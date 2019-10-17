@@ -1,0 +1,2 @@
+plugins/doc_fragments/vmware_rest_client.py future-import-boilerplate
+plugins/doc_fragments/vmware_rest_client.py metaclass-boilerplate
