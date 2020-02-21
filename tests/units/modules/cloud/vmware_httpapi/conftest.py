@@ -1,4 +1,5 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import base64
@@ -29,9 +30,9 @@ logging.basicConfig()
 vcr_log = logging.getLogger("vcr")
 vcr_log.setLevel(logging.DEBUG)
 
-vcenter_url = 'https://vcenter.test'
-username = 'administrator@vsphere.local'
-password = '!234AaAa56'
+vcenter_url = "https://vcenter.test"
+username = "administrator@vsphere.local"
+password = "!234AaAa56"
 
 
 def skip_py26(a):
@@ -43,38 +44,43 @@ def enable_vcr():
         return skip_py26
     stack = inspect.stack()
     frame = stack[1]
-    if hasattr(frame, 'filename'):
+    if hasattr(frame, "filename"):
         test_file_name = os.path.basename(stack[1].filename)
     else:
-        test_file_name = frame[1].split('/')[-1]
-    module_name = test_file_name.split('.')[0]
+        test_file_name = frame[1].split("/")[-1]
+    module_name = test_file_name.split(".")[0]
 
     my_vcr = vcr.VCR(
-        cassette_library_dir='tests/units/modules/cloud/vmware_httpapi/' + module_name,
-        path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+        cassette_library_dir="tests/units/modules/cloud/vmware_httpapi/"
+        + module_name,
+        path_transformer=vcr.VCR.ensure_suffix(".yaml"),
         # switch the record_mode to 'all' if you want to switch to the
         # record mode. VCR will just act as a proxy and record the communication between
         # the vcenter server and pytest.
         # record_mode='all',
-        record_mode='none',
+        record_mode="none",
     )
     return my_vcr.use_cassette
 
 
-class ConnectionPlugin():
+class ConnectionPlugin:
     def __init__(self):
-        self._url = ''
+        self._url = ""
         self._token = None
 
-    def send(self, path, data, method=None, headers=None, force_basic_auth=True):
+    def send(
+        self, path, data, method=None, headers=None, force_basic_auth=True
+    ):
         url = vcenter_url + path
-        if str(Request) == 'urllib2.Request':
-            if method == 'POST':
+        if str(Request) == "urllib2.Request":
+            if method == "POST":
                 req = Request(url, headers=headers, data=data.encode())
-            elif method == 'GET':
+            elif method == "GET":
                 req = Request(url, headers=headers)
         else:
-            req = Request(url, headers=headers, data=data.encode(), method=method)
+            req = Request(
+                url, headers=headers, data=data.encode(), method=method
+            )
         if self._token:
             req.add_header("vmware-api-session-id", self._token)
         else:
@@ -90,7 +96,6 @@ class ConnectionPlugin():
 
 
 class ConnectionLite(ansible.plugins.httpapi.vmware.HttpApi):
-
     def __init__(self, socket_path):
         self.connection = ConnectionPlugin()
         self.login(username, password)
@@ -98,13 +103,23 @@ class ConnectionLite(ansible.plugins.httpapi.vmware.HttpApi):
 
 @pytest.fixture()
 def run_module(monkeypatch):
-
     def func(module, params):
         exit_json = Mock()
-        monkeypatch.setattr(ansible.module_utils.basic.AnsibleModule, "exit_json", exit_json)
-        ansible.module_utils.basic._ANSIBLE_ARGS = json.dumps({'ANSIBLE_MODULE_ARGS': params}).encode()
-        monkeypatch.setattr(ansible.module_utils.vmware_httpapi.VmwareRestModule, "Connection", ConnectionLite)
-        loaded_m = importlib.import_module('ansible.modules.cloud.vmware_httpapi.' + module)
+        monkeypatch.setattr(
+            ansible.module_utils.basic.AnsibleModule, "exit_json", exit_json
+        )
+        ansible.module_utils.basic._ANSIBLE_ARGS = json.dumps(
+            {"ANSIBLE_MODULE_ARGS": params}
+        ).encode()
+        monkeypatch.setattr(
+            ansible.module_utils.vmware_httpapi.VmwareRestModule,
+            "Connection",
+            ConnectionLite,
+        )
+        loaded_m = importlib.import_module(
+            "ansible.modules.cloud.vmware_httpapi." + module
+        )
         loaded_m.main()
         return exit_json
+
     return func
