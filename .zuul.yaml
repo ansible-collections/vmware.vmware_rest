@@ -1,0 +1,6 @@
+# Zuul configuration
+- project:
+    check:
+      jobs:
+          - system-required
+          - ansible-python-jobs
