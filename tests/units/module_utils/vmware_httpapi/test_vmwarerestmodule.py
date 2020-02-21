@@ -7,9 +7,9 @@ import logging
 import pytest
 
 from ansible.module_utils.connection import Connection
-import ansible.module_utils.vmware_httpapi.VmwareRestModule as VmwareRestModule
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule as VmwareRestModule
 import ansible.module_utils.basic
-from ansible.plugins.httpapi.vmware import HttpApi
+from ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware import HttpApi
 
 
 class ConnectionLite(Connection):

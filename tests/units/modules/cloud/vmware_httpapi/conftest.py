@@ -13,11 +13,16 @@ import pytest
 import ssl
 import sys
 
-from units.compat.mock import Mock
+import six
+
+if six.PY3:
+    from unittest import mock
+else:
+    import mock
 
 import ansible.module_utils.basic
-import ansible.module_utils.vmware_httpapi.VmwareRestModule
-import ansible.plugins.httpapi.vmware
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule as VmwareRestModule
+import ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware
 
 from ansible.module_utils.six.moves.urllib.request import urlopen
 from ansible.module_utils.six.moves.urllib.request import Request
@@ -95,7 +100,7 @@ class ConnectionPlugin:
         pass
 
 
-class ConnectionLite(ansible.plugins.httpapi.vmware.HttpApi):
+class ConnectionLite(ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware.HttpApi):
     def __init__(self, socket_path):
         self.connection = ConnectionPlugin()
         self.login(username, password)
@@ -104,20 +109,16 @@ class ConnectionLite(ansible.plugins.httpapi.vmware.HttpApi):
 @pytest.fixture()
 def run_module(monkeypatch):
     def func(module, params):
-        exit_json = Mock()
+        exit_json = mock.Mock()
         monkeypatch.setattr(
             ansible.module_utils.basic.AnsibleModule, "exit_json", exit_json
         )
         ansible.module_utils.basic._ANSIBLE_ARGS = json.dumps(
             {"ANSIBLE_MODULE_ARGS": params}
         ).encode()
-        monkeypatch.setattr(
-            ansible.module_utils.vmware_httpapi.VmwareRestModule,
-            "Connection",
-            ConnectionLite,
-        )
+        monkeypatch.setattr(VmwareRestModule, "Connection", ConnectionLite)
         loaded_m = importlib.import_module(
-            "ansible.modules.cloud.vmware_httpapi." + module
+            "ansible_collections.ansible.vmware_rest.plugins.modules." + module
         )
         loaded_m.main()
         return exit_json

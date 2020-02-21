@@ -4,8 +4,13 @@ __metaclass__ = type
 
 import pytest
 
-from units.modules.cloud.vmware_httpapi.conftest import enable_vcr
-from units.compat.mock import ANY
+from .conftest import enable_vcr
+
+import six
+if six.PY3:
+    from unittest.mock import ANY as ANY
+else:
+    import mock.ANY as ANY
 
 
 @enable_vcr()
