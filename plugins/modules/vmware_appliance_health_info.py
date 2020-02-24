@@ -4,15 +4,16 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'community'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
 }
 
-DOCUMENTATION = r'''author:
+DOCUMENTATION = r"""author:
 - Paul Knight (@n3pjk)
 description:
 - This module can be used to gather information about VCSA health.
@@ -51,9 +52,9 @@ requirements:
 - python >= 2.6
 short_description: Gathers info about health of the VCSA.
 version_added: '2.10'
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - hosts: all
   connection: httpapi
   gather_facts: false
@@ -72,9 +73,9 @@ EXAMPLES = r'''
     - name: Get system health information
       vmware_appliance_health_info:
         subsystem: system
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 attribute:
     description: facts about the specified health attribute
     returned: always
@@ -82,31 +83,36 @@ attribute:
     sample: {
         "value": true
     }
-'''
+"""
 
-from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import API, VmwareRestModule
+from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import (
+    API,
+    VmwareRestModule,
+)
 
 
 SLUG = dict(
-    applmgmt='/health/applmgmt',
-    databasestorage='/health/database-storage',
-    load='/health/load',
-    mem='/health/mem',
-    softwarepackages='/health/software-packages',
-    storage='/health/storage',
-    swap='/health/swap',
-    system='/health/system',
-    lastcheck='/health/system/lastcheck',
+    applmgmt="/health/applmgmt",
+    databasestorage="/health/database-storage",
+    load="/health/load",
+    mem="/health/mem",
+    softwarepackages="/health/software-packages",
+    storage="/health/storage",
+    swap="/health/swap",
+    system="/health/system",
+    lastcheck="/health/system/lastcheck",
 )
 
 
 def get_subsystem(module, subsystem):
     try:
-        url = API['appliance']['base'] + SLUG[subsystem]
+        url = API["appliance"]["base"] + SLUG[subsystem]
     except KeyError:
-        module.fail(msg='[%s] is not a valid subsystem. '
-                    'Please specify correct subsystem, valid choices are '
-                    '[%s].' % (subsystem, ", ".join(list(SLUG.keys()))))
+        module.fail(
+            msg="[%s] is not a valid subsystem. "
+            "Please specify correct subsystem, valid choices are "
+            "[%s]." % (subsystem, ", ".join(list(SLUG.keys())))
+        )
 
     module.get(url=url, key=subsystem)
 
@@ -115,33 +121,34 @@ def main():
     argument_spec = VmwareRestModule.create_argument_spec()
     argument_spec.update(
         subsystem=dict(
-            type='str',
+            type="str",
             required=False,
             choices=[
-                'applmgmt',
-                'databasestorage',
-                'lastcheck',
-                'load',
-                'mem',
-                'softwarepackages',
-                'storage',
-                'swap',
-                'system',
+                "applmgmt",
+                "databasestorage",
+                "lastcheck",
+                "load",
+                "mem",
+                "softwarepackages",
+                "storage",
+                "swap",
+                "system",
             ],
         ),
-        asset=dict(type='str', required=False),
+        asset=dict(type="str", required=False),
     )
 
-    module = VmwareRestModule(argument_spec=argument_spec,
-                              supports_check_mode=True,
-                              is_multipart=True,
-                              use_object_handler=True)
-    subsystem = module.params['subsystem']
-    asset = module.params['asset']
+    module = VmwareRestModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        is_multipart=True,
+        use_object_handler=True,
+    )
+    subsystem = module.params["subsystem"]
+    asset = module.params["asset"]
 
     if asset is not None:
-        url = (API['appliance']['base']
-               + ('/health/%s/messages' % asset))
+        url = API["appliance"]["base"] + ("/health/%s/messages" % asset)
 
         module.get(url=url, key=asset)
     elif subsystem is None:
@@ -154,5 +161,5 @@ def main():
     module.exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

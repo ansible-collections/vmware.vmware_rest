@@ -4,15 +4,16 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    'metadata_version': '1.1',
-    'status': ['preview'],
-    'supported_by': 'community'
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
 }
 
-DOCUMENTATION = r'''author:
+DOCUMENTATION = r"""author:
 - Paul Knight (@n3pjk)
 description:
 - This module can be used to gather information about a specific category.
@@ -72,14 +73,14 @@ requirements:
 - python >= 2.6
 short_description: Gathers info about all, or a specified category.
 version_added: '2.10'
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Get all categories
   vmware_cis_category_info:
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 category:
     description: facts about the specified category
     returned: always
@@ -87,76 +88,76 @@ category:
     sample: {
         "value": true
     }
-'''
+"""
 
-from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import VmwareRestModule
+from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import (
+    VmwareRestModule,
+)
 
 
 def main():
     argument_spec = VmwareRestModule.create_argument_spec()
     argument_spec.update(
-        category_name=dict(type='str', required=False),
-        category_id=dict(type='str', required=False),
-        used_by_name=dict(type='str', required=False),
+        category_name=dict(type="str", required=False),
+        category_id=dict(type="str", required=False),
+        used_by_name=dict(type="str", required=False),
         used_by_type=dict(
-            type='str',
+            type="str",
             required=False,
             choices=[
-                'cluster',
-                'content_library',
-                'content_type',
-                'datacenter',
-                'datastore',
-                'folder',
-                'host',
-                'local_library',
-                'network',
-                'resource_pool',
-                'subscribed_library',
-                'tag',
-                'vm',
+                "cluster",
+                "content_library",
+                "content_type",
+                "datacenter",
+                "datastore",
+                "folder",
+                "host",
+                "local_library",
+                "network",
+                "resource_pool",
+                "subscribed_library",
+                "tag",
+                "vm",
             ],
         ),
-        used_by_id=dict(type='str', required=False),
+        used_by_id=dict(type="str", required=False),
     )
 
-    required_together = [
-        ['used_by_name', 'used_by_type']
-    ]
+    required_together = [["used_by_name", "used_by_type"]]
 
     mutually_exclusive = [
-        ['category_name', 'category_id', 'used_by_id', 'used_by_name'],
-        ['category_name', 'category_id', 'used_by_id', 'used_by_type'],
+        ["category_name", "category_id", "used_by_id", "used_by_name"],
+        ["category_name", "category_id", "used_by_id", "used_by_type"],
     ]
 
-    module = VmwareRestModule(argument_spec=argument_spec,
-                              required_together=required_together,
-                              mutually_exclusive=mutually_exclusive,
-                              supports_check_mode=True)
+    module = VmwareRestModule(
+        argument_spec=argument_spec,
+        required_together=required_together,
+        mutually_exclusive=mutually_exclusive,
+        supports_check_mode=True,
+    )
 
-    category_name = module.params['category_name']
-    category_id = module.params['category_id']
-    used_by_name = module.params['used_by_name']
-    used_by_type = module.params['used_by_type']
-    used_by_id = module.params['used_by_id']
+    category_name = module.params["category_name"]
+    category_id = module.params["category_id"]
+    used_by_name = module.params["used_by_name"]
+    used_by_type = module.params["used_by_type"]
+    used_by_id = module.params["used_by_id"]
 
-    url = module.get_url('category')
+    url = module.get_url("category")
     data = {}
     if category_name is not None:
-        category_id = module.get_id('category', category_name)
+        category_id = module.get_id("category", category_name)
     if category_id is not None:
-        url += '/id:' + category_id
+        url += "/id:" + category_id
         module.get(url=url)
     else:
         if used_by_name is not None:
             used_by_id = module.get_id(used_by_type, used_by_name)
-        url += '?~action=list-used-categories'
-        data = {
-            'used_by_entity': used_by_id
-        }
+        url += "?~action=list-used-categories"
+        data = {"used_by_entity": used_by_id}
         module.post(url=url, data=data)
     module.exit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
