@@ -3,12 +3,13 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 
 class ModuleDocFragment(object):
     # Parameters for VMware ReST HTTPAPI modules includes filters and state
-    DOCUMENTATION = r'''
+    DOCUMENTATION = r"""
 options:
     allow_multiples:
       description:
@@ -46,4 +47,4 @@ options:
       version_added: "2.10"
       type: list
       default: [200]
-'''
+"""

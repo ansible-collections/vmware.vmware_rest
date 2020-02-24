@@ -7,7 +7,7 @@
 
 class ModuleDocFragment(object):
     # Parameters for VMware REST Client based modules
-    DOCUMENTATION = r'''
+    DOCUMENTATION = r"""
 options:
   hostname:
     description:
@@ -39,4 +39,4 @@ options:
     type: str
     choices: [ http, https ]
     default: https
-'''
+"""
