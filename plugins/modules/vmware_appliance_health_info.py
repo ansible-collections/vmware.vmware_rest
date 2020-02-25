@@ -85,10 +85,7 @@ attribute:
     }
 """
 
-from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import (
-    API,
-    VmwareRestModule,
-)
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 SLUG = dict(
@@ -106,7 +103,7 @@ SLUG = dict(
 
 def get_subsystem(module, subsystem):
     try:
-        url = API["appliance"]["base"] + SLUG[subsystem]
+        url = vmware_httpapi.API["appliance"]["base"] + SLUG[subsystem]
     except KeyError:
         module.fail(
             msg="[%s] is not a valid subsystem. "
@@ -118,7 +115,7 @@ def get_subsystem(module, subsystem):
 
 
 def main():
-    argument_spec = VmwareRestModule.create_argument_spec()
+    argument_spec = vmware_httpapi.VmwareRestModule.create_argument_spec()
     argument_spec.update(
         subsystem=dict(
             type="str",
@@ -138,7 +135,7 @@ def main():
         asset=dict(type="str", required=False),
     )
 
-    module = VmwareRestModule(
+    module = vmware_httpapi.VmwareRestModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         is_multipart=True,
@@ -148,7 +145,9 @@ def main():
     asset = module.params["asset"]
 
     if asset is not None:
-        url = API["appliance"]["base"] + ("/health/%s/messages" % asset)
+        url = vmware_httpapi.API["appliance"]["base"] + (
+            "/health/%s/messages" % asset
+        )
 
         module.get(url=url, key=asset)
     elif subsystem is None:

@@ -90,13 +90,11 @@ category:
     }
 """
 
-from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import (
-    VmwareRestModule,
-)
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 def main():
-    argument_spec = VmwareRestModule.create_argument_spec()
+    argument_spec = vmware_httpapi.VmwareRestModule.create_argument_spec()
     argument_spec.update(
         category_name=dict(type="str", required=False),
         category_id=dict(type="str", required=False),
@@ -130,7 +128,7 @@ def main():
         ["category_name", "category_id", "used_by_id", "used_by_type"],
     ]
 
-    module = VmwareRestModule(
+    module = vmware_httpapi.VmwareRestModule(
         argument_spec=argument_spec,
         required_together=required_together,
         mutually_exclusive=mutually_exclusive,
