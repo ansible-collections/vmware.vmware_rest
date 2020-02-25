@@ -7,6 +7,7 @@ import pytest
 from .conftest import enable_vcr
 
 import six
+
 if six.PY3:
     from unittest.mock import ANY as ANY
 else:

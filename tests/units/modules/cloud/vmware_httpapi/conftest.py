@@ -21,7 +21,7 @@ else:
     import mock
 
 import ansible.module_utils.basic
-import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule as VmwareRestModule
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 import ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware
 
 from ansible.module_utils.six.moves.urllib.request import urlopen
@@ -100,7 +100,9 @@ class ConnectionPlugin:
         pass
 
 
-class ConnectionLite(ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware.HttpApi):
+class ConnectionLite(
+    ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware.HttpApi
+):
     def __init__(self, socket_path):
         self.connection = ConnectionPlugin()
         self.login(username, password)
@@ -116,7 +118,7 @@ def run_module(monkeypatch):
         ansible.module_utils.basic._ANSIBLE_ARGS = json.dumps(
             {"ANSIBLE_MODULE_ARGS": params}
         ).encode()
-        monkeypatch.setattr(VmwareRestModule, "Connection", ConnectionLite)
+        monkeypatch.setattr(vmware_httpapi, "Connection", ConnectionLite)
         loaded_m = importlib.import_module(
             "ansible_collections.ansible.vmware_rest.plugins.modules." + module
         )

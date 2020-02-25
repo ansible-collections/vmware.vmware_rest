@@ -102,16 +102,16 @@ object_info:
     }
 """
 
-from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import (
-    VmwareRestModule,
-)
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 def main():
-    argument_spec = VmwareRestModule.create_argument_spec(use_filters=True)
+    argument_spec = vmware_httpapi.VmwareRestModule.create_argument_spec(
+        use_filters=True
+    )
     argument_spec.update(object_type=dict(type="str", default="datacenter"))
 
-    module = VmwareRestModule(
+    module = vmware_httpapi.VmwareRestModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         use_object_handler=True,
