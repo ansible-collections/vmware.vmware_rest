@@ -77,10 +77,7 @@ access_mode:
     }
 """
 
-from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule import (
-    API,
-    VmwareRestModule,
-)
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 SLUG = dict(
@@ -93,7 +90,7 @@ SLUG = dict(
 
 def get_mode(module, mode):
     try:
-        url = API["appliance"]["base"] + SLUG[mode]
+        url = vmware_httpapi.API["appliance"]["base"] + SLUG[mode]
     except KeyError:
         module.fail(
             msg="[%s] is not a valid access mode. "
@@ -105,7 +102,7 @@ def get_mode(module, mode):
 
 
 def main():
-    argument_spec = VmwareRestModule.create_argument_spec()
+    argument_spec = vmware_httpapi.VmwareRestModule.create_argument_spec()
     argument_spec.update(
         access_mode=dict(
             type="str",
@@ -114,7 +111,7 @@ def main():
         )
     )
 
-    module = VmwareRestModule(
+    module = vmware_httpapi.VmwareRestModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         is_multipart=True,

@@ -7,9 +7,11 @@ import logging
 import pytest
 
 from ansible.module_utils.connection import Connection
-import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi.VmwareRestModule as VmwareRestModule
+import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 import ansible.module_utils.basic
-from ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware import HttpApi
+from ansible_collections.ansible.vmware_rest.plugins.httpapi.vmware import (
+    HttpApi,
+)
 
 
 class ConnectionLite(Connection):
@@ -23,7 +25,7 @@ class ConnectionLite(Connection):
 
 
 def test_get_url_with_filter(monkeypatch):
-    argument_spec = VmwareRestModule.VmwareRestModule.create_argument_spec(
+    argument_spec = vmware_httpapi.VmwareRestModule.create_argument_spec(
         use_filters=True
     )
     argument_spec.update(object_type=dict(type="str", default="datacenter"))
@@ -34,8 +36,8 @@ def test_get_url_with_filter(monkeypatch):
     monkeypatch.setattr(
         ansible.module_utils.basic, "_load_params", fake_load_params
     )
-    monkeypatch.setattr(VmwareRestModule, "Connection", ConnectionLite)
-    module = VmwareRestModule.VmwareRestModule(
+    monkeypatch.setattr(vmware_httpapi, "Connection", ConnectionLite)
+    module = vmware_httpapi.VmwareRestModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         use_object_handler=True,
