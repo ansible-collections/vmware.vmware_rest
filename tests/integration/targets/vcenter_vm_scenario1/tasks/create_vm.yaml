@@ -1,0 +1,38 @@
+- vcenter_cluster_info:
+  register: all_the_clusters
+- vcenter_datastore_info:
+  register: my_datastore_value
+- vcenter_folder_info:
+  register: my_folder_value
+- vcenter_cluster_info:
+    cluster: "{{ all_the_clusters.value[0].cluster }}"
+  register: my_cluster_info
+
+- set_fact:
+    rw_datastore: '{{ my_datastore_value.value|selectattr("name", "equalto", "rw_datastore")|first }}'
+    my_virtual_machine_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "VIRTUAL_MACHINE")|first }}'
+
+- vcenter_vm:
+    placement:
+      cluster: "{{ all_the_clusters.value[0].cluster }}"
+      datastore: "{{ rw_datastore.datastore }}"
+      folder: "{{ my_virtual_machine_folder.folder }}"
+      resource_pool: "{{ my_cluster_info.value.resource_pool }}"
+    name: test_vm1
+    guest_OS: DEBIAN_8_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    state: create
+
+- register: test_vm1
+  vcenter_vm_info:
+    filter.names:
+    - test_vm1
+
+- vcenter_vm_info:
+    vm: '{{ test_vm1.value[0].vm }}'
+
+- vcenter_vm_hardware_adapter_sata_info:
+    vm: '{{ test_vm1.value[0].vm }}'

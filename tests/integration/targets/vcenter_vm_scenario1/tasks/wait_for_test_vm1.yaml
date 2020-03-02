@@ -1,0 +1,11 @@
+- vcenter_vm_tools_info:
+    vm: '{{ test_vm1.value[0].vm }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state != "NOT_RUNNING"
+  retries: 60
+  delay: 5
+
+- debug:
+    var: vm_tools_info

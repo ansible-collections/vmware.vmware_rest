@@ -28,7 +28,13 @@ If you want to develop new content for this collection or improve what is alread
 
 ### Testing with `ansible-test`
 
-TBD
+
+```
+virtualenv -p python3.7 .virtualenv/py37
+source .virtualenv/py37/bin/activate.fish
+pip install -r requirements.txt -r test-requirements.txt
+ansible-test network-integration --python 3.7 --inventory /tmp/inventory-vmware_rest vcenter_vm_scenario1
+```
 
 ## Publishing New Version
 
