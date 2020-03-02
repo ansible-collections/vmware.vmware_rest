@@ -69,9 +69,14 @@ class HttpApi(HttpApiBase):
 
     def send_request(self, path, body_params, method="POST"):
         data = json.dumps(body_params) if body_params else "{}"
+        import q
+
+        q(path)
+        q(data)
 
         try:
             self._display_request(method=method)
+            q(data)
             response, response_data = self.connection.send(
                 path,
                 data,
@@ -79,7 +84,11 @@ class HttpApi(HttpApiBase):
                 headers=BASE_HEADERS,
                 force_basic_auth=True,
             )
+            import q
+
+            q(response.getcode())
             response_value = self._get_response_value(response_data)
+            q(response_value)
 
             return response.getcode(), self._response_to_json(response_value)
         except AnsibleConnectionFailure as e:
