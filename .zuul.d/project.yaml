@@ -1,0 +1,4 @@
+- project:
+    check:
+      jobs:
+        - ansible-test-cloud-integration-vmware-rest-python36

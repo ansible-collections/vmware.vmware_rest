@@ -79,6 +79,7 @@ class HttpApi(HttpApiBase):
                 headers=BASE_HEADERS,
                 force_basic_auth=True,
             )
+
             response_value = self._get_response_value(response_data)
 
             return response.getcode(), self._response_to_json(response_value)
