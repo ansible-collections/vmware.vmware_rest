@@ -106,21 +106,30 @@ class AnsibleModuleBase:
 
     def parameters(self):
         def itera(operationId):
-            for parameter in AnsibleModule._flatten_parameter(
-                self.resource.operations[operationId][2], self.definitions
-            ):
-                name = parameter["name"]
-                if name == "spec":
-                    for i in parameter["subkeys"]:
-                        yield i
-                else:
-                    yield parameter
+            versions = sorted(list(self.resource.operations[operationId].keys()))
+            print(versions)
+            print(self.resource.operations[operationId][versions[0]])
+            for version in versions:
+                print(version)
+                for parameter in AnsibleModule._flatten_parameter(
+                    self.resource.operations[operationId][version][2], self.definitions
+                ):
+                    print('-> %s' % parameter)
+                    name = parameter["name"]
+                    if name == "spec":
+                        for i in parameter["subkeys"]:
+                            i["since_version"] = version
+                            yield i
+                    else:
+                        parameter["since_version"] = version
+                        yield parameter
 
         results = {}
         for operationId in self.default_operationIds:
             if not operationId in self.resource.operations:
                 continue
             for parameter in itera(operationId):
+                print(parameter)
                 name = parameter["name"]
                 if name not in results:
                     results[name] = parameter
@@ -238,8 +247,8 @@ class AnsibleModuleBase:
         return yaml.dump(documentation)
 
     def gen_url_func(self):
-        first_operation = list(self.resource.operations.values())[0]
-        path = first_operation[1]
+        last_operation = self.last_operation(list(self.default_operationIds)[0])
+        path = last_operation[1]
 
         url_func = ast.parse(self.URL.format(path=path)).body[0]
         return url_func
@@ -342,6 +351,10 @@ class AnsibleModuleBase:
         with module_py_file.open("w") as fd:
             fd.write(astunparse.unparse(syntax_tree))
 
+    def last_operation(self, operationId):
+        last_version = sorted(list(self.resource.operations[operationId].keys()))[-1]
+        return self.resource.operations[operationId][last_version]
+
 
 class AnsibleModule(AnsibleModuleBase):
 
@@ -372,7 +385,7 @@ def main():
         main_func = ast.parse(MAIN_FUNC)
 
         for operation in self.default_operationIds:
-            (verb, path, _) = self.resource.operations[operation]
+            (verb, path, _) = self.last_operation(operation)
             if "$" in operation:
                 print(
                     "skipping operation {operation} for {path}".format(
@@ -449,7 +462,7 @@ return "{path}".format(**module.params) + gen_args(module)
     def list_index(self):
         if "get" not in self.resource.operations:
             return
-        path = self.resource.operations["get"][1]
+        path = self.last_operation("get")[1]
         m = re.search(r"{([-\w]+)}$", path)
         if m:
             return m.group(1)
@@ -460,10 +473,11 @@ return "{path}".format(**module.params) + gen_args(module)
     def gen_url_func(self):
         path = None
         list_path = None
+
         if "get" in self.resource.operations:
-            path = self.resource.operations["get"][1]
+            path = self.last_operation("get")[1]
         if "list" in self.resource.operations:
-            list_path = self.resource.operations["list"][1]
+            path = self.last_operation("list")[1]
 
         if not path:
             url_func = ast.parse(
@@ -581,6 +595,10 @@ class Definitions:
         return ref["$ref"].split("/")[2]
 
     def get(self, ref):
+        dotted = self._ref_to_dotted(ref)
+        if dotted not in self.definitions:
+            print("Cannot find key {dotted}".format(dotted=dotted))
+            return {}
         v = self.definitions[self._ref_to_dotted(ref)]
         return v
 
@@ -598,20 +616,18 @@ class Path:
 
 
 class SwaggerFile:
-    def __init__(self, file_path):
+    def __init__(self):
         super().__init__()
         self.definitions = []
         self.paths = {}
         self.resources = {}
-        self.file_path = file_path
-        self.open(file_path)
 
-    def open(self, json_definition):
+    def open(self, json_definition, version):
         data = json.loads(json_definition.open().read())
         self.definitions = Definitions(data["definitions"])
-        self.load_paths(data["paths"])
+        self.load_paths(data["paths"], version)
 
-    def load_paths(self, paths):
+    def load_paths(self, paths, version):
         for path in [Path(p, v) for p, v in paths.items()]:
             # if not path.path.startswith("/vcenter/vm/{vm}/hardware/adapter/sata"):
             #     continue
@@ -625,31 +641,40 @@ class SwaggerFile:
                     desc["parameters"],
                 )
 
-    def init_resources(self):
+    def init_resources(self, version):
         for path in self.paths.values():
             name = Resource.path_to_name(path)
             if not name in self.resources:
                 self.resources[name] = Resource(name)
                 self.resources[name].description = ""  # path.summary(verb)
+                self.resources[name].since_version = version
 
             for k, v in path.operations.items():
-                if k in self.resources[name].operations:
-                    raise Exception(
-                        "operationId already defined: %s vs %s"
-                        % (self.resources[name].operations[k], v)
-                    )
+                if not v:
+                    raise Exception(k)
+                # if k in self.resources[name].operations:
+                #     # raise Exception(
+                #     #     "operationId already defined: %s vs %s"
+                #     #     % (self.resources[name].operations[k], v)
+                #     # )
+                #     continue
                 k = k.replace(
                     "$task", ""
                 )  # NOTE: Not sure if this is the right thing to do
-                self.resources[name].operations[k] = v
+                self.resources[name].operations[k] = {version: v}
 
 
 def main():
-    p = pathlib.Path("6.7.0")
-    for json_file in p.glob("*.json"):
-        print("Generating modules from {}".format(json_file))
-        swagger_file = SwaggerFile(json_file)
-        swagger_file.init_resources()
+    input_files = ["appliance.json",  "cis.json",  "content.json",  "esx.json",  "stats.json",  "vapi.json", "vcenter.json"]
+    for input_file in input_files:
+        print("Generating modules from {}".format(input_file))
+        swagger_file = SwaggerFile()
+        for version in ["6.7.0", "7.0.0"]:
+            input_file_path = pathlib.Path(version) / input_file
+            if not input_file_path.exists():
+                continue
+            swagger_file.open(input_file_path, version=version)
+            swagger_file.init_resources(version=version)
 
         for resource in swagger_file.resources.values():
             if "get" in resource.operations or "list" in resource.operations:
@@ -664,6 +689,27 @@ def main():
             )
             if len(module.default_operationIds) > 0:
                 module.renderer()
+
+
+    # p = pathlib.Path("6.7.0")
+    # for json_file in p.glob("*.json"):
+    #     print("Generating modules from {}".format(json_file))
+    #     swagger_file = SwaggerFile(json_file)
+    #     swagger_file.init_resources()
+
+    #     for resource in swagger_file.resources.values():
+    #         if "get" in resource.operations or "list" in resource.operations:
+    #             module = AnsibleInfoModule(
+    #                 resource, definitions=swagger_file.definitions
+    #             )
+    #             if len(module.default_operationIds) > 0:
+    #                 module.write_functional_tests()
+    #                 module.renderer()
+    #         module = AnsibleModule(
+    #             resource, definitions=swagger_file.definitions
+    #         )
+    #         if len(module.default_operationIds) > 0:
+    #             module.renderer()
 
 
 if __name__ == "__main__":

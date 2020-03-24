@@ -1,2 +1,3 @@
+astunparse
 ansible
 six
