@@ -8,7 +8,7 @@ license: null
 license_file: null
 tags: null
 dependencies: {}
-repository: git@github.com:ansible-collections/ansible.vmware_rest.git
+repository: https://github.com/ansible-collections/vmware_rest.git
 documentation: null
 homepage: null
 issues: null
