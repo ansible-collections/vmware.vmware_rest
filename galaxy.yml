@@ -1,4 +1,4 @@
-namespace: ansible
+namespace: vmware
 name: vmware_rest
 version: 1.0.0
 readme: null
