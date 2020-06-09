@@ -9,7 +9,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r"""author:
+DOCUMENTATION = r"""
+author:
 - Abhijeet Kasurde (@Akasurde)
 - Paul Knight (@n3pjk)
 description:
@@ -62,7 +63,7 @@ EXAMPLES = r"""
 - name: Get All VM without any filters
   block:
   - name: Get VMs
-    vmware_core_info:
+    ansible.vmware_rest.vmware_core_info:
       object_type: "{{ object_type }}"
     register: vm_result
 
@@ -73,7 +74,7 @@ EXAMPLES = r"""
     object_type: vm
 
 - name: Get all clusters from Asia-Datacenter1
-  vmware_core_info:
+  ansible.vmware_rest.vmware_core_info:
     object_type: cluster
     filters:
       - datacenters: "{{ datacenter_obj }}"
@@ -97,7 +98,7 @@ object_info:
     }
 """
 
-import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
+from ansible_collections.ansible.vmware_rest.plugins.module_utils import vmware_httpapi
 
 
 def main():

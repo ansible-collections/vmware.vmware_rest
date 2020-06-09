@@ -54,12 +54,13 @@ options:
               'datastore', 'folder', 'host', 'local_library', 'network',
               'resource_pool', 'subscribed_library', 'tag', 'vm']
     type: str
-extends_documentation_fragment: VmwareRestModule.documentation
+extends_documentation_fragment:
+- ansible.vmware_rest.VmwareRestModule.documentation
 """
 
 EXAMPLES = r"""
 - name: Get all categories
-  vmware_cis_category_info:
+  ansible.vmware_rest.vmware_cis_category_info:
 """
 
 RETURN = r"""
@@ -71,10 +72,7 @@ category:
         "value": true
     }
 """
-
-from ansible.module_utils.vmware_httpapi.VmwareRestModule import (
-    VmwareRestModule,
-)
+from ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi import VmwareRestModule
 
 
 def get_category_by_id(module, category_id):

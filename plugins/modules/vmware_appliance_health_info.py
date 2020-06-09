@@ -8,7 +8,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r"""author:
+DOCUMENTATION = r"""
+author:
 - Paul Knight (@n3pjk)
 description:
 - This module can be used to gather information about VCSA health.
@@ -54,19 +55,17 @@ EXAMPLES = r"""
   connection: httpapi
   gather_facts: false
   vars:
-    ansible_network_os: vmware
+    ansible_network_os: ansible.vmware_rest.vmware
     ansible_host: vcenter.my.domain
     ansible_user: administrator@vsphere.local
     ansible_httpapi_password: "SomePassword"
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: false
   tasks:
-
     - name: Get all health attribute information
-      vmware_appliance_health_info:
-
+      ansible.vmware_rest.vmware_appliance_health_info:
     - name: Get system health information
-      vmware_appliance_health_info:
+      ansible.vmware_rest.vmware_appliance_health_info:
         subsystem: system
 """
 

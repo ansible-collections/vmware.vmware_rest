@@ -46,7 +46,7 @@ EXAMPLES = r"""
   connection: httpapi
   gather_facts: false
   vars:
-    ansible_network_os: vmware
+    ansible_network_os: ansible.vmware_rest.vmware
     ansible_host: vcenter.my.domain
     ansible_user: administrator@vsphere.local
     ansible_httpapi_password: "SomePassword"
@@ -55,10 +55,10 @@ EXAMPLES = r"""
   tasks:
 
   - name: Get all access modes information
-    vmware_appliance_access_info:
+    ansible.vmware_rest.vmware_appliance_access_info:
 
   - name: Get ssh access mode information
-    vmware_appliance_access_info:
+    ansible.vmware_rest.vmware_appliance_access_info:
       access_mode: ssh
 """
 
