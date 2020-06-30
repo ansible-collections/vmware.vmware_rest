@@ -1,14 +1,16 @@
 namespace: vmware
 name: vmware_rest
-version: 1.0.0
-readme: null
-authors: null
-description: null
+readme: README.md
+authors:
+  - Ansible (https://github.com/ansible)
+description:
 license: null
-license_file: null
-tags: null
+license_file: LICENSE
+tags:
+  - cloud
+  - vmware
+  - virtualization
 dependencies: {}
 repository: https://github.com/ansible-collections/vmware_rest.git
-documentation: null
-homepage: null
-issues: null
+homepage: https://github.com/ansible-collections/vmware_rest
+issues: https://github.com/ansible-collections/vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
