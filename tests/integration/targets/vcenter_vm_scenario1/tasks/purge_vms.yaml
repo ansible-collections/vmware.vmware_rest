@@ -1,7 +1,8 @@
 - register: existing_vms
   vcenter_vm_info:
 
-- vcenter_vm_power:
+- name: Turn off the VMs
+  vcenter_vm_power:
     state: stop
     vm: '{{ item.vm }}'
   with_items: "{{ existing_vms.value }}"

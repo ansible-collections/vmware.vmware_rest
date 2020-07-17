@@ -1,8 +1,20 @@
 - register: existing_datacenters
   vcenter_datacenter_info:
 - debug: var=existing_datacenters
-- vcenter_datacenter:
+- name: Force delete the existing DC
+  vcenter_datacenter:
     state: delete
     datacenter: '{{ item.datacenter }}'
     force: true
   with_items: "{{ existing_datacenters.value }}"
+  register: _result
+- debug: var=_result
+- assert:
+    that:
+      - _result is changed
+  when: existing_datacenters.value|length > 0
+- assert:
+    that:
+      - _result is skipped
+      - not(_result is changed)
+  when: existing_datacenters.value|length == 0

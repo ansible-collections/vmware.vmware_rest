@@ -9,6 +9,22 @@
     name: my_dc
     folder: "{{ my_datacenter_folder.folder }}"
     state: create
+  register: _result
+- debug: var=_result
+- assert:
+    that:
+      - _result is changed
+
+- name: Create datacenter my_dc (again)
+  vcenter_datacenter:
+    name: my_dc
+    folder: "{{ my_datacenter_folder.folder }}"
+    state: create
+  register: _result
+- debug: var=_result
+- assert:
+    that:
+      - not(_result is changed)
 
 - vcenter_datacenter_info:
   register: my_datacenter_list
@@ -18,13 +34,14 @@
 
 - debug: var=my_dc_info
 
-- name: Create Cluster
+- name: _community_ Create Cluster
   vmware_cluster:
     hostname: vcenter.test
     username: administrator@vsphere.local
     password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     datacenter_name: my_dc
     cluster_name: my_cluster
+    ha_host_monitoring: disabled
     validate_certs: no
 
 - vcenter_folder_info:
@@ -42,18 +59,24 @@
   register: my_folder_result
 - debug: var=my_folder_value
 
-- vcenter_host:
+- name: Connect the host(s)
+  vcenter_host:
     hostname: '{{ item }}'
     password: "{{ lookup('file', '/tmp/vcenter/tmp/esxi_password_root.txt') }}"
     user_name: root
     thumbprint_verification: 'NONE'
     state: create
     folder: '{{ my_host_folder.folder }}'
+  register: _result
   with_items:
     - esxi1.test
     - esxi2.test
+- debug: var=_result
+- assert:
+    that:
+      - _result is changed
 
-- name: Add ESXi in the cluster
+- name: _community_ Add ESXi in the cluster
   vmware_host:
     hostname: vcenter.test
     username: administrator@vsphere.local
@@ -68,7 +91,7 @@
     - esxi1.test
     - esxi2.test
 
-- name: Mount NFS (ro_datastore) datastores to ESXi
+- name: _community_ Mount NFS (ro_datastore) datastores to ESXi
   vmware_host_datastore:
     hostname: vcenter.test
     username: administrator@vsphere.local
@@ -85,7 +108,7 @@
     - esxi1.test
     - esxi2.test
 
-- name: Mount NFS (rw_datastore) datastores on the ESXi
+- name: _community_ Mount NFS (rw_datastore) datastores on the ESXi
   vmware_host_datastore:
     hostname: vcenter.test
     username: administrator@vsphere.local
@@ -113,7 +136,7 @@
 - set_fact:
     rw_datastore: '{{ my_datastore_value.value|selectattr("name", "equalto", "rw_datastore")|first }}'
 
-- name: Create the DVSwitch
+- name: _community_ Create the DVSwitch
   vmware_dvswitch:
     hostname: vcenter.test
     username: administrator@vsphere.local
@@ -127,7 +150,7 @@
     discovery_operation: both
     state: present
 
-- name: Attach the hosts to the DVSwitch
+- name: _community_ Attach the hosts to the DVSwitch
   vmware_dvs_host:
     hostname: vcenter.test
     username: administrator@vsphere.local
@@ -142,7 +165,8 @@
     - esxi1.test
     - esxi2.test
 
-- vmware_dvs_portgroup:
+- name: _community_ Create the portgroup
+  vmware_dvs_portgroup:
     hostname: vcenter.test
     username: administrator@vsphere.local
     password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
@@ -153,13 +177,6 @@
     vlan_id: 0
     num_ports: 120
     state: present
-
-- vmware_dvs_portgroup_info:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
-    validate_certs: no
-    datacenter: my_dc
 
 - vcenter_network_info:
   register: my_network_value

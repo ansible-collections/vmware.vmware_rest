@@ -7,6 +7,7 @@ import re
 import yaml
 import pathlib
 import astunparse
+from ruamel.yaml import YAML
 
 from pprint import pprint
 
@@ -159,9 +160,7 @@ class AnsibleModuleBase:
         documentation = {
             "author": ["Ansible VMware team"],
             "description": self.description,
-            # "extends_documentation_fragment": [
-            #     "ansible.vmware_rest.VmwareRestModule.documentation"
-            # ],
+            "extends_documentation_fragment": [],
             "module": self.name,
             "notes": ["Tested on vSphere 6.7"],
             "options": {},
@@ -704,13 +703,19 @@ def main():
             if len(module.default_operationIds) > 0:
                 module.renderer()
                 module_list.append(module.name)
-        print(module_list)
-# NOTE: module_defaults are not yet supported by ansible/ansible, maybe 2.11.
-#    meta_dir = pathlib.Path("meta")
-#    meta_dir.mkdir(exist_ok=True)
-#    runtime_yaml = meta_dir / "runtime.yml"
-#    with runtime_yaml.open('w') as fd:
-#        fd.write(yaml.dump({"action_groups": {"vmware_rest": module_list}}))
+
+    print("Updating the galaxy.yml file...")
+    yaml = YAML()
+    my_galaxy = base_dir = pathlib.Path(".") / "galaxy.yml"
+    galaxy_contents = yaml.load(my_galaxy.open('r'))
+    galaxy_contents["build_ignore"] = []
+    for m in module_list:
+        if m.startswith("vcenter_vm"):
+            continue
+        galaxy_contents["build_ignore"].append("plugins/modules/{}.py".format(m))
+    print(galaxy_contents)
+    with my_galaxy.open('w') as fd:
+        yaml.dump(galaxy_contents, fd)
 
 
 if __name__ == "__main__":

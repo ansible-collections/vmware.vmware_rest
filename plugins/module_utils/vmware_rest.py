@@ -6,7 +6,6 @@ import functools
 from async_lru import alru_cache
 
 
-
 @alru_cache()
 async def open_session(
     vcenter_hostname=None,
@@ -35,7 +34,10 @@ async def open_session(
             session_id = json["value"]
             session = aiohttp.ClientSession(
                 connector=connector,
-                headers={"vmware-api-session-id": session_id, 'content-type': 'application/json'},
+                headers={
+                    "vmware-api-session-id": session_id,
+                    "content-type": "application/json",
+                },
                 connector_owner=False,
             )
             return session

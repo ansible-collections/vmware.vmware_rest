@@ -18,3 +18,10 @@
     that:
       - _sata_adapter_result_1.value.pci_slot_number == _sata_adapter_result_2.value.pci_slot_number
       - _sata_adapter_result_1.value._key == _sata_adapter_result_2.value._key
+
+- name: Ensure the changed flags are consistent
+  assert:
+    that:
+      - _sata_adapter_result_1 is changed
+      - not(_sata_adapter_result_2 is changed)
+
