@@ -5,6 +5,7 @@ Missing features
 - cluster: same problem
 - datastore: same problem. For instance, we cannot mount a NFS volume
 - network modules (vswitch, dvswitch, portgroup), those are covered by the NSX-T API.
+- host: don't have a GET end-point
 
 Also
 ====

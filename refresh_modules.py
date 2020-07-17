@@ -272,7 +272,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 import socket
 import json
-import q
 
 DOCUMENTATION = ""
 
@@ -280,8 +279,12 @@ IN_QUERY_PARAMETER = None
 
 
 from ansible.module_utils.basic import env_fallback
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.init import AnsibleTurboModule
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import gen_args, update_changed_flag
+from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+# from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    gen_args,
+    open_session,
+    update_changed_flag)
 
 
 
@@ -303,6 +306,12 @@ def prepare_argument_spec():
             no_log=True,
             fallback=(env_fallback, ['VMWARE_PASSWORD']),
         ),
+        "vcenter_certs": dict(
+            type='bool',
+            required=False,
+            no_log=True,
+            fallback=(env_fallback, ['VMWARE_VALIDATE_CERTS']),
+        )
     }}
 
 
@@ -335,7 +344,6 @@ async def exists(params, session):
     unicity_keys = ["bus", "pci_slot_number"]
     devices = await list_devices(params, session)
     for device in devices:
-        print('device: %s' % device)
         for k in unicity_keys:
             if params.get(k) is not None and device.get(k) != params.get(k):
                 break
@@ -344,10 +352,12 @@ async def exists(params, session):
 
 
 
-def run_module( ):
+async def main( ):
     module_args = prepare_argument_spec()
-    module = AnsibleTurboModule(module_name="{name}", collection_name='vmware.vmware_rest', argument_spec=module_args, supports_check_mode=True)
-    module.run()
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    session = await open_session(vcenter_hostname=module.params['vcenter_hostname'], vcenter_username=module.params['vcenter_username'], vcenter_password=module.params['vcenter_password'])
+    result = await entry_point(module, session)
+    module.exit_json(**result)
 
 def url(params):
     pass
@@ -355,11 +365,10 @@ def url(params):
 def entry_point():
     pass
 
-def main():
-    run_module()
-
 if __name__ == '__main__':
-    main()
+    import asyncio
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
 
 """
         syntax_tree = ast.parse(DEFAULT_MODULE.format(name=self.name))
@@ -432,7 +441,6 @@ return "https://{{vcenter_hostname}}{path}".format(**params)
     def gen_entry_point_func(self):
         MAIN_FUNC = """
 async def entry_point(module, session):
-    print("Running {name}")
     func = globals()["_" + module.params['state']]
     return await func(module.params, session)
 """
@@ -454,10 +462,11 @@ async def entry_point(module, session):
 async def _{operation}(params, session):
     _url = "https://{{vcenter_hostname}}{path}".format(**params) + gen_args(params, IN_QUERY_PARAMETER)
     async with session.{verb}(_url) as resp:
-        if await resp.text() == "":
-            return {{}}
-        _json = await resp.json()
-        q(_json)
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {{}}
         return await update_changed_flag(_json, resp.status, "{operation}")
 """
             FUNC_WITH_DATA_TPL = """
@@ -475,10 +484,11 @@ async def _{operation}(params, session):
             spec[i] = params[i]
     _url = "https://{{vcenter_hostname}}{path}".format(**params)
     async with session.{verb}(_url, json={{'spec': spec}}) as resp:
-        if await resp.text() == "":
-            return {{}}
-
-        _json = await resp.json()
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {{}}
         # Update the value field with all the details
         if "{operation}" == "create" and "value" in _json:
             if type(_json["value"]) == dict:
@@ -584,10 +594,8 @@ return "https://{{vcenter_hostname}}{path}".format(**params) + gen_args(params, 
     def gen_entry_point_func(self):
         FUNC = """
 async def entry_point(module, session):
-    print("Running {name}")
     async with session.get(url(module.params)) as resp:
         _json = await resp.json()
-        q(_json)
         return await update_changed_flag(_json, resp.status, "get")
 """
         return ast.parse(FUNC.format(name=self.name)).body[0]
