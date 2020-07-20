@@ -70,10 +70,7 @@ async def update_changed_flag(data, status, operation):
     elif operation == "delete" and status in [200, 204]:
         data["failed"] = False
         data["changed"] = True
-    elif (
-        data.get("type")
-        == "com.vmware.vapi.std.errors.already_in_desired_state"
-    ):
+    elif data.get("type") == "com.vmware.vapi.std.errors.already_in_desired_state":
         data["failed"] = False
         data["changed"] = False
     elif data.get("type") == "com.vmware.vapi.std.errors.already_exists":
