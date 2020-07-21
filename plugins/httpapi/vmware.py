@@ -7,7 +7,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 author: Abhijeet Kasurde (Akasurde)
 httpapi : vmware
@@ -15,6 +15,7 @@ short_description: HttpApi Plugin for VMware REST API
 description:
   - This HttpApi plugin provides methods to connect to VMware vCenter over a HTTP(S)-based APIs.
 version_added: "2.10"
+version_added_collection: "ansible.builtin"
 """
 
 import json

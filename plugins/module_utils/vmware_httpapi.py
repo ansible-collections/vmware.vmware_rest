@@ -657,14 +657,14 @@ class VmwareRestModule(AnsibleModule):
                 choices=["debug", "info", "normal"],
                 default="normal",
             ),
-            status_code=dict(type="list", default=[200]),
+            status_code=dict(type="list", default=[200], elements='int'),
         )
         if use_filters:
-            argument_spec.update(filters=dict(type="list", default=[]))
+            argument_spec.update(filters=dict(type="list", default=[], elements='dict'))
         if use_state:
             argument_spec.update(
                 state=dict(
-                    type="list",
+                    type="str",
                     choices=["absent", "present", "query"],
                     default="query",
                 )

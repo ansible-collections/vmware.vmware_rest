@@ -8,37 +8,30 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r"""author:
-- Paul Knight (@n3pjk)
-description:
-- This module can be used to gather information about the four modes of accessing
-  the VCSA.
-- This module is based on REST API and uses httpapi connection plugin for persistent
-  connection.
-- The Appliance API works against the VCSA and uses the "administrator@vsphere.local"
-  user.
-extends_documentation_fragment:
-- ansible.vmware_rest.VmwareRestModule.documentation
+DOCUMENTATION = r"""
 module: vmware_appliance_access_info
+short_description: Gathers info about modes of access to the vCenter appliance using REST API
+description:
+- This module can be used to gather information about the four modes of accessing the VCSA.
+- This module is based on REST API and uses httpapi connection plugin for persistent connection.
+- The Appliance API works against the VCSA and uses the "administrator@vsphere.local" user.
+author:
+- Paul Knight (@n3pjk)
+extends_documentation_fragment:
+- vmware.vmware_rest.VmwareRestModule.documentation
 notes:
 - Tested on vSphere 6.7
 options:
   access_mode:
-    choices:
-    - consolecli
-    - dcui
-    - shell
-    - ssh
     description:
     - Method of access to get to appliance
     - If not specified, all modes will be returned.
     required: false
     type: str
+    choices: [ consolecli, dcui, shell, ssh ]
 requirements:
 - python >= 2.6
-short_description: Gathers info about modes of access to the vCenter appliance using
-  REST API.
-version_added: '2.10'
+version_added: '1.0.0'
 """
 
 EXAMPLES = r"""
@@ -53,12 +46,11 @@ EXAMPLES = r"""
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: false
   tasks:
-
   - name: Get all access modes information
-    vmware_appliance_access_info:
+    vmware.vmware_rest.vmware_appliance_access_info:
 
   - name: Get ssh access mode information
-    vmware_appliance_access_info:
+    vmware.vmware_rest.vmware_appliance_access_info:
       access_mode: ssh
 """
 
@@ -72,7 +64,7 @@ access_mode:
     }
 """
 
-import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
+import ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 SLUG = dict(

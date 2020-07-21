@@ -9,16 +9,20 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r"""author:
+DOCUMENTATION = r"""
+module: vmware_core_info
+author:
 - Abhijeet Kasurde (@Akasurde)
 - Paul Knight (@n3pjk)
+short_description: Gathers info about various VMware inventory objects using REST
+  API
+version_added: '1.0.0'
 description:
 - This module can be used to gather information about various VMware inventory objects.
 - This module is based on REST API and uses httpapi connection plugin for persistent
   connection.
 extends_documentation_fragment:
-- ansible.vmware_rest.VmwareRestModule_filters.documentation
-module: vmware_core_info
+- vmware.vmware_rest.VmwareRestModule_filters.documentation
 notes:
 - Tested on vSphere 6.7
 options:
@@ -53,16 +57,13 @@ options:
     type: str
 requirements:
 - python >= 2.6
-short_description: Gathers info about various VMware inventory objects using REST
-  API
-version_added: '2.10'
 """
 
 EXAMPLES = r"""
 - name: Get All VM without any filters
   block:
   - name: Get VMs
-    vmware_core_info:
+    vmware.vmware_rest.vmware_core_info:
       object_type: "{{ object_type }}"
     register: vm_result
 
@@ -73,7 +74,7 @@ EXAMPLES = r"""
     object_type: vm
 
 - name: Get all clusters from Asia-Datacenter1
-  vmware_core_info:
+  vmware.vmware_rest.vmware_core_info:
     object_type: cluster
     filters:
       - datacenters: "{{ datacenter_obj }}"
@@ -97,7 +98,7 @@ object_info:
     }
 """
 
-import ansible_collections.ansible.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
+import ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 def main():

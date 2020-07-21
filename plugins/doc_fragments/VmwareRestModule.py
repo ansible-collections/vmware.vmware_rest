@@ -15,22 +15,24 @@ options:
       description:
       - Indicates whether get_id() can return multiple IDs for a given name.
       - Typically, this should be false when updating or deleting; otherwise, all named objects could be affected.
-      required: true
+      default: false
       version_added: "2.10"
+      version_added_collection: 'ansible.builtin'
       type: bool
     log_level:
       description:
       - If ANSIBLE_DEBUG is set, this will be forced to 'debug', but can be user-defined otherwise.
-      required: True
       choices: ['debug', 'info', 'normal']
       version_added: "2.10"
+      version_added_collection: 'ansible.builtin'
       type: str
       default: 'normal'
     status_code:
       description:
       - A list of integer status codes considered to be successful for the this module.
-      required: true
-      version_added: "2.10"
       type: list
-      default: [200]
+      elements: int
+      version_added: "2.10"
+      version_added_collection: 'ansible.builtin'
+      default: [ 200 ]
 """

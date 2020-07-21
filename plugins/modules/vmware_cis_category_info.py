@@ -4,7 +4,6 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-
 __metaclass__ = type
 
 
@@ -16,7 +15,7 @@ description:
 - This module can be used to gather information about a specific category.
 - This module can also gather facts about all categories.
 - This module is based on REST API and uses httpapi connection plugin for persistent connection.
-version_added: '2.10'
+version_added: '1.0.0'
 author:
 - Paul Knight (@n3pjk)
 notes:
@@ -54,12 +53,13 @@ options:
               'datastore', 'folder', 'host', 'local_library', 'network',
               'resource_pool', 'subscribed_library', 'tag', 'vm']
     type: str
-extends_documentation_fragment: VmwareRestModule.documentation
+extends_documentation_fragment:
+- vmware.vmware_rest.VmwareRestModule.documentation
 """
 
 EXAMPLES = r"""
 - name: Get all categories
-  vmware_cis_category_info:
+  vmware.vmware_rest.vmware_cis_category_info:
 """
 
 RETURN = r"""
@@ -72,9 +72,7 @@ category:
     }
 """
 
-from ansible.module_utils.vmware_httpapi.VmwareRestModule import (
-    VmwareRestModule,
-)
+import ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_httpapi as vmware_httpapi
 
 
 def get_category_by_id(module, category_id):
@@ -103,7 +101,7 @@ def get_categories_used_by_id(module, used_by_id):
 
 
 def main():
-    argument_spec = VmwareRestModule.create_argument_spec()
+    argument_spec = vmware_httpapi.VmwareRestModule.create_argument_spec()
     argument_spec.update(
         category_name=dict(type="str", required=False),
         category_id=dict(type="str", required=False),
@@ -137,7 +135,7 @@ def main():
         ["category_name", "category_id", "used_by_id", "used_by_type"],
     ]
 
-    module = VmwareRestModule(
+    module = vmware_httpapi.VmwareRestModule(
         argument_spec=argument_spec,
         required_together=required_together,
         mutually_exclusive=mutually_exclusive,
