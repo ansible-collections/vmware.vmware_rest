@@ -12,38 +12,138 @@ from ruamel.yaml import YAML
 from pprint import pprint
 
 
+def normalize_description(string_list):
+    def _transform(i):
+        i = i.replace(" {@term enumerated type}", "")
+        i = re.sub(r"{@name DayOfWeek}", "day of the week", i)
+        return i
+
+    return [_transform(i) for i in string_list]
+
+
+def python_type(value):
+    TYPE_MAPPING = {
+        "array": "list",
+        "boolean": "bool",
+        "integer": "int",
+        "object": "dict",
+        "string": "str",
+    }
+    return TYPE_MAPPING.get(value, value)
+
+
+def gen_documentation(name, description, parameters):
+
+    documentation = {
+        "author": ["Ansible VMware team"],
+        "description": description,
+        "extends_documentation_fragment": [],
+        "module": name,
+        "notes": ["Tested on vSphere 7.0"],
+        "options": {},
+        "requirements": ["python >= 3.6"],
+        "short_description": description,
+        "version_added": "1.0.0",
+    }
+
+    for parameter in parameters:
+        description = []
+        option = {
+            "type": parameter["type"],
+        }
+        if parameter.get("required"):
+            option["required"] = True
+        if parameter.get("description"):
+            description.append(parameter["description"])
+        if parameter.get("subkeys"):
+            description.append("Validate attributes are:")
+            for subkey in parameter.get("subkeys"):
+                subkey["type"] = python_type(subkey["type"])
+                description.append(
+                    " - C({name}) ({type}): {description}".format(**subkey)
+                )
+        option["description"] = normalize_description(description)
+        option["type"] = python_type(option["type"])
+        if "enum" in parameter:
+            option["choices"] = parameter["enum"]
+
+        documentation["options"][parameter["name"]] = option
+    return documentation
+
+
+def path_to_name(path):
+    def is_element(i):
+        if i and not "{" in i:
+            return True
+        else:
+            return False
+
+    _path = path.split("?")[0]
+
+    elements = [i for i in _path.split("/") if is_element(i)]
+    # workaround for vcenter_vm_power
+    if elements[-1] in ("stop", "start", "suspend", "reset"):
+        elements = elements[:-1]
+    if elements[0:3] == ["rest", "com", "vmware"]:
+        elements = elements[3:]
+    elif elements[0:2] == ["rest", "hvc"]:
+        elements = elements[1:]
+    elif elements[0:2] == ["rest", "appliance"]:
+        elements = elements[1:]
+    elif elements[0:2] == ["rest", "vcenter"]:
+        elements = elements[1:]
+    elif elements[:1] == ["api"]:
+        elements = elements[1:]
+
+    module_name = "_".join(elements)
+    return module_name.replace("-", "")
+
+
+def gen_arguments_py(parameters, list_index=None):
+    def _add_key(assign, key, value):
+        k = [ast.Constant(value=key, kind=None)]
+        v = [ast.Constant(value=value, kind=None)]
+        assign.value.keys.append(k)
+        assign.value.values.append(v)
+
+    ARGUMENT_TPL = """argument_spec['{name}'] = {{}}"""
+
+    sorted_parameters = sorted(parameters, key=lambda item: item["name"])
+    for parameter in sorted_parameters:
+        assign = ast.parse(ARGUMENT_TPL.format(name=parameter["name"])).body[0]
+
+        # if None and list_index:
+        #     assign = ast.parse(ARGUMENT_TPL.format(name=list_index)).body[0]
+        #     _add_key(assign, "aliases", [parameter["name"]])
+        #     parameter["name"] = list_index
+
+        if parameter["name"] in ["user_name", "username", "password"]:
+            _add_key(assign, "nolog", True)
+
+        if parameter.get("required"):
+            if list_index == parameter["name"]:
+                pass
+            else:
+                _add_key(assign, "required", True)
+
+        # "bus" option defaulting on 0
+        if parameter["name"] == "bus":
+            _add_key(assign, "default", 0)
+
+        _add_key(assign, "type", python_type(parameter["type"]))
+        if "enum" in parameter:
+            _add_key(assign, "choices", sorted(parameter["enum"]))
+
+        if "operationIds" in parameter:
+            _add_key(assign, "operationIds", sorted(parameter["operationIds"]))
+
+        yield assign
+
+
 class Resource:
     def __init__(self, name):
         self.name = name
         self.operations = {}
-
-    @staticmethod
-    def path_to_name(path):
-        def is_element(i):
-            if i and not "{" in i:
-                return True
-            else:
-                return False
-
-        _path = path.path.split("?")[0]
-
-        elements = [i for i in _path.split("/") if is_element(i)]
-        # workaround for vcenter_vm_power
-        if elements[-1] in ('stop', 'start', 'suspend', 'reset'):
-            elements = elements[:-1]
-        if elements[0:3] == ["rest", "com", "vmware"]:
-            elements = elements[3:]
-        elif elements[0:2] == ["rest", "hvc"]:
-            elements = elements[1:]
-        elif elements[0:2] == ["rest", "appliance"]:
-            elements = elements[1:]
-        elif elements[0:2] == ["rest", "vcenter"]:
-            elements = elements[1:]
-        elif elements[:1] == ["api"]:
-            elements = elements[1:]
-
-        module_name = "_".join(elements)
-        return module_name.replace("-", "")
 
 
 class AnsibleModuleBase:
@@ -51,9 +151,10 @@ class AnsibleModuleBase:
         self.resource = resource
         self.definitions = definitions
         self.name = resource.name
-        self.description = "Handle resource of type {name}".format(
-            name=resource.name
-        )
+        self.description = "Handle resource of type {name}".format(name=resource.name)
+
+    def list_index(self):
+        return None
 
     def parameters(self):
         def itera(operationId):
@@ -81,15 +182,10 @@ class AnsibleModuleBase:
         for name, result in results.items():
             if result.get("required"):
                 if (
-                    len(
-                        set(self.default_operationIds)
-                        - set(result["operationIds"])
-                    )
+                    len(set(self.default_operationIds) - set(result["operationIds"]))
                     > 0
                 ):
-                    result[
-                        "description"
-                    ] += " Required with I(state={})".format(
+                    result["description"] += " Required with I(state={})".format(
                         list(set(result["operationIds"]))
                     )
                 del result["required"]
@@ -104,114 +200,15 @@ class AnsibleModuleBase:
 
         return results.values()
 
-    def gen_arguments_py(self):
-        def _add_key(assign, key, value):
-            k = [ast.Constant(value=key, kind=None)]
-            v = [ast.Constant(value=value, kind=None)]
-            assign.value.keys.append(k)
-            assign.value.values.append(v)
-
-        ARGUMENT_TPL = """argument_spec['{name}'] = {{}}"""
-
-        parameter_names = [i["name"] for i in self.parameters()]
-        for parameter in self.parameters():
-            assign = ast.parse(
-                ARGUMENT_TPL.format(name=parameter["name"])
-            ).body[0]
-
-            if (
-                hasattr(self, "list_index")
-                and self.list_index()
-                and self.list_index() not in parameter_names
-            ):
-                assign = ast.parse(
-                    ARGUMENT_TPL.format(name=self.list_index())
-                ).body[0]
-                _add_key(assign, "aliases", [parameter["name"]])
-                parameter["name"] = self.list_index()
-
-            if parameter["name"] in ["user_name", "username", "password"]:
-                _add_key(assign, "nolog", True)
-
-            if parameter.get("required"):
-                if (
-                    hasattr(self, "list_index")
-                    and self.list_index() == parameter["name"]
-                ):
-                    pass
-                else:
-                    _add_key(assign, "required", True)
-
-            # "bus" option defaulting on 0
-            if parameter["name"] == "bus":
-                _add_key(assign, "default", 0)
-
-            _add_key(assign, "type", self.python_type(parameter["type"]))
-            if "enum" in parameter:
-                _add_key(assign, "choices", sorted(parameter["enum"]))
-
-            if "operationIds" in parameter:
-                _add_key(assign, "operationIds", parameter["operationIds"])
-
-            yield assign
-
-    def gen_documentation(self):
-
-        documentation = {
-            "author": ["Ansible VMware team"],
-            "description": self.description,
-            "extends_documentation_fragment": [],
-            "module": self.name,
-            "notes": ["Tested on vSphere 6.7"],
-            "options": {},
-            "requirements": ["python >= 2.7"],
-            "short_description": self.description,
-            "version_added": "2.10",
-        }
-
-        for parameter in self.parameters():
-            description = []
-            option = {
-                "type": parameter["type"],
-            }
-            if parameter.get("required"):
-                option["required"] = True
-            if parameter.get("description"):
-                description.append(parameter["description"])
-            if parameter.get("subkeys"):
-                description.append("Validate attributes are:")
-                for subkey in parameter.get("subkeys"):
-                    subkey["type"] = self.python_type(subkey["type"])
-                    description.append(
-                        " - C({name}) ({type}): {description}".format(**subkey)
-                    )
-            option["description"] = description
-            option["type"] = self.python_type(option["type"])
-            if "enum" in parameter:
-                option["choices"] = parameter["enum"]
-
-            documentation["options"][parameter["name"]] = option
-        return yaml.dump(documentation)
-
     def gen_url_func(self):
         first_operation = list(self.resource.operations.values())[0]
         path = first_operation[1]
 
-        if not path.startswith("/rest"): # Pre 7.0.0
+        if not path.startswith("/rest"):  # Pre 7.0.0
             path = "/rest" + path
 
         url_func = ast.parse(self.URL.format(path=path)).body[0]
         return url_func
-
-    def python_type(self, value):
-        TYPE_MAPPING = {
-            "array": "list",
-            "boolean": "bool",
-            "integer": "int",
-            "object": "dict",
-            "string": "str",
-        }
-        return TYPE_MAPPING.get(value, value)
 
     @staticmethod
     def _property_to_parameter(prop_struct, definitions):
@@ -249,9 +246,7 @@ class AnsibleModuleBase:
         for i in parameter_structure:
             if "schema" in i:
                 schema = definitions.get(i["schema"])
-                for j in AnsibleModule._property_to_parameter(
-                    schema, definitions
-                ):
+                for j in AnsibleModule._property_to_parameter(schema, definitions):
                     yield j
             else:
                 yield i
@@ -263,7 +258,7 @@ class AnsibleModuleBase:
         raise NotImplementedError()
 
     def renderer(self):
-        #syntax_tree = ast.parse(MODULE_TEMPLATE)
+        # syntax_tree = ast.parse(MODULE_TEMPLATE)
         DEFAULT_MODULE = """
 #!/usr/bin/env python
 # Info module template
@@ -371,14 +366,15 @@ if __name__ == '__main__':
 
 """
         syntax_tree = ast.parse(DEFAULT_MODULE.format(name=self.name))
-        arguments = self.gen_arguments_py()
-        documentation = self.gen_documentation()
+        arguments = gen_arguments_py(self.parameters(), self.list_index())
+        documentation = yaml.dump(
+            gen_documentation(self.name, self.description, self.parameters())
+        )
         url_func = self.gen_url_func()
-        #main_func = self.gen_main_func()
+        # main_func = self.gen_main_func()
         entry_point_func = self.gen_entry_point_func()
 
         in_query_parameters = self.in_query_parameters()
-
 
         class SumTransformer(ast.NodeTransformer):
             def visit_FunctionDef(self, node):
@@ -387,12 +383,10 @@ if __name__ == '__main__':
 
             def visit_Assign(self, node):
 
-
                 if node.targets[0].id == "IN_QUERY_PARAMETER":
                     node.value = ast.Str(in_query_parameters)
 
                 return node
-
 
             def visit_FunctionDef(self, node):
                 if node.name == "url":
@@ -403,11 +397,12 @@ if __name__ == '__main__':
                     for arg in arguments:
                         node.body.insert(1, arg)
                 return node
+
             def visit_Assign(self, node):
                 if not isinstance(node.targets[0], ast.Name):
                     pass
                 elif node.targets[0].id == "DOCUMENTATION":
-                   node.value = ast.Str(documentation)
+                    node.value = ast.Str(documentation)
                 elif node.targets[0].id == "IN_QUERY_PARAMETER":
                     node.value = ast.Str(in_query_parameters)
                 return node
@@ -415,13 +410,11 @@ if __name__ == '__main__':
         syntax_tree = SumTransformer().visit(syntax_tree)
         syntax_tree = ast.fix_missing_locations(syntax_tree)
 
-
         module_dir = pathlib.Path("plugins/modules")
         module_dir.mkdir(exist_ok=True)
         module_py_file = module_dir / "{name}.py".format(name=self.name)
         with module_py_file.open("w") as fd:
             fd.write(astunparse.unparse(syntax_tree))
-
 
 
 class AnsibleModule(AnsibleModuleBase):
@@ -433,9 +426,9 @@ return "https://{{vcenter_hostname}}{path}".format(**params)
     def __init__(self, resource, definitions):
         super().__init__(resource, definitions)
         # TODO: We can probably do better
-        self.default_operationIds = set(
-            list(self.resource.operations.keys())
-        ) - set(["get", "list"])
+        self.default_operationIds = set(list(self.resource.operations.keys())) - set(
+            ["get", "list"]
+        )
 
     def gen_entry_point_func(self):
         MAIN_FUNC = """
@@ -445,9 +438,9 @@ async def entry_point(module, session):
 """
         main_func = ast.parse(MAIN_FUNC.format(name=self.name))
 
-        for operation in self.default_operationIds:
+        for operation in sorted(self.default_operationIds):
             (verb, path, _) = self.resource.operations[operation]
-            if not path.startswith("/rest"): # TODO
+            if not path.startswith("/rest"):  # TODO
                 path = "/rest" + path
             if "$" in operation:
                 print(
@@ -508,19 +501,14 @@ async def _{operation}(params, session):
 
             if data_accepted_fields:
                 func = ast.parse(
-                    FUNC_WITH_DATA_TPL.format(
-                        operation=operation, verb=verb, path=path
-                    )
+                    FUNC_WITH_DATA_TPL.format(operation=operation, verb=verb, path=path)
                 ).body[0]
                 func.body[0].value.elts = [
-                    ast.Constant(value=i, kind=None)
-                    for i in data_accepted_fields
+                    ast.Constant(value=i, kind=None) for i in data_accepted_fields
                 ]
             else:
                 func = ast.parse(
-                    FUNC_NO_DATA_TPL.format(
-                        operation=operation, verb=verb, path=path,
-                    )
+                    FUNC_NO_DATA_TPL.format(operation=operation, verb=verb, path=path,)
                 ).body[0]
 
             main_func.body.append(func)
@@ -569,21 +557,17 @@ return "https://{{vcenter_hostname}}{path}".format(**params) + gen_args(params, 
         if "list" in self.resource.operations:
             list_path = self.resource.operations["list"][1]
 
-        if path and not path.startswith("/rest"): # Pre 7.0.0
+        if path and not path.startswith("/rest"):  # Pre 7.0.0
             path = "/rest" + path
-        if list_path and not list_path.startswith("/rest"): # Pre 7.0.0
+        if list_path and not list_path.startswith("/rest"):  # Pre 7.0.0
             list_path = "/rest" + list_path
 
         if not path:
-            url_func = ast.parse(
-                self.URL_LIST_ONLY.format(list_path=list_path)
-            ).body[0]
+            url_func = ast.parse(self.URL_LIST_ONLY.format(list_path=list_path)).body[0]
         elif list_path and path.endswith("}"):
             url_func = ast.parse(
                 self.URL_WITH_LIST.format(
-                    path=path,
-                    list_path=list_path,
-                    list_index=self.list_index(),
+                    path=path, list_path=list_path, list_index=self.list_index(),
                 )
             ).body[0]
         else:
@@ -643,8 +627,6 @@ class SwaggerFile:
 
     def load_paths(self, paths):
         for path in [Path(p, v) for p, v in paths.items()]:
-            # if not path.path.startswith("/vcenter/vm/{vm}/hardware/adapter/sata"):
-            #     continue
             if not path in self.paths:
                 self.paths[path.path] = path
             for verb, desc in path.value.items():
@@ -657,7 +639,7 @@ class SwaggerFile:
 
     def init_resources(self):
         for path in self.paths.values():
-            name = Resource.path_to_name(path)
+            name = path_to_name(path.path)
             if not name in self.resources:
                 self.resources[name] = Resource(name)
                 self.resources[name].description = ""  # path.summary(verb)
@@ -697,24 +679,22 @@ def main():
                 if len(module.default_operationIds) > 0:
                     module.renderer()
                     module_list.append(module.name)
-            module = AnsibleModule(
-                resource, definitions=swagger_file.definitions
-            )
+            module = AnsibleModule(resource, definitions=swagger_file.definitions)
             if len(module.default_operationIds) > 0:
                 module.renderer()
                 module_list.append(module.name)
 
     print("Updating the galaxy.yml file...")
     yaml = YAML()
-    my_galaxy = base_dir = pathlib.Path(".") / "galaxy.yml"
-    galaxy_contents = yaml.load(my_galaxy.open('r'))
+    my_galaxy = pathlib.Path(".") / "galaxy.yml"
+    galaxy_contents = yaml.load(my_galaxy.open("r"))
     galaxy_contents["build_ignore"] = []
     for m in module_list:
         if m.startswith("vcenter_vm"):
             continue
         galaxy_contents["build_ignore"].append("plugins/modules/{}.py".format(m))
     print(galaxy_contents)
-    with my_galaxy.open('w') as fd:
+    with my_galaxy.open("w") as fd:
         yaml.dump(galaxy_contents, fd)
 
 

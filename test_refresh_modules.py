@@ -1,102 +1,103 @@
+import ast
 import pytest
+import types
+
+import refresh_modules as rm
+
+my_parameters = [
+    {"name": "aaa", "type": "boolean", "description": "a second parameter",},
+    {
+        "name": "aaa",
+        "type": "integer",
+        "required": True,
+        "description": "a second parameter",
+        "subkeys": [{"type": "ccc", "name": "a_subkey", "description": "more blabla"}],
+    },
+    {
+        "name": "ccc",
+        "type": "list",
+        "description": "3rd parameter is enum",
+        "enum": ["a", "b", "c"],
+    },
+]
 
 
-from refresh_modules import AnsibleModule
+def test_normalize_description():
+    assert rm.normalize_description(["a", "b"]) == ["a", "b"]
+    assert rm.normalize_description(["{@name DayOfWeek}"]) == ["day of the week"]
+    assert rm.normalize_description([" {@term enumerated type}"]) == [""]
 
 
-def test_flatten_parameter_in_path():
-    parameter_struct = [
-        {
-            "description": "System name identifier.",
-            "in": "path",
-            "name": "systemName",
-            "required": True,
-            "type": "string",
-        },
-        {
-            "description": "Archive identifier.",
-            "in": "path",
-            "name": "archive",
-            "required": True,
-            "type": "string",
-        },
-    ]
-    result = AnsibleModule._flatten_parameter(parameter_struct, None)
-    assert list(result) == parameter_struct
+def test_python_type():
+    assert rm.python_type("array") == "list"
+    assert rm.python_type("list") == "list"
+    assert rm.python_type("boolean") == "bool"
 
 
-def test_flatten_parameter_schema():
-    parameter_struct = [
-        {
-            "description": "Identifier of the service element.",
-            "in": "path",
-            "name": "service_id",
-            "required": True,
-            "type": "string",
-        },
-        {
-            "in": "body",
-            "name": "request_body",
-            "required": True,
-            "schema": {
-                "$ref": "#/definitions/a_list"
+def test_path_to_name():
+    assert rm.path_to_name("/rest/cis/tasks") == "rest_cis_tasks"
+    assert (
+        rm.path_to_name("/rest/com/vmware/cis/tagging/category")
+        == "cis_tagging_category"
+    )
+    assert (
+        rm.path_to_name("/rest/com/vmware/cis/tagging/category/id:{category_id}")
+        == "cis_tagging_category"
+    )
+    assert (
+        rm.path_to_name(
+            "/rest/com/vmware/cis/tagging/category/id:{category_id}?~action=add-to-used-by"
+        )
+        == "cis_tagging_category"
+    )
+    assert (
+        rm.path_to_name("/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}/disconnect")
+        == "vcenter_vm_hardware_ethernet_disconnect"
+    )
+
+
+def test_gen_documentation():
+
+    assert rm.gen_documentation("foo", "bar", my_parameters) == {
+        "author": ["Ansible VMware team"],
+        "description": "bar",
+        "extends_documentation_fragment": [],
+        "module": "foo",
+        "notes": ["Tested on vSphere 7.0"],
+        "options": {
+            "aaa": {
+                "description": [
+                    "a second parameter",
+                    "Validate attributes are:",
+                    " - C(a_subkey) (ccc): more blabla",
+                ],
+                "required": True,
+                "type": "int",
+            },
+            "ccc": {
+                "choices": ["a", "b", "c"],
+                "description": ["3rd parameter is enum"],
+                "type": "list",
             },
         },
-        {
-            "name": "bba",
-            "$ref": "#/definitions/just_a_key"
-        },
+        "requirements": ["python >= 3.6"],
+        "short_description": "bar",
+        "version_added": "1.0.0",
+    }
 
-    ]
 
-    expectation = [
-        {
-            "description": "Identifier of the service element.",
-            "in": "path",
-            "name": "service_id",
-            "required": True,
-            "type": "string",
-        },
-        {
-            "description": "Identifier of the operation element.",
-            "name": "operation_id",
-            "required": True,
-            "type": "string",
-        },
-        {
-            "description": "Identifier of the service element.",
-            "name": "service_id",
-            "required": True,
-            "type": "string",
-        },
-    ]
-
-    class Definitions:
-        def get(self, key):
-            my_dict = {
-                "#/definitions/a_list": {
-                    "properties": {
-                        "operation_id": {
-                            "description": "Identifier of the operation "
-                            "element.",
-                            "type": "string",
-                        },
-                        "service_id": {
-                            "description": "Identifier of the service "
-                            "element.",
-                            "type": "string",
-                        },
-                    },
-                    "required": ["service_id", "operation_id"],
-                    "type": "object",
-                },
-                "#/definitions/just_a_key": {
-                        "my_Value": {
-                            "description": "some value"
-                        },
-                    }
-            }
-            return my_dict[key["$ref"]]
-
-    result = AnsibleModule._flatten_parameter(parameter_struct, Definitions())
-    assert list(result) == expectation
+def test_gen_arguments_py(monkeypatch):
+    assert type(rm.gen_arguments_py([])) == types.GeneratorType
+    assert list(rm.gen_arguments_py([])) == []
+    ret = rm.gen_arguments_py(my_parameters)
+    assert ast.dump(ret.__next__().value) == ast.dump(
+        ast.Dict(
+            keys=[[ast.Constant(value="type")]], values=[[ast.Constant(value="bool")]]
+        )
+    )
+    assert ast.dump(ret.__next__().value) == ast.dump(
+        ast.Dict(
+            keys=[[ast.Constant(value="required")], [ast.Constant(value="type")]],
+            values=[[ast.Constant(value=True)], [ast.Constant(value="int")]],
+        )
+    )
