@@ -506,7 +506,8 @@ async def _{operation}(params, session):
                     FUNC_WITH_DATA_TPL.format(operation=operation, verb=verb, path=path)
                 ).body[0]
                 func.body[0].value.elts = [
-                    ast.Constant(value=i, kind=None) for i in data_accepted_fields
+                    ast.Constant(value=i, kind=None)
+                    for i in sorted(data_accepted_fields)
                 ]
             else:
                 func = ast.parse(
@@ -616,21 +617,25 @@ class Path:
 class SwaggerFile:
     def __init__(self, file_path):
         super().__init__()
-        self.definitions = []
-        self.paths = {}
         self.resources = {}
-        self.file_path = file_path
-        self.open(file_path)
+        with file_path.open() as fd:
+            json_content = json.load(fd)
+            self.definitions = Definitions(json_content["definitions"])
+            self.paths = self.load_paths(json_content["paths"])
+        from pprint import pprint
 
-    def open(self, json_definition):
-        data = json.loads(json_definition.open().read())
-        self.definitions = Definitions(data["definitions"])
-        self.load_paths(data["paths"])
+        pprint(self.definitions)
+        pprint(self.paths)
 
-    def load_paths(self, paths):
+    @staticmethod
+    def load_paths(paths):
+        result = {}
+        from pprint import pprint
+
+        pprint(result)
         for path in [Path(p, v) for p, v in paths.items()]:
-            if not path in self.paths:
-                self.paths[path.path] = path
+            if not path in paths:
+                result[path.path] = path
             for verb, desc in path.value.items():
                 operationId = desc["operationId"]
                 path.operations[operationId] = (
@@ -638,24 +643,28 @@ class SwaggerFile:
                     path.path,
                     desc["parameters"],
                 )
+        return result
 
-    def init_resources(self):
-        for path in self.paths.values():
+    @staticmethod
+    def init_resources(paths):
+        resources = {}
+        for path in paths:
             name = path_to_name(path.path)
-            if not name in self.resources:
-                self.resources[name] = Resource(name)
-                self.resources[name].description = ""  # path.summary(verb)
+            if not name in resources:
+                resources[name] = Resource(name)
+                resources[name].description = ""  # path.summary(verb)
 
             for k, v in path.operations.items():
-                if k in self.resources[name].operations:
+                if k in resources[name].operations:
                     raise Exception(
                         "operationId already defined: %s vs %s"
-                        % (self.resources[name].operations[k], v)
+                        % (resources[name].operations[k], v)
                     )
                 k = k.replace(
                     "$task", ""
                 )  # NOTE: Not sure if this is the right thing to do
-                self.resources[name].operations[k] = v
+                resources[name].operations[k] = v
+        return resources
 
 
 def main():
@@ -668,9 +677,9 @@ def main():
             continue
         print("Generating modules from {}".format(json_file))
         swagger_file = SwaggerFile(json_file)
-        swagger_file.init_resources()
+        resources = swagger_file.init_resources(swagger_file.paths.values())
 
-        for resource in swagger_file.resources.values():
+        for resource in resources.values():
             print(resource.name)
             if resource.name == "appliance_networking":
                 continue
