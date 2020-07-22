@@ -59,18 +59,26 @@
   register: my_folder_result
 - debug: var=my_folder_value
 
+- name: define ESXi list
+  set_fact:
+    my_esxis:
+      - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+        username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
+      - hostname: "{{ lookup('env', 'ESXI2_HOSTNAME') }}"
+        username: "{{ lookup('env', 'ESXI2_USERNAME') }}"
+        password: "{{ lookup('env', 'ESXI2_PASSWORD') }}"
+
 - name: Connect the host(s)
   vcenter_host:
-    hostname: '{{ item }}'
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/esxi_password_root.txt') }}"
-    user_name: root
+    hostname: "{{ item.hostname }}"
+    password: "{{ item.password }}"
+    user_name: "{{ item.username }}"
     thumbprint_verification: 'NONE'
     state: create
     folder: '{{ my_host_folder.folder }}'
   register: _result
-  with_items:
-    - esxi1.test
-    - esxi2.test
+  with_items: "{{ my_esxis}}"
 - debug: var=_result
 - assert:
     that:
@@ -78,52 +86,34 @@
 
 - name: _community_ Add ESXi in the cluster
   vmware_host:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     datacenter: my_dc
     cluster: my_cluster
-    esxi_hostname: '{{ item }}'
-    esxi_username: root
-    esxi_password: "{{ lookup('file', '/tmp/vcenter/tmp/esxi_password_root.txt') }}"
-    validate_certs: no
-  with_items:
-    - esxi1.test
-    - esxi2.test
+    esxi_hostname: "{{ item.hostname }}"
+    esxi_username: "{{ item.username }}"
+    esxi_password: "{{ item.password }}"
+  with_items: "{{ my_esxis}}"
 
 - name: _community_ Mount NFS (ro_datastore) datastores to ESXi
   vmware_host_datastore:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
-    esxi_hostname: '{{ item }}'
+    esxi_hostname: '{{ item.hostname }}'
     datastore_name: ro_datastore
     datastore_type: nfs
     nfs_server: datastore.test
     nfs_path: /srv/share/isos
     nfs_ro: true
     state: present
-    validate_certs: no
-  with_items:
-    - esxi1.test
-    - esxi2.test
+  with_items: "{{ my_esxis}}"
 
 - name: _community_ Mount NFS (rw_datastore) datastores on the ESXi
   vmware_host_datastore:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
-    esxi_hostname: '{{ item }}'
+    esxi_hostname: '{{ item.hostname }}'
     datastore_name: rw_datastore
     datastore_type: nfs
     nfs_server: datastore.test
     nfs_path: /srv/share/vms
     nfs_ro: false
     state: present
-    validate_certs: no
-  with_items:
-    - esxi1.test
-    - esxi2.test
+  with_items: "{{ my_esxis}}"
 
 - vcenter_cluster_info:
   register: all_the_clusters
@@ -138,10 +128,6 @@
 
 - name: _community_ Create the DVSwitch
   vmware_dvswitch:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
-    validate_certs: no
     datacenter_name: my_dc
     switch_name: dvswitch1
     switch_version: 6.5.0
@@ -152,24 +138,16 @@
 
 - name: _community_ Attach the hosts to the DVSwitch
   vmware_dvs_host:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     validate_certs: no
-    esxi_hostname: "{{ item }}"
+    esxi_hostname: "{{ item.hostname }}"
     switch_name: dvswitch1
     vmnics:
       - vmnic1
     state: present
-  with_items:
-    - esxi1.test
-    - esxi2.test
+  with_items: "{{ my_esxis}}"
 
 - name: _community_ Create the portgroup
   vmware_dvs_portgroup:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     validate_certs: no
     portgroup_name: my-portrgoup
     switch_name: dvswitch1
