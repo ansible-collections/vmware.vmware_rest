@@ -273,8 +273,10 @@ IN_QUERY_PARAMETER = None
 
 
 from ansible.module_utils.basic import env_fallback
-from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
-# from ansible.module_utils.basic import AnsibleModule
+try:
+    from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+except ImportError:
+    from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     gen_args,
     open_session,

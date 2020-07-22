@@ -1,7 +1,5 @@
 import aiohttp
 
-from ansible_module.turbo.exceptions import EmbeddedModuleFailure
-
 import functools
 from async_lru import alru_cache
 
@@ -25,11 +23,16 @@ async def open_session(
             auth=auth,
         ) as resp:
             if resp.status != 200:
-                raise EmbeddedModuleFailure(
-                    "Authentication failure. code: {}, json: {}".format(
-                        resp.status, await resp.text()
+                try:
+                    from ansible_module.turbo.exceptions import EmbeddedModuleFailure
+
+                    raise EmbeddedModuleFailure(
+                        "Authentication failure. code: {}, json: {}".format(
+                            resp.status, await resp.text()
+                        )
                     )
-                )
+                except ImportError:
+                    pass
             json = await resp.json()
             session_id = json["value"]
             session = aiohttp.ClientSession(
