@@ -1,16 +1,10 @@
 - name: DVSwitch info
   vmware_dvswitch_info:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     validate_certs: no
     switch_name: dvswitch1
   register: _dvswitches_info
 
 - vmware_dvs_portgroup_info:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     validate_certs: no
     datacenter: my_dc
   register: _portgroup_info

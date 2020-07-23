@@ -36,9 +36,6 @@
 
 - name: _community_ Create Cluster
   vmware_cluster:
-    hostname: vcenter.test
-    username: administrator@vsphere.local
-    password: "{{ lookup('file', '/tmp/vcenter/tmp/vcenter_password.txt') }}"
     datacenter_name: my_dc
     cluster_name: my_cluster
     ha_host_monitoring: disabled
