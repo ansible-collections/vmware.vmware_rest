@@ -703,6 +703,15 @@ def main():
     for m in module_list:
         if m.startswith("vcenter_vm"):
             continue
+        if m in [
+            "vcenter_folder_info",
+            "vcenter_cluster_info",
+            "vcenter_datacenter",
+            "vcenter_datacenter_info",
+            "vcenter_datastore_info",
+            "vcenter_network_info",
+        ]:
+            continue
         galaxy_contents["build_ignore"].append("plugins/modules/{}.py".format(m))
     print(galaxy_contents)
     with my_galaxy.open("w") as fd:
