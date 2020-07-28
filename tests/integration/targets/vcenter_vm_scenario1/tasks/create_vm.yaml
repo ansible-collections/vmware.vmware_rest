@@ -20,7 +20,7 @@
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
     guest_OS: DEBIAN_8_64
-    hardware_version: VMX_11
+    hardware_version: VMX_12
     memory:
       hot_add_enabled: true
       size_MiB: 1024
