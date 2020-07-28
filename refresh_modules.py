@@ -484,7 +484,7 @@ async def _{operation}(params, session):
         except KeyError:
             _json = {{}}
         # Update the value field with all the details
-        if "{operation}" == "create" and "value" in _json:
+        if "{operation}" == "create" and (resp.status in [200, 201]) and "value" in _json:
             if type(_json["value"]) == dict:
                 _id = list(_json["value"].values())[0]
             else:
