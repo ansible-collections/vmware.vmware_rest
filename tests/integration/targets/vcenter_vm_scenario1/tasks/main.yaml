@@ -25,4 +25,4 @@
 - vcenter_vm_info:
     vm: '{{ test_vm1.value[0].vm }}'
 
-- import_tasks: wait_for_test_vm1.yaml
+# - import_tasks: wait_for_test_vm1.yaml
