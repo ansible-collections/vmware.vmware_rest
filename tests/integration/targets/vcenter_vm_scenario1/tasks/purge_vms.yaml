@@ -1,5 +1,8 @@
 - register: existing_vms
   vcenter_vm_info:
+  retries: 100
+  delay: 3
+  until: existing_vms is not failed
 
 - name: Turn off the VMs
   vcenter_vm_power:
