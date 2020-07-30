@@ -62,9 +62,6 @@
       - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
         username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
         password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-      - hostname: "{{ lookup('env', 'ESXI2_HOSTNAME') }}"
-        username: "{{ lookup('env', 'ESXI2_USERNAME') }}"
-        password: "{{ lookup('env', 'ESXI2_PASSWORD') }}"
 
 - name: Connect the host(s)
   vcenter_host:
