@@ -8,9 +8,7 @@ INVENTORY_PATH="${INVENTORY_PATH:-../../inventory.networking}"
 # hostname=vcenter.test
 # username=administrator@vsphere.local
 # password=TRQhZ:WdXrhA*w;nqaU0
-
 echo "Reading credentials from ${INVENTORY_PATH}"
-export ANSIBLE_CONFIG=ansible.cfg
 export VMWARE_HOST=$(sed 's,^vcenter_hostname=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_USER=$(sed 's,^vcenter_username=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_PASSWORD=$(sed 's,^vcenter_password=\(.*\),\1,;t;d' ${INVENTORY_PATH})
@@ -21,3 +19,4 @@ export ESXI2_HOSTNAME=$(sed 's,^esxi2_hostname=\(.*\),\1,;t;d' ${INVENTORY_PATH}
 export ESXI2_USERNAME=$(sed 's,^esxi2_username=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export ESXI2_PASSWORD=$(sed 's,^esxi2_password=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_VALIDATE_CERTS=no
+export ANSIBLE_ROLES_PATH=..

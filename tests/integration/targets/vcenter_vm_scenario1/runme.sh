@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-set -eux
+set -eu
 source ../init.sh
-echo $VMWARE_HOST
-echo $VMWARE_USER
-echo $VMWARE_PASSWORD
+set -eux
 
 exec ansible-playbook -i ../inventory.networking playbook.yaml
