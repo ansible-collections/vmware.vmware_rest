@@ -1,7 +1,0 @@
-- project:
-    check:
-      jobs:
-        - ansible-test-cloud-integration-vmware-rest-python36
-        - build-ansible-collection:
-            required-projects:
-              - name: github.com/ansible-collections/vmware
