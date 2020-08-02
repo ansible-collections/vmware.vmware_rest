@@ -1,0 +1,28 @@
+- debug: msg="{{ lookup('env','VMWARE_HOST') }} - host"
+- debug: msg="{{ lookup('env','VMWARE_USER') }} - user"
+- debug: msg="{{ lookup('env','VMWARE_PASSWORD') }} - password"
+- import_tasks: purge_vms.yaml
+- import_tasks: cleanup.yaml
+- import_tasks: prepare.yaml
+- import_tasks: create_vm.yaml
+- import_tasks: ethernet.yaml
+- import_tasks: sata_controller.yaml
+- import_tasks: attach_cdrom.yaml
+
+- vcenter_vm_hardware_boot_info:
+    vm: '{{ test_vm1.value[0].vm }}'
+
+- vcenter_vm_hardware_boot:
+    vm: '{{ test_vm1.value[0].vm }}'
+    efi_legacy_boot: True
+    type: EFI
+    state: update
+
+- vcenter_vm_power:
+    state: start
+    vm: '{{ test_vm1.value[0].vm }}'
+
+- vcenter_vm_info:
+    vm: '{{ test_vm1.value[0].vm }}'
+
+# - import_tasks: wait_for_test_vm1.yaml

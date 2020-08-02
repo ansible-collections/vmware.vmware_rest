@@ -25,10 +25,7 @@ from ansible.module_utils.six.moves.urllib.error import HTTPError
 from ansible.plugins.httpapi import HttpApiBase
 from ansible.module_utils.connection import ConnectionError
 
-BASE_HEADERS = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-}
+BASE_HEADERS = {"Content-Type": "application/json", "Accept": "application/json"}
 
 
 class HttpApi(HttpApiBase):
@@ -73,12 +70,9 @@ class HttpApi(HttpApiBase):
         try:
             self._display_request(method=method)
             response, response_data = self.connection.send(
-                path,
-                data,
-                method=method,
-                headers=BASE_HEADERS,
-                force_basic_auth=True,
+                path, data, method=method, headers=BASE_HEADERS, force_basic_auth=True
             )
+
             response_value = self._get_response_value(response_data)
 
             return response.getcode(), self._response_to_json(response_value)
