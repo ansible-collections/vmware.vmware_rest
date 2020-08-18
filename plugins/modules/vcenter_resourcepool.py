@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_resourcepool
@@ -18,23 +17,23 @@ options:
       reservation, the reservation can grow beyond the specified value, if the parent
       resource pool has unreserved resources. A non-expandable reservation is called
       a fixed reservation.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.expandable-reservation
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.expandable-reservation
       will be set to true.
     - ' - C(limit) (int): The utilization of a resource pool will not exceed this
       limit, even if there are available resources. This is typically used to ensure
       a consistent performance of resource pools independent of available resources.
       If set to -1, then there is no fixed limit on resource usage (only bounded by
       available resources and shares). Units are MB for memory, and MHz for CPU.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.limit will be set
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.limit will be set
       to -1.
     - ' - C(reservation) (int): Amount of resource that is guaranteed available to
       a resource pool. Reserved resources are not wasted if they are not used. If
       the utilization is less than the reservation, the resources can be utilized
       by other running virtual machines. Units are MB fo memory, and MHz for CPU.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.reservation will
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.reservation will
       be set to 0.
     - ' - C(shares) (dict): Shares are used in case of resource contention.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.shares will be
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.shares will be
       set to 'NORMAL'.
     type: dict
   memory_allocation:
@@ -46,29 +45,30 @@ options:
       reservation, the reservation can grow beyond the specified value, if the parent
       resource pool has unreserved resources. A non-expandable reservation is called
       a fixed reservation.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.expandable-reservation
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.expandable-reservation
       will be set to true.
     - ' - C(limit) (int): The utilization of a resource pool will not exceed this
       limit, even if there are available resources. This is typically used to ensure
       a consistent performance of resource pools independent of available resources.
       If set to -1, then there is no fixed limit on resource usage (only bounded by
       available resources and shares). Units are MB for memory, and MHz for CPU.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.limit will be set
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.limit will be set
       to -1.
     - ' - C(reservation) (int): Amount of resource that is guaranteed available to
       a resource pool. Reserved resources are not wasted if they are not used. If
       the utilization is less than the reservation, the resources can be utilized
       by other running virtual machines. Units are MB fo memory, and MHz for CPU.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.reservation will
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.reservation will
       be set to 0.
     - ' - C(shares) (dict): Shares are used in case of resource contention.'
-    - If unset or empty, ResourcePool.ResourceAllocationUpdateSpec.shares will be
+    - If unset or empty, ResourcePool.ResourceAllocationCreateSpec.shares will be
       set to 'NORMAL'.
     type: dict
   name:
     description:
     - Name of the resource pool.
-    - if unset or empty, the name of the resource pool will not be changed.
+    - if unset or empty, the name of the resource pool will not be changed. Required
+      with I(state=['create', 'update'])
     type: str
   parent:
     description:
@@ -97,7 +97,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = []
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -114,10 +118,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -132,26 +136,28 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
-    argument_spec["resource_pool"] = {
-        "type": "str",
-        "operationIds": ["delete", "update"],
-    }
-    argument_spec["parent"] = {"type": "str", "operationIds": ["create"]}
-    argument_spec["name"] = {"type": "str", "operationIds": ["create", "update"]}
-    argument_spec["memory_allocation"] = {
-        "type": "dict",
-        "operationIds": ["create", "update"],
-    }
+
     argument_spec["cpu_allocation"] = {
         "type": "dict",
         "operationIds": ["create", "update"],
     }
+    argument_spec["memory_allocation"] = {
+        "type": "dict",
+        "operationIds": ["create", "update"],
+    }
+    argument_spec["name"] = {"type": "str", "operationIds": ["create", "update"]}
+    argument_spec["parent"] = {"type": "str", "operationIds": ["create"]}
+    argument_spec["resource_pool"] = {
+        "type": "str",
+        "operationIds": ["delete", "update"],
+    }
+    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -175,7 +181,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -194,6 +200,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/resource-pool".format(**params)
 
 
@@ -224,7 +231,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -271,7 +278,7 @@ async def _update(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

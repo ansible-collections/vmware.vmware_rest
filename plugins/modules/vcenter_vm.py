@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_vm
@@ -415,55 +414,50 @@ options:
       the other existing placement of the virtual machine result in disjoint placement
       the operation will fail.
     - 'Validate attributes are:'
-    - ' - C(cluster) (str): Cluster into which the cloned virtual machine should be
-      placed. '
-    - ' If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.resource-pool are
-      both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.cluster. '
-    - ' If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.host are both specified,
-      VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.'
-    - If VM.ClonePlacementSpec.resource-pool or VM.ClonePlacementSpec.host is specified,
-      it is recommended that this field be unset.
+    - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
+    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.resource-pool
+      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.cluster. '
+    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.host are
+      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
+    - If VM.RelocatePlacementSpec.resource-pool or VM.RelocatePlacementSpec.host is
+      specified, it is recommended that this field be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: ClusterComputeResource.'
-    - ' - C(datastore) (str): Datastore on which the cloned virtual machine''s configuration
+    - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
       state should be stored. This datastore will also be used for any virtual disks
-      that are created as part of the virtual machine clone operation unless individually
-      overridden.'
-    - If field is unset, the system will use the datastore of the source virtual machine.
+      that are associated with the virtual machine, unless individually overridden.'
+    - If this field is unset, the virtual machine will remain on the current datastore.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Datastore. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: Datastore.'
-    - ' - C(folder) (str): Virtual machine folder into which the cloned virtual machine
-      should be placed.'
-    - If field is unset, the system will use the virtual machine folder of the source
-      virtual machine. If this results in a conflict due to other placement parameters,
-      the virtual machine clone operation will fail.
+    - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
+      be placed.'
+    - If this field is unset, the virtual machine will stay in the current folder.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Folder. When operations return a value
       of this structure as a result, the field will be an identifier for the resource
       type: Folder.'
-    - ' - C(host) (str): Host onto which the cloned virtual machine should be placed. '
-    - ' If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.resource-pool are
-      both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.host. '
-    - ' If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.cluster are both specified,
-      VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.'
-    - If this field is unset, if VM.ClonePlacementSpec.resource-pool is unset, the
-      cloned virtual machine will use the host of the source virtual machine. if VM.ClonePlacementSpec.resource-pool
-      is set, and the target is a standalone host, the host is used. if VM.ClonePlacementSpec.resource-pool
-      is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.ClonePlacementSpec.resource-pool
+    - ' - C(host) (str): Host onto which the virtual machine should be placed. '
+    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.resource-pool
+      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.host. '
+    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.cluster are
+      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
+    - If this field is unset, if VM.RelocatePlacementSpec.resource-pool is unset,
+      the virtual machine will remain on the current host. if VM.RelocatePlacementSpec.resource-pool
+      is set, and the target is a standalone host, the host is used. if VM.RelocatePlacementSpec.resource-pool
+      is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.RelocatePlacementSpec.resource-pool
       is set, and the target is a cluster without DRS, InvalidArgument will be thrown.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: HostSystem. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: HostSystem.'
-    - ' - C(resource_pool) (str): Resource pool into which the cloned virtual machine
-      should be placed.'
-    - If field is unset, the system will use the resource pool of the source virtual
-      machine. If this results in a conflict due to other placement parameters, the
-      virtual machine clone operation will fail.
+    - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
+      be placed.'
+    - If this field is unset, the virtual machine will stay in the current resource
+      pool.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will be an identifier for the
@@ -553,7 +547,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = []
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -570,10 +568,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -588,79 +586,22 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["vm"] = {
-        "type": "str",
-        "operationIds": ["delete", "relocate", "unregister"],
-    }
-    argument_spec["storage_policy"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["state"] = {
-        "type": "str",
-        "choices": [
-            "clone",
-            "create",
-            "delete",
-            "instant_clone",
-            "register",
-            "relocate",
-            "unregister",
-        ],
-    }
-    argument_spec["source"] = {
-        "type": "str",
-        "operationIds": ["clone", "instant_clone"],
-    }
-    argument_spec["serial_ports_to_update"] = {
-        "type": "list",
+
+    argument_spec["bios_uuid"] = {"type": "str", "operationIds": ["instant_clone"]}
+    argument_spec["boot"] = {"type": "dict", "operationIds": ["create"]}
+    argument_spec["boot_devices"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["cdroms"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["cpu"] = {"type": "dict", "operationIds": ["create"]}
+    argument_spec["datastore"] = {"type": "str", "operationIds": ["register"]}
+    argument_spec["datastore_path"] = {"type": "str", "operationIds": ["register"]}
+    argument_spec["disconnect_all_nics"] = {
+        "type": "bool",
         "operationIds": ["instant_clone"],
     }
-    argument_spec["serial_ports"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["scsi_adapters"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["sata_adapters"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["power_on"] = {"type": "bool", "operationIds": ["clone"]}
-    argument_spec["placement"] = {
-        "type": "dict",
-        "operationIds": ["clone", "create", "instant_clone", "register", "relocate"],
-    }
-    argument_spec["path"] = {"type": "str", "operationIds": ["register"]}
-    argument_spec["parallel_ports_to_update"] = {
-        "type": "list",
-        "operationIds": ["instant_clone"],
-    }
-    argument_spec["parallel_ports"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["nics_to_update"] = {
-        "type": "list",
-        "operationIds": ["instant_clone"],
-    }
-    argument_spec["nics"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["name"] = {
-        "type": "str",
-        "operationIds": ["clone", "create", "instant_clone", "register"],
-    }
-    argument_spec["memory"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["hardware_version"] = {
-        "type": "str",
-        "choices": [
-            "VMX_03",
-            "VMX_04",
-            "VMX_06",
-            "VMX_07",
-            "VMX_08",
-            "VMX_09",
-            "VMX_10",
-            "VMX_11",
-            "VMX_12",
-            "VMX_13",
-            "VMX_14",
-            "VMX_15",
-            "VMX_16",
-            "VMX_17",
-        ],
-        "operationIds": ["create"],
-    }
-    argument_spec["guest_customization_spec"] = {
-        "type": "dict",
-        "operationIds": ["clone"],
-    }
+    argument_spec["disks"] = {"type": "list", "operationIds": ["create", "relocate"]}
+    argument_spec["disks_to_remove"] = {"type": "list", "operationIds": ["clone"]}
+    argument_spec["disks_to_update"] = {"type": "list", "operationIds": ["clone"]}
+    argument_spec["floppies"] = {"type": "list", "operationIds": ["create"]}
     argument_spec["guest_OS"] = {
         "type": "str",
         "choices": [
@@ -835,26 +776,85 @@ def prepare_argument_spec():
         ],
         "operationIds": ["create"],
     }
-    argument_spec["floppies"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["disks_to_update"] = {"type": "list", "operationIds": ["clone"]}
-    argument_spec["disks_to_remove"] = {"type": "list", "operationIds": ["clone"]}
-    argument_spec["disks"] = {"type": "list", "operationIds": ["create", "relocate"]}
-    argument_spec["disconnect_all_nics"] = {
-        "type": "bool",
+    argument_spec["guest_customization_spec"] = {
+        "type": "dict",
+        "operationIds": ["clone"],
+    }
+    argument_spec["hardware_version"] = {
+        "type": "str",
+        "choices": [
+            "VMX_03",
+            "VMX_04",
+            "VMX_06",
+            "VMX_07",
+            "VMX_08",
+            "VMX_09",
+            "VMX_10",
+            "VMX_11",
+            "VMX_12",
+            "VMX_13",
+            "VMX_14",
+            "VMX_15",
+            "VMX_16",
+            "VMX_17",
+        ],
+        "operationIds": ["create"],
+    }
+    argument_spec["memory"] = {"type": "dict", "operationIds": ["create"]}
+    argument_spec["name"] = {
+        "type": "str",
+        "operationIds": ["clone", "create", "instant_clone", "register"],
+    }
+    argument_spec["nics"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["nics_to_update"] = {
+        "type": "list",
         "operationIds": ["instant_clone"],
     }
-    argument_spec["datastore_path"] = {"type": "str", "operationIds": ["register"]}
-    argument_spec["datastore"] = {"type": "str", "operationIds": ["register"]}
-    argument_spec["cpu"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["cdroms"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["boot_devices"] = {"type": "list", "operationIds": ["create"]}
-    argument_spec["boot"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["bios_uuid"] = {"type": "str", "operationIds": ["instant_clone"]}
+    argument_spec["parallel_ports"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["parallel_ports_to_update"] = {
+        "type": "list",
+        "operationIds": ["instant_clone"],
+    }
+    argument_spec["path"] = {"type": "str", "operationIds": ["register"]}
+    argument_spec["placement"] = {
+        "type": "dict",
+        "operationIds": ["clone", "create", "instant_clone", "register", "relocate"],
+    }
+    argument_spec["power_on"] = {"type": "bool", "operationIds": ["clone"]}
+    argument_spec["sata_adapters"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["scsi_adapters"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["serial_ports"] = {"type": "list", "operationIds": ["create"]}
+    argument_spec["serial_ports_to_update"] = {
+        "type": "list",
+        "operationIds": ["instant_clone"],
+    }
+    argument_spec["source"] = {
+        "type": "str",
+        "operationIds": ["clone", "instant_clone"],
+    }
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": [
+            "clone",
+            "create",
+            "delete",
+            "instant_clone",
+            "register",
+            "relocate",
+            "unregister",
+        ],
+    }
+    argument_spec["storage_policy"] = {"type": "dict", "operationIds": ["create"]}
+    argument_spec["vm"] = {
+        "type": "str",
+        "operationIds": ["delete", "relocate", "unregister"],
+    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -878,7 +878,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -897,6 +897,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/vm".format(**params)
 
 
@@ -933,7 +934,7 @@ async def _clone(params, session):
         except KeyError:
             _json = {}
         if ("clone" == "create") and (resp.status in [200, 201]) and ("value" in _json):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -981,7 +982,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -1035,7 +1036,7 @@ async def _instant_clone(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -1065,7 +1066,7 @@ async def _register(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -1097,7 +1098,7 @@ async def _relocate(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

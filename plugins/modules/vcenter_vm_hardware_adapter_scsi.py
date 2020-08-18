@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_adapter_scsi
@@ -65,7 +64,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = []
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -82,10 +85,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -100,29 +103,31 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["vm"] = {
-        "type": "str",
-        "operationIds": ["create", "delete", "update"],
-    }
-    argument_spec["type"] = {
-        "type": "str",
-        "choices": ["BUSLOGIC", "LSILOGIC", "LSILOGICSAS", "PVSCSI"],
-        "operationIds": ["create"],
-    }
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+
+    argument_spec["adapter"] = {"type": "str", "operationIds": ["delete", "update"]}
+    argument_spec["bus"] = {"default": 0, "type": "int", "operationIds": ["create"]}
+    argument_spec["pci_slot_number"] = {"type": "int", "operationIds": ["create"]}
     argument_spec["sharing"] = {
         "type": "str",
         "choices": ["NONE", "PHYSICAL", "VIRTUAL"],
         "operationIds": ["create", "update"],
     }
-    argument_spec["pci_slot_number"] = {"type": "int", "operationIds": ["create"]}
-    argument_spec["bus"] = {"default": 0, "type": "int", "operationIds": ["create"]}
-    argument_spec["adapter"] = {"type": "str", "operationIds": ["delete", "update"]}
+    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+    argument_spec["type"] = {
+        "type": "str",
+        "choices": ["BUSLOGIC", "LSILOGIC", "LSILOGICSAS", "PVSCSI"],
+        "operationIds": ["create"],
+    }
+    argument_spec["vm"] = {
+        "type": "str",
+        "operationIds": ["create", "delete", "update"],
+    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -146,7 +151,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -165,6 +170,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/adapter/scsi".format(
         **params
     )
@@ -199,7 +205,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -246,7 +252,7 @@ async def _update(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

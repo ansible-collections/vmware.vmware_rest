@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_certificatemanagement_vcenter_tls
@@ -92,7 +91,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = ["action"]
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -109,10 +112,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -127,51 +130,53 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["subject_alt_name"] = {
-        "type": "list",
-        "operationIds": ["replace_vmca_signed"],
-    }
-    argument_spec["state_or_province"] = {
-        "type": "str",
-        "operationIds": ["replace_vmca_signed"],
-    }
-    argument_spec["state"] = {
-        "type": "str",
-        "choices": ["renew", "replace_vmca_signed", "set"],
-    }
-    argument_spec["root_cert"] = {"type": "str", "operationIds": ["set"]}
-    argument_spec["organization_unit"] = {
-        "type": "str",
-        "operationIds": ["replace_vmca_signed"],
-    }
-    argument_spec["organization"] = {
-        "type": "str",
-        "operationIds": ["replace_vmca_signed"],
-    }
-    argument_spec["locality"] = {"type": "str", "operationIds": ["replace_vmca_signed"]}
-    argument_spec["key_size"] = {"type": "int", "operationIds": ["replace_vmca_signed"]}
-    argument_spec["key"] = {"type": "str", "operationIds": ["set"]}
-    argument_spec["email_address"] = {
-        "type": "str",
-        "operationIds": ["replace_vmca_signed"],
-    }
-    argument_spec["duration"] = {"type": "int", "operationIds": ["renew"]}
-    argument_spec["country"] = {"type": "str", "operationIds": ["replace_vmca_signed"]}
-    argument_spec["common_name"] = {
-        "type": "str",
-        "operationIds": ["replace_vmca_signed"],
-    }
-    argument_spec["cert"] = {"type": "str", "operationIds": ["set"]}
+
     argument_spec["action"] = {
         "type": "str",
         "choices": ["replace-vmca-signed"],
         "operationIds": ["replace_vmca_signed"],
     }
+    argument_spec["cert"] = {"type": "str", "operationIds": ["set"]}
+    argument_spec["common_name"] = {
+        "type": "str",
+        "operationIds": ["replace_vmca_signed"],
+    }
+    argument_spec["country"] = {"type": "str", "operationIds": ["replace_vmca_signed"]}
+    argument_spec["duration"] = {"type": "int", "operationIds": ["renew"]}
+    argument_spec["email_address"] = {
+        "type": "str",
+        "operationIds": ["replace_vmca_signed"],
+    }
+    argument_spec["key"] = {"type": "str", "operationIds": ["set"]}
+    argument_spec["key_size"] = {"type": "int", "operationIds": ["replace_vmca_signed"]}
+    argument_spec["locality"] = {"type": "str", "operationIds": ["replace_vmca_signed"]}
+    argument_spec["organization"] = {
+        "type": "str",
+        "operationIds": ["replace_vmca_signed"],
+    }
+    argument_spec["organization_unit"] = {
+        "type": "str",
+        "operationIds": ["replace_vmca_signed"],
+    }
+    argument_spec["root_cert"] = {"type": "str", "operationIds": ["set"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["renew", "replace_vmca_signed", "set"],
+    }
+    argument_spec["state_or_province"] = {
+        "type": "str",
+        "operationIds": ["replace_vmca_signed"],
+    }
+    argument_spec["subject_alt_name"] = {
+        "type": "list",
+        "operationIds": ["replace_vmca_signed"],
+    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -195,7 +200,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -214,6 +219,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/certificate-management/vcenter/tls".format(
         **params
     )
@@ -244,7 +250,7 @@ async def _renew(params, session):
         except KeyError:
             _json = {}
         if ("renew" == "create") and (resp.status in [200, 201]) and ("value" in _json):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -286,7 +292,7 @@ async def _replace_vmca_signed(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -314,7 +320,7 @@ async def _set(params, session):
         except KeyError:
             _json = {}
         if ("set" == "create") and (resp.status in [200, 201]) and ("value" in _json):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: cis_tagging_tagassociation
@@ -67,7 +66,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = ["~action"]
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -84,10 +87,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -102,30 +105,24 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["~action"] = {
-        "type": "str",
-        "choices": ["attach-tag-to-multiple-objects", "list-attached-tags-on-objects"],
-        "operationIds": [
-            "attach_tag_to_multiple_objects",
-            "list_attached_tags_on_objects",
-        ],
-    }
-    argument_spec["tag_ids"] = {
-        "type": "list",
-        "operationIds": [
-            "attach_multiple_tags_to_object",
-            "detach_multiple_tags_from_object",
-            "list_attached_objects_on_tags",
-        ],
-    }
-    argument_spec["tag_id"] = {
-        "type": "str",
+
+    argument_spec["object_id"] = {
+        "type": "dict",
         "operationIds": [
             "attach",
-            "attach_tag_to_multiple_objects",
+            "attach_multiple_tags_to_object",
             "detach",
+            "detach_multiple_tags_from_object",
+            "list_attachable_tags",
+            "list_attached_tags",
+        ],
+    }
+    argument_spec["object_ids"] = {
+        "type": "list",
+        "operationIds": [
+            "attach_tag_to_multiple_objects",
             "detach_tag_from_multiple_objects",
-            "list_attached_objects",
+            "list_attached_tags_on_objects",
         ],
     }
     argument_spec["state"] = {
@@ -144,30 +141,38 @@ def prepare_argument_spec():
             "list_attached_tags_on_objects",
         ],
     }
-    argument_spec["object_ids"] = {
+    argument_spec["tag_id"] = {
+        "type": "str",
+        "operationIds": [
+            "attach",
+            "attach_tag_to_multiple_objects",
+            "detach",
+            "detach_tag_from_multiple_objects",
+            "list_attached_objects",
+        ],
+    }
+    argument_spec["tag_ids"] = {
         "type": "list",
         "operationIds": [
+            "attach_multiple_tags_to_object",
+            "detach_multiple_tags_from_object",
+            "list_attached_objects_on_tags",
+        ],
+    }
+    argument_spec["~action"] = {
+        "type": "str",
+        "choices": ["attach-tag-to-multiple-objects", "list-attached-tags-on-objects"],
+        "operationIds": [
             "attach_tag_to_multiple_objects",
-            "detach_tag_from_multiple_objects",
             "list_attached_tags_on_objects",
         ],
     }
-    argument_spec["object_id"] = {
-        "type": "dict",
-        "operationIds": [
-            "attach",
-            "attach_multiple_tags_to_object",
-            "detach",
-            "detach_multiple_tags_from_object",
-            "list_attachable_tags",
-            "list_attached_tags",
-        ],
-    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -191,7 +196,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -210,6 +215,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/com/vmware/cis/tagging/tag-association".format(
         **params
     )
@@ -244,7 +250,7 @@ async def _attach(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -276,7 +282,7 @@ async def _attach_multiple_tags_to_object(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -310,7 +316,7 @@ async def _attach_tag_to_multiple_objects(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -344,7 +350,7 @@ async def _detach(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -376,7 +382,7 @@ async def _detach_multiple_tags_from_object(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -410,7 +416,7 @@ async def _detach_tag_from_multiple_objects(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -444,7 +450,7 @@ async def _list_attachable_tags(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -491,7 +497,7 @@ async def _list_attached_objects_on_tags(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -525,7 +531,7 @@ async def _list_attached_tags(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -557,7 +563,7 @@ async def _list_attached_tags_on_objects(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

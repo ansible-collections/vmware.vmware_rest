@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_identity_providers
@@ -90,17 +89,17 @@ options:
     type: str
   oauth2:
     description:
-    - OAuth2 UpdateSpec
+    - OAuth2 CreateSpec
     - 'Validate attributes are:'
     - ' - C(auth_endpoint) (str): Authentication/authorization endpoint of the provider'
-    - ' - C(auth_query_params) (list): key/value pairs that are to be appended to
-      the authEndpoint request. How to append to authEndpoint request: If the map
-      is not empty, a "?" is added to the endpoint URL, and combination of each k
-      and each string in the v is added with an "&" delimiter. Details: If the value
-      contains only one string, then the key is added with "k=v". If the value is
-      an empty list, then the key is added without a "=v". If the value contains multiple
-      strings, then the key is repeated in the query-string for each string in the
-      value. If the map is empty, deletes all params.'
+    - ' - C(auth_query_params) (list): <p>key/value pairs that are to be appended
+      to the authEndpoint request.</p> <p>How to append to authEndpoint request:</p>
+      If the map is not empty, a "?" is added to the endpoint URL, and combination
+      of each k and each string in the v is added with an "&" delimiter. Details:<ul>
+      <li>If the value contains only one string, then the key is added with "k=v".</li>
+      <li>If the value is an empty list, then the key is added without a "=v".</li>
+      <li>If the value contains multiple strings, then the key is repeated in the
+      query-string for each string in the value.</li></ul>'
     - ' - C(authentication_method) (str): The {@name Oauth2AuthenticationMethod} {@term
       structure} contains the possible types of OAuth2 authentication methods.'
     - ' - C(claim_map) (list): The map used to transform an OAuth2 claim to a corresponding
@@ -109,16 +108,16 @@ options:
       is another map with an external group as the key and a vCenter Server group
       as value.'
     - ' - C(client_id) (str): Client identifier to connect to the provider'
-    - ' - C(client_secret) (str): Shared secret between identity provider and client'
+    - ' - C(client_secret) (str): The secret shared between the client and the provider'
     - ' - C(issuer) (str): The identity provider namespace. It is used to validate
-      the issuer in the acquired OAuth2 token'
+      the issuer in the acquired OAuth2 token.'
     - ' - C(public_key_uri) (str): Endpoint to retrieve the provider public key for
       validation'
-    - ' - C(token_endpoint) (str): Token endpoint of the provider.'
+    - ' - C(token_endpoint) (str): Token endpoint of the provider'
     type: dict
   oidc:
     description:
-    - OIDC UpdateSpec
+    - OIDC CreateSpec
     - 'Validate attributes are:'
     - ' - C(claim_map) (list): The map used to transform an OAuth2 claim to a corresponding
       claim that vCenter Server understands. Currently only the key "perms" is supported.
@@ -135,7 +134,7 @@ options:
     type: list
   provider:
     description:
-    - the identifier of the provider to update Required with I(state=['delete', 'update'])
+    - the identifier of the provider to delete Required with I(state=['delete', 'update'])
     type: str
   reset_groups_claim:
     description:
@@ -173,7 +172,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = []
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -190,10 +193,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -208,31 +211,12 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["upn_claim"] = {"type": "str", "operationIds": ["create", "update"]}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
-    argument_spec["reset_upn_claim"] = {"type": "bool", "operationIds": ["update"]}
-    argument_spec["reset_groups_claim"] = {"type": "bool", "operationIds": ["update"]}
-    argument_spec["provider"] = {"type": "str", "operationIds": ["delete", "update"]}
-    argument_spec["org_ids"] = {"type": "list", "operationIds": ["create", "update"]}
-    argument_spec["oidc"] = {"type": "dict", "operationIds": ["create", "update"]}
-    argument_spec["oauth2"] = {"type": "dict", "operationIds": ["create", "update"]}
-    argument_spec["name"] = {"type": "str", "operationIds": ["create", "update"]}
-    argument_spec["make_default"] = {"type": "bool", "operationIds": ["update"]}
-    argument_spec["is_default"] = {"type": "bool", "operationIds": ["create"]}
-    argument_spec["idm_protocol"] = {
-        "type": "str",
-        "choices": ["LDAP", "REST", "SCIM"],
+
+    argument_spec["active_directory_over_ldap"] = {
+        "type": "dict",
         "operationIds": ["create", "update"],
     }
-    argument_spec["idm_endpoints"] = {
-        "type": "list",
-        "operationIds": ["create", "update"],
-    }
-    argument_spec["groups_claim"] = {
-        "type": "str",
-        "operationIds": ["create", "update"],
-    }
-    argument_spec["domain_names"] = {
+    argument_spec["auth_query_params"] = {
         "type": "list",
         "operationIds": ["create", "update"],
     }
@@ -241,19 +225,40 @@ def prepare_argument_spec():
         "choices": ["Oauth2", "Oidc"],
         "operationIds": ["create", "update"],
     }
-    argument_spec["auth_query_params"] = {
+    argument_spec["domain_names"] = {
         "type": "list",
         "operationIds": ["create", "update"],
     }
-    argument_spec["active_directory_over_ldap"] = {
-        "type": "dict",
+    argument_spec["groups_claim"] = {
+        "type": "str",
         "operationIds": ["create", "update"],
     }
+    argument_spec["idm_endpoints"] = {
+        "type": "list",
+        "operationIds": ["create", "update"],
+    }
+    argument_spec["idm_protocol"] = {
+        "type": "str",
+        "choices": ["LDAP", "REST", "SCIM"],
+        "operationIds": ["create", "update"],
+    }
+    argument_spec["is_default"] = {"type": "bool", "operationIds": ["create"]}
+    argument_spec["make_default"] = {"type": "bool", "operationIds": ["update"]}
+    argument_spec["name"] = {"type": "str", "operationIds": ["create", "update"]}
+    argument_spec["oauth2"] = {"type": "dict", "operationIds": ["create", "update"]}
+    argument_spec["oidc"] = {"type": "dict", "operationIds": ["create", "update"]}
+    argument_spec["org_ids"] = {"type": "list", "operationIds": ["create", "update"]}
+    argument_spec["provider"] = {"type": "str", "operationIds": ["delete", "update"]}
+    argument_spec["reset_groups_claim"] = {"type": "bool", "operationIds": ["update"]}
+    argument_spec["reset_upn_claim"] = {"type": "bool", "operationIds": ["update"]}
+    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+    argument_spec["upn_claim"] = {"type": "str", "operationIds": ["create", "update"]}
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -277,7 +282,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -296,6 +301,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/identity/providers".format(**params)
 
 
@@ -340,7 +346,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -403,7 +409,7 @@ async def _update(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
