@@ -27,4 +27,3 @@
 - name: Assert idempotency
   assert:
     that: _attach_cdrom_1.value._key == _attach_cdrom_2.value._key
-

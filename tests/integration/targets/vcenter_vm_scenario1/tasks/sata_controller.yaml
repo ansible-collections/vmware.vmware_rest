@@ -24,4 +24,3 @@
     that:
       - _sata_adapter_result_1 is changed
       - not(_sata_adapter_result_2 is changed)
-
