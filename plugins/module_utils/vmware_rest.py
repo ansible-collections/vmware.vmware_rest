@@ -1,6 +1,7 @@
 import aiohttp
 import functools
-from async_lru import alru_cache
+import hashlib
+import importlib
 
 
 from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
@@ -8,13 +9,27 @@ from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions impo
 )
 
 
-@alru_cache()
 async def open_session(
     vcenter_hostname=None,
     vcenter_username=None,
     vcenter_password=None,
     validate_certs=True,
 ):
+
+    m = hashlib.sha256()
+    m.update(vcenter_hostname.encode())
+    m.update(vcenter_username.encode())
+    m.update(vcenter_password.encode())
+    m.update(b"yes" if validate_certs else b"no")
+    digest = m.hexdigest()
+    # TODO: Handle session timeout
+    if digest in open_session._pool:
+        return open_session._pool[digest]
+
+    aiohttp = importlib.import_module("aiohttp")
+    if not aiohttp:
+        raise EmbeddedModuleFailure()
+
     auth = aiohttp.BasicAuth(vcenter_username, vcenter_password)
     connector = aiohttp.TCPConnector(limit=20, ssl=validate_certs)
     async with aiohttp.ClientSession(
@@ -45,7 +60,11 @@ async def open_session(
                 },
                 connector_owner=False,
             )
+            open_session._pool[digest] = session
             return session
+
+
+open_session._pool = {}
 
 
 def gen_args(params, in_query_parameter):
