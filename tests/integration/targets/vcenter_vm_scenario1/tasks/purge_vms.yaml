@@ -15,5 +15,3 @@
     state: delete
     vm: '{{ item.vm }}'
   with_items: "{{ existing_vms.value }}"
-
-
