@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_guest_customizationspecs
@@ -68,7 +67,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = []
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -85,10 +88,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -103,31 +106,33 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["state"] = {
+
+    argument_spec["customization_spec"] = {
         "type": "str",
-        "choices": ["create", "delete", "export", "import_specification", "set"],
+        "operationIds": ["import_specification"],
     }
-    argument_spec["spec"] = {"type": "dict", "operationIds": ["create", "set"]}
-    argument_spec["name"] = {
-        "type": "str",
-        "operationIds": ["create", "delete", "export", "set", "set"],
-    }
+    argument_spec["description"] = {"type": "str", "operationIds": ["create", "set"]}
+    argument_spec["fingerprint"] = {"type": "str", "operationIds": ["set"]}
     argument_spec["format"] = {
         "type": "str",
         "choices": ["JSON", "XML"],
         "operationIds": ["export"],
     }
-    argument_spec["fingerprint"] = {"type": "str", "operationIds": ["set"]}
-    argument_spec["description"] = {"type": "str", "operationIds": ["create", "set"]}
-    argument_spec["customization_spec"] = {
+    argument_spec["name"] = {
         "type": "str",
-        "operationIds": ["import_specification"],
+        "operationIds": ["create", "delete", "export", "set", "set"],
     }
+    argument_spec["spec"] = {"type": "dict", "operationIds": ["create", "set"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["create", "delete", "export", "import_specification", "set"],
+    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -151,7 +156,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -170,6 +175,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/guest/customization-specs".format(
         **params
     )
@@ -181,7 +187,7 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
-    accepted_fields = ["description", "spec"]
+    accepted_fields = ["description", "name", "spec"]
     if "create" == "create":
         _exists = await exists(params, session)
         if _exists:
@@ -204,7 +210,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -213,22 +219,39 @@ async def _create(params, session):
 
 
 async def _delete(params, session):
+    accepted_fields = ["name"]
+    if "delete" == "create":
+        _exists = await exists(params, session)
+        if _exists:
+            return await update_changed_flag({"value": _exists}, 200, "get")
+    spec = {}
+    for i in accepted_fields:
+        if params[i]:
+            spec[i] = params[i]
     _url = "https://{vcenter_hostname}/rest/vcenter/guest/customization-specs/{name}".format(
         **params
-    ) + gen_args(
-        params, IN_QUERY_PARAMETER
     )
-    async with session.delete(_url) as resp:
+    async with session.delete(_url, json={"spec": spec}) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        if (
+            ("delete" == "create")
+            and (resp.status in [200, 201])
+            and ("value" in _json)
+        ):
+            if isinstance(_json["value"], dict):
+                _id = list(_json["value"].values())[0]
+            else:
+                _id = _json["value"]
+            _json = {"value": (await get_device_info(params, session, _url, _id))}
         return await update_changed_flag(_json, resp.status, "delete")
 
 
 async def _export(params, session):
-    accepted_fields = ["format"]
+    accepted_fields = ["format", "name"]
     if "export" == "create":
         _exists = await exists(params, session)
         if _exists:
@@ -251,7 +274,7 @@ async def _export(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -283,7 +306,7 @@ async def _import_specification(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -292,7 +315,7 @@ async def _import_specification(params, session):
 
 
 async def _set(params, session):
-    accepted_fields = ["description", "fingerprint", "spec"]
+    accepted_fields = ["description", "fingerprint", "name", "spec"]
     if "set" == "create":
         _exists = await exists(params, session)
         if _exists:
@@ -311,7 +334,7 @@ async def _set(params, session):
         except KeyError:
             _json = {}
         if ("set" == "create") and (resp.status in [200, 201]) and ("value" in _json):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_deployment_migrate_activedirectory
@@ -45,7 +44,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = ["action"]
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -62,10 +65,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -80,29 +83,31 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["username"] = {
-        "nolog": True,
-        "type": "str",
-        "operationIds": ["check"],
-    }
-    argument_spec["state"] = {"type": "str", "choices": ["check"]}
-    argument_spec["password"] = {
-        "nolog": True,
-        "type": "str",
-        "operationIds": ["check"],
-    }
-    argument_spec["domain"] = {"type": "str", "operationIds": ["check"]}
-    argument_spec["dns_servers"] = {"type": "list", "operationIds": ["check"]}
+
     argument_spec["action"] = {
         "type": "str",
         "choices": ["check"],
         "operationIds": ["check"],
     }
+    argument_spec["dns_servers"] = {"type": "list", "operationIds": ["check"]}
+    argument_spec["domain"] = {"type": "str", "operationIds": ["check"]}
+    argument_spec["password"] = {
+        "nolog": True,
+        "type": "str",
+        "operationIds": ["check"],
+    }
+    argument_spec["state"] = {"type": "str", "choices": ["check"]}
+    argument_spec["username"] = {
+        "nolog": True,
+        "type": "str",
+        "operationIds": ["check"],
+    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -126,7 +131,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -145,6 +150,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/vcenter/deployment/migrate/active-directory".format(
         **params
     )
@@ -175,7 +181,7 @@ async def _check(params, session):
         except KeyError:
             _json = {}
         if ("check" == "create") and (resp.status in [200, 201]) and ("value" in _json):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

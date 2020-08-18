@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_ovf_libraryitem
@@ -88,11 +87,14 @@ options:
     description:
     - Specification of the target content library and library item.
     - 'Validate attributes are:'
-    - ' - C(library_id) (str): Identifier of the library in which a new library item
-      should be created. This {@term field} is not used if the {@name #libraryItemId}
-      {@term field} is specified.'
-    - ' - C(library_item_id) (str): Identifier of the library item that should be
-      should be updated.'
+    - ' - C(folder_id) (str): Identifier of the vCenter folder that should contain
+      the virtual machine or virtual appliance. The folder must be virtual machine
+      folder.'
+    - ' - C(host_id) (str): Identifier of the target host on which the virtual machine
+      or virtual appliance will run. The target host must be a member of the cluster
+      that contains the resource pool identified by {@link #resourcePoolId}.'
+    - ' - C(resource_pool_id) (str): Identifier of the resource pool to which the
+      virtual machine or virtual appliance should be attached.'
     type: dict
   ~action:
     choices:
@@ -106,7 +108,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = ["~action"]
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -123,10 +129,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -141,32 +147,34 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
+
+    argument_spec["client_token"] = {
+        "type": "str",
+        "operationIds": ["create", "deploy"],
+    }
+    argument_spec["create_spec"] = {"type": "dict", "operationIds": ["create"]}
+    argument_spec["deployment_spec"] = {"type": "dict", "operationIds": ["deploy"]}
+    argument_spec["ovf_library_item_id"] = {
+        "type": "str",
+        "operationIds": ["deploy", "filter"],
+    }
+    argument_spec["source"] = {"type": "dict", "operationIds": ["create"]}
+    argument_spec["state"] = {"type": "str", "choices": ["create", "deploy", "filter"]}
+    argument_spec["target"] = {
+        "type": "dict",
+        "operationIds": ["create", "deploy", "filter"],
+    }
     argument_spec["~action"] = {
         "type": "str",
         "choices": ["deploy"],
         "operationIds": ["deploy"],
     }
-    argument_spec["target"] = {
-        "type": "dict",
-        "operationIds": ["create", "deploy", "filter"],
-    }
-    argument_spec["state"] = {"type": "str", "choices": ["create", "deploy", "filter"]}
-    argument_spec["source"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["ovf_library_item_id"] = {
-        "type": "str",
-        "operationIds": ["deploy", "filter"],
-    }
-    argument_spec["deployment_spec"] = {"type": "dict", "operationIds": ["deploy"]}
-    argument_spec["create_spec"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["client_token"] = {
-        "type": "str",
-        "operationIds": ["create", "deploy"],
-    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -190,7 +198,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -209,6 +217,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/com/vmware/vcenter/ovf/library-item".format(
         **params
     )
@@ -243,7 +252,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -275,7 +284,7 @@ async def _deploy(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -307,7 +316,7 @@ async def _filter(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]

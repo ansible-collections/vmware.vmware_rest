@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: vcenter_cluster_info
@@ -53,12 +52,16 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = [
     "filter.clusters",
     "filter.datacenters",
     "filter.folders",
     "filter.names",
 ]
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -75,10 +78,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -93,16 +96,18 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["filter.names"] = {"type": "list", "operationIds": ["list"]}
-    argument_spec["filter.folders"] = {"type": "list", "operationIds": ["list"]}
-    argument_spec["filter.datacenters"] = {"type": "list", "operationIds": ["list"]}
-    argument_spec["filter.clusters"] = {"type": "list", "operationIds": ["list"]}
+
     argument_spec["cluster"] = {"type": "str", "operationIds": ["get"]}
+    argument_spec["filter.clusters"] = {"type": "list", "operationIds": ["list"]}
+    argument_spec["filter.datacenters"] = {"type": "list", "operationIds": ["list"]}
+    argument_spec["filter.folders"] = {"type": "list", "operationIds": ["list"]}
+    argument_spec["filter.names"] = {"type": "list", "operationIds": ["list"]}
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -126,7 +131,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -145,6 +150,7 @@ async def main():
 
 
 def url(params):
+
     if params["cluster"]:
         return "https://{vcenter_hostname}/rest/vcenter/cluster/{cluster}".format(
             **params

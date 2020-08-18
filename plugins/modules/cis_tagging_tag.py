@@ -1,8 +1,7 @@
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-import socket
-import json
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
 module: cis_tagging_tag
@@ -69,7 +68,11 @@ version_added: 1.0.0
 requirements:
 - python >= 3.6
 """
+
 IN_QUERY_PARAMETER = ["~action"]
+
+import socket
+import json
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -86,10 +89,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"])
+            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -104,26 +107,12 @@ def prepare_argument_spec():
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
-    argument_spec["~action"] = {
+
+    argument_spec["category_id"] = {
         "type": "str",
-        "choices": ["add-to-used-by", "list-tags-for-category"],
-        "operationIds": ["add_to_used_by", "list_tags_for_category"],
+        "operationIds": ["list_tags_for_category"],
     }
-    argument_spec["used_by_entity"] = {
-        "type": "str",
-        "operationIds": ["add_to_used_by", "list_used_tags", "remove_from_used_by"],
-    }
-    argument_spec["update_spec"] = {"type": "dict", "operationIds": ["update"]}
-    argument_spec["tag_id"] = {
-        "type": "str",
-        "operationIds": [
-            "add_to_used_by",
-            "delete",
-            "remove_from_used_by",
-            "revoke_propagating_permissions",
-            "update",
-        ],
-    }
+    argument_spec["create_spec"] = {"type": "dict", "operationIds": ["create"]}
     argument_spec["state"] = {
         "type": "str",
         "choices": [
@@ -137,16 +126,32 @@ def prepare_argument_spec():
             "update",
         ],
     }
-    argument_spec["create_spec"] = {"type": "dict", "operationIds": ["create"]}
-    argument_spec["category_id"] = {
+    argument_spec["tag_id"] = {
         "type": "str",
-        "operationIds": ["list_tags_for_category"],
+        "operationIds": [
+            "add_to_used_by",
+            "delete",
+            "remove_from_used_by",
+            "revoke_propagating_permissions",
+            "update",
+        ],
     }
+    argument_spec["update_spec"] = {"type": "dict", "operationIds": ["update"]}
+    argument_spec["used_by_entity"] = {
+        "type": "str",
+        "operationIds": ["add_to_used_by", "list_used_tags", "remove_from_used_by"],
+    }
+    argument_spec["~action"] = {
+        "type": "str",
+        "choices": ["add-to-used-by", "list-tags-for-category"],
+        "operationIds": ["add_to_used_by", "list_tags_for_category"],
+    }
+
     return argument_spec
 
 
 async def get_device_info(params, session, _url, _key):
-    async with session.get(((_url + "/") + _key)) as resp:
+    async with session.get(_url + "/" + _key) as resp:
         _json = await resp.json()
         entry = _json["value"]
         entry["_key"] = _key
@@ -170,7 +175,7 @@ async def exists(params, session):
     devices = await list_devices(params, session)
     for device in devices:
         for k in unicity_keys:
-            if (params.get(k) is not None) and (device.get(k) != params.get(k)):
+            if params.get(k) is not None and device.get(k) != params.get(k):
                 break
         else:
             return device
@@ -189,6 +194,7 @@ async def main():
 
 
 def url(params):
+
     return "https://{vcenter_hostname}/rest/com/vmware/cis/tagging/tag".format(**params)
 
 
@@ -221,7 +227,7 @@ async def _add_to_used_by(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -251,7 +257,7 @@ async def _create(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -313,7 +319,7 @@ async def _list_used_tags(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -345,7 +351,7 @@ async def _remove_from_used_by(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
@@ -394,7 +400,7 @@ async def _update(params, session):
             and (resp.status in [200, 201])
             and ("value" in _json)
         ):
-            if type(_json["value"]) == dict:
+            if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
