@@ -43,16 +43,49 @@ options:
       for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual
       machine hardware versions (1003746)).
     type: str
+  vcenter_hostname:
+    description:
+    - The hostname or IP address of the vSphere vCenter
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_HOST) will be used instead.
+    required: true
+    type: str
+  vcenter_password:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_PASSWORD) will be used instead.
+    required: true
+    type: str
+  vcenter_username:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_USER) will be used instead.
+    required: true
+    type: str
+  vcenter_validate_certs:
+    default: true
+    description:
+    - Allows connection when SSL certificates are not valid. Set to C(false) when
+      certificates are not trusted.
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_VALIDATE_CERTS) will be used instead.
+    type: bool
   vm:
     description:
     - Virtual machine identifier.
     - 'The parameter must be an identifier for the resource type: VirtualMachine.'
     type: str
 author:
-- Ansible VMware team
+- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
 requirements:
 - python >= 3.6
+- aiohttp
+"""
+
+EXAMPLES = """
 """
 
 IN_QUERY_PARAMETER = []
@@ -77,21 +110,21 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
-            required=False,
+            required=True,
             no_log=True,
             fallback=(env_fallback, ["VMWARE_PASSWORD"]),
         ),
-        "vcenter_certs": dict(
+        "vcenter_validate_certs": dict(
             type="bool",
             required=False,
-            no_log=True,
+            default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
@@ -100,7 +133,6 @@ def prepare_argument_spec():
     argument_spec["upgrade_policy"] = {
         "type": "str",
         "choices": ["AFTER_CLEAN_SHUTDOWN", "ALWAYS", "NEVER"],
-        "operationIds": ["update"],
     }
     argument_spec["upgrade_version"] = {
         "type": "str",
@@ -120,9 +152,8 @@ def prepare_argument_spec():
             "VMX_16",
             "VMX_17",
         ],
-        "operationIds": ["update"],
     }
-    argument_spec["vm"] = {"type": "str", "operationIds": ["update"]}
+    argument_spec["vm"] = {"type": "str"}
 
     return argument_spec
 
@@ -172,7 +203,9 @@ async def main():
 
 def url(params):
 
-    return "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware".format(**params)
+    return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware").format(
+        **params
+    )
 
 
 async def entry_point(module, session):
@@ -182,10 +215,6 @@ async def entry_point(module, session):
 
 async def _update(params, session):
     accepted_fields = ["upgrade_policy", "upgrade_version"]
-    if "update" == "create":
-        _exists = await exists(params, session)
-        if _exists:
-            return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:
@@ -197,16 +226,6 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        if (
-            ("update" == "create")
-            and (resp.status in [200, 201])
-            and ("value" in _json)
-        ):
-            if isinstance(_json["value"], dict):
-                _id = list(_json["value"].values())[0]
-            else:
-                _id = _json["value"]
-            _json = {"value": (await get_device_info(params, session, _url, _id))}
         return await update_changed_flag(_json, resp.status, "update")
 
 

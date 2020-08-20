@@ -37,11 +37,44 @@ options:
     - Names that datacenters must have to match the filter (see Datacenter.Info.name).
     - If unset or empty, datacenters with any name match the filter.
     type: list
+  vcenter_hostname:
+    description:
+    - The hostname or IP address of the vSphere vCenter
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_HOST) will be used instead.
+    required: true
+    type: str
+  vcenter_password:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_PASSWORD) will be used instead.
+    required: true
+    type: str
+  vcenter_username:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_USER) will be used instead.
+    required: true
+    type: str
+  vcenter_validate_certs:
+    default: true
+    description:
+    - Allows connection when SSL certificates are not valid. Set to C(false) when
+      certificates are not trusted.
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_VALIDATE_CERTS) will be used instead.
+    type: bool
 author:
-- Ansible VMware team
+- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
 requirements:
 - python >= 3.6
+- aiohttp
+"""
+
+EXAMPLES = """
 """
 
 IN_QUERY_PARAMETER = ["filter.datacenters", "filter.folders", "filter.names"]
@@ -66,29 +99,29 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
-            required=False,
+            required=True,
             no_log=True,
             fallback=(env_fallback, ["VMWARE_PASSWORD"]),
         ),
-        "vcenter_certs": dict(
+        "vcenter_validate_certs": dict(
             type="bool",
             required=False,
-            no_log=True,
+            default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
 
-    argument_spec["datacenter"] = {"type": "str", "operationIds": ["get"]}
-    argument_spec["filter.datacenters"] = {"type": "list", "operationIds": ["list"]}
-    argument_spec["filter.folders"] = {"type": "list", "operationIds": ["list"]}
-    argument_spec["filter.names"] = {"type": "list", "operationIds": ["list"]}
+    argument_spec["datacenter"] = {"type": "str"}
+    argument_spec["filter.datacenters"] = {"type": "list"}
+    argument_spec["filter.folders"] = {"type": "list"}
+    argument_spec["filter.names"] = {"type": "list"}
 
     return argument_spec
 
@@ -139,11 +172,11 @@ async def main():
 def url(params):
 
     if params["datacenter"]:
-        return "https://{vcenter_hostname}/rest/vcenter/datacenter/{datacenter}".format(
-            **params
-        ) + gen_args(params, IN_QUERY_PARAMETER)
+        return (
+            "https://{vcenter_hostname}" "/rest/vcenter/datacenter/{datacenter}"
+        ).format(**params) + gen_args(params, IN_QUERY_PARAMETER)
     else:
-        return "https://{vcenter_hostname}/rest/vcenter/datacenter".format(
+        return ("https://{vcenter_hostname}" "/rest/vcenter/datacenter").format(
             **params
         ) + gen_args(params, IN_QUERY_PARAMETER)
 
