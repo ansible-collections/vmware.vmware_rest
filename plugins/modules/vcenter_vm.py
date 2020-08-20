@@ -368,7 +368,7 @@ options:
     description:
     - Virtual machine name.
     - If unset, the display name from the virtual machine's configuration file will
-      be used. Required with I(state=['clone', 'create', 'instant_clone', 'register'])
+      be used.
     type: str
   nics:
     description:
@@ -415,49 +415,44 @@ options:
       the operation will fail.
     - 'Validate attributes are:'
     - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
-    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.resource-pool
-      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.cluster. '
-    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.host are
-      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
-    - If VM.RelocatePlacementSpec.resource-pool or VM.RelocatePlacementSpec.host is
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster. '
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is
       specified, it is recommended that this field be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: ClusterComputeResource.'
-    - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
-      state should be stored. This datastore will also be used for any virtual disks
-      that are associated with the virtual machine, unless individually overridden.'
-    - If this field is unset, the virtual machine will remain on the current datastore.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Datastore. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: Datastore.'
     - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
       be placed.'
-    - If this field is unset, the virtual machine will stay in the current folder.
+    - This field is currently required. In the future, if this field is unset, the
+      system will attempt to choose a suitable folder for the virtual machine; if
+      a folder cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Folder. When operations return a value
       of this structure as a result, the field will be an identifier for the resource
       type: Folder.'
     - ' - C(host) (str): Host onto which the virtual machine should be placed. '
-    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.resource-pool
-      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.host. '
-    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.cluster are
-      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
-    - If this field is unset, if VM.RelocatePlacementSpec.resource-pool is unset,
-      the virtual machine will remain on the current host. if VM.RelocatePlacementSpec.resource-pool
-      is set, and the target is a standalone host, the host is used. if VM.RelocatePlacementSpec.resource-pool
-      is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.RelocatePlacementSpec.resource-pool
-      is set, and the target is a cluster without DRS, InvalidArgument will be thrown.
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host. '
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster
+      is specified. If unset, the system will attempt to choose a suitable host for
+      the virtual machine; if a host cannot be chosen, the virtual machine creation
+      operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: HostSystem. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: HostSystem.'
     - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
       be placed.'
-    - If this field is unset, the virtual machine will stay in the current resource
-      pool.
+    - This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster
+      are unset. In the future, if this field is unset, the system will attempt to
+      choose a suitable resource pool for the virtual machine; if a resource pool
+      cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will be an identifier for the
@@ -555,7 +550,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
-    from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
+        AnsibleTurboModule as AnsibleModule,
+    )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (

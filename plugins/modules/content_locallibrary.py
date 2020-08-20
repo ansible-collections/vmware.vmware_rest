@@ -69,7 +69,7 @@ options:
     type: dict
   library_id:
     description:
-    - Identifier of the local library to delete. Required with I(state=['delete',
+    - Identifier of the local library to update. Required with I(state=['delete',
       'publish', 'update'])
     type: str
   state:
@@ -158,7 +158,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
-    from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
+        AnsibleTurboModule as AnsibleModule,
+    )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (

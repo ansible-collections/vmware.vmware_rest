@@ -89,17 +89,17 @@ options:
     type: str
   oauth2:
     description:
-    - OAuth2 CreateSpec
+    - OAuth2 UpdateSpec
     - 'Validate attributes are:'
     - ' - C(auth_endpoint) (str): Authentication/authorization endpoint of the provider'
-    - ' - C(auth_query_params) (list): <p>key/value pairs that are to be appended
-      to the authEndpoint request.</p> <p>How to append to authEndpoint request:</p>
-      If the map is not empty, a "?" is added to the endpoint URL, and combination
-      of each k and each string in the v is added with an "&" delimiter. Details:<ul>
-      <li>If the value contains only one string, then the key is added with "k=v".</li>
-      <li>If the value is an empty list, then the key is added without a "=v".</li>
-      <li>If the value contains multiple strings, then the key is repeated in the
-      query-string for each string in the value.</li></ul>'
+    - ' - C(auth_query_params) (list): key/value pairs that are to be appended to
+      the authEndpoint request. How to append to authEndpoint request: If the map
+      is not empty, a "?" is added to the endpoint URL, and combination of each k
+      and each string in the v is added with an "&" delimiter. Details: If the value
+      contains only one string, then the key is added with "k=v". If the value is
+      an empty list, then the key is added without a "=v". If the value contains multiple
+      strings, then the key is repeated in the query-string for each string in the
+      value. If the map is empty, deletes all params.'
     - ' - C(authentication_method) (str): The {@name Oauth2AuthenticationMethod} {@term
       structure} contains the possible types of OAuth2 authentication methods.'
     - ' - C(claim_map) (list): The map used to transform an OAuth2 claim to a corresponding
@@ -108,16 +108,16 @@ options:
       is another map with an external group as the key and a vCenter Server group
       as value.'
     - ' - C(client_id) (str): Client identifier to connect to the provider'
-    - ' - C(client_secret) (str): The secret shared between the client and the provider'
+    - ' - C(client_secret) (str): Shared secret between identity provider and client'
     - ' - C(issuer) (str): The identity provider namespace. It is used to validate
-      the issuer in the acquired OAuth2 token.'
+      the issuer in the acquired OAuth2 token'
     - ' - C(public_key_uri) (str): Endpoint to retrieve the provider public key for
       validation'
-    - ' - C(token_endpoint) (str): Token endpoint of the provider'
+    - ' - C(token_endpoint) (str): Token endpoint of the provider.'
     type: dict
   oidc:
     description:
-    - OIDC CreateSpec
+    - OIDC UpdateSpec
     - 'Validate attributes are:'
     - ' - C(claim_map) (list): The map used to transform an OAuth2 claim to a corresponding
       claim that vCenter Server understands. Currently only the key "perms" is supported.
@@ -134,7 +134,7 @@ options:
     type: list
   provider:
     description:
-    - the identifier of the provider to delete Required with I(state=['delete', 'update'])
+    - the identifier of the provider to update Required with I(state=['delete', 'update'])
     type: str
   reset_groups_claim:
     description:
@@ -180,7 +180,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
-    from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
+        AnsibleTurboModule as AnsibleModule,
+    )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
