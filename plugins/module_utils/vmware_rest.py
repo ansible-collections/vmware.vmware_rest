@@ -1,5 +1,3 @@
-import aiohttp
-import functools
 import hashlib
 import importlib
 
@@ -44,7 +42,7 @@ async def open_session(
             if resp.status != 200:
                 try:
                     raise EmbeddedModuleFailure(
-                        "Authentication failure. code: {}, json: {}".format(
+                        "Authentication failure. code: {0}, json: {1}".format(
                             resp.status, await resp.text()
                         )
                     )
