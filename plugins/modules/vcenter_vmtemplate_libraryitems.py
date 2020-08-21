@@ -20,11 +20,11 @@ options:
     type: str
   disk_storage:
     description:
-    - Storage specification for the virtual machine template's disks.
+    - Storage specification for the deployed virtual machine's disks.
     - 'Validate attributes are:'
-    - ' - C(datastore) (str): Identifier for the datastore associated with a virtual
-      machine template''s disk.'
-    - ' - C(storage_policy) (dict): Storage policy for a virtual machine template''s
+    - ' - C(datastore) (str): Identifier for the datastore associated the deployed
+      virtual machine''s disk.'
+    - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
       disk.'
     type: dict
   disk_storage_overrides:
@@ -65,19 +65,19 @@ options:
     type: str
   placement:
     description:
-    - Information used to place the virtual machine template.
+    - Information used to place the deployed virtual machine.
     - 'Validate attributes are:'
-    - ' - C(cluster) (str): Cluster onto which the virtual machine template should
+    - ' - C(cluster) (str): Cluster onto which the deployed virtual machine should
       be placed. If {@name #cluster} and {@name #resourcePool} are both specified,
       {@name #resourcePool} must belong to {@name #cluster}. If {@name #cluster} and
       {@name #host} are both specified, {@name #host} must be a member of {@name #cluster}.'
-    - ' - C(folder) (str): Virtual machine folder into which the virtual machine template
-      should be placed.'
-    - ' - C(host) (str): Host onto which the virtual machine template should be placed.
-      If {@name #host} and {@name #resourcePool} are both specified, {@name #resourcePool}
+    - ' - C(folder) (str): Virtual machine folder into which the deployed virtual
+      machine should be placed.'
+    - ' - C(host) (str): Host onto which the virtual machine should be placed. If
+      {@name #host} and {@name #resourcePool} are both specified, {@name #resourcePool}
       must belong to {@name #host}. If {@name #host} and {@name #cluster} are both
       specified, {@name #host} must be a member of {@name #cluster}.'
-    - ' - C(resource_pool) (str): Resource pool into which the virtual machine template
+    - ' - C(resource_pool) (str): Resource pool into which the deployed virtual machine
       should be placed.'
     type: dict
   powered_on:
@@ -102,11 +102,11 @@ options:
     type: str
   vm_home_storage:
     description:
-    - Storage location for the virtual machine template's configuration and log files.
+    - Storage location for the deployed virtual machine's configuration and log files.
     - 'Validate attributes are:'
-    - ' - C(datastore) (str): Identifier of the datastore for the virtual machine
-      template''s configuration and log files.'
-    - ' - C(storage_policy) (dict): Storage policy for the virtual machine template''s
+    - ' - C(datastore) (str): Identifier of the datastore for the deployed virtual
+      machine''s configuration and log files.'
+    - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
       configuration and log files.'
     type: dict
 author:
@@ -123,7 +123,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
-    from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
+        AnsibleTurboModule as AnsibleModule,
+    )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (

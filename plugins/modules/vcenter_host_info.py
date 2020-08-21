@@ -86,7 +86,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
-    from ansible_module.turbo.module import AnsibleTurboModule as AnsibleModule
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
+        AnsibleTurboModule as AnsibleModule,
+    )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
