@@ -109,6 +109,35 @@ options:
     - If unset, the value is unchanged. Must be unset if the emulation type of the
       virtual Ethernet adapter is not VMXNET3.
     type: bool
+  vcenter_hostname:
+    description:
+    - The hostname or IP address of the vSphere vCenter
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_HOST) will be used instead.
+    required: true
+    type: str
+  vcenter_password:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_PASSWORD) will be used instead.
+    required: true
+    type: str
+  vcenter_username:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_USER) will be used instead.
+    required: true
+    type: str
+  vcenter_validate_certs:
+    default: true
+    description:
+    - Allows connection when SSL certificates are not valid. Set to C(false) when
+      certificates are not trusted.
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_VALIDATE_CERTS) will be used instead.
+    type: bool
   vm:
     description:
     - Virtual machine identifier.
@@ -123,10 +152,14 @@ options:
     - If unset, the value is unchanged.
     type: bool
 author:
-- Ansible VMware team
+- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
 requirements:
 - python >= 3.6
+- aiohttp
+"""
+
+EXAMPLES = """
 """
 
 IN_QUERY_PARAMETER = []
@@ -151,60 +184,43 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
-            required=False,
+            required=True,
             no_log=True,
             fallback=(env_fallback, ["VMWARE_PASSWORD"]),
         ),
-        "vcenter_certs": dict(
+        "vcenter_validate_certs": dict(
             type="bool",
             required=False,
-            no_log=True,
+            default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
 
-    argument_spec["allow_guest_control"] = {
-        "type": "bool",
-        "operationIds": ["create", "update"],
-    }
-    argument_spec["backing"] = {"type": "dict", "operationIds": ["create", "update"]}
-    argument_spec["mac_address"] = {"type": "str", "operationIds": ["create", "update"]}
+    argument_spec["allow_guest_control"] = {"type": "bool"}
+    argument_spec["backing"] = {"type": "dict"}
+    argument_spec["mac_address"] = {"type": "str"}
     argument_spec["mac_type"] = {
         "type": "str",
         "choices": ["ASSIGNED", "GENERATED", "MANUAL"],
-        "operationIds": ["create", "update"],
     }
-    argument_spec["nic"] = {"type": "str", "operationIds": ["delete", "update"]}
-    argument_spec["pci_slot_number"] = {"type": "int", "operationIds": ["create"]}
-    argument_spec["start_connected"] = {
-        "type": "bool",
-        "operationIds": ["create", "update"],
-    }
+    argument_spec["nic"] = {"type": "str"}
+    argument_spec["pci_slot_number"] = {"type": "int"}
+    argument_spec["start_connected"] = {"type": "bool"}
     argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
     argument_spec["type"] = {
         "type": "str",
         "choices": ["E1000", "E1000E", "PCNET32", "VMXNET", "VMXNET2", "VMXNET3"],
-        "operationIds": ["create"],
     }
-    argument_spec["upt_compatibility_enabled"] = {
-        "type": "bool",
-        "operationIds": ["create", "update"],
-    }
-    argument_spec["vm"] = {
-        "type": "str",
-        "operationIds": ["create", "delete", "update"],
-    }
-    argument_spec["wake_on_lan_enabled"] = {
-        "type": "bool",
-        "operationIds": ["create", "update"],
-    }
+    argument_spec["upt_compatibility_enabled"] = {"type": "bool"}
+    argument_spec["vm"] = {"type": "str"}
+    argument_spec["wake_on_lan_enabled"] = {"type": "bool"}
 
     return argument_spec
 
@@ -254,9 +270,9 @@ async def main():
 
 def url(params):
 
-    return "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet".format(
-        **params
-    )
+    return (
+        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/ethernet"
+    ).format(**params)
 
 
 async def entry_point(module, session):
@@ -276,10 +292,9 @@ async def _create(params, session):
         "upt_compatibility_enabled",
         "wake_on_lan_enabled",
     ]
-    if "create" == "create":
-        _exists = await exists(params, session)
-        if _exists:
-            return await update_changed_flag({"value": _exists}, 200, "get")
+    _exists = await exists(params, session)
+    if _exists:
+        return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:
@@ -293,11 +308,7 @@ async def _create(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        if (
-            ("create" == "create")
-            and (resp.status in [200, 201])
-            and ("value" in _json)
-        ):
+        if (resp.status in [200, 201]) and ("value" in _json):
             if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
@@ -331,10 +342,6 @@ async def _update(params, session):
         "upt_compatibility_enabled",
         "wake_on_lan_enabled",
     ]
-    if "update" == "create":
-        _exists = await exists(params, session)
-        if _exists:
-            return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:
@@ -348,16 +355,6 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        if (
-            ("update" == "create")
-            and (resp.status in [200, 201])
-            and ("value" in _json)
-        ):
-            if isinstance(_json["value"], dict):
-                _id = list(_json["value"].values())[0]
-            else:
-                _id = _json["value"]
-            _json = {"value": (await get_device_info(params, session, _url, _id))}
         return await update_changed_flag(_json, resp.status, "update")
 
 

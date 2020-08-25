@@ -39,16 +39,49 @@ options:
     - The Sata.Type enumerated type defines the valid emulation types for a virtual
       SATA adapter.
     type: str
+  vcenter_hostname:
+    description:
+    - The hostname or IP address of the vSphere vCenter
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_HOST) will be used instead.
+    required: true
+    type: str
+  vcenter_password:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_PASSWORD) will be used instead.
+    required: true
+    type: str
+  vcenter_username:
+    description:
+    - The vSphere vCenter username
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_USER) will be used instead.
+    required: true
+    type: str
+  vcenter_validate_certs:
+    default: true
+    description:
+    - Allows connection when SSL certificates are not valid. Set to C(false) when
+      certificates are not trusted.
+    - If the value is not specified in the task, the value of environment variable
+      C(VMWARE_VALIDATE_CERTS) will be used instead.
+    type: bool
   vm:
     description:
     - Virtual machine identifier.
     - 'The parameter must be an identifier for the resource type: VirtualMachine.'
     type: str
 author:
-- Ansible VMware team
+- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
 requirements:
 - python >= 3.6
+- aiohttp
+"""
+
+EXAMPLES = """
 """
 
 IN_QUERY_PARAMETER = []
@@ -73,35 +106,31 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=False, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
-            required=False,
+            required=True,
             no_log=True,
             fallback=(env_fallback, ["VMWARE_PASSWORD"]),
         ),
-        "vcenter_certs": dict(
+        "vcenter_validate_certs": dict(
             type="bool",
             required=False,
-            no_log=True,
+            default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
     }
 
-    argument_spec["adapter"] = {"type": "str", "operationIds": ["delete"]}
-    argument_spec["bus"] = {"default": 0, "type": "int", "operationIds": ["create"]}
-    argument_spec["pci_slot_number"] = {"type": "int", "operationIds": ["create"]}
+    argument_spec["adapter"] = {"type": "str"}
+    argument_spec["bus"] = {"default": 0, "type": "int"}
+    argument_spec["pci_slot_number"] = {"type": "int"}
     argument_spec["state"] = {"type": "str", "choices": ["create", "delete"]}
-    argument_spec["type"] = {
-        "type": "str",
-        "choices": ["AHCI"],
-        "operationIds": ["create"],
-    }
-    argument_spec["vm"] = {"type": "str", "operationIds": ["create", "delete"]}
+    argument_spec["type"] = {"type": "str", "choices": ["AHCI"]}
+    argument_spec["vm"] = {"type": "str"}
 
     return argument_spec
 
@@ -151,9 +180,9 @@ async def main():
 
 def url(params):
 
-    return "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/adapter/sata".format(
-        **params
-    )
+    return (
+        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/adapter/sata"
+    ).format(**params)
 
 
 async def entry_point(module, session):
@@ -163,10 +192,9 @@ async def entry_point(module, session):
 
 async def _create(params, session):
     accepted_fields = ["bus", "pci_slot_number", "type"]
-    if "create" == "create":
-        _exists = await exists(params, session)
-        if _exists:
-            return await update_changed_flag({"value": _exists}, 200, "get")
+    _exists = await exists(params, session)
+    if _exists:
+        return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:
@@ -180,11 +208,7 @@ async def _create(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        if (
-            ("create" == "create")
-            and (resp.status in [200, 201])
-            and ("value" in _json)
-        ):
+        if (resp.status in [200, 201]) and ("value" in _json):
             if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
