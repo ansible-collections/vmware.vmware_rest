@@ -1,4 +1,5 @@
-- vcenter_vm_hardware_cdrom:
+- name: Attach an ISO image to a guest VM
+  vcenter_vm_hardware_cdrom:
     vm: '{{ test_vm1.value[0].vm }}'
     type: SATA
     sata:
@@ -11,7 +12,8 @@
     state: create
   register: _attach_cdrom_1
 
-- vcenter_vm_hardware_cdrom:
+- name: _Ensure idempotency
+  vcenter_vm_hardware_cdrom:
     vm: '{{ test_vm1.value[0].vm }}'
     type: SATA
     sata:
