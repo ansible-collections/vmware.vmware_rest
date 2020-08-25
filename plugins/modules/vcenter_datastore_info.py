@@ -14,7 +14,7 @@ options:
     - 'The parameter must be an identifier for the resource type: Datastore. Required
       with I(state=[''get''])'
     type: str
-  filter.datacenters:
+  filter_datacenters:
     description:
     - Datacenters that must contain the datastore for the datastore to match the filter.
     - If unset or empty, datastores in any datacenter match the filter.
@@ -22,8 +22,9 @@ options:
       contain identifiers for the resource type: Datacenter. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: Datacenter.'
+    elements: str
     type: list
-  filter.datastores:
+  filter_datastores:
     description:
     - Identifiers of datastores that can match the filter.
     - If unset or empty, datastores with any identifier match the filter.
@@ -31,8 +32,9 @@ options:
       contain identifiers for the resource type: Datastore. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: Datastore.'
+    elements: str
     type: list
-  filter.folders:
+  filter_folders:
     description:
     - Folders that must contain the datastore for the datastore to match the filter.
     - If unset or empty, datastores in any folder match the filter.
@@ -40,16 +42,19 @@ options:
       contain identifiers for the resource type: Folder. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Folder.'
+    elements: str
     type: list
-  filter.names:
+  filter_names:
     description:
     - Names that datastores must have to match the filter (see Datastore.Info.name).
     - If unset or empty, datastores with any name match the filter.
+    elements: str
     type: list
-  filter.types:
+  filter_types:
     description:
     - Types that datastores must have to match the filter (see Datastore.Summary.type).
     - If unset or empty, datastores with any type match the filter.
+    elements: str
     type: list
   vcenter_hostname:
     description:
@@ -89,6 +94,9 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Build a list of all the datastores
+  vcenter_datastore_info:
+  register: my_datastore_value
 """
 
 IN_QUERY_PARAMETER = [
@@ -139,11 +147,11 @@ def prepare_argument_spec():
     }
 
     argument_spec["datastore"] = {"type": "str"}
-    argument_spec["filter.datacenters"] = {"type": "list"}
-    argument_spec["filter.datastores"] = {"type": "list"}
-    argument_spec["filter.folders"] = {"type": "list"}
-    argument_spec["filter.names"] = {"type": "list"}
-    argument_spec["filter.types"] = {"type": "list"}
+    argument_spec["filter_datacenters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_datastores"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_names"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_types"] = {"type": "list", "elements": "str"}
 
     return argument_spec
 

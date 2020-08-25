@@ -8,7 +8,7 @@ module: vcenter_host_info
 short_description: Handle resource of type vcenter_host
 description: Handle resource of type vcenter_host
 options:
-  filter.clusters:
+  filter_clusters:
     description:
     - Clusters that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any cluster and hosts that are not in a cluster
@@ -18,13 +18,15 @@ options:
       contain identifiers for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will contain identifiers
       for the resource type: ClusterComputeResource.'
+    elements: str
     type: list
-  filter.connection_states:
+  filter_connection_states:
     description:
     - Connection states that a host must be in to match the filter (see Host.Summary.connection-state.
     - If unset or empty, hosts in any connection state match the filter.
+    elements: str
     type: list
-  filter.datacenters:
+  filter_datacenters:
     description:
     - Datacenters that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any datacenter match the filter.
@@ -32,8 +34,9 @@ options:
       contain identifiers for the resource type: Datacenter. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: Datacenter.'
+    elements: str
     type: list
-  filter.folders:
+  filter_folders:
     description:
     - Folders that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any folder match the filter.
@@ -41,8 +44,9 @@ options:
       contain identifiers for the resource type: Folder. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Folder.'
+    elements: str
     type: list
-  filter.hosts:
+  filter_hosts:
     description:
     - Identifiers of hosts that can match the filter.
     - If unset or empty, hosts with any identifier match the filter.
@@ -50,13 +54,15 @@ options:
       contain identifiers for the resource type: HostSystem. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: HostSystem.'
+    elements: str
     type: list
-  filter.names:
+  filter_names:
     description:
     - Names that hosts must have to match the filter (see Host.Summary.name).
     - If unset or empty, hosts with any name match the filter.
+    elements: str
     type: list
-  filter.standalone:
+  filter_standalone:
     description:
     - If true, only hosts that are not part of a cluster can match the filter, and
       if false, only hosts that are are part of a cluster can match the filter.
@@ -153,13 +159,13 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["filter.clusters"] = {"type": "list"}
-    argument_spec["filter.connection_states"] = {"type": "list"}
-    argument_spec["filter.datacenters"] = {"type": "list"}
-    argument_spec["filter.folders"] = {"type": "list"}
-    argument_spec["filter.hosts"] = {"type": "list"}
-    argument_spec["filter.names"] = {"type": "list"}
-    argument_spec["filter.standalone"] = {"type": "bool"}
+    argument_spec["filter_clusters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_connection_states"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_datacenters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_hosts"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_names"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_standalone"] = {"type": "bool"}
 
     return argument_spec
 

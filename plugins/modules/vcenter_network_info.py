@@ -8,7 +8,7 @@ module: vcenter_network_info
 short_description: Handle resource of type vcenter_network
 description: Handle resource of type vcenter_network
 options:
-  filter.datacenters:
+  filter_datacenters:
     description:
     - Datacenters that must contain the network for the network to match the filter.
     - If unset or empty, networks in any datacenter match the filter.
@@ -16,8 +16,9 @@ options:
       contain identifiers for the resource type: Datacenter. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: Datacenter.'
+    elements: str
     type: list
-  filter.folders:
+  filter_folders:
     description:
     - Folders that must contain the network for the network to match the filter.
     - If unset or empty, networks in any folder match the filter.
@@ -25,13 +26,15 @@ options:
       contain identifiers for the resource type: Folder. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Folder.'
+    elements: str
     type: list
-  filter.names:
+  filter_names:
     description:
     - Names that networks must have to match the filter (see Network.Summary.name).
     - If unset or empty, networks with any name match the filter.
+    elements: str
     type: list
-  filter.networks:
+  filter_networks:
     description:
     - Identifiers of networks that can match the filter.
     - If unset or empty, networks with any identifier match the filter.
@@ -39,11 +42,13 @@ options:
       contain identifiers for the resource type: Network. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Network.'
+    elements: str
     type: list
-  filter.types:
+  filter_types:
     description:
     - Types that networks must have to match the filter (see Network.Summary.type).
     - If unset, networks with any type match the filter.
+    elements: str
     type: list
   vcenter_hostname:
     description:
@@ -132,11 +137,11 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["filter.datacenters"] = {"type": "list"}
-    argument_spec["filter.folders"] = {"type": "list"}
-    argument_spec["filter.names"] = {"type": "list"}
-    argument_spec["filter.networks"] = {"type": "list"}
-    argument_spec["filter.types"] = {"type": "list"}
+    argument_spec["filter_datacenters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_names"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_networks"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_types"] = {"type": "list", "elements": "str"}
 
     return argument_spec
 

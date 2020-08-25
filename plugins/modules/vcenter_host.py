@@ -110,6 +110,31 @@ requirements:
 """
 
 EXAMPLES = """
+- name: define ESXi list
+  set_fact:
+    my_esxis:
+    - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+      username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+      password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
+
+- set_fact:
+    my_datacenter_folder: '{{ my_folder_value.value|selectattr("type", "equalto",
+      "DATACENTER")|first }}'
+    my_virtual_machine_folder: '{{ my_folder_value.value|selectattr("type", "equalto",
+      "VIRTUAL_MACHINE")|first }}'
+    my_datastore_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "DATASTORE")|first
+      }}'
+    my_host_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "HOST")|first
+      }}'
+- name: Connect the host(s)
+  vcenter_host:
+    hostname: '{{ item.hostname }}'
+    password: '{{ item.password }}'
+    user_name: '{{ item.username }}'
+    thumbprint_verification: NONE
+    state: create
+    folder: '{{ my_host_folder.folder }}'
+  with_items: '{{ my_esxis}}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -157,7 +182,7 @@ def prepare_argument_spec():
     argument_spec["force_add"] = {"type": "bool"}
     argument_spec["host"] = {"type": "str"}
     argument_spec["hostname"] = {"type": "str"}
-    argument_spec["password"] = {"nolog": True, "type": "str"}
+    argument_spec["password"] = {"no_log": True, "type": "str"}
     argument_spec["port"] = {"type": "int"}
     argument_spec["state"] = {"type": "str", "choices": ["create", "delete"]}
     argument_spec["thumbprint"] = {"type": "str"}
@@ -165,7 +190,7 @@ def prepare_argument_spec():
         "type": "str",
         "choices": ["NONE", "THUMBPRINT"],
     }
-    argument_spec["user_name"] = {"nolog": True, "type": "str"}
+    argument_spec["user_name"] = {"no_log": True, "type": "str"}
 
     return argument_spec
 

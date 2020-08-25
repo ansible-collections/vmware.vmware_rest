@@ -79,6 +79,33 @@ requirements:
 """
 
 EXAMPLES = """
+- register: existing_datacenters
+  vcenter_datacenter_info:
+- set_fact:
+    my_datacenter_folder: '{{ my_folder_value.value|selectattr("type", "equalto",
+      "DATACENTER")|first }}'
+    my_virtual_machine_folder: '{{ my_folder_value.value|selectattr("type", "equalto",
+      "VIRTUAL_MACHINE")|first }}'
+    my_datastore_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "DATASTORE")|first
+      }}'
+    my_host_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "HOST")|first
+      }}'
+- name: Force delete the existing DC
+  vcenter_datacenter:
+    state: delete
+    datacenter: '{{ item.datacenter }}'
+    force: true
+  with_items: '{{ existing_datacenters.value }}'
+- name: Create datacenter my_dc
+  vcenter_datacenter:
+    name: my_dc
+    folder: '{{ my_datacenter_folder.folder }}'
+    state: create
+- name: Create datacenter my_dc (again)
+  vcenter_datacenter:
+    name: my_dc
+    folder: '{{ my_datacenter_folder.folder }}'
+    state: create
 """
 
 IN_QUERY_PARAMETER = ["force"]

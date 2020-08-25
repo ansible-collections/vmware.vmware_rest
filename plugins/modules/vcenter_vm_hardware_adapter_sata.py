@@ -82,6 +82,15 @@ requirements:
 """
 
 EXAMPLES = """
+- register: test_vm1
+  vcenter_vm_info:
+    filter_names: test_vm1
+
+- name: Create a SATA adapter at PCI slot 34
+  vcenter_vm_hardware_adapter_sata:
+    state: create
+    vm: '{{ test_vm1.value[0].vm }}'
+    pci_slot_number: 34
 """
 
 IN_QUERY_PARAMETER = []

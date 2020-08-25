@@ -8,7 +8,7 @@ module: vcenter_vm_info
 short_description: Handle resource of type vcenter_vm
 description: Handle resource of type vcenter_vm
 options:
-  filter.clusters:
+  filter_clusters:
     description:
     - Clusters that must contain the virtual machine for the virtual machine to match
       the filter.
@@ -17,8 +17,9 @@ options:
       contain identifiers for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will contain identifiers
       for the resource type: ClusterComputeResource.'
+    elements: str
     type: list
-  filter.datacenters:
+  filter_datacenters:
     description:
     - Datacenters that must contain the virtual machine for the virtual machine to
       match the filter.
@@ -27,8 +28,9 @@ options:
       contain identifiers for the resource type: Datacenter. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: Datacenter.'
+    elements: str
     type: list
-  filter.folders:
+  filter_folders:
     description:
     - Folders that must contain the virtual machine for the virtual machine to match
       the filter.
@@ -37,8 +39,9 @@ options:
       contain identifiers for the resource type: Folder. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Folder.'
+    elements: str
     type: list
-  filter.hosts:
+  filter_hosts:
     description:
     - Hosts that must contain the virtual machine for the virtual machine to match
       the filter.
@@ -47,18 +50,21 @@ options:
       contain identifiers for the resource type: HostSystem. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: HostSystem.'
+    elements: str
     type: list
-  filter.names:
+  filter_names:
     description:
     - Names that virtual machines must have to match the filter (see VM.Info.name).
     - If unset or empty, virtual machines with any name match the filter.
+    elements: str
     type: list
-  filter.power_states:
+  filter_power_states:
     description:
     - Power states that a virtual machine must be in to match the filter (see Power.Info.state.
     - If unset or empty, virtual machines in any power state match the filter.
+    elements: str
     type: list
-  filter.resource_pools:
+  filter_resource_pools:
     description:
     - Resource pools that must contain the virtual machine for the virtual machine
       to match the filter.
@@ -67,8 +73,9 @@ options:
       contain identifiers for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: ResourcePool.'
+    elements: str
     type: list
-  filter.vms:
+  filter_vms:
     description:
     - Identifiers of virtual machines that can match the filter.
     - If unset or empty, virtual machines with any identifier match the filter.
@@ -76,6 +83,7 @@ options:
       contain identifiers for the resource type: VirtualMachine. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: VirtualMachine.'
+    elements: str
     type: list
   vcenter_hostname:
     description:
@@ -121,6 +129,22 @@ requirements:
 """
 
 EXAMPLES = """
+- register: test_vm1
+  vcenter_vm_info:
+    filter_names: test_vm1
+
+- name: Search with an invalid filter
+  vcenter_vm_info:
+    filter_names: test_vm1_does_not_exists
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ test_vm1.value[0].vm }}'
+
+- name: Collect the list of the existing VM
+  vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed
+
 """
 
 IN_QUERY_PARAMETER = [
@@ -173,14 +197,14 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["filter.clusters"] = {"type": "list"}
-    argument_spec["filter.datacenters"] = {"type": "list"}
-    argument_spec["filter.folders"] = {"type": "list"}
-    argument_spec["filter.hosts"] = {"type": "list"}
-    argument_spec["filter.names"] = {"type": "list"}
-    argument_spec["filter.power_states"] = {"type": "list"}
-    argument_spec["filter.resource_pools"] = {"type": "list"}
-    argument_spec["filter.vms"] = {"type": "list"}
+    argument_spec["filter_clusters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_datacenters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_hosts"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_names"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_power_states"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_resource_pools"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_vms"] = {"type": "list", "elements": "str"}
     argument_spec["vm"] = {"type": "str"}
 
     return argument_spec
