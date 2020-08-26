@@ -16,6 +16,7 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+    elements: str
     type: list
   state:
     choices:
@@ -124,7 +125,7 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["disks"] = {"type": "list"}
+    argument_spec["disks"] = {"type": "list", "elements": "str"}
     argument_spec["state"] = {"type": "str", "choices": ["update"]}
     argument_spec["vm"] = {"type": "str"}
     argument_spec["vm_home"] = {"type": "dict"}

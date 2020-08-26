@@ -70,7 +70,10 @@ open_session._pool = {}
 def gen_args(params, in_query_parameter):
     args = ""
     for i in in_query_parameter:
-        v = params.get(i)
+        if i.startswith("filter."):
+            v = params.get("filter_" + i[7:])
+        else:
+            v = params.get(i)
         if not v:
             continue
         if not args:

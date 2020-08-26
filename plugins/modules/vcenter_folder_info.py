@@ -8,7 +8,7 @@ module: vcenter_folder_info
 short_description: Handle resource of type vcenter_folder
 description: Handle resource of type vcenter_folder
 options:
-  filter.datacenters:
+  filter_datacenters:
     description:
     - Datacenters that must contain the folder for the folder to match the filter.
     - If unset or empty, folder in any datacenter match the filter.
@@ -16,8 +16,9 @@ options:
       contain identifiers for the resource type: Datacenter. When operations return
       a value of this structure as a result, the field will contain identifiers for
       the resource type: Datacenter.'
+    elements: str
     type: list
-  filter.folders:
+  filter_folders:
     description:
     - Identifiers of folders that can match the filter.
     - If unset or empty, folders with any identifier match the filter.
@@ -25,13 +26,15 @@ options:
       contain identifiers for the resource type: Folder. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Folder.'
+    elements: str
     type: list
-  filter.names:
+  filter_names:
     description:
     - Names that folders must have to match the filter (see Folder.Summary.name).
     - If unset or empty, folders with any name match the filter.
+    elements: str
     type: list
-  filter.parent_folders:
+  filter_parent_folders:
     description:
     - Folders that must contain the folder for the folder to match the filter.
     - If unset or empty, folder in any folder match the filter.
@@ -39,8 +42,9 @@ options:
       contain identifiers for the resource type: Folder. When operations return a
       value of this structure as a result, the field will contain identifiers for
       the resource type: Folder.'
+    elements: str
     type: list
-  filter.type:
+  filter_type:
     choices:
     - DATACENTER
     - DATASTORE
@@ -90,6 +94,9 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Build a list of all the folders
+  vcenter_folder_info:
+  register: my_folder_value
 """
 
 IN_QUERY_PARAMETER = [
@@ -139,11 +146,11 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["filter.datacenters"] = {"type": "list"}
-    argument_spec["filter.folders"] = {"type": "list"}
-    argument_spec["filter.names"] = {"type": "list"}
-    argument_spec["filter.parent_folders"] = {"type": "list"}
-    argument_spec["filter.type"] = {
+    argument_spec["filter_datacenters"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_names"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_parent_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_type"] = {
         "type": "str",
         "choices": ["DATACENTER", "DATASTORE", "HOST", "NETWORK", "VIRTUAL_MACHINE"],
     }

@@ -57,6 +57,13 @@ requirements:
 """
 
 EXAMPLES = """
+- register: test_vm1
+  vcenter_vm_info:
+    filter_names: test_vm1
+
+- name: List the SATA adapter of a given VM
+  vcenter_vm_hardware_adapter_sata_info:
+    vm: '{{ test_vm1.value[0].vm }}'
 """
 
 IN_QUERY_PARAMETER = []

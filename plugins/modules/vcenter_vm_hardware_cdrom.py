@@ -130,6 +130,22 @@ requirements:
 """
 
 EXAMPLES = """
+- register: test_vm1
+  vcenter_vm_info:
+    filter_names: test_vm1
+
+- name: Attach an ISO image to a guest VM
+  vcenter_vm_hardware_cdrom:
+    vm: '{{ test_vm1.value[0].vm }}'
+    type: SATA
+    sata:
+      bus: 0
+      unit: 2
+    start_connected: true
+    backing:
+      iso_file: '[ro_datastore] fedora.iso'
+      type: ISO_FILE
+    state: create
 """
 
 IN_QUERY_PARAMETER = []

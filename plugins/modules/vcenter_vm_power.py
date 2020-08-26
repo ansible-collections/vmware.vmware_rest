@@ -59,6 +59,18 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect the list of the existing VM
+  vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed
+
+- name: Turn off the VM
+  vcenter_vm_power:
+    state: stop
+    vm: '{{ item.vm }}'
+  with_items: '{{ existing_vms.value }}'
+  ignore_errors: yes
+
 """
 
 IN_QUERY_PARAMETER = []

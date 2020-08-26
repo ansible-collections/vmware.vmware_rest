@@ -154,11 +154,6 @@
   register: my_network_value
 - debug: var=my_network_value
 
-- register: test_vm1
-  vcenter_vm_info:
-    filter.names:
-    - test_vm1
-
 - vcenter_cluster_info:
     cluster: "{{ all_the_clusters.value[0].cluster }}"
   register: my_cluster_info

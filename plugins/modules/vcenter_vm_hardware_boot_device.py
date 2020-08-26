@@ -11,6 +11,7 @@ options:
   devices:
     description:
     - Ordered list of boot devices.
+    elements: str
     type: list
   state:
     choices:
@@ -103,7 +104,7 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["devices"] = {"type": "list"}
+    argument_spec["devices"] = {"type": "list", "elements": "str"}
     argument_spec["state"] = {"type": "str", "choices": ["set"]}
     argument_spec["vm"] = {"type": "str"}
 

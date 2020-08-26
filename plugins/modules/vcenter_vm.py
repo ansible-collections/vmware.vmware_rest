@@ -49,11 +49,13 @@ options:
     description:
     - Boot device configuration.
     - If unset, a server-specific boot sequence will be used.
+    elements: str
     type: list
   cdroms:
     description:
     - List of CD-ROMs.
     - If unset, no CD-ROM devices will be created.
+    elements: str
     type: list
   cpu:
     description:
@@ -114,6 +116,7 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+    elements: str
     type: list
   disks_to_remove:
     description:
@@ -124,6 +127,7 @@ options:
       contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations
       return a value of this structure as a result, the field will contain identifiers
       for the resource type: vcenter.vm.hardware.Disk.'
+    elements: str
     type: list
   disks_to_update:
     description:
@@ -135,11 +139,13 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+    elements: str
     type: list
   floppies:
     description:
     - List of floppy drives.
     - If unset, no floppy drives will be created.
+    elements: str
     type: list
   guest_OS:
     choices:
@@ -368,12 +374,13 @@ options:
     description:
     - Virtual machine name.
     - If unset, the display name from the virtual machine's configuration file will
-      be used. Required with I(state=['clone', 'create', 'instant_clone', 'register'])
+      be used.
     type: str
   nics:
     description:
     - List of Ethernet adapters.
     - If unset, no Ethernet adapters will be created.
+    elements: str
     type: list
   nics_to_update:
     description:
@@ -383,11 +390,13 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.Ethernet.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.Ethernet.'
+    elements: str
     type: list
   parallel_ports:
     description:
     - List of parallel ports.
     - If unset, no parallel ports will be created.
+    elements: str
     type: list
   parallel_ports_to_update:
     description:
@@ -397,6 +406,7 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.'
+    elements: str
     type: list
   path:
     description:
@@ -414,26 +424,45 @@ options:
       the other existing placement of the virtual machine result in disjoint placement
       the operation will fail.
     - 'Validate attributes are:'
-    - ' - C(datastore) (str): Datastore on which the InstantCloned virtual machine''s
-      configuration state should be stored. This datastore will also be used for any
-      virtual disks that are created as part of the virtual machine InstantClone operation.'
-    - If field is unset, the system will use the datastore of the source virtual machine.
+    - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster. '
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is
+      specified, it is recommended that this field be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Datastore. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: Datastore.'
-    - ' - C(folder) (str): Virtual machine folder into which the InstantCloned virtual
-      machine should be placed.'
-    - If field is unset, the system will use the virtual machine folder of the source
-      virtual machine.
+      be an identifier for the resource type: ClusterComputeResource. When operations
+      return a value of this structure as a result, the field will be an identifier
+      for the resource type: ClusterComputeResource.'
+    - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
+      be placed.'
+    - This field is currently required. In the future, if this field is unset, the
+      system will attempt to choose a suitable folder for the virtual machine; if
+      a folder cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Folder. When operations return a value
       of this structure as a result, the field will be an identifier for the resource
       type: Folder.'
-    - ' - C(resource_pool) (str): Resource pool into which the InstantCloned virtual
-      machine should be placed.'
-    - If field is unset, the system will use the resource pool of the source virtual
-      machine.
+    - ' - C(host) (str): Host onto which the virtual machine should be placed. '
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host. '
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster
+      is specified. If unset, the system will attempt to choose a suitable host for
+      the virtual machine; if a host cannot be chosen, the virtual machine creation
+      operation will fail.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      be an identifier for the resource type: HostSystem. When operations return a
+      value of this structure as a result, the field will be an identifier for the
+      resource type: HostSystem.'
+    - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
+      be placed.'
+    - This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster
+      are unset. In the future, if this field is unset, the system will attempt to
+      choose a suitable resource pool for the virtual machine; if a resource pool
+      cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will be an identifier for the
@@ -451,6 +480,7 @@ options:
       will be created; this includes any devices that explicitly specify a SATA host
       bus adapter, as well as any devices that do not specify a host bus adapter if
       the guest's preferred adapter type is SATA.
+    elements: str
     type: list
   scsi_adapters:
     description:
@@ -460,11 +490,13 @@ options:
       bus adapter, as well as any devices that do not specify a host bus adapter if
       the guest's preferred adapter type is SCSI. The type of the SCSI adapter will
       be a guest-specific default type.
+    elements: str
     type: list
   serial_ports:
     description:
     - List of serial ports.
     - If unset, no serial ports will be created.
+    elements: str
     type: list
   serial_ports_to_update:
     description:
@@ -474,6 +506,7 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.SerialPort.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.SerialPort.'
+    elements: str
     type: list
   source:
     description:
@@ -555,6 +588,30 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect the list of the existing VM
+  vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed
+
+- name: Create a VM
+  vcenter_vm:
+    placement:
+      cluster: '{{ all_the_clusters.value[0].cluster }}'
+      datastore: '{{ rw_datastore.datastore }}'
+      folder: '{{ my_virtual_machine_folder.folder }}'
+      resource_pool: '{{ my_cluster_info.value.resource_pool }}'
+    name: test_vm1
+    guest_OS: DEBIAN_8_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    state: create
+- name: Delete some VM
+  vcenter_vm:
+    state: delete
+    vm: '{{ item.vm }}'
+  with_items: '{{ existing_vms.value }}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -600,16 +657,16 @@ def prepare_argument_spec():
 
     argument_spec["bios_uuid"] = {"type": "str"}
     argument_spec["boot"] = {"type": "dict"}
-    argument_spec["boot_devices"] = {"type": "list"}
-    argument_spec["cdroms"] = {"type": "list"}
+    argument_spec["boot_devices"] = {"type": "list", "elements": "str"}
+    argument_spec["cdroms"] = {"type": "list", "elements": "str"}
     argument_spec["cpu"] = {"type": "dict"}
     argument_spec["datastore"] = {"type": "str"}
     argument_spec["datastore_path"] = {"type": "str"}
     argument_spec["disconnect_all_nics"] = {"type": "bool"}
-    argument_spec["disks"] = {"type": "list"}
-    argument_spec["disks_to_remove"] = {"type": "list"}
-    argument_spec["disks_to_update"] = {"type": "list"}
-    argument_spec["floppies"] = {"type": "list"}
+    argument_spec["disks"] = {"type": "list", "elements": "str"}
+    argument_spec["disks_to_remove"] = {"type": "list", "elements": "str"}
+    argument_spec["disks_to_update"] = {"type": "list", "elements": "str"}
+    argument_spec["floppies"] = {"type": "list", "elements": "str"}
     argument_spec["guest_OS"] = {
         "type": "str",
         "choices": [
@@ -805,17 +862,17 @@ def prepare_argument_spec():
     }
     argument_spec["memory"] = {"type": "dict"}
     argument_spec["name"] = {"type": "str"}
-    argument_spec["nics"] = {"type": "list"}
-    argument_spec["nics_to_update"] = {"type": "list"}
-    argument_spec["parallel_ports"] = {"type": "list"}
-    argument_spec["parallel_ports_to_update"] = {"type": "list"}
+    argument_spec["nics"] = {"type": "list", "elements": "str"}
+    argument_spec["nics_to_update"] = {"type": "list", "elements": "str"}
+    argument_spec["parallel_ports"] = {"type": "list", "elements": "str"}
+    argument_spec["parallel_ports_to_update"] = {"type": "list", "elements": "str"}
     argument_spec["path"] = {"type": "str"}
     argument_spec["placement"] = {"type": "dict"}
     argument_spec["power_on"] = {"type": "bool"}
-    argument_spec["sata_adapters"] = {"type": "list"}
-    argument_spec["scsi_adapters"] = {"type": "list"}
-    argument_spec["serial_ports"] = {"type": "list"}
-    argument_spec["serial_ports_to_update"] = {"type": "list"}
+    argument_spec["sata_adapters"] = {"type": "list", "elements": "str"}
+    argument_spec["scsi_adapters"] = {"type": "list", "elements": "str"}
+    argument_spec["serial_ports"] = {"type": "list", "elements": "str"}
+    argument_spec["serial_ports_to_update"] = {"type": "list", "elements": "str"}
     argument_spec["source"] = {"type": "str"}
     argument_spec["state"] = {
         "type": "str",
