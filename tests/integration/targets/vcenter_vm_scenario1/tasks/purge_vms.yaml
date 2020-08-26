@@ -1,17 +1,25 @@
-- register: existing_vms
+---
+- name: _Wait for the vcenter server
   vcenter_vm_info:
   retries: 100
   delay: 3
+  register: existing_vms
   until: existing_vms is not failed
 
-- name: Turn off the VMs
+- name: Collect the list of the existing VM
+  vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed
+
+- name: Turn off the VM
   vcenter_vm_power:
     state: stop
     vm: '{{ item.vm }}'
   with_items: "{{ existing_vms.value }}"
   ignore_errors: yes
 
-- vcenter_vm:
+- name: Delete some VM
+  vcenter_vm:
     state: delete
     vm: '{{ item.vm }}'
   with_items: "{{ existing_vms.value }}"
