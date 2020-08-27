@@ -1,0 +1,16 @@
+---
+- name: _community_ Create Cluster
+  vmware_cluster:
+    datacenter_name: my_dc
+    cluster_name: my_cluster
+    ha_host_monitoring: disabled
+    validate_certs: no
+
+- name: Build a list of all the clusters
+  vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vcenter_cluster_info:
+    cluster: "{{ all_the_clusters.value[0].cluster }}"
+  register: my_cluster_info

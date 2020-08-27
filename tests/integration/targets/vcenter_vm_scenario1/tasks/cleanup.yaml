@@ -1,4 +1,5 @@
-- register: existing_datacenters
+- name: Get a list of all the datacenters
+  register: existing_datacenters
   vcenter_datacenter_info:
 - debug: var=existing_datacenters
 - name: Force delete the existing DC

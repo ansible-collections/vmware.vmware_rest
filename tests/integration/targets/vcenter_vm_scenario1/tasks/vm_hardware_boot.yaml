@@ -1,0 +1,11 @@
+- name: Retrieve the boot information from the VM
+  vcenter_vm_hardware_boot_info:
+    vm: '{{ test_vm1.value[0].vm }}'
+
+- name: Change a VM boot parameters
+  vcenter_vm_hardware_boot:
+    vm: '{{ test_vm1.value[0].vm }}'
+    efi_legacy_boot: True
+    type: EFI
+    state: update
+

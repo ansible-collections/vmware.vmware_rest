@@ -1,0 +1,31 @@
+---
+- name: _community_ Mount NFS (ro_datastore) datastores to ESXi
+  vmware_host_datastore:
+    esxi_hostname: '{{ item.hostname }}'
+    datastore_name: ro_datastore
+    datastore_type: nfs
+    nfs_server: datastore.test
+    nfs_path: /srv/share/isos
+    nfs_ro: true
+    state: present
+  with_items: "{{ my_esxis}}"
+
+- name: _community_ Mount NFS (rw_datastore) datastores on the ESXi
+  vmware_host_datastore:
+    esxi_hostname: '{{ item.hostname }}'
+    datastore_name: rw_datastore
+    datastore_type: nfs
+    nfs_server: datastore.test
+    nfs_path: /srv/share/vms
+    nfs_ro: false
+    state: present
+  with_items: "{{ my_esxis}}"
+
+- name: Retrieve a list of all the datastores
+  vcenter_datastore_info:
+  register: my_datastores
+- debug: var=my_datastores
+
+- set_fact:
+    rw_datastore: '{{ my_datastores.value|selectattr("name", "equalto", "rw_datastore")|first }}'
+
