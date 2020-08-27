@@ -18,6 +18,7 @@
       - vmnic1
     state: present
   with_items: "{{ my_esxis}}"
+  no_log: true
 
 - name: Create the portgroup
   community.vmware.vmware_dvs_portgroup:

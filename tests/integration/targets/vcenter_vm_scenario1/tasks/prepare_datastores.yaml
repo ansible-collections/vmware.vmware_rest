@@ -9,6 +9,7 @@
     nfs_ro: true
     state: present
   with_items: "{{ my_esxis}}"
+  no_log: true
 
 - name: _community_ Mount NFS (rw_datastore) datastores on the ESXi
   vmware_host_datastore:
@@ -20,6 +21,7 @@
     nfs_ro: false
     state: present
   with_items: "{{ my_esxis}}"
+  no_log: true
 
 - name: Retrieve a list of all the datastores
   vcenter_datastore_info:

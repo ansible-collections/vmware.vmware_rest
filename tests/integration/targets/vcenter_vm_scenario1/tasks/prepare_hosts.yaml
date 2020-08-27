@@ -14,6 +14,7 @@
     state: create
     folder: '{{ my_host_folder.folder }}'
   register: _result
+  no_log: true
   with_items: "{{ my_esxis}}"
 - debug: var=_result
 - assert:
