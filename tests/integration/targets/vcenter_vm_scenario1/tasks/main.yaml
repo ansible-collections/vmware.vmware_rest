@@ -11,6 +11,7 @@
 - import_tasks: prepare_datastores.yaml
 - import_tasks: prepare_guest_network.yaml
 - import_tasks: create_vm.yaml
+- import_tasks: vm_info.yaml
 - import_tasks: ethernet.yaml
 - import_tasks: sata_controller.yaml
 - import_tasks: attach_cdrom.yaml

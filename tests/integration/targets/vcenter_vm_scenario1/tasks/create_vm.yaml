@@ -22,14 +22,3 @@
 - assert:
     that:
       - _should_be_empty.value == []
-
-- register: test_vm1
-  vcenter_vm_info:
-    filter_names:
-    - test_vm1
-
-- debug: var=test_vm1
-
-- name: Collect information about a specific VM
-  vcenter_vm_info:
-    vm: '{{ test_vm1.value[0].vm }}'
