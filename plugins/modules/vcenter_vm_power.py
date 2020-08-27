@@ -59,18 +59,26 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect the list of the existing VM
+- name: _Wait for the vcenter server
   vcenter_vm_info:
+  retries: 100
+  delay: 3
   register: existing_vms
   until: existing_vms is not failed
-
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
 - name: Turn off the VM
   vcenter_vm_power:
     state: stop
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
   ignore_errors: yes
-
+- name: Turn the power of a VM on
+  vcenter_vm_power:
+    state: start
+    vm: '{{ test_vm1_info.value[0].vm }}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -89,6 +97,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     gen_args,
     open_session,
     update_changed_flag,
+    get_device_info,
+    list_devices,
+    exists,
 )
 
 
@@ -123,37 +134,6 @@ def prepare_argument_spec():
     return argument_spec
 
 
-async def get_device_info(params, session, _url, _key):
-    async with session.get(_url + "/" + _key) as resp:
-        _json = await resp.json()
-        entry = _json["value"]
-        entry["_key"] = _key
-        return entry
-
-
-async def list_devices(params, session):
-    existing_entries = []
-    _url = url(params)
-    async with session.get(_url) as resp:
-        _json = await resp.json()
-        devices = _json["value"]
-    for device in devices:
-        _id = list(device.values())[0]
-        existing_entries.append((await get_device_info(params, session, _url, _id)))
-    return existing_entries
-
-
-async def exists(params, session):
-    unicity_keys = ["bus", "pci_slot_number"]
-    devices = await list_devices(params, session)
-    for device in devices:
-        for k in unicity_keys:
-            if params.get(k) is not None and device.get(k) != params.get(k):
-                break
-        else:
-            return device
-
-
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
@@ -166,7 +146,7 @@ async def main():
     module.exit_json(**result)
 
 
-def url(params):
+def build_url(params):
 
     return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/power").format(**params)
 

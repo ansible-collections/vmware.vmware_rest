@@ -160,6 +160,25 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Attach a VM to a dvswitch
+  vcenter_vm_hardware_ethernet:
+    state: create
+    vm: '{{ test_vm1_info.value[0].vm }}'
+    pci_slot_number: 4
+    backing:
+      type: DISTRIBUTED_PORTGROUP
+      network: '{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}'
+    start_connected: false
+- name: Turn the NIC's start_connected flag on
+  vcenter_vm_hardware_ethernet:
+    state: update
+    nic: 4000
+    start_connected: true
+    vm: '{{ test_vm1_info.value[0].vm }}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -178,6 +197,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     gen_args,
     open_session,
     update_changed_flag,
+    get_device_info,
+    list_devices,
+    exists,
 )
 
 
@@ -225,37 +247,6 @@ def prepare_argument_spec():
     return argument_spec
 
 
-async def get_device_info(params, session, _url, _key):
-    async with session.get(_url + "/" + _key) as resp:
-        _json = await resp.json()
-        entry = _json["value"]
-        entry["_key"] = _key
-        return entry
-
-
-async def list_devices(params, session):
-    existing_entries = []
-    _url = url(params)
-    async with session.get(_url) as resp:
-        _json = await resp.json()
-        devices = _json["value"]
-    for device in devices:
-        _id = list(device.values())[0]
-        existing_entries.append((await get_device_info(params, session, _url, _id)))
-    return existing_entries
-
-
-async def exists(params, session):
-    unicity_keys = ["bus", "pci_slot_number"]
-    devices = await list_devices(params, session)
-    for device in devices:
-        for k in unicity_keys:
-            if params.get(k) is not None and device.get(k) != params.get(k):
-                break
-        else:
-            return device
-
-
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
@@ -268,7 +259,7 @@ async def main():
     module.exit_json(**result)
 
 
-def url(params):
+def build_url(params):
 
     return (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/ethernet"
@@ -292,7 +283,7 @@ async def _create(params, session):
         "upt_compatibility_enabled",
         "wake_on_lan_enabled",
     ]
-    _exists = await exists(params, session)
+    _exists = await exists(params, session, build_url(params))
     if _exists:
         return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}
@@ -349,6 +340,13 @@ async def _update(params, session):
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}".format(
         **params
     )
+    async with session.get(_url) as resp:
+        _json = await resp.json()
+        for (k, v) in _json["value"].items():
+            if (k in spec) and (spec[k] == v):
+                del spec[k]
+        if not spec:
+            return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json={"spec": spec}) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
