@@ -58,7 +58,7 @@ EXAMPLES = """
   register: test_vm1_info
 - name: Retrieve the boot information from the VM
   vcenter_vm_hardware_boot_info:
-    vm: '{{ test_vm1_info.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -132,6 +132,8 @@ def build_url(params):
 async def entry_point(module, session):
     async with session.get(build_url(module.params)) as resp:
         _json = await resp.json()
+        if module.params.get("None"):
+            _json["id"] = module.params.get("None")
         return await update_changed_flag(_json, resp.status, "get")
 
 

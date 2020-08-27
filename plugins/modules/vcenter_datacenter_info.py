@@ -165,6 +165,8 @@ def build_url(params):
 async def entry_point(module, session):
     async with session.get(build_url(module.params)) as resp:
         _json = await resp.json()
+        if module.params.get("datacenter"):
+            _json["id"] = module.params.get("datacenter")
         return await update_changed_flag(_json, resp.status, "get")
 
 

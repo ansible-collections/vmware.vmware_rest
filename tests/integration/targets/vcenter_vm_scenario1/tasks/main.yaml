@@ -15,5 +15,5 @@
 - import_tasks: vm_hardware_boot.yaml
 - import_tasks: vm_power.yaml
 - vcenter_vm_info:
-    vm: '{{ test_vm1.value[0].vm }}'
-# - import_tasks: wait_for_test_vm1.yaml
+    vm: '{{ test_vm1_info.id }}'
+# - import_tasks: wait_for_test_vm1_info.yaml

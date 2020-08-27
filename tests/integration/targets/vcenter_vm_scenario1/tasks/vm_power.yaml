@@ -1,5 +1,5 @@
 - name: Turn the power of a VM on
   vcenter_vm_power:
     state: start
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
 

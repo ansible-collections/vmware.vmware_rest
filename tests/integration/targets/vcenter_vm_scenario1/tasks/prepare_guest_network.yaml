@@ -36,6 +36,11 @@
     datacenter: my_dc
   register: my_portgroup_info
 
+
+- assert:
+    that:
+      - my_portgroup_info.dvs_portgroup_info.dvswitch1|length > 0
+
 - name: Get a list of the networks
   vcenter_network_info:
   register: my_network_value

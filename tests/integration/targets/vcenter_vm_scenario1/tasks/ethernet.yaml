@@ -1,7 +1,7 @@
 - name: Attach a VM to a dvswitch
   vcenter_vm_hardware_ethernet:
     state: create
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 4
     backing:
       type: DISTRIBUTED_PORTGROUP
@@ -9,10 +9,12 @@
     start_connected: false
   register: _vm_hardware_ethernet_1
 
+- debug: var=_vm_hardware_ethernet_1
+
 - name: _Attach a VM to a dvswitch (again)
   vcenter_vm_hardware_ethernet:
     state: create
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 4
     backing:
       type: DISTRIBUTED_PORTGROUP
@@ -20,9 +22,11 @@
     start_connected: false
   register: _vm_hardware_ethernet_2
 
+- debug: var=_vm_hardware_ethernet_2
+
 - name: Validate idempotency
   assert:
-    that: _vm_hardware_ethernet_1.value._key == _vm_hardware_ethernet_2.value._key
+    that: _vm_hardware_ethernet_1.id == _vm_hardware_ethernet_2.id
 - debug: var=_vm_hardware_ethernet_1
 
 - name: Turn the NIC's start_connected flag on
@@ -30,8 +34,36 @@
     state: update
     nic: 4000
     start_connected: true
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
+
+- name: _Turn the NIC's start_connected flag on (again)
+  vcenter_vm_hardware_ethernet:
+    state: update
+    nic: 4000
+    start_connected: true
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - not(_result is changed)
 
 - name: Collect a list of the NIC for a given VM
   vcenter_vm_hardware_ethernet_info:
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result.value|length == 1
