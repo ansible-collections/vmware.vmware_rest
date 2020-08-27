@@ -1,0 +1,18 @@
+- name: Build a list of all the folders
+  vcenter_folder_info:
+  register: my_folders
+- debug: var=my_folders
+- set_fact:
+    my_virtual_machine_folder: '{{ my_folders.value|selectattr("type", "equalto", "VIRTUAL_MACHINE")|first }}'
+    my_datastore_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATASTORE")|first }}'
+    my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first }}'
+
+- name: Build a list of the folders, with a filter
+  vcenter_folder_info:
+    filter_type: DATASTORE
+  register: _result
+- name: Ensure we didn't pick folder with a different type
+  assert:
+    that:
+      - _result.value|length > 0
+      - _result.value|selectattr('type', '!=', 'DATASTORE') == []

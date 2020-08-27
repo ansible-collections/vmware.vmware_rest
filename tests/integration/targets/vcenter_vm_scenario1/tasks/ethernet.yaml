@@ -1,35 +1,22 @@
-- name: DVSwitch info
-  vmware_dvswitch_info:
-    validate_certs: no
-    switch_name: dvswitch1
-  register: _dvswitches_info
-
-- vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: _portgroup_info
-
-- debug: var=_portgroup_info
-- debug: var=test_vm1.value[0].vm
-- vcenter_vm_hardware_ethernet:
+- name: Attach a VM to a dvswitch
+  vcenter_vm_hardware_ethernet:
     state: create
     vm: '{{ test_vm1.value[0].vm }}'
     pci_slot_number: 4
     backing:
-      #distributed_switch_uuid: "{{ _dvswitches_info.distributed_virtual_switches[0].uuid }}"
       type: DISTRIBUTED_PORTGROUP
-      network: "{{ _portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
+      network: "{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
     start_connected: false
   register: _vm_hardware_ethernet_1
 
-- vcenter_vm_hardware_ethernet:
+- name: _Attach a VM to a dvswitch (again)
+  vcenter_vm_hardware_ethernet:
     state: create
     vm: '{{ test_vm1.value[0].vm }}'
     pci_slot_number: 4
     backing:
-      #distributed_switch_uuid: "{{ _dvswitches_info.distributed_virtual_switches[0].uuid }}"
       type: DISTRIBUTED_PORTGROUP
-      network: "{{ _portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
+      network: "{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
     start_connected: false
   register: _vm_hardware_ethernet_2
 
@@ -38,14 +25,13 @@
     that: _vm_hardware_ethernet_1.value._key == _vm_hardware_ethernet_2.value._key
 - debug: var=_vm_hardware_ethernet_1
 
-- vcenter_vm_hardware_ethernet:
+- name: Turn the NIC's start_connected flag on
+  vcenter_vm_hardware_ethernet:
     state: update
     nic: 4000
     start_connected: true
     vm: '{{ test_vm1.value[0].vm }}'
 
-- vcenter_vm_hardware_ethernet_info:
-    vm: '{{ test_vm1.value[0].vm }}'
-
-- vcenter_vm_info:
+- name: Collect a list of the NIC for a given VM
+  vcenter_vm_hardware_ethernet_info:
     vm: '{{ test_vm1.value[0].vm }}'
