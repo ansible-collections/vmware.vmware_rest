@@ -1,6 +1,3 @@
-- debug: msg="{{ lookup('env','VMWARE_HOST') }} - host"
-- debug: msg="{{ lookup('env','VMWARE_USER') }} - user"
-- debug: msg="{{ lookup('env','VMWARE_PASSWORD') }} - password"
 - import_tasks: purge_vms.yaml
 - import_tasks: cleanup.yaml
 
