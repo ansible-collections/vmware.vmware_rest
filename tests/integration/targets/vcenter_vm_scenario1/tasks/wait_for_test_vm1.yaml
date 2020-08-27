@@ -1,5 +1,5 @@
 - vcenter_vm_tools_info:
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'
   register: vm_tools_info
   until:
   - vm_tools_info is not failed

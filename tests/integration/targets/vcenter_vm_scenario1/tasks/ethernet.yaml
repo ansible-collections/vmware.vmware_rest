@@ -1,7 +1,7 @@
 - name: Attach a VM to a dvswitch
   vcenter_vm_hardware_ethernet:
     state: create
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'
     pci_slot_number: 4
     backing:
       type: DISTRIBUTED_PORTGROUP
@@ -12,7 +12,7 @@
 - name: _Attach a VM to a dvswitch (again)
   vcenter_vm_hardware_ethernet:
     state: create
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'
     pci_slot_number: 4
     backing:
       type: DISTRIBUTED_PORTGROUP
@@ -30,8 +30,8 @@
     state: update
     nic: 4000
     start_connected: true
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'
 
 - name: Collect a list of the NIC for a given VM
   vcenter_vm_hardware_ethernet_info:
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'

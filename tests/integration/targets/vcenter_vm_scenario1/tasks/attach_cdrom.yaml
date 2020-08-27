@@ -1,6 +1,6 @@
 - name: Attach an ISO image to a guest VM
   vcenter_vm_hardware_cdrom:
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'
     type: SATA
     sata:
       bus: 0
@@ -14,7 +14,7 @@
 
 - name: _Ensure idempotency
   vcenter_vm_hardware_cdrom:
-    vm: '{{ test_vm1.value[0].vm }}'
+    vm: '{{ test_vm1_info.value[0].vm }}'
     type: SATA
     sata:
       bus: 0
