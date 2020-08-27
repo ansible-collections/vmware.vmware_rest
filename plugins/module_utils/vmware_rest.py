@@ -92,6 +92,9 @@ async def update_changed_flag(data, status, operation):
     if operation == "create" and status in [200, 201]:
         data["failed"] = False
         data["changed"] = True
+    elif operation == "update" and status in [200]:
+        data["failed"] = False
+        data["changed"] = True
     elif operation == "delete" and status in [200, 204]:
         data["failed"] = False
         data["changed"] = True
@@ -122,3 +125,45 @@ async def update_changed_flag(data, status, operation):
 
     data["_debug_info"] = {"status": status, "operation": operation}
     return data
+
+
+async def list_devices(params, session, url):
+    existing_entries = []
+    async with session.get(url) as resp:
+        _json = await resp.json()
+        devices = _json["value"]
+    for device in devices:
+        device_type = url.split("/")[-1]
+        if device_type == "ethernet":
+            device_type = "nic"
+        elif device_type == "sata":
+            device_type = "adapter"
+        _id = None
+        for i in [device_type]:
+            if i in device:
+                _id = device[i]
+                break
+        else:
+            EmbeddedModuleFailure("Cannot find the _id key of the device!")
+        existing_entries.append((await get_device_info(params, session, url, _id)))
+    return existing_entries
+
+
+async def get_device_info(params, session, url, _key):
+    async with session.get(url + "/" + _key) as resp:
+        _json = await resp.json()
+        entry = _json["value"]
+        entry["_key"] = _key
+        return entry
+
+
+async def exists(params, session, url):
+    unicity_keys = ["bus", "pci_slot_number"]
+    devices = await list_devices(params, session, url)
+
+    for device in devices:
+        for k in unicity_keys:
+            if params.get(k) is not None and device.get(k) != params.get(k):
+                break
+        else:
+            return device
