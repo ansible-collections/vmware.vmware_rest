@@ -1,0 +1,41 @@
+- name: define ESXi list
+  set_fact:
+    my_esxis:
+      - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+        username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
+
+- name: Connect the host(s)
+  vcenter_host:
+    hostname: "{{ item.hostname }}"
+    password: "{{ item.password }}"
+    user_name: "{{ item.username }}"
+    thumbprint_verification: 'NONE'
+    state: create
+    folder: '{{ my_host_folder.folder }}'
+  register: _result
+  with_items: "{{ my_esxis}}"
+- debug: var=_result
+- assert:
+    that:
+      - _result is changed
+
+- name: Get a list of the hosts
+  vcenter_host_info:
+  register: my_hosts
+
+- debug: var=my_hosts
+- name: Ensure we've got something
+  assert:
+    that:
+      - my_hosts.value|length > 0
+
+- name: _community_ Move ESXi in the cluster
+  vmware_host:
+    datacenter: my_dc
+    cluster: my_cluster
+    esxi_hostname: "{{ item.hostname }}"
+    esxi_username: "{{ item.username }}"
+    esxi_password: "{{ item.password }}"
+  with_items: "{{ my_esxis}}"
+  no_log: true

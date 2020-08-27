@@ -1,0 +1,54 @@
+---
+- name: Create the DVSwitch
+  community.vmware.vmware_dvswitch:
+    datacenter_name: my_dc
+    switch_name: dvswitch1
+    switch_version: 6.5.0
+    uplink_quantity: 2
+    discovery_proto: lldp
+    discovery_operation: both
+    state: present
+
+- name: Attach the hosts to the DVSwitch
+  community.vmware.vmware_dvs_host:
+    validate_certs: no
+    esxi_hostname: "{{ item.hostname }}"
+    switch_name: dvswitch1
+    vmnics:
+      - vmnic1
+    state: present
+  with_items: "{{ my_esxis}}"
+
+- name: Create the portgroup
+  community.vmware.vmware_dvs_portgroup:
+    validate_certs: no
+    portgroup_name: my-portrgoup
+    switch_name: dvswitch1
+    portgroup_type: earlyBinding
+    vlan_id: 0
+    num_ports: 120
+    state: present
+
+- name: Retrieve details about the portgroup
+  community.vmware.vmware_dvs_portgroup_info:
+    validate_certs: no
+    datacenter: my_dc
+  register: my_portgroup_info
+
+- name: Get a list of the networks
+  vcenter_network_info:
+  register: my_network_value
+- debug: var=my_network_value
+- assert:
+    that:
+      - my_network_value.value|length > 0
+
+- name: Get a list of the networks with a filter
+  vcenter_network_info:
+    filter_types: STANDARD_PORTGROUP
+  register: my_standard_portgroup_value
+
+- debug: var=my_standard_portgroup_value
+- assert:
+    that:
+      - my_standard_portgroup_value.value|selectattr('type', '!=', 'STANDARD_PORTGROUP') == []
