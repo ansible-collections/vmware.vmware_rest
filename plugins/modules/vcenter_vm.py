@@ -374,7 +374,7 @@ options:
     description:
     - Virtual machine name.
     - If unset, the display name from the virtual machine's configuration file will
-      be used.
+      be used. Required with I(state=['clone', 'create', 'instant_clone', 'register'])
     type: str
   nics:
     description:
@@ -425,44 +425,49 @@ options:
       the operation will fail.
     - 'Validate attributes are:'
     - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
-    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool
-      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster. '
-    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both
-      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
-    - If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is
+    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.resource-pool
+      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.cluster. '
+    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.host are
+      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
+    - If VM.RelocatePlacementSpec.resource-pool or VM.RelocatePlacementSpec.host is
       specified, it is recommended that this field be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: ClusterComputeResource.'
+    - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
+      state should be stored. This datastore will also be used for any virtual disks
+      that are associated with the virtual machine, unless individually overridden.'
+    - If this field is unset, the virtual machine will remain on the current datastore.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      be an identifier for the resource type: Datastore. When operations return a
+      value of this structure as a result, the field will be an identifier for the
+      resource type: Datastore.'
     - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
       be placed.'
-    - This field is currently required. In the future, if this field is unset, the
-      system will attempt to choose a suitable folder for the virtual machine; if
-      a folder cannot be chosen, the virtual machine creation operation will fail.
+    - If this field is unset, the virtual machine will stay in the current folder.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Folder. When operations return a value
       of this structure as a result, the field will be an identifier for the resource
       type: Folder.'
     - ' - C(host) (str): Host onto which the virtual machine should be placed. '
-    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool
-      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host. '
-    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both
-      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
-    - This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster
-      is specified. If unset, the system will attempt to choose a suitable host for
-      the virtual machine; if a host cannot be chosen, the virtual machine creation
-      operation will fail.
+    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.resource-pool
+      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.host. '
+    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.cluster are
+      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
+    - If this field is unset, if VM.RelocatePlacementSpec.resource-pool is unset,
+      the virtual machine will remain on the current host. if VM.RelocatePlacementSpec.resource-pool
+      is set, and the target is a standalone host, the host is used. if VM.RelocatePlacementSpec.resource-pool
+      is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.RelocatePlacementSpec.resource-pool
+      is set, and the target is a cluster without DRS, InvalidArgument will be thrown.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: HostSystem. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: HostSystem.'
     - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
       be placed.'
-    - This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster
-      are unset. In the future, if this field is unset, the system will attempt to
-      choose a suitable resource pool for the virtual machine; if a resource pool
-      cannot be chosen, the virtual machine creation operation will fail.
+    - If this field is unset, the virtual machine will stay in the current resource
+      pool.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will be an identifier for the
@@ -588,11 +593,12 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect the list of the existing VM
+- name: _Wait for the vcenter server
   vcenter_vm_info:
+  retries: 100
+  delay: 3
   register: existing_vms
   until: existing_vms is not failed
-
 - name: Create a VM
   vcenter_vm:
     placement:
@@ -630,6 +636,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     gen_args,
     open_session,
     update_changed_flag,
+    get_device_info,
+    list_devices,
+    exists,
 )
 
 
@@ -892,37 +901,6 @@ def prepare_argument_spec():
     return argument_spec
 
 
-async def get_device_info(params, session, _url, _key):
-    async with session.get(_url + "/" + _key) as resp:
-        _json = await resp.json()
-        entry = _json["value"]
-        entry["_key"] = _key
-        return entry
-
-
-async def list_devices(params, session):
-    existing_entries = []
-    _url = url(params)
-    async with session.get(_url) as resp:
-        _json = await resp.json()
-        devices = _json["value"]
-    for device in devices:
-        _id = list(device.values())[0]
-        existing_entries.append((await get_device_info(params, session, _url, _id)))
-    return existing_entries
-
-
-async def exists(params, session):
-    unicity_keys = ["bus", "pci_slot_number"]
-    devices = await list_devices(params, session)
-    for device in devices:
-        for k in unicity_keys:
-            if params.get(k) is not None and device.get(k) != params.get(k):
-                break
-        else:
-            return device
-
-
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
@@ -935,7 +913,7 @@ async def main():
     module.exit_json(**result)
 
 
-def url(params):
+def build_url(params):
 
     return ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(**params)
 
@@ -991,7 +969,7 @@ async def _create(params, session):
         "serial_ports",
         "storage_policy",
     ]
-    _exists = await exists(params, session)
+    _exists = await exists(params, session, build_url(params))
     if _exists:
         return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}

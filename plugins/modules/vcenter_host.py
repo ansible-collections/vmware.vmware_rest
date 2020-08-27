@@ -116,15 +116,12 @@ EXAMPLES = """
     - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
       username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
       password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-
 - set_fact:
-    my_datacenter_folder: '{{ my_folder_value.value|selectattr("type", "equalto",
-      "DATACENTER")|first }}'
-    my_virtual_machine_folder: '{{ my_folder_value.value|selectattr("type", "equalto",
+    my_virtual_machine_folder: '{{ my_folders.value|selectattr("type", "equalto",
       "VIRTUAL_MACHINE")|first }}'
-    my_datastore_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "DATASTORE")|first
+    my_datastore_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATASTORE")|first
       }}'
-    my_host_folder: '{{ my_folder_value.value|selectattr("type", "equalto", "HOST")|first
+    my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
       }}'
 - name: Connect the host(s)
   vcenter_host:
@@ -134,6 +131,7 @@ EXAMPLES = """
     thumbprint_verification: NONE
     state: create
     folder: '{{ my_host_folder.folder }}'
+  no_log: true
   with_items: '{{ my_esxis}}'
 """
 
@@ -153,6 +151,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     gen_args,
     open_session,
     update_changed_flag,
+    get_device_info,
+    list_devices,
+    exists,
 )
 
 
@@ -195,37 +196,6 @@ def prepare_argument_spec():
     return argument_spec
 
 
-async def get_device_info(params, session, _url, _key):
-    async with session.get(_url + "/" + _key) as resp:
-        _json = await resp.json()
-        entry = _json["value"]
-        entry["_key"] = _key
-        return entry
-
-
-async def list_devices(params, session):
-    existing_entries = []
-    _url = url(params)
-    async with session.get(_url) as resp:
-        _json = await resp.json()
-        devices = _json["value"]
-    for device in devices:
-        _id = list(device.values())[0]
-        existing_entries.append((await get_device_info(params, session, _url, _id)))
-    return existing_entries
-
-
-async def exists(params, session):
-    unicity_keys = ["bus", "pci_slot_number"]
-    devices = await list_devices(params, session)
-    for device in devices:
-        for k in unicity_keys:
-            if params.get(k) is not None and device.get(k) != params.get(k):
-                break
-        else:
-            return device
-
-
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
@@ -238,7 +208,7 @@ async def main():
     module.exit_json(**result)
 
 
-def url(params):
+def build_url(params):
 
     return ("https://{vcenter_hostname}" "/rest/vcenter/host").format(**params)
 
@@ -259,7 +229,7 @@ async def _create(params, session):
         "thumbprint_verification",
         "user_name",
     ]
-    _exists = await exists(params, session)
+    _exists = await exists(params, session, build_url(params))
     if _exists:
         return await update_changed_flag({"value": _exists}, 200, "get")
     spec = {}
