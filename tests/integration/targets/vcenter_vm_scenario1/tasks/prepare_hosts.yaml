@@ -31,8 +31,8 @@
     that:
       - my_hosts.value|length > 0
 
-- name: _community_ Move ESXi in the cluster
-  vmware_host:
+- name: Move ESXi in the cluster
+  community.vmware.vmware_host:
     datacenter: my_dc
     cluster: my_cluster
     esxi_hostname: "{{ item.hostname }}"
