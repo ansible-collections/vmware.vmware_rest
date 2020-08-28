@@ -228,9 +228,9 @@ async def entry_point(module, session):
 
 async def _create(params, session):
     accepted_fields = ["backing", "ide", "new_vmdk", "sata", "scsi", "type"]
-    _exists = await exists(params, session, build_url(params))
-    if _exists:
-        return await update_changed_flag({"value": _exists}, 200, "get")
+    _json = await exists(params, session, build_url(params))
+    if _json:
+        return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:
@@ -249,7 +249,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = {"value": (await get_device_info(params, session, _url, _id))}
+            _json = await get_device_info(params, session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 
@@ -283,6 +283,7 @@ async def _update(params, session):
             if (k in spec) and (spec[k] == v):
                 del spec[k]
         if not spec:
+            _json["id"] = params.get("disk")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json={"spec": spec}) as resp:
         try:
@@ -290,6 +291,7 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        _json["id"] = params.get("disk")
         return await update_changed_flag(_json, resp.status, "update")
 
 

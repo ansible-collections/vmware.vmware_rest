@@ -170,6 +170,7 @@ async def _update(params, session):
             if (k in spec) and (spec[k] == v):
                 del spec[k]
         if not spec:
+            _json["id"] = params.get("None")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json={"spec": spec}) as resp:
         try:
@@ -177,6 +178,7 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        _json["id"] = params.get("None")
         return await update_changed_flag(_json, resp.status, "update")
 
 

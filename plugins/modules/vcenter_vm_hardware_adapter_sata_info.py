@@ -63,7 +63,7 @@ EXAMPLES = """
   register: test_vm1_info
 - name: List the SATA adapter of a given VM
   vcenter_vm_hardware_adapter_sata_info:
-    vm: '{{ test_vm1_info.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -144,6 +144,8 @@ def build_url(params):
 async def entry_point(module, session):
     async with session.get(build_url(module.params)) as resp:
         _json = await resp.json()
+        if module.params.get("adapter"):
+            _json["id"] = module.params.get("adapter")
         return await update_changed_flag(_json, resp.status, "get")
 
 

@@ -109,7 +109,13 @@ EXAMPLES = """
   register: test_vm1_info
 - name: Change a VM boot parameters
   vcenter_vm_hardware_boot:
-    vm: '{{ test_vm1_info.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
+    efi_legacy_boot: true
+    type: EFI
+    state: update
+- name: Change a VM boot parameters (again)
+  vcenter_vm_hardware_boot:
+    vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: true
     type: EFI
     state: update
@@ -219,6 +225,7 @@ async def _update(params, session):
             if (k in spec) and (spec[k] == v):
                 del spec[k]
         if not spec:
+            _json["id"] = params.get("None")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json={"spec": spec}) as resp:
         try:
@@ -226,6 +233,7 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        _json["id"] = params.get("None")
         return await update_changed_flag(_json, resp.status, "update")
 
 

@@ -138,23 +138,18 @@ async def list_devices(params, session, url):
             device_type = "nic"
         elif device_type == "sata":
             device_type = "adapter"
-        _id = None
-        for i in [device_type]:
-            if i in device:
-                _id = device[i]
-                break
-        else:
-            EmbeddedModuleFailure("Cannot find the _id key of the device!")
+        _id = device.get(device_type)
+        if not _id:
+            EmbeddedModuleFailure("Cannot find the id key of the device!")
         existing_entries.append((await get_device_info(params, session, url, _id)))
     return existing_entries
 
 
-async def get_device_info(params, session, url, _key):
-    async with session.get(url + "/" + _key) as resp:
+async def get_device_info(params, session, url, _id):
+    async with session.get(url + "/" + _id) as resp:
         _json = await resp.json()
-        entry = _json["value"]
-        entry["_key"] = _key
-        return entry
+        _json["id"] = _id
+        return _json
 
 
 async def exists(params, session, url):
@@ -163,7 +158,7 @@ async def exists(params, session, url):
 
     for device in devices:
         for k in unicity_keys:
-            if params.get(k) is not None and device.get(k) != params.get(k):
+            if params.get(k) is not None and device["value"].get(k) != params.get(k):
                 break
         else:
             return device

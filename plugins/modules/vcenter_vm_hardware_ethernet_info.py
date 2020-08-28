@@ -63,7 +63,7 @@ EXAMPLES = """
   register: test_vm1_info
 - name: Collect a list of the NIC for a given VM
   vcenter_vm_hardware_ethernet_info:
-    vm: '{{ test_vm1_info.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
 """
 
 IN_QUERY_PARAMETER = []
@@ -143,6 +143,8 @@ def build_url(params):
 async def entry_point(module, session):
     async with session.get(build_url(module.params)) as resp:
         _json = await resp.json()
+        if module.params.get("nic"):
+            _json["id"] = module.params.get("nic")
         return await update_changed_flag(_json, resp.status, "get")
 
 

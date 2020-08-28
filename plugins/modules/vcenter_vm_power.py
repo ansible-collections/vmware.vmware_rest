@@ -61,7 +61,7 @@ requirements:
 EXAMPLES = """
 - name: _Wait for the vcenter server
   vcenter_vm_info:
-  retries: 100
+  retries: 1
   delay: 3
   register: existing_vms
   until: existing_vms is not failed
@@ -78,7 +78,7 @@ EXAMPLES = """
 - name: Turn the power of a VM on
   vcenter_vm_power:
     state: start
-    vm: '{{ test_vm1_info.value[0].vm }}'
+    vm: '{{ test_vm1_info.id }}'
 """
 
 IN_QUERY_PARAMETER = []
