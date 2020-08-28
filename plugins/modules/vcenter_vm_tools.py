@@ -22,8 +22,9 @@ options:
     type: str
   state:
     choices:
-    - update
+    - present
     - upgrade
+    default: present
     description: []
     type: str
   upgrade_policy:
@@ -125,7 +126,11 @@ def prepare_argument_spec():
 
     argument_spec["action"] = {"type": "str", "choices": ["upgrade"]}
     argument_spec["command_line_options"] = {"type": "str"}
-    argument_spec["state"] = {"type": "str", "choices": ["update", "upgrade"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["present", "upgrade"],
+        "default": "present",
+    }
     argument_spec["upgrade_policy"] = {
         "type": "str",
         "choices": ["MANUAL", "UPGRADE_AT_POWER_CYCLE"],
@@ -153,7 +158,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

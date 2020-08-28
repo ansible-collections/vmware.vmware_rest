@@ -28,8 +28,9 @@ options:
     type: int
   state:
     choices:
-    - create
-    - delete
+    - absent
+    - present
+    default: present
     description: []
     type: str
   type:
@@ -88,7 +89,6 @@ EXAMPLES = """
   register: test_vm1_info
 - name: Create a SATA adapter at PCI slot 34
   vcenter_vm_hardware_adapter_sata:
-    state: create
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
 """
@@ -140,7 +140,11 @@ def prepare_argument_spec():
     argument_spec["adapter"] = {"type": "str"}
     argument_spec["bus"] = {"default": 0, "type": "int"}
     argument_spec["pci_slot_number"] = {"type": "int"}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present"],
+        "default": "present",
+    }
     argument_spec["type"] = {"type": "str", "choices": ["AHCI"]}
     argument_spec["vm"] = {"type": "str"}
 
@@ -167,7 +171,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 
@@ -175,7 +188,11 @@ async def _create(params, session):
     accepted_fields = ["bus", "pci_slot_number", "type"]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["adapter"] = _json["id"]
+            return await globals()["_update"](params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

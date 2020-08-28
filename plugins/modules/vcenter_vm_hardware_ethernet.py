@@ -83,9 +83,10 @@ options:
     type: bool
   state:
     choices:
-    - create
-    - delete
-    - update
+    - absent
+    - present
+    - present
+    default: present
     description: []
     type: str
   type:
@@ -166,7 +167,6 @@ EXAMPLES = """
   register: test_vm1_info
 - name: Attach a VM to a dvswitch
   vcenter_vm_hardware_ethernet:
-    state: create
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 4
     backing:
@@ -175,7 +175,6 @@ EXAMPLES = """
     start_connected: false
 - name: Turn the NIC's start_connected flag on
   vcenter_vm_hardware_ethernet:
-    state: update
     nic: 4000
     start_connected: true
     vm: '{{ test_vm1_info.id }}'
@@ -235,7 +234,11 @@ def prepare_argument_spec():
     argument_spec["nic"] = {"type": "str"}
     argument_spec["pci_slot_number"] = {"type": "int"}
     argument_spec["start_connected"] = {"type": "bool"}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present", "present"],
+        "default": "present",
+    }
     argument_spec["type"] = {
         "type": "str",
         "choices": ["E1000", "E1000E", "PCNET32", "VMXNET", "VMXNET2", "VMXNET3"],
@@ -267,7 +270,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 
@@ -285,7 +297,11 @@ async def _create(params, session):
     ]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["nic"] = _json["id"]
+            return await globals()["_update"](params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:
