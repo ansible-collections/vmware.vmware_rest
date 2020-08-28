@@ -11,9 +11,31 @@
     memory:
       hot_add_enabled: true
       size_MiB: 1024
-    state: create
-  register: _create_vm
-- debug: var=_create_vm
+  register: _result
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
+
+- name: Create a VM (again)
+  vcenter_vm:
+    placement:
+      cluster: "{{ all_the_clusters.value[0].cluster }}"
+      datastore: "{{ rw_datastore.datastore }}"
+      folder: "{{ my_virtual_machine_folder.folder }}"
+      resource_pool: "{{ my_cluster_info.value.resource_pool }}"
+    name: test_vm1
+    guest_OS: DEBIAN_8_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+  register: _result
+- debug: var=_result
+- assert:
+    that:
+      - not(_result is changed)
 
 - register: _should_be_empty
   name: Search with an invalid filter

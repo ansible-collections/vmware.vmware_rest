@@ -47,8 +47,9 @@ options:
     type: int
   state:
     choices:
-    - create
-    - delete
+    - absent
+    - present
+    default: present
     description: []
     type: str
   thumbprint:
@@ -129,7 +130,6 @@ EXAMPLES = """
     password: '{{ item.password }}'
     user_name: '{{ item.username }}'
     thumbprint_verification: NONE
-    state: create
     folder: '{{ my_host_folder.folder }}'
   no_log: true
   with_items: '{{ my_esxis}}'
@@ -185,7 +185,11 @@ def prepare_argument_spec():
     argument_spec["hostname"] = {"type": "str"}
     argument_spec["password"] = {"no_log": True, "type": "str"}
     argument_spec["port"] = {"type": "int"}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present"],
+        "default": "present",
+    }
     argument_spec["thumbprint"] = {"type": "str"}
     argument_spec["thumbprint_verification"] = {
         "type": "str",
@@ -214,7 +218,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 
@@ -231,7 +244,11 @@ async def _create(params, session):
     ]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["host"] = _json["id"]
+            return await globals()["_update"](params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

@@ -10,7 +10,8 @@ description: Handle resource of type vcenter_vm_console_tickets
 options:
   state:
     choices:
-    - create
+    - present
+    default: present
     description: []
     type: str
   type:
@@ -114,7 +115,11 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["state"] = {"type": "str", "choices": ["create"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["present"],
+        "default": "present",
+    }
     argument_spec["type"] = {"type": "str", "choices": ["VMRC", "WEBMKS"]}
     argument_spec["vm"] = {"type": "str"}
 
@@ -141,7 +146,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 
@@ -149,7 +163,11 @@ async def _create(params, session):
     accepted_fields = ["type"]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["None"] = _json["id"]
+            return await globals()["_update"](params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

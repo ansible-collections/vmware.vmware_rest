@@ -20,6 +20,6 @@
 
 - name: Delete some VM
   vcenter_vm:
-    state: delete
+    state: absent
     vm: '{{ item.vm }}'
   with_items: "{{ existing_vms.value }}"

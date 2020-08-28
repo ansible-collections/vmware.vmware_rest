@@ -9,7 +9,6 @@
   vcenter_datacenter:
     name: my_dc
     folder: "{{ my_datacenter_folder.folder }}"
-    state: create
   register: _result
 - debug: var=_result
 - assert:
@@ -20,7 +19,6 @@
   vcenter_datacenter:
     name: my_dc
     folder: "{{ my_datacenter_folder.folder }}"
-    state: create
   register: _result
 - debug: var=_result
 - assert:

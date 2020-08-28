@@ -61,7 +61,7 @@ requirements:
 EXAMPLES = """
 - name: _Wait for the vcenter server
   vcenter_vm_info:
-  retries: 1
+  retries: 100
   delay: 3
   register: existing_vms
   until: existing_vms is not failed
@@ -152,7 +152,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

@@ -5,7 +5,6 @@
 
 - name: Create a SATA adapter at PCI slot 34
   vcenter_vm_hardware_adapter_sata:
-    state: create
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
   register: _sata_adapter_result_1
@@ -14,7 +13,6 @@
 
 - name: _Create a SATA adapter at PCI slot 34 (again)
   vcenter_vm_hardware_adapter_sata:
-    state: create
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
   register: _sata_adapter_result_2

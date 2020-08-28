@@ -37,8 +37,9 @@ options:
     type: str
   state:
     choices:
-    - create
-    - delete
+    - absent
+    - present
+    default: present
     description: []
     type: str
   vcenter_hostname:
@@ -89,15 +90,13 @@ EXAMPLES = """
   vcenter_datacenter:
     name: my_dc
     folder: '{{ my_datacenter_folder.folder }}'
-    state: create
 - name: Create datacenter my_dc (again)
   vcenter_datacenter:
     name: my_dc
     folder: '{{ my_datacenter_folder.folder }}'
-    state: create
 - name: Force delete the existing DC
   vcenter_datacenter:
-    state: delete
+    state: absent
     datacenter: '{{ item.datacenter }}'
     force: true
   with_items: '{{ existing_datacenters.value }}'
@@ -151,7 +150,11 @@ def prepare_argument_spec():
     argument_spec["folder"] = {"type": "str"}
     argument_spec["force"] = {"type": "bool"}
     argument_spec["name"] = {"type": "str"}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present"],
+        "default": "present",
+    }
 
     return argument_spec
 
@@ -174,7 +177,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 
@@ -182,7 +194,11 @@ async def _create(params, session):
     accepted_fields = ["folder", "name"]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["datacenter"] = _json["id"]
+            return await globals()["_update"](params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

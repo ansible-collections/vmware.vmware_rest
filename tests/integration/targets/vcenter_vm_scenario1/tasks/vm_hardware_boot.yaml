@@ -7,7 +7,6 @@
     vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: True
     type: EFI
-    state: update
   register: _result
 
 - assert:
@@ -19,7 +18,6 @@
     vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: True
     type: EFI
-    state: update
   register: _result
 
 - assert:
