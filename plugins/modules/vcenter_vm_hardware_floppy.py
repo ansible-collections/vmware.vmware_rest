@@ -177,7 +177,11 @@ async def _create(params, session):
     accepted_fields = ["allow_guest_control", "backing", "start_connected"]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["floppy"] = _json["id"]
+            return await _update(params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

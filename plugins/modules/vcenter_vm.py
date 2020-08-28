@@ -600,11 +600,25 @@ requirements:
 EXAMPLES = """
 - name: _Wait for the vcenter server
   vcenter_vm_info:
-  retries: 1
+  retries: 100
   delay: 3
   register: existing_vms
   until: existing_vms is not failed
 - name: Create a VM
+  vcenter_vm:
+    placement:
+      cluster: '{{ all_the_clusters.value[0].cluster }}'
+      datastore: '{{ rw_datastore.datastore }}'
+      folder: '{{ my_virtual_machine_folder.folder }}'
+      resource_pool: '{{ my_cluster_info.value.resource_pool }}'
+    name: test_vm1
+    guest_OS: DEBIAN_8_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    state: create
+- name: Create a VM (again)
   vcenter_vm:
     placement:
       cluster: '{{ all_the_clusters.value[0].cluster }}'
@@ -976,7 +990,11 @@ async def _create(params, session):
     ]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["vm"] = _json["id"]
+            return await _update(params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

@@ -230,7 +230,11 @@ async def _create(params, session):
     accepted_fields = ["backing", "ide", "new_vmdk", "sata", "scsi", "type"]
     _json = await exists(params, session, build_url(params))
     if _json:
-        return await update_changed_flag(_json, 200, "get")
+        if "_update" in globals():
+            params["disk"] = _json["id"]
+            return await _update(params, session)
+        else:
+            return await update_changed_flag(_json, 200, "get")
     spec = {}
     for i in accepted_fields:
         if params[i]:

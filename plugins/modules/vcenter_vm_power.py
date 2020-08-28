@@ -61,7 +61,7 @@ requirements:
 EXAMPLES = """
 - name: _Wait for the vcenter server
   vcenter_vm_info:
-  retries: 1
+  retries: 100
   delay: 3
   register: existing_vms
   until: existing_vms is not failed
