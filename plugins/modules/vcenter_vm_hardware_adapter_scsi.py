@@ -38,9 +38,9 @@ options:
     type: str
   state:
     choices:
-    - create
-    - delete
-    - update
+    - absent
+    - present
+    - present
     description: []
     type: str
   type:
@@ -149,7 +149,11 @@ def prepare_argument_spec():
         "type": "str",
         "choices": ["NONE", "PHYSICAL", "VIRTUAL"],
     }
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present", "present"],
+        "default": "present",
+    }
     argument_spec["type"] = {
         "type": "str",
         "choices": ["BUSLOGIC", "LSILOGIC", "LSILOGICSAS", "PVSCSI"],
@@ -179,7 +183,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

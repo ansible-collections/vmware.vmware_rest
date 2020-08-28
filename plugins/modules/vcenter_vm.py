@@ -528,10 +528,10 @@ options:
     type: str
   state:
     choices:
+    - absent
     - clone
-    - create
-    - delete
     - instant_clone
+    - present
     - register
     - relocate
     - unregister
@@ -617,7 +617,6 @@ EXAMPLES = """
     memory:
       hot_add_enabled: true
       size_MiB: 1024
-    state: create
 - name: Create a VM (again)
   vcenter_vm:
     placement:
@@ -631,10 +630,9 @@ EXAMPLES = """
     memory:
       hot_add_enabled: true
       size_MiB: 1024
-    state: create
 - name: Delete some VM
   vcenter_vm:
-    state: delete
+    state: absent
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
 """
@@ -905,14 +903,15 @@ def prepare_argument_spec():
     argument_spec["state"] = {
         "type": "str",
         "choices": [
+            "absent",
             "clone",
-            "create",
-            "delete",
             "instant_clone",
+            "present",
             "register",
             "relocate",
             "unregister",
         ],
+        "default": "present",
     }
     argument_spec["storage_policy"] = {"type": "dict"}
     argument_spec["vm"] = {"type": "str"}
@@ -938,7 +937,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

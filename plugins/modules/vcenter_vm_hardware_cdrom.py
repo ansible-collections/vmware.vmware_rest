@@ -74,9 +74,9 @@ options:
     type: bool
   state:
     choices:
-    - create
-    - delete
-    - update
+    - absent
+    - present
+    - present
     description: []
     type: str
   type:
@@ -145,7 +145,6 @@ EXAMPLES = """
     backing:
       iso_file: '[ro_datastore] fedora.iso'
       type: ISO_FILE
-    state: create
 """
 
 IN_QUERY_PARAMETER = []
@@ -198,7 +197,11 @@ def prepare_argument_spec():
     argument_spec["ide"] = {"type": "dict"}
     argument_spec["sata"] = {"type": "dict"}
     argument_spec["start_connected"] = {"type": "bool"}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present", "present"],
+        "default": "present",
+    }
     argument_spec["type"] = {"type": "str", "choices": ["IDE", "SATA"]}
     argument_spec["vm"] = {"type": "str"}
 
@@ -225,7 +228,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

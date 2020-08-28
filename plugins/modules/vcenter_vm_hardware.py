@@ -10,7 +10,7 @@ description: Handle resource of type vcenter_vm_hardware
 options:
   state:
     choices:
-    - update
+    - present
     description: []
     type: str
   upgrade_policy:
@@ -92,7 +92,6 @@ EXAMPLES = """
   register: test_vm1_info
 - name: Upgrade the VM hardware version
   vcenter_vm_hardware:
-    state: update
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13
     vm: '{{ test_vm1_info.id }}'
@@ -142,7 +141,11 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["state"] = {"type": "str", "choices": ["update"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["present"],
+        "default": "present",
+    }
     argument_spec["upgrade_policy"] = {
         "type": "str",
         "choices": ["AFTER_CLEAN_SHUTDOWN", "ALWAYS", "NEVER"],
@@ -191,7 +194,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

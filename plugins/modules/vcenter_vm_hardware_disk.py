@@ -85,9 +85,9 @@ options:
     type: dict
   state:
     choices:
-    - create
-    - delete
-    - update
+    - absent
+    - present
+    - present
     description: []
     type: str
   type:
@@ -195,7 +195,11 @@ def prepare_argument_spec():
     argument_spec["new_vmdk"] = {"type": "dict"}
     argument_spec["sata"] = {"type": "dict"}
     argument_spec["scsi"] = {"type": "dict"}
-    argument_spec["state"] = {"type": "str", "choices": ["create", "delete", "update"]}
+    argument_spec["state"] = {
+        "type": "str",
+        "choices": ["absent", "present", "present"],
+        "default": "present",
+    }
     argument_spec["type"] = {"type": "str", "choices": ["IDE", "SATA", "SCSI"]}
     argument_spec["vm"] = {"type": "str"}
 
@@ -222,7 +226,16 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    func = globals()[("_" + module.params["state"])]
+    if module.params["state"] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params["state"] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params["state"]
+    func = globals()[("_" + operation)]
     return await func(module.params, session)
 
 

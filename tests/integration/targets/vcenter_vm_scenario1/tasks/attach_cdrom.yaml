@@ -9,7 +9,6 @@
     backing:
       iso_file: '[ro_datastore] fedora.iso'
       type: ISO_FILE
-    state: create
   register: _attach_cdrom_1
 
 - name: _Ensure idempotency
@@ -23,7 +22,6 @@
     backing:
       iso_file: '[ro_datastore] fedora.iso'
       type: ISO_FILE
-    state: create
   register: _attach_cdrom_2
 
 - name: Assert idempotency
