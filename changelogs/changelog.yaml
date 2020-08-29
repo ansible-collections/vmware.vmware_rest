@@ -1,0 +1,9 @@
+ancestor: null
+releases:
+  0.1.0:
+    changes:
+      bugfixes:
+      - Fix logic in vmware_cis_category_info module.
+    fragments:
+    - cis_category_info.yml
+    release_date: '2020-08-28'
