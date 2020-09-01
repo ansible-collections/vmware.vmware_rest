@@ -110,18 +110,20 @@ collections:
 - name: community.vmware_rest
 ```
 
+Please note this collection depends on Python 3.6 or greater.
+
 ## Testing and Development
 
-If you want to develop new content for this collection or improve what is already here, the easiest way to work on the collection is to clone it into one of the configured [`COLLECTIONS_PATHS`](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#collections-paths), and work on it there.
+Please, don't open Pull Request against the [vmware_rest](https://github.com/ansible-collections/vmware_rest) repository.
+We use a project called [vmware_rest_code_generate](https://github.com/ansible-collections/vmware_rest_code_generator) to generate these modules and your change would be lost.
 
-- [Guidelines for VMware module development](https://docs.ansible.com/ansible/latest/dev_guide/platforms/vmware_guidelines.html)
 
 ### Testing with `ansible-test`
 
 
 ```
-virtualenv -p python3.7 .virtualenv/py37
-source .virtualenv/py37/bin/activate.fish
+virtualenv -p python3.7 .virtualenv/py37  # Or any other version greater than 3.6
+source .virtualenv/py37/bin/activate
 pip install -r requirements.txt -r test-requirements.txt
 ansible-test network-integration --python 3.7 --inventory /tmp/inventory-vmware_rest vcenter_vm_scenario1
 ```
