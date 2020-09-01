@@ -2,7 +2,8 @@
   vcenter_folder_info:
   register: my_folders
 - debug: var=my_folders
-- set_fact:
+- name: Look up the different folders
+  set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|selectattr("type", "equalto", "VIRTUAL_MACHINE")|first }}'
     my_datastore_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATASTORE")|first }}'
     my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first }}'
