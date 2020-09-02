@@ -4,3 +4,22 @@
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13
     vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+- assert:
+    that:
+      - _result is changed
+
+- name: Upgrade the VM hardware version (again)
+  vcenter_vm_hardware:
+    upgrade_policy: AFTER_CLEAN_SHUTDOWN
+    upgrade_version: VMX_13
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - not(_result is changed)

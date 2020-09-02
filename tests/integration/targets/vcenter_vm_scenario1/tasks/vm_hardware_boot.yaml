@@ -23,3 +23,10 @@
 - assert:
     that:
       - not(_result is changed)
+
+- name: Get information about the boot device
+  vcenter_vm_hardware_boot_device_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
