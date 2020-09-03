@@ -1,10 +1,3 @@
-plugins/modules/vcenter_vm_compute_policies_info.py compile-2.6!skip
-plugins/modules/vcenter_vm_compute_policies_info.py compile-2.7!skip
-plugins/modules/vcenter_vm_compute_policies_info.py compile-3.5!skip
-plugins/modules/vcenter_vm_compute_policies_info.py future-import-boilerplate!skip
-plugins/modules/vcenter_vm_compute_policies_info.py metaclass-boilerplate!skip
-plugins/modules/vcenter_vm_compute_policies_info.py validate-modules:missing-if-name-main
-plugins/modules/vcenter_vm_compute_policies_info.py validate-modules:missing-main-call
 plugins/modules/vcenter_cluster_info.py compile-2.6!skip
 plugins/modules/vcenter_cluster_info.py compile-2.7!skip
 plugins/modules/vcenter_cluster_info.py compile-3.5!skip
@@ -75,13 +68,6 @@ plugins/modules/vcenter_vm.py future-import-boilerplate!skip
 plugins/modules/vcenter_vm.py metaclass-boilerplate!skip
 plugins/modules/vcenter_vm.py validate-modules:missing-if-name-main
 plugins/modules/vcenter_vm.py validate-modules:missing-main-call
-plugins/modules/vcenter_vm_console_tickets.py compile-2.6!skip
-plugins/modules/vcenter_vm_console_tickets.py compile-2.7!skip
-plugins/modules/vcenter_vm_console_tickets.py compile-3.5!skip
-plugins/modules/vcenter_vm_console_tickets.py future-import-boilerplate!skip
-plugins/modules/vcenter_vm_console_tickets.py metaclass-boilerplate!skip
-plugins/modules/vcenter_vm_console_tickets.py validate-modules:missing-if-name-main
-plugins/modules/vcenter_vm_console_tickets.py validate-modules:missing-main-call
 plugins/modules/vcenter_vm_guest_customization.py compile-2.6!skip
 plugins/modules/vcenter_vm_guest_customization.py compile-2.7!skip
 plugins/modules/vcenter_vm_guest_customization.py compile-3.5!skip
