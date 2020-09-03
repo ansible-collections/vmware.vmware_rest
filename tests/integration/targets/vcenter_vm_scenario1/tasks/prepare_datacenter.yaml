@@ -2,7 +2,8 @@
 - name: Build a list of all the folders
   vcenter_folder_info:
   register: my_folders
-- set_fact:
+- name: Set my_datacenter_folder
+  set_fact:
     my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first }}'
 
 - name: Create datacenter my_dc
