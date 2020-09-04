@@ -1,3 +1,8 @@
+- name: Create a SATA adapter at PCI slot 34
+  vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 34
+
 - name: Attach an ISO image to a guest VM
   vcenter_vm_hardware_cdrom:
     vm: '{{ test_vm1_info.id }}'
