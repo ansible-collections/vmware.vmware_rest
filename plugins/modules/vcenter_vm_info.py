@@ -152,16 +152,138 @@ EXAMPLES = """
     filter_names: test_vm1_does_not_exists
 """
 
-IN_QUERY_PARAMETER = [
-    "filter.clusters",
-    "filter.datacenters",
-    "filter.folders",
-    "filter.hosts",
-    "filter.names",
-    "filter.power_states",
-    "filter.resource_pools",
-    "filter.vms",
-]
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {
+        "query": {
+            "filter.vms": "filter.vms",
+            "filter.names": "filter.names",
+            "filter.folders": "filter.folders",
+            "filter.datacenters": "filter.datacenters",
+            "filter.hosts": "filter.hosts",
+            "filter.clusters": "filter.clusters",
+            "filter.resource_pools": "filter.resource_pools",
+            "filter.power_states": "filter.power_states",
+        },
+        "body": {},
+        "path": {},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "boot": {
+                "delay": "spec/boot/delay",
+                "efi_legacy_boot": "spec/boot/efi_legacy_boot",
+                "enter_setup_mode": "spec/boot/enter_setup_mode",
+                "network_protocol": "spec/boot/network_protocol",
+                "retry": "spec/boot/retry",
+                "retry_delay": "spec/boot/retry_delay",
+                "type": "spec/boot/type",
+            },
+            "boot_devices": "spec/boot_devices",
+            "cdroms": "spec/cdroms",
+            "cpu": {
+                "cores_per_socket": "spec/cpu/cores_per_socket",
+                "count": "spec/cpu/count",
+                "hot_add_enabled": "spec/cpu/hot_add_enabled",
+                "hot_remove_enabled": "spec/cpu/hot_remove_enabled",
+            },
+            "disks": "spec/disks",
+            "floppies": "spec/floppies",
+            "guest_OS": "spec/guest_OS",
+            "hardware_version": "spec/hardware_version",
+            "memory": {
+                "hot_add_enabled": "spec/memory/hot_add_enabled",
+                "size_MiB": "spec/memory/size_MiB",
+            },
+            "name": "spec/name",
+            "nics": "spec/nics",
+            "parallel_ports": "spec/parallel_ports",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+            "sata_adapters": "spec/sata_adapters",
+            "scsi_adapters": "spec/scsi_adapters",
+            "serial_ports": "spec/serial_ports",
+            "storage_policy": {"policy": "spec/storage_policy/policy"},
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "relocate": {
+        "query": {},
+        "body": {
+            "disks": "spec/disks",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+        },
+        "path": {"vm": "vm"},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "spec/disks_to_remove",
+            "disks_to_update": "spec/disks_to_update",
+            "guest_customization_spec": {"name": "spec/guest_customization_spec/name"},
+            "name": "spec/name",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+            "power_on": "spec/power_on",
+            "source": "spec/source",
+        },
+        "path": {},
+    },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "spec/bios_uuid",
+            "disconnect_all_nics": "spec/disconnect_all_nics",
+            "name": "spec/name",
+            "nics_to_update": "spec/nics_to_update",
+            "parallel_ports_to_update": "spec/parallel_ports_to_update",
+            "placement": {
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+            "serial_ports_to_update": "spec/serial_ports_to_update",
+            "source": "spec/source",
+        },
+        "path": {},
+    },
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "spec/datastore",
+            "datastore_path": "spec/datastore_path",
+            "name": "spec/name",
+            "path": "spec/path",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+        },
+        "path": {},
+    },
+}
 
 import socket
 import json
@@ -174,12 +296,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -233,13 +357,15 @@ async def main():
 def build_url(params):
 
     if params["vm"]:
+        _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
         return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}").format(
             **params
-        ) + gen_args(params, IN_QUERY_PARAMETER)
+        ) + gen_args(params, _in_query_parameters)
     else:
+        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
         return ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(
             **params
-        ) + gen_args(params, IN_QUERY_PARAMETER)
+        ) + gen_args(params, _in_query_parameters)
 
 
 async def entry_point(module, session):

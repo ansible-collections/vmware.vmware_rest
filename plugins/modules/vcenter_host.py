@@ -117,7 +117,8 @@ EXAMPLES = """
     - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
       username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
       password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-- set_fact:
+- name: Look up the different folders
+  set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|selectattr("type", "equalto",
       "VIRTUAL_MACHINE")|first }}'
     my_datastore_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATASTORE")|first
@@ -135,7 +136,37 @@ EXAMPLES = """
   with_items: '{{ my_esxis}}'
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {
+        "query": {
+            "filter.hosts": "filter.hosts",
+            "filter.names": "filter.names",
+            "filter.folders": "filter.folders",
+            "filter.datacenters": "filter.datacenters",
+            "filter.standalone": "filter.standalone",
+            "filter.clusters": "filter.clusters",
+            "filter.connection_states": "filter.connection_states",
+        },
+        "body": {},
+        "path": {},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "folder": "spec/folder",
+            "force_add": "spec/force_add",
+            "hostname": "spec/hostname",
+            "password": "spec/password",
+            "port": "spec/port",
+            "thumbprint": "spec/thumbprint",
+            "thumbprint_verification": "spec/thumbprint_verification",
+            "user_name": "spec/user_name",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+}
 
 import socket
 import json
@@ -148,12 +179,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -232,29 +265,21 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
-    accepted_fields = [
-        "folder",
-        "force_add",
-        "hostname",
-        "password",
-        "port",
-        "thumbprint",
-        "thumbprint_verification",
-        "user_name",
-    ]
-    _json = await exists(params, session, build_url(params))
+    if params["host"]:
+        _json = await get_device_info(
+            params, session, build_url(params), params["host"]
+        )
+    else:
+        _json = await exists(params, session, build_url(params), ["host"])
     if _json:
         if "_update" in globals():
             params["host"] = _json["id"]
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = "https://{vcenter_hostname}/rest/vcenter/host".format(**params)
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -270,10 +295,17 @@ async def _create(params, session):
 
 
 async def _delete(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/host/{host}")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/host/{host}".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.delete(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.delete(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

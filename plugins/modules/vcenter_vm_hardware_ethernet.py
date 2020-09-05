@@ -65,7 +65,7 @@ options:
     description:
     - Virtual Ethernet adapter identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Ethernet.
-      Required with I(state=[''delete'', ''update''])'
+      Required with I(state=[''connect'', ''delete'', ''disconnect'', ''update''])'
     type: str
   pci_slot_number:
     description:
@@ -84,6 +84,8 @@ options:
   state:
     choices:
     - absent
+    - connect
+    - disconnect
     - present
     - present
     default: present
@@ -180,7 +182,50 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "spec/allow_guest_control",
+            "backing": {
+                "distributed_port": "spec/backing/distributed_port",
+                "network": "spec/backing/network",
+                "type": "spec/backing/type",
+            },
+            "mac_address": "spec/mac_address",
+            "mac_type": "spec/mac_type",
+            "pci_slot_number": "spec/pci_slot_number",
+            "start_connected": "spec/start_connected",
+            "type": "spec/type",
+            "upt_compatibility_enabled": "spec/upt_compatibility_enabled",
+            "wake_on_lan_enabled": "spec/wake_on_lan_enabled",
+        },
+        "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "spec/allow_guest_control",
+            "backing": {
+                "distributed_port": "spec/backing/distributed_port",
+                "network": "spec/backing/network",
+                "type": "spec/backing/type",
+            },
+            "mac_address": "spec/mac_address",
+            "mac_type": "spec/mac_type",
+            "start_connected": "spec/start_connected",
+            "upt_compatibility_enabled": "spec/upt_compatibility_enabled",
+            "wake_on_lan_enabled": "spec/wake_on_lan_enabled",
+        },
+        "path": {"vm": "vm", "nic": "nic"},
+    },
+    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+}
 
 import socket
 import json
@@ -193,12 +238,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -236,7 +283,7 @@ def prepare_argument_spec():
     argument_spec["start_connected"] = {"type": "bool"}
     argument_spec["state"] = {
         "type": "str",
-        "choices": ["absent", "present", "present"],
+        "choices": ["absent", "connect", "disconnect", "present", "present"],
         "default": "present",
     }
     argument_spec["type"] = {
@@ -283,33 +330,46 @@ async def entry_point(module, session):
     return await func(module.params, session)
 
 
+async def _connect(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
+    subdevice_type = get_subdevice_type(
+        "/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}/connect"
+    )
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
+    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}/connect".format(
+        **params
+    ) + gen_args(
+        params, _in_query_parameters
+    )
+    async with session.post(_url, json=payload) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        return await update_changed_flag(_json, resp.status, "connect")
+
+
 async def _create(params, session):
-    accepted_fields = [
-        "allow_guest_control",
-        "backing",
-        "mac_address",
-        "mac_type",
-        "pci_slot_number",
-        "start_connected",
-        "type",
-        "upt_compatibility_enabled",
-        "wake_on_lan_enabled",
-    ]
-    _json = await exists(params, session, build_url(params))
+    if params["nic"]:
+        _json = await get_device_info(params, session, build_url(params), params["nic"])
+    else:
+        _json = await exists(params, session, build_url(params), ["nic"])
     if _json:
         if "_update" in globals():
             params["nic"] = _json["id"]
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet".format(
         **params
     )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -325,12 +385,19 @@ async def _create(params, session):
 
 
 async def _delete(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}".format(
         **params
     ) + gen_args(
-        params, IN_QUERY_PARAMETER
+        params, _in_query_parameters
     )
-    async with session.delete(_url) as resp:
+    async with session.delete(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -339,32 +406,54 @@ async def _delete(params, session):
         return await update_changed_flag(_json, resp.status, "delete")
 
 
+async def _disconnect(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["disconnect"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
+    subdevice_type = get_subdevice_type(
+        "/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}/disconnect"
+    )
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
+    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}/disconnect".format(
+        **params
+    ) + gen_args(
+        params, _in_query_parameters
+    )
+    async with session.post(_url, json=payload) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        return await update_changed_flag(_json, resp.status, "disconnect")
+
+
 async def _update(params, session):
-    accepted_fields = [
-        "allow_guest_control",
-        "backing",
-        "mac_address",
-        "mac_type",
-        "start_connected",
-        "upt_compatibility_enabled",
-        "wake_on_lan_enabled",
-    ]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/ethernet/{nic}".format(
         **params
     )
     async with session.get(_url) as resp:
         _json = await resp.json()
         for (k, v) in _json["value"].items():
-            if (k in spec) and (spec[k] == v):
-                del spec[k]
-        if not spec:
+            if (k in payload) and (payload[k] == v):
+                del payload[k]
+            elif "spec" in payload:
+                if (k in payload["spec"]) and (payload["spec"][k] == v):
+                    del payload["spec"][k]
+        try:
+            if payload["spec"]["upgrade_version"] and (
+                "upgrade_policy" not in payload["spec"]
+            ):
+                payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
+        except KeyError:
+            pass
+        if (payload == {}) or (payload == {"spec": {}}):
             _json["id"] = params.get("nic")
             return await update_changed_flag(_json, resp.status, "get")
-    async with session.patch(_url, json={"spec": spec}) as resp:
+    async with session.patch(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

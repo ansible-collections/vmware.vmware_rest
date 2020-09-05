@@ -425,49 +425,44 @@ options:
       the operation will fail.
     - 'Validate attributes are:'
     - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
-    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.resource-pool
-      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.cluster. '
-    - ' If VM.RelocatePlacementSpec.cluster and VM.RelocatePlacementSpec.host are
-      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
-    - If VM.RelocatePlacementSpec.resource-pool or VM.RelocatePlacementSpec.host is
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster. '
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is
       specified, it is recommended that this field be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: ClusterComputeResource.'
-    - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
-      state should be stored. This datastore will also be used for any virtual disks
-      that are associated with the virtual machine, unless individually overridden.'
-    - If this field is unset, the virtual machine will remain on the current datastore.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Datastore. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: Datastore.'
     - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
       be placed.'
-    - If this field is unset, the virtual machine will stay in the current folder.
+    - This field is currently required. In the future, if this field is unset, the
+      system will attempt to choose a suitable folder for the virtual machine; if
+      a folder cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Folder. When operations return a value
       of this structure as a result, the field will be an identifier for the resource
       type: Folder.'
     - ' - C(host) (str): Host onto which the virtual machine should be placed. '
-    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.resource-pool
-      are both specified, VM.RelocatePlacementSpec.resource-pool must belong to VM.RelocatePlacementSpec.host. '
-    - ' If VM.RelocatePlacementSpec.host and VM.RelocatePlacementSpec.cluster are
-      both specified, VM.RelocatePlacementSpec.host must be a member of VM.RelocatePlacementSpec.cluster.'
-    - If this field is unset, if VM.RelocatePlacementSpec.resource-pool is unset,
-      the virtual machine will remain on the current host. if VM.RelocatePlacementSpec.resource-pool
-      is set, and the target is a standalone host, the host is used. if VM.RelocatePlacementSpec.resource-pool
-      is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.RelocatePlacementSpec.resource-pool
-      is set, and the target is a cluster without DRS, InvalidArgument will be thrown.
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host. '
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster
+      is specified. If unset, the system will attempt to choose a suitable host for
+      the virtual machine; if a host cannot be chosen, the virtual machine creation
+      operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: HostSystem. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: HostSystem.'
     - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
       be placed.'
-    - If this field is unset, the virtual machine will stay in the current resource
-      pool.
+    - This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster
+      are unset. In the future, if this field is unset, the system will attempt to
+      choose a suitable resource pool for the virtual machine; if a resource pool
+      cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will be an identifier for the
@@ -594,10 +589,8 @@ requirements:
 """
 
 EXAMPLES = """
-- name: _Wait for the vcenter server
+- name: Collect the list of the existing VM
   vcenter_vm_info:
-  retries: 100
-  delay: 3
   register: existing_vms
   until: existing_vms is not failed
 - name: Create a VM
@@ -633,7 +626,138 @@ EXAMPLES = """
   with_items: '{{ existing_vms.value }}'
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {
+        "query": {
+            "filter.vms": "filter.vms",
+            "filter.names": "filter.names",
+            "filter.folders": "filter.folders",
+            "filter.datacenters": "filter.datacenters",
+            "filter.hosts": "filter.hosts",
+            "filter.clusters": "filter.clusters",
+            "filter.resource_pools": "filter.resource_pools",
+            "filter.power_states": "filter.power_states",
+        },
+        "body": {},
+        "path": {},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "boot": {
+                "delay": "spec/boot/delay",
+                "efi_legacy_boot": "spec/boot/efi_legacy_boot",
+                "enter_setup_mode": "spec/boot/enter_setup_mode",
+                "network_protocol": "spec/boot/network_protocol",
+                "retry": "spec/boot/retry",
+                "retry_delay": "spec/boot/retry_delay",
+                "type": "spec/boot/type",
+            },
+            "boot_devices": "spec/boot_devices",
+            "cdroms": "spec/cdroms",
+            "cpu": {
+                "cores_per_socket": "spec/cpu/cores_per_socket",
+                "count": "spec/cpu/count",
+                "hot_add_enabled": "spec/cpu/hot_add_enabled",
+                "hot_remove_enabled": "spec/cpu/hot_remove_enabled",
+            },
+            "disks": "spec/disks",
+            "floppies": "spec/floppies",
+            "guest_OS": "spec/guest_OS",
+            "hardware_version": "spec/hardware_version",
+            "memory": {
+                "hot_add_enabled": "spec/memory/hot_add_enabled",
+                "size_MiB": "spec/memory/size_MiB",
+            },
+            "name": "spec/name",
+            "nics": "spec/nics",
+            "parallel_ports": "spec/parallel_ports",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+            "sata_adapters": "spec/sata_adapters",
+            "scsi_adapters": "spec/scsi_adapters",
+            "serial_ports": "spec/serial_ports",
+            "storage_policy": {"policy": "spec/storage_policy/policy"},
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "relocate": {
+        "query": {},
+        "body": {
+            "disks": "spec/disks",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+        },
+        "path": {"vm": "vm"},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "spec/disks_to_remove",
+            "disks_to_update": "spec/disks_to_update",
+            "guest_customization_spec": {"name": "spec/guest_customization_spec/name"},
+            "name": "spec/name",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+            "power_on": "spec/power_on",
+            "source": "spec/source",
+        },
+        "path": {},
+    },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "spec/bios_uuid",
+            "disconnect_all_nics": "spec/disconnect_all_nics",
+            "name": "spec/name",
+            "nics_to_update": "spec/nics_to_update",
+            "parallel_ports_to_update": "spec/parallel_ports_to_update",
+            "placement": {
+                "datastore": "spec/placement/datastore",
+                "folder": "spec/placement/folder",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+            "serial_ports_to_update": "spec/serial_ports_to_update",
+            "source": "spec/source",
+        },
+        "path": {},
+    },
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "spec/datastore",
+            "datastore_path": "spec/datastore_path",
+            "name": "spec/name",
+            "path": "spec/path",
+            "placement": {
+                "cluster": "spec/placement/cluster",
+                "folder": "spec/placement/folder",
+                "host": "spec/placement/host",
+                "resource_pool": "spec/placement/resource_pool",
+            },
+        },
+        "path": {},
+    },
+}
 
 import socket
 import json
@@ -646,12 +770,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -947,23 +1073,19 @@ async def entry_point(module, session):
 
 
 async def _clone(params, session):
-    accepted_fields = [
-        "disks_to_remove",
-        "disks_to_update",
-        "guest_customization_spec",
-        "name",
-        "placement",
-        "power_on",
-        "source",
-    ]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    _in_query_parameters = PAYLOAD_FORMAT["clone"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["clone"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm?action=clone&vmw-task=true")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm?action=clone&vmw-task=true".format(
         **params
+    ) + gen_args(
+        params, _in_query_parameters
     )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -973,38 +1095,19 @@ async def _clone(params, session):
 
 
 async def _create(params, session):
-    accepted_fields = [
-        "boot",
-        "boot_devices",
-        "cdroms",
-        "cpu",
-        "disks",
-        "floppies",
-        "guest_OS",
-        "hardware_version",
-        "memory",
-        "name",
-        "nics",
-        "parallel_ports",
-        "placement",
-        "sata_adapters",
-        "scsi_adapters",
-        "serial_ports",
-        "storage_policy",
-    ]
-    _json = await exists(params, session, build_url(params))
+    if params["vm"]:
+        _json = await get_device_info(params, session, build_url(params), params["vm"])
+    else:
+        _json = await exists(params, session, build_url(params), ["vm"])
     if _json:
         if "_update" in globals():
             params["vm"] = _json["id"]
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm".format(**params)
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1020,10 +1123,17 @@ async def _create(params, session):
 
 
 async def _delete(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.delete(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.delete(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1033,24 +1143,17 @@ async def _delete(params, session):
 
 
 async def _instant_clone(params, session):
-    accepted_fields = [
-        "bios_uuid",
-        "disconnect_all_nics",
-        "name",
-        "nics_to_update",
-        "parallel_ports_to_update",
-        "placement",
-        "serial_ports_to_update",
-        "source",
-    ]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    _in_query_parameters = PAYLOAD_FORMAT["instant_clone"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["instant_clone"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm?action=instant-clone")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm?action=instant-clone".format(
         **params
-    )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1060,13 +1163,17 @@ async def _instant_clone(params, session):
 
 
 async def _register(params, session):
-    accepted_fields = ["datastore", "datastore_path", "name", "path", "placement"]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm?action=register".format(**params)
-    async with session.post(_url, json={"spec": spec}) as resp:
+    _in_query_parameters = PAYLOAD_FORMAT["register"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["register"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm?action=register")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
+    _url = "https://{vcenter_hostname}/rest/vcenter/vm?action=register".format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1076,15 +1183,21 @@ async def _register(params, session):
 
 
 async def _relocate(params, session):
-    accepted_fields = ["disks", "placement"]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    _in_query_parameters = PAYLOAD_FORMAT["relocate"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["relocate"])
+    subdevice_type = get_subdevice_type(
+        "/rest/vcenter/vm/{vm}?action=relocate&vmw-task=true"
+    )
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}?action=relocate&vmw-task=true".format(
         **params
+    ) + gen_args(
+        params, _in_query_parameters
     )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1094,10 +1207,17 @@ async def _relocate(params, session):
 
 
 async def _unregister(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["unregister"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["unregister"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}?action=unregister")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}?action=unregister".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

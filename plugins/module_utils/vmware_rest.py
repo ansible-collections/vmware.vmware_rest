@@ -2,11 +2,6 @@ import hashlib
 import importlib
 
 
-from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-    EmbeddedModuleFailure,
-)
-
-
 async def open_session(
     vcenter_hostname=None,
     vcenter_username=None,
@@ -26,6 +21,10 @@ async def open_session(
 
     aiohttp = importlib.import_module("aiohttp")
     if not aiohttp:
+        from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+            EmbeddedModuleFailure,
+        )
+
         raise EmbeddedModuleFailure()
 
     auth = aiohttp.BasicAuth(vcenter_username, vcenter_password)
@@ -135,15 +134,13 @@ async def list_devices(params, session, url):
     async with session.get(url) as resp:
         _json = await resp.json()
         devices = _json["value"]
+    device_type = get_device_type(url)
+    subdevice_type = get_subdevice_type(url)
+
     for device in devices:
-        device_type = url.split("/")[-1]
-        if device_type == "ethernet":
-            device_type = "nic"
-        elif device_type == "sata":
-            device_type = "adapter"
-        _id = device.get(device_type)
+        _id = device.get(device_type) or device.get(subdevice_type)
         if not _id:
-            EmbeddedModuleFailure("Cannot find the id key of the device!")
+            raise Exception("Cannot find the id key of the device!")
         existing_entries.append((await get_device_info(params, session, url, _id)))
     return existing_entries
 
@@ -151,17 +148,75 @@ async def list_devices(params, session, url):
 async def get_device_info(params, session, url, _id):
     async with session.get(url + "/" + _id) as resp:
         _json = await resp.json()
-        _json["id"] = _id
+        _json["id"] = str(_id)
         return _json
 
 
-async def exists(params, session, url):
-    unicity_keys = ["bus", "pci_slot_number"]
+async def exists(params, session, url, unicity_keys=None):
+    if not unicity_keys:
+        unicity_keys = []
+
+    unicity_keys += ["pci_slot_number", "sata"]
+
     devices = await list_devices(params, session, url)
 
     for device in devices:
         for k in unicity_keys:
-            if params.get(k) is not None and device["value"].get(k) != params.get(k):
-                break
+            if not params.get(k):
+                continue
+            v = device["value"].get(k)
+            if isinstance(k, int) or isinstance(v, str):
+                k = str(k)
+                v = str(v)
+            if v == params.get(k):
+                return device
+
+
+def set_subkey(root, path, value):
+    cur_loc = root
+    splitted = path.split("/")
+    for j in splitted[:-1]:
+        if j not in cur_loc:
+            cur_loc[j] = {}
+        cur_loc = cur_loc[j]
+    cur_loc[splitted[-1]] = value
+
+
+def prepare_payload(params, payload_format):
+    payload = {}
+    for i in payload_format["body"].keys():
+        if params[i] is None:
+            continue
+        if isinstance(params[i], dict):
+            for k, v in params[i].items():
+                path = payload_format["body"][i][k]
+                set_subkey(payload, path, v)
         else:
-            return device
+            path = payload_format["body"][i]
+            set_subkey(payload, path, params[i])
+    return payload
+
+
+def get_subdevice_type(url):
+    """If url needs a subkey, return its name."""
+    candidates = []
+    for i in url.split("/"):
+        if i.startswith("{"):
+            candidates.append(i[1:-1])
+    if len(candidates) != 2:
+        return
+    return candidates[-1]
+
+
+def get_device_type(url):
+    device_type = url.split("/")[-1]
+    # NOTE: This mapping can be extracted from the delete end-point of the
+    # resource, e.g:
+    # /rest/vcenter/vm/{vm}/hardware/ethernet/{nic} -> nic
+    # Also, it sounds like we can use "list_index" instead
+    if device_type == "ethernet":
+        return "nic"
+    elif device_type in ["sata", "scsi"]:
+        return "adapter"
+    else:
+        return device_type

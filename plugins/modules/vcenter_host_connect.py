@@ -4,14 +4,14 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
-module: vcenter_vm_hardware_parallel_connect
-short_description: Handle resource of type vcenter_vm_hardware_parallel_connect
-description: Handle resource of type vcenter_vm_hardware_parallel_connect
+module: vcenter_host_connect
+short_description: Handle resource of type vcenter_host_connect
+description: Handle resource of type vcenter_host_connect
 options:
-  port:
+  host:
     description:
-    - Virtual parallel port identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.'
+    - Identifier of the host to be reconnected.
+    - 'The parameter must be an identifier for the resource type: HostSystem.'
     type: str
   state:
     choices:
@@ -47,11 +47,6 @@ options:
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_VALIDATE_CERTS) will be used instead.
     type: bool
-  vm:
-    description:
-    - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
-    type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
@@ -63,7 +58,8 @@ requirements:
 EXAMPLES = """
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {"connect": {"query": {}, "body": {}, "path": {"host": "host"}}}
 
 import socket
 import json
@@ -76,12 +72,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -107,9 +105,8 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["port"] = {"type": "str"}
+    argument_spec["host"] = {"type": "str"}
     argument_spec["state"] = {"type": "str", "choices": ["connect"]}
-    argument_spec["vm"] = {"type": "str"}
 
     return argument_spec
 
@@ -128,10 +125,9 @@ async def main():
 
 def build_url(params):
 
-    return (
-        "https://{vcenter_hostname}"
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect"
-    ).format(**params)
+    return ("https://{vcenter_hostname}" "/rest/vcenter/host/{host}/connect").format(
+        **params
+    )
 
 
 async def entry_point(module, session):
@@ -149,12 +145,17 @@ async def entry_point(module, session):
 
 
 async def _connect(params, session):
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect".format(
+    _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/host/{host}/connect")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
+    _url = "https://{vcenter_hostname}/rest/vcenter/host/{host}/connect".format(
         **params
-    ) + gen_args(
-        params, IN_QUERY_PARAMETER
-    )
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

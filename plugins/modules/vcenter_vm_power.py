@@ -59,10 +59,8 @@ requirements:
 """
 
 EXAMPLES = """
-- name: _Wait for the vcenter server
+- name: Collect the list of the existing VM
   vcenter_vm_info:
-  retries: 100
-  delay: 3
   register: existing_vms
   until: existing_vms is not failed
 - name: Collect information about a specific VM
@@ -75,13 +73,20 @@ EXAMPLES = """
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
   ignore_errors: yes
-- name: Turn the power of a VM on
+- name: Turn the power of the VM on
   vcenter_vm_power:
     state: start
     vm: '{{ test_vm1_info.id }}'
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+}
 
 import socket
 import json
@@ -94,12 +99,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -166,10 +173,17 @@ async def entry_point(module, session):
 
 
 async def _reset(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["reset"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["reset"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/reset")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/reset".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -179,10 +193,17 @@ async def _reset(params, session):
 
 
 async def _start(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["start"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["start"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/start")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/start".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -192,10 +213,17 @@ async def _start(params, session):
 
 
 async def _stop(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["stop"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["stop"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/stop")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/stop".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -205,10 +233,17 @@ async def _stop(params, session):
 
 
 async def _suspend(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["suspend"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["suspend"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/suspend")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/suspend".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

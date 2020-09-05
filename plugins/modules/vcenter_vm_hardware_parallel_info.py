@@ -59,7 +59,40 @@ requirements:
 EXAMPLES = """
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "spec/allow_guest_control",
+            "backing": {
+                "file": "spec/backing/file",
+                "host_device": "spec/backing/host_device",
+                "type": "spec/backing/type",
+            },
+            "start_connected": "spec/start_connected",
+        },
+        "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "spec/allow_guest_control",
+            "backing": {
+                "file": "spec/backing/file",
+                "host_device": "spec/backing/host_device",
+                "type": "spec/backing/type",
+            },
+            "start_connected": "spec/start_connected",
+        },
+        "path": {"vm": "vm", "port": "port"},
+    },
+    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+}
 
 import socket
 import json
@@ -72,12 +105,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -124,14 +159,16 @@ async def main():
 def build_url(params):
 
     if params["port"]:
+        _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
         return (
             "https://{vcenter_hostname}"
             "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
-        ).format(**params) + gen_args(params, IN_QUERY_PARAMETER)
+        ).format(**params) + gen_args(params, _in_query_parameters)
     else:
+        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
         return (
             "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel"
-        ).format(**params) + gen_args(params, IN_QUERY_PARAMETER)
+        ).format(**params) + gen_args(params, _in_query_parameters)
 
 
 async def entry_point(module, session):
