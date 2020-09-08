@@ -120,7 +120,23 @@ EXAMPLES = """
     type: EFI
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "delay": "spec/delay",
+            "efi_legacy_boot": "spec/efi_legacy_boot",
+            "enter_setup_mode": "spec/enter_setup_mode",
+            "network_protocol": "spec/network_protocol",
+            "retry": "spec/retry",
+            "retry_delay": "spec/retry_delay",
+            "type": "spec/type",
+        },
+        "path": {"vm": "vm"},
+    },
+}
 
 import socket
 import json
@@ -133,12 +149,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -215,31 +233,29 @@ async def entry_point(module, session):
 
 
 async def _update(params, session):
-    accepted_fields = [
-        "delay",
-        "efi_legacy_boot",
-        "enter_setup_mode",
-        "network_protocol",
-        "retry",
-        "retry_delay",
-        "type",
-    ]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/boot".format(
         **params
     )
     async with session.get(_url) as resp:
         _json = await resp.json()
         for (k, v) in _json["value"].items():
-            if (k in spec) and (spec[k] == v):
-                del spec[k]
-        if not spec:
+            if (k in payload) and (payload[k] == v):
+                del payload[k]
+            elif "spec" in payload:
+                if (k in payload["spec"]) and (payload["spec"][k] == v):
+                    del payload["spec"][k]
+        try:
+            if payload["spec"]["upgrade_version"] and (
+                "upgrade_policy" not in payload["spec"]
+            ):
+                payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
+        except KeyError:
+            pass
+        if (payload == {}) or (payload == {"spec": {}}):
             _json["id"] = params.get("None")
             return await update_changed_flag(_json, resp.status, "get")
-    async with session.patch(_url, json={"spec": spec}) as resp:
+    async with session.patch(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

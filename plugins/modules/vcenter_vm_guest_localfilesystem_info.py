@@ -52,9 +52,21 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Get guest filesystem information
+  vcenter_vm_guest_localfilesystem_info:
+    vm: '{{ test_vm1_info.id }}'
+  until:
+  - _result is not failed
+  retries: 60
+  delay: 5
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {"get": {"query": {}, "body": {}, "path": {"vm": "vm"}}}
 
 import socket
 import json
@@ -67,12 +79,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -117,9 +131,10 @@ async def main():
 
 def build_url(params):
 
+    _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
     return (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/guest/local-filesystem"
-    ).format(**params) + gen_args(params, IN_QUERY_PARAMETER)
+    ).format(**params) + gen_args(params, _in_query_parameters)
 
 
 async def entry_point(module, session):

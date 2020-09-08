@@ -146,7 +146,41 @@ requirements:
 EXAMPLES = """
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "backing": {
+                "type": "spec/backing/type",
+                "vmdk_file": "spec/backing/vmdk_file",
+            },
+            "ide": {"master": "spec/ide/master", "primary": "spec/ide/primary"},
+            "new_vmdk": {
+                "capacity": "spec/new_vmdk/capacity",
+                "name": "spec/new_vmdk/name",
+                "storage_policy": "spec/new_vmdk/storage_policy",
+            },
+            "sata": {"bus": "spec/sata/bus", "unit": "spec/sata/unit"},
+            "scsi": {"bus": "spec/scsi/bus", "unit": "spec/scsi/unit"},
+            "type": "spec/type",
+        },
+        "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "disk": "disk"}},
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "disk": "disk"}},
+    "update": {
+        "query": {},
+        "body": {
+            "backing": {
+                "type": "spec/backing/type",
+                "vmdk_file": "spec/backing/vmdk_file",
+            }
+        },
+        "path": {"vm": "vm", "disk": "disk"},
+    },
+}
 
 import socket
 import json
@@ -159,12 +193,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -241,22 +277,23 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
-    accepted_fields = ["backing", "ide", "new_vmdk", "sata", "scsi", "type"]
-    _json = await exists(params, session, build_url(params))
+    if params["disk"]:
+        _json = await get_device_info(
+            params, session, build_url(params), params["disk"]
+        )
+    else:
+        _json = await exists(params, session, build_url(params), ["disk"])
     if _json:
         if "_update" in globals():
             params["disk"] = _json["id"]
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/disk".format(
         **params
     )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -272,12 +309,19 @@ async def _create(params, session):
 
 
 async def _delete(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/disk/{disk}")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/disk/{disk}".format(
         **params
     ) + gen_args(
-        params, IN_QUERY_PARAMETER
+        params, _in_query_parameters
     )
-    async with session.delete(_url) as resp:
+    async with session.delete(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -287,23 +331,29 @@ async def _delete(params, session):
 
 
 async def _update(params, session):
-    accepted_fields = ["backing"]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/disk/{disk}".format(
         **params
     )
     async with session.get(_url) as resp:
         _json = await resp.json()
         for (k, v) in _json["value"].items():
-            if (k in spec) and (spec[k] == v):
-                del spec[k]
-        if not spec:
+            if (k in payload) and (payload[k] == v):
+                del payload[k]
+            elif "spec" in payload:
+                if (k in payload["spec"]) and (payload["spec"][k] == v):
+                    del payload["spec"][k]
+        try:
+            if payload["spec"]["upgrade_version"] and (
+                "upgrade_policy" not in payload["spec"]
+            ):
+                payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
+        except KeyError:
+            pass
+        if (payload == {}) or (payload == {"spec": {}}):
             _json["id"] = params.get("disk")
             return await update_changed_flag(_json, resp.status, "get")
-    async with session.patch(_url, json={"spec": spec}) as resp:
+    async with session.patch(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

@@ -99,13 +99,21 @@ EXAMPLES = """
   register: my_datastores
 """
 
-IN_QUERY_PARAMETER = [
-    "filter.datacenters",
-    "filter.datastores",
-    "filter.folders",
-    "filter.names",
-    "filter.types",
-]
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {
+        "query": {
+            "filter.datastores": "filter.datastores",
+            "filter.names": "filter.names",
+            "filter.types": "filter.types",
+            "filter.folders": "filter.folders",
+            "filter.datacenters": "filter.datacenters",
+        },
+        "body": {},
+        "path": {},
+    },
+    "get": {"query": {}, "body": {}, "path": {"datastore": "datastore"}},
+}
 
 import socket
 import json
@@ -118,12 +126,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -174,13 +184,15 @@ async def main():
 def build_url(params):
 
     if params["datastore"]:
+        _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
         return (
             "https://{vcenter_hostname}" "/rest/vcenter/datastore/{datastore}"
-        ).format(**params) + gen_args(params, IN_QUERY_PARAMETER)
+        ).format(**params) + gen_args(params, _in_query_parameters)
     else:
+        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
         return ("https://{vcenter_hostname}" "/rest/vcenter/datastore").format(
             **params
-        ) + gen_args(params, IN_QUERY_PARAMETER)
+        ) + gen_args(params, _in_query_parameters)
 
 
 async def entry_point(module, session):

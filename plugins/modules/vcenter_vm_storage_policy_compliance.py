@@ -82,7 +82,15 @@ requirements:
 EXAMPLES = """
 """
 
-IN_QUERY_PARAMETER = ["action"]
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "check": {
+        "query": {"action": "action"},
+        "body": {"disks": "disks", "vm_home": "vm_home"},
+        "path": {"vm": "vm"},
+    },
+}
 
 import socket
 import json
@@ -95,12 +103,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -168,15 +178,21 @@ async def entry_point(module, session):
 
 
 async def _check(params, session):
-    accepted_fields = ["check_spec"]
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    _in_query_parameters = PAYLOAD_FORMAT["check"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["check"])
+    subdevice_type = get_subdevice_type(
+        "/rest/vcenter/vm/{vm}/storage/policy/compliance"
+    )
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/storage/policy/compliance".format(
         **params
+    ) + gen_args(
+        params, _in_query_parameters
     )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

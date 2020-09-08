@@ -91,9 +91,32 @@ EXAMPLES = """
   vcenter_vm_hardware_adapter_sata:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
+- name: Create a SATA adapter at PCI slot 34
+  vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 34
+- name: Drop the SATA controller
+  vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 34
+    state: absent
 """
 
-IN_QUERY_PARAMETER = []
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "bus": "spec/bus",
+            "pci_slot_number": "spec/pci_slot_number",
+            "type": "spec/type",
+        },
+        "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "adapter": "adapter"}},
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "adapter": "adapter"}},
+}
 
 import socket
 import json
@@ -106,12 +129,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -185,22 +210,23 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
-    accepted_fields = ["bus", "pci_slot_number", "type"]
-    _json = await exists(params, session, build_url(params))
+    if params["adapter"]:
+        _json = await get_device_info(
+            params, session, build_url(params), params["adapter"]
+        )
+    else:
+        _json = await exists(params, session, build_url(params), ["adapter"])
     if _json:
         if "_update" in globals():
             params["adapter"] = _json["id"]
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
-    spec = {}
-    for i in accepted_fields:
-        if params[i]:
-            spec[i] = params[i]
+    payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/adapter/sata".format(
         **params
     )
-    async with session.post(_url, json={"spec": spec}) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -216,12 +242,21 @@ async def _create(params, session):
 
 
 async def _delete(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type(
+        "/rest/vcenter/vm/{vm}/hardware/adapter/sata/{adapter}"
+    )
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/adapter/sata/{adapter}".format(
         **params
     ) + gen_args(
-        params, IN_QUERY_PARAMETER
+        params, _in_query_parameters
     )
-    async with session.delete(_url) as resp:
+    async with session.delete(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

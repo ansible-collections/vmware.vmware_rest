@@ -65,7 +65,12 @@ requirements:
 EXAMPLES = """
 """
 
-IN_QUERY_PARAMETER = ["action"]
+# This structure describes the format of the data expected by the end-points
+PAYLOAD_FORMAT = {
+    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "disconnect": {"query": {"action": "action"}, "body": {}, "path": {"vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+}
 
 import socket
 import json
@@ -78,12 +83,14 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    gen_args,
-    open_session,
-    update_changed_flag,
-    get_device_info,
-    list_devices,
     exists,
+    gen_args,
+    get_device_info,
+    get_subdevice_type,
+    list_devices,
+    open_session,
+    prepare_payload,
+    update_changed_flag,
 )
 
 
@@ -150,12 +157,21 @@ async def entry_point(module, session):
 
 
 async def _connect(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
+    subdevice_type = get_subdevice_type(
+        "/rest/vcenter/vm/{vm}/tools/installer?action=connect"
+    )
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/tools/installer?action=connect".format(
         **params
     ) + gen_args(
-        params, IN_QUERY_PARAMETER
+        params, _in_query_parameters
     )
-    async with session.post(_url) as resp:
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -165,10 +181,17 @@ async def _connect(params, session):
 
 
 async def _disconnect(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["disconnect"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/tools/installer")
+    if subdevice_type and (not params[subdevice_type]):
+        _json = await exists(params, session, build_url(params))
+        if _json:
+            params[subdevice_type] = _json["id"]
     _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/tools/installer".format(
         **params
-    ) + gen_args(params, IN_QUERY_PARAMETER)
-    async with session.post(_url) as resp:
+    ) + gen_args(params, _in_query_parameters)
+    async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
