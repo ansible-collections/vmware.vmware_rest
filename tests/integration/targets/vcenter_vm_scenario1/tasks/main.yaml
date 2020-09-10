@@ -11,10 +11,11 @@
 - import_tasks: vm_info.yaml
 - import_tasks: vm_hardware.yaml
 - import_tasks: ethernet.yaml
-- import_tasks: sata_controller.yaml
+- import_tasks: vm_hardware_adapter.yaml
 - import_tasks: attach_cdrom.yaml
 - import_tasks: vm_hardware_boot.yaml
 - import_tasks: vm_power.yaml
 - vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
-# - import_tasks: wait_for_test_vm1_info.yaml
+- import_tasks: wait_for_test_vm1.yaml
+- import_tasks: vm_guest_info.yaml

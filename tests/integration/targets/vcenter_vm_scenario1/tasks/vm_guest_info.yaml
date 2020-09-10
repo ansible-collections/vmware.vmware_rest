@@ -1,0 +1,46 @@
+---
+- name: Get guest filesystem information 
+  vcenter_vm_guest_localfilesystem_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+  until:
+  - _result is not failed
+  retries: 60
+  delay: 5
+
+- debug: var=_result
+
+- name: Get guest networking information 
+  vcenter_vm_guest_networking_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Get guest network interfaces information 
+  vcenter_vm_guest_networking_interfaces_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Get guest network routes information 
+  vcenter_vm_guest_networking_routes_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Get guest power information
+  vcenter_vm_power_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Get guest identity information
+  vcenter_vm_guest_identity_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
