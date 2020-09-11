@@ -13,9 +13,11 @@ options:
     - Existing physical resource backing for the virtual disk. Exactly one of Disk.CreateSpec.backing
       or Disk.CreateSpec.new-vmdk must be specified.
     - If unset, the virtual disk will not be connected to an existing backing.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(type) (str): The Disk.BackingType enumerated type defines the valid backing
       types for a virtual disk.'
+    - '   - Accepted values:'
+    - '     - VMDK_FILE'
     - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk.'
     - This field is optional and it is only relevant when the value of Disk.BackingSpec.type
       is VMDK_FILE.
@@ -31,7 +33,7 @@ options:
     - Address for attaching the device to a virtual IDE adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(master) (bool): Flag specifying whether the device should be the master
       or slave device on the IDE adapter.'
     - If unset, the server will choose an available connection type. If no IDE connections
@@ -46,7 +48,7 @@ options:
     - Specification for creating a new VMDK backing for the virtual disk. Exactly
       one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.
     - If unset, a new VMDK backing will not be created.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes.'
     - If unset, defaults to a guest-specific capacity.
     - ' - C(name) (str): Base name of the VMDK file. The name should not include the
@@ -60,13 +62,20 @@ options:
       is applied. Currently a default storage policy is only supported by object based
       datastores : VVol & vSAN. For non- object datastores, if unset then no storage
       policy would be associated with the VMDK file.'
+    - '   - Accepted keys:'
+    - '     - policy (string): Identifier of the storage policy which should be associated
+      with the VMDK file.'
+    - 'When clients pass a value of this structure as a parameter, the field must
+      be an identifier for the resource type: vcenter.StoragePolicy. When operations
+      return a value of this structure as a result, the field will be an identifier
+      for the resource type: vcenter.StoragePolicy.'
     type: dict
   sata:
     description:
     - Address for attaching the device to a virtual SATA adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
@@ -77,7 +86,7 @@ options:
     - Address for attaching the device to a virtual SCSI adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
@@ -168,8 +177,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "disk": "disk"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "disk": "disk"}},
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -178,7 +187,7 @@ PAYLOAD_FORMAT = {
                 "vmdk_file": "spec/backing/vmdk_file",
             }
         },
-        "path": {"vm": "vm", "disk": "disk"},
+        "path": {"disk": "disk", "vm": "vm"},
     },
 }
 

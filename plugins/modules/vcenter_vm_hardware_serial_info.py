@@ -80,8 +80,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -98,10 +98,10 @@ PAYLOAD_FORMAT = {
             "start_connected": "spec/start_connected",
             "yield_on_poll": "spec/yield_on_poll",
         },
-        "path": {"vm": "vm", "port": "port"},
+        "path": {"port": "port", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }
 
 import socket

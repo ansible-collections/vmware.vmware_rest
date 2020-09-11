@@ -105,9 +105,9 @@ PAYLOAD_FORMAT = {
     "list": {
         "query": {
             "filter.clusters": "filter.clusters",
-            "filter.names": "filter.names",
-            "filter.folders": "filter.folders",
             "filter.datacenters": "filter.datacenters",
+            "filter.folders": "filter.folders",
+            "filter.names": "filter.names",
         },
         "body": {},
         "path": {},

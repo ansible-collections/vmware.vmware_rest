@@ -79,8 +79,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
+    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -93,10 +93,10 @@ PAYLOAD_FORMAT = {
             },
             "start_connected": "spec/start_connected",
         },
-        "path": {"vm": "vm", "cdrom": "cdrom"},
+        "path": {"cdrom": "cdrom", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
+    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
 }
 
 import socket

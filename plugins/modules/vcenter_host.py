@@ -140,13 +140,13 @@ EXAMPLES = """
 PAYLOAD_FORMAT = {
     "list": {
         "query": {
-            "filter.hosts": "filter.hosts",
-            "filter.names": "filter.names",
-            "filter.folders": "filter.folders",
-            "filter.datacenters": "filter.datacenters",
-            "filter.standalone": "filter.standalone",
             "filter.clusters": "filter.clusters",
             "filter.connection_states": "filter.connection_states",
+            "filter.datacenters": "filter.datacenters",
+            "filter.folders": "filter.folders",
+            "filter.hosts": "filter.hosts",
+            "filter.names": "filter.names",
+            "filter.standalone": "filter.standalone",
         },
         "body": {},
         "path": {},

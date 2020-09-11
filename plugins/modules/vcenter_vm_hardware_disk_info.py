@@ -81,8 +81,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "disk": "disk"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "disk": "disk"}},
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -91,7 +91,7 @@ PAYLOAD_FORMAT = {
                 "vmdk_file": "spec/backing/vmdk_file",
             }
         },
-        "path": {"vm": "vm", "disk": "disk"},
+        "path": {"disk": "disk", "vm": "vm"},
     },
 }
 

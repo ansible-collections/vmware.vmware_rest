@@ -88,8 +88,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -105,10 +105,10 @@ PAYLOAD_FORMAT = {
             "upt_compatibility_enabled": "spec/upt_compatibility_enabled",
             "wake_on_lan_enabled": "spec/wake_on_lan_enabled",
         },
-        "path": {"vm": "vm", "nic": "nic"},
+        "path": {"nic": "nic", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }
 
 import socket

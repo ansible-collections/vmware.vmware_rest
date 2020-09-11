@@ -60,7 +60,7 @@ PAYLOAD_FORMAT = {
     "update": {
         "query": {},
         "body": {
-            "disks": "spec/disks",
+            "disks": {"key": "spec/disks/key", "value": "spec/disks/value"},
             "vm_home": {"policy": "spec/vm_home/policy", "type": "spec/vm_home/type"},
         },
         "path": {"vm": "vm"},
