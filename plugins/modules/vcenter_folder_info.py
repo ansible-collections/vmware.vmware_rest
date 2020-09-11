@@ -109,11 +109,11 @@ EXAMPLES = """
 PAYLOAD_FORMAT = {
     "list": {
         "query": {
+            "filter.datacenters": "filter.datacenters",
             "filter.folders": "filter.folders",
             "filter.names": "filter.names",
-            "filter.type": "filter.type",
             "filter.parent_folders": "filter.parent_folders",
-            "filter.datacenters": "filter.datacenters",
+            "filter.type": "filter.type",
         },
         "body": {},
         "path": {},

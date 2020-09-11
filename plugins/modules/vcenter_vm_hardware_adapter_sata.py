@@ -114,8 +114,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "adapter": "adapter"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "adapter": "adapter"}},
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }
 
 import socket

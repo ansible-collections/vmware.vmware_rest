@@ -15,14 +15,16 @@ options:
     type: bool
   backing:
     description:
-    - 'Physical resource backing for the virtual CD-ROM device. '
-    - ' This field may only be modified if the virtual machine is not powered on or
-      the virtual CD-ROM device is not connected.'
-    - If unset, the value is unchanged.
-    - 'Validate attributes are:'
+    - Physical resource backing for the virtual CD-ROM device.
+    - If unset, defaults to automatic detection of a suitable host device.
+    - 'Valide attributes are:'
     - ' - C(device_access_type) (str): The Cdrom.DeviceAccessType enumerated type
       defines the valid device access types for a physical device packing of a virtual
       CD-ROM device.'
+    - '   - Accepted values:'
+    - '     - EMULATION'
+    - '     - PASSTHRU'
+    - '     - PASSTHRU_EXCLUSIVE'
     - ' - C(host_device) (str): Name of the device that should be used as the virtual
       CD-ROM device backing.'
     - If unset, the virtual CD-ROM device will be configured to automatically detect
@@ -33,6 +35,10 @@ options:
       is ISO_FILE.
     - ' - C(type) (str): The Cdrom.BackingType enumerated type defines the valid backing
       types for a virtual CD-ROM device.'
+    - '   - Accepted values:'
+    - '     - ISO_FILE'
+    - '     - HOST_DEVICE'
+    - '     - CLIENT_DEVICE'
     type: dict
   cdrom:
     description:
@@ -45,7 +51,7 @@ options:
     - Address for attaching the device to a virtual IDE adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(master) (bool): Flag specifying whether the device should be the master
       or slave device on the IDE adapter.'
     - If unset, the server will choose an available connection type. If no IDE connections
@@ -60,7 +66,7 @@ options:
     - Address for attaching the device to a virtual SATA adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
@@ -170,8 +176,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
+    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -184,10 +190,10 @@ PAYLOAD_FORMAT = {
             },
             "start_connected": "spec/start_connected",
         },
-        "path": {"vm": "vm", "cdrom": "cdrom"},
+        "path": {"cdrom": "cdrom", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "cdrom": "cdrom"}},
+    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
 }
 
 import socket

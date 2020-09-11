@@ -15,11 +15,10 @@ options:
     type: bool
   backing:
     description:
-    - 'Physical resource backing for the virtual Ethernet adapter. '
-    - ' This field may be modified at any time, and changes will be applied the next
-      time the virtual machine is powered on.'
-    - If unset, the value is unchanged.
-    - 'Validate attributes are:'
+    - Physical resource backing for the virtual Ethernet adapter.
+    - If unset, the system may try to find an appropriate backing. If one is not found,
+      the request will fail.
+    - 'Valide attributes are:'
     - ' - C(distributed_port) (str): Key of the distributed virtual port that backs
       the virtual Ethernet adapter. Depending on the type of the Portgroup, the port
       may be specified using this field. If the portgroup type is early-binding (also
@@ -43,6 +42,11 @@ options:
       type: Network.'
     - ' - C(type) (str): The Ethernet.BackingType enumerated type defines the valid
       backing types for a virtual Ethernet adapter.'
+    - '   - Accepted values:'
+    - '     - STANDARD_PORTGROUP'
+    - '     - HOST_DEVICE'
+    - '     - DISTRIBUTED_PORTGROUP'
+    - '     - OPAQUE_NETWORK'
     type: dict
   mac_address:
     description:
@@ -204,8 +208,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -221,10 +225,10 @@ PAYLOAD_FORMAT = {
             "upt_compatibility_enabled": "spec/upt_compatibility_enabled",
             "wake_on_lan_enabled": "spec/wake_on_lan_enabled",
         },
-        "path": {"vm": "vm", "nic": "nic"},
+        "path": {"nic": "nic", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "nic": "nic"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }
 
 import socket

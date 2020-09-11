@@ -97,6 +97,9 @@ async def update_changed_flag(data, status, operation):
     elif operation == "upgrade" and status in [200]:
         data["failed"] = False
         data["changed"] = True
+    elif operation == "set" and status in [200]:
+        data["failed"] = False
+        data["changed"] = True
     elif operation == "delete" and status in [200, 204]:
         data["failed"] = False
         data["changed"] = True

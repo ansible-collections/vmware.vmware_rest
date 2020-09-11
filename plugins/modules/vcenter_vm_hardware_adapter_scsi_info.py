@@ -79,12 +79,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "adapter": "adapter"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "adapter": "adapter"}},
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {"sharing": "spec/sharing"},
-        "path": {"vm": "vm", "adapter": "adapter"},
+        "path": {"adapter": "adapter", "vm": "vm"},
     },
 }
 

@@ -16,6 +16,22 @@ options:
       field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
       When operations return a value of this structure as a result, the key in the
       field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+    - 'Valide attributes are:'
+    - ' - C(key) (str): '
+    - ' - C(value) (dict): '
+    - '   - Accepted keys:'
+    - '     - policy (string): Storage Policy identification.'
+    - This field is optional and it is only relevant when the value of Policy.DiskPolicySpec.type
+      is USE_SPECIFIED_POLICY.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      be an identifier for the resource type: vcenter.StoragePolicy. When operations
+      return a value of this structure as a result, the field will be an identifier
+      for the resource type: vcenter.StoragePolicy.'
+    - '     - type (string): The Policy.DiskPolicySpec enumerated type defines the
+      choices for how to specify the policy to be associated with a virtual disk.'
+    - 'Accepted value for this field:'
+    - '       - C(USE_SPECIFIED_POLICY)'
+    - '       - C(USE_DEFAULT_POLICY)'
     elements: str
     type: list
   state:
@@ -62,7 +78,7 @@ options:
     description:
     - Storage policy to be used when reconfiguring the virtual machine home.
     - if unset the current storage policy is retained.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(policy) (str): Storage Policy identification.'
     - This field is optional and it is only relevant when the value of Policy.VmHomePolicySpec.type
       is USE_SPECIFIED_POLICY.
@@ -73,6 +89,9 @@ options:
     - ' - C(type) (str): The Policy.VmHomePolicySpec.PolicyType enumerated type defines
       the choices for how to specify the policy to be associated with the virtual
       machine home''s directory.'
+    - '   - Accepted values:'
+    - '     - USE_SPECIFIED_POLICY'
+    - '     - USE_DEFAULT_POLICY'
     type: dict
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -91,7 +110,7 @@ PAYLOAD_FORMAT = {
     "update": {
         "query": {},
         "body": {
-            "disks": "spec/disks",
+            "disks": {"key": "spec/disks/key", "value": "spec/disks/value"},
             "vm_home": {"policy": "spec/vm_home/policy", "type": "spec/vm_home/type"},
         },
         "path": {"vm": "vm"},

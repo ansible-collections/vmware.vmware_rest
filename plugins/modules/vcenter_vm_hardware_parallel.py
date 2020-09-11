@@ -15,11 +15,9 @@ options:
     type: bool
   backing:
     description:
-    - 'Physical resource backing for the virtual parallel port. '
-    - ' This field may only be modified if the virtual machine is not powered on or
-      the virtual parallel port is not connected.'
-    - If unset, the value is unchanged.
-    - 'Validate attributes are:'
+    - Physical resource backing for the virtual parallel port.
+    - If unset, defaults to automatic detection of a suitable host device.
+    - 'Valide attributes are:'
     - ' - C(file) (str): Path of the file that should be used as the virtual parallel
       port backing.'
     - This field is optional and it is only relevant when the value of Parallel.BackingSpec.type
@@ -30,6 +28,9 @@ options:
       a suitable host device.
     - ' - C(type) (str): The Parallel.BackingType enumerated type defines the valid
       backing types for a virtual parallel port.'
+    - '   - Accepted values:'
+    - '     - FILE'
+    - '     - HOST_DEVICE'
     type: dict
   port:
     description:
@@ -114,8 +115,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -127,10 +128,10 @@ PAYLOAD_FORMAT = {
             },
             "start_connected": "spec/start_connected",
         },
-        "path": {"vm": "vm", "port": "port"},
+        "path": {"port": "port", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }
 
 import socket

@@ -15,11 +15,9 @@ options:
     type: bool
   backing:
     description:
-    - 'Physical resource backing for the virtual floppy drive. '
-    - ' This field may only be modified if the virtual machine is not powered on or
-      the virtual floppy drive is not connected.'
-    - If unset, the value is unchanged.
-    - 'Validate attributes are:'
+    - Physical resource backing for the virtual floppy drive.
+    - If unset, defaults to automatic detection of a suitable host device.
+    - 'Valide attributes are:'
     - ' - C(host_device) (str): Name of the device that should be used as the virtual
       floppy drive backing.'
     - If unset, the virtual floppy drive will be configured to automatically detect
@@ -30,6 +28,10 @@ options:
       is IMAGE_FILE.
     - ' - C(type) (str): The Floppy.BackingType enumerated type defines the valid
       backing types for a virtual floppy drive.'
+    - '   - Accepted values:'
+    - '     - IMAGE_FILE'
+    - '     - HOST_DEVICE'
+    - '     - CLIENT_DEVICE'
     type: dict
   floppy:
     description:
@@ -114,8 +116,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
+    "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -127,10 +129,10 @@ PAYLOAD_FORMAT = {
             },
             "start_connected": "spec/start_connected",
         },
-        "path": {"vm": "vm", "floppy": "floppy"},
+        "path": {"floppy": "floppy", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
+    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
 }
 
 import socket

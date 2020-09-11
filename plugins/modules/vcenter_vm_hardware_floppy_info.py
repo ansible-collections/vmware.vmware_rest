@@ -75,8 +75,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
+    "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -88,10 +88,10 @@ PAYLOAD_FORMAT = {
             },
             "start_connected": "spec/start_connected",
         },
-        "path": {"vm": "vm", "floppy": "floppy"},
+        "path": {"floppy": "floppy", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "floppy": "floppy"}},
+    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
 }
 
 import socket

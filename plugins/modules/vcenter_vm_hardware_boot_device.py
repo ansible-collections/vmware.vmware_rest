@@ -11,11 +11,35 @@ options:
   devices:
     description:
     - Ordered list of boot devices.
+    - 'Valide attributes are:'
+    - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot order.'
+    - This field is optional and it is only relevant when the value of Device.Entry.type
+      is DISK.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations
+      return a value of this structure as a result, the field will contain identifiers
+      for the resource type: vcenter.vm.hardware.Disk.'
+    - ' - C(nic) (str): Virtual Ethernet device. Ethernet device to use as boot device
+      for this entry.'
+    - This field is optional and it is only relevant when the value of Device.Entry.type
+      is ETHERNET.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      be an identifier for the resource type: vcenter.vm.hardware.Ethernet. When operations
+      return a value of this structure as a result, the field will be an identifier
+      for the resource type: vcenter.vm.hardware.Ethernet.'
+    - ' - C(type) (str): The Device.Type enumerated type defines the valid device
+      types that may be used as bootable devices.'
+    - '   - Accepted values:'
+    - '     - CDROM'
+    - '     - DISK'
+    - '     - ETHERNET'
+    - '     - FLOPPY'
     elements: str
     type: list
   state:
     choices:
     - set
+    default: set
     description: []
     type: str
   vcenter_hostname:
@@ -61,12 +85,31 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Set a boot device
+  vcenter_vm_hardware_boot_device:
+    vm: '{{ test_vm1_info.id }}'
+    devices:
+    - type: CDROM
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "set": {"query": {}, "body": {"devices": "devices"}, "path": {"vm": "vm"}},
+    "set": {
+        "query": {},
+        "body": {
+            "devices": {
+                "disks": "devices/disks",
+                "nic": "devices/nic",
+                "type": "devices/type",
+            }
+        },
+        "path": {"vm": "vm"},
+    },
 }
 
 import socket
@@ -114,7 +157,7 @@ def prepare_argument_spec():
     }
 
     argument_spec["devices"] = {"type": "list", "elements": "str"}
-    argument_spec["state"] = {"type": "str", "choices": ["set"]}
+    argument_spec["state"] = {"type": "str", "choices": ["set"], "default": "set"}
     argument_spec["vm"] = {"type": "str"}
 
     return argument_spec

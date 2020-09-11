@@ -15,11 +15,9 @@ options:
     type: bool
   backing:
     description:
-    - 'Physical resource backing for the virtual serial port. '
-    - ' This field may only be modified if the virtual machine is not powered on or
-      the virtual serial port is not connected.'
-    - If unset, the value is unchanged.
-    - 'Validate attributes are:'
+    - Physical resource backing for the virtual serial port.
+    - If unset, defaults to automatic detection of a suitable host device.
+    - 'Valide attributes are:'
     - ' - C(file) (str): Path of the file backing the virtual serial port.'
     - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
       is FILE.
@@ -51,6 +49,13 @@ options:
     - If unset, no proxy service should be used.
     - ' - C(type) (str): The Serial.BackingType enumerated type defines the valid
       backing types for a virtual serial port.'
+    - '   - Accepted values:'
+    - '     - FILE'
+    - '     - HOST_DEVICE'
+    - '     - PIPE_SERVER'
+    - '     - PIPE_CLIENT'
+    - '     - NETWORK_SERVER'
+    - '     - NETWORK_CLIENT'
     type: dict
   port:
     description:
@@ -150,8 +155,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "get": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -168,10 +173,10 @@ PAYLOAD_FORMAT = {
             "start_connected": "spec/start_connected",
             "yield_on_poll": "spec/yield_on_poll",
         },
-        "path": {"vm": "vm", "port": "port"},
+        "path": {"port": "port", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm", "port": "port"}},
+    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }
 
 import socket

@@ -56,6 +56,12 @@ EXAMPLES = """
   vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+- name: Get boot device info
+  vcenter_vm_hardware_boot_device_info:
+    vm: '{{ test_vm1_info.id }}'
+- name: Get boot device info (again)
+  vcenter_vm_hardware_boot_device_info:
+    vm: '{{ test_vm1_info.id }}'
 - name: Get information about the boot device
   vcenter_vm_hardware_boot_device_info:
     vm: '{{ test_vm1_info.id }}'
@@ -64,7 +70,17 @@ EXAMPLES = """
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "set": {"query": {}, "body": {"devices": "devices"}, "path": {"vm": "vm"}},
+    "set": {
+        "query": {},
+        "body": {
+            "devices": {
+                "disks": "devices/disks",
+                "nic": "devices/nic",
+                "type": "devices/type",
+            }
+        },
+        "path": {"vm": "vm"},
+    },
 }
 
 import socket

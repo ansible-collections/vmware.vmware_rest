@@ -21,7 +21,7 @@ options:
     - If unset, the behavior is equivalent to a Compliance.CheckSpec with CheckSpec#vmHome
       set to true and CheckSpec#disks populated with all disks attached to the virtual
       machine.
-    - 'Validate attributes are:'
+    - 'Valide attributes are:'
     - ' - C(disks) (list): Identifiers of the virtual machine''s virtual disks for
       which compliance should be checked.'
     - If unset or empty, compliance check is invoked on all the associated disks.
@@ -87,7 +87,9 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "check": {
         "query": {"action": "action"},
-        "body": {"disks": "disks", "vm_home": "vm_home"},
+        "body": {
+            "check_spec": {"disks": "check_spec/disks", "vm_home": "check_spec/vm_home"}
+        },
         "path": {"vm": "vm"},
     },
 }
