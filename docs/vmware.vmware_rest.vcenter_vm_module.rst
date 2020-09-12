@@ -70,7 +70,7 @@ Parameters
                 <td>
                         <div>Boot configuration.</div>
                         <div>If unset, guest-specific default values will be used.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>delay</code> (int): Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on. This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
                         <div>If unset, default value is 0.</div>
                         <div>- <code>efi_legacy_boot</code> (bool): Flag indicating whether to use EFI legacy boot mode.</div>
@@ -78,11 +78,17 @@ Parameters
                         <div>- <code>enter_setup_mode</code> (bool): Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots. Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</div>
                         <div>If unset, the value is unchanged.</div>
                         <div>- <code>network_protocol</code> (str): The Boot.NetworkProtocol enumerated type defines the valid network boot protocols supported when booting a virtual machine with EFI firmware over the network.</div>
+                        <div>- Accepted values:</div>
+                        <div>- IPV4</div>
+                        <div>- IPV6</div>
                         <div>- <code>retry</code> (bool): Flag indicating whether the virtual machine should automatically retry the boot process after a failure.</div>
                         <div>If unset, default value is false.</div>
                         <div>- <code>retry_delay</code> (int): Delay in milliseconds before retrying the boot process after a failure; applicable only when Boot.Info.retry is true.</div>
                         <div>If unset, default value is 10000.</div>
                         <div>- <code>type</code> (str): The Boot.Type enumerated type defines the valid firmware types for a virtual machine.</div>
+                        <div>- Accepted values:</div>
+                        <div>- BIOS</div>
+                        <div>- EFI</div>
                 </td>
             </tr>
             <tr>
@@ -100,6 +106,13 @@ Parameters
                 <td>
                         <div>Boot device configuration.</div>
                         <div>If unset, a server-specific boot sequence will be used.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>type</code> (str): The Device.Type enumerated type defines the valid device types that may be used as bootable devices.</div>
+                        <div>- Accepted values:</div>
+                        <div>- CDROM</div>
+                        <div>- DISK</div>
+                        <div>- ETHERNET</div>
+                        <div>- FLOPPY</div>
                 </td>
             </tr>
             <tr>
@@ -117,6 +130,45 @@ Parameters
                 <td>
                         <div>List of CD-ROMs.</div>
                         <div>If unset, no CD-ROM devices will be created.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual CD-ROM device.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- device_access_type (string): The Cdrom.DeviceAccessType enumerated type defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>EMULATION</code></div>
+                        <div>- <code>PASSTHRU</code></div>
+                        <div>- <code>PASSTHRU_EXCLUSIVE</code></div>
+                        <div>- host_device (string): Name of the device that should be used as the virtual CD-ROM device backing.</div>
+                        <div>If unset, the virtual CD-ROM device will be configured to automatically detect a suitable host device.</div>
+                        <div>- iso_file (string): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
+                        <div>This field is optional and it is only relevant when the value of Cdrom.BackingSpec.type is ISO_FILE.</div>
+                        <div>- type (string): The Cdrom.BackingType enumerated type defines the valid backing types for a virtual CD-ROM device.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>ISO_FILE</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>CLIENT_DEVICE</code></div>
+                        <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- master (boolean): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
+                        <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
+                        <div>- primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
+                        <div>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</div>
+                        <div>- <code>sata</code> (dict): Address for attaching the device to a virtual SATA adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- bus (integer): Bus number of the adapter to which the device should be attached.</div>
+                        <div>- unit (integer): Unit number of the device.</div>
+                        <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>type</code> (str): The Cdrom.HostBusAdapterType enumerated type defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
+                        <div>- Accepted values:</div>
+                        <div>- IDE</div>
+                        <div>- SATA</div>
                 </td>
             </tr>
             <tr>
@@ -133,7 +185,7 @@ Parameters
                 <td>
                         <div>CPU configuration.</div>
                         <div>If unset, guest-specific default values will be used.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>cores_per_socket</code> (int): New number of CPU cores per socket. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
                         <div>If unset, the value is unchanged.</div>
                         <div>- <code>count</code> (int): New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
@@ -217,6 +269,48 @@ Parameters
                         <div>Individual disk relocation map.</div>
                         <div>If unset, all disks will migrate to the datastore specified in the VM.RelocatePlacementSpec.datastore field of VM.RelocateSpec.placement.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be an identifier for the resource type: vcenter.vm.hardware.Disk. When operations return a value of this structure as a result, the key in the field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>backing</code> (dict): Existing physical resource backing for the virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.</div>
+                        <div>If unset, the virtual disk will not be connected to an existing backing.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- type (string): The Disk.BackingType enumerated type defines the valid backing types for a virtual disk.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>VMDK_FILE</code></div>
+                        <div>- vmdk_file (string): Path of the VMDK file backing the virtual disk.</div>
+                        <div>This field is optional and it is only relevant when the value of Disk.BackingSpec.type is VMDK_FILE.</div>
+                        <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- master (boolean): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
+                        <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
+                        <div>- primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
+                        <div>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</div>
+                        <div>- <code>new_vmdk</code> (dict): Specification for creating a new VMDK backing for the virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.</div>
+                        <div>If unset, a new VMDK backing will not be created.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- capacity (integer): Capacity of the virtual disk backing in bytes.</div>
+                        <div>If unset, defaults to a guest-specific capacity.</div>
+                        <div>- name (string): Base name of the VMDK file. The name should not include the &#x27;.vmdk&#x27; file extension.</div>
+                        <div>If unset, a name (derived from the name of the virtual machine) will be chosen by the server.</div>
+                        <div>- storage_policy (object): The Disk.StoragePolicySpec structure contains information about the storage policy that is to be associated the with VMDK file.</div>
+                        <div>If unset the default storage policy of the target datastore (if applicable) is applied. Currently a default storage policy is only supported by object based datastores : VVol &amp; vSAN. For non- object datastores, if unset then no storage policy would be associated with the VMDK file.</div>
+                        <div>- <code>sata</code> (dict): Address for attaching the device to a virtual SATA adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- bus (integer): Bus number of the adapter to which the device should be attached.</div>
+                        <div>- unit (integer): Unit number of the device.</div>
+                        <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
+                        <div>- <code>scsi</code> (dict): Address for attaching the device to a virtual SCSI adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- bus (integer): Bus number of the adapter to which the device should be attached.</div>
+                        <div>- unit (integer): Unit number of the device.</div>
+                        <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
+                        <div>- <code>type</code> (str): The Disk.HostBusAdapterType enumerated type defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine.</div>
+                        <div>- Accepted values:</div>
+                        <div>- IDE</div>
+                        <div>- SCSI</div>
+                        <div>- SATA</div>
                 </td>
             </tr>
             <tr>
@@ -253,6 +347,13 @@ Parameters
                         <div>Map of Disks to Update.</div>
                         <div>If unset, all disks will copied to the datastore specified in the VM.ClonePlacementSpec.datastore field of VM.CloneSpec.placement. If the same identifier is in VM.CloneSpec.disks-to-remove InvalidArgument fault will be thrown.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be an identifier for the resource type: vcenter.vm.hardware.Disk. When operations return a value of this structure as a result, the key in the field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>key</code> (str):</div>
+                        <div>- <code>value</code> (dict):</div>
+                        <div>- Accepted keys:</div>
+                        <div>- datastore (string): Destination datastore to clone disk.</div>
+                        <div>This field is currently required. In the future, if this field is unset disk will be copied to the datastore specified in the VM.ClonePlacementSpec.datastore field of VM.CloneSpec.placement.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Datastore. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Datastore.</div>
                 </td>
             </tr>
             <tr>
@@ -270,6 +371,23 @@ Parameters
                 <td>
                         <div>List of floppy drives.</div>
                         <div>If unset, no floppy drives will be created.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual floppy drive.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- host_device (string): Name of the device that should be used as the virtual floppy drive backing.</div>
+                        <div>If unset, the virtual floppy drive will be configured to automatically detect a suitable host device.</div>
+                        <div>- image_file (string): Path of the image file that should be used as the virtual floppy drive backing.</div>
+                        <div>This field is optional and it is only relevant when the value of Floppy.BackingSpec.type is IMAGE_FILE.</div>
+                        <div>- type (string): The Floppy.BackingType enumerated type defines the valid backing types for a virtual floppy drive.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>IMAGE_FILE</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>CLIENT_DEVICE</code></div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>Defaults to false if unset.</div>
                 </td>
             </tr>
             <tr>
@@ -286,7 +404,7 @@ Parameters
                 <td>
                         <div>Guest customization spec to apply to the virtual machine after the virtual machine is deployed.</div>
                         <div>If unset, the guest operating system is not customized after clone.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>name</code> (str): Name of the customization specification.</div>
                         <div>If unset, no guest customization is performed.</div>
                 </td>
@@ -521,7 +639,7 @@ Parameters
                 <td>
                         <div>Memory configuration.</div>
                         <div>If unset, guest-specific default values will be used.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>hot_add_enabled</code> (bool): Flag indicating whether adding memory while the virtual machine is running should be enabled.</div>
                         <div>Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running.</div>
                         <div>This field may only be modified if the virtual machine is not powered on.</div>
@@ -545,7 +663,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine name.</div>
-                        <div>If unset, the display name from the virtual machine&#x27;s configuration file will be used.</div>
+                        <div>If unset, the display name from the virtual machine&#x27;s configuration file will be used. Required with <em>state=[&#x27;clone&#x27;, &#x27;create&#x27;, &#x27;instant_clone&#x27;, &#x27;register&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -563,6 +681,46 @@ Parameters
                 <td>
                         <div>List of Ethernet adapters.</div>
                         <div>If unset, no Ethernet adapters will be created.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual Ethernet adapter.</div>
+                        <div>If unset, the system may try to find an appropriate backing. If one is not found, the request will fail.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- distributed_port (string): Key of the distributed virtual port that backs the virtual Ethernet adapter. Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected. This field cannot be specified as no free ports exist before use.</div>
+                        <div>May be used to specify a port when the network specified on the Ethernet.BackingSpec.network field is a static or early binding distributed portgroup. If unset, the port will be automatically assigned to the Ethernet adapter based on the policy embodied by the portgroup type.</div>
+                        <div>- network (string): Identifier of the network that backs the virtual Ethernet adapter.</div>
+                        <div>This field is optional and it is only relevant when the value of Ethernet.BackingSpec.type is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Network. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Network.</div>
+                        <div>- type (string): The Ethernet.BackingType enumerated type defines the valid backing types for a virtual Ethernet adapter.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>STANDARD_PORTGROUP</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>DISTRIBUTED_PORTGROUP</code></div>
+                        <div>- <code>OPAQUE_NETWORK</code></div>
+                        <div>- <code>mac_address</code> (str): MAC address.</div>
+                        <div>Workaround for PR1459647</div>
+                        <div>- <code>mac_type</code> (str): The Ethernet.MacAddressType enumerated type defines the valid MAC address origins for a virtual Ethernet adapter.</div>
+                        <div>- Accepted values:</div>
+                        <div>- MANUAL</div>
+                        <div>- GENERATED</div>
+                        <div>- ASSIGNED</div>
+                        <div>- <code>pci_slot_number</code> (int): Address of the virtual Ethernet adapter on the PCI bus. If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</div>
+                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>type</code> (str): The Ethernet.EmulationType enumerated type defines the valid emulation types for a virtual Ethernet adapter.</div>
+                        <div>- Accepted values:</div>
+                        <div>- E1000</div>
+                        <div>- E1000E</div>
+                        <div>- PCNET32</div>
+                        <div>- VMXNET</div>
+                        <div>- VMXNET2</div>
+                        <div>- VMXNET3</div>
+                        <div>- <code>upt_compatibility_enabled</code> (bool): Flag indicating whether Universal Pass-Through (UPT) compatibility is enabled on this virtual Ethernet adapter.</div>
+                        <div>If unset, defaults to false.</div>
+                        <div>- <code>wake_on_lan_enabled</code> (bool): Flag indicating whether wake-on-LAN is enabled on this virtual Ethernet adapter.</div>
+                        <div>Defaults to false if unset.</div>
                 </td>
             </tr>
             <tr>
@@ -581,6 +739,30 @@ Parameters
                         <div>Map of NICs to update.</div>
                         <div>If unset, no NICs will be updated.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be an identifier for the resource type: vcenter.vm.hardware.Ethernet. When operations return a value of this structure as a result, the key in the field map will be an identifier for the resource type: vcenter.vm.hardware.Ethernet.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>key</code> (str):</div>
+                        <div>- <code>value</code> (dict):</div>
+                        <div>- Accepted keys:</div>
+                        <div>- allow_guest_control (boolean): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>If unset, the value is unchanged.</div>
+                        <div>- backing (object): Physical resource backing for the virtual Ethernet adapter.</div>
+                        <div>If unset, the system may try to find an appropriate backing. If one is not found, the request will fail.</div>
+                        <div>- mac_address (string): MAC address.</div>
+                        <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged. Must be specified if Ethernet.UpdateSpec.mac-type is MANUAL. Must be unset if the MAC address type is not MANUAL.</div>
+                        <div>- mac_type (string): The Ethernet.MacAddressType enumerated type defines the valid MAC address origins for a virtual Ethernet adapter.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>MANUAL</code></div>
+                        <div>- <code>GENERATED</code></div>
+                        <div>- <code>ASSIGNED</code></div>
+                        <div>- start_connected (boolean): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
+                        <div>- upt_compatibility_enabled (boolean): Flag indicating whether Universal Pass-Through (UPT) compatibility should be enabled on this virtual Ethernet adapter.</div>
+                        <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged. Must be unset if the emulation type of the virtual Ethernet adapter is not VMXNET3.</div>
+                        <div>- wake_on_lan_enabled (boolean): Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet adapter.</div>
+                        <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -598,6 +780,22 @@ Parameters
                 <td>
                         <div>List of parallel ports.</div>
                         <div>If unset, no parallel ports will be created.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual parallel port.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- file (string): Path of the file that should be used as the virtual parallel port backing.</div>
+                        <div>This field is optional and it is only relevant when the value of Parallel.BackingSpec.type is FILE.</div>
+                        <div>- host_device (string): Name of the device that should be used as the virtual parallel port backing.</div>
+                        <div>If unset, the virtual parallel port will be configured to automatically detect a suitable host device.</div>
+                        <div>- type (string): The Parallel.BackingType enumerated type defines the valid backing types for a virtual parallel port.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>FILE</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>Defaults to false if unset.</div>
                 </td>
             </tr>
             <tr>
@@ -616,6 +814,16 @@ Parameters
                         <div>Map of parallel ports to Update.</div>
                         <div>If unset, no parallel ports will be updated.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort. When operations return a value of this structure as a result, the key in the field map will be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>key</code> (str):</div>
+                        <div>- <code>value</code> (dict):</div>
+                        <div>- Accepted keys:</div>
+                        <div>- allow_guest_control (boolean): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>If unset, the value is unchanged.</div>
+                        <div>- backing (object): Physical resource backing for the virtual parallel port.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>- start_connected (boolean): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -648,25 +856,25 @@ Parameters
                 <td>
                         <div>Virtual machine placement information.</div>
                         <div>If this field is unset, the system will use the values from the source virtual machine. If specified, each field will be used for placement. If the fields result in disjoint placement the operation will fail. If the fields along with the other existing placement of the virtual machine result in disjoint placement the operation will fail.</div>
-                        <div>Validate attributes are:</div>
-                        <div>- <code>cluster</code> (str): Cluster into which the virtual machine should be placed.</div>
-                        <div>If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster.</div>
-                        <div>If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.</div>
-                        <div>If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is specified, it is recommended that this field be unset.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>cluster</code> (str): Cluster into which the cloned virtual machine should be placed.</div>
+                        <div>If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.resource-pool are both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.cluster.</div>
+                        <div>If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.host are both specified, VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.</div>
+                        <div>If VM.ClonePlacementSpec.resource-pool or VM.ClonePlacementSpec.host is specified, it is recommended that this field be unset.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: ClusterComputeResource. When operations return a value of this structure as a result, the field will be an identifier for the resource type: ClusterComputeResource.</div>
-                        <div>- <code>datastore</code> (str): Datastore on which the virtual machine&#x27;s configuration state should be stored. This datastore will also be used for any virtual disks that are created as part of the virtual machine creation operation.</div>
-                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose suitable storage for the virtual machine; if storage cannot be chosen, the virtual machine creation operation will fail.</div>
+                        <div>- <code>datastore</code> (str): Datastore on which the cloned virtual machine&#x27;s configuration state should be stored. This datastore will also be used for any virtual disks that are created as part of the virtual machine clone operation unless individually overridden.</div>
+                        <div>If field is unset, the system will use the datastore of the source virtual machine.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Datastore. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Datastore.</div>
-                        <div>- <code>folder</code> (str): Virtual machine folder into which the virtual machine should be placed.</div>
-                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the virtual machine; if a folder cannot be chosen, the virtual machine creation operation will fail.</div>
+                        <div>- <code>folder</code> (str): Virtual machine folder into which the cloned virtual machine should be placed.</div>
+                        <div>If field is unset, the system will use the virtual machine folder of the source virtual machine. If this results in a conflict due to other placement parameters, the virtual machine clone operation will fail.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Folder. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Folder.</div>
-                        <div>- <code>host</code> (str): Host onto which the virtual machine should be placed.</div>
-                        <div>If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host.</div>
-                        <div>If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.</div>
-                        <div>This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster is specified. If unset, the system will attempt to choose a suitable host for the virtual machine; if a host cannot be chosen, the virtual machine creation operation will fail.</div>
+                        <div>- <code>host</code> (str): Host onto which the cloned virtual machine should be placed.</div>
+                        <div>If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.resource-pool are both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.host.</div>
+                        <div>If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.cluster are both specified, VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.</div>
+                        <div>If this field is unset, if VM.ClonePlacementSpec.resource-pool is unset, the cloned virtual machine will use the host of the source virtual machine. if VM.ClonePlacementSpec.resource-pool is set, and the target is a standalone host, the host is used. if VM.ClonePlacementSpec.resource-pool is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.ClonePlacementSpec.resource-pool is set, and the target is a cluster without DRS, InvalidArgument will be thrown.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: HostSystem. When operations return a value of this structure as a result, the field will be an identifier for the resource type: HostSystem.</div>
-                        <div>- <code>resource_pool</code> (str): Resource pool into which the virtual machine should be placed.</div>
-                        <div>This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are unset. In the future, if this field is unset, the system will attempt to choose a suitable resource pool for the virtual machine; if a resource pool cannot be chosen, the virtual machine creation operation will fail.</div>
+                        <div>- <code>resource_pool</code> (str): Resource pool into which the cloned virtual machine should be placed.</div>
+                        <div>If field is unset, the system will use the resource pool of the source virtual machine. If this results in a conflict due to other placement parameters, the virtual machine clone operation will fail.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: ResourcePool. When operations return a value of this structure as a result, the field will be an identifier for the resource type: ResourcePool.</div>
                 </td>
             </tr>
@@ -705,6 +913,14 @@ Parameters
                 <td>
                         <div>List of SATA adapters.</div>
                         <div>If unset, any adapters necessary to connect the virtual machine&#x27;s storage devices will be created; this includes any devices that explicitly specify a SATA host bus adapter, as well as any devices that do not specify a host bus adapter if the guest&#x27;s preferred adapter type is SATA.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>bus</code> (int): SATA bus number.</div>
+                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
+                        <div>- <code>pci_slot_number</code> (int): Address of the SATA adapter on the PCI bus.</div>
+                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>- <code>type</code> (str): The Sata.Type enumerated type defines the valid emulation types for a virtual SATA adapter.</div>
+                        <div>- Accepted values:</div>
+                        <div>- AHCI</div>
                 </td>
             </tr>
             <tr>
@@ -722,6 +938,22 @@ Parameters
                 <td>
                         <div>List of SCSI adapters.</div>
                         <div>If unset, any adapters necessary to connect the virtual machine&#x27;s storage devices will be created; this includes any devices that explicitly specify a SCSI host bus adapter, as well as any devices that do not specify a host bus adapter if the guest&#x27;s preferred adapter type is SCSI. The type of the SCSI adapter will be a guest-specific default type.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>bus</code> (int): SCSI bus number.</div>
+                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
+                        <div>- <code>pci_slot_number</code> (int): Address of the SCSI adapter on the PCI bus. If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added.</div>
+                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>- <code>sharing</code> (str): The Scsi.Sharing enumerated type defines the valid bus sharing modes for a virtual SCSI adapter.</div>
+                        <div>- Accepted values:</div>
+                        <div>- NONE</div>
+                        <div>- VIRTUAL</div>
+                        <div>- PHYSICAL</div>
+                        <div>- <code>type</code> (str): The Scsi.Type enumerated type defines the valid emulation types for a virtual SCSI adapter.</div>
+                        <div>- Accepted values:</div>
+                        <div>- BUSLOGIC</div>
+                        <div>- LSILOGIC</div>
+                        <div>- LSILOGICSAS</div>
+                        <div>- PVSCSI</div>
                 </td>
             </tr>
             <tr>
@@ -739,6 +971,39 @@ Parameters
                 <td>
                         <div>List of serial ports.</div>
                         <div>If unset, no serial ports will be created.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual serial port.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- file (string): Path of the file backing the virtual serial port.</div>
+                        <div>This field is optional and it is only relevant when the value of Serial.BackingSpec.type is FILE.</div>
+                        <div>- host_device (string): Name of the device backing the virtual serial port.</div>
+                        <div>If unset, the virtual serial port will be configured to automatically detect a suitable host device.</div>
+                        <div>- network_location (string): URI specifying the location of the network service backing the virtual serial port.</div>
+                        <div>- If Serial.BackingSpec.type is NETWORK_SERVER, this field is the location used by clients to connect to this server. The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.</div>
+                        <div>- If Serial.BackingSpec.type is NETWORK_CLIENT, this field is the location used by the virtual machine to connect to the remote server.</div>
+                        <div></div>
+                        <div>This field is optional and it is only relevant when the value of Serial.BackingSpec.type is one of NETWORK_SERVER or NETWORK_CLIENT.</div>
+                        <div>- no_rx_loss (boolean): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun. This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</div>
+                        <div>If unset, defaults to false.</div>
+                        <div>- pipe (string): Name of the pipe backing the virtual serial port.</div>
+                        <div>This field is optional and it is only relevant when the value of Serial.BackingSpec.type is one of PIPE_SERVER or PIPE_CLIENT.</div>
+                        <div>- proxy (string): Proxy service that provides network access to the network backing. If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</div>
+                        <div>If unset, no proxy service should be used.</div>
+                        <div>- type (string): The Serial.BackingType enumerated type defines the valid backing types for a virtual serial port.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>FILE</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>PIPE_SERVER</code></div>
+                        <div>- <code>PIPE_CLIENT</code></div>
+                        <div>- <code>NETWORK_SERVER</code></div>
+                        <div>- <code>NETWORK_CLIENT</code></div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>Defaults to false if unset.</div>
+                        <div>- <code>yield_on_poll</code> (bool): CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host.</div>
+                        <div>If unset, defaults to false.</div>
                 </td>
             </tr>
             <tr>
@@ -757,6 +1022,19 @@ Parameters
                         <div>Map of serial ports to Update.</div>
                         <div>If unset, no serial ports will be updated.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be an identifier for the resource type: vcenter.vm.hardware.SerialPort. When operations return a value of this structure as a result, the key in the field map will be an identifier for the resource type: vcenter.vm.hardware.SerialPort.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>key</code> (str):</div>
+                        <div>- <code>value</code> (dict):</div>
+                        <div>- Accepted keys:</div>
+                        <div>- allow_guest_control (boolean): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>If unset, the value is unchanged.</div>
+                        <div>- backing (object): Physical resource backing for the virtual serial port.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>- start_connected (boolean): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
+                        <div>- yield_on_poll (boolean): CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host.</div>
+                        <div>This field may be modified at any time, and changes applied to a connected virtual serial port take effect immediately.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -789,7 +1067,7 @@ Parameters
                                     <li>absent</li>
                                     <li>clone</li>
                                     <li>instant_clone</li>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                                     <li>register</li>
                                     <li>relocate</li>
                                     <li>unregister</li>
@@ -812,7 +1090,7 @@ Parameters
                 <td>
                         <div>The VM.StoragePolicySpec structure contains information about the storage policy that is to be associated with the virtual machine home (which contains the configuration and log files).</div>
                         <div>If unset the datastore default storage policy (if applicable) is applied. Currently a default storage policy is only supported by object datastores : VVol and vSAN. For non-object datastores, if unset then no storage policy would be associated with the virtual machine home.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>policy</code> (str): Identifier of the storage policy which should be associated with the virtual machine.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.StoragePolicy. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.StoragePolicy.</div>
                 </td>
@@ -915,10 +1193,8 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: _Wait for the vcenter server
+    - name: Collect the list of the existing VM
       vcenter_vm_info:
-      retries: 100
-      delay: 3
       register: existing_vms
       until: existing_vms is not failed
     - name: Create a VM
@@ -942,6 +1218,19 @@ Examples
           folder: '{{ my_virtual_machine_folder.folder }}'
           resource_pool: '{{ my_cluster_info.value.resource_pool }}'
         name: test_vm1
+        guest_OS: DEBIAN_8_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+    - name: Create another VM
+      vcenter_vm:
+        placement:
+          cluster: '{{ all_the_clusters.value[0].cluster }}'
+          datastore: '{{ rw_datastore.datastore }}'
+          folder: '{{ my_virtual_machine_folder.folder }}'
+          resource_pool: '{{ my_cluster_info.value.resource_pool }}'
+        name: test_vm2
         guest_OS: DEBIAN_8_64
         hardware_version: VMX_11
         memory:

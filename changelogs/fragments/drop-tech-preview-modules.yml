@@ -1,3 +1,0 @@
-bugfixes:
-- minor_changes - drop vcenter_vm_compute_policies_info because the API is flagged as Technology Preview
-- minor_changes - drop vcenter_vm_console_tickets because the API is flagged as Technology Preview

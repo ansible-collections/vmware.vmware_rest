@@ -100,7 +100,7 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -230,6 +230,15 @@ Examples
       vcenter_vm_hardware_adapter_sata:
         vm: '{{ test_vm1_info.id }}'
         pci_slot_number: 34
+    - name: Create a SATA adapter at PCI slot 34
+      vcenter_vm_hardware_adapter_sata:
+        vm: '{{ test_vm1_info.id }}'
+        pci_slot_number: 34
+    - name: Drop the SATA controller
+      vcenter_vm_hardware_adapter_sata:
+        vm: '{{ test_vm1_info.id }}'
+        pci_slot_number: 34
+        state: absent
 
 
 
