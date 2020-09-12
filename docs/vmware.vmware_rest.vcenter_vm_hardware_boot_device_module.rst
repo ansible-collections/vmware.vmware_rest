@@ -54,6 +54,19 @@ Parameters
                 </td>
                 <td>
                         <div>Ordered list of boot devices.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
+                        <div>This field is optional and it is only relevant when the value of Device.Entry.type is DISK.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vcenter.vm.hardware.Disk.</div>
+                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry.</div>
+                        <div>This field is optional and it is only relevant when the value of Device.Entry.type is ETHERNET.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.vm.hardware.Ethernet. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.vm.hardware.Ethernet.</div>
+                        <div>- <code>type</code> (str): The Device.Type enumerated type defines the valid device types that may be used as bootable devices.</div>
+                        <div>- Accepted values:</div>
+                        <div>- CDROM</div>
+                        <div>- DISK</div>
+                        <div>- ETHERNET</div>
+                        <div>- FLOPPY</div>
                 </td>
             </tr>
             <tr>
@@ -67,7 +80,7 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>set</li>
+                                    <li><div style="color: blue"><b>set</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -166,6 +179,20 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Set a boot device
+      vcenter_vm_hardware_boot_device:
+        vm: '{{ test_vm1_info.id }}'
+        devices:
+        - type: CDROM
 
 
 

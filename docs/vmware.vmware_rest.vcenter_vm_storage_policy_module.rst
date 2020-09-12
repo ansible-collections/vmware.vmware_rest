@@ -56,6 +56,17 @@ Parameters
                         <div>Storage policy or policies to be used when reconfiguring virtual machine diks.</div>
                         <div>if unset the current storage policy is retained.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be an identifier for the resource type: vcenter.vm.hardware.Disk. When operations return a value of this structure as a result, the key in the field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>key</code> (str):</div>
+                        <div>- <code>value</code> (dict):</div>
+                        <div>- Accepted keys:</div>
+                        <div>- policy (string): Storage Policy identification.</div>
+                        <div>This field is optional and it is only relevant when the value of Policy.DiskPolicySpec.type is USE_SPECIFIED_POLICY.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.StoragePolicy. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.StoragePolicy.</div>
+                        <div>- type (string): The Policy.DiskPolicySpec enumerated type defines the choices for how to specify the policy to be associated with a virtual disk.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>USE_SPECIFIED_POLICY</code></div>
+                        <div>- <code>USE_DEFAULT_POLICY</code></div>
                 </td>
             </tr>
             <tr>
@@ -69,7 +80,7 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -176,11 +187,14 @@ Parameters
                 <td>
                         <div>Storage policy to be used when reconfiguring the virtual machine home.</div>
                         <div>if unset the current storage policy is retained.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>policy</code> (str): Storage Policy identification.</div>
                         <div>This field is optional and it is only relevant when the value of Policy.VmHomePolicySpec.type is USE_SPECIFIED_POLICY.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.StoragePolicy. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.StoragePolicy.</div>
                         <div>- <code>type</code> (str): The Policy.VmHomePolicySpec.PolicyType enumerated type defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory.</div>
+                        <div>- Accepted values:</div>
+                        <div>- USE_SPECIFIED_POLICY</div>
+                        <div>- USE_DEFAULT_POLICY</div>
                 </td>
             </tr>
     </table>

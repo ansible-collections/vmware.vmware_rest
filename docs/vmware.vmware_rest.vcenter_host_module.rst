@@ -151,7 +151,7 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -295,7 +295,8 @@ Examples
         - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
           username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
           password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-    - set_fact:
+    - name: Look up the different folders
+      set_fact:
         my_virtual_machine_folder: '{{ my_folders.value|selectattr("type", "equalto",
           "VIRTUAL_MACHINE")|first }}'
         my_datastore_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATASTORE")|first

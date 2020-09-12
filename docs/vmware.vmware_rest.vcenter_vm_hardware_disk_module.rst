@@ -54,8 +54,10 @@ Parameters
                 <td>
                         <div>Existing physical resource backing for the virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.</div>
                         <div>If unset, the virtual disk will not be connected to an existing backing.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>type</code> (str): The Disk.BackingType enumerated type defines the valid backing types for a virtual disk.</div>
+                        <div>- Accepted values:</div>
+                        <div>- VMDK_FILE</div>
                         <div>- <code>vmdk_file</code> (str): Path of the VMDK file backing the virtual disk.</div>
                         <div>This field is optional and it is only relevant when the value of Disk.BackingSpec.type is VMDK_FILE.</div>
                 </td>
@@ -90,7 +92,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
                         <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
@@ -111,13 +113,16 @@ Parameters
                 <td>
                         <div>Specification for creating a new VMDK backing for the virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.</div>
                         <div>If unset, a new VMDK backing will not be created.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>capacity</code> (int): Capacity of the virtual disk backing in bytes.</div>
                         <div>If unset, defaults to a guest-specific capacity.</div>
                         <div>- <code>name</code> (str): Base name of the VMDK file. The name should not include the &#x27;.vmdk&#x27; file extension.</div>
                         <div>If unset, a name (derived from the name of the virtual machine) will be chosen by the server.</div>
                         <div>- <code>storage_policy</code> (dict): The Disk.StoragePolicySpec structure contains information about the storage policy that is to be associated the with VMDK file.</div>
                         <div>If unset the default storage policy of the target datastore (if applicable) is applied. Currently a default storage policy is only supported by object based datastores : VVol &amp; vSAN. For non- object datastores, if unset then no storage policy would be associated with the VMDK file.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- policy (string): Identifier of the storage policy which should be associated with the VMDK file.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.StoragePolicy. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.StoragePolicy.</div>
                 </td>
             </tr>
             <tr>
@@ -134,7 +139,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SATA adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
                         <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
@@ -154,7 +159,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SCSI adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
                         <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
@@ -172,8 +177,8 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
-                                    <li>present</li>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>

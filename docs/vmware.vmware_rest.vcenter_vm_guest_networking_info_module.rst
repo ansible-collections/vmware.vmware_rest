@@ -133,6 +133,18 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Get guest networking information
+      vcenter_vm_guest_networking_info:
+        vm: '{{ test_vm1_info.id }}'
 
 
 
