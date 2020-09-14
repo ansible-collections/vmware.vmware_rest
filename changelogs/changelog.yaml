@@ -7,3 +7,18 @@ releases:
     fragments:
     - cis_category_info.yml
     release_date: '2020-08-28'
+  0.2.0:
+    changes:
+      bugfixes:
+      - Improve the documentation of the modules
+      - minor_changes - drop vcenter_vm_compute_policies_info because the API is flagged
+        as Technology Preview
+      - minor_changes - drop vcenter_vm_console_tickets because the API is flagged
+        as Technology Preview
+      - minor_changes - drop vcenter_vm_guest_power and keep vcenter_vm_power which
+        provides the same features
+    fragments:
+    - drop-tech-preview-modules.yml
+    - drop-vcenter_vm_guest_power.yml
+    - improve_documentation.yml
+    release_date: '2020-09-11'

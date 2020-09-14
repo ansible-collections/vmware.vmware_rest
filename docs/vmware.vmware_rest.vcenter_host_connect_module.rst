@@ -1,11 +1,11 @@
-.. _vmware.vmware_rest.vcenter_vm_hardware_parallel_connect_module:
+.. _vmware.vmware_rest.vcenter_host_connect_module:
 
 
-*******************************************************
-vmware.vmware_rest.vcenter_vm_hardware_parallel_connect
-*******************************************************
+***************************************
+vmware.vmware_rest.vcenter_host_connect
+***************************************
 
-**Handle resource of type vcenter_vm_hardware_parallel_connect**
+**Handle resource of type vcenter_host_connect**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_parallel_connect
+- Handle resource of type vcenter_host_connect
 
 
 
@@ -43,7 +43,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>port</b>
+                    <b>host</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -52,8 +52,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual parallel port identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.</div>
+                        <div>Identifier of the host to be reconnected.</div>
+                        <div>The parameter must be an identifier for the resource type: HostSystem.</div>
                 </td>
             </tr>
             <tr>
@@ -142,22 +142,6 @@ Parameters
                 <td>
                         <div>Allows connection when SSL certificates are not valid. Set to <code>false</code> when certificates are not trusted.</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_VALIDATE_CERTS</code> will be used instead.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
                 </td>
             </tr>
     </table>

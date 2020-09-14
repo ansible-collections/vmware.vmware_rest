@@ -1,11 +1,11 @@
-.. _vmware.vmware_rest.vcenter_vm_hardware_serial_disconnect_module:
+.. _vmware.vmware_rest.vcenter_host_disconnect_module:
 
 
-********************************************************
-vmware.vmware_rest.vcenter_vm_hardware_serial_disconnect
-********************************************************
+******************************************
+vmware.vmware_rest.vcenter_host_disconnect
+******************************************
 
-**Handle resource of type vcenter_vm_hardware_serial_disconnect**
+**Handle resource of type vcenter_host_disconnect**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_serial_disconnect
+- Handle resource of type vcenter_host_disconnect
 
 
 
@@ -43,7 +43,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>port</b>
+                    <b>host</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -52,8 +52,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual serial port identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.SerialPort.</div>
+                        <div>Identifier of the host to be disconnected.</div>
+                        <div>The parameter must be an identifier for the resource type: HostSystem.</div>
                 </td>
             </tr>
             <tr>
@@ -142,22 +142,6 @@ Parameters
                 <td>
                         <div>Allows connection when SSL certificates are not valid. Set to <code>false</code> when certificates are not trusted.</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_VALIDATE_CERTS</code> will be used instead.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
                 </td>
             </tr>
     </table>

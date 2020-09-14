@@ -17,10 +17,6 @@ PEP440 is the schema used to describe the versions of Ansible.
 ## Content
 
 <!--start collection content-->
-### Httpapi plugins
-Name | Description
---- | ---
-
 ### Modules
 Name | Description
 --- | ---
@@ -30,21 +26,17 @@ Name | Description
 [vmware.vmware_rest.vcenter_datastore_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_datastore_info_module.rst)|Handle resource of type vcenter_datastore
 [vmware.vmware_rest.vcenter_folder_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_folder_info_module.rst)|Handle resource of type vcenter_folder
 [vmware.vmware_rest.vcenter_host](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_host_module.rst)|Handle resource of type vcenter_host
+[vmware.vmware_rest.vcenter_host_connect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_host_connect_module.rst)|Handle resource of type vcenter_host_connect
+[vmware.vmware_rest.vcenter_host_disconnect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_host_disconnect_module.rst)|Handle resource of type vcenter_host_disconnect
 [vmware.vmware_rest.vcenter_host_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_host_info_module.rst)|Handle resource of type vcenter_host
 [vmware.vmware_rest.vcenter_network_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_network_info_module.rst)|Handle resource of type vcenter_network
 [vmware.vmware_rest.vcenter_vm](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_module.rst)|Handle resource of type vcenter_vm
-[vmware.vmware_rest.vcenter_vm_compute_policies_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_compute_policies_info_module.rst)|Handle resource of type vcenter_vm_compute_policies
-[vmware.vmware_rest.vcenter_vm_console_tickets](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_console_tickets_module.rst)|Handle resource of type vcenter_vm_console_tickets
-[vmware.vmware_rest.vcenter_vm_guest_customization](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_customization_module.rst)|Handle resource of type vcenter_vm_guest_customization
 [vmware.vmware_rest.vcenter_vm_guest_identity_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_identity_info_module.rst)|Handle resource of type vcenter_vm_guest_identity
 [vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info_module.rst)|Handle resource of type vcenter_vm_guest_localfilesystem
 [vmware.vmware_rest.vcenter_vm_guest_networking_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_networking_info_module.rst)|Handle resource of type vcenter_vm_guest_networking
 [vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info_module.rst)|Handle resource of type vcenter_vm_guest_networking_interfaces
 [vmware.vmware_rest.vcenter_vm_guest_networking_routes_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_networking_routes_info_module.rst)|Handle resource of type vcenter_vm_guest_networking_routes
-[vmware.vmware_rest.vcenter_vm_guest_power](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_power_module.rst)|Handle resource of type vcenter_vm_guest_power
-[vmware.vmware_rest.vcenter_vm_guest_power_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_power_info_module.rst)|Handle resource of type vcenter_vm_guest_power
 [vmware.vmware_rest.vcenter_vm_hardware](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_module.rst)|Handle resource of type vcenter_vm_hardware
-[vmware.vmware_rest.vcenter_vm_hardware_action_upgrade](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_action_upgrade_module.rst)|Handle resource of type vcenter_vm_hardware_action_upgrade
 [vmware.vmware_rest.vcenter_vm_hardware_adapter_sata](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_module.rst)|Handle resource of type vcenter_vm_hardware_adapter_sata
 [vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info_module.rst)|Handle resource of type vcenter_vm_hardware_adapter_sata
 [vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_module.rst)|Handle resource of type vcenter_vm_hardware_adapter_scsi
@@ -54,31 +46,21 @@ Name | Description
 [vmware.vmware_rest.vcenter_vm_hardware_boot_device_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_boot_device_info_module.rst)|Handle resource of type vcenter_vm_hardware_boot_device
 [vmware.vmware_rest.vcenter_vm_hardware_boot_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_boot_info_module.rst)|Handle resource of type vcenter_vm_hardware_boot
 [vmware.vmware_rest.vcenter_vm_hardware_cdrom](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_cdrom_module.rst)|Handle resource of type vcenter_vm_hardware_cdrom
-[vmware.vmware_rest.vcenter_vm_hardware_cdrom_connect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_cdrom_connect_module.rst)|Handle resource of type vcenter_vm_hardware_cdrom_connect
-[vmware.vmware_rest.vcenter_vm_hardware_cdrom_disconnect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_cdrom_disconnect_module.rst)|Handle resource of type vcenter_vm_hardware_cdrom_disconnect
 [vmware.vmware_rest.vcenter_vm_hardware_cdrom_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_cdrom_info_module.rst)|Handle resource of type vcenter_vm_hardware_cdrom
 [vmware.vmware_rest.vcenter_vm_hardware_cpu](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_cpu_module.rst)|Handle resource of type vcenter_vm_hardware_cpu
 [vmware.vmware_rest.vcenter_vm_hardware_cpu_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_cpu_info_module.rst)|Handle resource of type vcenter_vm_hardware_cpu
 [vmware.vmware_rest.vcenter_vm_hardware_disk](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_disk_module.rst)|Handle resource of type vcenter_vm_hardware_disk
 [vmware.vmware_rest.vcenter_vm_hardware_disk_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_disk_info_module.rst)|Handle resource of type vcenter_vm_hardware_disk
 [vmware.vmware_rest.vcenter_vm_hardware_ethernet](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_ethernet_module.rst)|Handle resource of type vcenter_vm_hardware_ethernet
-[vmware.vmware_rest.vcenter_vm_hardware_ethernet_connect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_ethernet_connect_module.rst)|Handle resource of type vcenter_vm_hardware_ethernet_connect
-[vmware.vmware_rest.vcenter_vm_hardware_ethernet_disconnect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_ethernet_disconnect_module.rst)|Handle resource of type vcenter_vm_hardware_ethernet_disconnect
 [vmware.vmware_rest.vcenter_vm_hardware_ethernet_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_ethernet_info_module.rst)|Handle resource of type vcenter_vm_hardware_ethernet
 [vmware.vmware_rest.vcenter_vm_hardware_floppy](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_floppy_module.rst)|Handle resource of type vcenter_vm_hardware_floppy
-[vmware.vmware_rest.vcenter_vm_hardware_floppy_connect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_floppy_connect_module.rst)|Handle resource of type vcenter_vm_hardware_floppy_connect
-[vmware.vmware_rest.vcenter_vm_hardware_floppy_disconnect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_floppy_disconnect_module.rst)|Handle resource of type vcenter_vm_hardware_floppy_disconnect
 [vmware.vmware_rest.vcenter_vm_hardware_floppy_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_floppy_info_module.rst)|Handle resource of type vcenter_vm_hardware_floppy
 [vmware.vmware_rest.vcenter_vm_hardware_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_info_module.rst)|Handle resource of type vcenter_vm_hardware
 [vmware.vmware_rest.vcenter_vm_hardware_memory](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_memory_module.rst)|Handle resource of type vcenter_vm_hardware_memory
 [vmware.vmware_rest.vcenter_vm_hardware_memory_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_memory_info_module.rst)|Handle resource of type vcenter_vm_hardware_memory
 [vmware.vmware_rest.vcenter_vm_hardware_parallel](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_parallel_module.rst)|Handle resource of type vcenter_vm_hardware_parallel
-[vmware.vmware_rest.vcenter_vm_hardware_parallel_connect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_parallel_connect_module.rst)|Handle resource of type vcenter_vm_hardware_parallel_connect
-[vmware.vmware_rest.vcenter_vm_hardware_parallel_disconnect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_parallel_disconnect_module.rst)|Handle resource of type vcenter_vm_hardware_parallel_disconnect
 [vmware.vmware_rest.vcenter_vm_hardware_parallel_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_parallel_info_module.rst)|Handle resource of type vcenter_vm_hardware_parallel
 [vmware.vmware_rest.vcenter_vm_hardware_serial](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_serial_module.rst)|Handle resource of type vcenter_vm_hardware_serial
-[vmware.vmware_rest.vcenter_vm_hardware_serial_connect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_serial_connect_module.rst)|Handle resource of type vcenter_vm_hardware_serial_connect
-[vmware.vmware_rest.vcenter_vm_hardware_serial_disconnect](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_serial_disconnect_module.rst)|Handle resource of type vcenter_vm_hardware_serial_disconnect
 [vmware.vmware_rest.vcenter_vm_hardware_serial_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_serial_info_module.rst)|Handle resource of type vcenter_vm_hardware_serial
 [vmware.vmware_rest.vcenter_vm_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_info_module.rst)|Handle resource of type vcenter_vm
 [vmware.vmware_rest.vcenter_vm_libraryitem_info](https://github.com/ansible-collections/vmware_rest.git/blob/main/docs/vmware.vmware_rest.vcenter_vm_libraryitem_info_module.rst)|Handle resource of type vcenter_vm_libraryitem

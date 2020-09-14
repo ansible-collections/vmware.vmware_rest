@@ -1,2 +1,0 @@
-bugfixes:
-- minor_changes - drop vcenter_vm_guest_power and keep vcenter_vm_power which provides the same features

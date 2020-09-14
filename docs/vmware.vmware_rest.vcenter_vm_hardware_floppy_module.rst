@@ -73,14 +73,17 @@ Parameters
                 </td>
                 <td>
                         <div>Physical resource backing for the virtual floppy drive.</div>
-                        <div>This field may only be modified if the virtual machine is not powered on or the virtual floppy drive is not connected.</div>
-                        <div>If unset, the value is unchanged.</div>
-                        <div>Validate attributes are:</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual floppy drive backing.</div>
                         <div>If unset, the virtual floppy drive will be configured to automatically detect a suitable host device.</div>
                         <div>- <code>image_file</code> (str): Path of the image file that should be used as the virtual floppy drive backing.</div>
                         <div>This field is optional and it is only relevant when the value of Floppy.BackingSpec.type is IMAGE_FILE.</div>
                         <div>- <code>type</code> (str): The Floppy.BackingType enumerated type defines the valid backing types for a virtual floppy drive.</div>
+                        <div>- Accepted values:</div>
+                        <div>- IMAGE_FILE</div>
+                        <div>- HOST_DEVICE</div>
+                        <div>- CLIENT_DEVICE</div>
                 </td>
             </tr>
             <tr>
@@ -96,7 +99,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual floppy drive identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy. Required with <em>state=[&#x27;delete&#x27;, &#x27;update&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy. Required with <em>state=[&#x27;connect&#x27;, &#x27;delete&#x27;, &#x27;disconnect&#x27;, &#x27;update&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -131,8 +134,10 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
-                                    <li>present</li>
-                                    <li>present</li>
+                                    <li>connect</li>
+                                    <li>disconnect</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>

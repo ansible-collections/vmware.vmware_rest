@@ -120,7 +120,7 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -211,7 +211,8 @@ Examples
     - name: Get a list of all the datacenters
       register: existing_datacenters
       vcenter_datacenter_info:
-    - set_fact:
+    - name: Set my_datacenter_folder
+      set_fact:
         my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first
           }}'
     - name: Create datacenter my_dc

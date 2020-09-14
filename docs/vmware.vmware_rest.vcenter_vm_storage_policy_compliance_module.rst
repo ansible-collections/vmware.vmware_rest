@@ -72,7 +72,7 @@ Parameters
                 <td>
                         <div>Parameter specifies the entities on which storage policy compliance check is to be invoked. The storage compliance Info Compliance.Info is returned.</div>
                         <div>If unset, the behavior is equivalent to a Compliance.CheckSpec with CheckSpec#vmHome set to true and CheckSpec#disks populated with all disks attached to the virtual machine.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>disks</code> (list): Identifiers of the virtual machine&#x27;s virtual disks for which compliance should be checked.</div>
                         <div>If unset or empty, compliance check is invoked on all the associated disks.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vcenter.vm.hardware.Disk.</div>

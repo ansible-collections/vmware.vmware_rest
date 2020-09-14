@@ -149,6 +149,18 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: List the SCSI adapter of a given VM
+      vcenter_vm_hardware_adapter_scsi_info:
+        vm: '{{ test_vm1_info.id }}'
 
 
 

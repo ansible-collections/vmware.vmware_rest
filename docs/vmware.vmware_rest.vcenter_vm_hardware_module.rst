@@ -51,7 +51,7 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>present</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -211,6 +211,11 @@ Examples
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
     - name: Upgrade the VM hardware version
+      vcenter_vm_hardware:
+        upgrade_policy: AFTER_CLEAN_SHUTDOWN
+        upgrade_version: VMX_13
+        vm: '{{ test_vm1_info.id }}'
+    - name: Upgrade the VM hardware version (again)
       vcenter_vm_hardware:
         upgrade_policy: AFTER_CLEAN_SHUTDOWN
         upgrade_version: VMX_13

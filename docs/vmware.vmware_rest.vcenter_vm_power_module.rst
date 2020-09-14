@@ -158,10 +158,8 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: _Wait for the vcenter server
+    - name: Collect the list of the existing VM
       vcenter_vm_info:
-      retries: 100
-      delay: 3
       register: existing_vms
       until: existing_vms is not failed
     - name: Collect information about a specific VM
@@ -174,7 +172,7 @@ Examples
         vm: '{{ item.vm }}'
       with_items: '{{ existing_vms.value }}'
       ignore_errors: yes
-    - name: Turn the power of a VM on
+    - name: Turn the power of the VM on
       vcenter_vm_power:
         state: start
         vm: '{{ test_vm1_info.id }}'

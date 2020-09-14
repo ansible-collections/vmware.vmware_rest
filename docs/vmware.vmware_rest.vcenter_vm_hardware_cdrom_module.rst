@@ -73,15 +73,22 @@ Parameters
                 </td>
                 <td>
                         <div>Physical resource backing for the virtual CD-ROM device.</div>
-                        <div>This field may only be modified if the virtual machine is not powered on or the virtual CD-ROM device is not connected.</div>
-                        <div>If unset, the value is unchanged.</div>
-                        <div>Validate attributes are:</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>device_access_type</code> (str): The Cdrom.DeviceAccessType enumerated type defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
+                        <div>- Accepted values:</div>
+                        <div>- EMULATION</div>
+                        <div>- PASSTHRU</div>
+                        <div>- PASSTHRU_EXCLUSIVE</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing.</div>
                         <div>If unset, the virtual CD-ROM device will be configured to automatically detect a suitable host device.</div>
                         <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
                         <div>This field is optional and it is only relevant when the value of Cdrom.BackingSpec.type is ISO_FILE.</div>
                         <div>- <code>type</code> (str): The Cdrom.BackingType enumerated type defines the valid backing types for a virtual CD-ROM device.</div>
+                        <div>- Accepted values:</div>
+                        <div>- ISO_FILE</div>
+                        <div>- HOST_DEVICE</div>
+                        <div>- CLIENT_DEVICE</div>
                 </td>
             </tr>
             <tr>
@@ -97,7 +104,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual CD-ROM device identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom. Required with <em>state=[&#x27;delete&#x27;, &#x27;update&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom. Required with <em>state=[&#x27;connect&#x27;, &#x27;delete&#x27;, &#x27;disconnect&#x27;, &#x27;update&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -114,7 +121,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
                         <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
@@ -135,7 +142,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SATA adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Validate attributes are:</div>
+                        <div>Valide attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
                         <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
@@ -173,8 +180,10 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
-                                    <li>present</li>
-                                    <li>present</li>
+                                    <li>connect</li>
+                                    <li>disconnect</li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
