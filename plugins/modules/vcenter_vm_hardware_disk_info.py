@@ -65,18 +65,11 @@ PAYLOAD_FORMAT = {
     "create": {
         "query": {},
         "body": {
-            "backing": {
-                "type": "spec/backing/type",
-                "vmdk_file": "spec/backing/vmdk_file",
-            },
-            "ide": {"master": "spec/ide/master", "primary": "spec/ide/primary"},
-            "new_vmdk": {
-                "capacity": "spec/new_vmdk/capacity",
-                "name": "spec/new_vmdk/name",
-                "storage_policy": "spec/new_vmdk/storage_policy",
-            },
-            "sata": {"bus": "spec/sata/bus", "unit": "spec/sata/unit"},
-            "scsi": {"bus": "spec/scsi/bus", "unit": "spec/scsi/unit"},
+            "backing": "spec/backing",
+            "ide": "spec/ide",
+            "new_vmdk": "spec/new_vmdk",
+            "sata": "spec/sata",
+            "scsi": "spec/scsi",
             "type": "spec/type",
         },
         "path": {"vm": "vm"},
@@ -85,12 +78,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
-        "body": {
-            "backing": {
-                "type": "spec/backing/type",
-                "vmdk_file": "spec/backing/vmdk_file",
-            }
-        },
+        "body": {"backing": "spec/backing"},
         "path": {"disk": "disk", "vm": "vm"},
     },
 }

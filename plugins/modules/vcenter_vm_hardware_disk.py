@@ -21,6 +21,7 @@ options:
     - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk.'
     - This field is optional and it is only relevant when the value of Disk.BackingSpec.type
       is VMDK_FILE.
+    elements: dict
     type: dict
   disk:
     description:
@@ -42,6 +43,7 @@ options:
       to the primary or secondary IDE adapter of the virtual machine.'
     - If unset, the server will choose a adapter with an available connection. If
       no IDE connections are available, the request will be rejected.
+    elements: dict
     type: dict
   new_vmdk:
     description:
@@ -69,6 +71,7 @@ options:
       be an identifier for the resource type: vcenter.StoragePolicy. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: vcenter.StoragePolicy.'
+    elements: dict
     type: dict
   sata:
     description:
@@ -80,6 +83,7 @@ options:
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
       If there are no available connections on the adapter, the request will be rejected.
+    elements: dict
     type: dict
   scsi:
     description:
@@ -91,6 +95,7 @@ options:
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
       If there are no available connections on the adapter, the request will be rejected.
+    elements: dict
     type: dict
   state:
     choices:
@@ -161,18 +166,11 @@ PAYLOAD_FORMAT = {
     "create": {
         "query": {},
         "body": {
-            "backing": {
-                "type": "spec/backing/type",
-                "vmdk_file": "spec/backing/vmdk_file",
-            },
-            "ide": {"master": "spec/ide/master", "primary": "spec/ide/primary"},
-            "new_vmdk": {
-                "capacity": "spec/new_vmdk/capacity",
-                "name": "spec/new_vmdk/name",
-                "storage_policy": "spec/new_vmdk/storage_policy",
-            },
-            "sata": {"bus": "spec/sata/bus", "unit": "spec/sata/unit"},
-            "scsi": {"bus": "spec/scsi/bus", "unit": "spec/scsi/unit"},
+            "backing": "spec/backing",
+            "ide": "spec/ide",
+            "new_vmdk": "spec/new_vmdk",
+            "sata": "spec/sata",
+            "scsi": "spec/scsi",
             "type": "spec/type",
         },
         "path": {"vm": "vm"},
@@ -181,12 +179,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
-        "body": {
-            "backing": {
-                "type": "spec/backing/type",
-                "vmdk_file": "spec/backing/vmdk_file",
-            }
-        },
+        "body": {"backing": "spec/backing"},
         "path": {"disk": "disk", "vm": "vm"},
     },
 }

@@ -66,11 +66,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "host_device": "spec/backing/host_device",
-                "image_file": "spec/backing/image_file",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"vm": "vm"},
@@ -81,11 +77,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "host_device": "spec/backing/host_device",
-                "image_file": "spec/backing/image_file",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"floppy": "floppy", "vm": "vm"},

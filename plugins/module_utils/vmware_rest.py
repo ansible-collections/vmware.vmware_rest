@@ -190,13 +190,9 @@ def prepare_payload(params, payload_format):
     for i in payload_format["body"].keys():
         if params[i] is None:
             continue
-        if isinstance(params[i], dict):
-            for k, v in params[i].items():
-                path = payload_format["body"][i][k]
-                set_subkey(payload, path, v)
-        else:
-            path = payload_format["body"][i]
-            set_subkey(payload, path, params[i])
+
+        path = payload_format["body"][i]
+        set_subkey(payload, path, params[i])
     return payload
 
 

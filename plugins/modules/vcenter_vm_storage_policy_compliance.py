@@ -31,6 +31,7 @@ options:
       for the resource type: vcenter.vm.hardware.Disk.'
     - ' - C(vm_home) (bool): Invoke compliance check on the virtual machine home directory
       if set to true.'
+    elements: dict
     type: dict
   state:
     choices:
@@ -87,9 +88,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "check": {
         "query": {"action": "action"},
-        "body": {
-            "check_spec": {"disks": "check_spec/disks", "vm_home": "check_spec/vm_home"}
-        },
+        "body": {"check_spec": "check_spec"},
         "path": {"vm": "vm"},
     },
 }

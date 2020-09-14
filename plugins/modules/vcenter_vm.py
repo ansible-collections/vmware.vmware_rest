@@ -50,6 +50,7 @@ options:
     - '   - Accepted values:'
     - '     - BIOS'
     - '     - EFI'
+    elements: dict
     type: dict
   boot_devices:
     description:
@@ -63,7 +64,7 @@ options:
     - '     - DISK'
     - '     - ETHERNET'
     - '     - FLOPPY'
-    elements: str
+    elements: dict
     type: list
   cdroms:
     description:
@@ -127,7 +128,7 @@ options:
     - '   - Accepted values:'
     - '     - IDE'
     - '     - SATA'
-    elements: str
+    elements: dict
     type: list
   cpu:
     description:
@@ -154,6 +155,7 @@ options:
       the virtual machine is running is enabled. '
     - ' This field may only be modified if the virtual machine is powered off.'
     - If unset, the value is unchanged.
+    elements: dict
     type: dict
   datastore:
     description:
@@ -255,7 +257,7 @@ options:
     - '     - IDE'
     - '     - SCSI'
     - '     - SATA'
-    elements: str
+    elements: dict
     type: list
   disks_to_remove:
     description:
@@ -290,7 +292,7 @@ options:
       be an identifier for the resource type: Datastore. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: Datastore.'
-    elements: str
+    elements: dict
     type: list
   floppies:
     description:
@@ -320,7 +322,7 @@ options:
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
       be connected whenever the virtual machine is powered on.'
     - Defaults to false if unset.
-    elements: str
+    elements: dict
     type: list
   guest_OS:
     choices:
@@ -504,6 +506,7 @@ options:
     - 'Valide attributes are:'
     - ' - C(name) (str): Name of the customization specification.'
     - If unset, no guest customization is performed.
+    elements: dict
     type: dict
   hardware_version:
     choices:
@@ -544,12 +547,13 @@ options:
       is true, and the new memory size must satisfy the constraints specified by Memory.Info.hot-add-increment-size-mib
       and Memory.Info.hot-add-limit-mib.'
     - If unset, the value is unchanged.
+    elements: dict
     type: dict
   name:
     description:
     - Virtual machine name.
     - If unset, the display name from the virtual machine's configuration file will
-      be used. Required with I(state=['clone', 'create', 'instant_clone', 'register'])
+      be used.
     type: str
   nics:
     description:
@@ -622,7 +626,7 @@ options:
     - ' - C(wake_on_lan_enabled) (bool): Flag indicating whether wake-on-LAN is enabled
       on this virtual Ethernet adapter.'
     - Defaults to false if unset.
-    elements: str
+    elements: dict
     type: list
   nics_to_update:
     description:
@@ -669,7 +673,7 @@ options:
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
     - If unset, the value is unchanged.
-    elements: str
+    elements: dict
     type: list
   parallel_ports:
     description:
@@ -698,7 +702,7 @@ options:
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
       be connected whenever the virtual machine is powered on.'
     - Defaults to false if unset.
-    elements: str
+    elements: dict
     type: list
   parallel_ports_to_update:
     description:
@@ -721,7 +725,7 @@ options:
     - '     - start_connected (boolean): Flag indicating whether the virtual device
       should be connected whenever the virtual machine is powered on.'
     - If unset, the value is unchanged.
-    elements: str
+    elements: dict
     type: list
   path:
     description:
@@ -739,59 +743,60 @@ options:
       the other existing placement of the virtual machine result in disjoint placement
       the operation will fail.
     - 'Valide attributes are:'
-    - ' - C(cluster) (str): Cluster into which the cloned virtual machine should be
-      placed. '
-    - ' If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.resource-pool are
-      both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.cluster. '
-    - ' If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.host are both specified,
-      VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.'
-    - If VM.ClonePlacementSpec.resource-pool or VM.ClonePlacementSpec.host is specified,
-      it is recommended that this field be unset.
+    - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster. '
+    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is
+      specified, it is recommended that this field be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ClusterComputeResource. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: ClusterComputeResource.'
-    - ' - C(datastore) (str): Datastore on which the cloned virtual machine''s configuration
+    - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
       state should be stored. This datastore will also be used for any virtual disks
-      that are created as part of the virtual machine clone operation unless individually
-      overridden.'
-    - If field is unset, the system will use the datastore of the source virtual machine.
+      that are created as part of the virtual machine creation operation.'
+    - This field is currently required. In the future, if this field is unset, the
+      system will attempt to choose suitable storage for the virtual machine; if storage
+      cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Datastore. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: Datastore.'
-    - ' - C(folder) (str): Virtual machine folder into which the cloned virtual machine
-      should be placed.'
-    - If field is unset, the system will use the virtual machine folder of the source
-      virtual machine. If this results in a conflict due to other placement parameters,
-      the virtual machine clone operation will fail.
+    - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
+      be placed.'
+    - This field is currently required. In the future, if this field is unset, the
+      system will attempt to choose a suitable folder for the virtual machine; if
+      a folder cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: Folder. When operations return a value
       of this structure as a result, the field will be an identifier for the resource
       type: Folder.'
-    - ' - C(host) (str): Host onto which the cloned virtual machine should be placed. '
-    - ' If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.resource-pool are
-      both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.host. '
-    - ' If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.cluster are both specified,
-      VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.'
-    - If this field is unset, if VM.ClonePlacementSpec.resource-pool is unset, the
-      cloned virtual machine will use the host of the source virtual machine. if VM.ClonePlacementSpec.resource-pool
-      is set, and the target is a standalone host, the host is used. if VM.ClonePlacementSpec.resource-pool
-      is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.ClonePlacementSpec.resource-pool
-      is set, and the target is a cluster without DRS, InvalidArgument will be thrown.
+    - ' - C(host) (str): Host onto which the virtual machine should be placed. '
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool
+      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host. '
+    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both
+      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
+    - This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster
+      is specified. If unset, the system will attempt to choose a suitable host for
+      the virtual machine; if a host cannot be chosen, the virtual machine creation
+      operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: HostSystem. When operations return a
       value of this structure as a result, the field will be an identifier for the
       resource type: HostSystem.'
-    - ' - C(resource_pool) (str): Resource pool into which the cloned virtual machine
-      should be placed.'
-    - If field is unset, the system will use the resource pool of the source virtual
-      machine. If this results in a conflict due to other placement parameters, the
-      virtual machine clone operation will fail.
+    - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
+      be placed.'
+    - This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster
+      are unset. In the future, if this field is unset, the system will attempt to
+      choose a suitable resource pool for the virtual machine; if a resource pool
+      cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
       be an identifier for the resource type: ResourcePool. When operations return
       a value of this structure as a result, the field will be an identifier for the
       resource type: ResourcePool.'
+    elements: dict
     type: dict
   power_on:
     description:
@@ -816,7 +821,7 @@ options:
       types for a virtual SATA adapter.'
     - '   - Accepted values:'
     - '     - AHCI'
-    elements: str
+    elements: dict
     type: list
   scsi_adapters:
     description:
@@ -848,7 +853,7 @@ options:
     - '     - LSILOGIC'
     - '     - LSILOGICSAS'
     - '     - PVSCSI'
-    elements: str
+    elements: dict
     type: list
   serial_ports:
     description:
@@ -908,7 +913,7 @@ options:
       the virtual serial port. The amount of time it takes to regain the processor
       will depend on the degree of other virtual machine activity on the host.'
     - If unset, defaults to false.
-    elements: str
+    elements: dict
     type: list
   serial_ports_to_update:
     description:
@@ -937,7 +942,7 @@ options:
     - ' This field may be modified at any time, and changes applied to a connected
       virtual serial port take effect immediately.'
     - If unset, the value is unchanged.
-    elements: str
+    elements: dict
     type: list
   source:
     description:
@@ -975,6 +980,7 @@ options:
       be an identifier for the resource type: vcenter.StoragePolicy. When operations
       return a value of this structure as a result, the field will be an identifier
       for the resource type: vcenter.StoragePolicy.'
+    elements: dict
     type: dict
   vcenter_hostname:
     description:
@@ -1050,19 +1056,6 @@ EXAMPLES = """
     memory:
       hot_add_enabled: true
       size_MiB: 1024
-- name: Create another VM
-  vcenter_vm:
-    placement:
-      cluster: '{{ all_the_clusters.value[0].cluster }}'
-      datastore: '{{ rw_datastore.datastore }}'
-      folder: '{{ my_virtual_machine_folder.folder }}'
-      resource_pool: '{{ my_cluster_info.value.resource_pool }}'
-    name: test_vm2
-    guest_OS: DEBIAN_8_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
 - name: Delete some VM
   vcenter_vm:
     state: absent
@@ -1089,91 +1082,23 @@ PAYLOAD_FORMAT = {
     "create": {
         "query": {},
         "body": {
-            "boot": {
-                "delay": "spec/boot/delay",
-                "efi_legacy_boot": "spec/boot/efi_legacy_boot",
-                "enter_setup_mode": "spec/boot/enter_setup_mode",
-                "network_protocol": "spec/boot/network_protocol",
-                "retry": "spec/boot/retry",
-                "retry_delay": "spec/boot/retry_delay",
-                "type": "spec/boot/type",
-            },
-            "boot_devices": {"type": "spec/boot_devices/type"},
-            "cdroms": {
-                "allow_guest_control": "spec/cdroms/allow_guest_control",
-                "backing": "spec/cdroms/backing",
-                "ide": "spec/cdroms/ide",
-                "sata": "spec/cdroms/sata",
-                "start_connected": "spec/cdroms/start_connected",
-                "type": "spec/cdroms/type",
-            },
-            "cpu": {
-                "cores_per_socket": "spec/cpu/cores_per_socket",
-                "count": "spec/cpu/count",
-                "hot_add_enabled": "spec/cpu/hot_add_enabled",
-                "hot_remove_enabled": "spec/cpu/hot_remove_enabled",
-            },
-            "disks": {
-                "backing": "spec/disks/backing",
-                "ide": "spec/disks/ide",
-                "new_vmdk": "spec/disks/new_vmdk",
-                "sata": "spec/disks/sata",
-                "scsi": "spec/disks/scsi",
-                "type": "spec/disks/type",
-            },
-            "floppies": {
-                "allow_guest_control": "spec/floppies/allow_guest_control",
-                "backing": "spec/floppies/backing",
-                "start_connected": "spec/floppies/start_connected",
-            },
+            "boot": "spec/boot",
+            "boot_devices": "spec/boot_devices",
+            "cdroms": "spec/cdroms",
+            "cpu": "spec/cpu",
+            "disks": "spec/disks",
+            "floppies": "spec/floppies",
             "guest_OS": "spec/guest_OS",
             "hardware_version": "spec/hardware_version",
-            "memory": {
-                "hot_add_enabled": "spec/memory/hot_add_enabled",
-                "size_MiB": "spec/memory/size_MiB",
-            },
+            "memory": "spec/memory",
             "name": "spec/name",
-            "nics": {
-                "allow_guest_control": "spec/nics/allow_guest_control",
-                "backing": "spec/nics/backing",
-                "mac_address": "spec/nics/mac_address",
-                "mac_type": "spec/nics/mac_type",
-                "pci_slot_number": "spec/nics/pci_slot_number",
-                "start_connected": "spec/nics/start_connected",
-                "type": "spec/nics/type",
-                "upt_compatibility_enabled": "spec/nics/upt_compatibility_enabled",
-                "wake_on_lan_enabled": "spec/nics/wake_on_lan_enabled",
-            },
-            "parallel_ports": {
-                "allow_guest_control": "spec/parallel_ports/allow_guest_control",
-                "backing": "spec/parallel_ports/backing",
-                "start_connected": "spec/parallel_ports/start_connected",
-            },
-            "placement": {
-                "cluster": "spec/placement/cluster",
-                "datastore": "spec/placement/datastore",
-                "folder": "spec/placement/folder",
-                "host": "spec/placement/host",
-                "resource_pool": "spec/placement/resource_pool",
-            },
-            "sata_adapters": {
-                "bus": "spec/sata_adapters/bus",
-                "pci_slot_number": "spec/sata_adapters/pci_slot_number",
-                "type": "spec/sata_adapters/type",
-            },
-            "scsi_adapters": {
-                "bus": "spec/scsi_adapters/bus",
-                "pci_slot_number": "spec/scsi_adapters/pci_slot_number",
-                "sharing": "spec/scsi_adapters/sharing",
-                "type": "spec/scsi_adapters/type",
-            },
-            "serial_ports": {
-                "allow_guest_control": "spec/serial_ports/allow_guest_control",
-                "backing": "spec/serial_ports/backing",
-                "start_connected": "spec/serial_ports/start_connected",
-                "yield_on_poll": "spec/serial_ports/yield_on_poll",
-            },
-            "storage_policy": {"policy": "spec/storage_policy/policy"},
+            "nics": "spec/nics",
+            "parallel_ports": "spec/parallel_ports",
+            "placement": "spec/placement",
+            "sata_adapters": "spec/sata_adapters",
+            "scsi_adapters": "spec/scsi_adapters",
+            "serial_ports": "spec/serial_ports",
+            "storage_policy": "spec/storage_policy",
         },
         "path": {},
     },
@@ -1181,16 +1106,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "relocate": {
         "query": {},
-        "body": {
-            "disks": {"key": "spec/disks/key", "value": "spec/disks/value"},
-            "placement": {
-                "cluster": "spec/placement/cluster",
-                "datastore": "spec/placement/datastore",
-                "folder": "spec/placement/folder",
-                "host": "spec/placement/host",
-                "resource_pool": "spec/placement/resource_pool",
-            },
-        },
+        "body": {"disks": "spec/disks", "placement": "spec/placement"},
         "path": {"vm": "vm"},
     },
     "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
@@ -1198,19 +1114,10 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "disks_to_remove": "spec/disks_to_remove",
-            "disks_to_update": {
-                "key": "spec/disks_to_update/key",
-                "value": "spec/disks_to_update/value",
-            },
-            "guest_customization_spec": {"name": "spec/guest_customization_spec/name"},
+            "disks_to_update": "spec/disks_to_update",
+            "guest_customization_spec": "spec/guest_customization_spec",
             "name": "spec/name",
-            "placement": {
-                "cluster": "spec/placement/cluster",
-                "datastore": "spec/placement/datastore",
-                "folder": "spec/placement/folder",
-                "host": "spec/placement/host",
-                "resource_pool": "spec/placement/resource_pool",
-            },
+            "placement": "spec/placement",
             "power_on": "spec/power_on",
             "source": "spec/source",
         },
@@ -1222,23 +1129,10 @@ PAYLOAD_FORMAT = {
             "bios_uuid": "spec/bios_uuid",
             "disconnect_all_nics": "spec/disconnect_all_nics",
             "name": "spec/name",
-            "nics_to_update": {
-                "key": "spec/nics_to_update/key",
-                "value": "spec/nics_to_update/value",
-            },
-            "parallel_ports_to_update": {
-                "key": "spec/parallel_ports_to_update/key",
-                "value": "spec/parallel_ports_to_update/value",
-            },
-            "placement": {
-                "datastore": "spec/placement/datastore",
-                "folder": "spec/placement/folder",
-                "resource_pool": "spec/placement/resource_pool",
-            },
-            "serial_ports_to_update": {
-                "key": "spec/serial_ports_to_update/key",
-                "value": "spec/serial_ports_to_update/value",
-            },
+            "nics_to_update": "spec/nics_to_update",
+            "parallel_ports_to_update": "spec/parallel_ports_to_update",
+            "placement": "spec/placement",
+            "serial_ports_to_update": "spec/serial_ports_to_update",
             "source": "spec/source",
         },
         "path": {},
@@ -1250,12 +1144,7 @@ PAYLOAD_FORMAT = {
             "datastore_path": "spec/datastore_path",
             "name": "spec/name",
             "path": "spec/path",
-            "placement": {
-                "cluster": "spec/placement/cluster",
-                "folder": "spec/placement/folder",
-                "host": "spec/placement/host",
-                "resource_pool": "spec/placement/resource_pool",
-            },
+            "placement": "spec/placement",
         },
         "path": {},
     },
@@ -1307,16 +1196,16 @@ def prepare_argument_spec():
 
     argument_spec["bios_uuid"] = {"type": "str"}
     argument_spec["boot"] = {"type": "dict"}
-    argument_spec["boot_devices"] = {"type": "list", "elements": "str"}
-    argument_spec["cdroms"] = {"type": "list", "elements": "str"}
+    argument_spec["boot_devices"] = {"type": "list", "elements": "dict"}
+    argument_spec["cdroms"] = {"type": "list", "elements": "dict"}
     argument_spec["cpu"] = {"type": "dict"}
     argument_spec["datastore"] = {"type": "str"}
     argument_spec["datastore_path"] = {"type": "str"}
     argument_spec["disconnect_all_nics"] = {"type": "bool"}
-    argument_spec["disks"] = {"type": "list", "elements": "str"}
+    argument_spec["disks"] = {"type": "list", "elements": "dict"}
     argument_spec["disks_to_remove"] = {"type": "list", "elements": "str"}
-    argument_spec["disks_to_update"] = {"type": "list", "elements": "str"}
-    argument_spec["floppies"] = {"type": "list", "elements": "str"}
+    argument_spec["disks_to_update"] = {"type": "list", "elements": "dict"}
+    argument_spec["floppies"] = {"type": "list", "elements": "dict"}
     argument_spec["guest_OS"] = {
         "type": "str",
         "choices": [
@@ -1512,17 +1401,17 @@ def prepare_argument_spec():
     }
     argument_spec["memory"] = {"type": "dict"}
     argument_spec["name"] = {"type": "str"}
-    argument_spec["nics"] = {"type": "list", "elements": "str"}
-    argument_spec["nics_to_update"] = {"type": "list", "elements": "str"}
-    argument_spec["parallel_ports"] = {"type": "list", "elements": "str"}
-    argument_spec["parallel_ports_to_update"] = {"type": "list", "elements": "str"}
+    argument_spec["nics"] = {"type": "list", "elements": "dict"}
+    argument_spec["nics_to_update"] = {"type": "list", "elements": "dict"}
+    argument_spec["parallel_ports"] = {"type": "list", "elements": "dict"}
+    argument_spec["parallel_ports_to_update"] = {"type": "list", "elements": "dict"}
     argument_spec["path"] = {"type": "str"}
     argument_spec["placement"] = {"type": "dict"}
     argument_spec["power_on"] = {"type": "bool"}
-    argument_spec["sata_adapters"] = {"type": "list", "elements": "str"}
-    argument_spec["scsi_adapters"] = {"type": "list", "elements": "str"}
-    argument_spec["serial_ports"] = {"type": "list", "elements": "str"}
-    argument_spec["serial_ports_to_update"] = {"type": "list", "elements": "str"}
+    argument_spec["sata_adapters"] = {"type": "list", "elements": "dict"}
+    argument_spec["scsi_adapters"] = {"type": "list", "elements": "dict"}
+    argument_spec["serial_ports"] = {"type": "list", "elements": "dict"}
+    argument_spec["serial_ports_to_update"] = {"type": "list", "elements": "dict"}
     argument_spec["source"] = {"type": "str"}
     argument_spec["state"] = {
         "type": "str",
