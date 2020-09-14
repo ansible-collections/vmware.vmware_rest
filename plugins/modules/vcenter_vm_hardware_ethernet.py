@@ -47,6 +47,7 @@ options:
     - '     - HOST_DEVICE'
     - '     - DISTRIBUTED_PORTGROUP'
     - '     - OPAQUE_NETWORK'
+    elements: dict
     type: dict
   mac_address:
     description:
@@ -193,11 +194,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "distributed_port": "spec/backing/distributed_port",
-                "network": "spec/backing/network",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "mac_address": "spec/mac_address",
             "mac_type": "spec/mac_type",
             "pci_slot_number": "spec/pci_slot_number",
@@ -214,11 +211,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "distributed_port": "spec/backing/distributed_port",
-                "network": "spec/backing/network",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "mac_address": "spec/mac_address",
             "mac_type": "spec/mac_type",
             "start_connected": "spec/start_connected",

@@ -31,6 +31,7 @@ options:
     - '   - Accepted values:'
     - '     - FILE'
     - '     - HOST_DEVICE'
+    elements: dict
     type: dict
   port:
     description:
@@ -106,11 +107,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"vm": "vm"},
@@ -121,11 +118,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"port": "port", "vm": "vm"},

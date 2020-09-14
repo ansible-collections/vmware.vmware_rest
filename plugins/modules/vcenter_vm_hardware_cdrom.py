@@ -39,6 +39,7 @@ options:
     - '     - ISO_FILE'
     - '     - HOST_DEVICE'
     - '     - CLIENT_DEVICE'
+    elements: dict
     type: dict
   cdrom:
     description:
@@ -60,6 +61,7 @@ options:
       to the primary or secondary IDE adapter of the virtual machine.'
     - If unset, the server will choose a adapter with an available connection. If
       no IDE connections are available, the request will be rejected.
+    elements: dict
     type: dict
   sata:
     description:
@@ -71,6 +73,7 @@ options:
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
       If there are no available connections on the adapter, the request will be rejected.
+    elements: dict
     type: dict
   start_connected:
     description:
@@ -163,14 +166,9 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "device_access_type": "spec/backing/device_access_type",
-                "host_device": "spec/backing/host_device",
-                "iso_file": "spec/backing/iso_file",
-                "type": "spec/backing/type",
-            },
-            "ide": {"master": "spec/ide/master", "primary": "spec/ide/primary"},
-            "sata": {"bus": "spec/sata/bus", "unit": "spec/sata/unit"},
+            "backing": "spec/backing",
+            "ide": "spec/ide",
+            "sata": "spec/sata",
             "start_connected": "spec/start_connected",
             "type": "spec/type",
         },
@@ -182,12 +180,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "device_access_type": "spec/backing/device_access_type",
-                "host_device": "spec/backing/host_device",
-                "iso_file": "spec/backing/iso_file",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"cdrom": "cdrom", "vm": "vm"},

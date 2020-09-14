@@ -66,15 +66,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "network_location": "spec/backing/network_location",
-                "no_rx_loss": "spec/backing/no_rx_loss",
-                "pipe": "spec/backing/pipe",
-                "proxy": "spec/backing/proxy",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
             "yield_on_poll": "spec/yield_on_poll",
         },
@@ -86,15 +78,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "network_location": "spec/backing/network_location",
-                "no_rx_loss": "spec/backing/no_rx_loss",
-                "pipe": "spec/backing/pipe",
-                "proxy": "spec/backing/proxy",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
             "yield_on_poll": "spec/yield_on_poll",
         },

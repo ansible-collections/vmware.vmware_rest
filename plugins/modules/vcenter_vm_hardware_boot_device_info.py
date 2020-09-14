@@ -70,17 +70,7 @@ EXAMPLES = """
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "set": {
-        "query": {},
-        "body": {
-            "devices": {
-                "disks": "devices/disks",
-                "nic": "devices/nic",
-                "type": "devices/type",
-            }
-        },
-        "path": {"vm": "vm"},
-    },
+    "set": {"query": {}, "body": {"devices": "devices"}, "path": {"vm": "vm"}},
 }
 
 import socket

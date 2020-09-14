@@ -34,7 +34,7 @@ options:
     - '     - DISK'
     - '     - ETHERNET'
     - '     - FLOPPY'
-    elements: str
+    elements: dict
     type: list
   state:
     choices:
@@ -99,17 +99,7 @@ EXAMPLES = """
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "set": {
-        "query": {},
-        "body": {
-            "devices": {
-                "disks": "devices/disks",
-                "nic": "devices/nic",
-                "type": "devices/type",
-            }
-        },
-        "path": {"vm": "vm"},
-    },
+    "set": {"query": {}, "body": {"devices": "devices"}, "path": {"vm": "vm"}},
 }
 
 import socket
@@ -156,7 +146,7 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["devices"] = {"type": "list", "elements": "str"}
+    argument_spec["devices"] = {"type": "list", "elements": "dict"}
     argument_spec["state"] = {"type": "str", "choices": ["set"], "default": "set"}
     argument_spec["vm"] = {"type": "str"}
 
