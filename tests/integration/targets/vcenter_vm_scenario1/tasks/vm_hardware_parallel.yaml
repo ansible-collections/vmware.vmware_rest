@@ -1,0 +1,18 @@
+---
+- name: Retrieve the parallel port information from the VM
+  vcenter_vm_hardware_parallel_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- vcenter_vm_hardware_parallel:
+    vm: '{{ test_vm1_info.id }}'
+    allow_guest_control: true
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
