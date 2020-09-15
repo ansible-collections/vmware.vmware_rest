@@ -13,3 +13,11 @@
   register: test_vm1_info
 
 - debug: var=test_vm1_info
+
+
+- name: Collect the hardware information
+  vcenter_vm_hardware_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: my_vm1_hardware_info
+
+- debug: var=my_vm1_hardware_info
