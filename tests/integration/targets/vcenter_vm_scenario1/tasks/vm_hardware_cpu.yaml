@@ -1,0 +1,18 @@
+---
+- name: Retrieve the CPU information from the VM
+  vcenter_vm_hardware_cpu_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Dedicate one core to the VM
+  vcenter_vm_hardware_cpu:
+    vm: '{{ test_vm1_info.id }}'
+    count: 1
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that: not (_result is changed)
