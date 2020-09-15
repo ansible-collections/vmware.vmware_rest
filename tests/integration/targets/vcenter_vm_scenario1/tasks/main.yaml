@@ -17,6 +17,7 @@
 - import_tasks: vm_hardware_adapter.yaml
 - import_tasks: vm_hardware_cdrom.yaml
 - import_tasks: vm_hardware_boot.yaml
+- import_tasks: vm_hardware_boot_device.yaml
 - import_tasks: vm_power.yaml
 - vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
