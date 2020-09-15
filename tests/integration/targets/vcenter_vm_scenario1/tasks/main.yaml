@@ -13,7 +13,7 @@
 - import_tasks: vm_hardware.yaml
 - import_tasks: ethernet.yaml
 - import_tasks: vm_hardware_adapter.yaml
-- import_tasks: attach_cdrom.yaml
+- import_tasks: vm_hardware_cdrom.yaml
 - import_tasks: vm_hardware_boot.yaml
 - import_tasks: vm_power.yaml
 - vcenter_vm_info:

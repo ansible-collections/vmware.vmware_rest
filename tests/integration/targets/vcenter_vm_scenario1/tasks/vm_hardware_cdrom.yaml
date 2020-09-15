@@ -34,3 +34,10 @@
 
 - assert:
     that: not (_result is changed)
+
+- name: List the cdrom devices on the guest
+  vcenter_vm_hardware_cdrom_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
