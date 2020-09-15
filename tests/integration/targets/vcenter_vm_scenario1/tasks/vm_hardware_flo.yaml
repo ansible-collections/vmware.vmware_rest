@@ -1,0 +1,30 @@
+---
+- name: List the floppy disk drives
+  vcenter_vm_hardware_floppy_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Add a floppy disk drive
+  vcenter_vm_hardware_floppy:
+    vm: '{{ test_vm1_info.id }}'
+    allow_guest_control: true
+  register: my_floppy_drive
+
+- debug: var=my_floppy_drive
+
+- assert:
+    that: my_floppy_drive is changed
+
+- name: Remove a floppy drive
+  vcenter_vm_hardware_floppy:
+    vm: '{{ test_vm1_info.id }}'
+    floppy: '{{ my_floppy_drive.id }}'
+    state: absent
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that: _result is changed
