@@ -1,0 +1,42 @@
+---
+- name: Retrieve the disk information from the VM
+  vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 34
+
+- name: Create a new disk
+  vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    type: SATA
+    new_vmdk:
+      capacity: 320000
+  register: my_new_disk
+
+- debug: var=my_new_disk
+
+- assert:
+    that: my_new_disk is changed
+
+- name: Delete the disk
+  vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    disk:  '{{ my_new_disk.id }}'
+    state: absent
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that: _result is changed
+
+- vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 34
+    state: absent
+
