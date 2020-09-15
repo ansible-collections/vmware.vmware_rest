@@ -44,7 +44,7 @@ options:
     description:
     - Virtual CD-ROM device identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom.
-      Required with I(state=[''connect'', ''delete'', ''disconnect'', ''update''])'
+      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
     type: str
   ide:
     description:
@@ -163,14 +163,9 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "device_access_type": "spec/backing/device_access_type",
-                "host_device": "spec/backing/host_device",
-                "iso_file": "spec/backing/iso_file",
-                "type": "spec/backing/type",
-            },
-            "ide": {"master": "spec/ide/master", "primary": "spec/ide/primary"},
-            "sata": {"bus": "spec/sata/bus", "unit": "spec/sata/unit"},
+            "backing": "spec/backing",
+            "ide": "spec/ide",
+            "sata": "spec/sata",
             "start_connected": "spec/start_connected",
             "type": "spec/type",
         },
@@ -182,12 +177,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "device_access_type": "spec/backing/device_access_type",
-                "host_device": "spec/backing/host_device",
-                "iso_file": "spec/backing/iso_file",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"cdrom": "cdrom", "vm": "vm"},

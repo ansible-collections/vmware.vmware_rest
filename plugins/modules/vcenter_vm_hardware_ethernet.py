@@ -69,7 +69,7 @@ options:
     description:
     - Virtual Ethernet adapter identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Ethernet.
-      Required with I(state=[''connect'', ''delete'', ''disconnect'', ''update''])'
+      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
     type: str
   pci_slot_number:
     description:
@@ -193,11 +193,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "distributed_port": "spec/backing/distributed_port",
-                "network": "spec/backing/network",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "mac_address": "spec/mac_address",
             "mac_type": "spec/mac_type",
             "pci_slot_number": "spec/pci_slot_number",
@@ -214,11 +210,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "distributed_port": "spec/backing/distributed_port",
-                "network": "spec/backing/network",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "mac_address": "spec/mac_address",
             "mac_type": "spec/mac_type",
             "start_connected": "spec/start_connected",

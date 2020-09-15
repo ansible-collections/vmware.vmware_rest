@@ -12,7 +12,7 @@ options:
     description:
     - Virtual SCSI adapter identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.ScsiAdapter.
-      Required with I(state=[''delete'', ''update''])'
+      Required with I(state=[''absent''])'
     type: str
   bus:
     description:

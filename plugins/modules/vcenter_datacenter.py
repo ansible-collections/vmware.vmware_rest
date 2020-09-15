@@ -12,7 +12,7 @@ options:
     description:
     - Identifier of the datacenter to be deleted.
     - 'The parameter must be an identifier for the resource type: Datacenter. Required
-      with I(state=[''delete''])'
+      with I(state=[''absent''])'
     type: str
   folder:
     description:
@@ -33,7 +33,7 @@ options:
     type: bool
   name:
     description:
-    - The name of the datacenter to be created. Required with I(state=['create'])
+    - The name of the datacenter to be created. Required with I(state=['present'])
     type: str
   state:
     choices:

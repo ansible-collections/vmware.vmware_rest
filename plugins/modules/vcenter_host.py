@@ -30,15 +30,15 @@ options:
     description:
     - Identifier of the host to be deleted.
     - 'The parameter must be an identifier for the resource type: HostSystem. Required
-      with I(state=[''delete''])'
+      with I(state=[''absent''])'
     type: str
   hostname:
     description:
-    - The IP address or DNS resolvable name of the host. Required with I(state=['create'])
+    - The IP address or DNS resolvable name of the host. Required with I(state=['present'])
     type: str
   password:
     description:
-    - The password for the administrator account on the host. Required with I(state=['create'])
+    - The password for the administrator account on the host. Required with I(state=['present'])
     type: str
   port:
     description:
@@ -67,11 +67,11 @@ options:
     - THUMBPRINT
     description:
     - The Host.CreateSpec.ThumbprintVerification enumerated type defines the thumbprint
-      verification schemes for a host's SSL certificate. Required with I(state=['create'])
+      verification schemes for a host's SSL certificate. Required with I(state=['present'])
     type: str
   user_name:
     description:
-    - The administrator account on the host. Required with I(state=['create'])
+    - The administrator account on the host. Required with I(state=['present'])
     type: str
   vcenter_hostname:
     description:

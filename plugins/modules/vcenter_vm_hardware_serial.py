@@ -61,7 +61,7 @@ options:
     description:
     - Virtual serial port identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.SerialPort.
-      Required with I(state=[''connect'', ''delete'', ''disconnect'', ''update''])'
+      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
     type: str
   start_connected:
     description:
@@ -141,15 +141,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "network_location": "spec/backing/network_location",
-                "no_rx_loss": "spec/backing/no_rx_loss",
-                "pipe": "spec/backing/pipe",
-                "proxy": "spec/backing/proxy",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
             "yield_on_poll": "spec/yield_on_poll",
         },
@@ -161,15 +153,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "network_location": "spec/backing/network_location",
-                "no_rx_loss": "spec/backing/no_rx_loss",
-                "pipe": "spec/backing/pipe",
-                "proxy": "spec/backing/proxy",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
             "yield_on_poll": "spec/yield_on_poll",
         },
