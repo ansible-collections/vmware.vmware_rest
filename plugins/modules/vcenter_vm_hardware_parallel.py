@@ -36,7 +36,7 @@ options:
     description:
     - Virtual parallel port identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.
-      Required with I(state=[''connect'', ''delete'', ''disconnect'', ''update''])'
+      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
     type: str
   start_connected:
     description:
@@ -106,11 +106,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"vm": "vm"},
@@ -121,11 +117,7 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {
             "allow_guest_control": "spec/allow_guest_control",
-            "backing": {
-                "file": "spec/backing/file",
-                "host_device": "spec/backing/host_device",
-                "type": "spec/backing/type",
-            },
+            "backing": "spec/backing",
             "start_connected": "spec/start_connected",
         },
         "path": {"port": "port", "vm": "vm"},

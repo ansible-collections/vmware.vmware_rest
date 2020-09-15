@@ -87,9 +87,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "check": {
         "query": {"action": "action"},
-        "body": {
-            "check_spec": {"disks": "check_spec/disks", "vm_home": "check_spec/vm_home"}
-        },
+        "body": {"check_spec": "check_spec"},
         "path": {"vm": "vm"},
     },
 }

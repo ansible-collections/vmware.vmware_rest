@@ -26,7 +26,7 @@ options:
     description:
     - Virtual disk identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Disk.
-      Required with I(state=[''delete'', ''update''])'
+      Required with I(state=[''absent''])'
     type: str
   ide:
     description:
@@ -153,6 +153,29 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Create a new disk
+  vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    type: SATA
+    new_vmdk:
+      capacity: 320000
+  register: my_new_disk
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Create a new disk
+  vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    type: SATA
+    new_vmdk:
+      capacity: 320000
+  register: my_new_disk
+- name: Delete the disk
+  vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    disk: '{{ my_new_disk.id }}'
+    state: absent
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -161,18 +184,11 @@ PAYLOAD_FORMAT = {
     "create": {
         "query": {},
         "body": {
-            "backing": {
-                "type": "spec/backing/type",
-                "vmdk_file": "spec/backing/vmdk_file",
-            },
-            "ide": {"master": "spec/ide/master", "primary": "spec/ide/primary"},
-            "new_vmdk": {
-                "capacity": "spec/new_vmdk/capacity",
-                "name": "spec/new_vmdk/name",
-                "storage_policy": "spec/new_vmdk/storage_policy",
-            },
-            "sata": {"bus": "spec/sata/bus", "unit": "spec/sata/unit"},
-            "scsi": {"bus": "spec/scsi/bus", "unit": "spec/scsi/unit"},
+            "backing": "spec/backing",
+            "ide": "spec/ide",
+            "new_vmdk": "spec/new_vmdk",
+            "sata": "spec/sata",
+            "scsi": "spec/scsi",
             "type": "spec/type",
         },
         "path": {"vm": "vm"},
@@ -181,12 +197,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
-        "body": {
-            "backing": {
-                "type": "spec/backing/type",
-                "vmdk_file": "spec/backing/vmdk_file",
-            }
-        },
+        "body": {"backing": "spec/backing"},
         "path": {"disk": "disk", "vm": "vm"},
     },
 }

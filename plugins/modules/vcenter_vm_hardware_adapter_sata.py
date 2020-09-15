@@ -12,7 +12,7 @@ options:
     description:
     - Virtual SATA adapter identifier.
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.SataAdapter.
-      Required with I(state=[''delete''])'
+      Required with I(state=[''absent''])'
     type: str
   bus:
     description:

@@ -32,7 +32,7 @@ options:
     - 'Accepted value for this field:'
     - '       - C(USE_SPECIFIED_POLICY)'
     - '       - C(USE_DEFAULT_POLICY)'
-    elements: str
+    elements: dict
     type: list
   state:
     choices:
@@ -109,10 +109,7 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "update": {
         "query": {},
-        "body": {
-            "disks": {"key": "spec/disks/key", "value": "spec/disks/value"},
-            "vm_home": {"policy": "spec/vm_home/policy", "type": "spec/vm_home/type"},
-        },
+        "body": {"disks": "spec/disks", "vm_home": "spec/vm_home"},
         "path": {"vm": "vm"},
     },
 }
@@ -161,7 +158,7 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["disks"] = {"type": "list", "elements": "str"}
+    argument_spec["disks"] = {"type": "list", "elements": "dict"}
     argument_spec["state"] = {
         "type": "str",
         "choices": ["present"],
