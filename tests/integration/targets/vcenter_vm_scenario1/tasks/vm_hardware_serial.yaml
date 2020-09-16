@@ -1,0 +1,33 @@
+---
+- name: Retrieve the serial ports information from the VM
+  vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Create a serial port
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Serial port 1"
+    allow_guest_control: true
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
+
+- name: Create a serial port (again)
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Serial port 1"
+    allow_guest_control: true
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - not(_result is changed)
