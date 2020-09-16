@@ -39,6 +39,9 @@ options:
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy.
       Required with I(state=[''absent'', ''connect'', ''disconnect''])'
     type: str
+  label:
+    description: []
+    type: str
   start_connected:
     description:
     - Flag indicating whether the virtual device should be connected whenever the
@@ -98,6 +101,25 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Add a floppy disk drive
+  vcenter_vm_hardware_floppy:
+    vm: '{{ test_vm1_info.id }}'
+    allow_guest_control: true
+  register: my_floppy_drive
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Add a floppy disk drive
+  vcenter_vm_hardware_floppy:
+    vm: '{{ test_vm1_info.id }}'
+    allow_guest_control: true
+  register: my_floppy_drive
+- name: Remove a floppy drive
+  vcenter_vm_hardware_floppy:
+    vm: '{{ test_vm1_info.id }}'
+    floppy: '{{ my_floppy_drive.id }}'
+    state: absent
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -138,6 +160,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -174,6 +197,7 @@ def prepare_argument_spec():
     argument_spec["allow_guest_control"] = {"type": "bool"}
     argument_spec["backing"] = {"type": "dict"}
     argument_spec["floppy"] = {"type": "str"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["start_connected"] = {"type": "bool"}
     argument_spec["state"] = {
         "type": "str",
@@ -244,9 +268,7 @@ async def _connect(params, session):
 
 async def _create(params, session):
     if params["floppy"]:
-        _json = await get_device_info(
-            params, session, build_url(params), params["floppy"]
-        )
+        _json = await get_device_info(session, build_url(params), params["floppy"])
     else:
         _json = await exists(params, session, build_url(params), ["floppy"])
     if _json:
@@ -270,7 +292,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 

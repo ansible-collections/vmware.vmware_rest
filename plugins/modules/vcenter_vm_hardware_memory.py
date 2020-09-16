@@ -76,6 +76,14 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Increase the memory of a VM
+  vcenter_vm_hardware_memory:
+    vm: '{{ test_vm1_info.id }}'
+    size_MiB: 1080
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -102,6 +110,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,

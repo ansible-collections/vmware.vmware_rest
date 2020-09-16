@@ -61,6 +61,9 @@ options:
     - If unset, the server will choose a adapter with an available connection. If
       no IDE connections are available, the request will be rejected.
     type: dict
+  label:
+    description: []
+    type: str
   sata:
     description:
     - Address for attaching the device to a virtual SATA adapter.
@@ -197,6 +200,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -234,6 +238,7 @@ def prepare_argument_spec():
     argument_spec["backing"] = {"type": "dict"}
     argument_spec["cdrom"] = {"type": "str"}
     argument_spec["ide"] = {"type": "dict"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["sata"] = {"type": "dict"}
     argument_spec["start_connected"] = {"type": "bool"}
     argument_spec["state"] = {
@@ -306,9 +311,7 @@ async def _connect(params, session):
 
 async def _create(params, session):
     if params["cdrom"]:
-        _json = await get_device_info(
-            params, session, build_url(params), params["cdrom"]
-        )
+        _json = await get_device_info(session, build_url(params), params["cdrom"])
     else:
         _json = await exists(params, session, build_url(params), ["cdrom"])
     if _json:
@@ -332,7 +335,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 

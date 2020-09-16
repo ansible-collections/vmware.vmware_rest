@@ -48,6 +48,9 @@ options:
     - '     - DISTRIBUTED_PORTGROUP'
     - '     - OPAQUE_NETWORK'
     type: dict
+  label:
+    description: []
+    type: str
   mac_address:
     description:
     - 'MAC address. '
@@ -234,6 +237,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -269,6 +273,7 @@ def prepare_argument_spec():
 
     argument_spec["allow_guest_control"] = {"type": "bool"}
     argument_spec["backing"] = {"type": "dict"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["mac_address"] = {"type": "str"}
     argument_spec["mac_type"] = {
         "type": "str",
@@ -352,7 +357,7 @@ async def _connect(params, session):
 
 async def _create(params, session):
     if params["nic"]:
-        _json = await get_device_info(params, session, build_url(params), params["nic"])
+        _json = await get_device_info(session, build_url(params), params["nic"])
     else:
         _json = await exists(params, session, build_url(params), ["nic"])
     if _json:
@@ -376,7 +381,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 

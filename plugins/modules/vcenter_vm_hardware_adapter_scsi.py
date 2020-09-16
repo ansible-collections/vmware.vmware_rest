@@ -20,6 +20,9 @@ options:
     - If unset, the server will choose an available bus number; if none is available,
       the request will fail.
     type: int
+  label:
+    description: []
+    type: str
   pci_slot_number:
     description:
     - Address of the SCSI adapter on the PCI bus. If the PCI address is invalid, the
@@ -145,6 +148,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -180,6 +184,7 @@ def prepare_argument_spec():
 
     argument_spec["adapter"] = {"type": "str"}
     argument_spec["bus"] = {"default": 0, "type": "int"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["pci_slot_number"] = {"type": "int"}
     argument_spec["sharing"] = {
         "type": "str",
@@ -234,9 +239,7 @@ async def entry_point(module, session):
 
 async def _create(params, session):
     if params["adapter"]:
-        _json = await get_device_info(
-            params, session, build_url(params), params["adapter"]
-        )
+        _json = await get_device_info(session, build_url(params), params["adapter"])
     else:
         _json = await exists(params, session, build_url(params), ["adapter"])
     if _json:
@@ -260,7 +263,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 

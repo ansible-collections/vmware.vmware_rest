@@ -1155,6 +1155,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -1481,7 +1482,7 @@ async def _clone(params, session):
 
 async def _create(params, session):
     if params["vm"]:
-        _json = await get_device_info(params, session, build_url(params), params["vm"])
+        _json = await get_device_info(session, build_url(params), params["vm"])
     else:
         _json = await exists(params, session, build_url(params), ["vm"])
     if _json:
@@ -1503,7 +1504,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 
