@@ -14,6 +14,9 @@ options:
     - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Disk.
       Required with I(state=[''get''])'
     type: str
+  label:
+    description: []
+    type: str
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -61,6 +64,10 @@ EXAMPLES = """
   vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+- name: Retrieve disk information using the label
+  vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm1_info.id }}'
+    label: Hard disk 1
 - name: Retrieve the disk information from the VM
   vcenter_vm_hardware_disk_info:
     vm: '{{ test_vm1_info.id }}'
@@ -101,6 +108,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -135,6 +143,7 @@ def prepare_argument_spec():
     }
 
     argument_spec["disk"] = {"type": "str"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["vm"] = {"type": "str"}
 
     return argument_spec
@@ -167,10 +176,25 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    async with session.get(build_url(module.params)) as resp:
+    url = build_url(module.params)
+    async with session.get(url) as resp:
         _json = await resp.json()
         if module.params.get("disk"):
             _json["id"] = module.params.get("disk")
+        elif module.params.get("label"):  # TODO extend the list of filter
+            _json = await exists(module.params, session, url)
+        else:  # list context, retrieve the details of each entry
+            try:
+                if (
+                    isinstance(_json["value"][0]["disk"], str)
+                    and len(list(_json["value"][0].values())) == 1
+                ):
+                    # this is a list of id, we fetch the details
+                    full_device_list = await build_full_device_list(session, url, _json)
+                    _json = {"value": [i["value"] for i in full_device_list]}
+            except (KeyError, IndexError):
+                pass
+
         return await update_changed_flag(_json, resp.status, "get")
 
 

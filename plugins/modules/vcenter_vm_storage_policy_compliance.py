@@ -80,6 +80,14 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Adjust storage policy compliance of a VM
+  vcenter_vm_storage_policy_compliance:
+    vm: '{{ test_vm1_info.id }}'
+    disks:
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -103,6 +111,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,

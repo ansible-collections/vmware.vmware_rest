@@ -132,23 +132,34 @@ async def update_changed_flag(data, status, operation):
     return data
 
 
-async def list_devices(params, session, url):
+async def list_devices(session, url):
     existing_entries = []
+
     async with session.get(url) as resp:
         _json = await resp.json()
-        devices = _json["value"]
-    device_type = get_device_type(url)
-    subdevice_type = get_subdevice_type(url)
-
-    for device in devices:
-        _id = device.get(device_type) or device.get(subdevice_type)
-        if not _id:
-            raise Exception("Cannot find the id key of the device!")
-        existing_entries.append((await get_device_info(params, session, url, _id)))
-    return existing_entries
+        return _json
 
 
-async def get_device_info(params, session, url, _id):
+async def build_full_device_list(session, url, device_list):
+    import asyncio
+
+    device_ids = []
+    for i in device_list["value"]:
+        fields = list(i.values())
+        key = list(i.keys())[0]
+        if len(fields) != 1:
+            # The list already comes with all the details
+            return device_list
+        device_ids.append(fields[0])
+
+    tasks = [
+        asyncio.ensure_future(get_device_info(session, url, _id)) for _id in device_ids
+    ]
+
+    return [await i for i in tasks]
+
+
+async def get_device_info(session, url, _id):
     async with session.get(url + "/" + _id) as resp:
         _json = await resp.json()
         _json["id"] = str(_id)
@@ -159,11 +170,12 @@ async def exists(params, session, url, unicity_keys=None):
     if not unicity_keys:
         unicity_keys = []
 
-    unicity_keys += ["pci_slot_number", "sata"]
+    unicity_keys += ["label", "pci_slot_number", "sata"]
 
-    devices = await list_devices(params, session, url)
+    devices = await list_devices(session, url)
+    full_devices = await build_full_device_list(session, url, devices)
 
-    for device in devices:
+    for device in full_devices:
         for k in unicity_keys:
             if not params.get(k):
                 continue
@@ -217,5 +229,7 @@ def get_device_type(url):
         return "nic"
     elif device_type in ["sata", "scsi"]:
         return "adapter"
+    elif device_type in ["parallel", "serial"]:
+        return "port"
     else:
         return device_type

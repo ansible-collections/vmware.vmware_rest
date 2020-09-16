@@ -57,6 +57,9 @@ options:
     - '     - NETWORK_SERVER'
     - '     - NETWORK_CLIENT'
     type: dict
+  label:
+    description: []
+    type: str
   port:
     description:
     - Virtual serial port identifier.
@@ -132,6 +135,40 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Get an existing serial port (label)
+  vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm1_info.id }}'
+    label: Serial port 1
+  register: serial_port_1
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Create a new serial port
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: Serial port 2
+    allow_guest_control: true
+- name: Create an existing serial port (label)
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: Serial port 1
+    allow_guest_control: true
+- name: Create another serial port with a label
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: Serial port 2
+    allow_guest_control: true
+- name: Delete an existing serial port (label)
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: Serial port 2
+    state: absent
+- name: Delete an existing serial port (port id)
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    port: '{{ serial_port_1.id }}'
+    state: absent
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -174,6 +211,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -209,6 +247,7 @@ def prepare_argument_spec():
 
     argument_spec["allow_guest_control"] = {"type": "bool"}
     argument_spec["backing"] = {"type": "dict"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["port"] = {"type": "str"}
     argument_spec["start_connected"] = {"type": "bool"}
     argument_spec["state"] = {
@@ -281,9 +320,7 @@ async def _connect(params, session):
 
 async def _create(params, session):
     if params["port"]:
-        _json = await get_device_info(
-            params, session, build_url(params), params["port"]
-        )
+        _json = await get_device_info(session, build_url(params), params["port"])
     else:
         _json = await exists(params, session, build_url(params), ["port"])
     if _json:
@@ -307,7 +344,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 

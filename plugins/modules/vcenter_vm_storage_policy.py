@@ -102,6 +102,24 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Adjust VM storage policy
+  vcenter_vm_storage_policy:
+    vm: '{{ test_vm1_info.id }}'
+    disks:
+    - key: '{{ test_vm1_info.value.disks[0].key }}'
+      value:
+        type: USE_DEFAULT_POLICY
+- name: Adjust VM storage policy (again)
+  vcenter_vm_storage_policy:
+    vm: '{{ test_vm1_info.id }}'
+    disks:
+    - key: '{{ test_vm1_info.value.disks[0].key }}'
+      value:
+        type: USE_DEFAULT_POLICY
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -125,6 +143,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,

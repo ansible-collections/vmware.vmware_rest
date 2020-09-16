@@ -43,6 +43,9 @@ options:
     - If unset, the server will choose a adapter with an available connection. If
       no IDE connections are available, the request will be rejected.
     type: dict
+  label:
+    description: []
+    type: str
   new_vmdk:
     description:
     - Specification for creating a new VMDK backing for the virtual disk. Exactly
@@ -213,6 +216,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -249,6 +253,7 @@ def prepare_argument_spec():
     argument_spec["backing"] = {"type": "dict"}
     argument_spec["disk"] = {"type": "str"}
     argument_spec["ide"] = {"type": "dict"}
+    argument_spec["label"] = {"type": "str"}
     argument_spec["new_vmdk"] = {"type": "dict"}
     argument_spec["sata"] = {"type": "dict"}
     argument_spec["scsi"] = {"type": "dict"}
@@ -298,9 +303,7 @@ async def entry_point(module, session):
 
 async def _create(params, session):
     if params["disk"]:
-        _json = await get_device_info(
-            params, session, build_url(params), params["disk"]
-        )
+        _json = await get_device_info(session, build_url(params), params["disk"])
     else:
         _json = await exists(params, session, build_url(params), ["disk"])
     if _json:
@@ -324,7 +327,7 @@ async def _create(params, session):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
-            _json = await get_device_info(params, session, _url, _id)
+            _json = await get_device_info(session, _url, _id)
         return await update_changed_flag(_json, resp.status, "create")
 
 

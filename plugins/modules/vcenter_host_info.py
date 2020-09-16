@@ -156,6 +156,7 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
+    build_full_device_list,
     exists,
     gen_args,
     get_device_info,
@@ -221,10 +222,25 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-    async with session.get(build_url(module.params)) as resp:
+    url = build_url(module.params)
+    async with session.get(url) as resp:
         _json = await resp.json()
         if module.params.get("host"):
             _json["id"] = module.params.get("host")
+        elif module.params.get("label"):  # TODO extend the list of filter
+            _json = await exists(module.params, session, url)
+        else:  # list context, retrieve the details of each entry
+            try:
+                if (
+                    isinstance(_json["value"][0]["host"], str)
+                    and len(list(_json["value"][0].values())) == 1
+                ):
+                    # this is a list of id, we fetch the details
+                    full_device_list = await build_full_device_list(session, url, _json)
+                    _json = {"value": [i["value"] for i in full_device_list]}
+            except (KeyError, IndexError):
+                pass
+
         return await update_changed_flag(_json, resp.status, "get")
 
 
