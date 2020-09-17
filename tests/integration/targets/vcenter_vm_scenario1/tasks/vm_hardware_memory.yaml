@@ -1,0 +1,19 @@
+---
+- name: Retrieve the memory information from the VM
+  vcenter_vm_hardware_memory_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- debug: var=_result
+
+- name: Increase the memory of a VM
+  vcenter_vm_hardware_memory:
+    vm: '{{ test_vm1_info.id }}'
+    size_MiB: 1080
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
