@@ -362,17 +362,3 @@ plugins/modules/vcenter_vm_tools.py future-import-boilerplate!skip
 plugins/modules/vcenter_vm_tools.py metaclass-boilerplate!skip
 plugins/modules/vcenter_vm_tools.py validate-modules:missing-if-name-main
 plugins/modules/vcenter_vm_tools.py validate-modules:missing-main-call
-plugins/modules/vcenter_vm_tools_installer_info.py compile-2.6!skip
-plugins/modules/vcenter_vm_tools_installer_info.py compile-2.7!skip
-plugins/modules/vcenter_vm_tools_installer_info.py compile-3.5!skip
-plugins/modules/vcenter_vm_tools_installer_info.py future-import-boilerplate!skip
-plugins/modules/vcenter_vm_tools_installer_info.py metaclass-boilerplate!skip
-plugins/modules/vcenter_vm_tools_installer_info.py validate-modules:missing-if-name-main
-plugins/modules/vcenter_vm_tools_installer_info.py validate-modules:missing-main-call
-plugins/modules/vcenter_vm_tools_installer.py compile-2.6!skip
-plugins/modules/vcenter_vm_tools_installer.py compile-2.7!skip
-plugins/modules/vcenter_vm_tools_installer.py compile-3.5!skip
-plugins/modules/vcenter_vm_tools_installer.py future-import-boilerplate!skip
-plugins/modules/vcenter_vm_tools_installer.py metaclass-boilerplate!skip
-plugins/modules/vcenter_vm_tools_installer.py validate-modules:missing-if-name-main
-plugins/modules/vcenter_vm_tools_installer.py validate-modules:missing-main-call
