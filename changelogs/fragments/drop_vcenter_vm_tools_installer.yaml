@@ -1,0 +1,5 @@
+---
+
+deprecated_features:
+- vcenter_vm_tools_installer - remove the module from the collection.
+- vcenter_vm_tools - remove the ``upgrade`` state.

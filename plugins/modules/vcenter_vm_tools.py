@@ -8,22 +8,9 @@ module: vcenter_vm_tools
 short_description: Handle resource of type vcenter_vm_tools
 description: Handle resource of type vcenter_vm_tools
 options:
-  action:
-    choices:
-    - upgrade
-    description:
-    - action=upgrade Required with I(state=['upgrade'])
-    type: str
-  command_line_options:
-    description:
-    - Command line options passed to the installer to modify the installation procedure
-      for Tools.
-    - Set if any additional options are desired.
-    type: str
   state:
     choices:
     - present
-    - upgrade
     default: present
     description: []
     type: str
@@ -78,6 +65,21 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Change vm-tools upgrade policy to MANUAL
+  vcenter_vm_tools:
+    vm: '{{ test_vm1_info.id }}'
+    upgrade_policy: MANUAL
+- name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
+  vcenter_vm_tools:
+    vm: '{{ test_vm1_info.id }}'
+    upgrade_policy: UPGRADE_AT_POWER_CYCLE
+- name: Retrive vm-tools information
+  vcenter_vm_tools:
+    vm: '{{ test_vm1_info.id }}'
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -86,11 +88,6 @@ PAYLOAD_FORMAT = {
     "update": {
         "query": {},
         "body": {"upgrade_policy": "spec/upgrade_policy"},
-        "path": {"vm": "vm"},
-    },
-    "upgrade": {
-        "query": {"action": "action"},
-        "body": {"command_line_options": "command_line_options"},
         "path": {"vm": "vm"},
     },
 }
@@ -140,11 +137,9 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["action"] = {"type": "str", "choices": ["upgrade"]}
-    argument_spec["command_line_options"] = {"type": "str"}
     argument_spec["state"] = {
         "type": "str",
-        "choices": ["present", "upgrade"],
+        "choices": ["present"],
         "default": "present",
     }
     argument_spec["upgrade_policy"] = {
@@ -216,26 +211,6 @@ async def _update(params, session):
             _json = {}
         _json["id"] = params.get("None")
         return await update_changed_flag(_json, resp.status, "update")
-
-
-async def _upgrade(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["upgrade"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["upgrade"])
-    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/tools")
-    if subdevice_type and (not params[subdevice_type]):
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/tools".format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        return await update_changed_flag(_json, resp.status, "upgrade")
 
 
 if __name__ == "__main__":

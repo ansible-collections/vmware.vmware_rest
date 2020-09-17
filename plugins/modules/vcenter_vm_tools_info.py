@@ -62,11 +62,6 @@ PAYLOAD_FORMAT = {
         "body": {"upgrade_policy": "spec/upgrade_policy"},
         "path": {"vm": "vm"},
     },
-    "upgrade": {
-        "query": {"action": "action"},
-        "body": {"command_line_options": "command_line_options"},
-        "path": {"vm": "vm"},
-    },
 }
 
 import socket
