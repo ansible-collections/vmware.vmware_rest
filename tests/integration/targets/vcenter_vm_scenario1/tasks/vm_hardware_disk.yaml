@@ -31,6 +31,18 @@
 - assert:
     that: my_new_disk is changed
 
+- name: Check storage policy compliance of a disk
+  vcenter_vm_storage_policy_compliance:
+    vm: '{{ test_vm1_info.id }}'
+    check_spec:
+      disks:
+        - '{{ my_new_disk.id }}'
+      vm_home: False
+    state: check
+  register: _result
+
+- debug: var=_result
+
 - name: Delete the disk
   vcenter_vm_hardware_disk:
     vm: '{{ test_vm1_info.id }}'
