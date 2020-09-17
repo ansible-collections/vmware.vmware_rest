@@ -6,10 +6,10 @@
 
 - debug: var=_result
 
-- name: Create a serial port
+- name: Create a new serial port
   vcenter_vm_hardware_serial:
     vm: '{{ test_vm1_info.id }}'
-    label: "Serial port 1"
+    label: "Serial port 2"
     allow_guest_control: true
   register: _result
 
@@ -19,7 +19,21 @@
     that:
       - _result is changed
 
-- name: Create a serial port (again)
+- name: Create another serial port with a label
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Serial port 2"
+    allow_guest_control: true
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
+
+
+- name: Create an existing serial port (label)
   vcenter_vm_hardware_serial:
     vm: '{{ test_vm1_info.id }}'
     label: "Serial port 1"
@@ -31,3 +45,29 @@
 - assert:
     that:
       - not(_result is changed)
+
+- name: Get an existing serial port (label)
+  vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Serial port 1"
+  register: serial_port_1
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result.value.label == "Serial port 1"
+
+- name: Delete an existing serial port (port id)
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    port: '{{ serial_port_1.id }}'
+    state: absent
+  register: _result
+
+- name: Delete an existing serial port (label)
+  vcenter_vm_hardware_serial:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Serial port 2"
+    state: absent
+  register: _result

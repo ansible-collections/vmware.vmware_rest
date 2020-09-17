@@ -6,6 +6,14 @@
 
 - debug: var=_result
 
+- name: Retrieve disk information using the label
+  vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Hard disk 1"
+  register: _result
+
+- debug: var=_result
+
 - vcenter_vm_hardware_adapter_sata:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
