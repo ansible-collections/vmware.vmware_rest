@@ -17,6 +17,7 @@ options:
     choices:
     - connect
     description: []
+    required: true
     type: str
   vcenter_hostname:
     description:
@@ -107,7 +108,7 @@ def prepare_argument_spec():
     }
 
     argument_spec["host"] = {"type": "str"}
-    argument_spec["state"] = {"type": "str", "choices": ["connect"]}
+    argument_spec["state"] = {"required": True, "type": "str", "choices": ["connect"]}
 
     return argument_spec
 
