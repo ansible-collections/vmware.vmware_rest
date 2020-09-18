@@ -31,21 +31,61 @@
 - assert:
     that: my_new_disk is changed
 
-- name: Get VM storage policy compliance information
-  vcenter_vm_storage_policy_compliance_info:
+- name: Get VM storage policy
+  vcenter_vm_storage_policy_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
 - debug: var=_result
 
-- name: Check storage policy compliance of a disk
-  vcenter_vm_storage_policy_compliance:
+- name: Adjust VM storage policy
+  vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
-    check_spec:
-      disks:
-        - '{{ my_new_disk.id }}'
-      vm_home: False
-    state: check
+    disks:
+      - key: '{{ my_new_disk.id }}'
+        value:
+          type: USE_DEFAULT_POLICY
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
+
+- name: List existing storage policies
+  vcenter_storage_policies_info:
+  register: storage_policies
+
+- debug: var=storage_policies
+
+- name: Look up the VM Encryption Policy
+  set_fact:
+    my_storage_policy: "{{ (storage_policies.value |  selectattr('name', 'equalto', 'VVol No Requirements Policy') | list | first) }}"
+
+- debug: var=my_storage_policy
+
+- name: _Adjust VM storage policy (again)
+  vcenter_vm_storage_policy:
+    vm: '{{ test_vm1_info.id }}'
+    disks:
+      - key: '{{ my_new_disk.id }}'
+        value:
+          policy: "{{ my_storage_policy.policy }}"
+          type: USE_SPECIFIED_POLICY
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - not(_result is changed)
+  ignore_errors: true
+
+
+- name: Get VM storage policy compliance information
+  vcenter_vm_storage_policy_compliance_info:
+    vm: '{{ test_vm1_info.id }}'
   register: _result
 
 - debug: var=_result

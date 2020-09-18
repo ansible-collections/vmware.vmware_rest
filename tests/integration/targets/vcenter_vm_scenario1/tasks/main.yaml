@@ -14,7 +14,6 @@
   with_fileglob:
     - "vm_hardware*.yaml"
 - import_tasks: vm_libraryitem.yaml
-- import_tasks: vm_storage_policy.yaml
 - import_tasks: vm_power.yaml
 - vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
