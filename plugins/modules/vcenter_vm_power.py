@@ -15,6 +15,7 @@ options:
     - stop
     - suspend
     description: []
+    required: true
     type: str
   vcenter_hostname:
     description:
@@ -59,6 +60,24 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect the list of the existing VM
+  vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Turn off the VM
+  vcenter_vm_power:
+    state: stop
+    vm: '{{ item.vm }}'
+  with_items: '{{ existing_vms.value }}'
+  ignore_errors: yes
+- name: Turn the power of the VM on
+  vcenter_vm_power:
+    state: start
+    vm: '{{ test_vm1_info.id }}'
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -116,6 +135,7 @@ def prepare_argument_spec():
     }
 
     argument_spec["state"] = {
+        "required": True,
         "type": "str",
         "choices": ["reset", "start", "stop", "suspend"],
     }

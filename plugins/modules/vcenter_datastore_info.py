@@ -213,7 +213,7 @@ async def entry_point(module, session):
                     # this is a list of id, we fetch the details
                     full_device_list = await build_full_device_list(session, url, _json)
                     _json = {"value": [i["value"] for i in full_device_list]}
-            except (KeyError, IndexError):
+            except (TypeError, KeyError, IndexError):
                 pass
 
         return await update_changed_flag(_json, resp.status, "get")

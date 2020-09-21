@@ -110,16 +110,17 @@ EXAMPLES = """
   vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
     disks:
-    - key: '{{ test_vm1_info.value.disks[0].key }}'
+    - key: '{{ my_new_disk.id }}'
       value:
         type: USE_DEFAULT_POLICY
 - name: Adjust VM storage policy (again)
   vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
     disks:
-    - key: '{{ test_vm1_info.value.disks[0].key }}'
+    - key: '{{ my_new_disk.id }}'
       value:
-        type: USE_DEFAULT_POLICY
+        policy: '{{ my_storage_policy.policy }}'
+        type: USE_SPECIFIED_POLICY
 """
 
 # This structure describes the format of the data expected by the end-points

@@ -4,19 +4,20 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
-module: vcenter_vm_hardware_serial_info
-short_description: Handle resource of type vcenter_vm_hardware_serial
-description: Handle resource of type vcenter_vm_hardware_serial
+module: vcenter_storage_policies_info
+short_description: Handle resource of type vcenter_storage_policies
+description: Handle resource of type vcenter_storage_policies
 options:
-  label:
-    description: []
-    type: str
-  port:
+  filter_policies:
     description:
-    - Virtual serial port identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.SerialPort.
-      Required with I(state=[''get''])'
-    type: str
+    - Identifiers of storage policies that can match the filter.
+    - If unset or empty, storage policies with any identifiers match the filter.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      contain identifiers for the resource type: vcenter.StoragePolicy. When operations
+      return a value of this structure as a result, the field will contain identifiers
+      for the resource type: vcenter.StoragePolicy.'
+    elements: str
+    type: list
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -46,11 +47,6 @@ options:
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_VALIDATE_CERTS) will be used instead.
     type: bool
-  vm:
-    description:
-    - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
-    type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
@@ -60,47 +56,19 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect information about a specific VM
-  vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Get an existing serial port (label)
-  vcenter_vm_hardware_serial_info:
-    vm: '{{ test_vm1_info.id }}'
-    label: Serial port 1
-  register: serial_port_1
-- name: Retrieve the serial ports information from the VM
-  vcenter_vm_hardware_serial_info:
-    vm: '{{ test_vm1_info.id }}'
+- name: List existing storage policies
+  vcenter_storage_policies_info:
+  register: storage_policies
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "create": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "spec/allow_guest_control",
-            "backing": "spec/backing",
-            "start_connected": "spec/start_connected",
-            "yield_on_poll": "spec/yield_on_poll",
-        },
-        "path": {"vm": "vm"},
+    "list": {"query": {"filter.policies": "filter.policies"}, "body": {}, "path": {}},
+    "check_compatibility": {
+        "query": {"action": "action"},
+        "body": {"datastores": "datastores"},
+        "path": {"policy": "policy"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "get": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "spec/allow_guest_control",
-            "backing": "spec/backing",
-            "start_connected": "spec/start_connected",
-            "yield_on_poll": "spec/yield_on_poll",
-        },
-        "path": {"port": "port", "vm": "vm"},
-    },
-    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }
 
 import socket
@@ -148,9 +116,7 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["label"] = {"type": "str"}
-    argument_spec["port"] = {"type": "str"}
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["filter_policies"] = {"type": "list", "elements": "str"}
 
     return argument_spec
 
@@ -169,30 +135,24 @@ async def main():
 
 def build_url(params):
 
-    if params["port"]:
-        _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
-        return (
-            "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/serial/{port}"
-        ).format(**params) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return (
-            "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/serial"
-        ).format(**params) + gen_args(params, _in_query_parameters)
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return ("https://{vcenter_hostname}" "/rest/vcenter/storage/policies").format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
 
 
 async def entry_point(module, session):
     url = build_url(module.params)
     async with session.get(url) as resp:
         _json = await resp.json()
-        if module.params.get("port"):
-            _json["id"] = module.params.get("port")
+        if module.params.get("None"):
+            _json["id"] = module.params.get("None")
         elif module.params.get("label"):  # TODO extend the list of filter
             _json = await exists(module.params, session, url)
         else:  # list context, retrieve the details of each entry
             try:
                 if (
-                    isinstance(_json["value"][0]["port"], str)
+                    isinstance(_json["value"][0]["None"], str)
                     and len(list(_json["value"][0].values())) == 1
                 ):
                     # this is a list of id, we fetch the details

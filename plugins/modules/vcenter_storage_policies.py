@@ -4,38 +4,33 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
-module: vcenter_vm_storage_policy_compliance
-short_description: Handle resource of type vcenter_vm_storage_policy_compliance
-description: Handle resource of type vcenter_vm_storage_policy_compliance
+module: vcenter_storage_policies
+short_description: Handle resource of type vcenter_storage_policies
+description: Handle resource of type vcenter_storage_policies
 options:
   action:
     choices:
-    - check
+    - check-compatibility
     description:
-    - action=check
+    - action=check-compatibility
     type: str
-  check_spec:
+  datastores:
     description:
-    - Parameter specifies the entities on which storage policy compliance check is
-      to be invoked. The storage compliance Info Compliance.Info is returned.
-    - If unset, the behavior is equivalent to a Compliance.CheckSpec with CheckSpec#vmHome
-      set to true and CheckSpec#disks populated with all disks attached to the virtual
-      machine.
-    - 'Valide attributes are:'
-    - ' - C(disks) (list): Identifiers of the virtual machine''s virtual disks for
-      which compliance should be checked.'
-    - If unset or empty, compliance check is invoked on all the associated disks.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: vcenter.vm.hardware.Disk.'
-    - ' - C(vm_home) (bool): Invoke compliance check on the virtual machine home directory
-      if set to true.'
-    type: dict
+    - Datastores used to check compatibility against a storage policy. The number
+      of datastores is limited to 1024.
+    - 'The parameter must contain identifiers for the resource type: Datastore.'
+    elements: str
+    type: list
+  policy:
+    description:
+    - The storage policy identifier
+    - 'The parameter must be an identifier for the resource type: vcenter.StoragePolicy.'
+    type: str
   state:
     choices:
-    - check
+    - check_compatibility
     description: []
+    required: true
     type: str
   vcenter_hostname:
     description:
@@ -66,11 +61,6 @@ options:
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_VALIDATE_CERTS) will be used instead.
     type: bool
-  vm:
-    description:
-    - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
-    type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
@@ -80,23 +70,15 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect information about a specific VM
-  vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Adjust storage policy compliance of a VM
-  vcenter_vm_storage_policy_compliance:
-    vm: '{{ test_vm1_info.id }}'
-    disks:
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "check": {
+    "list": {"query": {"filter.policies": "filter.policies"}, "body": {}, "path": {}},
+    "check_compatibility": {
         "query": {"action": "action"},
-        "body": {"check_spec": "check_spec"},
-        "path": {"vm": "vm"},
+        "body": {"datastores": "datastores"},
+        "path": {"policy": "policy"},
     },
 }
 
@@ -145,10 +127,14 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["action"] = {"type": "str", "choices": ["check"]}
-    argument_spec["check_spec"] = {"type": "dict"}
-    argument_spec["state"] = {"type": "str", "choices": ["check"]}
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["action"] = {"type": "str", "choices": ["check-compatibility"]}
+    argument_spec["datastores"] = {"type": "list", "elements": "str"}
+    argument_spec["policy"] = {"type": "str"}
+    argument_spec["state"] = {
+        "required": True,
+        "type": "str",
+        "choices": ["check_compatibility"],
+    }
 
     return argument_spec
 
@@ -167,9 +153,9 @@ async def main():
 
 def build_url(params):
 
-    return (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/storage/policy/compliance"
-    ).format(**params)
+    return ("https://{vcenter_hostname}" "/rest/vcenter/storage/policies").format(
+        **params
+    )
 
 
 async def entry_point(module, session):
@@ -186,28 +172,24 @@ async def entry_point(module, session):
     return await func(module.params, session)
 
 
-async def _check(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["check"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["check"])
-    subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/storage/policy/compliance"
-    )
+async def _check_compatibility(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["check_compatibility"]["query"].keys()
+    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["check_compatibility"])
+    subdevice_type = get_subdevice_type("/rest/vcenter/storage/policies/{policy}")
     if subdevice_type and (not params[subdevice_type]):
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/storage/policy/compliance".format(
+    _url = "https://{vcenter_hostname}/rest/vcenter/storage/policies/{policy}".format(
         **params
-    ) + gen_args(
-        params, _in_query_parameters
-    )
+    ) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        return await update_changed_flag(_json, resp.status, "check")
+        return await update_changed_flag(_json, resp.status, "check_compatibility")
 
 
 if __name__ == "__main__":
