@@ -47,7 +47,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -203,6 +203,30 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Adjust VM storage policy
+      vcenter_vm_storage_policy:
+        vm: '{{ test_vm1_info.id }}'
+        disks:
+        - key: '{{ my_new_disk.id }}'
+          value:
+            type: USE_DEFAULT_POLICY
+    - name: Adjust VM storage policy (again)
+      vcenter_vm_storage_policy:
+        vm: '{{ test_vm1_info.id }}'
+        disks:
+        - key: '{{ my_new_disk.id }}'
+          value:
+            policy: '{{ my_storage_policy.policy }}'
+            type: USE_SPECIFIED_POLICY
 
 
 

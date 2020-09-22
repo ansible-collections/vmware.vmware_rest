@@ -90,7 +90,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the host to be deleted.</div>
-                        <div>The parameter must be an identifier for the resource type: HostSystem. Required with <em>state=[&#x27;delete&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: HostSystem. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -105,7 +105,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The IP address or DNS resolvable name of the host. Required with <em>state=[&#x27;create&#x27;]</em></div>
+                        <div>The IP address or DNS resolvable name of the host. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -120,7 +120,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The password for the administrator account on the host. Required with <em>state=[&#x27;create&#x27;]</em></div>
+                        <div>The password for the administrator account on the host. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -189,7 +189,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Host.CreateSpec.ThumbprintVerification enumerated type defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;create&#x27;]</em></div>
+                        <div>The Host.CreateSpec.ThumbprintVerification enumerated type defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -204,7 +204,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The administrator account on the host. Required with <em>state=[&#x27;create&#x27;]</em></div>
+                        <div>The administrator account on the host. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

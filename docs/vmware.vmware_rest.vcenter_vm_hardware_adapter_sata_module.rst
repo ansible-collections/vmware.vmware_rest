@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual SATA adapter identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.SataAdapter. Required with <em>state=[&#x27;delete&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.SataAdapter. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -70,6 +70,20 @@ Parameters
                 <td>
                         <div>SATA bus number.</div>
                         <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
                 </td>
             </tr>
             <tr>

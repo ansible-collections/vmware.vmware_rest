@@ -98,7 +98,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -122,7 +122,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -260,7 +260,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -338,7 +338,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -363,7 +363,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -591,7 +591,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name GuestOS} defines the valid guest operating system types used for configuring a virtual machine. Required with <em>state=[&#x27;create&#x27;]</em></div>
+                        <div>The {@name GuestOS} defines the valid guest operating system types used for configuring a virtual machine. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -663,7 +663,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine name.</div>
-                        <div>If unset, the display name from the virtual machine&#x27;s configuration file will be used. Required with <em>state=[&#x27;clone&#x27;, &#x27;create&#x27;, &#x27;instant_clone&#x27;, &#x27;register&#x27;]</em></div>
+                        <div>If unset, the display name from the virtual machine&#x27;s configuration file will be used.</div>
                 </td>
             </tr>
             <tr>
@@ -673,7 +673,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -730,7 +730,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -772,7 +772,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -805,7 +805,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -857,24 +857,24 @@ Parameters
                         <div>Virtual machine placement information.</div>
                         <div>If this field is unset, the system will use the values from the source virtual machine. If specified, each field will be used for placement. If the fields result in disjoint placement the operation will fail. If the fields along with the other existing placement of the virtual machine result in disjoint placement the operation will fail.</div>
                         <div>Valide attributes are:</div>
-                        <div>- <code>cluster</code> (str): Cluster into which the cloned virtual machine should be placed.</div>
-                        <div>If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.resource-pool are both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.cluster.</div>
-                        <div>If VM.ClonePlacementSpec.cluster and VM.ClonePlacementSpec.host are both specified, VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.</div>
-                        <div>If VM.ClonePlacementSpec.resource-pool or VM.ClonePlacementSpec.host is specified, it is recommended that this field be unset.</div>
+                        <div>- <code>cluster</code> (str): Cluster into which the virtual machine should be placed.</div>
+                        <div>If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster.</div>
+                        <div>If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.</div>
+                        <div>If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is specified, it is recommended that this field be unset.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: ClusterComputeResource. When operations return a value of this structure as a result, the field will be an identifier for the resource type: ClusterComputeResource.</div>
-                        <div>- <code>datastore</code> (str): Datastore on which the cloned virtual machine&#x27;s configuration state should be stored. This datastore will also be used for any virtual disks that are created as part of the virtual machine clone operation unless individually overridden.</div>
-                        <div>If field is unset, the system will use the datastore of the source virtual machine.</div>
+                        <div>- <code>datastore</code> (str): Datastore on which the virtual machine&#x27;s configuration state should be stored. This datastore will also be used for any virtual disks that are created as part of the virtual machine creation operation.</div>
+                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose suitable storage for the virtual machine; if storage cannot be chosen, the virtual machine creation operation will fail.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Datastore. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Datastore.</div>
-                        <div>- <code>folder</code> (str): Virtual machine folder into which the cloned virtual machine should be placed.</div>
-                        <div>If field is unset, the system will use the virtual machine folder of the source virtual machine. If this results in a conflict due to other placement parameters, the virtual machine clone operation will fail.</div>
+                        <div>- <code>folder</code> (str): Virtual machine folder into which the virtual machine should be placed.</div>
+                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the virtual machine; if a folder cannot be chosen, the virtual machine creation operation will fail.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Folder. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Folder.</div>
-                        <div>- <code>host</code> (str): Host onto which the cloned virtual machine should be placed.</div>
-                        <div>If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.resource-pool are both specified, VM.ClonePlacementSpec.resource-pool must belong to VM.ClonePlacementSpec.host.</div>
-                        <div>If VM.ClonePlacementSpec.host and VM.ClonePlacementSpec.cluster are both specified, VM.ClonePlacementSpec.host must be a member of VM.ClonePlacementSpec.cluster.</div>
-                        <div>If this field is unset, if VM.ClonePlacementSpec.resource-pool is unset, the cloned virtual machine will use the host of the source virtual machine. if VM.ClonePlacementSpec.resource-pool is set, and the target is a standalone host, the host is used. if VM.ClonePlacementSpec.resource-pool is set, and the target is a DRS cluster, a host will be picked by DRS. if VM.ClonePlacementSpec.resource-pool is set, and the target is a cluster without DRS, InvalidArgument will be thrown.</div>
+                        <div>- <code>host</code> (str): Host onto which the virtual machine should be placed.</div>
+                        <div>If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host.</div>
+                        <div>If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.</div>
+                        <div>This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster is specified. If unset, the system will attempt to choose a suitable host for the virtual machine; if a host cannot be chosen, the virtual machine creation operation will fail.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: HostSystem. When operations return a value of this structure as a result, the field will be an identifier for the resource type: HostSystem.</div>
-                        <div>- <code>resource_pool</code> (str): Resource pool into which the cloned virtual machine should be placed.</div>
-                        <div>If field is unset, the system will use the resource pool of the source virtual machine. If this results in a conflict due to other placement parameters, the virtual machine clone operation will fail.</div>
+                        <div>- <code>resource_pool</code> (str): Resource pool into which the virtual machine should be placed.</div>
+                        <div>This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are unset. In the future, if this field is unset, the system will attempt to choose a suitable resource pool for the virtual machine; if a resource pool cannot be chosen, the virtual machine creation operation will fail.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: ResourcePool. When operations return a value of this structure as a result, the field will be an identifier for the resource type: ResourcePool.</div>
                 </td>
             </tr>
@@ -905,7 +905,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -930,7 +930,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -963,7 +963,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -1013,7 +1013,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
+                         / <span style="color: purple">elements=dictionary</span>
                     </div>
                 </td>
                 <td>
@@ -1179,7 +1179,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the virtual machine to be unregistered.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine. Required with <em>state=[&#x27;delete&#x27;, &#x27;relocate&#x27;, &#x27;unregister&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: VirtualMachine. Required with <em>state=[&#x27;absent&#x27;, &#x27;relocate&#x27;, &#x27;unregister&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -1218,19 +1218,6 @@ Examples
           folder: '{{ my_virtual_machine_folder.folder }}'
           resource_pool: '{{ my_cluster_info.value.resource_pool }}'
         name: test_vm1
-        guest_OS: DEBIAN_8_64
-        hardware_version: VMX_11
-        memory:
-          hot_add_enabled: true
-          size_MiB: 1024
-    - name: Create another VM
-      vcenter_vm:
-        placement:
-          cluster: '{{ all_the_clusters.value[0].cluster }}'
-          datastore: '{{ rw_datastore.datastore }}'
-          folder: '{{ my_virtual_machine_folder.folder }}'
-          resource_pool: '{{ my_cluster_info.value.resource_pool }}'
-        name: test_vm2
         guest_OS: DEBIAN_8_64
         hardware_version: VMX_11
         memory:

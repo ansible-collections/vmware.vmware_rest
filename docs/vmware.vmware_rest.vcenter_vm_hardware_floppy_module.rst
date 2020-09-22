@@ -99,7 +99,21 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual floppy drive identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy. Required with <em>state=[&#x27;connect&#x27;, &#x27;delete&#x27;, &#x27;disconnect&#x27;, &#x27;update&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
                 </td>
             </tr>
             <tr>
@@ -236,6 +250,30 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Add a floppy disk drive
+      vcenter_vm_hardware_floppy:
+        vm: '{{ test_vm1_info.id }}'
+        allow_guest_control: true
+      register: my_floppy_drive
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Add a floppy disk drive
+      vcenter_vm_hardware_floppy:
+        vm: '{{ test_vm1_info.id }}'
+        allow_guest_control: true
+      register: my_floppy_drive
+    - name: Remove a floppy drive
+      vcenter_vm_hardware_floppy:
+        vm: '{{ test_vm1_info.id }}'
+        floppy: '{{ my_floppy_drive.id }}'
+        state: absent
 
 
 
