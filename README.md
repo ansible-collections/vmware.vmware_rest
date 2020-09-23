@@ -83,7 +83,7 @@ Name | Description
 
 Before using the VMware community collection, you need to install the collection with the `ansible-galaxy` CLI:
 
-    ansible-galaxy collection install community.vmware_rest
+    ansible-galaxy collection install vmware.vmware_rest
 
 You can also include it in a `requirements.yml` file and install it via `ansible-galaxy collection install -r requirements.yml` using the format:
 
