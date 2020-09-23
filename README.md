@@ -1,6 +1,6 @@
-# Ansible Collection: community.vmware_rest
+# Ansible Collection: vmware.vmware_rest
 
-This repo hosts the `community.vmware_rest` Ansible Collection.
+This repo hosts the `vmware.vmware_rest` Ansible Collection.
 
 The collection includes the VMware modules and plugins supported by Ansible VMware community to help the management of VMware infrastructure. These modules are different from `community.vmware` since they are based upon VMware vSphere REST API interface and not relying on any third party libraries such as [`Pyvmomi`](https://github.com/vmware/pyvmomi) and [`vSphere Automation SDK for Python`](https://github.com/vmware/vsphere-automation-sdk-python).
 
@@ -81,15 +81,15 @@ Name | Description
 
 ### Installing the Collection from Ansible Galaxy
 
-Before using the VMware community collection, you need to install the collection with the `ansible-galaxy` CLI:
+Before using the VMware collection, you need to install the collection with the `ansible-galaxy` CLI:
 
-    ansible-galaxy collection install community.vmware_rest
+    ansible-galaxy collection install vmware.vmware_rest
 
 You can also include it in a `requirements.yml` file and install it via `ansible-galaxy collection install -r requirements.yml` using the format:
 
 ```yaml
 collections:
-- name: community.vmware_rest
+- name: vmware.vmware_rest
 ```
 
 Please note this collection depends on Python 3.6 or greater.
