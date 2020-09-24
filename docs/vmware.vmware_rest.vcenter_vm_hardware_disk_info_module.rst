@@ -59,6 +59,20 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_hostname</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -149,6 +163,22 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Retrieve disk information using the label
+      vcenter_vm_hardware_disk_info:
+        vm: '{{ test_vm1_info.id }}'
+        label: Hard disk 1
+    - name: Retrieve the disk information from the VM
+      vcenter_vm_hardware_disk_info:
+        vm: '{{ test_vm1_info.id }}'
 
 
 

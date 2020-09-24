@@ -226,6 +226,19 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Dedicate one core to the VM
+      vcenter_vm_hardware_cpu:
+        vm: '{{ test_vm1_info.id }}'
+        count: 1
 
 
 

@@ -88,6 +88,20 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>port</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -98,7 +112,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual parallel port identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort. Required with <em>state=[&#x27;connect&#x27;, &#x27;delete&#x27;, &#x27;disconnect&#x27;, &#x27;update&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

@@ -75,7 +75,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual disk identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Disk. Required with <em>state=[&#x27;delete&#x27;, &#x27;update&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Disk. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -97,6 +97,20 @@ Parameters
                         <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
                         <div>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
                 </td>
             </tr>
             <tr>
@@ -297,6 +311,34 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Create a new disk
+      vcenter_vm_hardware_disk:
+        vm: '{{ test_vm1_info.id }}'
+        type: SATA
+        new_vmdk:
+          capacity: 320000
+      register: my_new_disk
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Create a new disk
+      vcenter_vm_hardware_disk:
+        vm: '{{ test_vm1_info.id }}'
+        type: SATA
+        new_vmdk:
+          capacity: 320000
+      register: my_new_disk
+    - name: Delete the disk
+      vcenter_vm_hardware_disk:
+        vm: '{{ test_vm1_info.id }}'
+        disk: '{{ my_new_disk.id }}'
+        state: absent
 
 
 

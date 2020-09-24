@@ -43,40 +43,6 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>action</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>upgrade</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>action=upgrade Required with <em>state=[&#x27;upgrade&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>command_line_options</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Command line options passed to the installer to modify the installation procedure for Tools.</div>
-                        <div>Set if any additional options are desired.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -86,7 +52,6 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                    <li>upgrade</li>
                         </ul>
                 </td>
                 <td>
@@ -204,6 +169,26 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Change vm-tools upgrade policy to MANUAL
+      vcenter_vm_tools:
+        vm: '{{ test_vm1_info.id }}'
+        upgrade_policy: MANUAL
+    - name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
+      vcenter_vm_tools:
+        vm: '{{ test_vm1_info.id }}'
+        upgrade_policy: UPGRADE_AT_POWER_CYCLE
+    - name: Retrive vm-tools information
+      vcenter_vm_tools:
+        vm: '{{ test_vm1_info.id }}'
 
 
 

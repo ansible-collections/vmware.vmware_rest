@@ -190,6 +190,19 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    - name: Collect information about a specific VM
+      vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+    - name: Increase the memory of a VM
+      vcenter_vm_hardware_memory:
+        vm: '{{ test_vm1_info.id }}'
+        size_MiB: 1080
 
 
 

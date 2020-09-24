@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the datacenter to be deleted.</div>
-                        <div>The parameter must be an identifier for the resource type: Datacenter. Required with <em>state=[&#x27;delete&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: Datacenter. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -105,7 +105,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The name of the datacenter to be created. Required with <em>state=[&#x27;create&#x27;]</em></div>
+                        <div>The name of the datacenter to be created. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

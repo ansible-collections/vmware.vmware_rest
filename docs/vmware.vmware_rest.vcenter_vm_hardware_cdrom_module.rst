@@ -104,7 +104,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual CD-ROM device identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom. Required with <em>state=[&#x27;connect&#x27;, &#x27;delete&#x27;, &#x27;disconnect&#x27;, &#x27;update&#x27;]</em></div>
+                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -126,6 +126,20 @@ Parameters
                         <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
                         <div>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
                 </td>
             </tr>
             <tr>
