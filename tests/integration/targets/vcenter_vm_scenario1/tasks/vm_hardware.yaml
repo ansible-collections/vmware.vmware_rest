@@ -11,7 +11,7 @@
     that:
       - _result is changed
 
-- name: Upgrade the VM hardware version (again)
+- name: _Upgrade the VM hardware version (again)
   vcenter_vm_hardware:
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13

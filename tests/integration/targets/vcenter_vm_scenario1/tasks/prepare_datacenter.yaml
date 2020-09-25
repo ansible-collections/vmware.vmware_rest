@@ -16,7 +16,7 @@
     that:
       - _result is changed
 
-- name: Create datacenter my_dc (again)
+- name: _Create datacenter my_dc (again)
   vcenter_datacenter:
     name: my_dc
     folder: "{{ my_datacenter_folder.folder }}"
