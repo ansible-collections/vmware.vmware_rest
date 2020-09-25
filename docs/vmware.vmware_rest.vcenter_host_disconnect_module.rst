@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_host_disconnect
 ******************************************
 
-**Handle resource of type vcenter_host_disconnect**
+**Manage the host disconnect of a vCenter**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_host_disconnect
+- Manage the host disconnect of a vCenter
 
 
 
@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the host to be disconnected.</div>
-                        <div>The parameter must be an identifier for the resource type: HostSystem.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>

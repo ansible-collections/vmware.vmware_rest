@@ -5,30 +5,26 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_boot_device
-short_description: Handle resource of type vcenter_vm_hardware_boot_device
-description: Handle resource of type vcenter_vm_hardware_boot_device
+short_description: Manage the boot device of a VM
+description: Manage the boot device of a VM
 options:
   devices:
     description:
     - Ordered list of boot devices.
     - 'Valide attributes are:'
     - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot order.'
-    - This field is optional and it is only relevant when the value of Device.Entry.type
-      is DISK.
+    - This field is optional and it is only relevant when the value of I(type) is
+      DISK.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: vcenter.vm.hardware.Disk.'
+      contain the id of resources returned by M(vcenter_vm_hardware_disk). '
     - ' - C(nic) (str): Virtual Ethernet device. Ethernet device to use as boot device
       for this entry.'
-    - This field is optional and it is only relevant when the value of Device.Entry.type
-      is ETHERNET.
+    - This field is optional and it is only relevant when the value of I(type) is
+      ETHERNET.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: vcenter.vm.hardware.Ethernet. When operations
-      return a value of this structure as a result, the field will be an identifier
-      for the resource type: vcenter.vm.hardware.Ethernet.'
-    - ' - C(type) (str): The Device.Type enumerated type defines the valid device
-      types that may be used as bootable devices.'
+      be the id of a resource returned by M(vcenter_vm_hardware_ethernet). '
+    - ' - C(type) (str): This option defines the valid device types that may be used
+      as bootable devices.'
     - '   - Accepted values:'
     - '     - CDROM'
     - '     - DISK'
@@ -74,7 +70,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -94,6 +90,9 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
     devices:
     - type: CDROM
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

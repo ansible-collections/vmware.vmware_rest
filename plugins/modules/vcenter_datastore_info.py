@@ -5,23 +5,21 @@
 
 DOCUMENTATION = """
 module: vcenter_datastore_info
-short_description: Handle resource of type vcenter_datastore
-description: Handle resource of type vcenter_datastore
+short_description: Collect the information associated with the vCenter datastores
+description: Collect the information associated with the vCenter datastores
 options:
   datastore:
     description:
     - Identifier of the datastore for which information should be retrieved.
-    - 'The parameter must be an identifier for the resource type: Datastore. Required
-      with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_datastore_info).
+      Required with I(state=['get'])
     type: str
   filter_datacenters:
     description:
     - Datacenters that must contain the datastore for the datastore to match the filter.
     - If unset or empty, datastores in any datacenter match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datacenter. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datacenter.'
+      contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
   filter_datastores:
@@ -29,9 +27,7 @@ options:
     - Identifiers of datastores that can match the filter.
     - If unset or empty, datastores with any identifier match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datastore. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datastore.'
+      contain the id of resources returned by M(vcenter_datastore_info). '
     elements: str
     type: list
   filter_folders:
@@ -39,20 +35,18 @@ options:
     - Folders that must contain the datastore for the datastore to match the filter.
     - If unset or empty, datastores in any folder match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Folder. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Folder.'
+      contain the id of resources returned by M(vcenter_folder_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that datastores must have to match the filter (see Datastore.Info.name).
+    - Names that datastores must have to match the filter (see I(name)).
     - If unset or empty, datastores with any name match the filter.
     elements: str
     type: list
   filter_types:
     description:
-    - Types that datastores must have to match the filter (see Datastore.Summary.type).
+    - Types that datastores must have to match the filter (see I(type)).
     - If unset or empty, datastores with any type match the filter.
     elements: str
     type: list
@@ -97,6 +91,9 @@ EXAMPLES = """
 - name: Retrieve a list of all the datastores
   vcenter_datastore_info:
   register: my_datastores
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

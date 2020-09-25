@@ -5,14 +5,14 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_adapter_sata
-short_description: Handle resource of type vcenter_vm_hardware_adapter_sata
-description: Handle resource of type vcenter_vm_hardware_adapter_sata
+short_description: Manage the SATA adapter of a VM
+description: Manage the SATA adapter of a VM
 options:
   adapter:
     description:
     - Virtual SATA adapter identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.SataAdapter.
-      Required with I(state=[''absent''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_adapter_sata).
+      Required with I(state=['absent'])
     type: str
   bus:
     description:
@@ -40,7 +40,7 @@ options:
     choices:
     - AHCI
     description:
-    - The Sata.Type enumerated type defines the valid emulation types for a virtual
+    - The I(type) enumerated type defines the valid emulation types for a virtual
       SATA adapter.
     type: str
   vcenter_hostname:
@@ -75,7 +75,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -103,6 +103,14 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
     state: absent
+- name: Remove SATA adapter at PCI slot 34
+  vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 34
+    state: absent
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

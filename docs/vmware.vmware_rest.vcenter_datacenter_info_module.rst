@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datacenter_info
 ******************************************
 
-**Handle resource of type vcenter_datacenter**
+**Collect the information associated with the vCenter datacenters**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_datacenter
+- Collect the information associated with the vCenter datacenters
 
 
 
@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the datacenter.</div>
-                        <div>The parameter must be an identifier for the resource type: Datacenter. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datacenter_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@ Parameters
                 <td>
                         <div>Identifiers of datacenters that can match the filter.</div>
                         <div>If unset or empty, datacenters with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datacenter. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datacenter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -89,7 +89,7 @@ Parameters
                 <td>
                         <div>Folders that must contain the datacenters for the datacenter to match the filter.</div>
                         <div>If unset or empty, datacenters in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -105,7 +105,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that datacenters must have to match the filter (see Datacenter.Info.name).</div>
+                        <div>Names that datacenters must have to match the filter (see <em>name</em>).</div>
                         <div>If unset or empty, datacenters with any name match the filter.</div>
                 </td>
             </tr>

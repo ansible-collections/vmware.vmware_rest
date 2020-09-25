@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_floppy
 *********************************************
 
-**Handle resource of type vcenter_vm_hardware_floppy**
+**Manage the floppy of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_floppy
+- Manage the floppy of a VM
 
 
 
@@ -78,8 +78,8 @@ Parameters
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual floppy drive backing.</div>
                         <div>If unset, the virtual floppy drive will be configured to automatically detect a suitable host device.</div>
                         <div>- <code>image_file</code> (str): Path of the image file that should be used as the virtual floppy drive backing.</div>
-                        <div>This field is optional and it is only relevant when the value of Floppy.BackingSpec.type is IMAGE_FILE.</div>
-                        <div>- <code>type</code> (str): The Floppy.BackingType enumerated type defines the valid backing types for a virtual floppy drive.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is IMAGE_FILE.</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual floppy drive.</div>
                         <div>- Accepted values:</div>
                         <div>- IMAGE_FILE</div>
                         <div>- HOST_DEVICE</div>
@@ -99,7 +99,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual floppy drive identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_floppy</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -241,7 +241,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

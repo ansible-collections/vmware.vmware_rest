@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datastore_info
 *****************************************
 
-**Handle resource of type vcenter_datastore**
+**Collect the information associated with the vCenter datastores**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_datastore
+- Collect the information associated with the vCenter datastores
 
 
 
@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the datastore for which information should be retrieved.</div>
-                        <div>The parameter must be an identifier for the resource type: Datastore. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datastore_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@ Parameters
                 <td>
                         <div>Datacenters that must contain the datastore for the datastore to match the filter.</div>
                         <div>If unset or empty, datastores in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datacenter. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datacenter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -89,7 +89,7 @@ Parameters
                 <td>
                         <div>Identifiers of datastores that can match the filter.</div>
                         <div>If unset or empty, datastores with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datastore. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datastore.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datastore_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -107,7 +107,7 @@ Parameters
                 <td>
                         <div>Folders that must contain the datastore for the datastore to match the filter.</div>
                         <div>If unset or empty, datastores in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -123,7 +123,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that datastores must have to match the filter (see Datastore.Info.name).</div>
+                        <div>Names that datastores must have to match the filter (see <em>name</em>).</div>
                         <div>If unset or empty, datastores with any name match the filter.</div>
                 </td>
             </tr>
@@ -140,7 +140,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Types that datastores must have to match the filter (see Datastore.Summary.type).</div>
+                        <div>Types that datastores must have to match the filter (see <em>type</em>).</div>
                         <div>If unset or empty, datastores with any type match the filter.</div>
                 </td>
             </tr>

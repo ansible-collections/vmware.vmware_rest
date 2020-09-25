@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_boot
 *******************************************
 
-**Handle resource of type vcenter_vm_hardware_boot**
+**Manage the boot of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_boot
+- Manage the boot of a VM
 
 
 
@@ -112,7 +112,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Boot.NetworkProtocol enumerated type defines the valid network boot protocols supported when booting a virtual machine with EFI firmware over the network.</div>
+                        <div>The <em>network_protocol</em> enumerated type defines the valid network boot protocols supported when booting a virtual machine with EFI firmware over the network.</div>
                 </td>
             </tr>
             <tr>
@@ -147,7 +147,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Delay in milliseconds before retrying the boot process after a failure; applicable only when Boot.Info.retry is true.</div>
+                        <div>Delay in milliseconds before retrying the boot process after a failure; applicable only when <em>retry</em> is true.</div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
@@ -184,7 +184,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Boot.Type enumerated type defines the valid firmware types for a virtual machine.</div>
+                        <div>The <em>type</em> enumerated type defines the valid firmware types for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -271,7 +271,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>
@@ -290,11 +290,6 @@ Examples
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
     - name: Change a VM boot parameters
-      vcenter_vm_hardware_boot:
-        vm: '{{ test_vm1_info.id }}'
-        efi_legacy_boot: true
-        type: EFI
-    - name: Change a VM boot parameters (again)
       vcenter_vm_hardware_boot:
         vm: '{{ test_vm1_info.id }}'
         efi_legacy_boot: true

@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_guest_identity_info
-short_description: Handle resource of type vcenter_vm_guest_identity
-description: Handle resource of type vcenter_vm_guest_identity
+short_description: Collect the guest identity information
+description: Collect the guest identity information
 options:
   vcenter_hostname:
     description:
@@ -40,8 +40,8 @@ options:
   vm:
     description:
     - Identifier of the virtual machine.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['get'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -62,6 +62,9 @@ EXAMPLES = """
 - name: Guest identity
   vcenter_vm_guest_identity_info:
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

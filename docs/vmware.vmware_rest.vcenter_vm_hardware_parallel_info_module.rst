@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_parallel_info
 ****************************************************
 
-**Handle resource of type vcenter_vm_hardware_parallel**
+**Collect the parallel information from a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_parallel
+- Collect the parallel information from a VM
 
 
 
@@ -67,7 +67,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual parallel port identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_parallel</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -154,7 +154,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

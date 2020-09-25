@@ -5,14 +5,14 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_adapter_scsi_info
-short_description: Handle resource of type vcenter_vm_hardware_adapter_scsi
-description: Handle resource of type vcenter_vm_hardware_adapter_scsi
+short_description: Collect the SCSI adapter information from a VM
+description: Collect the SCSI adapter information from a VM
 options:
   adapter:
     description:
     - Virtual SCSI adapter identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.ScsiAdapter.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_adapter_scsi).
+      Required with I(state=['get'])
     type: str
   label:
     description: []
@@ -49,7 +49,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -67,6 +67,9 @@ EXAMPLES = """
 - name: List the SCSI adapter of a given VM
   vcenter_vm_hardware_adapter_scsi_info:
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

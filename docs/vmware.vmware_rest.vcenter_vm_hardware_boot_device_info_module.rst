@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_boot_device_info
 *******************************************************
 
-**Handle resource of type vcenter_vm_hardware_boot_device**
+**Collect the boot device information from a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_boot_device
+- Collect the boot device information from a VM
 
 
 
@@ -124,7 +124,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -143,9 +143,6 @@ Examples
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
     - name: Get boot device info
-      vcenter_vm_hardware_boot_device_info:
-        vm: '{{ test_vm1_info.id }}'
-    - name: Get boot device info (again)
       vcenter_vm_hardware_boot_device_info:
         vm: '{{ test_vm1_info.id }}'
     - name: Get information about the boot device

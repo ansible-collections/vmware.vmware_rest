@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_parallel
 ***********************************************
 
-**Handle resource of type vcenter_vm_hardware_parallel**
+**Manage the parallel of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_parallel
+- Manage the parallel of a VM
 
 
 
@@ -76,10 +76,10 @@ Parameters
                         <div>If unset, defaults to automatic detection of a suitable host device.</div>
                         <div>Valide attributes are:</div>
                         <div>- <code>file</code> (str): Path of the file that should be used as the virtual parallel port backing.</div>
-                        <div>This field is optional and it is only relevant when the value of Parallel.BackingSpec.type is FILE.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is FILE.</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual parallel port backing.</div>
                         <div>If unset, the virtual parallel port will be configured to automatically detect a suitable host device.</div>
-                        <div>- <code>type</code> (str): The Parallel.BackingType enumerated type defines the valid backing types for a virtual parallel port.</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual parallel port.</div>
                         <div>- Accepted values:</div>
                         <div>- FILE</div>
                         <div>- HOST_DEVICE</div>
@@ -112,7 +112,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual parallel port identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_parallel</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -240,7 +240,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_host
 *******************************
 
-**Handle resource of type vcenter_host**
+**Manage the host of a vCenter**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_host
+- Manage the host of a vCenter
 
 
 
@@ -54,7 +54,7 @@ Parameters
                 <td>
                         <div>Host and cluster folder in which the new standalone host should be created.</div>
                         <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the host; if a folder cannot be chosen, the host creation operation will fail.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Folder. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -90,7 +90,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the host to be deleted.</div>
-                        <div>The parameter must be an identifier for the resource type: HostSystem. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_host_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -170,7 +170,7 @@ Parameters
                 </td>
                 <td>
                         <div>The thumbprint of the SSL certificate, which the host is expected to have. The thumbprint is always computed using the SHA1 hash and is the string representation of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx where, &#x27;x&#x27; represents a hexadecimal digit.</div>
-                        <div>This field is optional and it is only relevant when the value of Host.CreateSpec.thumbprint-verification is THUMBPRINT.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>thumbprint_verification</em> is THUMBPRINT.</div>
                 </td>
             </tr>
             <tr>
@@ -189,7 +189,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Host.CreateSpec.ThumbprintVerification enumerated type defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The <em>thumbprint_verification</em> enumerated type defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

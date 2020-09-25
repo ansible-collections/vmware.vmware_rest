@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_boot_device
 **************************************************
 
-**Handle resource of type vcenter_vm_hardware_boot_device**
+**Manage the boot device of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_boot_device
+- Manage the boot device of a VM
 
 
 
@@ -56,12 +56,12 @@ Parameters
                         <div>Ordered list of boot devices.</div>
                         <div>Valide attributes are:</div>
                         <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
-                        <div>This field is optional and it is only relevant when the value of Device.Entry.type is DISK.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vcenter.vm.hardware.Disk.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is DISK.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>
                         <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry.</div>
-                        <div>This field is optional and it is only relevant when the value of Device.Entry.type is ETHERNET.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.vm.hardware.Ethernet. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.vm.hardware.Ethernet.</div>
-                        <div>- <code>type</code> (str): The Device.Type enumerated type defines the valid device types that may be used as bootable devices.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is ETHERNET.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_ethernet</span>.</div>
+                        <div>- <code>type</code> (str): This option defines the valid device types that may be used as bootable devices.</div>
                         <div>- Accepted values:</div>
                         <div>- CDROM</div>
                         <div>- DISK</div>
@@ -170,7 +170,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

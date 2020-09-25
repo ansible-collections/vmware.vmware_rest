@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware
-short_description: Handle resource of type vcenter_vm_hardware
-description: Handle resource of type vcenter_vm_hardware
+short_description: Manage the hardware of a VM
+description: Manage the hardware of a VM
 options:
   state:
     choices:
@@ -20,8 +20,8 @@ options:
     - ALWAYS
     - NEVER
     description:
-    - The Hardware.UpgradePolicy enumerated type defines the valid virtual hardware
-      upgrade policies for a virtual machine.
+    - The I(upgrade_policy) enumerated type defines the valid virtual hardware upgrade
+      policies for a virtual machine.
     type: str
   upgrade_version:
     choices:
@@ -40,9 +40,9 @@ options:
     - VMX_16
     - VMX_17
     description:
-    - The Hardware.Version enumerated type defines the valid virtual hardware versions
-      for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual
-      machine hardware versions (1003746)).
+    - The I(version) enumerated type defines the valid virtual hardware versions for
+      a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine
+      hardware versions (1003746)).
     type: str
   vcenter_hostname:
     description:
@@ -76,7 +76,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -96,11 +96,9 @@ EXAMPLES = """
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13
     vm: '{{ test_vm1_info.id }}'
-- name: Upgrade the VM hardware version (again)
-  vcenter_vm_hardware:
-    upgrade_policy: AFTER_CLEAN_SHUTDOWN
-    upgrade_version: VMX_13
-    vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

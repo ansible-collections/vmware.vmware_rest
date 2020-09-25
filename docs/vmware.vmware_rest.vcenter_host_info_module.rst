@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_host_info
 ************************************
 
-**Handle resource of type vcenter_host**
+**Collect the information associated with the vCenter hosts**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_host
+- Collect the information associated with the vCenter hosts
 
 
 
@@ -54,8 +54,8 @@ Parameters
                 </td>
                 <td>
                         <div>Clusters that must contain the hosts for the hosts to match the filter.</div>
-                        <div>If unset or empty, hosts in any cluster and hosts that are not in a cluster match the filter. If this field is not empty and Host.FilterSpec.standalone is true, no hosts will match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: ClusterComputeResource. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: ClusterComputeResource.</div>
+                        <div>If unset or empty, hosts in any cluster and hosts that are not in a cluster match the filter. If this field is not empty and <em>standalone</em> is true, no hosts will match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Connection states that a host must be in to match the filter (see Host.Summary.connection-state.</div>
+                        <div>Connection states that a host must be in to match the filter (see I()</div>
                         <div>If unset or empty, hosts in any connection state match the filter.</div>
                 </td>
             </tr>
@@ -90,7 +90,7 @@ Parameters
                 <td>
                         <div>Datacenters that must contain the hosts for the hosts to match the filter.</div>
                         <div>If unset or empty, hosts in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datacenter. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datacenter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -108,7 +108,7 @@ Parameters
                 <td>
                         <div>Folders that must contain the hosts for the hosts to match the filter.</div>
                         <div>If unset or empty, hosts in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -126,7 +126,7 @@ Parameters
                 <td>
                         <div>Identifiers of hosts that can match the filter.</div>
                         <div>If unset or empty, hosts with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: HostSystem. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: HostSystem.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -142,7 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that hosts must have to match the filter (see Host.Summary.name).</div>
+                        <div>Names that hosts must have to match the filter (see <em>name</em>).</div>
                         <div>If unset or empty, hosts with any name match the filter.</div>
                 </td>
             </tr>
@@ -163,7 +163,7 @@ Parameters
                 </td>
                 <td>
                         <div>If true, only hosts that are not part of a cluster can match the filter, and if false, only hosts that are are part of a cluster can match the filter.</div>
-                        <div>If unset Hosts can match filter independent of whether they are part of a cluster or not. If this field is true and Host.FilterSpec.clusters os not empty, no hosts will match the filter.</div>
+                        <div>If unset Hosts can match filter independent of whether they are part of a cluster or not. If this field is true and <em>clusters</em> os not empty, no hosts will match the filter.</div>
                 </td>
             </tr>
             <tr>

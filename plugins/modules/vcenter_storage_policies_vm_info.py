@@ -5,14 +5,16 @@
 
 DOCUMENTATION = """
 module: vcenter_storage_policies_vm_info
-short_description: Handle resource of type vcenter_storage_policies_vm
-description: Handle resource of type vcenter_storage_policies_vm
+short_description: Collect the information associated with the vCenter storage policies
+  vms
+description: Collect the information associated with the vCenter storage policies
+  vms
 options:
   policy:
     description:
     - storage policy identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.StoragePolicy.
-      Required with I(state=[''list''])'
+    - The parameter must be the id of a resource returned by M(vcenter_storage_policies).
+      Required with I(state=['list'])
     type: str
   vcenter_hostname:
     description:
@@ -52,6 +54,9 @@ requirements:
 """
 
 EXAMPLES = """
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

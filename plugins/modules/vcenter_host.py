@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_host
-short_description: Handle resource of type vcenter_host
-description: Handle resource of type vcenter_host
+short_description: Manage the host of a vCenter
+description: Manage the host of a vCenter
 options:
   folder:
     description:
@@ -15,9 +15,7 @@ options:
       system will attempt to choose a suitable folder for the host; if a folder cannot
       be chosen, the host creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Folder. When operations return a value
-      of this structure as a result, the field will be an identifier for the resource
-      type: Folder.'
+      be the id of a resource returned by M(vcenter_folder_info). '
     type: str
   force_add:
     description:
@@ -29,8 +27,8 @@ options:
   host:
     description:
     - Identifier of the host to be deleted.
-    - 'The parameter must be an identifier for the resource type: HostSystem. Required
-      with I(state=[''absent''])'
+    - The parameter must be the id of a resource returned by M(vcenter_host_info).
+      Required with I(state=['absent'])
     type: str
   hostname:
     description:
@@ -58,7 +56,7 @@ options:
       The thumbprint is always computed using the SHA1 hash and is the string representation
       of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx
       where, ''x'' represents a hexadecimal digit.'
-    - This field is optional and it is only relevant when the value of Host.CreateSpec.thumbprint-verification
+    - This field is optional and it is only relevant when the value of I(thumbprint_verification)
       is THUMBPRINT.
     type: str
   thumbprint_verification:
@@ -66,8 +64,8 @@ options:
     - NONE
     - THUMBPRINT
     description:
-    - The Host.CreateSpec.ThumbprintVerification enumerated type defines the thumbprint
-      verification schemes for a host's SSL certificate. Required with I(state=['present'])
+    - The I(thumbprint_verification) enumerated type defines the thumbprint verification
+      schemes for a host's SSL certificate. Required with I(state=['present'])
     type: str
   user_name:
     description:
@@ -134,6 +132,9 @@ EXAMPLES = """
     folder: '{{ my_host_folder.folder }}'
   no_log: true
   with_items: '{{ my_esxis}}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

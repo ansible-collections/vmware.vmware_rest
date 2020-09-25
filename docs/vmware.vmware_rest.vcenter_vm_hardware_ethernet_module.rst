@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_ethernet
 ***********************************************
 
-**Handle resource of type vcenter_vm_hardware_ethernet**
+**Manage the ethernet of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_ethernet
+- Manage the ethernet of a VM
 
 
 
@@ -76,11 +76,11 @@ Parameters
                         <div>If unset, the system may try to find an appropriate backing. If one is not found, the request will fail.</div>
                         <div>Valide attributes are:</div>
                         <div>- <code>distributed_port</code> (str): Key of the distributed virtual port that backs the virtual Ethernet adapter. Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected. This field cannot be specified as no free ports exist before use.</div>
-                        <div>May be used to specify a port when the network specified on the Ethernet.BackingSpec.network field is a static or early binding distributed portgroup. If unset, the port will be automatically assigned to the Ethernet adapter based on the policy embodied by the portgroup type.</div>
+                        <div>May be used to specify a port when the network specified on the <em>network</em> field is a static or early binding distributed portgroup. If unset, the port will be automatically assigned to the Ethernet adapter based on the policy embodied by the portgroup type.</div>
                         <div>- <code>network</code> (str): Identifier of the network that backs the virtual Ethernet adapter.</div>
-                        <div>This field is optional and it is only relevant when the value of Ethernet.BackingSpec.type is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Network. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Network.</div>
-                        <div>- <code>type</code> (str): The Ethernet.BackingType enumerated type defines the valid backing types for a virtual Ethernet adapter.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_network_info</span>.</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual Ethernet adapter.</div>
                         <div>- Accepted values:</div>
                         <div>- STANDARD_PORTGROUP</div>
                         <div>- HOST_DEVICE</div>
@@ -116,7 +116,8 @@ Parameters
                 <td>
                         <div>MAC address.</div>
                         <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
-                        <div>If unset, the value is unchanged. Must be specified if Ethernet.UpdateSpec.mac-type is MANUAL. Must be unset if the MAC address type is not MANUAL.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged. Must be specified if <em>mac_type</em> is MANUAL. Must be unset if the MAC address type is not MANUAL.</div>
                 </td>
             </tr>
             <tr>
@@ -136,7 +137,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Ethernet.MacAddressType enumerated type defines the valid MAC address origins for a virtual Ethernet adapter.</div>
+                        <div>The <em>mac_address_type</em> enumerated type defines the valid MAC address origins for a virtual Ethernet adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -152,7 +153,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual Ethernet adapter identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Ethernet. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_ethernet</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -232,7 +233,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Ethernet.EmulationType enumerated type defines the valid emulation types for a virtual Ethernet adapter.</div>
+                        <div>The <em>emulation_type</em> enumerated type defines the valid emulation types for a virtual Ethernet adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -253,6 +254,7 @@ Parameters
                 <td>
                         <div>Flag indicating whether Universal Pass-Through (UPT) compatibility should be enabled on this virtual Ethernet adapter.</div>
                         <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div></div>
                         <div>If unset, the value is unchanged. Must be unset if the emulation type of the virtual Ethernet adapter is not VMXNET3.</div>
                 </td>
             </tr>
@@ -340,7 +342,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -361,6 +363,7 @@ Parameters
                 <td>
                         <div>Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet adapter.</div>
                         <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div></div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>

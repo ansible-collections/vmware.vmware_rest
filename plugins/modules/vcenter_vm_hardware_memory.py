@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_memory
-short_description: Handle resource of type vcenter_vm_hardware_memory
-description: Handle resource of type vcenter_vm_hardware_memory
+short_description: Manage the memory of a VM
+description: Manage the memory of a VM
 options:
   hot_add_enabled:
     description:
@@ -14,7 +14,9 @@ options:
       should be enabled. '
     - ' Some guest operating systems may consume more resources or perform less efficiently
       when they run on hardware that supports adding memory while the machine is running. '
+    - ''
     - ' This field may only be modified if the virtual machine is not powered on.'
+    - ''
     - If unset, the value is unchanged.
     type: bool
   size_MiB:
@@ -22,9 +24,11 @@ options:
     - 'New memory size in mebibytes. '
     - ' The supported range of memory sizes is constrained by the configured guest
       operating system and virtual hardware version of the virtual machine. '
-    - ' If the virtual machine is running, this value may only be changed if Memory.Info.hot-add-enabled
-      is true, and the new memory size must satisfy the constraints specified by Memory.Info.hot-add-increment-size-mib
-      and Memory.Info.hot-add-limit-mib.'
+    - ''
+    - ' If the virtual machine is running, this value may only be changed if I(hot_add_enabled)
+      is true, and the new memory size must satisfy the constraints specified by I(hot_add_increment_size_mib)
+      and I()'
+    - ''
     - If unset, the value is unchanged.
     type: int
   state:
@@ -65,7 +69,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -84,6 +88,9 @@ EXAMPLES = """
   vcenter_vm_hardware_memory:
     vm: '{{ test_vm1_info.id }}'
     size_MiB: 1080
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

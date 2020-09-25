@@ -1,11 +1,11 @@
-.. _vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_module:
+.. _vmware.vmware_rest.vcenter_resourcepool_module:
 
 
-***************************************************
-vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
-***************************************************
+***************************************
+vmware.vmware_rest.vcenter_resourcepool
+***************************************
 
-**Manage the SATA adapter of a VM**
+**Manage the resourcepool of a vCenter**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the SATA adapter of a VM
+- Manage the resourcepool of a vCenter
 
 
 
@@ -43,7 +43,77 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>adapter</b>
+                    <b>cpu_allocation</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Resource allocation for CPU.</div>
+                        <div>if unset or empty, the CPU allocation of the resource pool will not be changed.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
+                        <div>If unset or empty, <em>expandable_reservation</em> will be set to true.</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>limit</em> will be set to -1.</div>
+                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>reservation</em> will be set to 0.</div>
+                        <div>- <code>shares</code> (dict): Shares are used in case of resource contention.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- level (string): This option defines the possible values for the allocation level.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>LOW</code></div>
+                        <div>- <code>NORMAL</code></div>
+                        <div>- <code>HIGH</code></div>
+                        <div>- <code>CUSTOM</code></div>
+                        <div>- shares (integer): When <em>level</em> is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored.</div>
+                        <div>There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
+                        <div></div>
+                        <div>This field is optional and it is only relevant when the value of <em>level</em> is CUSTOM.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>memory_allocation</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Resource allocation for CPU.</div>
+                        <div>if unset or empty, the CPU allocation of the resource pool will not be changed.</div>
+                        <div>Valide attributes are:</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
+                        <div>If unset or empty, <em>expandable_reservation</em> will be set to true.</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>limit</em> will be set to -1.</div>
+                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>reservation</em> will be set to 0.</div>
+                        <div>- <code>shares</code> (dict): Shares are used in case of resource contention.</div>
+                        <div>- Accepted keys:</div>
+                        <div>- level (string): This option defines the possible values for the allocation level.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>LOW</code></div>
+                        <div>- <code>NORMAL</code></div>
+                        <div>- <code>HIGH</code></div>
+                        <div>- <code>CUSTOM</code></div>
+                        <div>- shares (integer): When <em>level</em> is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored.</div>
+                        <div>There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
+                        <div></div>
+                        <div>This field is optional and it is only relevant when the value of <em>level</em> is CUSTOM.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>name</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -52,30 +122,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual SATA adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_adapter_sata</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Name of the resource pool.</div>
+                        <div>if unset or empty, the name of the resource pool will not be changed. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>bus</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>SATA bus number.</div>
-                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>label</b>
+                    <b>parent</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -84,22 +138,24 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>Parent of the created resource pool.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>pci_slot_number</b>
+                    <b>resource_pool</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">integer</span>
+                        <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Address of the SATA adapter on the PCI bus.</div>
-                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>Identifier of the resource pool to be deleted.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -115,27 +171,10 @@ Parameters
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>type</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>AHCI</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>The <em>type</em> enumerated type defines the valid emulation types for a virtual SATA adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -209,55 +248,12 @@ Parameters
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_VALIDATE_CERTS</code> will be used instead.</div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
-                </td>
-            </tr>
     </table>
     <br/>
 
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Create a SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-    - name: Create a SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-    - name: Drop the SATA controller
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-        state: absent
-    - name: Remove SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-        state: absent
 
 
 

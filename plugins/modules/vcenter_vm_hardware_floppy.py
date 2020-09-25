@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_floppy
-short_description: Handle resource of type vcenter_vm_hardware_floppy
-description: Handle resource of type vcenter_vm_hardware_floppy
+short_description: Manage the floppy of a VM
+description: Manage the floppy of a VM
 options:
   allow_guest_control:
     description:
@@ -24,10 +24,10 @@ options:
       a suitable host device.
     - ' - C(image_file) (str): Path of the image file that should be used as the virtual
       floppy drive backing.'
-    - This field is optional and it is only relevant when the value of Floppy.BackingSpec.type
-      is IMAGE_FILE.
-    - ' - C(type) (str): The Floppy.BackingType enumerated type defines the valid
-      backing types for a virtual floppy drive.'
+    - This field is optional and it is only relevant when the value of I(type) is
+      IMAGE_FILE.
+    - ' - C(type) (str): This option defines the valid backing types for a virtual
+      floppy drive.'
     - '   - Accepted values:'
     - '     - IMAGE_FILE'
     - '     - HOST_DEVICE'
@@ -36,8 +36,8 @@ options:
   floppy:
     description:
     - Virtual floppy drive identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Floppy.
-      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_floppy).
+      Required with I(state=['absent', 'connect', 'disconnect'])
     type: str
   label:
     description: []
@@ -90,7 +90,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -120,6 +120,9 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
     floppy: '{{ my_floppy_drive.id }}'
     state: absent
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

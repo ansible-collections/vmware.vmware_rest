@@ -1,11 +1,11 @@
-.. _vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_module:
+.. _vmware.vmware_rest.vcenter_resourcepool_info_module:
 
 
-***************************************************
-vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
-***************************************************
+********************************************
+vmware.vmware_rest.vcenter_resourcepool_info
+********************************************
 
-**Manage the SATA adapter of a VM**
+**Collect the information associated with the vCenter resourcepools**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the SATA adapter of a VM
+- Collect the information associated with the vCenter resourcepools
 
 
 
@@ -43,7 +43,114 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>adapter</b>
+                    <b>filter_clusters</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Clusters that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any cluster match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_cluster_info</span>.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>filter_datacenters</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Datacenters that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>filter_hosts</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Hosts that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any host match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_host_info</span>.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>filter_names</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Names that resource pools must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, resource pools with any name match the filter.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>filter_parent_resource_pools</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Resource pools that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any resource pool match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>filter_resource_pools</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Identifiers of resource pools that can match the filter.</div>
+                        <div>If unset or empty, resource pools with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>resource_pool</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -52,90 +159,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual SATA adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_adapter_sata</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>bus</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>SATA bus number.</div>
-                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>label</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>pci_slot_number</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Address of the SATA adapter on the PCI bus.</div>
-                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>state</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>absent</li>
-                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                        </ul>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>type</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>AHCI</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>The <em>type</em> enumerated type defines the valid emulation types for a virtual SATA adapter.</div>
+                        <div>Identifier of the resource pool for which information should be retrieved.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -209,55 +234,12 @@ Parameters
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_VALIDATE_CERTS</code> will be used instead.</div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
-                </td>
-            </tr>
     </table>
     <br/>
 
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Create a SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-    - name: Create a SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-    - name: Drop the SATA controller
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-        state: absent
-    - name: Remove SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-        state: absent
 
 
 

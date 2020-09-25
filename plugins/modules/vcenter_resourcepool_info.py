@@ -4,51 +4,65 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
-module: vcenter_folder_info
-short_description: Collect the information associated with the vCenter folders
-description: Collect the information associated with the vCenter folders
+module: vcenter_resourcepool_info
+short_description: Collect the information associated with the vCenter resourcepools
+description: Collect the information associated with the vCenter resourcepools
 options:
+  filter_clusters:
+    description:
+    - Clusters that must contain the resource pool for the resource pool to match
+      the filter.
+    - If unset or empty, resource pools in any cluster match the filter.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      contain the id of resources returned by M(vcenter_cluster_info). '
+    elements: str
+    type: list
   filter_datacenters:
     description:
-    - Datacenters that must contain the folder for the folder to match the filter.
-    - If unset or empty, folder in any datacenter match the filter.
+    - Datacenters that must contain the resource pool for the resource pool to match
+      the filter.
+    - If unset or empty, resource pools in any datacenter match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
       contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
-  filter_folders:
+  filter_hosts:
     description:
-    - Identifiers of folders that can match the filter.
-    - If unset or empty, folders with any identifier match the filter.
+    - Hosts that must contain the resource pool for the resource pool to match the
+      filter.
+    - If unset or empty, resource pools in any host match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+      contain the id of resources returned by M(vcenter_host_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that folders must have to match the filter (see I(name)).
-    - If unset or empty, folders with any name match the filter.
+    - Names that resource pools must have to match the filter (see I(name)).
+    - If unset or empty, resource pools with any name match the filter.
     elements: str
     type: list
-  filter_parent_folders:
+  filter_parent_resource_pools:
     description:
-    - Folders that must contain the folder for the folder to match the filter.
-    - If unset or empty, folder in any folder match the filter.
+    - Resource pools that must contain the resource pool for the resource pool to
+      match the filter.
+    - If unset or empty, resource pools in any resource pool match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+      contain the id of resources returned by M(vcenter_resourcepool_info). '
     elements: str
     type: list
-  filter_type:
-    choices:
-    - DATACENTER
-    - DATASTORE
-    - HOST
-    - NETWORK
-    - VIRTUAL_MACHINE
+  filter_resource_pools:
     description:
-    - The I(type) enumerated type defines the type of a vCenter Server folder. The
-      type of a folder determines what what kinds of children can be contained in
-      the folder.
+    - Identifiers of resource pools that can match the filter.
+    - If unset or empty, resource pools with any identifier match the filter.
+    - 'When clients pass a value of this structure as a parameter, the field must
+      contain the id of resources returned by M(vcenter_resourcepool_info). '
+    elements: str
+    type: list
+  resource_pool:
+    description:
+    - Identifier of the resource pool for which information should be retrieved.
+    - The parameter must be the id of a resource returned by M(vcenter_resourcepool_info).
+      Required with I(state=['get'])
     type: str
   vcenter_hostname:
     description:
@@ -88,15 +102,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Build a list of all the folders
-  vcenter_folder_info:
-  register: my_folders
-- name: Build a list of all the folders
-  vcenter_folder_info:
-  register: my_folders
-- name: Build a list of the folders, with a filter
-  vcenter_folder_info:
-    filter_type: DATASTORE
 """
 
 RETURN = """
@@ -106,15 +111,37 @@ RETURN = """
 PAYLOAD_FORMAT = {
     "list": {
         "query": {
+            "filter.clusters": "filter.clusters",
             "filter.datacenters": "filter.datacenters",
-            "filter.folders": "filter.folders",
+            "filter.hosts": "filter.hosts",
             "filter.names": "filter.names",
-            "filter.parent_folders": "filter.parent_folders",
-            "filter.type": "filter.type",
+            "filter.parent_resource_pools": "filter.parent_resource_pools",
+            "filter.resource_pools": "filter.resource_pools",
         },
         "body": {},
         "path": {},
-    }
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "spec/cpu_allocation",
+            "memory_allocation": "spec/memory_allocation",
+            "name": "spec/name",
+            "parent": "spec/parent",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "get": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "update": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "spec/cpu_allocation",
+            "memory_allocation": "spec/memory_allocation",
+            "name": "spec/name",
+        },
+        "path": {"resource_pool": "resource_pool"},
+    },
 }
 
 import socket
@@ -162,14 +189,13 @@ def prepare_argument_spec():
         ),
     }
 
+    argument_spec["filter_clusters"] = {"type": "list", "elements": "str"}
     argument_spec["filter_datacenters"] = {"type": "list", "elements": "str"}
-    argument_spec["filter_folders"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_hosts"] = {"type": "list", "elements": "str"}
     argument_spec["filter_names"] = {"type": "list", "elements": "str"}
-    argument_spec["filter_parent_folders"] = {"type": "list", "elements": "str"}
-    argument_spec["filter_type"] = {
-        "type": "str",
-        "choices": ["DATACENTER", "DATASTORE", "HOST", "NETWORK", "VIRTUAL_MACHINE"],
-    }
+    argument_spec["filter_parent_resource_pools"] = {"type": "list", "elements": "str"}
+    argument_spec["filter_resource_pools"] = {"type": "list", "elements": "str"}
+    argument_spec["resource_pool"] = {"type": "str"}
 
     return argument_spec
 
@@ -188,24 +214,30 @@ async def main():
 
 def build_url(params):
 
-    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/rest/vcenter/folder").format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
+    if params["resource_pool"]:
+        _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
+        return (
+            "https://{vcenter_hostname}" "/rest/vcenter/resource-pool/{resource_pool}"
+        ).format(**params) + gen_args(params, _in_query_parameters)
+    else:
+        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+        return ("https://{vcenter_hostname}" "/rest/vcenter/resource-pool").format(
+            **params
+        ) + gen_args(params, _in_query_parameters)
 
 
 async def entry_point(module, session):
     url = build_url(module.params)
     async with session.get(url) as resp:
         _json = await resp.json()
-        if module.params.get("None"):
-            _json["id"] = module.params.get("None")
+        if module.params.get("resource_pool"):
+            _json["id"] = module.params.get("resource_pool")
         elif module.params.get("label"):  # TODO extend the list of filter
             _json = await exists(module.params, session, url)
         else:  # list context, retrieve the details of each entry
             try:
                 if (
-                    isinstance(_json["value"][0]["None"], str)
+                    isinstance(_json["value"][0]["resource_pool"], str)
                     and len(list(_json["value"][0].values())) == 1
                 ):
                     # this is a list of id, we fetch the details

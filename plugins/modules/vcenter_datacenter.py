@@ -5,14 +5,14 @@
 
 DOCUMENTATION = """
 module: vcenter_datacenter
-short_description: Handle resource of type vcenter_datacenter
-description: Handle resource of type vcenter_datacenter
+short_description: Manage the datacenter of a vCenter
+description: Manage the datacenter of a vCenter
 options:
   datacenter:
     description:
     - Identifier of the datacenter to be deleted.
-    - 'The parameter must be an identifier for the resource type: Datacenter. Required
-      with I(state=[''absent''])'
+    - The parameter must be the id of a resource returned by M(vcenter_datacenter_info).
+      Required with I(state=['absent'])
     type: str
   folder:
     description:
@@ -21,9 +21,7 @@ options:
       system will attempt to choose a suitable folder for the datacenter; if a folder
       cannot be chosen, the datacenter creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Folder. When operations return a value
-      of this structure as a result, the field will be an identifier for the resource
-      type: Folder.'
+      be the id of a resource returned by M(vcenter_folder_info). '
     type: str
   force:
     description:
@@ -91,16 +89,15 @@ EXAMPLES = """
   vcenter_datacenter:
     name: my_dc
     folder: '{{ my_datacenter_folder.folder }}'
-- name: Create datacenter my_dc (again)
-  vcenter_datacenter:
-    name: my_dc
-    folder: '{{ my_datacenter_folder.folder }}'
 - name: Force delete the existing DC
   vcenter_datacenter:
     state: absent
     datacenter: '{{ item.datacenter }}'
     force: true
   with_items: '{{ existing_datacenters.value }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

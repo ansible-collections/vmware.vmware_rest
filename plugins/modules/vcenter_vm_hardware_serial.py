@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_serial
-short_description: Handle resource of type vcenter_vm_hardware_serial
-description: Handle resource of type vcenter_vm_hardware_serial
+short_description: Manage the serial of a VM
+description: Manage the serial of a VM
 options:
   allow_guest_control:
     description:
@@ -19,36 +19,37 @@ options:
     - If unset, defaults to automatic detection of a suitable host device.
     - 'Valide attributes are:'
     - ' - C(file) (str): Path of the file backing the virtual serial port.'
-    - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
-      is FILE.
+    - This field is optional and it is only relevant when the value of I(type) is
+      FILE.
     - ' - C(host_device) (str): Name of the device backing the virtual serial port. '
+    - ''
+    - ''
     - If unset, the virtual serial port will be configured to automatically detect
       a suitable host device.
     - ' - C(network_location) (str): URI specifying the location of the network service
       backing the virtual serial port. '
-    - '   - If Serial.BackingSpec.type is NETWORK_SERVER, this field is the location
-      used by clients to connect to this server. The hostname part of the URI should
-      either be empty or should specify the address of the host on which the virtual
-      machine is running.'
-    - '   - If Serial.BackingSpec.type is NETWORK_CLIENT, this field is the location
-      used by the virtual machine to connect to the remote server.'
+    - '   - If I(type) is NETWORK_SERVER, this field is the location used by clients
+      to connect to this server. The hostname part of the URI should either be empty
+      or should specify the address of the host on which the virtual machine is running.'
+    - '   - If I(type) is NETWORK_CLIENT, this field is the location used by the virtual
+      machine to connect to the remote server.'
     - ' '
-    - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
-      is one of NETWORK_SERVER or NETWORK_CLIENT.
+    - This field is optional and it is only relevant when the value of I(type) is
+      one of NETWORK_SERVER or NETWORK_CLIENT.
     - ' - C(no_rx_loss) (bool): Flag that enables optimized data transfer over the
       pipe. When the value is true, the host buffers data to prevent data overrun.
       This allows the virtual machine to read all of the data transferred over the
       pipe with no data loss.'
     - If unset, defaults to false.
     - ' - C(pipe) (str): Name of the pipe backing the virtual serial port.'
-    - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
-      is one of PIPE_SERVER or PIPE_CLIENT.
+    - This field is optional and it is only relevant when the value of I(type) is
+      one of PIPE_SERVER or PIPE_CLIENT.
     - ' - C(proxy) (str): Proxy service that provides network access to the network
       backing. If set, the virtual machine initiates a connection with the proxy service
       and forwards the traffic to the proxy.'
     - If unset, no proxy service should be used.
-    - ' - C(type) (str): The Serial.BackingType enumerated type defines the valid
-      backing types for a virtual serial port.'
+    - ' - C(type) (str): This option defines the valid backing types for a virtual
+      serial port.'
     - '   - Accepted values:'
     - '     - FILE'
     - '     - HOST_DEVICE'
@@ -63,8 +64,8 @@ options:
   port:
     description:
     - Virtual serial port identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.SerialPort.
-      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_serial).
+      Required with I(state=['absent', 'connect', 'disconnect'])
     type: str
   start_connected:
     description:
@@ -114,7 +115,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
   yield_on_poll:
     description:
@@ -124,6 +125,7 @@ options:
       virtual machine activity on the host. '
     - ' This field may be modified at any time, and changes applied to a connected
       virtual serial port take effect immediately.'
+    - ''
     - If unset, the value is unchanged.
     type: bool
 author:
@@ -169,6 +171,9 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
     port: '{{ serial_port_1.id }}'
     state: absent
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

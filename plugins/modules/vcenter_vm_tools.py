@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_tools
-short_description: Handle resource of type vcenter_vm_tools
-description: Handle resource of type vcenter_vm_tools
+short_description: Manage the tools of a VM
+description: Manage the tools of a VM
 options:
   state:
     choices:
@@ -19,8 +19,8 @@ options:
     - MANUAL
     - UPGRADE_AT_POWER_CYCLE
     description:
-    - The Tools.UpgradePolicy enumerated type defines when Tools are auto-upgraded
-      for a virtual machine.
+    - The I(upgrade_policy) enumerated type defines when Tools are auto-upgraded for
+      a virtual machine.
     type: str
   vcenter_hostname:
     description:
@@ -54,7 +54,7 @@ options:
   vm:
     description:
     - Identifier of the virtual machine.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -80,6 +80,9 @@ EXAMPLES = """
 - name: Retrive vm-tools information
   vcenter_vm_tools:
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

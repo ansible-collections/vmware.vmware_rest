@@ -5,13 +5,13 @@
 
 DOCUMENTATION = """
 module: vcenter_host_disconnect
-short_description: Handle resource of type vcenter_host_disconnect
-description: Handle resource of type vcenter_host_disconnect
+short_description: Manage the host disconnect of a vCenter
+description: Manage the host disconnect of a vCenter
 options:
   host:
     description:
     - Identifier of the host to be disconnected.
-    - 'The parameter must be an identifier for the resource type: HostSystem.'
+    - The parameter must be the id of a resource returned by M(vcenter_host_info).
     type: str
   state:
     choices:
@@ -57,6 +57,9 @@ requirements:
 """
 
 EXAMPLES = """
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_info
 **********************************
 
-**Handle resource of type vcenter_vm**
+**Collect the  information from a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm
+- Collect the  information from a VM
 
 
 
@@ -55,7 +55,7 @@ Parameters
                 <td>
                         <div>Clusters that must contain the virtual machine for the virtual machine to match the filter.</div>
                         <div>If unset or empty, virtual machines in any cluster match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: ClusterComputeResource. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: ClusterComputeResource.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -73,7 +73,7 @@ Parameters
                 <td>
                         <div>Datacenters that must contain the virtual machine for the virtual machine to match the filter.</div>
                         <div>If unset or empty, virtual machines in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datacenter. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datacenter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -91,7 +91,7 @@ Parameters
                 <td>
                         <div>Folders that must contain the virtual machine for the virtual machine to match the filter.</div>
                         <div>If unset or empty, virtual machines in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -109,7 +109,7 @@ Parameters
                 <td>
                         <div>Hosts that must contain the virtual machine for the virtual machine to match the filter.</div>
                         <div>If unset or empty, virtual machines on any host match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: HostSystem. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: HostSystem.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -125,7 +125,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that virtual machines must have to match the filter (see VM.Info.name).</div>
+                        <div>Names that virtual machines must have to match the filter (see <em>name</em>).</div>
                         <div>If unset or empty, virtual machines with any name match the filter.</div>
                 </td>
             </tr>
@@ -142,7 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Power states that a virtual machine must be in to match the filter (see Power.Info.state.</div>
+                        <div>Power states that a virtual machine must be in to match the filter (see I()</div>
                         <div>If unset or empty, virtual machines in any power state match the filter.</div>
                 </td>
             </tr>
@@ -161,7 +161,7 @@ Parameters
                 <td>
                         <div>Resource pools that must contain the virtual machine for the virtual machine to match the filter.</div>
                         <div>If unset or empty, virtual machines in any resource pool match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: ResourcePool. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: ResourcePool.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -179,7 +179,7 @@ Parameters
                 <td>
                         <div>Identifiers of virtual machines that can match the filter.</div>
                         <div>If unset or empty, virtual machines with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: VirtualMachine. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: VirtualMachine.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -266,7 +266,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>

@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_info
-short_description: Handle resource of type vcenter_vm_hardware
-description: Handle resource of type vcenter_vm_hardware
+short_description: Manage the info of a VM
+description: Manage the info of a VM
 options:
   vcenter_hostname:
     description:
@@ -40,8 +40,8 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['get'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -61,6 +61,9 @@ EXAMPLES = """
   vcenter_vm_hardware_info:
     vm: '{{ search_result.value[0].vm }}'
   register: my_vm1_hardware_info
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

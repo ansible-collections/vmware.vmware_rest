@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_memory
 *********************************************
 
-**Handle resource of type vcenter_vm_hardware_memory**
+**Manage the memory of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_memory
+- Manage the memory of a VM
 
 
 
@@ -58,7 +58,9 @@ Parameters
                 <td>
                         <div>Flag indicating whether adding memory while the virtual machine is running should be enabled.</div>
                         <div>Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running.</div>
+                        <div></div>
                         <div>This field may only be modified if the virtual machine is not powered on.</div>
+                        <div></div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
@@ -76,7 +78,9 @@ Parameters
                 <td>
                         <div>New memory size in mebibytes.</div>
                         <div>The supported range of memory sizes is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</div>
-                        <div>If the virtual machine is running, this value may only be changed if Memory.Info.hot-add-enabled is true, and the new memory size must satisfy the constraints specified by Memory.Info.hot-add-increment-size-mib and Memory.Info.hot-add-limit-mib.</div>
+                        <div></div>
+                        <div>If the virtual machine is running, this value may only be changed if <em>hot_add_enabled</em> is true, and the new memory size must satisfy the constraints specified by <em>hot_add_increment_size_mib</em> and I()</div>
+                        <div></div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
@@ -181,7 +185,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

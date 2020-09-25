@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_ethernet_info
-short_description: Handle resource of type vcenter_vm_hardware_ethernet
-description: Handle resource of type vcenter_vm_hardware_ethernet
+short_description: Collect the ethernet information from a VM
+description: Collect the ethernet information from a VM
 options:
   label:
     description: []
@@ -14,8 +14,8 @@ options:
   nic:
     description:
     - Virtual Ethernet adapter identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Ethernet.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_ethernet).
+      Required with I(state=['get'])
     type: str
   vcenter_hostname:
     description:
@@ -49,7 +49,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -67,6 +67,9 @@ EXAMPLES = """
 - name: Collect a list of the NIC for a given VM
   vcenter_vm_hardware_ethernet_info:
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points
