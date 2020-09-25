@@ -13,7 +13,7 @@
     that:
       - _result is changed
 
-- name: Change a VM boot parameters (again)
+- name: _Change a VM boot parameters (again)
   vcenter_vm_hardware_boot:
     vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: True

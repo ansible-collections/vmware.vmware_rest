@@ -18,7 +18,7 @@
     that:
       - _result is changed
 
-- name: Create a VM (again)
+- name: _Create a VM (again)
   vcenter_vm:
     placement:
       cluster: "{{ all_the_clusters.value[0].cluster }}"
