@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_boot
-short_description: Handle resource of type vcenter_vm_hardware_boot
-description: Handle resource of type vcenter_vm_hardware_boot
+short_description: Manage the boot of a VM
+description: Manage the boot of a VM
 options:
   delay:
     description:
@@ -32,7 +32,7 @@ options:
     - IPV4
     - IPV6
     description:
-    - The Boot.NetworkProtocol enumerated type defines the valid network boot protocols
+    - The I(network_protocol) enumerated type defines the valid network boot protocols
       supported when booting a virtual machine with EFI firmware over the network.
     type: str
   retry:
@@ -44,7 +44,7 @@ options:
   retry_delay:
     description:
     - Delay in milliseconds before retrying the boot process after a failure; applicable
-      only when Boot.Info.retry is true.
+      only when I(retry) is true.
     - If unset, the value is unchanged.
     type: int
   state:
@@ -58,8 +58,7 @@ options:
     - BIOS
     - EFI
     description:
-    - The Boot.Type enumerated type defines the valid firmware types for a virtual
-      machine.
+    - The I(type) enumerated type defines the valid firmware types for a virtual machine.
     type: str
   vcenter_hostname:
     description:
@@ -93,7 +92,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -113,11 +112,9 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: true
     type: EFI
-- name: Change a VM boot parameters (again)
-  vcenter_vm_hardware_boot:
-    vm: '{{ test_vm1_info.id }}'
-    efi_legacy_boot: true
-    type: EFI
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

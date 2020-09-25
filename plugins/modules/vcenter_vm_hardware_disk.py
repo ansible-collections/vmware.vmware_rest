@@ -5,28 +5,28 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_disk
-short_description: Handle resource of type vcenter_vm_hardware_disk
-description: Handle resource of type vcenter_vm_hardware_disk
+short_description: Manage the disk of a VM
+description: Manage the disk of a VM
 options:
   backing:
     description:
-    - Existing physical resource backing for the virtual disk. Exactly one of Disk.CreateSpec.backing
-      or Disk.CreateSpec.new-vmdk must be specified.
+    - Existing physical resource backing for the virtual disk. Exactly one of I(backing)
+      or I(new_vmdk) must be specified.
     - If unset, the virtual disk will not be connected to an existing backing.
     - 'Valide attributes are:'
-    - ' - C(type) (str): The Disk.BackingType enumerated type defines the valid backing
-      types for a virtual disk.'
+    - ' - C(type) (str): This option defines the valid backing types for a virtual
+      disk.'
     - '   - Accepted values:'
     - '     - VMDK_FILE'
     - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk.'
-    - This field is optional and it is only relevant when the value of Disk.BackingSpec.type
-      is VMDK_FILE.
+    - This field is optional and it is only relevant when the value of I(type) is
+      VMDK_FILE.
     type: dict
   disk:
     description:
     - Virtual disk identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Disk.
-      Required with I(state=[''absent''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_disk).
+      Required with I(state=['absent'])
     type: str
   ide:
     description:
@@ -49,7 +49,7 @@ options:
   new_vmdk:
     description:
     - Specification for creating a new VMDK backing for the virtual disk. Exactly
-      one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.
+      one of I(backing) or I(new_vmdk) must be specified.
     - If unset, a new VMDK backing will not be created.
     - 'Valide attributes are:'
     - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes.'
@@ -58,7 +58,7 @@ options:
       ''.vmdk'' file extension.'
     - If unset, a name (derived from the name of the virtual machine) will be chosen
       by the server.
-    - ' - C(storage_policy) (dict): The Disk.StoragePolicySpec structure contains
+    - ' - C(storage_policy) (dict): The I(storage_policy_spec) structure contains
       information about the storage policy that is to be associated the with VMDK
       file.'
     - 'If unset the default storage policy of the target datastore (if applicable)
@@ -69,9 +69,7 @@ options:
     - '     - policy (string): Identifier of the storage policy which should be associated
       with the VMDK file.'
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: vcenter.StoragePolicy. When operations
-      return a value of this structure as a result, the field will be an identifier
-      for the resource type: vcenter.StoragePolicy.'
+      be the id of a resource returned by M(vcenter_storage_policies). '
     type: dict
   sata:
     description:
@@ -109,7 +107,7 @@ options:
     - SATA
     - SCSI
     description:
-    - The Disk.HostBusAdapterType enumerated type defines the valid types of host
+    - The I(host_bus_adapter_type) enumerated type defines the valid types of host
       bus adapters that may be used for attaching a virtual storage device to a virtual
       machine.
     type: str
@@ -145,7 +143,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -179,6 +177,9 @@ EXAMPLES = """
     vm: '{{ test_vm1_info.id }}'
     disk: '{{ my_new_disk.id }}'
     state: absent
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

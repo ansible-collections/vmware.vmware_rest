@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_tools
 ***********************************
 
-**Handle resource of type vcenter_vm_tools**
+**Manage the tools of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_tools
+- Manage the tools of a VM
 
 
 
@@ -73,7 +73,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Tools.UpgradePolicy enumerated type defines when Tools are auto-upgraded for a virtual machine.</div>
+                        <div>The <em>upgrade_policy</em> enumerated type defines when Tools are auto-upgraded for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -160,7 +160,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the virtual machine.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

@@ -5,17 +5,15 @@
 
 DOCUMENTATION = """
 module: vcenter_storage_policies_info
-short_description: Handle resource of type vcenter_storage_policies
-description: Handle resource of type vcenter_storage_policies
+short_description: Collect the information associated with the vCenter storage policiess
+description: Collect the information associated with the vCenter storage policiess
 options:
   filter_policies:
     description:
     - Identifiers of storage policies that can match the filter.
     - If unset or empty, storage policies with any identifiers match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: vcenter.StoragePolicy. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: vcenter.StoragePolicy.'
+      contain the id of resources returned by M(vcenter_storage_policies). '
     elements: str
     type: list
   vcenter_hostname:
@@ -59,6 +57,9 @@ EXAMPLES = """
 - name: List existing storage policies
   vcenter_storage_policies_info:
   register: storage_policies
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

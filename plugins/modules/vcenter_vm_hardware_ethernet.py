@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_ethernet
-short_description: Handle resource of type vcenter_vm_hardware_ethernet
-description: Handle resource of type vcenter_vm_hardware_ethernet
+short_description: Manage the ethernet of a VM
+description: Manage the ethernet of a VM
 options:
   allow_guest_control:
     description:
@@ -28,20 +28,18 @@ options:
       is created and assigned to a virtual machine when it is powered on and the Ethernet
       adapter is connected. This field cannot be specified as no free ports exist
       before use.'
-    - May be used to specify a port when the network specified on the Ethernet.BackingSpec.network
-      field is a static or early binding distributed portgroup. If unset, the port
-      will be automatically assigned to the Ethernet adapter based on the policy embodied
+    - May be used to specify a port when the network specified on the I(network) field
+      is a static or early binding distributed portgroup. If unset, the port will
+      be automatically assigned to the Ethernet adapter based on the policy embodied
       by the portgroup type.
     - ' - C(network) (str): Identifier of the network that backs the virtual Ethernet
       adapter.'
-    - This field is optional and it is only relevant when the value of Ethernet.BackingSpec.type
-      is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.
+    - This field is optional and it is only relevant when the value of I(type) is
+      one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Network. When operations return a value
-      of this structure as a result, the field will be an identifier for the resource
-      type: Network.'
-    - ' - C(type) (str): The Ethernet.BackingType enumerated type defines the valid
-      backing types for a virtual Ethernet adapter.'
+      be the id of a resource returned by M(vcenter_network_info). '
+    - ' - C(type) (str): This option defines the valid backing types for a virtual
+      Ethernet adapter.'
     - '   - Accepted values:'
     - '     - STANDARD_PORTGROUP'
     - '     - HOST_DEVICE'
@@ -56,8 +54,9 @@ options:
     - 'MAC address. '
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
-    - If unset, the value is unchanged. Must be specified if Ethernet.UpdateSpec.mac-type
-      is MANUAL. Must be unset if the MAC address type is not MANUAL.
+    - ''
+    - If unset, the value is unchanged. Must be specified if I(mac_type) is MANUAL.
+      Must be unset if the MAC address type is not MANUAL.
     type: str
   mac_type:
     choices:
@@ -65,14 +64,14 @@ options:
     - GENERATED
     - MANUAL
     description:
-    - The Ethernet.MacAddressType enumerated type defines the valid MAC address origins
+    - The I(mac_address_type) enumerated type defines the valid MAC address origins
       for a virtual Ethernet adapter.
     type: str
   nic:
     description:
     - Virtual Ethernet adapter identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Ethernet.
-      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_ethernet).
+      Required with I(state=['absent', 'connect', 'disconnect'])
     type: str
   pci_slot_number:
     description:
@@ -107,8 +106,8 @@ options:
     - VMXNET2
     - VMXNET3
     description:
-    - The Ethernet.EmulationType enumerated type defines the valid emulation types
-      for a virtual Ethernet adapter.
+    - The I(emulation_type) enumerated type defines the valid emulation types for
+      a virtual Ethernet adapter.
     type: str
   upt_compatibility_enabled:
     description:
@@ -116,6 +115,7 @@ options:
       enabled on this virtual Ethernet adapter. '
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
+    - ''
     - If unset, the value is unchanged. Must be unset if the emulation type of the
       virtual Ethernet adapter is not VMXNET3.
     type: bool
@@ -151,7 +151,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
   wake_on_lan_enabled:
     description:
@@ -159,6 +159,7 @@ options:
       adapter. '
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
+    - ''
     - If unset, the value is unchanged.
     type: bool
 author:
@@ -187,6 +188,9 @@ EXAMPLES = """
     nic: 4000
     start_connected: true
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

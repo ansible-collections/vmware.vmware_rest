@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_network_info
 ***************************************
 
-**Handle resource of type vcenter_network**
+**Collect the information associated with the vCenter networks**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_network
+- Collect the information associated with the vCenter networks
 
 
 
@@ -55,7 +55,7 @@ Parameters
                 <td>
                         <div>Datacenters that must contain the network for the network to match the filter.</div>
                         <div>If unset or empty, networks in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datacenter. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datacenter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -73,7 +73,7 @@ Parameters
                 <td>
                         <div>Folders that must contain the network for the network to match the filter.</div>
                         <div>If unset or empty, networks in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -89,7 +89,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that networks must have to match the filter (see Network.Summary.name).</div>
+                        <div>Names that networks must have to match the filter (see <em>name</em>).</div>
                         <div>If unset or empty, networks with any name match the filter.</div>
                 </td>
             </tr>
@@ -108,7 +108,7 @@ Parameters
                 <td>
                         <div>Identifiers of networks that can match the filter.</div>
                         <div>If unset or empty, networks with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Network. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Network.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_network_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -124,7 +124,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Types that networks must have to match the filter (see Network.Summary.type).</div>
+                        <div>Types that networks must have to match the filter (see <em>type</em>).</div>
                         <div>If unset, networks with any type match the filter.</div>
                 </td>
             </tr>

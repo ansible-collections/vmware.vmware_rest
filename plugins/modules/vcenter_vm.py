@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm
-short_description: Handle resource of type vcenter_vm
-description: Handle resource of type vcenter_vm
+short_description: Manage the vm of a vCenter
+description: Manage the vm of a vCenter
 options:
   bios_uuid:
     description:
@@ -33,9 +33,8 @@ options:
       Note that this flag will automatically be reset to false once the virtual machine
       enters setup mode.'
     - If unset, the value is unchanged.
-    - ' - C(network_protocol) (str): The Boot.NetworkProtocol enumerated type defines
-      the valid network boot protocols supported when booting a virtual machine with
-      EFI firmware over the network.'
+    - ' - C(network_protocol) (str): This option defines the valid network boot protocols
+      supported when booting a virtual machine with EFI firmware over the network.'
     - '   - Accepted values:'
     - '     - IPV4'
     - '     - IPV6'
@@ -43,10 +42,10 @@ options:
       retry the boot process after a failure.'
     - If unset, default value is false.
     - ' - C(retry_delay) (int): Delay in milliseconds before retrying the boot process
-      after a failure; applicable only when Boot.Info.retry is true.'
+      after a failure; applicable only when I(retry) is true.'
     - If unset, default value is 10000.
-    - ' - C(type) (str): The Boot.Type enumerated type defines the valid firmware
-      types for a virtual machine.'
+    - ' - C(type) (str): This option defines the valid firmware types for a virtual
+      machine.'
     - '   - Accepted values:'
     - '     - BIOS'
     - '     - EFI'
@@ -56,8 +55,8 @@ options:
     - Boot device configuration.
     - If unset, a server-specific boot sequence will be used.
     - 'Valide attributes are:'
-    - ' - C(type) (str): The Device.Type enumerated type defines the valid device
-      types that may be used as bootable devices.'
+    - ' - C(type) (str): This option defines the valid device types that may be used
+      as bootable devices.'
     - '   - Accepted values:'
     - '     - CDROM'
     - '     - DISK'
@@ -76,9 +75,8 @@ options:
     - ' - C(backing) (dict): Physical resource backing for the virtual CD-ROM device.'
     - If unset, defaults to automatic detection of a suitable host device.
     - '   - Accepted keys:'
-    - '     - device_access_type (string): The Cdrom.DeviceAccessType enumerated type
-      defines the valid device access types for a physical device packing of a virtual
-      CD-ROM device.'
+    - '     - device_access_type (string): This option defines the valid device access
+      types for a physical device packing of a virtual CD-ROM device.'
     - 'Accepted value for this field:'
     - '       - C(EMULATION)'
     - '       - C(PASSTHRU)'
@@ -89,10 +87,10 @@ options:
       a suitable host device.
     - '     - iso_file (string): Path of the image file that should be used as the
       virtual CD-ROM device backing.'
-    - This field is optional and it is only relevant when the value of Cdrom.BackingSpec.type
-      is ISO_FILE.
-    - '     - type (string): The Cdrom.BackingType enumerated type defines the valid
-      backing types for a virtual CD-ROM device.'
+    - This field is optional and it is only relevant when the value of I(type) is
+      ISO_FILE.
+    - '     - type (string): This option defines the valid backing types for a virtual
+      CD-ROM device.'
     - 'Accepted value for this field:'
     - '       - C(ISO_FILE)'
     - '       - C(HOST_DEVICE)'
@@ -121,9 +119,8 @@ options:
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
       be connected whenever the virtual machine is powered on.'
     - Defaults to false if unset.
-    - ' - C(type) (str): The Cdrom.HostBusAdapterType enumerated type defines the
-      valid types of host bus adapters that may be used for attaching a Cdrom to a
-      virtual machine.'
+    - ' - C(type) (str): This option defines the valid types of host bus adapters
+      that may be used for attaching a Cdrom to a virtual machine.'
     - '   - Accepted values:'
     - '     - IDE'
     - '     - SATA'
@@ -142,35 +139,36 @@ options:
       virtual machine must be a multiple of the number of cores per socket. '
     - ' The supported range of CPU counts is constrained by the configured guest operating
       system and virtual hardware version of the virtual machine. '
+    - ''
     - ' If the virtual machine is running, the number of CPU cores may only be increased
-      if Cpu.Info.hot-add-enabled is true, and may only be decreased if Cpu.Info.hot-remove-enabled
+      if I(hot_add_enabled) is true, and may only be decreased if I(hot_remove_enabled)
       is true.'
+    - ''
     - If unset, the value is unchanged.
     - ' - C(hot_add_enabled) (bool): Flag indicating whether adding CPUs while the
       virtual machine is running is enabled. '
     - ' This field may only be modified if the virtual machine is powered off.'
+    - ''
     - If unset, the value is unchanged.
     - ' - C(hot_remove_enabled) (bool): Flag indicating whether removing CPUs while
       the virtual machine is running is enabled. '
     - ' This field may only be modified if the virtual machine is powered off.'
+    - ''
     - If unset, the value is unchanged.
     type: dict
   datastore:
     description:
     - Identifier of the datastore on which the virtual machine's configuration state
       is stored.
-    - If unset, VM.RegisterSpec.path must also be unset and VM.RegisterSpec.datastore-path
-      must be set.
+    - If unset, I(path) must also be unset and I(datastore_path) must be set.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Datastore. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: Datastore.'
+      be the id of a resource returned by M(vcenter_datastore_info). '
     type: str
   datastore_path:
     description:
     - Datastore path for the virtual machine's configuration file in the format "[datastore
       name] path". For example "[storage1] Test-VM/Test-VM.vmx".
-    - If unset, both VM.RegisterSpec.datastore and VM.RegisterSpec.path must be set.
+    - If unset, both I(datastore) and I(path) must be set.
     type: str
   disconnect_all_nics:
     description:
@@ -182,24 +180,22 @@ options:
   disks:
     description:
     - Individual disk relocation map.
-    - If unset, all disks will migrate to the datastore specified in the VM.RelocatePlacementSpec.datastore
-      field of VM.RelocateSpec.placement.
+    - If unset, all disks will migrate to the datastore specified in the I(datastore)
+      field of I()
     - 'When clients pass a value of this structure as a parameter, the key in the
-      field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
-      When operations return a value of this structure as a result, the key in the
-      field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+      field map must be the id of a resource returned by M(vcenter_vm_hardware_disk). '
     - 'Valide attributes are:'
     - ' - C(backing) (dict): Existing physical resource backing for the virtual disk.
-      Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.'
+      Exactly one of I(backing) or I(new_vmdk) must be specified.'
     - If unset, the virtual disk will not be connected to an existing backing.
     - '   - Accepted keys:'
-    - '     - type (string): The Disk.BackingType enumerated type defines the valid
-      backing types for a virtual disk.'
+    - '     - type (string): This option defines the valid backing types for a virtual
+      disk.'
     - 'Accepted value for this field:'
     - '       - C(VMDK_FILE)'
     - '     - vmdk_file (string): Path of the VMDK file backing the virtual disk.'
-    - This field is optional and it is only relevant when the value of Disk.BackingSpec.type
-      is VMDK_FILE.
+    - This field is optional and it is only relevant when the value of I(type) is
+      VMDK_FILE.
     - ' - C(ide) (dict): Address for attaching the device to a virtual IDE adapter.'
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
@@ -213,8 +209,7 @@ options:
     - If unset, the server will choose a adapter with an available connection. If
       no IDE connections are available, the request will be rejected.
     - ' - C(new_vmdk) (dict): Specification for creating a new VMDK backing for the
-      virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk
-      must be specified.'
+      virtual disk. Exactly one of I(backing) or I(new_vmdk) must be specified.'
     - If unset, a new VMDK backing will not be created.
     - '   - Accepted keys:'
     - '     - capacity (integer): Capacity of the virtual disk backing in bytes.'
@@ -223,7 +218,7 @@ options:
       the ''.vmdk'' file extension.'
     - If unset, a name (derived from the name of the virtual machine) will be chosen
       by the server.
-    - '     - storage_policy (object): The Disk.StoragePolicySpec structure contains
+    - '     - storage_policy (object): The I(storage_policy_spec) structure contains
       information about the storage policy that is to be associated the with VMDK
       file.'
     - 'If unset the default storage policy of the target datastore (if applicable)
@@ -248,9 +243,8 @@ options:
     - '     - unit (integer): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
       If there are no available connections on the adapter, the request will be rejected.
-    - ' - C(type) (str): The Disk.HostBusAdapterType enumerated type defines the valid
-      types of host bus adapters that may be used for attaching a virtual storage
-      device to a virtual machine.'
+    - ' - C(type) (str): This option defines the valid types of host bus adapters
+      that may be used for attaching a virtual storage device to a virtual machine.'
     - '   - Accepted values:'
     - '     - IDE'
     - '     - SCSI'
@@ -260,36 +254,29 @@ options:
   disks_to_remove:
     description:
     - Set of Disks to Remove.
-    - If unset, all disks will be copied. If the same identifier is in VM.CloneSpec.disks-to-update
+    - If unset, all disks will be copied. If the same identifier is in I(disks_to_update)
       InvalidArgument fault will be returned.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: vcenter.vm.hardware.Disk. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: vcenter.vm.hardware.Disk.'
+      contain the id of resources returned by M(vcenter_vm_hardware_disk). '
     elements: str
     type: list
   disks_to_update:
     description:
     - Map of Disks to Update.
-    - If unset, all disks will copied to the datastore specified in the VM.ClonePlacementSpec.datastore
-      field of VM.CloneSpec.placement. If the same identifier is in VM.CloneSpec.disks-to-remove
-      InvalidArgument fault will be thrown.
+    - If unset, all disks will copied to the datastore specified in the I(datastore)
+      field of I() If the same identifier is in I(disks_to_remove) InvalidArgument
+      fault will be thrown.
     - 'When clients pass a value of this structure as a parameter, the key in the
-      field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
-      When operations return a value of this structure as a result, the key in the
-      field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+      field map must be the id of a resource returned by M(vcenter_vm_hardware_disk). '
     - 'Valide attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
     - '   - Accepted keys:'
     - '     - datastore (string): Destination datastore to clone disk.'
     - This field is currently required. In the future, if this field is unset disk
-      will be copied to the datastore specified in the VM.ClonePlacementSpec.datastore
-      field of VM.CloneSpec.placement.
+      will be copied to the datastore specified in the I(datastore) field of I()
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Datastore. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: Datastore.'
+      be the id of a resource returned by M(vcenter_datastore_info). '
     elements: dict
     type: list
   floppies:
@@ -309,10 +296,10 @@ options:
       a suitable host device.
     - '     - image_file (string): Path of the image file that should be used as the
       virtual floppy drive backing.'
-    - This field is optional and it is only relevant when the value of Floppy.BackingSpec.type
-      is IMAGE_FILE.
-    - '     - type (string): The Floppy.BackingType enumerated type defines the valid
-      backing types for a virtual floppy drive.'
+    - This field is optional and it is only relevant when the value of I(type) is
+      IMAGE_FILE.
+    - '     - type (string): This option defines the valid backing types for a virtual
+      floppy drive.'
     - 'Accepted value for this field:'
     - '       - C(IMAGE_FILE)'
     - '       - C(HOST_DEVICE)'
@@ -522,9 +509,9 @@ options:
     - VMX_16
     - VMX_17
     description:
-    - The Hardware.Version enumerated type defines the valid virtual hardware versions
-      for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual
-      machine hardware versions (1003746)).
+    - The I(version) enumerated type defines the valid virtual hardware versions for
+      a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine
+      hardware versions (1003746)).
     type: str
   memory:
     description:
@@ -535,14 +522,18 @@ options:
       virtual machine is running should be enabled. '
     - ' Some guest operating systems may consume more resources or perform less efficiently
       when they run on hardware that supports adding memory while the machine is running. '
+    - ''
     - ' This field may only be modified if the virtual machine is not powered on.'
+    - ''
     - If unset, the value is unchanged.
     - ' - C(size_MiB) (int): New memory size in mebibytes. '
     - ' The supported range of memory sizes is constrained by the configured guest
       operating system and virtual hardware version of the virtual machine. '
-    - ' If the virtual machine is running, this value may only be changed if Memory.Info.hot-add-enabled
-      is true, and the new memory size must satisfy the constraints specified by Memory.Info.hot-add-increment-size-mib
-      and Memory.Info.hot-add-limit-mib.'
+    - ''
+    - ' If the virtual machine is running, this value may only be changed if I(hot_add_enabled)
+      is true, and the new memory size must satisfy the constraints specified by I(hot_add_increment_size_mib)
+      and I()'
+    - ''
     - If unset, the value is unchanged.
     type: dict
   name:
@@ -572,20 +563,18 @@ options:
       is created and assigned to a virtual machine when it is powered on and the Ethernet
       adapter is connected. This field cannot be specified as no free ports exist
       before use.'
-    - May be used to specify a port when the network specified on the Ethernet.BackingSpec.network
-      field is a static or early binding distributed portgroup. If unset, the port
-      will be automatically assigned to the Ethernet adapter based on the policy embodied
+    - May be used to specify a port when the network specified on the I(network) field
+      is a static or early binding distributed portgroup. If unset, the port will
+      be automatically assigned to the Ethernet adapter based on the policy embodied
       by the portgroup type.
     - '     - network (string): Identifier of the network that backs the virtual Ethernet
       adapter.'
-    - This field is optional and it is only relevant when the value of Ethernet.BackingSpec.type
-      is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.
+    - This field is optional and it is only relevant when the value of I(type) is
+      one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Network. When operations return a value
-      of this structure as a result, the field will be an identifier for the resource
-      type: Network.'
-    - '     - type (string): The Ethernet.BackingType enumerated type defines the
-      valid backing types for a virtual Ethernet adapter.'
+      be the id of a resource returned by M(vcenter_network_info). '
+    - '     - type (string): This option defines the valid backing types for a virtual
+      Ethernet adapter.'
     - 'Accepted value for this field:'
     - '       - C(STANDARD_PORTGROUP)'
     - '       - C(HOST_DEVICE)'
@@ -593,8 +582,8 @@ options:
     - '       - C(OPAQUE_NETWORK)'
     - ' - C(mac_address) (str): MAC address.'
     - Workaround for PR1459647
-    - ' - C(mac_type) (str): The Ethernet.MacAddressType enumerated type defines the
-      valid MAC address origins for a virtual Ethernet adapter.'
+    - ' - C(mac_type) (str): This option defines the valid MAC address origins for
+      a virtual Ethernet adapter.'
     - '   - Accepted values:'
     - '     - MANUAL'
     - '     - GENERATED'
@@ -607,8 +596,8 @@ options:
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
       be connected whenever the virtual machine is powered on.'
     - Defaults to false if unset.
-    - ' - C(type) (str): The Ethernet.EmulationType enumerated type defines the valid
-      emulation types for a virtual Ethernet adapter.'
+    - ' - C(type) (str): This option defines the valid emulation types for a virtual
+      Ethernet adapter.'
     - '   - Accepted values:'
     - '     - E1000'
     - '     - E1000E'
@@ -629,9 +618,7 @@ options:
     - Map of NICs to update.
     - If unset, no NICs will be updated.
     - 'When clients pass a value of this structure as a parameter, the key in the
-      field map must be an identifier for the resource type: vcenter.vm.hardware.Ethernet.
-      When operations return a value of this structure as a result, the key in the
-      field map will be an identifier for the resource type: vcenter.vm.hardware.Ethernet.'
+      field map must be the id of a resource returned by M(vcenter_vm_hardware_ethernet). '
     - 'Valide attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
@@ -646,10 +633,11 @@ options:
     - '     - mac_address (string): MAC address. '
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
-    - If unset, the value is unchanged. Must be specified if Ethernet.UpdateSpec.mac-type
-      is MANUAL. Must be unset if the MAC address type is not MANUAL.
-    - '     - mac_type (string): The Ethernet.MacAddressType enumerated type defines
-      the valid MAC address origins for a virtual Ethernet adapter.'
+    - ''
+    - If unset, the value is unchanged. Must be specified if I(mac_type) is MANUAL.
+      Must be unset if the MAC address type is not MANUAL.
+    - '     - mac_type (string): This option defines the valid MAC address origins
+      for a virtual Ethernet adapter.'
     - 'Accepted value for this field:'
     - '       - C(MANUAL)'
     - '       - C(GENERATED)'
@@ -662,12 +650,14 @@ options:
       adapter. '
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
+    - ''
     - If unset, the value is unchanged. Must be unset if the emulation type of the
       virtual Ethernet adapter is not VMXNET3.
     - '     - wake_on_lan_enabled (boolean): Flag indicating whether wake-on-LAN shoud
       be enabled on this virtual Ethernet adapter. '
     - ' This field may be modified at any time, and changes will be applied the next
       time the virtual machine is powered on.'
+    - ''
     - If unset, the value is unchanged.
     elements: dict
     type: list
@@ -684,14 +674,14 @@ options:
     - '   - Accepted keys:'
     - '     - file (string): Path of the file that should be used as the virtual parallel
       port backing.'
-    - This field is optional and it is only relevant when the value of Parallel.BackingSpec.type
-      is FILE.
+    - This field is optional and it is only relevant when the value of I(type) is
+      FILE.
     - '     - host_device (string): Name of the device that should be used as the
       virtual parallel port backing.'
     - If unset, the virtual parallel port will be configured to automatically detect
       a suitable host device.
-    - '     - type (string): The Parallel.BackingType enumerated type defines the
-      valid backing types for a virtual parallel port.'
+    - '     - type (string): This option defines the valid backing types for a virtual
+      parallel port.'
     - 'Accepted value for this field:'
     - '       - C(FILE)'
     - '       - C(HOST_DEVICE)'
@@ -705,9 +695,7 @@ options:
     - Map of parallel ports to Update.
     - If unset, no parallel ports will be updated.
     - 'When clients pass a value of this structure as a parameter, the key in the
-      field map must be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.
-      When operations return a value of this structure as a result, the key in the
-      field map will be an identifier for the resource type: vcenter.vm.hardware.ParallelPort.'
+      field map must be the id of a resource returned by M(vcenter_vm_hardware_parallel). '
     - 'Valide attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
@@ -727,8 +715,7 @@ options:
     description:
     - 'Path to the virtual machine''s configuration file on the datastore corresponding
       to {@link #datastore).'
-    - If unset, VM.RegisterSpec.datastore must also be unset and VM.RegisterSpec.datastore-path
-      must be set.
+    - If unset, I(datastore) must also be unset and I(datastore_path) must be set.
     type: str
   placement:
     description:
@@ -740,16 +727,16 @@ options:
       the operation will fail.
     - 'Valide attributes are:'
     - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
-    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.resource-pool
-      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.cluster. '
-    - ' If VM.ComputePlacementSpec.cluster and VM.ComputePlacementSpec.host are both
-      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
-    - If VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.host is
-      specified, it is recommended that this field be unset.
+    - ' If I(cluster) and I(resource_pool) are both specified, I(resource_pool) must
+      belong to I(cluster). '
+    - ''
+    - ' If I(cluster) and I(host) are both specified, I(host) must be a member of
+      I(cluster).'
+    - ''
+    - If I(resource_pool) or I(host) is specified, it is recommended that this field
+      be unset.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: ClusterComputeResource. When operations
-      return a value of this structure as a result, the field will be an identifier
-      for the resource type: ClusterComputeResource.'
+      be the id of a resource returned by M(vcenter_cluster_info). '
     - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
       state should be stored. This datastore will also be used for any virtual disks
       that are created as part of the virtual machine creation operation.'
@@ -757,45 +744,38 @@ options:
       system will attempt to choose suitable storage for the virtual machine; if storage
       cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Datastore. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: Datastore.'
+      be the id of a resource returned by M(vcenter_datastore_info). '
     - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
       be placed.'
     - This field is currently required. In the future, if this field is unset, the
       system will attempt to choose a suitable folder for the virtual machine; if
       a folder cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: Folder. When operations return a value
-      of this structure as a result, the field will be an identifier for the resource
-      type: Folder.'
+      be the id of a resource returned by M(vcenter_folder_info). '
     - ' - C(host) (str): Host onto which the virtual machine should be placed. '
-    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.resource-pool
-      are both specified, VM.ComputePlacementSpec.resource-pool must belong to VM.ComputePlacementSpec.host. '
-    - ' If VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster are both
-      specified, VM.ComputePlacementSpec.host must be a member of VM.ComputePlacementSpec.cluster.'
-    - This field may be unset if VM.ComputePlacementSpec.resource-pool or VM.ComputePlacementSpec.cluster
-      is specified. If unset, the system will attempt to choose a suitable host for
-      the virtual machine; if a host cannot be chosen, the virtual machine creation
-      operation will fail.
+    - ' If I(host) and I(resource_pool) are both specified, I(resource_pool) must
+      belong to I(host). '
+    - ''
+    - ' If I(host) and I(cluster) are both specified, I(host) must be a member of
+      I(cluster).'
+    - ''
+    - This field may be unset if I(resource_pool) or I(cluster) is specified. If unset,
+      the system will attempt to choose a suitable host for the virtual machine; if
+      a host cannot be chosen, the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: HostSystem. When operations return a
-      value of this structure as a result, the field will be an identifier for the
-      resource type: HostSystem.'
+      be the id of a resource returned by M(vcenter_host_info). '
     - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
       be placed.'
-    - This field is currently required if both VM.ComputePlacementSpec.host and VM.ComputePlacementSpec.cluster
-      are unset. In the future, if this field is unset, the system will attempt to
-      choose a suitable resource pool for the virtual machine; if a resource pool
-      cannot be chosen, the virtual machine creation operation will fail.
+    - This field is currently required if both I(host) and I(cluster) are unset. In
+      the future, if this field is unset, the system will attempt to choose a suitable
+      resource pool for the virtual machine; if a resource pool cannot be chosen,
+      the virtual machine creation operation will fail.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: ResourcePool. When operations return
-      a value of this structure as a result, the field will be an identifier for the
-      resource type: ResourcePool.'
+      be the id of a resource returned by M(vcenter_resourcepool_info). '
     type: dict
   power_on:
     description:
-    - Attempt to perform a VM.CloneSpec.power-on after clone.
+    - Attempt to perform a I(power_on) after clone.
     - If unset, the virtual machine will not be powered on.
     type: bool
   sata_adapters:
@@ -812,8 +792,8 @@ options:
     - ' - C(pci_slot_number) (int): Address of the SATA adapter on the PCI bus.'
     - If unset, the server will choose an available address when the virtual machine
       is powered on.
-    - ' - C(type) (str): The Sata.Type enumerated type defines the valid emulation
-      types for a virtual SATA adapter.'
+    - ' - C(type) (str): This option defines the valid emulation types for a virtual
+      SATA adapter.'
     - '   - Accepted values:'
     - '     - AHCI'
     elements: dict
@@ -835,14 +815,14 @@ options:
       or as the device is hot added.'
     - If unset, the server will choose an available address when the virtual machine
       is powered on.
-    - ' - C(sharing) (str): The Scsi.Sharing enumerated type defines the valid bus
-      sharing modes for a virtual SCSI adapter.'
+    - ' - C(sharing) (str): This option defines the valid bus sharing modes for a
+      virtual SCSI adapter.'
     - '   - Accepted values:'
     - '     - NONE'
     - '     - VIRTUAL'
     - '     - PHYSICAL'
-    - ' - C(type) (str): The Scsi.Type enumerated type defines the valid emulation
-      types for a virtual SCSI adapter.'
+    - ' - C(type) (str): This option defines the valid emulation types for a virtual
+      SCSI adapter.'
     - '   - Accepted values:'
     - '     - BUSLOGIC'
     - '     - LSILOGIC'
@@ -862,37 +842,38 @@ options:
     - If unset, defaults to automatic detection of a suitable host device.
     - '   - Accepted keys:'
     - '     - file (string): Path of the file backing the virtual serial port.'
-    - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
-      is FILE.
+    - This field is optional and it is only relevant when the value of I(type) is
+      FILE.
     - '     - host_device (string): Name of the device backing the virtual serial
       port. '
+    - ''
+    - ''
     - If unset, the virtual serial port will be configured to automatically detect
       a suitable host device.
     - '     - network_location (string): URI specifying the location of the network
       service backing the virtual serial port. '
-    - '   - If Serial.BackingSpec.type is NETWORK_SERVER, this field is the location
-      used by clients to connect to this server. The hostname part of the URI should
-      either be empty or should specify the address of the host on which the virtual
-      machine is running.'
-    - '   - If Serial.BackingSpec.type is NETWORK_CLIENT, this field is the location
-      used by the virtual machine to connect to the remote server.'
+    - '   - If I(type) is NETWORK_SERVER, this field is the location used by clients
+      to connect to this server. The hostname part of the URI should either be empty
+      or should specify the address of the host on which the virtual machine is running.'
+    - '   - If I(type) is NETWORK_CLIENT, this field is the location used by the virtual
+      machine to connect to the remote server.'
     - ' '
-    - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
-      is one of NETWORK_SERVER or NETWORK_CLIENT.
+    - This field is optional and it is only relevant when the value of I(type) is
+      one of NETWORK_SERVER or NETWORK_CLIENT.
     - '     - no_rx_loss (boolean): Flag that enables optimized data transfer over
       the pipe. When the value is true, the host buffers data to prevent data overrun.
       This allows the virtual machine to read all of the data transferred over the
       pipe with no data loss.'
     - If unset, defaults to false.
     - '     - pipe (string): Name of the pipe backing the virtual serial port.'
-    - This field is optional and it is only relevant when the value of Serial.BackingSpec.type
-      is one of PIPE_SERVER or PIPE_CLIENT.
+    - This field is optional and it is only relevant when the value of I(type) is
+      one of PIPE_SERVER or PIPE_CLIENT.
     - '     - proxy (string): Proxy service that provides network access to the network
       backing. If set, the virtual machine initiates a connection with the proxy service
       and forwards the traffic to the proxy.'
     - If unset, no proxy service should be used.
-    - '     - type (string): The Serial.BackingType enumerated type defines the valid
-      backing types for a virtual serial port.'
+    - '     - type (string): This option defines the valid backing types for a virtual
+      serial port.'
     - 'Accepted value for this field:'
     - '       - C(FILE)'
     - '       - C(HOST_DEVICE)'
@@ -915,9 +896,7 @@ options:
     - Map of serial ports to Update.
     - If unset, no serial ports will be updated.
     - 'When clients pass a value of this structure as a parameter, the key in the
-      field map must be an identifier for the resource type: vcenter.vm.hardware.SerialPort.
-      When operations return a value of this structure as a result, the key in the
-      field map will be an identifier for the resource type: vcenter.vm.hardware.SerialPort.'
+      field map must be the id of a resource returned by M(vcenter_vm_hardware_serial). '
     - 'Valide attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
@@ -936,16 +915,16 @@ options:
       will depend on the degree of other virtual machine activity on the host. '
     - ' This field may be modified at any time, and changes applied to a connected
       virtual serial port take effect immediately.'
+    - ''
     - If unset, the value is unchanged.
     elements: dict
     type: list
   source:
     description:
     - Virtual machine to InstantClone from.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: VirtualMachine. When operations return
-      a value of this structure as a result, the field will be an identifier for the
-      resource type: VirtualMachine. Required with I(state=[''clone'', ''instant_clone''])'
+    - When clients pass a value of this structure as a parameter, the field must be
+      the id of a resource returned by M(vcenter_vm_info). Required with I(state=['clone',
+      'instant_clone'])
     type: str
   state:
     choices:
@@ -961,9 +940,9 @@ options:
     type: str
   storage_policy:
     description:
-    - The VM.StoragePolicySpec structure contains information about the storage policy
-      that is to be associated with the virtual machine home (which contains the configuration
-      and log files).
+    - The I(storage_policy_spec) structure contains information about the storage
+      policy that is to be associated with the virtual machine home (which contains
+      the configuration and log files).
     - 'If unset the datastore default storage policy (if applicable) is applied. Currently
       a default storage policy is only supported by object datastores : VVol and vSAN.
       For non-object datastores, if unset then no storage policy would be associated
@@ -972,9 +951,7 @@ options:
     - ' - C(policy) (str): Identifier of the storage policy which should be associated
       with the virtual machine.'
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: vcenter.StoragePolicy. When operations
-      return a value of this structure as a result, the field will be an identifier
-      for the resource type: vcenter.StoragePolicy.'
+      be the id of a resource returned by M(vcenter_storage_policies). '
     type: dict
   vcenter_hostname:
     description:
@@ -1008,8 +985,8 @@ options:
   vm:
     description:
     - Identifier of the virtual machine to be unregistered.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.
-      Required with I(state=[''absent'', ''relocate'', ''unregister''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['absent', 'relocate', 'unregister'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -1037,24 +1014,14 @@ EXAMPLES = """
     memory:
       hot_add_enabled: true
       size_MiB: 1024
-- name: Create a VM (again)
-  vcenter_vm:
-    placement:
-      cluster: '{{ all_the_clusters.value[0].cluster }}'
-      datastore: '{{ rw_datastore.datastore }}'
-      folder: '{{ my_virtual_machine_folder.folder }}'
-      resource_pool: '{{ my_cluster_info.value.resource_pool }}'
-    name: test_vm1
-    guest_OS: DEBIAN_8_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
 - name: Delete some VM
   vcenter_vm:
     state: absent
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

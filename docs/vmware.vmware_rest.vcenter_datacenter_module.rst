@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datacenter
 *************************************
 
-**Handle resource of type vcenter_datacenter**
+**Manage the datacenter of a vCenter**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_datacenter
+- Manage the datacenter of a vCenter
 
 
 
@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the datacenter to be deleted.</div>
-                        <div>The parameter must be an identifier for the resource type: Datacenter. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datacenter_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -70,7 +70,7 @@ Parameters
                 <td>
                         <div>Datacenter folder in which the new datacenter should be created.</div>
                         <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the datacenter; if a folder cannot be chosen, the datacenter creation operation will fail.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: Folder. When operations return a value of this structure as a result, the field will be an identifier for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -216,10 +216,6 @@ Examples
         my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first
           }}'
     - name: Create datacenter my_dc
-      vcenter_datacenter:
-        name: my_dc
-        folder: '{{ my_datacenter_folder.folder }}'
-    - name: Create datacenter my_dc (again)
       vcenter_datacenter:
         name: my_dc
         folder: '{{ my_datacenter_folder.folder }}'

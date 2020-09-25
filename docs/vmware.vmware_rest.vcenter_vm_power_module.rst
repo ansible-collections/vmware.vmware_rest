@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_power
 ***********************************
 
-**Handle resource of type vcenter_vm_power**
+**Manage the power of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_power
+- Manage the power of a VM
 
 
 
@@ -145,7 +145,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

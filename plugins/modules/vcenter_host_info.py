@@ -5,24 +5,22 @@
 
 DOCUMENTATION = """
 module: vcenter_host_info
-short_description: Handle resource of type vcenter_host
-description: Handle resource of type vcenter_host
+short_description: Collect the information associated with the vCenter hosts
+description: Collect the information associated with the vCenter hosts
 options:
   filter_clusters:
     description:
     - Clusters that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any cluster and hosts that are not in a cluster
-      match the filter. If this field is not empty and Host.FilterSpec.standalone
-      is true, no hosts will match the filter.
+      match the filter. If this field is not empty and I(standalone) is true, no hosts
+      will match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: ClusterComputeResource. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: ClusterComputeResource.'
+      contain the id of resources returned by M(vcenter_cluster_info). '
     elements: str
     type: list
   filter_connection_states:
     description:
-    - Connection states that a host must be in to match the filter (see Host.Summary.connection-state.
+    - Connection states that a host must be in to match the filter (see I()
     - If unset or empty, hosts in any connection state match the filter.
     elements: str
     type: list
@@ -31,9 +29,7 @@ options:
     - Datacenters that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any datacenter match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datacenter. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datacenter.'
+      contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
   filter_folders:
@@ -41,9 +37,7 @@ options:
     - Folders that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any folder match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Folder. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Folder.'
+      contain the id of resources returned by M(vcenter_folder_info). '
     elements: str
     type: list
   filter_hosts:
@@ -51,14 +45,12 @@ options:
     - Identifiers of hosts that can match the filter.
     - If unset or empty, hosts with any identifier match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: HostSystem. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: HostSystem.'
+      contain the id of resources returned by M(vcenter_host_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that hosts must have to match the filter (see Host.Summary.name).
+    - Names that hosts must have to match the filter (see I(name)).
     - If unset or empty, hosts with any name match the filter.
     elements: str
     type: list
@@ -67,8 +59,8 @@ options:
     - If true, only hosts that are not part of a cluster can match the filter, and
       if false, only hosts that are are part of a cluster can match the filter.
     - If unset Hosts can match filter independent of whether they are part of a cluster
-      or not. If this field is true and Host.FilterSpec.clusters os not empty, no
-      hosts will match the filter.
+      or not. If this field is true and I(clusters) os not empty, no hosts will match
+      the filter.
     type: bool
   vcenter_hostname:
     description:
@@ -111,6 +103,9 @@ EXAMPLES = """
 - name: Get a list of the hosts
   vcenter_host_info:
   register: my_hosts
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

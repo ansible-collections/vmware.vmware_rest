@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_cpu
 ******************************************
 
-**Handle resource of type vcenter_vm_hardware_cpu**
+**Manage the cpu of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_cpu
+- Manage the cpu of a VM
 
 
 
@@ -70,7 +70,9 @@ Parameters
                 <td>
                         <div>New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
                         <div>The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</div>
-                        <div>If the virtual machine is running, the number of CPU cores may only be increased if Cpu.Info.hot-add-enabled is true, and may only be decreased if Cpu.Info.hot-remove-enabled is true.</div>
+                        <div></div>
+                        <div>If the virtual machine is running, the number of CPU cores may only be increased if <em>hot_add_enabled</em> is true, and may only be decreased if <em>hot_remove_enabled</em> is true.</div>
+                        <div></div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
@@ -92,6 +94,7 @@ Parameters
                 <td>
                         <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled.</div>
                         <div>This field may only be modified if the virtual machine is powered off.</div>
+                        <div></div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
@@ -113,6 +116,7 @@ Parameters
                 <td>
                         <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled.</div>
                         <div>This field may only be modified if the virtual machine is powered off.</div>
+                        <div></div>
                         <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
@@ -217,7 +221,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

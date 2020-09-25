@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_cdrom
 ********************************************
 
-**Handle resource of type vcenter_vm_hardware_cdrom**
+**Manage the cdrom of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_cdrom
+- Manage the cdrom of a VM
 
 
 
@@ -75,7 +75,7 @@ Parameters
                         <div>Physical resource backing for the virtual CD-ROM device.</div>
                         <div>If unset, defaults to automatic detection of a suitable host device.</div>
                         <div>Valide attributes are:</div>
-                        <div>- <code>device_access_type</code> (str): The Cdrom.DeviceAccessType enumerated type defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
+                        <div>- <code>device_access_type</code> (str): This option defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
                         <div>- Accepted values:</div>
                         <div>- EMULATION</div>
                         <div>- PASSTHRU</div>
@@ -83,8 +83,8 @@ Parameters
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing.</div>
                         <div>If unset, the virtual CD-ROM device will be configured to automatically detect a suitable host device.</div>
                         <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
-                        <div>This field is optional and it is only relevant when the value of Cdrom.BackingSpec.type is ISO_FILE.</div>
-                        <div>- <code>type</code> (str): The Cdrom.BackingType enumerated type defines the valid backing types for a virtual CD-ROM device.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is ISO_FILE.</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual CD-ROM device.</div>
                         <div>- Accepted values:</div>
                         <div>- ISO_FILE</div>
                         <div>- HOST_DEVICE</div>
@@ -104,7 +104,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual CD-ROM device identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_cdrom</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -219,7 +219,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Cdrom.HostBusAdapterType enumerated type defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
+                        <div>The <em>host_bus_adapter_type</em> enumerated type defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -306,7 +306,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

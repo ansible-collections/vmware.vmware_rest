@@ -5,8 +5,10 @@
 
 DOCUMENTATION = """
 module: vcenter_storage_policies_compliance_vm_info
-short_description: Handle resource of type vcenter_storage_policies_compliance_vm
-description: Handle resource of type vcenter_storage_policies_compliance_vm
+short_description: Collect the information associated with the vCenter storage policies
+  compliance vms
+description: Collect the information associated with the vCenter storage policies
+  compliance vms
 options:
   filter_status:
     description:
@@ -19,9 +21,7 @@ options:
     - Identifiers of virtual machines that can match the filter
     - If unset or empty, virtual machines with any identifier matches the filter
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: VirtualMachine. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: VirtualMachine.'
+      contain the id of resources returned by M(vcenter_vm_info). '
     elements: str
     type: list
   vcenter_hostname:
@@ -62,6 +62,9 @@ requirements:
 """
 
 EXAMPLES = """
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_folder_info
 **************************************
 
-**Handle resource of type vcenter_folder**
+**Collect the information associated with the vCenter folders**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_folder
+- Collect the information associated with the vCenter folders
 
 
 
@@ -55,7 +55,7 @@ Parameters
                 <td>
                         <div>Datacenters that must contain the folder for the folder to match the filter.</div>
                         <div>If unset or empty, folder in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Datacenter. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Datacenter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -73,7 +73,7 @@ Parameters
                 <td>
                         <div>Identifiers of folders that can match the filter.</div>
                         <div>If unset or empty, folders with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -89,7 +89,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that folders must have to match the filter (see Folder.Summary.name).</div>
+                        <div>Names that folders must have to match the filter (see <em>name</em>).</div>
                         <div>If unset or empty, folders with any name match the filter.</div>
                 </td>
             </tr>
@@ -108,7 +108,7 @@ Parameters
                 <td>
                         <div>Folders that must contain the folder for the folder to match the filter.</div>
                         <div>If unset or empty, folder in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: Folder. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: Folder.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -130,7 +130,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Folder.Type enumerated type defines the type of a vCenter Server folder. The type of a folder determines what what kinds of children can be contained in the folder.</div>
+                        <div>The <em>type</em> enumerated type defines the type of a vCenter Server folder. The type of a folder determines what what kinds of children can be contained in the folder.</div>
                 </td>
             </tr>
             <tr>

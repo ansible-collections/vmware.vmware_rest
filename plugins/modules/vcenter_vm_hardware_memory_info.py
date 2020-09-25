@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_memory_info
-short_description: Handle resource of type vcenter_vm_hardware_memory
-description: Handle resource of type vcenter_vm_hardware_memory
+short_description: Collect the memory information from a VM
+description: Collect the memory information from a VM
 options:
   vcenter_hostname:
     description:
@@ -40,8 +40,8 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['get'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -59,6 +59,9 @@ EXAMPLES = """
 - name: Retrieve the memory information from the VM
   vcenter_vm_hardware_memory_info:
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

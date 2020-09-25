@@ -5,23 +5,21 @@
 
 DOCUMENTATION = """
 module: vcenter_datacenter_info
-short_description: Handle resource of type vcenter_datacenter
-description: Handle resource of type vcenter_datacenter
+short_description: Collect the information associated with the vCenter datacenters
+description: Collect the information associated with the vCenter datacenters
 options:
   datacenter:
     description:
     - Identifier of the datacenter.
-    - 'The parameter must be an identifier for the resource type: Datacenter. Required
-      with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_datacenter_info).
+      Required with I(state=['get'])
     type: str
   filter_datacenters:
     description:
     - Identifiers of datacenters that can match the filter.
     - If unset or empty, datacenters with any identifier match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datacenter. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datacenter.'
+      contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
   filter_folders:
@@ -29,14 +27,12 @@ options:
     - Folders that must contain the datacenters for the datacenter to match the filter.
     - If unset or empty, datacenters in any folder match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Folder. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Folder.'
+      contain the id of resources returned by M(vcenter_folder_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that datacenters must have to match the filter (see Datacenter.Info.name).
+    - Names that datacenters must have to match the filter (see I(name)).
     - If unset or empty, datacenters with any name match the filter.
     elements: str
     type: list
@@ -84,6 +80,9 @@ EXAMPLES = """
 - name: collect a list of the datacenters
   vcenter_datacenter_info:
   register: my_datacenters
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

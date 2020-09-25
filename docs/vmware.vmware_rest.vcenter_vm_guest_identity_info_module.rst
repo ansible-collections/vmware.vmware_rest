@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_identity_info
 *************************************************
 
-**Handle resource of type vcenter_vm_guest_identity**
+**Collect the guest identity information**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_guest_identity
+- Collect the guest identity information
 
 
 
@@ -124,7 +124,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the virtual machine.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>

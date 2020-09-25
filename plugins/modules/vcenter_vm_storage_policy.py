@@ -5,30 +5,26 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_storage_policy
-short_description: Handle resource of type vcenter_vm_storage_policy
-description: Handle resource of type vcenter_vm_storage_policy
+short_description: Manage the storage policy of a VM
+description: Manage the storage policy of a VM
 options:
   disks:
     description:
     - Storage policy or policies to be used when reconfiguring virtual machine diks.
     - if unset the current storage policy is retained.
     - 'When clients pass a value of this structure as a parameter, the key in the
-      field map must be an identifier for the resource type: vcenter.vm.hardware.Disk.
-      When operations return a value of this structure as a result, the key in the
-      field map will be an identifier for the resource type: vcenter.vm.hardware.Disk.'
+      field map must be the id of a resource returned by M(vcenter_vm_hardware_disk). '
     - 'Valide attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
     - '   - Accepted keys:'
     - '     - policy (string): Storage Policy identification.'
-    - This field is optional and it is only relevant when the value of Policy.DiskPolicySpec.type
-      is USE_SPECIFIED_POLICY.
+    - This field is optional and it is only relevant when the value of I(type) is
+      USE_SPECIFIED_POLICY.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: vcenter.StoragePolicy. When operations
-      return a value of this structure as a result, the field will be an identifier
-      for the resource type: vcenter.StoragePolicy.'
-    - '     - type (string): The Policy.DiskPolicySpec enumerated type defines the
-      choices for how to specify the policy to be associated with a virtual disk.'
+      be the id of a resource returned by M(vcenter_storage_policies). '
+    - '     - type (string): This option defines the choices for how to specify the
+      policy to be associated with a virtual disk.'
     - 'Accepted value for this field:'
     - '       - C(USE_SPECIFIED_POLICY)'
     - '       - C(USE_DEFAULT_POLICY)'
@@ -72,7 +68,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
   vm_home:
     description:
@@ -80,15 +76,12 @@ options:
     - if unset the current storage policy is retained.
     - 'Valide attributes are:'
     - ' - C(policy) (str): Storage Policy identification.'
-    - This field is optional and it is only relevant when the value of Policy.VmHomePolicySpec.type
-      is USE_SPECIFIED_POLICY.
+    - This field is optional and it is only relevant when the value of I(type) is
+      USE_SPECIFIED_POLICY.
     - 'When clients pass a value of this structure as a parameter, the field must
-      be an identifier for the resource type: vcenter.StoragePolicy. When operations
-      return a value of this structure as a result, the field will be an identifier
-      for the resource type: vcenter.StoragePolicy.'
-    - ' - C(type) (str): The Policy.VmHomePolicySpec.PolicyType enumerated type defines
-      the choices for how to specify the policy to be associated with the virtual
-      machine home''s directory.'
+      be the id of a resource returned by M(vcenter_storage_policies). '
+    - ' - C(type) (str): This option defines the choices for how to specify the policy
+      to be associated with the virtual machine home''s directory.'
     - '   - Accepted values:'
     - '     - USE_SPECIFIED_POLICY'
     - '     - USE_DEFAULT_POLICY'
@@ -113,14 +106,9 @@ EXAMPLES = """
     - key: '{{ my_new_disk.id }}'
       value:
         type: USE_DEFAULT_POLICY
-- name: Adjust VM storage policy (again)
-  vcenter_vm_storage_policy:
-    vm: '{{ test_vm1_info.id }}'
-    disks:
-    - key: '{{ my_new_disk.id }}'
-      value:
-        policy: '{{ my_storage_policy.policy }}'
-        type: USE_SPECIFIED_POLICY
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

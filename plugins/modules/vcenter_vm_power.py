@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_power
-short_description: Handle resource of type vcenter_vm_power
-description: Handle resource of type vcenter_vm_power
+short_description: Manage the power of a VM
+description: Manage the power of a VM
 options:
   state:
     choices:
@@ -49,7 +49,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -78,6 +78,9 @@ EXAMPLES = """
   vcenter_vm_power:
     state: start
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

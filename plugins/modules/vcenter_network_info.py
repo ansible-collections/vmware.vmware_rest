@@ -5,17 +5,15 @@
 
 DOCUMENTATION = """
 module: vcenter_network_info
-short_description: Handle resource of type vcenter_network
-description: Handle resource of type vcenter_network
+short_description: Collect the information associated with the vCenter networks
+description: Collect the information associated with the vCenter networks
 options:
   filter_datacenters:
     description:
     - Datacenters that must contain the network for the network to match the filter.
     - If unset or empty, networks in any datacenter match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datacenter. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datacenter.'
+      contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
   filter_folders:
@@ -23,14 +21,12 @@ options:
     - Folders that must contain the network for the network to match the filter.
     - If unset or empty, networks in any folder match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Folder. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Folder.'
+      contain the id of resources returned by M(vcenter_folder_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that networks must have to match the filter (see Network.Summary.name).
+    - Names that networks must have to match the filter (see I(name)).
     - If unset or empty, networks with any name match the filter.
     elements: str
     type: list
@@ -39,14 +35,12 @@ options:
     - Identifiers of networks that can match the filter.
     - If unset or empty, networks with any identifier match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Network. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Network.'
+      contain the id of resources returned by M(vcenter_network_info). '
     elements: str
     type: list
   filter_types:
     description:
-    - Types that networks must have to match the filter (see Network.Summary.type).
+    - Types that networks must have to match the filter (see I(type)).
     - If unset, networks with any type match the filter.
     elements: str
     type: list
@@ -95,6 +89,9 @@ EXAMPLES = """
   vcenter_network_info:
     filter_types: STANDARD_PORTGROUP
   register: my_standard_portgroup_value
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

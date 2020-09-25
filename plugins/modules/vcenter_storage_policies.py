@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_storage_policies
-short_description: Handle resource of type vcenter_storage_policies
-description: Handle resource of type vcenter_storage_policies
+short_description: Manage the storage policies of a vCenter
+description: Manage the storage policies of a vCenter
 options:
   action:
     choices:
@@ -18,13 +18,13 @@ options:
     description:
     - Datastores used to check compatibility against a storage policy. The number
       of datastores is limited to 1024.
-    - 'The parameter must contain identifiers for the resource type: Datastore.'
+    - The parameter must contain the id of resources returned by M(vcenter_datastore_info).
     elements: str
     type: list
   policy:
     description:
     - The storage policy identifier
-    - 'The parameter must be an identifier for the resource type: vcenter.StoragePolicy.'
+    - The parameter must be the id of a resource returned by M(vcenter_storage_policies).
     type: str
   state:
     choices:
@@ -70,6 +70,9 @@ requirements:
 """
 
 EXAMPLES = """
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_cdrom
-short_description: Handle resource of type vcenter_vm_hardware_cdrom
-description: Handle resource of type vcenter_vm_hardware_cdrom
+short_description: Manage the cdrom of a VM
+description: Manage the cdrom of a VM
 options:
   allow_guest_control:
     description:
@@ -18,9 +18,8 @@ options:
     - Physical resource backing for the virtual CD-ROM device.
     - If unset, defaults to automatic detection of a suitable host device.
     - 'Valide attributes are:'
-    - ' - C(device_access_type) (str): The Cdrom.DeviceAccessType enumerated type
-      defines the valid device access types for a physical device packing of a virtual
-      CD-ROM device.'
+    - ' - C(device_access_type) (str): This option defines the valid device access
+      types for a physical device packing of a virtual CD-ROM device.'
     - '   - Accepted values:'
     - '     - EMULATION'
     - '     - PASSTHRU'
@@ -31,10 +30,10 @@ options:
       a suitable host device.
     - ' - C(iso_file) (str): Path of the image file that should be used as the virtual
       CD-ROM device backing.'
-    - This field is optional and it is only relevant when the value of Cdrom.BackingSpec.type
-      is ISO_FILE.
-    - ' - C(type) (str): The Cdrom.BackingType enumerated type defines the valid backing
-      types for a virtual CD-ROM device.'
+    - This field is optional and it is only relevant when the value of I(type) is
+      ISO_FILE.
+    - ' - C(type) (str): This option defines the valid backing types for a virtual
+      CD-ROM device.'
     - '   - Accepted values:'
     - '     - ISO_FILE'
     - '     - HOST_DEVICE'
@@ -43,8 +42,8 @@ options:
   cdrom:
     description:
     - Virtual CD-ROM device identifier.
-    - 'The parameter must be an identifier for the resource type: vcenter.vm.hardware.Cdrom.
-      Required with I(state=[''absent'', ''connect'', ''disconnect''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_cdrom).
+      Required with I(state=['absent', 'connect', 'disconnect'])
     type: str
   ide:
     description:
@@ -96,7 +95,7 @@ options:
     - IDE
     - SATA
     description:
-    - The Cdrom.HostBusAdapterType enumerated type defines the valid types of host
+    - The I(host_bus_adapter_type) enumerated type defines the valid types of host
       bus adapters that may be used for attaching a Cdrom to a virtual machine.
     type: str
   vcenter_hostname:
@@ -131,7 +130,7 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -157,6 +156,9 @@ EXAMPLES = """
     backing:
       iso_file: '[ro_datastore] fedora.iso'
       type: ISO_FILE
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

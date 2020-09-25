@@ -5,23 +5,21 @@
 
 DOCUMENTATION = """
 module: vcenter_cluster_info
-short_description: Handle resource of type vcenter_cluster
-description: Handle resource of type vcenter_cluster
+short_description: Collect the information associated with the vCenter clusters
+description: Collect the information associated with the vCenter clusters
 options:
   cluster:
     description:
     - Identifier of the cluster.
-    - 'The parameter must be an identifier for the resource type: ClusterComputeResource.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_cluster_info).
+      Required with I(state=['get'])
     type: str
   filter_clusters:
     description:
     - Identifiers of clusters that can match the filter.
     - If unset or empty, clusters with any identifier match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: ClusterComputeResource. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: ClusterComputeResource.'
+      contain the id of resources returned by M(vcenter_cluster_info). '
     elements: str
     type: list
   filter_datacenters:
@@ -29,9 +27,7 @@ options:
     - Datacenters that must contain the cluster for the cluster to match the filter.
     - If unset or empty, clusters in any datacenter match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datacenter. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datacenter.'
+      contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
   filter_folders:
@@ -39,14 +35,12 @@ options:
     - Folders that must contain the cluster for the cluster to match the filter.
     - If unset or empty, clusters in any folder match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Folder. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Folder.'
+      contain the id of resources returned by M(vcenter_folder_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that clusters must have to match the filter (see Cluster.Info.name).
+    - Names that clusters must have to match the filter (see I(name)).
     - If unset or empty, clusters with any name match the filter.
     elements: str
     type: list
@@ -98,6 +92,9 @@ EXAMPLES = """
   vcenter_cluster_info:
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

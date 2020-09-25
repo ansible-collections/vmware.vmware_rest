@@ -4,54 +4,108 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 DOCUMENTATION = """
-module: vcenter_vm_hardware_parallel
-short_description: Manage the parallel of a VM
-description: Manage the parallel of a VM
+module: vcenter_resourcepool
+short_description: Manage the resourcepool of a vCenter
+description: Manage the resourcepool of a vCenter
 options:
-  allow_guest_control:
+  cpu_allocation:
     description:
-    - Flag indicating whether the guest can connect and disconnect the device.
-    - If unset, the value is unchanged.
-    type: bool
-  backing:
-    description:
-    - Physical resource backing for the virtual parallel port.
-    - If unset, defaults to automatic detection of a suitable host device.
+    - Resource allocation for CPU.
+    - if unset or empty, the CPU allocation of the resource pool will not be changed.
     - 'Valide attributes are:'
-    - ' - C(file) (str): Path of the file that should be used as the virtual parallel
-      port backing.'
-    - This field is optional and it is only relevant when the value of I(type) is
-      FILE.
-    - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      parallel port backing.'
-    - If unset, the virtual parallel port will be configured to automatically detect
-      a suitable host device.
-    - ' - C(type) (str): This option defines the valid backing types for a virtual
-      parallel port.'
-    - '   - Accepted values:'
-    - '     - FILE'
-    - '     - HOST_DEVICE'
+    - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
+      reservation, the reservation can grow beyond the specified value, if the parent
+      resource pool has unreserved resources. A non-expandable reservation is called
+      a fixed reservation.'
+    - If unset or empty, I(expandable_reservation) will be set to true.
+    - ' - C(limit) (int): The utilization of a resource pool will not exceed this
+      limit, even if there are available resources. This is typically used to ensure
+      a consistent performance of resource pools independent of available resources.
+      If set to -1, then there is no fixed limit on resource usage (only bounded by
+      available resources and shares). Units are MB for memory, and MHz for CPU.'
+    - If unset or empty, I(limit) will be set to -1.
+    - ' - C(reservation) (int): Amount of resource that is guaranteed available to
+      a resource pool. Reserved resources are not wasted if they are not used. If
+      the utilization is less than the reservation, the resources can be utilized
+      by other running virtual machines. Units are MB fo memory, and MHz for CPU.'
+    - If unset or empty, I(reservation) will be set to 0.
+    - ' - C(shares) (dict): Shares are used in case of resource contention.'
+    - '   - Accepted keys:'
+    - '     - level (string): This option defines the possible values for the allocation
+      level.'
+    - 'Accepted value for this field:'
+    - '       - C(LOW)'
+    - '       - C(NORMAL)'
+    - '       - C(HIGH)'
+    - '       - C(CUSTOM)'
+    - '     - shares (integer): When I(level) is set to CUSTOM, it is the number of
+      shares allocated. Otherwise, this value is ignored. '
+    - ' There is no unit for this value. It is a relative measure based on the settings
+      for other resource pools.'
+    - ''
+    - This field is optional and it is only relevant when the value of I(level) is
+      CUSTOM.
     type: dict
-  label:
-    description: []
-    type: str
-  port:
+  memory_allocation:
     description:
-    - Virtual parallel port identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_parallel).
-      Required with I(state=['absent', 'connect', 'disconnect'])
-    type: str
-  start_connected:
+    - Resource allocation for CPU.
+    - if unset or empty, the CPU allocation of the resource pool will not be changed.
+    - 'Valide attributes are:'
+    - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
+      reservation, the reservation can grow beyond the specified value, if the parent
+      resource pool has unreserved resources. A non-expandable reservation is called
+      a fixed reservation.'
+    - If unset or empty, I(expandable_reservation) will be set to true.
+    - ' - C(limit) (int): The utilization of a resource pool will not exceed this
+      limit, even if there are available resources. This is typically used to ensure
+      a consistent performance of resource pools independent of available resources.
+      If set to -1, then there is no fixed limit on resource usage (only bounded by
+      available resources and shares). Units are MB for memory, and MHz for CPU.'
+    - If unset or empty, I(limit) will be set to -1.
+    - ' - C(reservation) (int): Amount of resource that is guaranteed available to
+      a resource pool. Reserved resources are not wasted if they are not used. If
+      the utilization is less than the reservation, the resources can be utilized
+      by other running virtual machines. Units are MB fo memory, and MHz for CPU.'
+    - If unset or empty, I(reservation) will be set to 0.
+    - ' - C(shares) (dict): Shares are used in case of resource contention.'
+    - '   - Accepted keys:'
+    - '     - level (string): This option defines the possible values for the allocation
+      level.'
+    - 'Accepted value for this field:'
+    - '       - C(LOW)'
+    - '       - C(NORMAL)'
+    - '       - C(HIGH)'
+    - '       - C(CUSTOM)'
+    - '     - shares (integer): When I(level) is set to CUSTOM, it is the number of
+      shares allocated. Otherwise, this value is ignored. '
+    - ' There is no unit for this value. It is a relative measure based on the settings
+      for other resource pools.'
+    - ''
+    - This field is optional and it is only relevant when the value of I(level) is
+      CUSTOM.
+    type: dict
+  name:
     description:
-    - Flag indicating whether the virtual device should be connected whenever the
-      virtual machine is powered on.
-    - If unset, the value is unchanged.
-    type: bool
+    - Name of the resource pool.
+    - if unset or empty, the name of the resource pool will not be changed. Required
+      with I(state=['present'])
+    type: str
+  parent:
+    description:
+    - Parent of the created resource pool.
+    - When clients pass a value of this structure as a parameter, the field must be
+      the id of a resource returned by M(vcenter_resourcepool_info). Required with
+      I(state=['present'])
+    type: str
+  resource_pool:
+    description:
+    - Identifier of the resource pool to be deleted.
+    - The parameter must be the id of a resource returned by M(vcenter_resourcepool_info).
+      Required with I(state=['absent'])
+    type: str
   state:
     choices:
     - absent
-    - connect
-    - disconnect
     - present
     - present
     default: present
@@ -86,11 +140,6 @@ options:
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_VALIDATE_CERTS) will be used instead.
     type: bool
-  vm:
-    description:
-    - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
-    type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
 version_added: 1.0.0
@@ -107,29 +156,39 @@ RETURN = """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "list": {
+        "query": {
+            "filter.clusters": "filter.clusters",
+            "filter.datacenters": "filter.datacenters",
+            "filter.hosts": "filter.hosts",
+            "filter.names": "filter.names",
+            "filter.parent_resource_pools": "filter.parent_resource_pools",
+            "filter.resource_pools": "filter.resource_pools",
+        },
+        "body": {},
+        "path": {},
+    },
     "create": {
         "query": {},
         "body": {
-            "allow_guest_control": "spec/allow_guest_control",
-            "backing": "spec/backing",
-            "start_connected": "spec/start_connected",
+            "cpu_allocation": "spec/cpu_allocation",
+            "memory_allocation": "spec/memory_allocation",
+            "name": "spec/name",
+            "parent": "spec/parent",
         },
-        "path": {"vm": "vm"},
+        "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "get": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "get": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
     "update": {
         "query": {},
         "body": {
-            "allow_guest_control": "spec/allow_guest_control",
-            "backing": "spec/backing",
-            "start_connected": "spec/start_connected",
+            "cpu_allocation": "spec/cpu_allocation",
+            "memory_allocation": "spec/memory_allocation",
+            "name": "spec/name",
         },
-        "path": {"port": "port", "vm": "vm"},
+        "path": {"resource_pool": "resource_pool"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }
 
 import socket
@@ -177,17 +236,16 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["allow_guest_control"] = {"type": "bool"}
-    argument_spec["backing"] = {"type": "dict"}
-    argument_spec["label"] = {"type": "str"}
-    argument_spec["port"] = {"type": "str"}
-    argument_spec["start_connected"] = {"type": "bool"}
+    argument_spec["cpu_allocation"] = {"type": "dict"}
+    argument_spec["memory_allocation"] = {"type": "dict"}
+    argument_spec["name"] = {"type": "str"}
+    argument_spec["parent"] = {"type": "str"}
+    argument_spec["resource_pool"] = {"type": "str"}
     argument_spec["state"] = {
         "type": "str",
-        "choices": ["absent", "connect", "disconnect", "present", "present"],
+        "choices": ["absent", "present", "present"],
         "default": "present",
     }
-    argument_spec["vm"] = {"type": "str"}
 
     return argument_spec
 
@@ -206,9 +264,7 @@ async def main():
 
 def build_url(params):
 
-    return (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel"
-    ).format(**params)
+    return ("https://{vcenter_hostname}" "/rest/vcenter/resource-pool").format(**params)
 
 
 async def entry_point(module, session):
@@ -225,45 +281,21 @@ async def entry_point(module, session):
     return await func(module.params, session)
 
 
-async def _connect(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
-    subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect"
-    )
-    if subdevice_type and (not params[subdevice_type]):
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect".format(
-        **params
-    ) + gen_args(
-        params, _in_query_parameters
-    )
-    async with session.post(_url, json=payload) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        return await update_changed_flag(_json, resp.status, "connect")
-
-
 async def _create(params, session):
-    if params["port"]:
-        _json = await get_device_info(session, build_url(params), params["port"])
+    if params["resource_pool"]:
+        _json = await get_device_info(
+            session, build_url(params), params["resource_pool"]
+        )
     else:
-        _json = await exists(params, session, build_url(params), ["port"])
+        _json = await exists(params, session, build_url(params), ["resource_pool"])
     if _json:
         if "_update" in globals():
-            params["port"] = _json["id"]
+            params["resource_pool"] = _json["id"]
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/parallel".format(
-        **params
-    )
+    _url = "https://{vcenter_hostname}/rest/vcenter/resource-pool".format(**params)
     async with session.post(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
@@ -282,14 +314,12 @@ async def _create(params, session):
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
-    subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
-    )
+    subdevice_type = get_subdevice_type("/rest/vcenter/resource-pool/{resource_pool}")
     if subdevice_type and (not params[subdevice_type]):
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/parallel/{port}".format(
+    _url = "https://{vcenter_hostname}/rest/vcenter/resource-pool/{resource_pool}".format(
         **params
     ) + gen_args(
         params, _in_query_parameters
@@ -303,33 +333,9 @@ async def _delete(params, session):
         return await update_changed_flag(_json, resp.status, "delete")
 
 
-async def _disconnect(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["disconnect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
-    subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/disconnect"
-    )
-    if subdevice_type and (not params[subdevice_type]):
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/parallel/{port}/disconnect".format(
-        **params
-    ) + gen_args(
-        params, _in_query_parameters
-    )
-    async with session.post(_url, json=payload) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        return await update_changed_flag(_json, resp.status, "disconnect")
-
-
 async def _update(params, session):
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/parallel/{port}".format(
+    _url = "https://{vcenter_hostname}/rest/vcenter/resource-pool/{resource_pool}".format(
         **params
     )
     async with session.get(_url) as resp:
@@ -348,7 +354,7 @@ async def _update(params, session):
         except KeyError:
             pass
         if (payload == {}) or (payload == {"spec": {}}):
-            _json["id"] = params.get("port")
+            _json["id"] = params.get("resource_pool")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json=payload) as resp:
         try:
@@ -356,7 +362,7 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        _json["id"] = params.get("port")
+        _json["id"] = params.get("resource_pool")
         return await update_changed_flag(_json, resp.status, "update")
 
 

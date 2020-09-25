@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_disk
 *******************************************
 
-**Handle resource of type vcenter_vm_hardware_disk**
+**Manage the disk of a VM**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Handle resource of type vcenter_vm_hardware_disk
+- Manage the disk of a VM
 
 
 
@@ -52,14 +52,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Existing physical resource backing for the virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.</div>
+                        <div>Existing physical resource backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</div>
                         <div>If unset, the virtual disk will not be connected to an existing backing.</div>
                         <div>Valide attributes are:</div>
-                        <div>- <code>type</code> (str): The Disk.BackingType enumerated type defines the valid backing types for a virtual disk.</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual disk.</div>
                         <div>- Accepted values:</div>
                         <div>- VMDK_FILE</div>
                         <div>- <code>vmdk_file</code> (str): Path of the VMDK file backing the virtual disk.</div>
-                        <div>This field is optional and it is only relevant when the value of Disk.BackingSpec.type is VMDK_FILE.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is VMDK_FILE.</div>
                 </td>
             </tr>
             <tr>
@@ -75,7 +75,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual disk identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: vcenter.vm.hardware.Disk. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_disk</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -125,18 +125,18 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Specification for creating a new VMDK backing for the virtual disk. Exactly one of Disk.CreateSpec.backing or Disk.CreateSpec.new-vmdk must be specified.</div>
+                        <div>Specification for creating a new VMDK backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</div>
                         <div>If unset, a new VMDK backing will not be created.</div>
                         <div>Valide attributes are:</div>
                         <div>- <code>capacity</code> (int): Capacity of the virtual disk backing in bytes.</div>
                         <div>If unset, defaults to a guest-specific capacity.</div>
                         <div>- <code>name</code> (str): Base name of the VMDK file. The name should not include the &#x27;.vmdk&#x27; file extension.</div>
                         <div>If unset, a name (derived from the name of the virtual machine) will be chosen by the server.</div>
-                        <div>- <code>storage_policy</code> (dict): The Disk.StoragePolicySpec structure contains information about the storage policy that is to be associated the with VMDK file.</div>
+                        <div>- <code>storage_policy</code> (dict): The <em>storage_policy_spec</em> structure contains information about the storage policy that is to be associated the with VMDK file.</div>
                         <div>If unset the default storage policy of the target datastore (if applicable) is applied. Currently a default storage policy is only supported by object based datastores : VVol &amp; vSAN. For non- object datastores, if unset then no storage policy would be associated with the VMDK file.</div>
                         <div>- Accepted keys:</div>
                         <div>- policy (string): Identifier of the storage policy which should be associated with the VMDK file.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.StoragePolicy. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.StoragePolicy.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -215,7 +215,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The Disk.HostBusAdapterType enumerated type defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine.</div>
+                        <div>The <em>host_bus_adapter_type</em> enumerated type defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -302,7 +302,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual machine identifier.</div>
-                        <div>The parameter must be an identifier for the resource type: VirtualMachine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
                 </td>
             </tr>
     </table>

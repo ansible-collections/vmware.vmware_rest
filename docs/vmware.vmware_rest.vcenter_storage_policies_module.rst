@@ -1,11 +1,11 @@
-.. _vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_module:
+.. _vmware.vmware_rest.vcenter_storage_policies_module:
 
 
-***************************************************
-vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
-***************************************************
+*******************************************
+vmware.vmware_rest.vcenter_storage_policies
+*******************************************
 
-**Manage the SATA adapter of a VM**
+**Manage the storage policies of a vCenter**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the SATA adapter of a VM
+- Manage the storage policies of a vCenter
 
 
 
@@ -43,7 +43,42 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>adapter</b>
+                    <b>action</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>check-compatibility</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>action=check-compatibility</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>datastores</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Datastores used to check compatibility against a storage policy. The number of datastores is limited to 1024.</div>
+                        <div>The parameter must contain the id of resources returned by <span class='module'>vcenter_datastore_info</span>.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>policy</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -52,54 +87,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual SATA adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_adapter_sata</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>bus</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>SATA bus number.</div>
-                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>label</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>pci_slot_number</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Address of the SATA adapter on the PCI bus.</div>
-                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>The storage policy identifier</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -109,33 +98,15 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>absent</li>
-                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li>check_compatibility</li>
                         </ul>
                 </td>
                 <td>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>type</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>AHCI</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>The <em>type</em> enumerated type defines the valid emulation types for a virtual SATA adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -209,55 +180,12 @@ Parameters
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_VALIDATE_CERTS</code> will be used instead.</div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
-                </td>
-            </tr>
     </table>
     <br/>
 
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Create a SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-    - name: Create a SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-    - name: Drop the SATA controller
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-        state: absent
-    - name: Remove SATA adapter at PCI slot 34
-      vcenter_vm_hardware_adapter_sata:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 34
-        state: absent
 
 
 

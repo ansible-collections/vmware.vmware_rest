@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_guest_networking_routes_info
-short_description: Handle resource of type vcenter_vm_guest_networking_routes
-description: Handle resource of type vcenter_vm_guest_networking_routes
+short_description: Collect the guest networking routes information
+description: Collect the guest networking routes information
 options:
   vcenter_hostname:
     description:
@@ -40,8 +40,8 @@ options:
   vm:
     description:
     - Virtual machine ID
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.
-      Required with I(state=[''list''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['list'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -59,6 +59,9 @@ EXAMPLES = """
 - name: Get guest network routes information
   vcenter_vm_guest_networking_routes_info:
     vm: '{{ test_vm1_info.id }}'
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

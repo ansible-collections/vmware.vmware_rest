@@ -5,8 +5,8 @@
 
 DOCUMENTATION = """
 module: vcenter_vm_info
-short_description: Handle resource of type vcenter_vm
-description: Handle resource of type vcenter_vm
+short_description: Collect the  information from a VM
+description: Collect the  information from a VM
 options:
   filter_clusters:
     description:
@@ -14,9 +14,7 @@ options:
       the filter.
     - If unset or empty, virtual machines in any cluster match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: ClusterComputeResource. When operations
-      return a value of this structure as a result, the field will contain identifiers
-      for the resource type: ClusterComputeResource.'
+      contain the id of resources returned by M(vcenter_cluster_info). '
     elements: str
     type: list
   filter_datacenters:
@@ -25,9 +23,7 @@ options:
       match the filter.
     - If unset or empty, virtual machines in any datacenter match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Datacenter. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: Datacenter.'
+      contain the id of resources returned by M(vcenter_datacenter_info). '
     elements: str
     type: list
   filter_folders:
@@ -36,9 +32,7 @@ options:
       the filter.
     - If unset or empty, virtual machines in any folder match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: Folder. When operations return a
-      value of this structure as a result, the field will contain identifiers for
-      the resource type: Folder.'
+      contain the id of resources returned by M(vcenter_folder_info). '
     elements: str
     type: list
   filter_hosts:
@@ -47,20 +41,18 @@ options:
       the filter.
     - If unset or empty, virtual machines on any host match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: HostSystem. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: HostSystem.'
+      contain the id of resources returned by M(vcenter_host_info). '
     elements: str
     type: list
   filter_names:
     description:
-    - Names that virtual machines must have to match the filter (see VM.Info.name).
+    - Names that virtual machines must have to match the filter (see I(name)).
     - If unset or empty, virtual machines with any name match the filter.
     elements: str
     type: list
   filter_power_states:
     description:
-    - Power states that a virtual machine must be in to match the filter (see Power.Info.state.
+    - Power states that a virtual machine must be in to match the filter (see I()
     - If unset or empty, virtual machines in any power state match the filter.
     elements: str
     type: list
@@ -70,9 +62,7 @@ options:
       to match the filter.
     - If unset or empty, virtual machines in any resource pool match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: ResourcePool. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: ResourcePool.'
+      contain the id of resources returned by M(vcenter_resourcepool_info). '
     elements: str
     type: list
   filter_vms:
@@ -80,9 +70,7 @@ options:
     - Identifiers of virtual machines that can match the filter.
     - If unset or empty, virtual machines with any identifier match the filter.
     - 'When clients pass a value of this structure as a parameter, the field must
-      contain identifiers for the resource type: VirtualMachine. When operations return
-      a value of this structure as a result, the field will contain identifiers for
-      the resource type: VirtualMachine.'
+      contain the id of resources returned by M(vcenter_vm_info). '
     elements: str
     type: list
   vcenter_hostname:
@@ -117,8 +105,8 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - 'The parameter must be an identifier for the resource type: VirtualMachine.
-      Required with I(state=[''get''])'
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['get'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -150,6 +138,9 @@ EXAMPLES = """
 - name: Search with an invalid filter
   vcenter_vm_info:
     filter_names: test_vm1_does_not_exists
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points

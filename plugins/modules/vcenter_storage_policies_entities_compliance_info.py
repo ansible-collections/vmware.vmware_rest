@@ -5,8 +5,10 @@
 
 DOCUMENTATION = """
 module: vcenter_storage_policies_entities_compliance_info
-short_description: Handle resource of type vcenter_storage_policies_entities_compliance
-description: Handle resource of type vcenter_storage_policies_entities_compliance
+short_description: Collect the information associated with the vCenter storage policies
+  entities compliances
+description: Collect the information associated with the vCenter storage policies
+  entities compliances
 options:
   filter_status:
     description:
@@ -51,6 +53,9 @@ requirements:
 """
 
 EXAMPLES = """
+"""
+
+RETURN = """
 """
 
 # This structure describes the format of the data expected by the end-points
