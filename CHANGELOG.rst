@@ -5,6 +5,29 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v0.3.0
+======
+
+Minor Changes
+-------------
+
+- Better documentation
+- The module RETURN sections are now defined.
+- vcenter_resourcepool - new module
+- vcenter_resourcepool_info - new module
+- vcenter_storage_policies - new module
+- vcenter_storage_policies_compliance_vm_info - new module
+- vcenter_storage_policies_entities_compliance_info - new module
+- vcenter_storage_policies_info - new module
+- vcenter_storage_policies_vm_info - new module
+
+Deprecated Features
+-------------------
+
+- vcenter_vm_storage_policy_compliance - drop the module, it returns 404 error.
+- vcenter_vm_tools - remove the ``upgrade`` state.
+- vcenter_vm_tools_installer - remove the module from the collection.
+
 v0.2.0
 ======
 

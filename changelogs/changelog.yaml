@@ -22,3 +22,27 @@ releases:
     - drop-vcenter_vm_guest_power.yml
     - improve_documentation.yml
     release_date: '2020-09-11'
+  0.3.0:
+    changes:
+      deprecated_features:
+      - vcenter_vm_storage_policy_compliance - drop the module, it returns 404 error.
+      - vcenter_vm_tools - remove the ``upgrade`` state.
+      - vcenter_vm_tools_installer - remove the module from the collection.
+      minor_changes:
+      - Better documentation
+      - The module RETURN sections are now defined.
+      - vcenter_resourcepool - new module
+      - vcenter_resourcepool_info - new module
+      - vcenter_storage_policies - new module
+      - vcenter_storage_policies_compliance_vm_info - new module
+      - vcenter_storage_policies_entities_compliance_info - new module
+      - vcenter_storage_policies_info - new module
+      - vcenter_storage_policies_vm_info - new module
+    fragments:
+    - RETURN_section.yaml
+    - add_vcenter_vm_storage_policies.yaml
+    - better_documentation.yaml
+    - drop_vcenter_vm_storage_policy_compliance.yaml
+    - drop_vcenter_vm_tools_installer.yaml
+    - new_modules.yaml
+    release_date: '2020-09-25'

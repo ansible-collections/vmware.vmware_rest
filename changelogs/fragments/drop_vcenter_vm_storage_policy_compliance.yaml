@@ -1,3 +1,0 @@
----
-deprecated_features:
-- vcenter_vm_storage_policy_compliance - drop the module, it returns 404 error.
