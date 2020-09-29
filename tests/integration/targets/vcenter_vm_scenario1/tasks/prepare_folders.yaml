@@ -12,8 +12,9 @@
   vcenter_folder_info:
     filter_type: DATASTORE
   register: _result
+
 - name: Ensure we didn't pick folder with a different type
   assert:
     that:
       - _result.value|length > 0
-      - _result.value|selectattr('type', '!=', 'DATASTORE') == []
+      - _result.value|selectattr('type', '!=', 'DATASTORE')|list == []
