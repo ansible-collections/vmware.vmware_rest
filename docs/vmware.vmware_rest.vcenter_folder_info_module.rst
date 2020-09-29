@@ -170,6 +170,23 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_log_file</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>You can use this optional parameter to set the location of a log file.</div>
+                        <div>This file will be used to record the HTTP REST interaction.</div>
+                        <div>The file will be stored on the host that run the module.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -253,7 +270,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Build a list of the folders, with a filter</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-s1359&#x27;, &#x27;name&#x27;: &#x27;datastore&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-s1433&#x27;, &#x27;name&#x27;: &#x27;datastore&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}]</div>
                 </td>
             </tr>
     </table>

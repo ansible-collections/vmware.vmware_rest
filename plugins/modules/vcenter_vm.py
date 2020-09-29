@@ -967,6 +967,12 @@ options:
       C(VMWARE_PASSWORD) will be used instead.
     required: true
     type: str
+  vcenter_rest_log_file:
+    description:
+    - 'You can use this optional parameter to set the location of a log file. '
+    - 'This file will be used to record the HTTP REST interaction. '
+    - 'The file will be stored on the host that run the module. '
+    type: str
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -1026,7 +1032,7 @@ RETURN = """
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1374
+  sample: vm-1448
   type: str
 value:
   description: Create a VM
@@ -1050,7 +1056,7 @@ value:
       value:
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_8/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1_3/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -1064,8 +1070,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 4233e38e-9d1e-b78e-9675-552cc0e3a0f0
-      instance_uuid: 5033f120-0576-b306-aa84-72262238f869
+      bios_uuid: 4233e6ac-3e51-dc3d-5d68-ed35b75c3e69
+      instance_uuid: 5033439d-62f1-fffb-feb4-56e8dfc65fb5
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -1219,6 +1225,11 @@ def prepare_argument_spec():
             required=False,
             default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
+        ),
+        "vcenter_rest_log_file": dict(
+            type="str",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
     }
 
@@ -1467,6 +1478,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)
     module.exit_json(**result)

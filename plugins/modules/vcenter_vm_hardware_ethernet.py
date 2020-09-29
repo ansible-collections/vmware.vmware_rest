@@ -133,6 +133,12 @@ options:
       C(VMWARE_PASSWORD) will be used instead.
     required: true
     type: str
+  vcenter_rest_log_file:
+    description:
+    - 'You can use this optional parameter to set the location of a log file. '
+    - 'This file will be used to record the HTTP REST interaction. '
+    - 'The file will be stored on the host that run the module. '
+    type: str
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -203,13 +209,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 561022035
+      connection_cookie: 1118976689
       distributed_port: '2'
-      distributed_switch_uuid: 50 33 02 33 50 e0 ce 2e-66 d0 e8 a7 ef e5 4a a3
-      network: dvportgroup-1373
+      distributed_switch_uuid: 50 33 35 7b 83 9b 31 f0-c6 06 82 f4 c2 b4 07 1e
+      network: dvportgroup-1447
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:b3:d8:43
+    mac_address: 00:50:56:b3:aa:d3
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -300,6 +306,11 @@ def prepare_argument_spec():
             default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
+        "vcenter_rest_log_file": dict(
+            type="str",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
     }
 
     argument_spec["allow_guest_control"] = {"type": "bool"}
@@ -336,6 +347,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)
     module.exit_json(**result)

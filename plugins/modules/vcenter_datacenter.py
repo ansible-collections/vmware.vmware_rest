@@ -54,6 +54,12 @@ options:
       C(VMWARE_PASSWORD) will be used instead.
     required: true
     type: str
+  vcenter_rest_log_file:
+    description:
+    - 'You can use this optional parameter to set the location of a log file. '
+    - 'This file will be used to record the HTTP REST interaction. '
+    - 'The file will be stored on the host that run the module. '
+    type: str
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -102,17 +108,17 @@ RETURN = """
 id:
   description: moid of the resource
   returned: On success
-  sample: datacenter-1356
+  sample: datacenter-1430
   type: str
 value:
   description: Create datacenter my_dc
   returned: On success
   sample:
-    datastore_folder: group-s1359
-    host_folder: group-h1358
+    datastore_folder: group-s1433
+    host_folder: group-h1432
     name: my_dc
-    network_folder: group-n1360
-    vm_folder: group-v1357
+    network_folder: group-n1434
+    vm_folder: group-v1431
   type: dict
 """
 
@@ -183,6 +189,11 @@ def prepare_argument_spec():
             default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
+        "vcenter_rest_log_file": dict(
+            type="str",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
     }
 
     argument_spec["datacenter"] = {"type": "str"}
@@ -205,6 +216,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)
     module.exit_json(**result)

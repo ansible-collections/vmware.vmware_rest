@@ -107,6 +107,23 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_log_file</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>You can use this optional parameter to set the location of a log file.</div>
+                        <div>This file will be used to record the HTTP REST interaction.</div>
+                        <div>The file will be stored on the host that run the module.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -204,7 +221,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Collect a list of the NIC for a given VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 562966108, &#x27;distributed_port&#x27;: &#x27;3&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 33 02 33 50 e0 ce 2e-66 d0 e8 a7 ef e5 4a a3&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1373&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:d8:43&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 1, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 1, &#x27;wake_on_lan_enabled&#x27;: 1}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 1122021854, &#x27;distributed_port&#x27;: &#x27;3&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 33 35 7b 83 9b 31 f0-c6 06 82 f4 c2 b4 07 1e&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1447&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:aa:d3&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 1, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 1, &#x27;wake_on_lan_enabled&#x27;: 1}]</div>
                 </td>
             </tr>
     </table>

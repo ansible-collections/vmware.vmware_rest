@@ -77,6 +77,23 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_log_file</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>You can use this optional parameter to set the location of a log file.</div>
+                        <div>This file will be used to record the HTTP REST interaction.</div>
+                        <div>The file will be stored on the host that run the module.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -174,7 +191,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get VM storage policy compliance information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: [{&#x27;key&#x27;: &#x27;16000&#x27;, &#x27;value&#x27;: {&#x27;check_time&#x27;: &#x27;2020-09-29T17:30:38.943Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}], &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: [{&#x27;key&#x27;: &#x27;16000&#x27;, &#x27;value&#x27;: {&#x27;check_time&#x27;: &#x27;2020-09-29T21:14:38.828Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}], &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
                 </td>
             </tr>
     </table>

@@ -125,6 +125,12 @@ options:
       C(VMWARE_PASSWORD) will be used instead.
     required: true
     type: str
+  vcenter_rest_log_file:
+    description:
+    - 'You can use this optional parameter to set the location of a log file. '
+    - 'This file will be used to record the HTTP REST interaction. '
+    - 'The file will be stored on the host that run the module. '
+    type: str
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -192,7 +198,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1_8/test_vm1_1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_3/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -269,6 +275,11 @@ def prepare_argument_spec():
             default=True,
             fallback=(env_fallback, ["VMWARE_VALIDATE_CERTS"]),
         ),
+        "vcenter_rest_log_file": dict(
+            type="str",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
     }
 
     argument_spec["backing"] = {"type": "dict"}
@@ -296,6 +307,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)
     module.exit_json(**result)

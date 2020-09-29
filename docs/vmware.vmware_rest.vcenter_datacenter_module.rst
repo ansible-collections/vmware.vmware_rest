@@ -163,6 +163,23 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_log_file</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>You can use this optional parameter to set the location of a log file.</div>
+                        <div>This file will be used to record the HTTP REST interaction.</div>
+                        <div>The file will be stored on the host that run the module.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -254,7 +271,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">datacenter-1356</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">datacenter-1430</div>
                 </td>
             </tr>
             <tr>
@@ -271,7 +288,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create datacenter my_dc</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;datastore_folder&#x27;: &#x27;group-s1359&#x27;, &#x27;host_folder&#x27;: &#x27;group-h1358&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;, &#x27;network_folder&#x27;: &#x27;group-n1360&#x27;, &#x27;vm_folder&#x27;: &#x27;group-v1357&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;datastore_folder&#x27;: &#x27;group-s1433&#x27;, &#x27;host_folder&#x27;: &#x27;group-h1432&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;, &#x27;network_folder&#x27;: &#x27;group-n1434&#x27;, &#x27;vm_folder&#x27;: &#x27;group-v1431&#x27;}</div>
                 </td>
             </tr>
     </table>
