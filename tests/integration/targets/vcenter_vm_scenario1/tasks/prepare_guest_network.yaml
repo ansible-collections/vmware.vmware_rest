@@ -57,4 +57,4 @@
 - debug: var=my_standard_portgroup_value
 - assert:
     that:
-      - my_standard_portgroup_value.value|selectattr('type', '!=', 'STANDARD_PORTGROUP') == []
+      - my_standard_portgroup_value.value|selectattr('type', '!=', 'STANDARD_PORTGROUP')|list == []
