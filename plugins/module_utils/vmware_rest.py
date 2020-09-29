@@ -39,14 +39,15 @@ async def open_session(
             auth=auth,
         ) as resp:
             if resp.status != 200:
-                try:
-                    raise EmbeddedModuleFailure(
-                        "Authentication failure. code: {0}, json: {1}".format(
-                            resp.status, await resp.text()
-                        )
+                from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+                    EmbeddedModuleFailure,
+                )
+
+                raise EmbeddedModuleFailure(
+                    "Authentication failure. code: {0}, json: {1}".format(
+                        resp.status, await resp.text()
                     )
-                except ImportError:
-                    pass
+                )
             json = await resp.json()
             session_id = json["value"]
             session = aiohttp.ClientSession(
