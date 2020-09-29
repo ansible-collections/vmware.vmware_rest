@@ -17,5 +17,7 @@
 - import_tasks: vm_power.yaml
 - vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
-#- import_tasks: wait_for_test_vm1.yaml
-#- import_tasks: vm_guest_info.yaml
+- when: wait_for_vm is defined
+  block:
+  - import_tasks: wait_for_test_vm1.yaml
+  - import_tasks: vm_guest_info.yaml

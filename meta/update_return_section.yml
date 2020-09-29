@@ -1,0 +1,6 @@
+---
+# See: https://github.com/goneri/ansible-collection-goneri.utils
+enabled: true
+keys:
+  id:
+    description: moid of the resource
