@@ -38,7 +38,7 @@ Parameters
         <tr>
             <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
-            <th width="100%">Comments</th>
+<th width="100%">Comments</th>
         </tr>
             <tr>
                 <td colspan="1">
