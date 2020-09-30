@@ -1,0 +1,41 @@
+- name: Build a list of all the clusters
+  vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vcenter_cluster_info:
+    cluster: "{{ all_the_clusters.value[0].cluster }}"
+  register: my_cluster_info
+
+- debug: var=my_cluster_info
+
+- name: Retrieve a list of all the datastores
+  vcenter_datastore_info:
+  register: my_datastores
+- debug: var=my_datastores
+
+- name: We can also use filter to limit the number of result
+  vcenter_datastore_info:
+    filter_names:
+      - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
+
+- name: Build a list of all the folders
+  vcenter_folder_info:
+  register: my_folders
+- debug: var=my_folders
+
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
+    filter_names:
+      - vm
+  register: my_folders
+
+- name: Set my_virtual_machine_folder
+  set_fact:
+    my_virtual_machine_folder: '{{ my_folders.value|first }}'

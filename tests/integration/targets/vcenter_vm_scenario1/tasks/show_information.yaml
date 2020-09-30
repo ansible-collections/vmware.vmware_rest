@@ -1,0 +1,5 @@
+---
+- name: Get a list of all the datacenters
+  register: existing_datacenters
+  vcenter_datacenter_info:
+

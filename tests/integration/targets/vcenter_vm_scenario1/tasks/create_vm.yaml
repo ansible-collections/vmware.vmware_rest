@@ -1,8 +1,9 @@
+- debug: var=my_datastore.datastore
 - name: Create a VM
   vcenter_vm:
     placement:
-      cluster: "{{ all_the_clusters.value[0].cluster }}"
-      datastore: "{{ rw_datastore.datastore }}"
+      cluster: "{{ my_cluster_info.id }}"
+      datastore: "{{ my_datastore.datastore }}"
       folder: "{{ my_virtual_machine_folder.folder }}"
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
@@ -12,8 +13,8 @@
       hot_add_enabled: true
       size_MiB: 1024
   register: _result
-- debug: var=_result
 
+- debug: var=_result
 - assert:
     that:
       - _result is changed
@@ -21,8 +22,8 @@
 - name: _Create a VM (again)
   vcenter_vm:
     placement:
-      cluster: "{{ all_the_clusters.value[0].cluster }}"
-      datastore: "{{ rw_datastore.datastore }}"
+      cluster: "{{ my_cluster_info.id }}"
+      datastore: "{{ my_datastore.datastore }}"
       folder: "{{ my_virtual_machine_folder.folder }}"
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
