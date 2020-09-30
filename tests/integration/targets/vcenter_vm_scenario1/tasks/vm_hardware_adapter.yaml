@@ -1,14 +1,9 @@
 ---
-- name: List the SATA adapter of a given VM
-  vcenter_vm_hardware_adapter_sata_info:
-    vm: '{{ test_vm1_info.id }}'
-
 - name: Create a SATA adapter at PCI slot 34
   vcenter_vm_hardware_adapter_sata:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
   register: _sata_adapter_result_1
-
 - debug: var=_sata_adapter_result_1
 
 - name: _Create a SATA adapter at PCI slot 34 (again)
@@ -24,15 +19,6 @@
     that:
       - _sata_adapter_result_1.value.pci_slot_number == _sata_adapter_result_2.value.pci_slot_number
       - _sata_adapter_result_1.id == _sata_adapter_result_2.id
-
-- name: Drop the SATA controller
-  vcenter_vm_hardware_adapter_sata:
-    vm: '{{ test_vm1_info.id }}'
-    pci_slot_number: 34
-    state: absent
-  register: _result
-
-- debug: var=_result
 
 - name: List the SCSI adapter of a given VM
   vcenter_vm_hardware_adapter_scsi_info:

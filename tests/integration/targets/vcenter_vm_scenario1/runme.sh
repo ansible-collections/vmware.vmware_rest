@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -eu
-source ../init.sh
 set -eux
-
-exec ansible-playbook -i ../inventory.networking playbook.yaml
+source ../init.sh
+exec ansible-playbook playbook.yaml -vvv -e wait_for_vm=1

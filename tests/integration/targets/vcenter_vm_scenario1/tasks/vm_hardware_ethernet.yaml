@@ -10,6 +10,12 @@
 
 - debug: var=_vm_hardware_ethernet_1
 
+- name: Turn the NIC's start_connected flag on
+  vcenter_vm_hardware_ethernet:
+    nic: '{{ _vm_hardware_ethernet_1.id }}'
+    start_connected: true
+    vm: '{{ test_vm1_info.id }}'
+
 - name: _Attach a VM to a dvswitch (again)
   vcenter_vm_hardware_ethernet:
     vm: '{{ test_vm1_info.id }}'
@@ -26,19 +32,6 @@
   assert:
     that: _vm_hardware_ethernet_1.id == _vm_hardware_ethernet_2.id
 - debug: var=_vm_hardware_ethernet_1
-
-- name: Turn the NIC's start_connected flag on
-  vcenter_vm_hardware_ethernet:
-    nic: 4000
-    start_connected: true
-    vm: '{{ test_vm1_info.id }}'
-  register: _result
-
-- debug: var=_result
-
-- assert:
-    that:
-      - _result is changed
 
 - name: _Turn the NIC's start_connected flag on (again)
   vcenter_vm_hardware_ethernet:
