@@ -1,0 +1,9 @@
+- import_tasks: purge_vms.yaml
+- import_tasks: cleanup.yaml
+
+- import_tasks: prepare_datacenter.yaml
+- import_tasks: prepare_cluster.yaml
+- import_tasks: prepare_folders.yaml
+- import_tasks: prepare_hosts.yaml
+- import_tasks: prepare_datastores.yaml
+- import_tasks: prepare_guest_network.yaml
