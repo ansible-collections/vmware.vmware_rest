@@ -7,12 +7,14 @@ async def open_session(
     vcenter_username=None,
     vcenter_password=None,
     validate_certs=True,
+    log_file=None,
 ):
-
     m = hashlib.sha256()
     m.update(vcenter_hostname.encode())
     m.update(vcenter_username.encode())
     m.update(vcenter_password.encode())
+    if log_file:
+        m.update(log_file.encode())
     m.update(b"yes" if validate_certs else b"no")
     digest = m.hexdigest()
     # TODO: Handle session timeout
@@ -27,10 +29,28 @@ async def open_session(
 
         raise EmbeddedModuleFailure()
 
+    if log_file:
+        trace_config = aiohttp.TraceConfig()
+
+        async def on_request_end(session, trace_config_ctx, params):
+            with open(log_file, "a+") as fd:
+                answer = await params.response.text()
+                fd.write(
+                    f"{params.method}: {params.url}\n"
+                    f"headers: {params.headers}\n"
+                    f"  status: {params.response.status}\n"
+                    f"  answer: {answer}\n\n"
+                )
+
+        trace_config.on_request_end.append(on_request_end)
+        trace_configs = [trace_config]
+    else:
+        trace_configs = []
+
     auth = aiohttp.BasicAuth(vcenter_username, vcenter_password)
     connector = aiohttp.TCPConnector(limit=20, ssl=validate_certs)
     async with aiohttp.ClientSession(
-        connector=connector, connector_owner=False
+        connector=connector, connector_owner=False, trace_configs=trace_configs
     ) as session:
         async with session.post(
             "https://{hostname}/rest/com/vmware/cis/session".format(
@@ -39,14 +59,15 @@ async def open_session(
             auth=auth,
         ) as resp:
             if resp.status != 200:
-                try:
-                    raise EmbeddedModuleFailure(
-                        "Authentication failure. code: {0}, json: {1}".format(
-                            resp.status, await resp.text()
-                        )
+                from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+                    EmbeddedModuleFailure,
+                )
+
+                raise EmbeddedModuleFailure(
+                    "Authentication failure. code: {0}, json: {1}".format(
+                        resp.status, await resp.text()
                     )
-                except ImportError:
-                    pass
+                )
             json = await resp.json()
             session_id = json["value"]
             session = aiohttp.ClientSession(
@@ -56,6 +77,7 @@ async def open_session(
                     "content-type": "application/json",
                 },
                 connector_owner=False,
+                trace_configs=trace_configs,
             )
             open_session._pool[digest] = session
             return session
