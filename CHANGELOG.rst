@@ -5,6 +5,15 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v0.4.0
+======
+
+Minor Changes
+-------------
+
+- The format of the output of the Modules is now documented in the RETURN block.
+- vcenter_rest_log_file - this optional parameter can be used to point on the log file where all the HTTP interaction will be record.
+
 v0.3.0
 ======
 

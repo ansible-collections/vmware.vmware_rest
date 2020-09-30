@@ -46,3 +46,13 @@ releases:
     - drop_vcenter_vm_tools_installer.yaml
     - new_modules.yaml
     release_date: '2020-09-25'
+  0.4.0:
+    changes:
+      minor_changes:
+      - The format of the output of the Modules is now documented in the RETURN block.
+      - vcenter_rest_log_file - this optional parameter can be used to point on the
+        log file where all the HTTP interaction will be record.
+    fragments:
+    - add_RETURN_block_to_modules.yaml
+    - add_vcenter_rest_log_file_parameter.yaml
+    release_date: '2020-09-30'
