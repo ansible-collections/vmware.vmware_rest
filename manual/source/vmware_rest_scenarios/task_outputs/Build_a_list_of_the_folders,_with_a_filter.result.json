@@ -1,0 +1,10 @@
+{
+    "value": [
+        {
+            "folder": "group-s1242",
+            "name": "datastore",
+            "type": "DATASTORE"
+        }
+    ],
+    "changed": false
+}

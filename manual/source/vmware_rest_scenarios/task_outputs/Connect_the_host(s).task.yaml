@@ -1,0 +1,10 @@
+- name: Connect the host(s)
+  vcenter_host:
+    hostname: "{{ item.hostname }}"
+    password: "{{ item.password }}"
+    user_name: "{{ item.username }}"
+    thumbprint_verification: 'NONE'
+    folder: '{{ my_host_folder.folder }}'
+  register: _result
+  no_log: true
+  with_items: "{{ my_esxis}}"

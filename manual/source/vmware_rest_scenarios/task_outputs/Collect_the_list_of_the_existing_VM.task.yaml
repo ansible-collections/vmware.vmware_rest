@@ -1,0 +1,4 @@
+- name: Collect the list of the existing VM
+  vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed

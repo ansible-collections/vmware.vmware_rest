@@ -1,0 +1,4 @@
+- name: Build a list of the folders, with a filter
+  vcenter_folder_info:
+    filter_type: DATASTORE
+  register: _result

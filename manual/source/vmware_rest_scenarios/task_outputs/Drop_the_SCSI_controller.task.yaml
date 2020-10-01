@@ -1,0 +1,6 @@
+- name: Drop the SCSI controller
+  vcenter_vm_hardware_adapter_scsi:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 35
+    state: absent
+  register: _result

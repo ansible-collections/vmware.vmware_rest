@@ -1,0 +1,4 @@
+- name: Get the information from the library
+  vcenter_vm_libraryitem_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
