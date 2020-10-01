@@ -1,0 +1,4 @@
+- name: Retrieve the parallel port information from the VM
+  vcenter_vm_hardware_parallel_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
