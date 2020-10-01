@@ -1,0 +1,4 @@
+- name: Retrive vm-tools information
+  vcenter_vm_tools:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result

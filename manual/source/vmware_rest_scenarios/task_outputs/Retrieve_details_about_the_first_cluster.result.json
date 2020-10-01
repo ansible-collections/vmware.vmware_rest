@@ -1,0 +1,8 @@
+{
+    "value": {
+        "name": "my_cluster",
+        "resource_pool": "resgroup-1246"
+    },
+    "id": "domain-c1245",
+    "changed": false
+}

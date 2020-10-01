@@ -1,0 +1,11 @@
+{
+    "value": [
+        {
+            "host": "host-1250",
+            "name": "esxi1.test",
+            "connection_state": "CONNECTED",
+            "power_state": "POWERED_ON"
+        }
+    ],
+    "changed": false
+}

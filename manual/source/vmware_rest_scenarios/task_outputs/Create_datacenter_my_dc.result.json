@@ -1,0 +1,11 @@
+{
+    "value": {
+        "datastore_folder": "group-s1242",
+        "host_folder": "group-h1241",
+        "network_folder": "group-n1243",
+        "name": "my_dc",
+        "vm_folder": "group-v1240"
+    },
+    "id": "datacenter-1239",
+    "changed": true
+}
