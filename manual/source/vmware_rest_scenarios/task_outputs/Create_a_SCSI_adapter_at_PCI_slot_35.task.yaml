@@ -1,0 +1,5 @@
+- name: Create a SCSI adapter at PCI slot 35
+  vcenter_vm_hardware_adapter_scsi:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 35
+  register: _scsi_adapter_result_1

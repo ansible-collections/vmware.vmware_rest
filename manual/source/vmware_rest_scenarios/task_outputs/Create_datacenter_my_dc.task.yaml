@@ -1,0 +1,5 @@
+- name: Create datacenter my_dc
+  vcenter_datacenter:
+    name: my_dc
+    folder: "{{ my_datacenter_folder.folder }}"
+  register: _result

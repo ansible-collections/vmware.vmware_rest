@@ -1,0 +1,3 @@
+- name: Get a list of the networks
+  vcenter_network_info:
+  register: my_network_value
