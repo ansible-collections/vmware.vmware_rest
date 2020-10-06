@@ -6,9 +6,15 @@
       type: DISTRIBUTED_PORTGROUP
       network: "{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
     start_connected: false
-  register: _vm_hardware_ethernet_1
+  register: vm_hardware_ethernet_1
 
-- debug: var=_vm_hardware_ethernet_1
+- debug: var=vm_hardware_ethernet_1
+
+- name: Turn the NIC's start_connected flag on
+  vcenter_vm_hardware_ethernet:
+    nic: '{{ vm_hardware_ethernet_1.id }}'
+    start_connected: true
+    vm: '{{ test_vm1_info.id }}'
 
 - name: _Attach a VM to a dvswitch (again)
   vcenter_vm_hardware_ethernet:
@@ -24,21 +30,7 @@
 
 - name: Validate idempotency
   assert:
-    that: _vm_hardware_ethernet_1.id == _vm_hardware_ethernet_2.id
-- debug: var=_vm_hardware_ethernet_1
-
-- name: Turn the NIC's start_connected flag on
-  vcenter_vm_hardware_ethernet:
-    nic: 4000
-    start_connected: true
-    vm: '{{ test_vm1_info.id }}'
-  register: _result
-
-- debug: var=_result
-
-- assert:
-    that:
-      - _result is changed
+    that: vm_hardware_ethernet_1.id == _vm_hardware_ethernet_2.id
 
 - name: _Turn the NIC's start_connected flag on (again)
   vcenter_vm_hardware_ethernet:

@@ -1,4 +1,20 @@
 ---
+- name: _community_ unmount NFS (ro_datastore) datastores to ESXi
+  vmware_host_datastore:
+    esxi_hostname: '{{ item.hostname }}'
+    datastore_name: ro_datastore
+    state: absent
+  with_items: "{{ my_esxis}}"
+  no_log: true
+
+- name: _community_ unmount NFS (rw_datastore) datastores on the ESXi
+  vmware_host_datastore:
+    esxi_hostname: '{{ item.hostname }}'
+    datastore_name: rw_datastore
+    state: absent
+  with_items: "{{ my_esxis}}"
+  no_log: true
+
 - name: _community_ Mount NFS (ro_datastore) datastores to ESXi
   vmware_host_datastore:
     esxi_hostname: '{{ item.hostname }}'
@@ -22,12 +38,3 @@
     state: present
   with_items: "{{ my_esxis}}"
   no_log: true
-
-- name: Retrieve a list of all the datastores
-  vcenter_datastore_info:
-  register: my_datastores
-- debug: var=my_datastores
-
-- set_fact:
-    rw_datastore: '{{ my_datastores.value|selectattr("name", "equalto", "rw_datastore")|first }}'
-

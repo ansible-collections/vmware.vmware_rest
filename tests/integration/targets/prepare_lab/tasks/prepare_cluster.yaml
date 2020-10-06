@@ -1,0 +1,7 @@
+---
+- name: _community_ Create Cluster
+  vmware_cluster:
+    datacenter_name: my_dc
+    cluster_name: my_cluster
+    ha_host_monitoring: disabled
+    validate_certs: no
