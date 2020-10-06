@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the datastore for which information should be retrieved.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datastore_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datastore_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -246,40 +246,13 @@ Examples
     - name: Retrieve a list of all the datastores
       vcenter_datastore_info:
       register: my_datastores
+    - name: We can also use filter to limit the number of result
+      vcenter_datastore_info:
+        filter_names:
+        - rw_datastore
+      register: my_datastores
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Retrieve a list of all the datastores</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1442&#x27;, &#x27;free_space&#x27;: 24638345216, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1443&#x27;, &#x27;free_space&#x27;: 24638345216, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1444&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

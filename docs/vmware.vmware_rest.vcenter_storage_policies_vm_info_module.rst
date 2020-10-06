@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>storage policy identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>. Required with <em>state=[&#x27;list&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>
                 </td>
             </tr>
             <tr>

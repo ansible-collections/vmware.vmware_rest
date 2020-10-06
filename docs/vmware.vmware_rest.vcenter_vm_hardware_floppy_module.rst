@@ -151,7 +151,6 @@ Parameters
                                     <li>connect</li>
                                     <li>disconnect</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
@@ -293,55 +292,6 @@ Examples
         state: absent
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">8000</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Add a floppy disk drive</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 1, &#x27;backing&#x27;: {&#x27;auto_detect&#x27;: 1, &#x27;host_device&#x27;: &#x27;&#x27;, &#x27;type&#x27;: &#x27;HOST_DEVICE&#x27;}, &#x27;label&#x27;: &#x27;Floppy drive 1&#x27;, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;}</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

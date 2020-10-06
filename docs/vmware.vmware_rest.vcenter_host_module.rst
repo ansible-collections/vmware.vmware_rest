@@ -314,10 +314,6 @@ Examples
           password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
     - name: Look up the different folders
       set_fact:
-        my_virtual_machine_folder: '{{ my_folders.value|selectattr("type", "equalto",
-          "VIRTUAL_MACHINE")|first }}'
-        my_datastore_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATASTORE")|first
-          }}'
         my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
           }}'
     - name: Connect the host(s)

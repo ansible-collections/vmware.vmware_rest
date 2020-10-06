@@ -160,7 +160,7 @@ Parameters
                 </td>
                 <td>
                         <div>Identifier of the resource pool for which information should be retrieved.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
                 </td>
             </tr>
             <tr>

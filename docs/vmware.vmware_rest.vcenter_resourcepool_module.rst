@@ -171,7 +171,6 @@ Parameters
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>

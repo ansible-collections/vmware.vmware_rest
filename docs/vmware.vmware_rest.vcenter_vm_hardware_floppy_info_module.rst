@@ -53,7 +53,7 @@ Parameters
                 </td>
                 <td>
                         <div>Virtual floppy drive identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_floppy</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_floppy</span>.</div>
                 </td>
             </tr>
             <tr>
