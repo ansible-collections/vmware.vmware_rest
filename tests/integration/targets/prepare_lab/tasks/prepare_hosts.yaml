@@ -6,7 +6,7 @@
         password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
 
 - name: Connect the host(s)
-  vcenter_host:
+  vmware.vmware_rest.vcenter_host:
     hostname: "{{ item.hostname }}"
     password: "{{ item.password }}"
     user_name: "{{ item.username }}"
@@ -21,7 +21,7 @@
       - _result is changed
 
 - name: Get a list of the hosts
-  vcenter_host_info:
+  vmware.vmware_rest.vcenter_host_info:
   register: my_hosts
 
 - debug: var=my_hosts

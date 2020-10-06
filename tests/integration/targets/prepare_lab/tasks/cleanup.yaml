@@ -1,9 +1,9 @@
 - name: Get a list of all the datacenters
   register: existing_datacenters
-  vcenter_datacenter_info:
+  vmware.vmware_rest.vcenter_datacenter_info:
 - debug: var=existing_datacenters
 - name: Force delete the existing DC
-  vcenter_datacenter:
+  vmware.vmware_rest.vcenter_datacenter:
     state: absent
     datacenter: '{{ item.datacenter }}'
     force: true

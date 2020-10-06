@@ -1,5 +1,5 @@
 - name: Build a list of all the folders
-  vcenter_folder_info:
+  vmware.vmware_rest.vcenter_folder_info:
   register: my_folders
 - debug: var=my_folders
 - name: Look up the different folders
@@ -7,7 +7,7 @@
     my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first }}'
 
 - name: Build a list of the folders, with a filter
-  vcenter_folder_info:
+  vmware.vmware_rest.vcenter_folder_info:
     filter_type: DATASTORE
   register: _result
 

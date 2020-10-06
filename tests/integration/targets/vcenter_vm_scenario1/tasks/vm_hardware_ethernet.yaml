@@ -1,5 +1,5 @@
 - name: Attach a VM to a dvswitch
-  vcenter_vm_hardware_ethernet:
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 4
     backing:
@@ -11,13 +11,13 @@
 - debug: var=vm_hardware_ethernet_1
 
 - name: Turn the NIC's start_connected flag on
-  vcenter_vm_hardware_ethernet:
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
     nic: '{{ vm_hardware_ethernet_1.id }}'
     start_connected: true
     vm: '{{ test_vm1_info.id }}'
 
 - name: _Attach a VM to a dvswitch (again)
-  vcenter_vm_hardware_ethernet:
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 4
     backing:
@@ -33,7 +33,7 @@
     that: vm_hardware_ethernet_1.id == _vm_hardware_ethernet_2.id
 
 - name: _Turn the NIC's start_connected flag on (again)
-  vcenter_vm_hardware_ethernet:
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
     nic: 4000
     start_connected: true
     vm: '{{ test_vm1_info.id }}'
@@ -46,7 +46,7 @@
       - not(_result is changed)
 
 - name: Collect a list of the NIC for a given VM
-  vcenter_vm_hardware_ethernet_info:
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 

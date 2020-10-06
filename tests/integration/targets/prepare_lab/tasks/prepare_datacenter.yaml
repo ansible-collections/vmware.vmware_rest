@@ -1,13 +1,13 @@
 ---
 - name: Build a list of all the folders
-  vcenter_folder_info:
+  vmware.vmware_rest.vcenter_folder_info:
   register: my_folders
 - name: Set my_datacenter_folder
   set_fact:
     my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first }}'
 
 - name: Create datacenter my_dc
-  vcenter_datacenter:
+  vmware.vmware_rest.vcenter_datacenter:
     name: my_dc
     folder: "{{ my_datacenter_folder.folder }}"
   register: _result
@@ -17,7 +17,7 @@
       - _result is changed
 
 - name: _Create datacenter my_dc (again)
-  vcenter_datacenter:
+  vmware.vmware_rest.vcenter_datacenter:
     name: my_dc
     folder: "{{ my_datacenter_folder.folder }}"
   register: _result
@@ -27,7 +27,7 @@
       - not(_result is changed)
 
 - name: collect a list of the datacenters
-  vcenter_datacenter_info:
+  vmware.vmware_rest.vcenter_datacenter_info:
   register: my_datacenters
 
 - assert:

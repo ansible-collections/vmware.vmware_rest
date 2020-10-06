@@ -1,6 +1,6 @@
 ---
 - name: Attach an ISO image to a guest VM
-  vcenter_vm_hardware_cdrom:
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom:
     vm: '{{ test_vm1_info.id }}'
     type: SATA
     sata:
@@ -16,7 +16,7 @@
     that: _result is changed
 
 - name: _Ensure idempotency
-  vcenter_vm_hardware_cdrom:
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom:
     vm: '{{ test_vm1_info.id }}'
     type: SATA
     sata:
@@ -32,14 +32,14 @@
     that: not (_result is changed)
 
 - name: List the cdrom devices on the guest
-  vcenter_vm_hardware_cdrom_info:
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
 - debug: var=_result
 
 - name: Set a boot device
-  vcenter_vm_hardware_boot_device:
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device:
     vm: '{{ test_vm1_info.id }}'
     devices:
       - type: "CDROM"
@@ -52,7 +52,7 @@
 
 
 - name: _Get boot device info (again)
-  vcenter_vm_hardware_boot_device_info:
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 

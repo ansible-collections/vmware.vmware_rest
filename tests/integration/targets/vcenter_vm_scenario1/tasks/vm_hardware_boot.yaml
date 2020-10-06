@@ -1,9 +1,9 @@
 - name: Retrieve the boot information from the VM
-  vcenter_vm_hardware_boot_info:
+  vmware.vmware_rest.vcenter_vm_hardware_boot_info:
     vm: '{{ test_vm1_info.id }}'
 
 - name: Change a VM boot parameters
-  vcenter_vm_hardware_boot:
+  vmware.vmware_rest.vcenter_vm_hardware_boot:
     vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: True
     type: EFI
@@ -14,7 +14,7 @@
       - _result is changed
 
 - name: _Change a VM boot parameters (again)
-  vcenter_vm_hardware_boot:
+  vmware.vmware_rest.vcenter_vm_hardware_boot:
     vm: '{{ test_vm1_info.id }}'
     efi_legacy_boot: True
     type: EFI
@@ -25,7 +25,7 @@
       - not(_result is changed)
 
 - name: Get information about the boot device
-  vcenter_vm_hardware_boot_device_info:
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
