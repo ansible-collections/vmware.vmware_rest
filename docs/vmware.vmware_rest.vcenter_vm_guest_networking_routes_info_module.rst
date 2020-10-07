@@ -165,38 +165,6 @@ Examples
 
 
 
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Get guest network routes information</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;gateway_address&#x27;: &#x27;192.168.122.1&#x27;, &#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;0.0.0.0&#x27;, &#x27;prefix_length&#x27;: 0}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;192.168.122.0&#x27;, &#x27;prefix_length&#x27;: 24}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;fe80::&#x27;, &#x27;prefix_length&#x27;: 64}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;fe80::77b1:d84c:2071:4752&#x27;, &#x27;prefix_length&#x27;: 128}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;ff00::&#x27;, &#x27;prefix_length&#x27;: 8}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
-
 
 Status
 ------

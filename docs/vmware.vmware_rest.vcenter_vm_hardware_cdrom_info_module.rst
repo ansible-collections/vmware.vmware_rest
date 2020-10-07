@@ -192,40 +192,11 @@ Examples
     - name: List the cdrom devices on the guest
       vcenter_vm_hardware_cdrom_info:
         vm: '{{ test_vm1_info.id }}'
+    - name: List the cdrom devices on the guest
+      vcenter_vm_hardware_cdrom_info:
+        vm: '{{ test_vm1_info.id }}'
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>List the cdrom devices on the guest</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;iso_file&#x27;: &#x27;[ro_datastore] fedora.iso&#x27;, &#x27;type&#x27;: &#x27;ISO_FILE&#x27;}, &#x27;label&#x27;: &#x27;CD/DVD drive 1&#x27;, &#x27;sata&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 2}, &#x27;start_connected&#x27;: 1, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;SATA&#x27;}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

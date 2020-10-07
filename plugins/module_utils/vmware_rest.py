@@ -22,12 +22,12 @@ async def open_session(
         return open_session._pool[digest]
 
     aiohttp = importlib.import_module("aiohttp")
-    if not aiohttp:
-        from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-            EmbeddedModuleFailure,
-        )
+    exceptions = importlib.import_module(
+        "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
+    )
 
-        raise EmbeddedModuleFailure()
+    if not aiohttp:
+        raise exceptions.EmbeddedModuleFailure()
 
     if log_file:
         trace_config = aiohttp.TraceConfig()
@@ -52,35 +52,35 @@ async def open_session(
     async with aiohttp.ClientSession(
         connector=connector, connector_owner=False, trace_configs=trace_configs
     ) as session:
-        async with session.post(
-            "https://{hostname}/rest/com/vmware/cis/session".format(
-                hostname=vcenter_hostname
-            ),
-            auth=auth,
-        ) as resp:
-            if resp.status != 200:
-                from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-                    EmbeddedModuleFailure,
-                )
-
-                raise EmbeddedModuleFailure(
-                    "Authentication failure. code: {0}, json: {1}".format(
-                        resp.status, await resp.text()
+        try:
+            async with session.post(
+                "https://{hostname}/rest/com/vmware/cis/session".format(
+                    hostname=vcenter_hostname
+                ),
+                auth=auth,
+            ) as resp:
+                if resp.status != 200:
+                    raise exceptions.EmbeddedModuleFailure(
+                        "Authentication failure. code: {0}, json: {1}".format(
+                            resp.status, await resp.text()
+                        )
                     )
-                )
-            json = await resp.json()
-            session_id = json["value"]
-            session = aiohttp.ClientSession(
-                connector=connector,
-                headers={
-                    "vmware-api-session-id": session_id,
-                    "content-type": "application/json",
-                },
-                connector_owner=False,
-                trace_configs=trace_configs,
-            )
-            open_session._pool[digest] = session
-            return session
+                json = await resp.json()
+        except aiohttp.client_exceptions.ClientConnectorError as e:
+            raise exceptions.EmbeddedModuleFailure(f"Authentication failure: {e}")
+
+    session_id = json["value"]
+    session = aiohttp.ClientSession(
+        connector=connector,
+        headers={
+            "vmware-api-session-id": session_id,
+            "content-type": "application/json",
+        },
+        connector_owner=False,
+        trace_configs=trace_configs,
+    )
+    open_session._pool[digest] = session
+    return session
 
 
 open_session._pool = {}

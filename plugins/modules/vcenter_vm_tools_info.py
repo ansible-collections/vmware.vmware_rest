@@ -58,6 +58,19 @@ requirements:
 """
 
 EXAMPLES = """
+- name: Collect information about a specific VM
+  vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+- name: Wait until my VM is ready
+  vcenter_vm_tools_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state == "RUNNING"
+  retries: 60
+  delay: 5
 """
 
 RETURN = """
@@ -131,6 +144,12 @@ def prepare_argument_spec():
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    if not module.params["vcenter_hostname"]:
+        module.fail_json("vcenter_hostname cannot be empty")
+    if not module.params["vcenter_username"]:
+        module.fail_json("vcenter_username cannot be empty")
+    if not module.params["vcenter_password"]:
+        module.fail_json("vcenter_password cannot be empty")
     session = await open_session(
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
