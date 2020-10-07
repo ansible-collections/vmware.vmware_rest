@@ -1,6 +1,6 @@
 ---
 - name: _community_ unmount NFS (ro_datastore) datastores to ESXi
-  vmware_host_datastore:
+  community.vmware.vmware_host_datastore:
     esxi_hostname: '{{ item.hostname }}'
     datastore_name: ro_datastore
     state: absent
@@ -8,7 +8,7 @@
   no_log: true
 
 - name: _community_ unmount NFS (rw_datastore) datastores on the ESXi
-  vmware_host_datastore:
+  community.vmware.vmware_host_datastore:
     esxi_hostname: '{{ item.hostname }}'
     datastore_name: rw_datastore
     state: absent
@@ -16,7 +16,7 @@
   no_log: true
 
 - name: _community_ Mount NFS (ro_datastore) datastores to ESXi
-  vmware_host_datastore:
+  community.vmware.vmware_host_datastore:
     esxi_hostname: '{{ item.hostname }}'
     datastore_name: ro_datastore
     datastore_type: nfs
@@ -28,7 +28,7 @@
   no_log: true
 
 - name: _community_ Mount NFS (rw_datastore) datastores on the ESXi
-  vmware_host_datastore:
+  community.vmware.vmware_host_datastore:
     esxi_hostname: '{{ item.hostname }}'
     datastore_name: rw_datastore
     datastore_type: nfs

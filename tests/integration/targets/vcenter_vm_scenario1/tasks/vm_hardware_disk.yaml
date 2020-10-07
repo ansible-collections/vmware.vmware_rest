@@ -1,13 +1,13 @@
 ---
 - name: Retrieve the disk information from the VM
-  vcenter_vm_hardware_disk_info:
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
 - debug: var=_result
 
 - name: Retrieve disk information using the label
-  vcenter_vm_hardware_disk_info:
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
     vm: '{{ test_vm1_info.id }}'
     label: "Hard disk 1"
   register: _result
@@ -19,7 +19,7 @@
     pci_slot_number: 34
 
 - name: Create a new disk
-  vcenter_vm_hardware_disk:
+  vmware.vmware_rest.vcenter_vm_hardware_disk:
     vm: '{{ test_vm1_info.id }}'
     type: SATA
     new_vmdk:
@@ -32,14 +32,14 @@
     that: my_new_disk is changed
 
 - name: Get VM storage policy
-  vcenter_vm_storage_policy_info:
+  vmware.vmware_rest.vcenter_vm_storage_policy_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
 - debug: var=_result
 
 - name: Adjust VM storage policy
-  vcenter_vm_storage_policy:
+  vmware.vmware_rest.vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
     disks:
       - key: '{{ my_new_disk.id }}'
@@ -54,7 +54,7 @@
       - _result is changed
 
 - name: List existing storage policies
-  vcenter_storage_policies_info:
+  vmware.vmware_rest.vcenter_storage_policies_info:
   register: storage_policies
 
 - debug: var=storage_policies
@@ -66,7 +66,7 @@
 - debug: var=my_storage_policy
 
 - name: _Adjust VM storage policy (again)
-  vcenter_vm_storage_policy:
+  vmware.vmware_rest.vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
     disks:
       - key: '{{ my_new_disk.id }}'
@@ -84,14 +84,14 @@
 
 
 - name: Get VM storage policy compliance information
-  vcenter_vm_storage_policy_compliance_info:
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
 - debug: var=_result
 
 - name: Delete the disk
-  vcenter_vm_hardware_disk:
+  vmware.vmware_rest.vcenter_vm_hardware_disk:
     vm: '{{ test_vm1_info.id }}'
     disk:  '{{ my_new_disk.id }}'
     state: absent
@@ -103,7 +103,7 @@
     that: _result is changed
 
 - name: Remove SATA adapter at PCI slot 34
-  vcenter_vm_hardware_adapter_sata:
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
     state: absent

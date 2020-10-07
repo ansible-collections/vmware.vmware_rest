@@ -1,6 +1,6 @@
 - debug: var=my_datastore.datastore
 - name: Create a VM
-  vcenter_vm:
+  vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
       datastore: "{{ my_datastore.datastore }}"
@@ -20,7 +20,7 @@
       - _result is changed
 
 - name: _Create a VM (again)
-  vcenter_vm:
+  vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
       datastore: "{{ my_datastore.datastore }}"
@@ -40,7 +40,7 @@
 
 - register: _should_be_empty
   name: Search with an invalid filter
-  vcenter_vm_info:
+  vmware.vmware_rest.vcenter_vm_info:
     filter_names: test_vm1_does_not_exists
 - assert:
     that:
