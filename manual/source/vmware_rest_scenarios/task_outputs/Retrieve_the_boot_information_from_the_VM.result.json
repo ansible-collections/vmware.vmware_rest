@@ -1,0 +1,10 @@
+{
+    "value": {
+        "delay": 0,
+        "retry_delay": 10000,
+        "enter_setup_mode": false,
+        "type": "BIOS",
+        "retry": false
+    },
+    "changed": false
+}

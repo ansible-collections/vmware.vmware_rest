@@ -1,0 +1,6 @@
+- name: Turn off the VM
+  vcenter_vm_power:
+    state: stop
+    vm: '{{ item.vm }}'
+  with_items: "{{ existing_vms.value }}"
+  ignore_errors: yes

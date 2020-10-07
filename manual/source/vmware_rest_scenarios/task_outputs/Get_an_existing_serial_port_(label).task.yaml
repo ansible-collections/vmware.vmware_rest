@@ -1,0 +1,5 @@
+- name: Get an existing serial port (label)
+  vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm1_info.id }}'
+    label: "Serial port 1"
+  register: serial_port_1

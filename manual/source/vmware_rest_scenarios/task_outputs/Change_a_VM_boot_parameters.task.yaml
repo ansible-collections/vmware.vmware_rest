@@ -1,0 +1,6 @@
+- name: Change a VM boot parameters
+  vcenter_vm_hardware_boot:
+    vm: '{{ test_vm1_info.id }}'
+    efi_legacy_boot: True
+    type: EFI
+  register: _result

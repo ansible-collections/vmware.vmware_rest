@@ -1,0 +1,4 @@
+- register: _should_be_empty
+  name: Search with an invalid filter
+  vcenter_vm_info:
+    filter_names: test_vm1_does_not_exists
