@@ -107,4 +107,3 @@
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
     state: absent
-
