@@ -5,4 +5,3 @@
   register: _result
 
 - debug: var=_result
-

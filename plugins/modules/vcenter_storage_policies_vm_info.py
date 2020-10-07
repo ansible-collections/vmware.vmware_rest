@@ -14,7 +14,6 @@ options:
     description:
     - storage policy identifier.
     - The parameter must be the id of a resource returned by M(vcenter_storage_policies).
-      Required with I(state=['list'])
     type: str
   vcenter_hostname:
     description:
@@ -126,6 +125,12 @@ def prepare_argument_spec():
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    if not module.params["vcenter_hostname"]:
+        module.fail_json("vcenter_hostname cannot be empty")
+    if not module.params["vcenter_username"]:
+        module.fail_json("vcenter_username cannot be empty")
+    if not module.params["vcenter_password"]:
+        module.fail_json("vcenter_password cannot be empty")
     session = await open_session(
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],

@@ -33,5 +33,3 @@
 - assert:
     that:
       - my_datacenters.value|length > 0
-
-

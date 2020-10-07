@@ -107,7 +107,6 @@ options:
     choices:
     - absent
     - present
-    - present
     default: present
     description: []
     type: str
@@ -254,7 +253,7 @@ def prepare_argument_spec():
     argument_spec["resource_pool"] = {"type": "str"}
     argument_spec["state"] = {
         "type": "str",
-        "choices": ["absent", "present", "present"],
+        "choices": ["absent", "present"],
         "default": "present",
     }
 
@@ -264,6 +263,12 @@ def prepare_argument_spec():
 async def main():
     module_args = prepare_argument_spec()
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    if not module.params["vcenter_hostname"]:
+        module.fail_json("vcenter_hostname cannot be empty")
+    if not module.params["vcenter_username"]:
+        module.fail_json("vcenter_username cannot be empty")
+    if not module.params["vcenter_password"]:
+        module.fail_json("vcenter_password cannot be empty")
     session = await open_session(
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],

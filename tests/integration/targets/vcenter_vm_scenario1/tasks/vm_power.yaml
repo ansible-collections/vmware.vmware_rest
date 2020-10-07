@@ -2,4 +2,3 @@
   vcenter_vm_power:
     state: start
     vm: '{{ test_vm1_info.id }}'
-

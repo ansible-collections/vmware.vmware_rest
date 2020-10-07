@@ -2,4 +2,3 @@
   vcenter_vm_hardware_cdrom_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result
-

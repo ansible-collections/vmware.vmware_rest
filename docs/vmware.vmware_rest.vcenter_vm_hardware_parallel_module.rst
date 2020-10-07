@@ -150,7 +150,6 @@ Parameters
                                     <li>connect</li>
                                     <li>disconnect</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                    <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
                 <td>
