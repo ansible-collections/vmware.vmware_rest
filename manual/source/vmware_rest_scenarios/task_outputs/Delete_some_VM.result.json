@@ -10,7 +10,7 @@
             "invocation": {
                 "module_args": {
                     "state": "absent",
-                    "vm": "vm-1259",
+                    "vm": "vm-1311",
                     "vcenter_hostname": "vcenter.test",
                     "vcenter_username": "administrator@vsphere.local",
                     "vcenter_password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER",
@@ -51,7 +51,7 @@
             "_ansible_no_log": false,
             "item": {
                 "memory_size_MiB": 1080,
-                "vm": "vm-1259",
+                "vm": "vm-1311",
                 "name": "test_vm1",
                 "power_state": "POWERED_ON",
                 "cpu_count": 1
@@ -59,7 +59,7 @@
             "ansible_loop_var": "item",
             "_ansible_item_label": {
                 "memory_size_MiB": 1080,
-                "vm": "vm-1259",
+                "vm": "vm-1311",
                 "name": "test_vm1",
                 "power_state": "POWERED_ON",
                 "cpu_count": 1

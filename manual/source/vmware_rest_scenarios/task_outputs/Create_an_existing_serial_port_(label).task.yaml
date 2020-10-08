@@ -1,5 +1,5 @@
 - name: Create an existing serial port (label)
-  vcenter_vm_hardware_serial:
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
     vm: '{{ test_vm1_info.id }}'
     label: "Serial port 1"
     allow_guest_control: true

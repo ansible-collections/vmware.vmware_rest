@@ -156,17 +156,49 @@ Examples
 .. code-block:: yaml+jinja
 
     - name: Collect information about a specific VM
-      vcenter_vm_info:
+      vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
     - name: Get boot device info
-      vcenter_vm_hardware_boot_device_info:
+      vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
         vm: '{{ test_vm1_info.id }}'
     - name: Get information about the boot device
-      vcenter_vm_hardware_boot_device_info:
+      vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
         vm: '{{ test_vm1_info.id }}'
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Get information about the boot device</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;type&#x27;: &#x27;CDROM&#x27;}]</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

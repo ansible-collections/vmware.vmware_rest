@@ -1229,11 +1229,11 @@ Examples
 .. code-block:: yaml+jinja
 
     - name: Collect the list of the existing VM
-      vcenter_vm_info:
+      vmware.vmware_rest.vcenter_vm_info:
       register: existing_vms
       until: existing_vms is not failed
     - name: Create a VM
-      vcenter_vm:
+      vmware.vmware_rest.vcenter_vm:
         placement:
           cluster: '{{ my_cluster_info.id }}'
           datastore: '{{ my_datastore.datastore }}'
@@ -1246,12 +1246,61 @@ Examples
           hot_add_enabled: true
           size_MiB: 1024
     - name: Delete some VM
-      vcenter_vm:
+      vmware.vmware_rest.vcenter_vm:
         state: absent
         vm: '{{ item.vm }}'
       with_items: '{{ existing_vms.value }}'
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>msg</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Delete some VM</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">All items completed</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>results</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Delete some VM</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1311&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 200}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1311&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1311&#x27;}}]</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

@@ -156,17 +156,49 @@ Examples
 .. code-block:: yaml+jinja
 
     - name: Collect information about a specific VM
-      vcenter_vm_info:
+      vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
     - name: Get guest identity information
-      vcenter_vm_guest_identity_info:
+      vmware.vmware_rest.vcenter_vm_guest_identity_info:
         vm: '{{ test_vm1_info.id }}'
     - name: Guest identity
-      vcenter_vm_guest_identity_info:
+      vmware.vmware_rest.vcenter_vm_guest_identity_info:
         vm: '{{ test_vm1_info.id }}'
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Get guest identity information</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;family&#x27;: &#x27;LINUX&#x27;, &#x27;full_name&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Red Hat Fedora (64-bit)&#x27;, &#x27;id&#x27;: &#x27;vmsg.guestos.fedora64Guest.label&#x27;}, &#x27;host_name&#x27;: &#x27;localhost.localdomain&#x27;, &#x27;ip_address&#x27;: &#x27;192.168.122.206&#x27;, &#x27;name&#x27;: &#x27;FEDORA_64&#x27;}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

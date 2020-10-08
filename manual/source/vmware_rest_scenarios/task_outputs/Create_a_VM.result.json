@@ -14,7 +14,7 @@
                         "unit": 0
                     },
                     "backing": {
-                        "vmdk_file": "[rw_datastore] test_vm1_1/test_vm1.vmdk",
+                        "vmdk_file": "[rw_datastore] test_vm1_13/test_vm1.vmdk",
                         "type": "VMDK_FILE"
                     },
                     "label": "Hard disk 1",
@@ -50,8 +50,8 @@
         "floppies": [],
         "identity": {
             "name": "test_vm1",
-            "instance_uuid": "5033e494-e1eb-86e9-a7aa-4cb84e18921a",
-            "bios_uuid": "4233031e-56af-6357-36eb-d73587fb48ae"
+            "instance_uuid": "5033a4c3-29db-76cc-993c-1b034d8bdecb",
+            "bios_uuid": "4233b639-9121-f34d-f95a-6c1437dd5255"
         },
         "nvme_adapters": [],
         "name": "test_vm1",
@@ -72,6 +72,6 @@
             "version": "VMX_11"
         }
     },
-    "id": "vm-1259",
+    "id": "vm-1334",
     "changed": true
 }

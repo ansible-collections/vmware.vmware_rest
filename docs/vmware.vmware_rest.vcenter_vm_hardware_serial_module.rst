@@ -310,41 +310,90 @@ Examples
 .. code-block:: yaml+jinja
 
     - name: Get an existing serial port (label)
-      vcenter_vm_hardware_serial_info:
+      vmware.vmware_rest.vcenter_vm_hardware_serial_info:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 1
       register: serial_port_1
     - name: Collect information about a specific VM
-      vcenter_vm_info:
+      vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
     - name: Create a new serial port
-      vcenter_vm_hardware_serial:
+      vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 2
         allow_guest_control: true
     - name: Create an existing serial port (label)
-      vcenter_vm_hardware_serial:
+      vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 1
         allow_guest_control: true
     - name: Create another serial port with a label
-      vcenter_vm_hardware_serial:
+      vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 2
         allow_guest_control: true
     - name: Delete an existing serial port (label)
-      vcenter_vm_hardware_serial:
+      vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 2
         state: absent
     - name: Delete an existing serial port (port id)
-      vcenter_vm_hardware_serial:
+      vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         port: '{{ serial_port_1.id }}'
         state: absent
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>id</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>moid of the resource</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">9000</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Create an existing serial port (label)</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 1, &#x27;backing&#x27;: {&#x27;auto_detect&#x27;: 1, &#x27;host_device&#x27;: &#x27;&#x27;, &#x27;type&#x27;: &#x27;HOST_DEVICE&#x27;}, &#x27;label&#x27;: &#x27;Serial port 1&#x27;, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;yield_on_poll&#x27;: 0}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

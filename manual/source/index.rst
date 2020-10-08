@@ -7,3 +7,4 @@ vmware.vmware_rest: Ansible Collection for VMware
    :caption: vmware.vmware_rest documentation
 
    guide_vmware_rest
+   docs
