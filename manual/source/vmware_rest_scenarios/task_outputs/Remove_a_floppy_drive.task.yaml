@@ -1,5 +1,5 @@
 - name: Remove a floppy drive
-  vcenter_vm_hardware_floppy:
+  vmware.vmware_rest.vcenter_vm_hardware_floppy:
     vm: '{{ test_vm1_info.id }}'
     floppy: '{{ my_floppy_drive.id }}'
     state: absent

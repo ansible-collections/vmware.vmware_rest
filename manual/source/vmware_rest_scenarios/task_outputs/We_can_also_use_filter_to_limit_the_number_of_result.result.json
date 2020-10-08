@@ -1,10 +1,10 @@
 {
     "value": [
         {
-            "datastore": "datastore-1255",
+            "datastore": "datastore-1330",
             "name": "rw_datastore",
             "type": "NFS",
-            "free_space": 24638394368,
+            "free_space": 24638164992,
             "capacity": 26831990784
         }
     ],

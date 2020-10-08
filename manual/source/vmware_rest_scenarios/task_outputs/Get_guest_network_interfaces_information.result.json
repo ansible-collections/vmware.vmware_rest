@@ -1,16 +1,16 @@
 {
     "value": [
         {
-            "mac_address": "00:50:56:b3:7a:1d",
+            "mac_address": "00:50:56:b3:50:3a",
             "ip": {
                 "ip_addresses": [
                     {
-                        "ip_address": "192.168.122.165",
+                        "ip_address": "192.168.122.206",
                         "prefix_length": 24,
                         "state": "PREFERRED"
                     },
                     {
-                        "ip_address": "fe80::6c6a:fac6:441f:6061",
+                        "ip_address": "fe80::aac7:85f1:63c9:42fc",
                         "prefix_length": 64,
                         "state": "UNKNOWN"
                     }

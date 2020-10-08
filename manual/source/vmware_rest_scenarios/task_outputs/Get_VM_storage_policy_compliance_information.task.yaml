@@ -1,4 +1,4 @@
 - name: Get VM storage policy compliance information
-  vcenter_vm_storage_policy_compliance_info:
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result

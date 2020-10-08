@@ -1,4 +1,4 @@
 - name: Retrieve the serial ports information from the VM
-  vcenter_vm_hardware_serial_info:
+  vmware.vmware_rest.vcenter_vm_hardware_serial_info:
     vm: '{{ test_vm1_info.id }}'
   register: _result

@@ -1,5 +1,5 @@
 - name: Delete an existing serial port (port id)
-  vcenter_vm_hardware_serial:
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
     vm: '{{ test_vm1_info.id }}'
     port: '{{ serial_port_1.id }}'
     state: absent

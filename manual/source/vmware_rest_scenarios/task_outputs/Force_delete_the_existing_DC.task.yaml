@@ -1,5 +1,5 @@
 - name: Force delete the existing DC
-  vcenter_datacenter:
+  vmware.vmware_rest.vcenter_datacenter:
     state: absent
     datacenter: '{{ item.datacenter }}'
     force: true

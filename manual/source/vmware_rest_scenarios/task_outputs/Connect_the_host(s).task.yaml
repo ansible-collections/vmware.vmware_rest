@@ -1,5 +1,5 @@
 - name: Connect the host(s)
-  vcenter_host:
+  vmware.vmware_rest.vcenter_host:
     hostname: "{{ item.hostname }}"
     password: "{{ item.password }}"
     user_name: "{{ item.username }}"
