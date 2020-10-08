@@ -4,12 +4,14 @@
 How to run a virtual machine
 ****************************
 
-.. contents:: Topics
+.. contents::
+  :local:
+
 
 Introduction
 ============
 
-This section cover the power management of your virtual machine.
+This section covers the power management of your virtual machine.
 
 Power information
 =================
@@ -39,7 +41,7 @@ ______
 How to wait until my virtual machine is ready
 =============================================
 
-If you're virtual machine runs VMware Tools, you can build a loop
+If your virtual machine runs VMware Tools, you can build a loop
 around the ``center_vm_tools_info`` module:
 
 .. literalinclude:: task_outputs/Wait_until_my_VM_is_ready.task.yaml

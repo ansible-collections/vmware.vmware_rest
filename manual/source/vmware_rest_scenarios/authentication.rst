@@ -4,21 +4,22 @@
 How to configure the vmware_rest collection
 *******************************************
 
-.. contents:: Topics
+.. contents::
+  :local:
+
 
 Introduction
 ============
 
-The vcenter_rest modules need to be authenticated. There is two different
-ways to do this.
+The vcenter_rest modules need to be authenticated. There are two different
 
 Environment variables
 =====================
 
 .. note::
-    This solution will only work fine if you call the modules from the local machine.
+    This solution requires that you call the modules from the local machine.
 
-You need to export some environment variables in your shell before you call
+You need to export some environment variables in your shell before you call the modules.
 
 .. code-block:: shell
 
@@ -37,8 +38,8 @@ All the vcenter_rest modules accept the following arguments:
 - ``vcenter_password``
 
 
-Ignore SSL certificat error
-===========================
+Ignore SSL certificate error
+============================
 
 It's common to run a test environment without a proper SSL certificate configuration.
 
