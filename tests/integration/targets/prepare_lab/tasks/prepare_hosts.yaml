@@ -1,20 +1,11 @@
-- name: define ESXi list
-  set_fact:
-    my_esxis:
-      - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-        username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
-        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-
 - name: Connect the host(s)
   vmware.vmware_rest.vcenter_host:
-    hostname: "{{ item.hostname }}"
-    password: "{{ item.password }}"
-    user_name: "{{ item.username }}"
+    hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+    user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+    password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
     thumbprint_verification: 'NONE'
     folder: '{{ my_host_folder.folder }}'
   register: _result
-  no_log: true
-  with_items: "{{ my_esxis}}"
 - debug: var=_result
 - assert:
     that:
@@ -34,8 +25,7 @@
   community.vmware.vmware_host:
     datacenter: my_dc
     cluster: my_cluster
-    esxi_hostname: "{{ item.hostname }}"
-    esxi_username: "{{ item.username }}"
-    esxi_password: "{{ item.password }}"
-  with_items: "{{ my_esxis}}"
+    esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+    esxi_username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+    esxi_password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
   no_log: true

@@ -12,12 +12,11 @@
 - name: Attach the hosts to the DVSwitch
   community.vmware.vmware_dvs_host:
     validate_certs: no
-    esxi_hostname: "{{ item.hostname }}"
+    esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
     switch_name: dvswitch1
     vmnics:
       - vmnic1
     state: present
-  with_items: "{{ my_esxis}}"
   no_log: true
 
 - name: Create the portgroup
