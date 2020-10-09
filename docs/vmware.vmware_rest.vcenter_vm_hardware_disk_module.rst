@@ -266,6 +266,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -332,13 +334,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: Create a new disk
-      vmware.vmware_rest.vcenter_vm_hardware_disk:
-        vm: '{{ test_vm1_info.id }}'
-        type: SATA
-        new_vmdk:
-          capacity: 320000
-      register: my_new_disk
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
@@ -401,7 +396,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new disk</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_13/test_vm1_1.vmdk&#x27;}, &#x27;capacity&#x27;: 320000, &#x27;label&#x27;: &#x27;Hard disk 2&#x27;, &#x27;sata&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SATA&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_9/test_vm1_1.vmdk&#x27;}, &#x27;capacity&#x27;: 320000, &#x27;label&#x27;: &#x27;Hard disk 2&#x27;, &#x27;sata&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SATA&#x27;}</div>
                 </td>
             </tr>
     </table>

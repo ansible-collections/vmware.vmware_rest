@@ -27,6 +27,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -75,7 +77,7 @@ value:
     disks:
     - key: '16000'
       value:
-        check_time: '2020-10-08T19:50:19.451Z'
+        check_time: '2020-10-09T20:57:15.470Z'
         failure_cause: []
         policy: f4e5bade-15a2-4805-bf8e-52318c4ce443
         status: NOT_APPLICABLE
@@ -161,6 +163,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

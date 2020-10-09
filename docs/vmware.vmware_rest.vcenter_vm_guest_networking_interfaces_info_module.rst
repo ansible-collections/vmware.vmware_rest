@@ -89,6 +89,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -191,7 +193,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest network interfaces information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;ip&#x27;: {&#x27;ip_addresses&#x27;: [{&#x27;ip_address&#x27;: &#x27;192.168.122.206&#x27;, &#x27;prefix_length&#x27;: 24, &#x27;state&#x27;: &#x27;PREFERRED&#x27;}, {&#x27;ip_address&#x27;: &#x27;fe80::aac7:85f1:63c9:42fc&#x27;, &#x27;prefix_length&#x27;: 64, &#x27;state&#x27;: &#x27;UNKNOWN&#x27;}]}, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:50:3a&#x27;, &#x27;nic&#x27;: &#x27;4000&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;ip&#x27;: {&#x27;ip_addresses&#x27;: [{&#x27;ip_address&#x27;: &#x27;192.168.122.87&#x27;, &#x27;prefix_length&#x27;: 24, &#x27;state&#x27;: &#x27;PREFERRED&#x27;}, {&#x27;ip_address&#x27;: &#x27;fe80::bba5:5d60:f47c:81b5&#x27;, &#x27;prefix_length&#x27;: 64, &#x27;state&#x27;: &#x27;UNKNOWN&#x27;}]}, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:31:93&#x27;, &#x27;nic&#x27;: &#x27;4000&#x27;}]</div>
                 </td>
             </tr>
     </table>

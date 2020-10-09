@@ -306,6 +306,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -407,15 +409,6 @@ Examples
           network: '{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}'
         start_connected: false
       register: vm_hardware_ethernet_1
-    - name: Attach a VM to a dvswitch
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 4
-        backing:
-          type: DISTRIBUTED_PORTGROUP
-          network: '{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}'
-        start_connected: false
-      register: vm_hardware_ethernet_1
     - name: Turn the NIC's start_connected flag on
       vmware.vmware_rest.vcenter_vm_hardware_ethernet:
         nic: '{{ vm_hardware_ethernet_1.id }}'
@@ -467,7 +460,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Attach a VM to a dvswitch</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 613880563, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 33 27 07 fd 2a f3 66-56 21 ab 97 87 ed 08 43&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1333&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:50:3a&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 835200818, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 33 79 c1 09 0f 61 7f-c8 fa ca b7 f2 a7 b6 93&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1328&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:31:93&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
                 </td>
             </tr>
     </table>

@@ -89,6 +89,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -191,7 +193,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get VM storage policy compliance information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: [{&#x27;key&#x27;: &#x27;16000&#x27;, &#x27;value&#x27;: {&#x27;check_time&#x27;: &#x27;2020-10-08T19:50:19.451Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}], &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: [{&#x27;key&#x27;: &#x27;16000&#x27;, &#x27;value&#x27;: {&#x27;check_time&#x27;: &#x27;2020-10-09T20:57:15.470Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}], &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
                 </td>
             </tr>
     </table>

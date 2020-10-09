@@ -129,6 +129,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -159,13 +161,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Create a new disk
-  vmware.vmware_rest.vcenter_vm_hardware_disk:
-    vm: '{{ test_vm1_info.id }}'
-    type: SATA
-    new_vmdk:
-      capacity: 320000
-  register: my_new_disk
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
@@ -197,7 +192,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1_13/test_vm1_1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_9/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -312,6 +307,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

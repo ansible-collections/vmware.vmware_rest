@@ -3,13 +3,13 @@
         "start_connected": false,
         "pci_slot_number": 4,
         "backing": {
-            "connection_cookie": 613880563,
-            "distributed_switch_uuid": "50 33 27 07 fd 2a f3 66-56 21 ab 97 87 ed 08 43",
+            "connection_cookie": 835200818,
+            "distributed_switch_uuid": "50 33 79 c1 09 0f 61 7f-c8 fa ca b7 f2 a7 b6 93",
             "distributed_port": "2",
             "type": "DISTRIBUTED_PORTGROUP",
-            "network": "dvportgroup-1333"
+            "network": "dvportgroup-1328"
         },
-        "mac_address": "00:50:56:b3:50:3a",
+        "mac_address": "00:50:56:b3:31:93",
         "mac_type": "ASSIGNED",
         "allow_guest_control": false,
         "wake_on_lan_enabled": false,
