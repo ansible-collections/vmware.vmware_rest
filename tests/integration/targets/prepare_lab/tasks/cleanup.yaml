@@ -1,3 +1,10 @@
+- name: List the host
+  vmware.vmware_rest.vcenter_host_info:
+  register: my_hosts
+- name: Remove the first hosts
+  vmware.vmware_rest.vcenter_host:
+    state: absent
+    host: "{{ my_hosts.value[0].host }}"
 - name: Get a list of all the datacenters
   register: existing_datacenters
   vmware.vmware_rest.vcenter_datacenter_info:
