@@ -92,6 +92,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -122,27 +124,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Collect the list of the existing VM
-  vmware.vmware_rest.vcenter_vm_info:
-  register: existing_vms
-  until: existing_vms is not failed
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-- name: Search with an invalid filter
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names: test_vm1_does_not_exists
 """
 
 RETURN = """
@@ -150,7 +131,7 @@ RETURN = """
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1334
+  sample: vm-1306
   type: str
 value:
   description: Collect information about a specific VM
@@ -174,7 +155,7 @@ value:
       value:
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_13/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1_8/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -188,8 +169,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 4233b639-9121-f34d-f95a-6c1437dd5255
-      instance_uuid: 5033a4c3-29db-76cc-993c-1b034d8bdecb
+      bios_uuid: 42330e65-0127-0865-0afa-7854f6abf174
+      instance_uuid: 50330a98-5470-c32e-bbe3-b98ef5b53e61
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -377,6 +358,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

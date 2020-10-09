@@ -27,6 +27,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -57,13 +59,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Get guest network interfaces information
-  vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info:
-    vm: '{{ test_vm1_info.id }}'
 """
 
 RETURN = """
@@ -74,13 +69,13 @@ value:
   sample:
   - ip:
       ip_addresses:
-      - ip_address: 192.168.122.206
+      - ip_address: 192.168.122.233
         prefix_length: 24
         state: PREFERRED
-      - ip_address: fe80::aac7:85f1:63c9:42fc
+      - ip_address: fe80::7d8b:3d54:ecc3:1a8b
         prefix_length: 64
         state: UNKNOWN
-    mac_address: 00:50:56:b3:50:3a
+    mac_address: 00:50:56:b3:76:84
     nic: '4000'
   type: list
 """
@@ -156,6 +151,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

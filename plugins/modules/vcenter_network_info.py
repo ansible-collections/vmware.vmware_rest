@@ -63,6 +63,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -88,13 +90,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Get a list of the networks
-  vmware.vmware_rest.vcenter_network_info:
-  register: my_network_value
-- name: Get a list of the networks with a filter
-  vmware.vmware_rest.vcenter_network_info:
-    filter_types: STANDARD_PORTGROUP
-  register: my_standard_portgroup_value
 """
 
 RETURN = """
@@ -103,11 +98,11 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: my-portrgoup
-    network: dvportgroup-1333
+  - name: dvswitch1-DVUplinks-1303
+    network: dvportgroup-1304
     type: DISTRIBUTED_PORTGROUP
-  - name: dvswitch1-DVUplinks-1331
-    network: dvportgroup-1332
+  - name: my-portrgoup
+    network: dvportgroup-1305
     type: DISTRIBUTED_PORTGROUP
   type: list
 """
@@ -199,6 +194,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

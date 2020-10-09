@@ -10,18 +10,12 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.vcenter_datacenter_module
     docs/vmware.vmware_rest.vcenter_datastore_info_module
     docs/vmware.vmware_rest.vcenter_folder_info_module
-    docs/vmware.vmware_rest.vcenter_host_connect_module
-    docs/vmware.vmware_rest.vcenter_host_disconnect_module
     docs/vmware.vmware_rest.vcenter_host_info_module
     docs/vmware.vmware_rest.vcenter_host_module
     docs/vmware.vmware_rest.vcenter_network_info_module
     docs/vmware.vmware_rest.vcenter_resourcepool_info_module
     docs/vmware.vmware_rest.vcenter_resourcepool_module
-    docs/vmware.vmware_rest.vcenter_storage_policies_compliance_vm_info_module
-    docs/vmware.vmware_rest.vcenter_storage_policies_entities_compliance_info_module
     docs/vmware.vmware_rest.vcenter_storage_policies_info_module
-    docs/vmware.vmware_rest.vcenter_storage_policies_module
-    docs/vmware.vmware_rest.vcenter_storage_policies_vm_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_identity_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_networking_info_module

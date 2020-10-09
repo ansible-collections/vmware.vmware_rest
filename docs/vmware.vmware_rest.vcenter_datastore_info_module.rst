@@ -193,6 +193,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -238,19 +240,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Retrieve a list of all the datastores
-      vmware.vmware_rest.vcenter_datastore_info:
-      register: my_datastores
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
 
 
 
@@ -280,7 +269,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve a list of all the datastores</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1328&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1329&#x27;, &#x27;free_space&#x27;: 24638164992, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1330&#x27;, &#x27;free_space&#x27;: 24638164992, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1300&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1301&#x27;, &#x27;free_space&#x27;: 24638304256, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1302&#x27;, &#x27;free_space&#x27;: 24638304256, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
                 </td>
             </tr>
     </table>

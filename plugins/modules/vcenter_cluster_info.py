@@ -62,6 +62,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -87,16 +89,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
 """
 
 RETURN = """
@@ -104,14 +96,14 @@ RETURN = """
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1320
+  sample: domain-c1292
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1321
+    resource_pool: resgroup-1293
   type: dict
 """
 
@@ -202,6 +194,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

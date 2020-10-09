@@ -59,6 +59,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -84,23 +86,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Get a list of all the datacenters
-  register: existing_datacenters
-  vmware.vmware_rest.vcenter_datacenter_info:
-- name: Set my_datacenter_folder
-  set_fact:
-    my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first
-      }}'
-- name: Create datacenter my_dc
-  vmware.vmware_rest.vcenter_datacenter:
-    name: my_dc
-    folder: '{{ my_datacenter_folder.folder }}'
-- name: Force delete the existing DC
-  vmware.vmware_rest.vcenter_datacenter:
-    state: absent
-    datacenter: '{{ item.datacenter }}'
-    force: true
-  with_items: '{{ existing_datacenters.value }}'
 """
 
 RETURN = """
@@ -115,7 +100,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1291
+      datacenter: datacenter-1264
       name: my_dc
     _ansible_no_log: 0
     _debug_info:
@@ -126,7 +111,7 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1291
+        datacenter: datacenter-1264
         folder: null
         force: 1
         name: null
@@ -137,7 +122,7 @@ results:
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1291
+      datacenter: datacenter-1264
       name: my_dc
   type: list
 """
@@ -242,6 +227,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

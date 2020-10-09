@@ -2,7 +2,7 @@
     "value": [
         {
             "name": "my_dc",
-            "datacenter": "datacenter-1314"
+            "datacenter": "datacenter-1286"
         }
     ],
     "changed": false

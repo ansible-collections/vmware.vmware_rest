@@ -89,6 +89,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -150,24 +152,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Wait until my VM is ready
-      vmware.vmware_rest.vcenter_vm_tools_info:
-        vm: '{{ test_vm1_info.id }}'
-      register: vm_tools_info
-      until:
-      - vm_tools_info is not failed
-      - vm_tools_info.value.run_state == "RUNNING"
-      retries: 60
-      delay: 5
 
 
 

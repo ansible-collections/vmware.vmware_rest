@@ -27,6 +27,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -57,16 +59,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Get guest identity information
-  vmware.vmware_rest.vcenter_vm_guest_identity_info:
-    vm: '{{ test_vm1_info.id }}'
-- name: Guest identity
-  vmware.vmware_rest.vcenter_vm_guest_identity_info:
-    vm: '{{ test_vm1_info.id }}'
 """
 
 RETURN = """
@@ -81,7 +73,7 @@ value:
       default_message: Red Hat Fedora (64-bit)
       id: vmsg.guestos.fedora64Guest.label
     host_name: localhost.localdomain
-    ip_address: 192.168.122.206
+    ip_address: 192.168.122.233
     name: FEDORA_64
   type: dict
 """
@@ -157,6 +149,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

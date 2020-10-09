@@ -119,6 +119,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -180,23 +182,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Get an existing serial port (label)
-      vmware.vmware_rest.vcenter_vm_hardware_serial_info:
-        vm: '{{ test_vm1_info.id }}'
-        label: Serial port 1
-      register: serial_port_1
-    - name: Retrieve the serial ports information from the VM
-      vmware.vmware_rest.vcenter_vm_hardware_serial_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 

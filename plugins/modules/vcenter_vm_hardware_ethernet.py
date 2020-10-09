@@ -137,6 +137,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -176,33 +178,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Attach a VM to a dvswitch
-  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-    vm: '{{ test_vm1_info.id }}'
-    pci_slot_number: 4
-    backing:
-      type: DISTRIBUTED_PORTGROUP
-      network: '{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}'
-    start_connected: false
-  register: vm_hardware_ethernet_1
-- name: Attach a VM to a dvswitch
-  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-    vm: '{{ test_vm1_info.id }}'
-    pci_slot_number: 4
-    backing:
-      type: DISTRIBUTED_PORTGROUP
-      network: '{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}'
-    start_connected: false
-  register: vm_hardware_ethernet_1
-- name: Turn the NIC's start_connected flag on
-  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-    nic: '{{ vm_hardware_ethernet_1.id }}'
-    start_connected: true
-    vm: '{{ test_vm1_info.id }}'
 """
 
 RETURN = """
@@ -218,13 +193,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 613880563
+      connection_cookie: 778083806
       distributed_port: '2'
-      distributed_switch_uuid: 50 33 27 07 fd 2a f3 66-56 21 ab 97 87 ed 08 43
-      network: dvportgroup-1333
+      distributed_switch_uuid: 50 33 48 2b fe 8e dd 2e-34 30 84 e3 41 65 b6 72
+      network: dvportgroup-1305
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:b3:50:3a
+    mac_address: 00:50:56:b3:76:84
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -362,6 +337,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

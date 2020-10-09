@@ -27,6 +27,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -57,19 +59,6 @@ requirements:
 """
 
 EXAMPLES = """
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Wait until my VM is ready
-  vmware.vmware_rest.vcenter_vm_tools_info:
-    vm: '{{ test_vm1_info.id }}'
-  register: vm_tools_info
-  until:
-  - vm_tools_info is not failed
-  - vm_tools_info.value.run_state == "RUNNING"
-  retries: 60
-  delay: 5
 """
 
 RETURN = """
@@ -167,6 +156,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

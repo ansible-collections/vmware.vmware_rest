@@ -48,7 +48,10 @@ async def open_session(
         trace_configs = []
 
     auth = aiohttp.BasicAuth(vcenter_username, vcenter_password)
-    connector = aiohttp.TCPConnector(limit=20, ssl=validate_certs)
+    if validate_certs:
+        connector = aiohttp.TCPConnector(limit=20)
+    else:
+        connector = aiohttp.TCPConnector(limit=20, ssl=False)
     async with aiohttp.ClientSession(
         connector=connector, connector_owner=False, trace_configs=trace_configs
     ) as session:
@@ -110,6 +113,8 @@ def gen_args(params, in_query_parameter):
 
 
 async def update_changed_flag(data, status, operation):
+    if not data:
+        data = {}
     if operation == "create" and status in [200, 201]:
         data["failed"] = False
         data["changed"] = True
@@ -183,9 +188,10 @@ async def build_full_device_list(session, url, device_list):
 
 async def get_device_info(session, url, _id):
     async with session.get(url + "/" + _id) as resp:
-        _json = await resp.json()
-        _json["id"] = str(_id)
-        return _json
+        if resp.status == 200:
+            _json = await resp.json()
+            _json["id"] = str(_id)
+            return _json
 
 
 async def exists(params, session, url, unicity_keys=None):

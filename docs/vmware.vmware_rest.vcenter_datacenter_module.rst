@@ -175,6 +175,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -220,28 +222,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Get a list of all the datacenters
-      register: existing_datacenters
-      vmware.vmware_rest.vcenter_datacenter_info:
-    - name: Set my_datacenter_folder
-      set_fact:
-        my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first
-          }}'
-    - name: Create datacenter my_dc
-      vmware.vmware_rest.vcenter_datacenter:
-        name: my_dc
-        folder: '{{ my_datacenter_folder.folder }}'
-    - name: Force delete the existing DC
-      vmware.vmware_rest.vcenter_datacenter:
-        state: absent
-        datacenter: '{{ item.datacenter }}'
-        force: true
-      with_items: '{{ existing_datacenters.value }}'
 
 
 
@@ -288,7 +268,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Force delete the existing DC</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1291&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 200}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1291&#x27;, &#x27;folder&#x27;: None, &#x27;force&#x27;: 1, &#x27;name&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0}}, &#x27;item&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1291&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1264&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 200}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1264&#x27;, &#x27;folder&#x27;: None, &#x27;force&#x27;: 1, &#x27;name&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0}}, &#x27;item&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1264&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}}]</div>
                 </td>
             </tr>
     </table>
