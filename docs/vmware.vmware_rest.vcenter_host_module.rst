@@ -256,6 +256,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -306,59 +308,19 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: define ESXi list
-      set_fact:
-        my_esxis:
-        - hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-          username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
-          password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
     - name: Look up the different folders
       set_fact:
         my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
           }}'
     - name: Connect the host(s)
       vmware.vmware_rest.vcenter_host:
-        hostname: '{{ item.hostname }}'
-        password: '{{ item.password }}'
-        user_name: '{{ item.username }}'
+        hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+        user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
         thumbprint_verification: NONE
         folder: '{{ my_host_folder.folder }}'
-      no_log: true
-      with_items: '{{ my_esxis}}'
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>censored</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Connect the host(s)</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">the output has been hidden due to the fact that &#x27;no_log: true&#x27; was specified for this result</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

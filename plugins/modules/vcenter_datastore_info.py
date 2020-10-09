@@ -68,6 +68,8 @@ options:
     - 'You can use this optional parameter to set the location of a log file. '
     - 'This file will be used to record the HTTP REST interaction. '
     - 'The file will be stored on the host that run the module. '
+    - 'If the value is not specified in the task, the value of '
+    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
   vcenter_username:
     description:
@@ -110,18 +112,18 @@ value:
   returned: On success
   sample:
   - capacity: 15032385536
-    datastore: datastore-1328
+    datastore: datastore-1323
     free_space: 13523484672
     name: local
     type: VMFS
   - capacity: 26831990784
-    datastore: datastore-1329
-    free_space: 24638164992
+    datastore: datastore-1324
+    free_space: 24638259200
     name: ro_datastore
     type: NFS
   - capacity: 26831990784
-    datastore: datastore-1330
-    free_space: 24638164992
+    datastore: datastore-1325
+    free_space: 24638259200
     name: rw_datastore
     type: NFS
   type: list
@@ -216,6 +218,7 @@ async def main():
         vcenter_hostname=module.params["vcenter_hostname"],
         vcenter_username=module.params["vcenter_username"],
         vcenter_password=module.params["vcenter_password"],
+        validate_certs=module.params["vcenter_validate_certs"],
         log_file=module.params["vcenter_rest_log_file"],
     )
     result = await entry_point(module, session)

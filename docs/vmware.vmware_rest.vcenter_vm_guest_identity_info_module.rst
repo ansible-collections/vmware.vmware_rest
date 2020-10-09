@@ -89,6 +89,8 @@ Parameters
                         <div>You can use this optional parameter to set the location of a log file.</div>
                         <div>This file will be used to record the HTTP REST interaction.</div>
                         <div>The file will be stored on the host that run the module.</div>
+                        <div>If the value is not specified in the task, the value of</div>
+                        <div>environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -194,7 +196,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest identity information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;family&#x27;: &#x27;LINUX&#x27;, &#x27;full_name&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Red Hat Fedora (64-bit)&#x27;, &#x27;id&#x27;: &#x27;vmsg.guestos.fedora64Guest.label&#x27;}, &#x27;host_name&#x27;: &#x27;localhost.localdomain&#x27;, &#x27;ip_address&#x27;: &#x27;192.168.122.206&#x27;, &#x27;name&#x27;: &#x27;FEDORA_64&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;family&#x27;: &#x27;LINUX&#x27;, &#x27;full_name&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Red Hat Fedora (64-bit)&#x27;, &#x27;id&#x27;: &#x27;vmsg.guestos.fedora64Guest.label&#x27;}, &#x27;host_name&#x27;: &#x27;localhost.localdomain&#x27;, &#x27;ip_address&#x27;: &#x27;192.168.122.87&#x27;, &#x27;name&#x27;: &#x27;FEDORA_64&#x27;}</div>
                 </td>
             </tr>
     </table>

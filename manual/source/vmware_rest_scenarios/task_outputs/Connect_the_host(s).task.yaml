@@ -1,10 +1,8 @@
 - name: Connect the host(s)
   vmware.vmware_rest.vcenter_host:
-    hostname: "{{ item.hostname }}"
-    password: "{{ item.password }}"
-    user_name: "{{ item.username }}"
+    hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+    user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+    password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
     thumbprint_verification: 'NONE'
     folder: '{{ my_host_folder.folder }}'
   register: _result
-  no_log: true
-  with_items: "{{ my_esxis}}"
