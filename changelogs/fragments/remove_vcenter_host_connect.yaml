@@ -1,0 +1,4 @@
+---
+minor_changes:
+- vcenter_host_connect - remove the module, use ``vcenter_host``
+- vcenter_host_disconnect - remove the module, use ``vcenter_host`` 
