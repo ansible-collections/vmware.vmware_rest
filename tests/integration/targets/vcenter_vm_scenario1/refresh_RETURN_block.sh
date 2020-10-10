@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2155
 set -eux
 
 export ANSIBLE_CALLBACK_WHITELIST=goneri.utils.collect_task_outputs

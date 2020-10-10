@@ -5,6 +5,14 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v1.0.1
+======
+
+Minor Changes
+-------------
+
+- Ensure the shellcheck sanity test pass
+
 v1.0.0
 ======
 
