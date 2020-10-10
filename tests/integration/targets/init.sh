@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2155,SC2086
 INVENTORY_PATH="${INVENTORY_PATH:-../../inventory.networking}"
 
 # The inventory file should have the following format:

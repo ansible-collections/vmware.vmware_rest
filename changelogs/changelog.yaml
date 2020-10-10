@@ -231,3 +231,10 @@ releases:
       name: vcenter_vm_tools_info
       namespace: ''
     release_date: '2020-10-09'
+  1.0.1:
+    changes:
+      minor_changes:
+      - Ensure the shellcheck sanity test pass
+    fragments:
+    - shellcheck.yaml
+    release_date: '2020-10-09'
