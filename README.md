@@ -92,6 +92,10 @@ collections:
 
 Please note this collection depends on Python 3.6 or greater.
 
+### Documentation
+
+The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/scenario_guides/guide_vmware_rest.html) gives a step by step introduction of the collection.
+
 ## Testing and Development
 
 Please, don't open Pull Request against the [vmware_rest](https://github.com/ansible-collections/vmware_rest) repository.
