@@ -1,0 +1,4 @@
+---
+minor_changes:
+- vcenter_resourcepool - add example in documentation.
+- vcenter_resourcepool_info - add example in documentation.
