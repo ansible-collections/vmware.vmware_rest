@@ -1,0 +1,24 @@
+{
+    "value": {
+        "name": "Resources",
+        "memory_allocation": {
+            "shares": {
+                "level": "NORMAL"
+            },
+            "expandable_reservation": true,
+            "limit": -1,
+            "reservation": 0
+        },
+        "resource_pools": [],
+        "cpu_allocation": {
+            "shares": {
+                "level": "NORMAL"
+            },
+            "expandable_reservation": true,
+            "limit": -1,
+            "reservation": 0
+        }
+    },
+    "id": "resgroup-1008",
+    "changed": false
+}

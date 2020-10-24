@@ -1,0 +1,9 @@
+{
+    "value": [
+        {
+            "name": "Resources",
+            "resource_pool": "resgroup-1008"
+        }
+    ],
+    "changed": false
+}

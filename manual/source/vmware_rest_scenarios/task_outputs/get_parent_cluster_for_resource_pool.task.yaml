@@ -1,0 +1,5 @@
+- name: get parent cluster for resource pool
+  vmware.vmware_rest.vcenter_cluster_info:
+    filter_names:
+    - my_cluster
+  register: my_cluster
