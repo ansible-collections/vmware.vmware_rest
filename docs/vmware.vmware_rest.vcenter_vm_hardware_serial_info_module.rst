@@ -182,23 +182,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Get an existing serial port (label)
-      vmware.vmware_rest.vcenter_vm_hardware_serial_info:
-        vm: '{{ test_vm1_info.id }}'
-        label: Serial port 1
-      register: serial_port_1
-    - name: Retrieve the serial ports information from the VM
-      vmware.vmware_rest.vcenter_vm_hardware_serial_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 

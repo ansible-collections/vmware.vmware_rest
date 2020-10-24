@@ -222,22 +222,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Adjust VM storage policy
-      vmware.vmware_rest.vcenter_vm_storage_policy:
-        vm: '{{ test_vm1_info.id }}'
-        disks:
-        - key: '{{ my_new_disk.id }}'
-          value:
-            type: USE_DEFAULT_POLICY
 
 
 

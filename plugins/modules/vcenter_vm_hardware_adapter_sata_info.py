@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# template: DEFAULT_MODULE
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_adapter_sata_info
@@ -66,10 +67,10 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -93,6 +94,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure,
+    )
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
@@ -165,8 +169,8 @@ async def main():
     module.exit_json(**result)
 
 
+# template: URL_WITH_LIST
 def build_url(params):
-
     if params["adapter"]:
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
         return (
@@ -180,6 +184,7 @@ def build_url(params):
         ).format(**params) + gen_args(params, _in_query_parameters)
 
 
+# template: FUNC
 async def entry_point(module, session):
     url = build_url(module.params)
     async with session.get(url) as resp:

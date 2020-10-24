@@ -273,24 +273,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Create a SCSI adapter at PCI slot 35
-      vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 35
-    - name: Drop the SCSI controller
-      vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 35
-        state: absent
 
 
 

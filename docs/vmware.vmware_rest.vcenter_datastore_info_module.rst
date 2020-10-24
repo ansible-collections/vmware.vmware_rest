@@ -240,19 +240,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Retrieve a list of all the datastores
-      vmware.vmware_rest.vcenter_datastore_info:
-      register: my_datastores
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
 
 
 
@@ -282,7 +269,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve a list of all the datastores</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1323&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1324&#x27;, &#x27;free_space&#x27;: 24638259200, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1325&#x27;, &#x27;free_space&#x27;: 24638259200, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1390&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1391&#x27;, &#x27;free_space&#x27;: 24638074880, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1392&#x27;, &#x27;free_space&#x27;: 24638074880, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
                 </td>
             </tr>
     </table>

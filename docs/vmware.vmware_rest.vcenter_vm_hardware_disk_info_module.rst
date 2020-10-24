@@ -182,22 +182,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Retrieve disk information using the label
-      vmware.vmware_rest.vcenter_vm_hardware_disk_info:
-        vm: '{{ test_vm1_info.id }}'
-        label: Hard disk 1
-    - name: Retrieve the disk information from the VM
-      vmware.vmware_rest.vcenter_vm_hardware_disk_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 
@@ -244,7 +228,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve disk information using the label</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_9/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_12/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}</div>
                 </td>
             </tr>
     </table>

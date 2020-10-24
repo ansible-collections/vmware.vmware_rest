@@ -205,20 +205,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Get a list of all the datacenters
-      register: existing_datacenters
-      vmware.vmware_rest.vcenter_datacenter_info:
-    - name: Get a list of all the datacenters
-      register: existing_datacenters
-      vmware.vmware_rest.vcenter_datacenter_info:
-    - name: collect a list of the datacenters
-      vmware.vmware_rest.vcenter_datacenter_info:
-      register: my_datacenters
 
 
 
@@ -248,7 +234,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>collect a list of the datacenters</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1309&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1374&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
                 </td>
             </tr>
     </table>

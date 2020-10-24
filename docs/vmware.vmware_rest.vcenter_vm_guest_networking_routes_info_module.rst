@@ -152,18 +152,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Get guest network routes information
-      vmware.vmware_rest.vcenter_vm_guest_networking_routes_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 
@@ -192,8 +180,6 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Get guest network routes information</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;gateway_address&#x27;: &#x27;192.168.122.1&#x27;, &#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;0.0.0.0&#x27;, &#x27;prefix_length&#x27;: 0}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;192.168.122.0&#x27;, &#x27;prefix_length&#x27;: 24}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;fe80::&#x27;, &#x27;prefix_length&#x27;: 64}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;fe80::bba5:5d60:f47c:81b5&#x27;, &#x27;prefix_length&#x27;: 128}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;ff00::&#x27;, &#x27;prefix_length&#x27;: 8}]</div>
                 </td>
             </tr>
     </table>

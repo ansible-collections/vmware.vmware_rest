@@ -268,25 +268,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Add a floppy disk drive
-      vmware.vmware_rest.vcenter_vm_hardware_floppy:
-        vm: '{{ test_vm1_info.id }}'
-        allow_guest_control: true
-      register: my_floppy_drive
-    - name: Remove a floppy drive
-      vmware.vmware_rest.vcenter_vm_hardware_floppy:
-        vm: '{{ test_vm1_info.id }}'
-        floppy: '{{ my_floppy_drive.id }}'
-        state: absent
 
 
 

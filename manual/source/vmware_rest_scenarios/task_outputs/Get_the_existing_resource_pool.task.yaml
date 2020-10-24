@@ -1,0 +1,4 @@
+- name: Get the existing resource pool
+  vmware.vmware_rest.vcenter_resourcepool_info:
+    resource_pool: "{{ resource_pools.value[0].resource_pool }}"
+  register: my_resource_pool

@@ -1,24 +1,24 @@
 {
     "value": [
         {
-            "datastore": "datastore-1323",
+            "datastore": "datastore-1390",
             "name": "local",
             "type": "VMFS",
             "free_space": 13523484672,
             "capacity": 15032385536
         },
         {
-            "datastore": "datastore-1324",
+            "datastore": "datastore-1391",
             "name": "ro_datastore",
             "type": "NFS",
-            "free_space": 24638259200,
+            "free_space": 24638074880,
             "capacity": 26831990784
         },
         {
-            "datastore": "datastore-1325",
+            "datastore": "datastore-1392",
             "name": "rw_datastore",
             "type": "NFS",
-            "free_space": 24638259200,
+            "free_space": 24638074880,
             "capacity": 26831990784
         }
     ],

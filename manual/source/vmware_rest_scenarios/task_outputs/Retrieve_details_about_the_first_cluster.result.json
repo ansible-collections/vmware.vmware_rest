@@ -1,8 +1,8 @@
 {
     "value": {
         "name": "my_cluster",
-        "resource_pool": "resgroup-1316"
+        "resource_pool": "resgroup-1381"
     },
-    "id": "domain-c1315",
+    "id": "domain-c1380",
     "changed": false
 }

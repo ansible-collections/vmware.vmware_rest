@@ -303,22 +303,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Look up the different folders
-      set_fact:
-        my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
-          }}'
-    - name: Connect the host(s)
-      vmware.vmware_rest.vcenter_host:
-        hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-        user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
-        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-        thumbprint_verification: NONE
-        folder: '{{ my_host_folder.folder }}'
 
 
 

@@ -1,0 +1,4 @@
+- name: Read details from a specific resource pool
+  vmware.vmware_rest.vcenter_resourcepool_info:
+    resource_pool: "{{ my_resource_pool.id }}"
+  register: my_resource_pool

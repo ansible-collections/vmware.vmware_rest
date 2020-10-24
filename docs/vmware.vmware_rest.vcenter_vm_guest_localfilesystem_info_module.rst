@@ -152,22 +152,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Get guest filesystem information
-      vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info:
-        vm: '{{ test_vm1_info.id }}'
-      until:
-      - _result is not failed
-      retries: 60
-      delay: 5
 
 
 
@@ -197,7 +181,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest filesystem information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;key&#x27;: &#x27;/&#x27;, &#x27;value&#x27;: {&#x27;capacity&#x27;: 2515173376, &#x27;free_space&#x27;: 774766592, &#x27;mappings&#x27;: []}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;key&#x27;: &#x27;/&#x27;, &#x27;value&#x27;: {&#x27;capacity&#x27;: 2515173376, &#x27;free_space&#x27;: 774778880, &#x27;mappings&#x27;: []}}]</div>
                 </td>
             </tr>
     </table>

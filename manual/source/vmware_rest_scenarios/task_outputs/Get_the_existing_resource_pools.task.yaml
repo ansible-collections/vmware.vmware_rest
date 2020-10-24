@@ -1,0 +1,3 @@
+- name: Get the existing resource pools
+  vmware.vmware_rest.vcenter_resourcepool_info:
+  register: resource_pools

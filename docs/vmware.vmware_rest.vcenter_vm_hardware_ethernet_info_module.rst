@@ -182,21 +182,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Collect a list of the NIC for a given VM
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
-        vm: '{{ test_vm1_info.id }}'
-    - name: Collect a list of the NIC for a given VM
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 

@@ -152,18 +152,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml+jinja
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Get guest power information
-      vmware.vmware_rest.vcenter_vm_power_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 
