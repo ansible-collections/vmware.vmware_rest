@@ -5,6 +5,15 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v1.0.2
+======
+
+Minor Changes
+-------------
+
+- vcenter_resourcepool - add example in documentation.
+- vcenter_resourcepool_info - add example in documentation.
+
 v1.0.1
 ======
 
