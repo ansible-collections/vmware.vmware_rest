@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# template: DEFAULT_MODULE
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_boot_device
@@ -88,7 +89,7 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
@@ -100,7 +101,7 @@ EXAMPLES = """
     - type: CDROM
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -114,6 +115,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure,
+    )
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
@@ -186,13 +190,14 @@ async def main():
     module.exit_json(**result)
 
 
+# template: URL
 def build_url(params):
-
     return (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/boot/device"
     ).format(**params)
 
 
+# template: main_content
 async def entry_point(module, session):
     if module.params["state"] == "present":
         if "_create" in globals():
@@ -203,23 +208,23 @@ async def entry_point(module, session):
         operation = "delete"
     else:
         operation = module.params["state"]
-    func = globals()[("_" + operation)]
+
+    func = globals()["_" + operation]
     return await func(module.params, session)
 
 
+# template: FUNC_WITH_DATA_TPL
 async def _set(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["set"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["set"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/boot/device")
-    if subdevice_type and (not params[subdevice_type]):
+    if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/boot/device".format(
-        **params
-    ) + gen_args(
-        params, _in_query_parameters
-    )
+    _url = (
+        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/boot/device"
+    ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.put(_url, json=payload) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":

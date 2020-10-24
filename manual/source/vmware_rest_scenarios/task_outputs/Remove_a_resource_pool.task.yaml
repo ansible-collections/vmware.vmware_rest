@@ -1,0 +1,4 @@
+- name: Remove a resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: "{{ my_resource_pool.id }}"
+    state: absent

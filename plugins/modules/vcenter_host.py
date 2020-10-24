@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# template: DEFAULT_MODULE
 
 DOCUMENTATION = """
 module: vcenter_host
@@ -116,7 +117,7 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Look up the different folders
   set_fact:
     my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
@@ -130,7 +131,7 @@ EXAMPLES = """
     folder: '{{ my_host_folder.folder }}'
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -170,6 +171,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure,
+    )
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
@@ -256,11 +260,12 @@ async def main():
     module.exit_json(**result)
 
 
+# template: URL
 def build_url(params):
-
     return ("https://{vcenter_hostname}" "/rest/vcenter/host").format(**params)
 
 
+# template: main_content
 async def entry_point(module, session):
     if module.params["state"] == "present":
         if "_create" in globals():
@@ -271,10 +276,12 @@ async def entry_point(module, session):
         operation = "delete"
     else:
         operation = module.params["state"]
-    func = globals()[("_" + operation)]
+
+    func = globals()["_" + operation]
     return await func(module.params, session)
 
 
+# FUNC_WITH_DATA_CREATE_TPL
 async def _create(params, session):
     if params["host"]:
         _json = await get_device_info(session, build_url(params), params["host"])
@@ -286,32 +293,40 @@ async def _create(params, session):
             return await globals()["_update"](params, session)
         else:
             return await update_changed_flag(_json, 200, "get")
+
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
-    _url = "https://{vcenter_hostname}/rest/vcenter/host".format(**params)
+    _url = ("https://{vcenter_hostname}" "/rest/vcenter/host").format(**params)
     async with session.post(_url, json=payload) as resp:
+        if resp.status == 500:
+            raise EmbeddedModuleFailure(
+                f"Request has failed: status={resp.status}, {await resp.text()}"
+            )
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        if (resp.status in [200, 201]) and ("value" in _json):
+        # Update the value field with all the details
+        if (resp.status in [200, 201]) and "value" in _json:
             if isinstance(_json["value"], dict):
                 _id = list(_json["value"].values())[0]
             else:
                 _id = _json["value"]
             _json = await get_device_info(session, _url, _id)
+
         return await update_changed_flag(_json, resp.status, "create")
 
 
+# template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type("/rest/vcenter/host/{host}")
-    if subdevice_type and (not params[subdevice_type]):
+    if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/host/{host}".format(
+    _url = ("https://{vcenter_hostname}" "/rest/vcenter/host/{host}").format(
         **params
     ) + gen_args(params, _in_query_parameters)
     async with session.delete(_url, json=payload) as resp:

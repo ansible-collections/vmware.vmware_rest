@@ -6,7 +6,6 @@
             "id": "vmsg.guestos.fedora64Guest.label"
         },
         "name": "FEDORA_64",
-        "ip_address": "192.168.122.87",
         "family": "LINUX",
         "host_name": "localhost.localdomain"
     },

@@ -306,7 +306,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Look up the different folders
       set_fact:

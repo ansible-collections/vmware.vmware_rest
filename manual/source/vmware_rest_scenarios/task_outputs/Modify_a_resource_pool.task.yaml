@@ -1,0 +1,15 @@
+- name: Modify a resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: "{{ my_resource_pool.id }}"
+    cpu_allocation:
+      expandable_reservation: true
+      limit: -1
+      reservation: 0
+      shares:
+        level: "NORMAL"
+    memory_allocation:
+      expandable_reservation: false
+      limit: 1000
+      reservation: 0
+      shares:
+        level: "NORMAL"

@@ -259,8 +259,76 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Get the existing resource pool
+      vmware.vmware_rest.vcenter_resourcepool_info:
+        resource_pool: '{{ resource_pools.value[0].resource_pool }}'
+      register: my_resource_pool
+    - name: Get the existing resource pools
+      vmware.vmware_rest.vcenter_resourcepool_info:
+      register: resource_pools
+    - name: Get the existing resource pools
+      vmware.vmware_rest.vcenter_resourcepool_info:
+      register: resource_pools
+    - name: Read details from a specific resource pool
+      vmware.vmware_rest.vcenter_resourcepool_info:
+        resource_pool: '{{ my_resource_pool.id }}'
+      register: my_resource_pool
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>id</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>moid of the resource</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1010</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Read details from a specific resource pool</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu_allocation&#x27;: {&#x27;expandable_reservation&#x27;: 1, &#x27;limit&#x27;: -1, &#x27;reservation&#x27;: 0, &#x27;shares&#x27;: {&#x27;level&#x27;: &#x27;NORMAL&#x27;}}, &#x27;memory_allocation&#x27;: {&#x27;expandable_reservation&#x27;: 0, &#x27;limit&#x27;: 1000, &#x27;reservation&#x27;: 0, &#x27;shares&#x27;: {&#x27;level&#x27;: &#x27;NORMAL&#x27;}}, &#x27;name&#x27;: &#x27;my_resource_pool&#x27;, &#x27;resource_pools&#x27;: []}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status
