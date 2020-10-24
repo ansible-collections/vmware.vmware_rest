@@ -238,3 +238,11 @@ releases:
     fragments:
     - shellcheck.yaml
     release_date: '2020-10-09'
+  1.0.2:
+    changes:
+      minor_changes:
+      - vcenter_resourcepool - add example in documentation.
+      - vcenter_resourcepool_info - add example in documentation.
+    fragments:
+    - resourcepool.yaml
+    release_date: '2020-10-23'
