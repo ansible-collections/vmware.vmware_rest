@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# template: DEFAULT_MODULE
 
 DOCUMENTATION = """
 module: vcenter_vm_power
@@ -144,6 +145,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure,
+    )
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
@@ -208,22 +212,26 @@ async def main():
         module.fail_json("vcenter_username cannot be empty")
     if not module.params["vcenter_password"]:
         module.fail_json("vcenter_password cannot be empty")
-    session = await open_session(
-        vcenter_hostname=module.params["vcenter_hostname"],
-        vcenter_username=module.params["vcenter_username"],
-        vcenter_password=module.params["vcenter_password"],
-        validate_certs=module.params["vcenter_validate_certs"],
-        log_file=module.params["vcenter_rest_log_file"],
-    )
+    try:
+        session = await open_session(
+            vcenter_hostname=module.params["vcenter_hostname"],
+            vcenter_username=module.params["vcenter_username"],
+            vcenter_password=module.params["vcenter_password"],
+            validate_certs=module.params["vcenter_validate_certs"],
+            log_file=module.params["vcenter_rest_log_file"],
+        )
+    except EmbeddedModuleFailure as err:
+        module.fail_json(err.get_message())
     result = await entry_point(module, session)
     module.exit_json(**result)
 
 
+# template: URL
 def build_url(params):
-
     return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/power").format(**params)
 
 
+# template: main_content
 async def entry_point(module, session):
     if module.params["state"] == "present":
         if "_create" in globals():
@@ -234,19 +242,21 @@ async def entry_point(module, session):
         operation = "delete"
     else:
         operation = module.params["state"]
-    func = globals()[("_" + operation)]
+
+    func = globals()["_" + operation]
     return await func(module.params, session)
 
 
+# template: FUNC_WITH_DATA_TPL
 async def _reset(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["reset"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["reset"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/reset")
-    if subdevice_type and (not params[subdevice_type]):
+    if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/reset".format(
+    _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/power/reset").format(
         **params
     ) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:
@@ -258,15 +268,16 @@ async def _reset(params, session):
         return await update_changed_flag(_json, resp.status, "reset")
 
 
+# template: FUNC_WITH_DATA_TPL
 async def _start(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["start"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["start"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/start")
-    if subdevice_type and (not params[subdevice_type]):
+    if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/start".format(
+    _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/power/start").format(
         **params
     ) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:
@@ -278,15 +289,16 @@ async def _start(params, session):
         return await update_changed_flag(_json, resp.status, "start")
 
 
+# template: FUNC_WITH_DATA_TPL
 async def _stop(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["stop"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["stop"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/stop")
-    if subdevice_type and (not params[subdevice_type]):
+    if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/stop".format(
+    _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/power/stop").format(
         **params
     ) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:
@@ -298,15 +310,16 @@ async def _stop(params, session):
         return await update_changed_flag(_json, resp.status, "stop")
 
 
+# template: FUNC_WITH_DATA_TPL
 async def _suspend(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["suspend"]["query"].keys()
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["suspend"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/suspend")
-    if subdevice_type and (not params[subdevice_type]):
+    if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/power/suspend".format(
+    _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/power/suspend").format(
         **params
     ) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:

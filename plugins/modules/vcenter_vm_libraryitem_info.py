@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# template: DEFAULT_MODULE
 
 DOCUMENTATION = """
 module: vcenter_vm_libraryitem_info
@@ -85,6 +86,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure,
+    )
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
@@ -144,25 +148,29 @@ async def main():
         module.fail_json("vcenter_username cannot be empty")
     if not module.params["vcenter_password"]:
         module.fail_json("vcenter_password cannot be empty")
-    session = await open_session(
-        vcenter_hostname=module.params["vcenter_hostname"],
-        vcenter_username=module.params["vcenter_username"],
-        vcenter_password=module.params["vcenter_password"],
-        validate_certs=module.params["vcenter_validate_certs"],
-        log_file=module.params["vcenter_rest_log_file"],
-    )
+    try:
+        session = await open_session(
+            vcenter_hostname=module.params["vcenter_hostname"],
+            vcenter_username=module.params["vcenter_username"],
+            vcenter_password=module.params["vcenter_password"],
+            validate_certs=module.params["vcenter_validate_certs"],
+            log_file=module.params["vcenter_rest_log_file"],
+        )
+    except EmbeddedModuleFailure as err:
+        module.fail_json(err.get_message())
     result = await entry_point(module, session)
     module.exit_json(**result)
 
 
+# template: URL_WITH_ARGS
 def build_url(params):
-
     _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
     return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/library-item").format(
         **params
     ) + gen_args(params, _in_query_parameters)
 
 
+# template: FUNC
 async def entry_point(module, session):
     url = build_url(module.params)
     async with session.get(url) as resp:

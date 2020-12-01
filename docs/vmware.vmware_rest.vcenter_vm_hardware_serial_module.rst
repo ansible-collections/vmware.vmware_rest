@@ -309,7 +309,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Get an existing serial port (label)
       vmware.vmware_rest.vcenter_vm_hardware_serial_info:

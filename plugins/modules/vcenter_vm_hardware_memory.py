@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# template: DEFAULT_MODULE
 
 DOCUMENTATION = """
 module: vcenter_vm_hardware_memory
@@ -125,6 +126,9 @@ import json
 from ansible.module_utils.basic import env_fallback
 
 try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure,
+    )
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
@@ -191,24 +195,28 @@ async def main():
         module.fail_json("vcenter_username cannot be empty")
     if not module.params["vcenter_password"]:
         module.fail_json("vcenter_password cannot be empty")
-    session = await open_session(
-        vcenter_hostname=module.params["vcenter_hostname"],
-        vcenter_username=module.params["vcenter_username"],
-        vcenter_password=module.params["vcenter_password"],
-        validate_certs=module.params["vcenter_validate_certs"],
-        log_file=module.params["vcenter_rest_log_file"],
-    )
+    try:
+        session = await open_session(
+            vcenter_hostname=module.params["vcenter_hostname"],
+            vcenter_username=module.params["vcenter_username"],
+            vcenter_password=module.params["vcenter_password"],
+            validate_certs=module.params["vcenter_validate_certs"],
+            log_file=module.params["vcenter_rest_log_file"],
+        )
+    except EmbeddedModuleFailure as err:
+        module.fail_json(err.get_message())
     result = await entry_point(module, session)
     module.exit_json(**result)
 
 
+# template: URL
 def build_url(params):
-
     return (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/memory"
     ).format(**params)
 
 
+# template: main_content
 async def entry_point(module, session):
     if module.params["state"] == "present":
         if "_create" in globals():
@@ -219,31 +227,39 @@ async def entry_point(module, session):
         operation = "delete"
     else:
         operation = module.params["state"]
-    func = globals()[("_" + operation)]
+
+    func = globals()["_" + operation]
     return await func(module.params, session)
 
 
+# FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
     payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
-    _url = "https://{vcenter_hostname}/rest/vcenter/vm/{vm}/hardware/memory".format(
-        **params
-    )
+    _url = (
+        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/memory"
+    ).format(**params)
     async with session.get(_url) as resp:
         _json = await resp.json()
-        for (k, v) in _json["value"].items():
-            if (k in payload) and (payload[k] == v):
+        for k, v in _json["value"].items():
+            if k in payload and payload[k] == v:
                 del payload[k]
             elif "spec" in payload:
-                if (k in payload["spec"]) and (payload["spec"][k] == v):
+                if k in payload["spec"] and payload["spec"][k] == v:
                     del payload["spec"][k]
+
+        # NOTE: workaround for vcenter_vm_hardware, upgrade_version needs the upgrade_policy
+        # option. So we ensure it's here.
         try:
-            if payload["spec"]["upgrade_version"] and (
-                "upgrade_policy" not in payload["spec"]
+            if (
+                payload["spec"]["upgrade_version"]
+                and "upgrade_policy" not in payload["spec"]
             ):
                 payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
         except KeyError:
             pass
-        if (payload == {}) or (payload == {"spec": {}}):
+
+        if payload == {} or payload == {"spec": {}}:
+            # Nothing has changed
             _json["id"] = params.get("None")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json=payload) as resp:

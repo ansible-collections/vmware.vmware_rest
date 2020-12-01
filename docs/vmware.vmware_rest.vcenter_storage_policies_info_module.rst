@@ -157,7 +157,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: List existing storage policies
       vmware.vmware_rest.vcenter_storage_policies_info:

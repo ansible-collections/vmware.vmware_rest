@@ -232,7 +232,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Build a list of all the folders
       vmware.vmware_rest.vcenter_folder_info:

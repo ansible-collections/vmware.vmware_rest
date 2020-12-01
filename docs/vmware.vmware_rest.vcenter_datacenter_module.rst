@@ -225,7 +225,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Get a list of all the datacenters
       register: existing_datacenters
