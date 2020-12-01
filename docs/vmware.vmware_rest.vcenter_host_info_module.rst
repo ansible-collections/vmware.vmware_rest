@@ -265,7 +265,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Get a list of the hosts
       vmware.vmware_rest.vcenter_host_info:

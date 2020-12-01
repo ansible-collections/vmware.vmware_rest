@@ -227,7 +227,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Get a list of the networks
       vmware.vmware_rest.vcenter_network_info:

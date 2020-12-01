@@ -226,7 +226,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Build a list of all the clusters
       vmware.vmware_rest.vcenter_cluster_info:
@@ -235,6 +235,11 @@ Examples
       vmware.vmware_rest.vcenter_cluster_info:
         cluster: '{{ all_the_clusters.value[0].cluster }}'
       register: my_cluster_info
+    - name: get parent cluster for resource pool
+      vmware.vmware_rest.vcenter_cluster_info:
+        filter_names:
+        - my_cluster
+      register: my_cluster
 
 
 

@@ -243,7 +243,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Retrieve a list of all the datastores
       vmware.vmware_rest.vcenter_datastore_info:

@@ -394,7 +394,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:

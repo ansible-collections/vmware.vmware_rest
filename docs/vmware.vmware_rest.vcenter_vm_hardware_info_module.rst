@@ -155,7 +155,7 @@ Parameters
 Examples
 --------
 
-.. code-block:: yaml+jinja
+.. code-block:: yaml
 
     - name: Look up the VM called test_vm1 in the inventory
       register: search_result
