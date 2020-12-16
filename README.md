@@ -77,6 +77,15 @@ Name | Description
 
 ## Installation and Usage
 
+### Install the dependencies
+
+This collection depends on Python 3.6 or greater and [aiohttp](https://docs.aiohttp.org/en/stable/).
+
+You can either install ``aiohttp`` using your OS package manager or using Python virtual environment.
+
+Notes:
+For RHEL, there is no ``python3-aiohttp`` package available (yet), you can either get it from EPEL or install ``aiohttp`` using pip.
+
 ### Installing the Collection from Ansible Galaxy
 
 Before using the VMware collection, you need to install the collection with the `ansible-galaxy` CLI:
@@ -89,8 +98,6 @@ You can also include it in a `requirements.yml` file and install it via `ansible
 collections:
 - name: vmware.vmware_rest
 ```
-
-Please note this collection depends on Python 3.6 or greater.
 
 ### Documentation
 
