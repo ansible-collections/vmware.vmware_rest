@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -127,10 +127,10 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -140,6 +140,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -263,7 +265,7 @@ async def entry_point(module, session):
 
 # FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware").format(
         **params
     )

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -138,10 +138,10 @@ PAYLOAD_FORMAT = {
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -151,6 +151,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -250,7 +252,7 @@ async def entry_point(module, session):
 # template: FUNC_WITH_DATA_TPL
 async def _reset(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["reset"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["reset"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["reset"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/reset")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -271,7 +273,7 @@ async def _reset(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _start(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["start"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["start"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["start"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/start")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -292,7 +294,7 @@ async def _start(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _stop(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["stop"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["stop"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["stop"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/stop")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -313,7 +315,7 @@ async def _stop(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _suspend(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["suspend"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["suspend"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["suspend"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/power/suspend")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))

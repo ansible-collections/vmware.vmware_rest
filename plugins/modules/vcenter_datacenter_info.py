@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -18,16 +18,16 @@ options:
     description:
     - Identifiers of datacenters that can match the filter.
     - If unset or empty, datacenters with any identifier match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_datacenter_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_datacenter_info).
     elements: str
     type: list
   filter_folders:
     description:
     - Folders that must contain the datacenters for the datacenter to match the filter.
     - If unset or empty, datacenters in any folder match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_folder_info).
     elements: str
     type: list
   filter_names:
@@ -126,10 +126,10 @@ PAYLOAD_FORMAT = {
         "path": {"datacenter": "datacenter"},
     },
     "get": {"query": {}, "body": {}, "path": {"datacenter": "datacenter"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -139,6 +139,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -219,11 +221,10 @@ def build_url(params):
         return (
             "https://{vcenter_hostname}" "/rest/vcenter/datacenter/{datacenter}"
         ).format(**params) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return ("https://{vcenter_hostname}" "/rest/vcenter/datacenter").format(
-            **params
-        ) + gen_args(params, _in_query_parameters)
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return ("https://{vcenter_hostname}" "/rest/vcenter/datacenter").format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
 
 
 # template: FUNC
