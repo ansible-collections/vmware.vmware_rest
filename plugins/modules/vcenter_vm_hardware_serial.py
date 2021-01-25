@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -18,7 +18,7 @@ options:
     description:
     - Physical resource backing for the virtual serial port.
     - If unset, defaults to automatic detection of a suitable host device.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(file) (str): Path of the file backing the virtual serial port.'
     - This field is optional and it is only relevant when the value of I(type) is
       FILE.
@@ -231,10 +231,10 @@ PAYLOAD_FORMAT = {
     },
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -246,6 +246,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -351,7 +354,7 @@ async def entry_point(module, session):
 # template: FUNC_WITH_DATA_TPL
 async def _connect(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
     subdevice_type = get_subdevice_type(
         "/rest/vcenter/vm/{vm}/hardware/serial/{port}/connect"
     )
@@ -382,8 +385,7 @@ async def _create(params, session):
         if "_update" in globals():
             params["port"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = (
@@ -414,7 +416,7 @@ async def _create(params, session):
 # template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/serial/{port}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -435,7 +437,7 @@ async def _delete(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _disconnect(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["disconnect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
     subdevice_type = get_subdevice_type(
         "/rest/vcenter/vm/{vm}/hardware/serial/{port}/disconnect"
     )
@@ -458,7 +460,7 @@ async def _disconnect(params, session):
 
 # FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/serial/{port}"
     ).format(**params)

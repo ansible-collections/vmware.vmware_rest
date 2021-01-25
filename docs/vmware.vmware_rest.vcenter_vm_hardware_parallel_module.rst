@@ -74,7 +74,7 @@ Parameters
                 <td>
                         <div>Physical resource backing for the virtual parallel port.</div>
                         <div>If unset, defaults to automatic detection of a suitable host device.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>file</code> (str): Path of the file that should be used as the virtual parallel port backing.</div>
                         <div>This field is optional and it is only relevant when the value of <em>type</em> is FILE.</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual parallel port backing.</div>

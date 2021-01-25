@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -13,8 +13,8 @@ options:
     description:
     - Identifiers of storage policies that can match the filter.
     - If unset or empty, storage policies with any identifiers match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_storage_policies). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_storage_policies).
     elements: str
     type: list
   vcenter_hostname:
@@ -117,10 +117,10 @@ PAYLOAD_FORMAT = {
         "body": {"datastores": "datastores"},
         "path": {"policy": "policy"},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -132,6 +132,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,

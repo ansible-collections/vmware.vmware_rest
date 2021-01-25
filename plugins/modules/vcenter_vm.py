@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -19,7 +19,7 @@ options:
     description:
     - Boot configuration.
     - If unset, guest-specific default values will be used.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(delay) (int): Delay in milliseconds before beginning the firmware boot
       process when the virtual machine is powered on. This delay may be used to provide
       a time window for users to connect to the virtual machine console and enter
@@ -55,7 +55,7 @@ options:
     description:
     - Boot device configuration.
     - If unset, a server-specific boot sequence will be used.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(type) (str): This option defines the valid device types that may be used
       as bootable devices.'
     - '   - Accepted values:'
@@ -69,7 +69,7 @@ options:
     description:
     - List of CD-ROMs.
     - If unset, no CD-ROM devices will be created.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
       and disconnect the device.'
     - Defaults to false if unset.
@@ -131,7 +131,7 @@ options:
     description:
     - CPU configuration.
     - If unset, guest-specific default values will be used.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(cores_per_socket) (int): New number of CPU cores per socket. The number
       of CPU cores in the virtual machine must be a multiple of the number of cores
       per socket.'
@@ -185,7 +185,7 @@ options:
       field of I()
     - 'When clients pass a value of this structure as a parameter, the key in the
       field map must be the id of a resource returned by M(vcenter_vm_hardware_disk). '
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(backing) (dict): Existing physical resource backing for the virtual disk.
       Exactly one of I(backing) or I(new_vmdk) must be specified.'
     - If unset, the virtual disk will not be connected to an existing backing.
@@ -257,8 +257,8 @@ options:
     - Set of Disks to Remove.
     - If unset, all disks will be copied. If the same identifier is in I(disks_to_update)
       InvalidArgument fault will be returned.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_vm_hardware_disk). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_vm_hardware_disk).
     elements: str
     type: list
   disks_to_update:
@@ -269,7 +269,7 @@ options:
       fault will be thrown.
     - 'When clients pass a value of this structure as a parameter, the key in the
       field map must be the id of a resource returned by M(vcenter_vm_hardware_disk). '
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
     - '   - Accepted keys:'
@@ -284,7 +284,7 @@ options:
     description:
     - List of floppy drives.
     - If unset, no floppy drives will be created.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
       and disconnect the device.'
     - Defaults to false if unset.
@@ -489,7 +489,7 @@ options:
     - Guest customization spec to apply to the virtual machine after the virtual machine
       is deployed.
     - If unset, the guest operating system is not customized after clone.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(name) (str): Name of the customization specification.'
     - If unset, no guest customization is performed.
     type: dict
@@ -518,7 +518,7 @@ options:
     description:
     - Memory configuration.
     - If unset, guest-specific default values will be used.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(hot_add_enabled) (bool): Flag indicating whether adding memory while the
       virtual machine is running should be enabled. '
     - ' Some guest operating systems may consume more resources or perform less efficiently
@@ -547,7 +547,7 @@ options:
     description:
     - List of Ethernet adapters.
     - If unset, no Ethernet adapters will be created.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
       and disconnect the device.'
     - Defaults to false if unset.
@@ -620,7 +620,7 @@ options:
     - If unset, no NICs will be updated.
     - 'When clients pass a value of this structure as a parameter, the key in the
       field map must be the id of a resource returned by M(vcenter_vm_hardware_ethernet). '
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
     - '   - Accepted keys:'
@@ -666,7 +666,7 @@ options:
     description:
     - List of parallel ports.
     - If unset, no parallel ports will be created.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
       and disconnect the device.'
     - Defaults to false if unset.
@@ -697,7 +697,7 @@ options:
     - If unset, no parallel ports will be updated.
     - 'When clients pass a value of this structure as a parameter, the key in the
       field map must be the id of a resource returned by M(vcenter_vm_hardware_parallel). '
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
     - '   - Accepted keys:'
@@ -726,7 +726,7 @@ options:
       result in disjoint placement the operation will fail. If the fields along with
       the other existing placement of the virtual machine result in disjoint placement
       the operation will fail.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(cluster) (str): Cluster into which the virtual machine should be placed. '
     - ' If I(cluster) and I(resource_pool) are both specified, I(resource_pool) must
       belong to I(cluster). '
@@ -786,7 +786,7 @@ options:
       will be created; this includes any devices that explicitly specify a SATA host
       bus adapter, as well as any devices that do not specify a host bus adapter if
       the guest's preferred adapter type is SATA.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(bus) (int): SATA bus number.'
     - If unset, the server will choose an available bus number; if none is available,
       the request will fail.
@@ -807,7 +807,7 @@ options:
       bus adapter, as well as any devices that do not specify a host bus adapter if
       the guest's preferred adapter type is SCSI. The type of the SCSI adapter will
       be a guest-specific default type.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(bus) (int): SCSI bus number.'
     - If unset, the server will choose an available bus number; if none is available,
       the request will fail.
@@ -835,7 +835,7 @@ options:
     description:
     - List of serial ports.
     - If unset, no serial ports will be created.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
       and disconnect the device.'
     - Defaults to false if unset.
@@ -898,7 +898,7 @@ options:
     - If unset, no serial ports will be updated.
     - 'When clients pass a value of this structure as a parameter, the key in the
       field map must be the id of a resource returned by M(vcenter_vm_hardware_serial). '
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(key) (str): '
     - ' - C(value) (dict): '
     - '   - Accepted keys:'
@@ -948,7 +948,7 @@ options:
       a default storage policy is only supported by object datastores : VVol and vSAN.
       For non-object datastores, if unset then no storage policy would be associated
       with the virtual machine home.'
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(policy) (str): Identifier of the storage policy which should be associated
       with the virtual machine.'
     - 'When clients pass a value of this structure as a parameter, the field must
@@ -1187,10 +1187,10 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -1202,6 +1202,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -1527,7 +1530,7 @@ async def entry_point(module, session):
 # template: FUNC_WITH_DATA_TPL
 async def _clone(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["clone"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["clone"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["clone"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm?action=clone&vmw-task=true")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -1555,8 +1558,7 @@ async def _create(params, session):
         if "_update" in globals():
             params["vm"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(**params)
@@ -1585,7 +1587,7 @@ async def _create(params, session):
 # template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -1606,7 +1608,7 @@ async def _delete(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _instant_clone(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["instant_clone"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["instant_clone"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["instant_clone"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm?action=instant-clone")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -1627,7 +1629,7 @@ async def _instant_clone(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _register(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["register"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["register"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["register"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm?action=register")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -1648,7 +1650,7 @@ async def _register(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _relocate(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["relocate"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["relocate"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["relocate"])
     subdevice_type = get_subdevice_type(
         "/rest/vcenter/vm/{vm}?action=relocate&vmw-task=true"
     )
@@ -1672,7 +1674,7 @@ async def _relocate(params, session):
 # template: FUNC_WITH_DATA_TPL
 async def _unregister(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["unregister"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["unregister"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["unregister"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}?action=unregister")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))

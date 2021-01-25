@@ -56,7 +56,7 @@ Parameters
                         <div>Storage policy or policies to be used when reconfiguring virtual machine diks.</div>
                         <div>if unset the current storage policy is retained.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>key</code> (str):</div>
                         <div>- <code>value</code> (dict):</div>
                         <div>- Accepted keys:</div>
@@ -206,7 +206,7 @@ Parameters
                 <td>
                         <div>Storage policy to be used when reconfiguring the virtual machine home.</div>
                         <div>if unset the current storage policy is retained.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>policy</code> (str): Storage Policy identification.</div>
                         <div>This field is optional and it is only relevant when the value of <em>type</em> is USE_SPECIFIED_POLICY.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>

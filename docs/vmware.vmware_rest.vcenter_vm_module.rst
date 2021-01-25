@@ -70,7 +70,7 @@ Parameters
                 <td>
                         <div>Boot configuration.</div>
                         <div>If unset, guest-specific default values will be used.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>delay</code> (int): Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on. This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
                         <div>If unset, default value is 0.</div>
                         <div>- <code>efi_legacy_boot</code> (bool): Flag indicating whether to use EFI legacy boot mode.</div>
@@ -106,7 +106,7 @@ Parameters
                 <td>
                         <div>Boot device configuration.</div>
                         <div>If unset, a server-specific boot sequence will be used.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): This option defines the valid device types that may be used as bootable devices.</div>
                         <div>- Accepted values:</div>
                         <div>- CDROM</div>
@@ -130,7 +130,7 @@ Parameters
                 <td>
                         <div>List of CD-ROMs.</div>
                         <div>If unset, no CD-ROM devices will be created.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
                         <div>Defaults to false if unset.</div>
                         <div>- <code>backing</code> (dict): Physical resource backing for the virtual CD-ROM device.</div>
@@ -185,7 +185,7 @@ Parameters
                 <td>
                         <div>CPU configuration.</div>
                         <div>If unset, guest-specific default values will be used.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>cores_per_socket</code> (int): New number of CPU cores per socket. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
                         <div>If unset, the value is unchanged.</div>
                         <div>- <code>count</code> (int): New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
@@ -273,7 +273,7 @@ Parameters
                         <div>Individual disk relocation map.</div>
                         <div>If unset, all disks will migrate to the datastore specified in the <em>datastore</em> field of I()</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>backing</code> (dict): Existing physical resource backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</div>
                         <div>If unset, the virtual disk will not be connected to an existing backing.</div>
                         <div>- Accepted keys:</div>
@@ -351,7 +351,7 @@ Parameters
                         <div>Map of Disks to Update.</div>
                         <div>If unset, all disks will copied to the datastore specified in the <em>datastore</em> field of I() If the same identifier is in <em>disks_to_remove</em> InvalidArgument fault will be thrown.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>key</code> (str):</div>
                         <div>- <code>value</code> (dict):</div>
                         <div>- Accepted keys:</div>
@@ -375,7 +375,7 @@ Parameters
                 <td>
                         <div>List of floppy drives.</div>
                         <div>If unset, no floppy drives will be created.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
                         <div>Defaults to false if unset.</div>
                         <div>- <code>backing</code> (dict): Physical resource backing for the virtual floppy drive.</div>
@@ -408,7 +408,7 @@ Parameters
                 <td>
                         <div>Guest customization spec to apply to the virtual machine after the virtual machine is deployed.</div>
                         <div>If unset, the guest operating system is not customized after clone.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>name</code> (str): Name of the customization specification.</div>
                         <div>If unset, no guest customization is performed.</div>
                 </td>
@@ -643,7 +643,7 @@ Parameters
                 <td>
                         <div>Memory configuration.</div>
                         <div>If unset, guest-specific default values will be used.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>hot_add_enabled</code> (bool): Flag indicating whether adding memory while the virtual machine is running should be enabled.</div>
                         <div>Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running.</div>
                         <div></div>
@@ -689,7 +689,7 @@ Parameters
                 <td>
                         <div>List of Ethernet adapters.</div>
                         <div>If unset, no Ethernet adapters will be created.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
                         <div>Defaults to false if unset.</div>
                         <div>- <code>backing</code> (dict): Physical resource backing for the virtual Ethernet adapter.</div>
@@ -747,7 +747,7 @@ Parameters
                         <div>Map of NICs to update.</div>
                         <div>If unset, no NICs will be updated.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_ethernet</span>.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>key</code> (str):</div>
                         <div>- <code>value</code> (dict):</div>
                         <div>- Accepted keys:</div>
@@ -791,7 +791,7 @@ Parameters
                 <td>
                         <div>List of parallel ports.</div>
                         <div>If unset, no parallel ports will be created.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
                         <div>Defaults to false if unset.</div>
                         <div>- <code>backing</code> (dict): Physical resource backing for the virtual parallel port.</div>
@@ -825,7 +825,7 @@ Parameters
                         <div>Map of parallel ports to Update.</div>
                         <div>If unset, no parallel ports will be updated.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_parallel</span>.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>key</code> (str):</div>
                         <div>- <code>value</code> (dict):</div>
                         <div>- Accepted keys:</div>
@@ -867,7 +867,7 @@ Parameters
                 <td>
                         <div>Virtual machine placement information.</div>
                         <div>If this field is unset, the system will use the values from the source virtual machine. If specified, each field will be used for placement. If the fields result in disjoint placement the operation will fail. If the fields along with the other existing placement of the virtual machine result in disjoint placement the operation will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>cluster</code> (str): Cluster into which the virtual machine should be placed.</div>
                         <div>If <em>cluster</em> and <em>resource_pool</em> are both specified, <em>resource_pool</em> must belong to <em>cluster</em>.</div>
                         <div></div>
@@ -928,7 +928,7 @@ Parameters
                 <td>
                         <div>List of SATA adapters.</div>
                         <div>If unset, any adapters necessary to connect the virtual machine&#x27;s storage devices will be created; this includes any devices that explicitly specify a SATA host bus adapter, as well as any devices that do not specify a host bus adapter if the guest&#x27;s preferred adapter type is SATA.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): SATA bus number.</div>
                         <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
                         <div>- <code>pci_slot_number</code> (int): Address of the SATA adapter on the PCI bus.</div>
@@ -953,7 +953,7 @@ Parameters
                 <td>
                         <div>List of SCSI adapters.</div>
                         <div>If unset, any adapters necessary to connect the virtual machine&#x27;s storage devices will be created; this includes any devices that explicitly specify a SCSI host bus adapter, as well as any devices that do not specify a host bus adapter if the guest&#x27;s preferred adapter type is SCSI. The type of the SCSI adapter will be a guest-specific default type.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): SCSI bus number.</div>
                         <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
                         <div>- <code>pci_slot_number</code> (int): Address of the SCSI adapter on the PCI bus. If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added.</div>
@@ -986,7 +986,7 @@ Parameters
                 <td>
                         <div>List of serial ports.</div>
                         <div>If unset, no serial ports will be created.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
                         <div>Defaults to false if unset.</div>
                         <div>- <code>backing</code> (dict): Physical resource backing for the virtual serial port.</div>
@@ -1039,7 +1039,7 @@ Parameters
                         <div>Map of serial ports to Update.</div>
                         <div>If unset, no serial ports will be updated.</div>
                         <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_serial</span>.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>key</code> (str):</div>
                         <div>- <code>value</code> (dict):</div>
                         <div>- Accepted keys:</div>
@@ -1108,7 +1108,7 @@ Parameters
                 <td>
                         <div>The <em>storage_policy_spec</em> structure contains information about the storage policy that is to be associated with the virtual machine home (which contains the configuration and log files).</div>
                         <div>If unset the datastore default storage policy (if applicable) is applied. Currently a default storage policy is only supported by object datastores : VVol and vSAN. For non-object datastores, if unset then no storage policy would be associated with the virtual machine home.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>policy</code> (str): Identifier of the storage policy which should be associated with the virtual machine.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>
                 </td>

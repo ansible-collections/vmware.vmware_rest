@@ -54,7 +54,7 @@ Parameters
                 <td>
                         <div>Existing physical resource backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</div>
                         <div>If unset, the virtual disk will not be connected to an existing backing.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): This option defines the valid backing types for a virtual disk.</div>
                         <div>- Accepted values:</div>
                         <div>- VMDK_FILE</div>
@@ -92,7 +92,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
                         <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
@@ -127,7 +127,7 @@ Parameters
                 <td>
                         <div>Specification for creating a new VMDK backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</div>
                         <div>If unset, a new VMDK backing will not be created.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>capacity</code> (int): Capacity of the virtual disk backing in bytes.</div>
                         <div>If unset, defaults to a guest-specific capacity.</div>
                         <div>- <code>name</code> (str): Base name of the VMDK file. The name should not include the &#x27;.vmdk&#x27; file extension.</div>
@@ -153,7 +153,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SATA adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
                         <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
@@ -173,7 +173,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SCSI adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
                         <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>

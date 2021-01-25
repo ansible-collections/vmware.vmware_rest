@@ -74,7 +74,7 @@ Parameters
                 <td>
                         <div>Physical resource backing for the virtual floppy drive.</div>
                         <div>If unset, defaults to automatic detection of a suitable host device.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual floppy drive backing.</div>
                         <div>If unset, the virtual floppy drive will be configured to automatically detect a suitable host device.</div>
                         <div>- <code>image_file</code> (str): Path of the image file that should be used as the virtual floppy drive backing.</div>

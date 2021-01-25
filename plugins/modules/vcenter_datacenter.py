@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -167,10 +167,10 @@ PAYLOAD_FORMAT = {
         "path": {"datacenter": "datacenter"},
     },
     "get": {"query": {}, "body": {}, "path": {"datacenter": "datacenter"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -182,6 +182,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -289,8 +292,7 @@ async def _create(params, session):
         if "_update" in globals():
             params["datacenter"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/rest/vcenter/datacenter").format(**params)
@@ -319,7 +321,7 @@ async def _create(params, session):
 # template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type("/rest/vcenter/datacenter/{datacenter}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))

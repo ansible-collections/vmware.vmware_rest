@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -14,7 +14,7 @@ options:
     - Existing physical resource backing for the virtual disk. Exactly one of I(backing)
       or I(new_vmdk) must be specified.
     - If unset, the virtual disk will not be connected to an existing backing.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(type) (str): This option defines the valid backing types for a virtual
       disk.'
     - '   - Accepted values:'
@@ -34,7 +34,7 @@ options:
     - Address for attaching the device to a virtual IDE adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(master) (bool): Flag specifying whether the device should be the master
       or slave device on the IDE adapter.'
     - If unset, the server will choose an available connection type. If no IDE connections
@@ -52,7 +52,7 @@ options:
     - Specification for creating a new VMDK backing for the virtual disk. Exactly
       one of I(backing) or I(new_vmdk) must be specified.
     - If unset, a new VMDK backing will not be created.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes.'
     - If unset, defaults to a guest-specific capacity.
     - ' - C(name) (str): Base name of the VMDK file. The name should not include the
@@ -77,7 +77,7 @@ options:
     - Address for attaching the device to a virtual SATA adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
@@ -88,7 +88,7 @@ options:
     - Address for attaching the device to a virtual SCSI adapter.
     - If unset, the server will choose an available address; if none is available,
       the request will fail.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
     - If unset, the server will choose an available unit number on the specified adapter.
@@ -225,10 +225,10 @@ PAYLOAD_FORMAT = {
         "body": {"backing": "spec/backing"},
         "path": {"disk": "disk", "vm": "vm"},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -240,6 +240,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -354,8 +357,7 @@ async def _create(params, session):
         if "_update" in globals():
             params["disk"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/disk").format(
@@ -386,7 +388,7 @@ async def _create(params, session):
 # template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/disk/{disk}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -406,7 +408,7 @@ async def _delete(params, session):
 
 # FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/disk/{disk}"
     ).format(**params)
