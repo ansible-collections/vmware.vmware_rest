@@ -54,7 +54,7 @@ Parameters
                 </td>
                 <td>
                         <div>Ordered list of boot devices.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
                         <div>This field is optional and it is only relevant when the value of <em>type</em> is DISK.</div>
                         <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>

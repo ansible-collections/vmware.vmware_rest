@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -13,16 +13,16 @@ options:
     description:
     - Datacenters that must contain the network for the network to match the filter.
     - If unset or empty, networks in any datacenter match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_datacenter_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_datacenter_info).
     elements: str
     type: list
   filter_folders:
     description:
     - Folders that must contain the network for the network to match the filter.
     - If unset or empty, networks in any folder match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_folder_info).
     elements: str
     type: list
   filter_names:
@@ -35,8 +35,8 @@ options:
     description:
     - Identifiers of networks that can match the filter.
     - If unset or empty, networks with any identifier match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_network_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_network_info).
     elements: str
     type: list
   filter_types:
@@ -128,10 +128,10 @@ PAYLOAD_FORMAT = {
         "body": {},
         "path": {},
     }
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -143,6 +143,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,

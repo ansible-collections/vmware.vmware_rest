@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -117,10 +117,10 @@ PAYLOAD_FORMAT = {
     },
     "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -132,6 +132,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -209,11 +212,10 @@ def build_url(params):
         return (
             "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/cdrom/{cdrom}"
         ).format(**params) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return (
-            "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/cdrom"
-        ).format(**params) + gen_args(params, _in_query_parameters)
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/cdrom").format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
 
 
 # template: FUNC

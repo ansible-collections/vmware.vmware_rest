@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -12,12 +12,12 @@ options:
   devices:
     description:
     - Ordered list of boot devices.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot order.'
     - This field is optional and it is only relevant when the value of I(type) is
       DISK.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_vm_hardware_disk). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_vm_hardware_disk).
     - ' - C(nic) (str): Virtual Ethernet device. Ethernet device to use as boot device
       for this entry.'
     - This field is optional and it is only relevant when the value of I(type) is
@@ -108,10 +108,10 @@ RETURN = """
 PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "set": {"query": {}, "body": {"devices": "devices"}, "path": {"vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -123,6 +123,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -219,7 +222,7 @@ async def entry_point(module, session):
 # template: FUNC_WITH_DATA_TPL
 async def _set(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["set"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["set"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["set"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/boot/device")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))

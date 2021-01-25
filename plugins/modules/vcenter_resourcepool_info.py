@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -14,8 +14,8 @@ options:
     - Clusters that must contain the resource pool for the resource pool to match
       the filter.
     - If unset or empty, resource pools in any cluster match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_cluster_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_cluster_info).
     elements: str
     type: list
   filter_datacenters:
@@ -23,8 +23,8 @@ options:
     - Datacenters that must contain the resource pool for the resource pool to match
       the filter.
     - If unset or empty, resource pools in any datacenter match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_datacenter_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_datacenter_info).
     elements: str
     type: list
   filter_hosts:
@@ -32,8 +32,8 @@ options:
     - Hosts that must contain the resource pool for the resource pool to match the
       filter.
     - If unset or empty, resource pools in any host match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_host_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_host_info).
     elements: str
     type: list
   filter_names:
@@ -47,16 +47,16 @@ options:
     - Resource pools that must contain the resource pool for the resource pool to
       match the filter.
     - If unset or empty, resource pools in any resource pool match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_resourcepool_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_resourcepool_info).
     elements: str
     type: list
   filter_resource_pools:
     description:
     - Identifiers of resource pools that can match the filter.
     - If unset or empty, resource pools with any identifier match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_resourcepool_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_resourcepool_info).
     elements: str
     type: list
   resource_pool:
@@ -131,7 +131,7 @@ RETURN = """
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1060
+  sample: resgroup-1036
   type: str
 value:
   description: Read details from a specific resource pool
@@ -189,10 +189,10 @@ PAYLOAD_FORMAT = {
         },
         "path": {"resource_pool": "resource_pool"},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -204,6 +204,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -285,11 +288,10 @@ def build_url(params):
         return (
             "https://{vcenter_hostname}" "/rest/vcenter/resource-pool/{resource_pool}"
         ).format(**params) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return ("https://{vcenter_hostname}" "/rest/vcenter/resource-pool").format(
-            **params
-        ) + gen_args(params, _in_query_parameters)
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return ("https://{vcenter_hostname}" "/rest/vcenter/resource-pool").format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
 
 
 # template: FUNC

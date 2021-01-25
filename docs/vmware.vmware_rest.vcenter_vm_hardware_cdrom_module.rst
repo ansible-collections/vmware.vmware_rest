@@ -74,7 +74,7 @@ Parameters
                 <td>
                         <div>Physical resource backing for the virtual CD-ROM device.</div>
                         <div>If unset, defaults to automatic detection of a suitable host device.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>device_access_type</code> (str): This option defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
                         <div>- Accepted values:</div>
                         <div>- EMULATION</div>
@@ -121,7 +121,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
                         <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
@@ -156,7 +156,7 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SATA adapter.</div>
                         <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
                         <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>

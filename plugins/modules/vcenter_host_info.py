@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -15,8 +15,8 @@ options:
     - If unset or empty, hosts in any cluster and hosts that are not in a cluster
       match the filter. If this field is not empty and I(standalone) is true, no hosts
       will match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_cluster_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_cluster_info).
     elements: str
     type: list
   filter_connection_states:
@@ -29,24 +29,24 @@ options:
     description:
     - Datacenters that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any datacenter match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_datacenter_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_datacenter_info).
     elements: str
     type: list
   filter_folders:
     description:
     - Folders that must contain the hosts for the hosts to match the filter.
     - If unset or empty, hosts in any folder match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_folder_info).
     elements: str
     type: list
   filter_hosts:
     description:
     - Identifiers of hosts that can match the filter.
     - If unset or empty, hosts with any identifier match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_host_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_host_info).
     elements: str
     type: list
   filter_names:
@@ -157,10 +157,10 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -172,6 +172,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,

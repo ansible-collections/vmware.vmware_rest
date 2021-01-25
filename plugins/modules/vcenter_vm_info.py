@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright: Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
@@ -14,8 +14,8 @@ options:
     - Clusters that must contain the virtual machine for the virtual machine to match
       the filter.
     - If unset or empty, virtual machines in any cluster match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_cluster_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_cluster_info).
     elements: str
     type: list
   filter_datacenters:
@@ -23,8 +23,8 @@ options:
     - Datacenters that must contain the virtual machine for the virtual machine to
       match the filter.
     - If unset or empty, virtual machines in any datacenter match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_datacenter_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_datacenter_info).
     elements: str
     type: list
   filter_folders:
@@ -32,8 +32,8 @@ options:
     - Folders that must contain the virtual machine for the virtual machine to match
       the filter.
     - If unset or empty, virtual machines in any folder match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_folder_info).
     elements: str
     type: list
   filter_hosts:
@@ -41,8 +41,8 @@ options:
     - Hosts that must contain the virtual machine for the virtual machine to match
       the filter.
     - If unset or empty, virtual machines on any host match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_host_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_host_info).
     elements: str
     type: list
   filter_names:
@@ -62,16 +62,16 @@ options:
     - Resource pools that must contain the virtual machine for the virtual machine
       to match the filter.
     - If unset or empty, virtual machines in any resource pool match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_resourcepool_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_resourcepool_info).
     elements: str
     type: list
   filter_vms:
     description:
     - Identifiers of virtual machines that can match the filter.
     - If unset or empty, virtual machines with any identifier match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_vm_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_vm_info).
     elements: str
     type: list
   vcenter_hostname:
@@ -297,10 +297,10 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -312,6 +312,9 @@ try:
     )
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
+AnsibleModule.collection_name = "vmware.vmware_rest"
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -395,11 +398,10 @@ def build_url(params):
         return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}").format(
             **params
         ) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(
-            **params
-        ) + gen_args(params, _in_query_parameters)
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
 
 
 # template: FUNC
