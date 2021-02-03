@@ -1,0 +1,31 @@
+- name: Check if the Shell is enabled
+  vmware.vmware_rest.appliance_access_shell_info:
+  register: result
+
+- debug: var=result
+
+- name: Disable the Shell
+  vmware.vmware_rest.appliance_access_shell:
+    enabled: False
+    timeout: 600
+
+- name: _Disable the Shell (again)
+  vmware.vmware_rest.appliance_access_shell:
+    enabled: False
+    timeout: 600
+  register: result
+
+- debug: var=result
+- name: Idempotency is broken
+  assert:
+    that:
+      - not (result.changed)
+  ignore_errors: True
+
+- name: Enable the Shell with a timeout
+  vmware.vmware_rest.appliance_access_shell:
+    enabled: True
+    timeout: 600
+  register: result
+
+- debug: var=result

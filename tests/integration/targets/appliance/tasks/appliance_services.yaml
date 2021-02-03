@@ -1,0 +1,38 @@
+---
+- name: List all the services
+  vmware.vmware_rest.appliance_services_info:
+  register: result
+- debug: var=result
+
+- name: Get information about ntpd
+  vmware.vmware_rest.appliance_services_info:
+    service: ntpd
+  register: result
+- debug: var=result
+
+- name: Stop the ntpd service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: stop
+  register: result
+- debug: var=result
+
+- name: Start the ntpd service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: start
+  register: result
+- debug: var=result
+
+- name: Restart the ntpd service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: restart
+  register: result
+- debug: var=result
+
+- name: Ensure the result is "changed" (broken)
+  assert:
+    that:
+      - result.changed
+  ignore_errors: True
