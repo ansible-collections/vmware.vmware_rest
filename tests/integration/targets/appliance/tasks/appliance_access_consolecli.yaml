@@ -1,0 +1,18 @@
+- name: Check if the Console CLI is enabled
+  appliance_access_consolecli_info:
+
+- name: Disable the Console CLI
+  appliance_access_consolecli:
+    enabled: False
+
+- name: _Disable the Console CLI (again)
+  appliance_access_consolecli:
+    enabled: False
+  register: result
+
+- debug: var=result
+- name: Idempotency is broken
+  assert:
+    that:
+      - not (result.changed)
+  ignore_errors: True

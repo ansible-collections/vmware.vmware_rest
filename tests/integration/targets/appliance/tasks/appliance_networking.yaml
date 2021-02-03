@@ -1,0 +1,11 @@
+- name: Get network information
+  appliance_networking_info:
+  register: result
+- debug: var=result
+
+
+- name: Set network information
+  appliance_networking:
+    ipv6_enabled: False
+  register: result
+- debug: var=result

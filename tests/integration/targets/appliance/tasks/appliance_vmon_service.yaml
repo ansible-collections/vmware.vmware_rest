@@ -1,0 +1,12 @@
+- name: Get information about a VMON service
+  appliance_vmon_service_info:
+    service: vpxd
+  register: result
+
+- debug: var=result
+
+- name: Adjust vpxd configuration
+  appliance_vmon_service:
+    service: vpxd
+    startup_type: AUTOMATIC
+  register: result

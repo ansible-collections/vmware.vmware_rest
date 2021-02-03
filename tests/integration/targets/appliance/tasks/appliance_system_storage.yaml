@@ -1,0 +1,19 @@
+- name: Get the appliance storage information
+  appliance_system_storage_info:
+  register: result
+
+- debug: var=result
+
+- name: Resize the first partition and return the state of the partition before and after the operation
+  appliance_system_storage:
+    state: resize_ex
+  register: result
+
+- debug: var=result
+
+- name: Resize the first partition
+  appliance_system_storage:
+    state: resize
+  register: result
+
+- debug: var=result

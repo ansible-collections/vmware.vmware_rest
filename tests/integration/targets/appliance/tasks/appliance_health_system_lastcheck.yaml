@@ -1,0 +1,6 @@
+- name: Get the health state of system last_check
+  appliance_health_system_lastcheck:
+  register: result
+  ignore_errors: True
+
+- debug: var=result

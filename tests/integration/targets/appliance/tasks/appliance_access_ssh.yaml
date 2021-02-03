@@ -1,0 +1,12 @@
+- name: Check is the SSH access is enabled
+  appliance_access_ssh_info:
+  register: result
+
+- debug: var=result
+
+- name: Ensure the SSH access ie enabled
+  appliance_access_ssh:
+    enabled: true
+  register: result
+
+- debug: var=result
