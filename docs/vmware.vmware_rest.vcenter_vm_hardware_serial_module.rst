@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_serial
 *********************************************
 
-**Manage the serial of a VM**
+**Adds a virtual serial port to the virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the serial of a VM
+- Adds a virtual serial port to the virtual machine.
 
 
 
@@ -57,7 +57,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the guest can connect and disconnect the device.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -72,27 +71,9 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Physical resource backing for the virtual serial port.</div>
-                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>file</code> (str): Path of the file backing the virtual serial port.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is FILE.</div>
-                        <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port.</div>
-                        <div></div>
-                        <div></div>
-                        <div>If unset, the virtual serial port will be configured to automatically detect a suitable host device.</div>
-                        <div>- <code>network_location</code> (str): URI specifying the location of the network service backing the virtual serial port.</div>
-                        <div>- If <em>type</em> is NETWORK_SERVER, this field is the location used by clients to connect to this server. The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.</div>
-                        <div>- If <em>type</em> is NETWORK_CLIENT, this field is the location used by the virtual machine to connect to the remote server.</div>
-                        <div></div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is one of NETWORK_SERVER or NETWORK_CLIENT.</div>
-                        <div>- <code>no_rx_loss</code> (bool): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun. This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</div>
-                        <div>If unset, defaults to false.</div>
-                        <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is one of PIPE_SERVER or PIPE_CLIENT.</div>
-                        <div>- <code>proxy</code> (str): Proxy service that provides network access to the network backing. If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</div>
-                        <div>If unset, no proxy service should be used.</div>
-                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual serial port.</div>
+                        <div>Physical resource backing for the virtual serial port. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>type</code> (str): The {@name BackingType} defines the valid backing types for a virtual serial port.</div>
                         <div>- Accepted values:</div>
                         <div>- FILE</div>
                         <div>- HOST_DEVICE</div>
@@ -100,6 +81,12 @@ Parameters
                         <div>- PIPE_CLIENT</div>
                         <div>- NETWORK_SERVER</div>
                         <div>- NETWORK_CLIENT</div>
+                        <div>- <code>file</code> (str): Path of the file backing the virtual serial port.</div>
+                        <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port. &lt;p&gt;</div>
+                        <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port.</div>
+                        <div>- <code>no_rx_loss</code> (bool): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun.  This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</div>
+                        <div>- <code>network_location</code> (str): URI specifying the location of the network service backing the virtual serial port. &lt;ul&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_SERVER}, this field is the location used by clients to connect to this server.  The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.&lt;/li&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_CLIENT}, this field is the location used by the virtual machine to connect to the remote server.&lt;/li&gt; &lt;/ul&gt;</div>
+                        <div>- <code>proxy</code> (str): Proxy service that provides network access to the network backing.  If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</div>
                 </td>
             </tr>
             <tr>
@@ -114,6 +101,7 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>The name of the item</div>
                 </td>
             </tr>
             <tr>
@@ -128,8 +116,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual serial port identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_serial</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>Virtual serial port identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -149,7 +136,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -269,13 +255,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -294,10 +280,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host.</div>
-                        <div>This field may be modified at any time, and changes applied to a connected virtual serial port take effect immediately.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host. This field may be modified at any time, and changes applied to a connected virtual serial port take effect immediately.</div>
                 </td>
             </tr>
     </table>
@@ -405,4 +388,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

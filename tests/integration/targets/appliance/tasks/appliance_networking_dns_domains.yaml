@@ -1,0 +1,32 @@
+- name: Get DNS domains configuration
+  vmware.vmware_rest.appliance_networking_dns_domains_info:
+  register: result
+
+- debug: var=result
+
+- name: Update the domain configuration
+  vmware.vmware_rest.appliance_networking_dns_domains:
+    domains:
+      - foobar
+  register: result
+
+- debug: var=result
+
+- name: Update the domain configuration (again)
+  vmware.vmware_rest.appliance_networking_dns_domains:
+    domains:
+      - foobar
+  register: result
+
+- debug: var=result
+- name: Idempotency is broken
+  assert:
+    that:
+      - not (result.changed)
+  ignore_errors: True
+
+- name: Add another domain configuration
+  vmware.vmware_rest.appliance_networking_dns_domains:
+    domain: barfoo
+    state: add
+  register: result

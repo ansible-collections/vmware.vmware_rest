@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_boot_device_info
 *******************************************************
 
-**Collect the boot device information from a VM**
+**Returns an ordered list of boot devices for the virtual machine. If the {@term list} is empty, the virtual machine uses a default boot sequence.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the boot device information from a VM
+- Returns an ordered list of boot devices for the virtual machine. If the {@term list} is empty, the virtual machine uses a default boot sequence.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -210,4 +209,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

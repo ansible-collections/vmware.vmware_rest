@@ -1,17 +1,17 @@
 ---
-- name: _community_ unmount NFS (ro_datastore) datastores to ESXi
-  community.vmware.vmware_host_datastore:
-    esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-    datastore_name: ro_datastore
-    state: absent
-  no_log: true
-
-- name: _community_ unmount NFS (rw_datastore) datastores on the ESXi
-  community.vmware.vmware_host_datastore:
-    esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-    datastore_name: rw_datastore
-    state: absent
-  no_log: true
+#- name: _community_ unmount NFS (ro_datastore) datastores to ESXi
+#  community.vmware.vmware_host_datastore:
+#    esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+#    datastore_name: ro_datastore
+#    state: absent
+#  no_log: true
+#
+#- name: _community_ unmount NFS (rw_datastore) datastores on the ESXi
+#  community.vmware.vmware_host_datastore:
+#    esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+#    datastore_name: rw_datastore
+#    state: absent
+#  no_log: true
 
 - name: _community_ Mount NFS (ro_datastore) datastores to ESXi
   community.vmware.vmware_host_datastore:

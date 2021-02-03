@@ -1,17 +1,14 @@
 {
     "value": {
         "overall_compliance": "NOT_APPLICABLE",
-        "disks": [
-            {
-                "value": {
-                    "failure_cause": [],
-                    "status": "NOT_APPLICABLE",
-                    "check_time": "2020-10-09T20:57:15.470Z",
-                    "policy": "f4e5bade-15a2-4805-bf8e-52318c4ce443"
-                },
-                "key": "16000"
+        "disks": {
+            "16000": {
+                "failure_cause": [],
+                "status": "NOT_APPLICABLE",
+                "check_time": "2021-04-27T17:04:37.354Z",
+                "policy": "f4e5bade-15a2-4805-bf8e-52318c4ce443"
             }
-        ]
+        }
     },
     "changed": false
 }

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_ethernet
 ***********************************************
 
-**Manage the ethernet of a VM**
+**Adds a virtual Ethernet adapter to the virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the ethernet of a VM
+- Adds a virtual Ethernet adapter to the virtual machine.
 
 
 
@@ -57,7 +57,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the guest can connect and disconnect the device.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -72,20 +71,16 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Physical resource backing for the virtual Ethernet adapter.</div>
-                        <div>If unset, the system may try to find an appropriate backing. If one is not found, the request will fail.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>distributed_port</code> (str): Key of the distributed virtual port that backs the virtual Ethernet adapter. Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected. This field cannot be specified as no free ports exist before use.</div>
-                        <div>May be used to specify a port when the network specified on the <em>network</em> field is a static or early binding distributed portgroup. If unset, the port will be automatically assigned to the Ethernet adapter based on the policy embodied by the portgroup type.</div>
-                        <div>- <code>network</code> (str): Identifier of the network that backs the virtual Ethernet adapter.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_network_info</span>.</div>
-                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual Ethernet adapter.</div>
+                        <div>Physical resource backing for the virtual Ethernet adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>type</code> (str): The {@name BackingType} defines the valid backing types for a virtual Ethernet adapter.</div>
                         <div>- Accepted values:</div>
                         <div>- STANDARD_PORTGROUP</div>
                         <div>- HOST_DEVICE</div>
                         <div>- DISTRIBUTED_PORTGROUP</div>
                         <div>- OPAQUE_NETWORK</div>
+                        <div>- <code>network</code> (str): Identifier of the network that backs the virtual Ethernet adapter.</div>
+                        <div>- <code>distributed_port</code> (str): Key of the distributed virtual port that backs the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected.  This field cannot be specified as no free ports exist before use.</div>
                 </td>
             </tr>
             <tr>
@@ -100,6 +95,7 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>The name of the item</div>
                 </td>
             </tr>
             <tr>
@@ -114,10 +110,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>MAC address.</div>
-                        <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged. Must be specified if <em>mac_type</em> is MANUAL. Must be unset if the MAC address type is not MANUAL.</div>
+                        <div>MAC address. This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
                 </td>
             </tr>
             <tr>
@@ -137,7 +130,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>mac_address_type</em> enumerated type defines the valid MAC address origins for a virtual Ethernet adapter.</div>
+                        <div>The {@name MacAddressType} defines the valid MAC address origins for a virtual Ethernet adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -152,8 +145,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual Ethernet adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_ethernet</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>Virtual Ethernet adapter identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -168,8 +160,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Address of the virtual Ethernet adapter on the PCI bus. If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</div>
-                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</div>
                 </td>
             </tr>
             <tr>
@@ -189,7 +180,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -232,7 +222,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>emulation_type</em> enumerated type defines the valid emulation types for a virtual Ethernet adapter.</div>
+                        <div>The {@name EmulationType} defines the valid emulation types for a virtual Ethernet adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -251,10 +241,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether Universal Pass-Through (UPT) compatibility should be enabled on this virtual Ethernet adapter.</div>
-                        <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged. Must be unset if the emulation type of the virtual Ethernet adapter is not VMXNET3.</div>
+                        <div>Flag indicating whether Universal Pass-Through (UPT) compatibility should be enabled on this virtual Ethernet adapter. This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
                 </td>
             </tr>
             <tr>
@@ -354,13 +341,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -379,10 +366,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet adapter.</div>
-                        <div>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet adapter. This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
                 </td>
             </tr>
     </table>
@@ -460,7 +444,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Attach a VM to a dvswitch</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 835200818, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 33 79 c1 09 0f 61 7f-c8 fa ca b7 f2 a7 b6 93&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1328&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:b3:31:93&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 1107666745, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 26 fa 60 df 9b f8 27-8c 63 8b cc 31 1f ca 53&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1247&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:a6:eb:d7&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
                 </td>
             </tr>
     </table>
@@ -474,4 +458,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

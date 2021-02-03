@@ -1,21 +1,22 @@
 {
     "results": [
         {
+            "value": {},
             "failed": false,
             "changed": true,
             "_debug_info": {
-                "status": 200,
+                "status": 204,
                 "operation": "delete"
             },
             "invocation": {
                 "module_args": {
                     "state": "absent",
-                    "datacenter": "datacenter-1286",
+                    "datacenter": "datacenter-1200",
                     "force": true,
                     "vcenter_hostname": "vcenter.test",
                     "vcenter_username": "administrator@vsphere.local",
                     "vcenter_password": "VALUE_SPECIFIED_IN_NO_LOG_PARAMETER",
-                    "vcenter_validate_certs": false,
+                    "vcenter_validate_certs": "no",
                     "vcenter_rest_log_file": null,
                     "folder": null,
                     "name": null
@@ -24,12 +25,12 @@
             "_ansible_no_log": false,
             "item": {
                 "name": "my_dc",
-                "datacenter": "datacenter-1286"
+                "datacenter": "datacenter-1200"
             },
             "ansible_loop_var": "item",
             "_ansible_item_label": {
                 "name": "my_dc",
-                "datacenter": "datacenter-1286"
+                "datacenter": "datacenter-1200"
             }
         }
     ],

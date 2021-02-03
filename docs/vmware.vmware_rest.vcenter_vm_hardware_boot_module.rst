@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_boot
 *******************************************
 
-**Manage the boot of a VM**
+**Updates the boot-related settings of a virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the boot of a VM
+- Updates the boot-related settings of a virtual machine.
 
 
 
@@ -52,8 +52,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on. This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on.  This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
                 </td>
             </tr>
             <tr>
@@ -73,7 +72,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether to use EFI legacy boot mode.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -92,8 +90,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots. Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots.  Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</div>
                 </td>
             </tr>
             <tr>
@@ -112,7 +109,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>network_protocol</em> enumerated type defines the valid network boot protocols supported when booting a virtual machine with EFI firmware over the network.</div>
+                        <div>The {@name NetworkProtocol} defines the valid network boot protocols supported when booting a virtual machine with {@link Type#EFI} firmware over the network.</div>
                 </td>
             </tr>
             <tr>
@@ -132,7 +129,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual machine should automatically retry the boot process after a failure.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -147,8 +143,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Delay in milliseconds before retrying the boot process after a failure; applicable only when <em>retry</em> is true.</div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Delay in milliseconds before retrying the boot process after a failure; applicable only when {@link Info#retry} is true.</div>
                 </td>
             </tr>
             <tr>
@@ -184,7 +179,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>type</em> enumerated type defines the valid firmware types for a virtual machine.</div>
+                        <div>The {@name Type} defines the valid firmware types for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -284,13 +279,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -343,6 +338,21 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <br/>
                 </td>
             </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Change a VM boot parameters</div>
+                    <br/>
+                </td>
+            </tr>
     </table>
     <br/><br/>
 
@@ -354,4 +364,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

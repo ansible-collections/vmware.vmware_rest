@@ -1,61 +1,55 @@
 {
     "value": {
         "instant_clone_frozen": false,
-        "cdroms": [],
+        "cdroms": {},
         "memory": {
             "size_MiB": 1024,
             "hot_add_enabled": true
         },
-        "disks": [
-            {
-                "value": {
-                    "scsi": {
-                        "bus": 0,
-                        "unit": 0
-                    },
-                    "backing": {
-                        "vmdk_file": "[rw_datastore] test_vm1_9/test_vm1.vmdk",
-                        "type": "VMDK_FILE"
-                    },
-                    "label": "Hard disk 1",
-                    "type": "SCSI",
-                    "capacity": 17179869184
+        "disks": {
+            "2000": {
+                "scsi": {
+                    "bus": 0,
+                    "unit": 0
                 },
-                "key": "2000"
+                "backing": {
+                    "vmdk_file": "[rw_datastore] test_vm1_1/test_vm1.vmdk",
+                    "type": "VMDK_FILE"
+                },
+                "label": "Hard disk 1",
+                "type": "SCSI",
+                "capacity": 17179869184
             }
-        ],
-        "parallel_ports": [],
-        "sata_adapters": [],
+        },
+        "parallel_ports": {},
+        "sata_adapters": {},
         "cpu": {
             "hot_remove_enabled": false,
             "count": 1,
             "hot_add_enabled": false,
             "cores_per_socket": 1
         },
-        "scsi_adapters": [
-            {
-                "value": {
-                    "scsi": {
-                        "bus": 0,
-                        "unit": 7
-                    },
-                    "label": "SCSI controller 0",
-                    "sharing": "NONE",
-                    "type": "PVSCSI"
+        "scsi_adapters": {
+            "1000": {
+                "scsi": {
+                    "bus": 0,
+                    "unit": 7
                 },
-                "key": "1000"
+                "label": "SCSI controller 0",
+                "sharing": "NONE",
+                "type": "PVSCSI"
             }
-        ],
+        },
         "power_state": "POWERED_OFF",
-        "floppies": [],
+        "floppies": {},
         "identity": {
             "name": "test_vm1",
-            "instance_uuid": "5033998f-164f-ca7e-f6e2-dc5b33aba813",
-            "bios_uuid": "423371c6-fb2f-8b9c-3fc9-e2740edf57db"
+            "instance_uuid": "502618c0-76c7-ccf8-5bef-d05a90e5cd5b",
+            "bios_uuid": "4226cb9f-88dd-5cb8-79b0-8fd4443b19f3"
         },
-        "nvme_adapters": [],
+        "nvme_adapters": {},
         "name": "test_vm1",
-        "nics": [],
+        "nics": {},
         "boot": {
             "delay": 0,
             "retry_delay": 10000,
@@ -63,7 +57,7 @@
             "type": "BIOS",
             "retry": false
         },
-        "serial_ports": [],
+        "serial_ports": {},
         "boot_devices": [],
         "guest_OS": "DEBIAN_8_64",
         "hardware": {
@@ -72,6 +66,6 @@
             "version": "VMX_11"
         }
     },
-    "id": "vm-1329",
+    "id": "vm-1248",
     "changed": false
 }

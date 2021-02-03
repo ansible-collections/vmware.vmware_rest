@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_ethernet_info
 ****************************************************
 
-**Collect the ethernet information from a VM**
+**Returns information about a virtual Ethernet adapter.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the ethernet information from a VM
+- Returns information about a virtual Ethernet adapter.
 
 
 
@@ -52,6 +52,7 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>The name of the item</div>
                 </td>
             </tr>
             <tr>
@@ -66,8 +67,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual Ethernet adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_ethernet</span>.</div>
+                        <div>Virtual Ethernet adapter identifier. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -167,13 +167,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -238,4 +238,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

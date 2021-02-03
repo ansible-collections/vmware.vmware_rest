@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_cluster_info
 ***************************************
 
-**Collect the information associated with the vCenter clusters**
+**Retrieves information about the cluster corresponding to {@param.name cluster}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the information associated with the vCenter clusters
+- Retrieves information about the cluster corresponding to {@param.name cluster}.
 
 
 
@@ -52,14 +52,13 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the cluster.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_cluster_info</span>.</div>
+                        <div>Identifier of the cluster. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_clusters</b>
+                    <b>clusters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -70,14 +69,12 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of clusters that can match the filter.</div>
-                        <div>If unset or empty, clusters with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datacenters</b>
+                    <b>datacenters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -88,14 +85,13 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the cluster for the cluster to match the filter.</div>
-                        <div>If unset or empty, clusters in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_folders</b>
+                    <b>folders</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -106,14 +102,13 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the cluster for the cluster to match the filter.</div>
-                        <div>If unset or empty, clusters in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_names</b>
+                    <b>names</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -123,8 +118,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that clusters must have to match the filter (see <em>name</em>).</div>
-                        <div>If unset or empty, clusters with any name match the filter.</div>
+                        <div>Names that clusters must have to match the filter (see {@link Info#name}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
             <tr>
@@ -269,7 +264,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1315</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1231</div>
                 </td>
             </tr>
             <tr>
@@ -286,7 +281,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve details about the first cluster</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1316&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1232&#x27;}</div>
                 </td>
             </tr>
     </table>
@@ -300,4 +295,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

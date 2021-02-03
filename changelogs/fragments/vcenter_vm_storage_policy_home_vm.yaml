@@ -1,0 +1,4 @@
+---
+breaking_changes:
+- "vcenter_vm_storage_policy - the module has a new mandatory paramter: ``vm_home``."
+- "vcenter_vm_storage_policy - the format of the ``disks`` parameter has changed."

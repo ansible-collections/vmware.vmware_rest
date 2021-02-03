@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
 ***************************************************
 
-**Manage the SATA adapter of a VM**
+**Adds a virtual SATA adapter to the virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the SATA adapter of a VM
+- Adds a virtual SATA adapter to the virtual machine.
 
 
 
@@ -52,8 +52,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual SATA adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_adapter_sata</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Virtual SATA adapter identifier. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -69,7 +68,6 @@ Parameters
                 </td>
                 <td>
                         <div>SATA bus number.</div>
-                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
                 </td>
             </tr>
             <tr>
@@ -84,6 +82,7 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>The name of the item</div>
                 </td>
             </tr>
             <tr>
@@ -99,7 +98,6 @@ Parameters
                 </td>
                 <td>
                         <div>Address of the SATA adapter on the PCI bus.</div>
-                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
                 </td>
             </tr>
             <tr>
@@ -135,7 +133,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>type</em> enumerated type defines the valid emulation types for a virtual SATA adapter.</div>
+                        <div>The {@name Type} defines the valid emulation types for a virtual SATA adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -235,13 +233,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -328,4 +326,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

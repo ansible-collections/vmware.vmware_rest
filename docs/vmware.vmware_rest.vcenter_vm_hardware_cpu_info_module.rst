@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_cpu_info
 ***********************************************
 
-**Collect the cpu information from a VM**
+**Returns the CPU-related settings of a virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the cpu information from a VM
+- Returns the CPU-related settings of a virtual machine.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -207,4 +206,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

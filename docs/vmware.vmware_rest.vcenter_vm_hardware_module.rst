@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware
 **************************************
 
-**Manage the hardware of a VM**
+**Upgrades the virtual machine to a newer virtual hardware version.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the hardware of a VM
+- Upgrades the virtual machine to a newer virtual hardware version.
 
 
 
@@ -52,6 +52,7 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li>upgrade</li>
                         </ul>
                 </td>
                 <td>
@@ -74,7 +75,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>upgrade_policy</em> enumerated type defines the valid virtual hardware upgrade policies for a virtual machine.</div>
+                        <div>The {@name UpgradePolicy} defines the valid virtual hardware upgrade policies for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -102,10 +103,12 @@ Parameters
                                     <li>VMX_15</li>
                                     <li>VMX_16</li>
                                     <li>VMX_17</li>
+                                    <li>VMX_18</li>
+                                    <li>VMX_19</li>
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>version</em> enumerated type defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                        <div>The {@name Version} defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
                 </td>
             </tr>
             <tr>
@@ -201,17 +204,50 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
+                    <b>version</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>VMX_03</li>
+                                    <li>VMX_04</li>
+                                    <li>VMX_06</li>
+                                    <li>VMX_07</li>
+                                    <li>VMX_08</li>
+                                    <li>VMX_09</li>
+                                    <li>VMX_10</li>
+                                    <li>VMX_11</li>
+                                    <li>VMX_12</li>
+                                    <li>VMX_13</li>
+                                    <li>VMX_14</li>
+                                    <li>VMX_15</li>
+                                    <li>VMX_16</li>
+                                    <li>VMX_17</li>
+                                    <li>VMX_18</li>
+                                    <li>VMX_19</li>
+                        </ul>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>The {@name Version} defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vm</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -255,12 +291,27 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>id</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">string</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
                             <div>moid of the resource</div>
+                    <br/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Upgrade the VM hardware version</div>
                     <br/>
                 </td>
             </tr>
@@ -275,4 +326,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

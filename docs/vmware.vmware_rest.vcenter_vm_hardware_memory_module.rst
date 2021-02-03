@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_memory
 *********************************************
 
-**Manage the memory of a VM**
+**Updates the memory-related settings of a virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the memory of a VM
+- Updates the memory-related settings of a virtual machine.
 
 
 
@@ -56,12 +56,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether adding memory while the virtual machine is running should be enabled.</div>
-                        <div>Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running.</div>
-                        <div></div>
-                        <div>This field may only be modified if the virtual machine is not powered on.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Flag indicating whether adding memory while the virtual machine is running should be enabled. Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running. This field may only be modified if the virtual machine is not powered on.</div>
                 </td>
             </tr>
             <tr>
@@ -76,12 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New memory size in mebibytes.</div>
-                        <div>The supported range of memory sizes is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</div>
-                        <div></div>
-                        <div>If the virtual machine is running, this value may only be changed if <em>hot_add_enabled</em> is true, and the new memory size must satisfy the constraints specified by <em>hot_add_increment_size_mib</em> and I()</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>New memory size in mebibytes. The supported range of memory sizes is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, this value may only be changed if {@link Info#hotAddEnabled} is true, and the new memory size must satisfy the constraints specified by {@link Info#hotAddIncrementSizeMiB} and {@link Info#hotAddLimitMiB}.</div>
                 </td>
             </tr>
             <tr>
@@ -198,13 +188,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -247,12 +237,27 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>id</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">string</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
                             <div>moid of the resource</div>
+                    <br/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Increase the memory of a VM</div>
                     <br/>
                 </td>
             </tr>
@@ -267,4 +272,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

@@ -1,0 +1,43 @@
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+
+- name: Adjust the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    servers:
+      - time.google.com
+
+- name: Adjust the NTP configuration (again)
+  vmware.vmware_rest.appliance_ntp:
+    servers:
+      - time.google.com
+  register: result
+
+- debug: var=result
+- name: Idempotency is broken
+  assert:
+    that:
+      - not (result.changed)
+  ignore_errors: True
+
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+  register: result
+
+- debug: var=result
+- name: Assert the NTP configuration is right
+  assert:
+    that:
+      - result.value == ["time.google.com"]
+
+- name: Test the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    state: test
+    servers:
+      - time.google.com
+  register: result
+- debug: var=result
+
+- name: Ensure the result is successful
+  assert:
+    that:
+      - result.value[0].status == "SERVER_REACHABLE"

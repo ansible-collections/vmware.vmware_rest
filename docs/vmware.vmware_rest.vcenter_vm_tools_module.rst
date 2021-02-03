@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_tools
 ***********************************
 
-**Manage the tools of a VM**
+**Begins the Tools upgrade process. To monitor the status of the Tools upgrade, clients should check the Tools status by calling {@link #get} and examining {@name Info#versionStatus} and {@name Info#runState}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the tools of a VM
+- Begins the Tools upgrade process. To monitor the status of the Tools upgrade, clients should check the Tools status by calling {@link #get} and examining {@name Info#versionStatus} and {@name Info#runState}.
 
 
 
@@ -43,6 +43,21 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>command_line_options</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Command line options passed to the installer to modify the installation procedure for Tools.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -52,6 +67,7 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                    <li>upgrade</li>
                         </ul>
                 </td>
                 <td>
@@ -73,7 +89,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>upgrade_policy</em> enumerated type defines when Tools are auto-upgraded for a virtual machine.</div>
+                        <div>The {@name UpgradePolicy} defines when Tools are auto-upgraded for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -173,13 +189,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the virtual machine.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Identifier of the virtual machine. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -266,4 +282,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

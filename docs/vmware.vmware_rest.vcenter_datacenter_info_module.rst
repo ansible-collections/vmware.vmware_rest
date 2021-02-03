@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datacenter_info
 ******************************************
 
-**Collect the information associated with the vCenter datacenters**
+**Retrieves information about the datacenter corresponding to {@param.name datacenter}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the information associated with the vCenter datacenters
+- Retrieves information about the datacenter corresponding to {@param.name datacenter}.
 
 
 
@@ -52,14 +52,13 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the datacenter.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div>Identifier of the datacenter. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datacenters</b>
+                    <b>datacenters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -70,14 +69,13 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of datacenters that can match the filter.</div>
-                        <div>If unset or empty, datacenters with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_folders</b>
+                    <b>folders</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -88,14 +86,13 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the datacenters for the datacenter to match the filter.</div>
-                        <div>If unset or empty, datacenters in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_names</b>
+                    <b>names</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -105,8 +102,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that datacenters must have to match the filter (see <em>name</em>).</div>
-                        <div>If unset or empty, datacenters with any name match the filter.</div>
+                        <div>Names that datacenters must have to match the filter (see {@link Info#name}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
             <tr>
@@ -248,7 +245,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>collect a list of the datacenters</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1309&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1225&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
                 </td>
             </tr>
     </table>
@@ -262,4 +259,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

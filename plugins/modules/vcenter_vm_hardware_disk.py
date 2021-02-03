@@ -1,98 +1,79 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_vm_hardware_disk
-short_description: Manage the disk of a VM
-description: Manage the disk of a VM
+short_description: Updates the configuration of a virtual disk.  An update {@term
+  operation} can be used to detach the existing VMDK file and attach another VMDK
+  file to the virtual machine.
+description: Updates the configuration of a virtual disk.  An update {@term operation}
+  can be used to detach the existing VMDK file and attach another VMDK file to the
+  virtual machine.
 options:
   backing:
     description:
-    - Existing physical resource backing for the virtual disk. Exactly one of I(backing)
-      or I(new_vmdk) must be specified.
-    - If unset, the virtual disk will not be connected to an existing backing.
-    - 'Valide attributes are:'
-    - ' - C(type) (str): This option defines the valid backing types for a virtual
-      disk.'
+    - 'Existing physical resource backing for the virtual disk. Exactly one of {@name
+      #backing} or {@name #newVmdk} must be specified. Required with I(state=[''present''])'
+    - 'Valid attributes are:'
+    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
+      a virtual disk.'
     - '   - Accepted values:'
     - '     - VMDK_FILE'
     - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk.'
-    - This field is optional and it is only relevant when the value of I(type) is
-      VMDK_FILE.
     type: dict
   disk:
     description:
-    - Virtual disk identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_disk).
-      Required with I(state=['absent'])
+    - Virtual disk identifier. Required with I(state=['absent', 'present'])
     type: str
   ide:
     description:
     - Address for attaching the device to a virtual IDE adapter.
-    - If unset, the server will choose an available address; if none is available,
-      the request will fail.
-    - 'Valide attributes are:'
-    - ' - C(master) (bool): Flag specifying whether the device should be the master
-      or slave device on the IDE adapter.'
-    - If unset, the server will choose an available connection type. If no IDE connections
-      are available, the request will be rejected.
+    - 'Valid attributes are:'
     - ' - C(primary) (bool): Flag specifying whether the device should be attached
       to the primary or secondary IDE adapter of the virtual machine.'
-    - If unset, the server will choose a adapter with an available connection. If
-      no IDE connections are available, the request will be rejected.
+    - ' - C(master) (bool): Flag specifying whether the device should be the master
+      or slave device on the IDE adapter.'
     type: dict
   label:
-    description: []
+    description:
+    - The name of the item
     type: str
   new_vmdk:
     description:
-    - Specification for creating a new VMDK backing for the virtual disk. Exactly
-      one of I(backing) or I(new_vmdk) must be specified.
-    - If unset, a new VMDK backing will not be created.
-    - 'Valide attributes are:'
+    - 'Specification for creating a new VMDK backing for the virtual disk.  Exactly
+      one of {@name #backing} or {@name #newVmdk} must be specified.'
+    - 'Valid attributes are:'
+    - ' - C(name) (str): Base name of the VMDK file.  The name should not include
+      the ''.vmdk'' file extension.'
     - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes.'
-    - If unset, defaults to a guest-specific capacity.
-    - ' - C(name) (str): Base name of the VMDK file. The name should not include the
-      ''.vmdk'' file extension.'
-    - If unset, a name (derived from the name of the virtual machine) will be chosen
-      by the server.
-    - ' - C(storage_policy) (dict): The I(storage_policy_spec) structure contains
-      information about the storage policy that is to be associated the with VMDK
-      file.'
-    - 'If unset the default storage policy of the target datastore (if applicable)
-      is applied. Currently a default storage policy is only supported by object based
-      datastores : VVol & vSAN. For non- object datastores, if unset then no storage
-      policy would be associated with the VMDK file.'
+    - ' - C(storage_policy) (dict): The {@name StoragePolicySpec} {@term structure}
+      contains information about the storage policy that is to be associated the with
+      VMDK file.'
     - '   - Accepted keys:'
     - '     - policy (string): Identifier of the storage policy which should be associated
       with the VMDK file.'
-    - 'When clients pass a value of this structure as a parameter, the field must
-      be the id of a resource returned by M(vcenter_storage_policies). '
     type: dict
   sata:
     description:
-    - Address for attaching the device to a virtual SATA adapter.
-    - If unset, the server will choose an available address; if none is available,
-      the request will fail.
-    - 'Valide attributes are:'
+    - Address for attaching the device to a virtual SATA adapter. Required with I(state=['present'])
+    - 'Valid attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
-    - If unset, the server will choose an available unit number on the specified adapter.
-      If there are no available connections on the adapter, the request will be rejected.
     type: dict
   scsi:
     description:
-    - Address for attaching the device to a virtual SCSI adapter.
-    - If unset, the server will choose an available address; if none is available,
-      the request will fail.
-    - 'Valide attributes are:'
+    - Address for attaching the device to a virtual SCSI adapter. Required with I(state=['present'])
+    - 'Valid attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
     - ' - C(unit) (int): Unit number of the device.'
-    - If unset, the server will choose an available unit number on the specified adapter.
-      If there are no available connections on the adapter, the request will be rejected.
     type: dict
   state:
     choices:
@@ -107,9 +88,8 @@ options:
     - SATA
     - SCSI
     description:
-    - The I(host_bus_adapter_type) enumerated type defines the valid types of host
-      bus adapters that may be used for attaching a virtual storage device to a virtual
-      machine.
+    - The {@name HostBusAdapterType} defines the valid types of host bus adapters
+      that may be used for attaching a virtual storage device to a virtual machine.
     type: str
   vcenter_hostname:
     description:
@@ -150,18 +130,18 @@ options:
     type: bool
   vm:
     description:
-    - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
+    - Virtual machine identifier. This parameter is mandatory.
+    required: true
     type: str
 author:
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)
 version_added: 1.0.0
 requirements:
 - python >= 3.6
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
@@ -180,7 +160,7 @@ EXAMPLES = """
     state: absent
 """
 
-RETURN = """
+RETURN = r"""
 # content generated by the update_return_section callback# task: Create a new disk
 id:
   description: moid of the resource
@@ -193,7 +173,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1_9/test_vm1_1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_1/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -205,30 +185,30 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
-            "backing": "spec/backing",
-            "ide": "spec/ide",
-            "new_vmdk": "spec/new_vmdk",
-            "sata": "spec/sata",
-            "scsi": "spec/scsi",
-            "type": "spec/type",
+            "backing": "backing",
+            "ide": "ide",
+            "new_vmdk": "new_vmdk",
+            "sata": "sata",
+            "scsi": "scsi",
+            "type": "type",
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "get": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
-        "body": {"backing": "spec/backing"},
+        "body": {"backing": "backing"},
         "path": {"disk": "disk", "vm": "vm"},
     },
-}
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -238,6 +218,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -293,14 +275,18 @@ def prepare_argument_spec():
         "default": "present",
     }
     argument_spec["type"] = {"type": "str", "choices": ["IDE", "SATA", "SCSI"]}
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["vm"] = {"required": True, "type": "str"}
 
     return argument_spec
 
 
 async def main():
+    required_if = list([])
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -321,15 +307,15 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL
+# template: default_module.j2
 def build_url(params):
-    return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/disk").format(
+    return ("https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/disk").format(
         **params
     )
 
 
-# template: main_content
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -341,24 +327,26 @@ async def entry_point(module, session):
         operation = module.params["state"]
 
     func = globals()["_" + operation]
+
     return await func(module.params, session)
 
 
-# FUNC_WITH_DATA_CREATE_TPL
 async def _create(params, session):
+
     if params["disk"]:
         _json = await get_device_info(session, build_url(params), params["disk"])
     else:
         _json = await exists(params, session, build_url(params), ["disk"])
     if _json:
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
         if "_update" in globals():
             params["disk"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
-    _url = ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/disk").format(
+    _url = ("https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/disk").format(
         **params
     )
     async with session.post(_url, json=payload) as resp:
@@ -372,28 +360,31 @@ async def _create(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        # Update the value field with all the details
-        if (resp.status in [200, 201]) and "value" in _json:
-            if isinstance(_json["value"], dict):
+
+        if resp.status in [200, 201]:
+            if isinstance(_json, str):  # 7.0.2 and greater
+                _id = _json  # TODO: fetch the object
+            elif isinstance(_json, dict) and "value" not in _json:
                 _id = list(_json["value"].values())[0]
-            else:
+            elif isinstance(_json, dict) and "value" in _json:
                 _id = _json["value"]
-            _json = await get_device_info(session, _url, _id)
+            _json_device_info = await get_device_info(session, _url, _id)
+            if _json_device_info:
+                _json = _json_device_info
 
         return await update_changed_flag(_json, resp.status, "create")
 
 
-# template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
-    subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/disk/{disk}")
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("/api/vcenter/vm/{vm}/hardware/disk/{disk}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
     _url = (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/disk/{disk}"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/disk/{disk}"
     ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.delete(_url, json=payload) as resp:
         try:
@@ -404,34 +395,28 @@ async def _delete(params, session):
         return await update_changed_flag(_json, resp.status, "delete")
 
 
-# FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/disk/{disk}"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/disk/{disk}"
     ).format(**params)
     async with session.get(_url) as resp:
         _json = await resp.json()
-        for k, v in _json["value"].items():
+        if "value" in _json:
+            value = _json["value"]
+        else:  # 7.0.2 and greater
+            value = _json
+        for k, v in value.items():
             if k in payload and payload[k] == v:
                 del payload[k]
             elif "spec" in payload:
                 if k in payload["spec"] and payload["spec"][k] == v:
                     del payload["spec"][k]
 
-        # NOTE: workaround for vcenter_vm_hardware, upgrade_version needs the upgrade_policy
-        # option. So we ensure it's here.
-        try:
-            if (
-                payload["spec"]["upgrade_version"]
-                and "upgrade_policy" not in payload["spec"]
-            ):
-                payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
-        except KeyError:
-            pass
-
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed
+            if "value" not in _json:  # 7.0.2
+                _json = {"value": _json}
             _json["id"] = params.get("disk")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json=payload) as resp:
@@ -440,6 +425,8 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        if "value" not in _json:  # 7.0.2
+            _json = {"value": _json}
         _json["id"] = params.get("disk")
         return await update_changed_flag(_json, resp.status, "update")
 

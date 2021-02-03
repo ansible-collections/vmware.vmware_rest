@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_resourcepool
 ***************************************
 
-**Manage the resourcepool of a vCenter**
+**Updates the configuration of a resource pool.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the resourcepool of a vCenter
+- Updates the configuration of a resource pool.
 
 
 
@@ -53,26 +53,19 @@ Parameters
                 </td>
                 <td>
                         <div>Resource allocation for CPU.</div>
-                        <div>if unset or empty, the CPU allocation of the resource pool will not be changed.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
-                        <div>If unset or empty, <em>expandable_reservation</em> will be set to true.</div>
-                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
-                        <div>If unset or empty, <em>limit</em> will be set to -1.</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
-                        <div>If unset or empty, <em>reservation</em> will be set to 0.</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
                         <div>- <code>shares</code> (dict): Shares are used in case of resource contention.</div>
                         <div>- Accepted keys:</div>
-                        <div>- level (string): This option defines the possible values for the allocation level.</div>
+                        <div>- level (string): The {@name Level} defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
                         <div>- <code>HIGH</code></div>
                         <div>- <code>CUSTOM</code></div>
-                        <div>- shares (integer): When <em>level</em> is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored.</div>
-                        <div>There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
-                        <div></div>
-                        <div>This field is optional and it is only relevant when the value of <em>level</em> is CUSTOM.</div>
+                        <div>- shares (integer): When {@link #level} is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored. There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
                 </td>
             </tr>
             <tr>
@@ -88,26 +81,19 @@ Parameters
                 </td>
                 <td>
                         <div>Resource allocation for CPU.</div>
-                        <div>if unset or empty, the CPU allocation of the resource pool will not be changed.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
-                        <div>If unset or empty, <em>expandable_reservation</em> will be set to true.</div>
-                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
-                        <div>If unset or empty, <em>limit</em> will be set to -1.</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
-                        <div>If unset or empty, <em>reservation</em> will be set to 0.</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
                         <div>- <code>shares</code> (dict): Shares are used in case of resource contention.</div>
                         <div>- Accepted keys:</div>
-                        <div>- level (string): This option defines the possible values for the allocation level.</div>
+                        <div>- level (string): The {@name Level} defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
                         <div>- <code>HIGH</code></div>
                         <div>- <code>CUSTOM</code></div>
-                        <div>- shares (integer): When <em>level</em> is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored.</div>
-                        <div>There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
-                        <div></div>
-                        <div>This field is optional and it is only relevant when the value of <em>level</em> is CUSTOM.</div>
+                        <div>- shares (integer): When {@link #level} is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored. There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
                 </td>
             </tr>
             <tr>
@@ -122,8 +108,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Name of the resource pool.</div>
-                        <div>if unset or empty, the name of the resource pool will not be changed. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Name of the resource pool. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -138,8 +123,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Parent of the created resource pool.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Parent of the created resource pool. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -154,8 +138,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the resource pool to be deleted.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Identifier of the resource pool to be deleted. Required with <em>state=[&#x27;absent&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -354,7 +337,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1060</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1235</div>
                 </td>
             </tr>
             <tr>
@@ -385,4 +368,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

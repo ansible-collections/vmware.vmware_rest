@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_networking_routes_info
 **********************************************************
 
-**Collect the guest networking routes information**
+**Returns information about network routing in the guest operating system.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the guest networking routes information
+- Returns information about network routing in the guest operating system.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine ID</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine ID Required with <em>state=[&#x27;list&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -192,8 +191,6 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Get guest network routes information</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;gateway_address&#x27;: &#x27;192.168.122.1&#x27;, &#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;0.0.0.0&#x27;, &#x27;prefix_length&#x27;: 0}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;192.168.122.0&#x27;, &#x27;prefix_length&#x27;: 24}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;fe80::&#x27;, &#x27;prefix_length&#x27;: 64}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;fe80::bba5:5d60:f47c:81b5&#x27;, &#x27;prefix_length&#x27;: 128}, {&#x27;interface_index&#x27;: 0, &#x27;network&#x27;: &#x27;ff00::&#x27;, &#x27;prefix_length&#x27;: 8}]</div>
                 </td>
             </tr>
     </table>
@@ -207,4 +204,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

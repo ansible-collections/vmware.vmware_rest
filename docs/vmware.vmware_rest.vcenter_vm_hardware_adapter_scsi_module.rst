@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi
 ***************************************************
 
-**Manage the SCSI adapter of a VM**
+**Updates the configuration of a virtual SCSI adapter.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the SCSI adapter of a VM
+- Updates the configuration of a virtual SCSI adapter.
 
 
 
@@ -52,8 +52,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual SCSI adapter identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_adapter_scsi</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Virtual SCSI adapter identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -69,7 +68,6 @@ Parameters
                 </td>
                 <td>
                         <div>SCSI bus number.</div>
-                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
                 </td>
             </tr>
             <tr>
@@ -84,6 +82,7 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>The name of the item</div>
                 </td>
             </tr>
             <tr>
@@ -98,8 +97,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Address of the SCSI adapter on the PCI bus. If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added.</div>
-                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
+                        <div>Address of the SCSI adapter on the PCI bus.  If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added.</div>
                 </td>
             </tr>
             <tr>
@@ -119,7 +117,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>sharing</em> enumerated type defines the valid bus sharing modes for a virtual SCSI adapter.</div>
+                        <div>The {@name Sharing} defines the valid bus sharing modes for a virtual SCSI adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -158,7 +156,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>type</em> enumerated type defines the valid emulation types for a virtual SCSI adapter.</div>
+                        <div>The {@name Type} defines the valid emulation types for a virtual SCSI adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -258,13 +256,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -351,4 +349,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)
