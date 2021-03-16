@@ -1,23 +1,28 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_vm_hardware_boot_device
 short_description: Manage the boot device of a VM
 description: Manage the boot device of a VM
 options:
   devices:
     description:
-    - Ordered list of boot devices.
-    - 'Valide attributes are:'
+    - Ordered list of boot devices. This parameter is mandatory.
+    - 'Valid attributes are:'
     - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot order.'
     - This field is optional and it is only relevant when the value of I(type) is
       DISK.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_vm_hardware_disk). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_vm_hardware_disk).
     - ' - C(nic) (str): Virtual Ethernet device. Ethernet device to use as boot device
       for this entry.'
     - This field is optional and it is only relevant when the value of I(type) is
@@ -26,12 +31,14 @@ options:
       be the id of a resource returned by M(vcenter_vm_hardware_ethernet). '
     - ' - C(type) (str): This option defines the valid device types that may be used
       as bootable devices.'
+    - '   This key is required.'
     - '   - Accepted values:'
     - '     - CDROM'
     - '     - DISK'
     - '     - ETHERNET'
     - '     - FLOPPY'
     elements: dict
+    required: true
     type: list
   state:
     choices:
@@ -79,7 +86,9 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). This
+      parameter is mandatory.
+    required: true
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -89,29 +98,20 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Set a boot device
-  vmware.vmware_rest.vcenter_vm_hardware_boot_device:
-    vm: '{{ test_vm1_info.id }}'
-    devices:
-    - type: CDROM
+EXAMPLES = r"""
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "set": {"query": {}, "body": {"devices": "devices"}, "path": {"vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -121,6 +121,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -163,16 +165,20 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["devices"] = {"type": "list", "elements": "dict"}
+    argument_spec["devices"] = {"required": True, "type": "list", "elements": "dict"}
     argument_spec["state"] = {"type": "str", "choices": ["set"], "default": "set"}
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["vm"] = {"required": True, "type": "str"}
 
     return argument_spec
 
 
 async def main():
+    required_if = list([["state", "set", ["devices", "vm"], True],])
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -193,15 +199,15 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL
+# template: default_module.j2
 def build_url(params):
     return (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/boot/device"
     ).format(**params)
 
 
-# template: main_content
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -213,13 +219,13 @@ async def entry_point(module, session):
         operation = module.params["state"]
 
     func = globals()["_" + operation]
+
     return await func(module.params, session)
 
 
-# template: FUNC_WITH_DATA_TPL
 async def _set(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["set"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["set"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["set"])
     subdevice_type = get_subdevice_type("/rest/vcenter/vm/{vm}/hardware/boot/device")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))

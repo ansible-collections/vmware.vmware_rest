@@ -1,10 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_vm_hardware_parallel
 short_description: Manage the parallel of a VM
 description: Manage the parallel of a VM
@@ -18,7 +23,7 @@ options:
     description:
     - Physical resource backing for the virtual parallel port.
     - If unset, defaults to automatic detection of a suitable host device.
-    - 'Valide attributes are:'
+    - 'Valid attributes are:'
     - ' - C(file) (str): Path of the file that should be used as the virtual parallel
       port backing.'
     - This field is optional and it is only relevant when the value of I(type) is
@@ -40,7 +45,7 @@ options:
     description:
     - Virtual parallel port identifier.
     - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_parallel).
-      Required with I(state=['absent', 'connect', 'disconnect'])
+      Required with I(state=['absent', 'connect', 'disconnect', 'present'])
     type: str
   start_connected:
     description:
@@ -97,7 +102,9 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). This
+      parameter is mandatory.
+    required: true
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -107,10 +114,10 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -138,10 +145,10 @@ PAYLOAD_FORMAT = {
     },
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -151,6 +158,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -203,14 +212,25 @@ def prepare_argument_spec():
         "choices": ["absent", "connect", "disconnect", "present"],
         "default": "present",
     }
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["vm"] = {"required": True, "type": "str"}
 
     return argument_spec
 
 
 async def main():
+    required_if = list(
+        [
+            ["state", "connect", ["port", "vm"], True],
+            ["state", "absent", ["port", "vm"], True],
+            ["state", "disconnect", ["port", "vm"], True],
+            ["state", "present", ["port", "vm"], True],
+        ]
+    )
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -231,15 +251,15 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL
+# template: default_module.j2
 def build_url(params):
     return (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel"
     ).format(**params)
 
 
-# template: main_content
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -251,13 +271,13 @@ async def entry_point(module, session):
         operation = module.params["state"]
 
     func = globals()["_" + operation]
+
     return await func(module.params, session)
 
 
-# template: FUNC_WITH_DATA_TPL
 async def _connect(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
     subdevice_type = get_subdevice_type(
         "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect"
     )
@@ -278,8 +298,8 @@ async def _connect(params, session):
         return await update_changed_flag(_json, resp.status, "connect")
 
 
-# FUNC_WITH_DATA_CREATE_TPL
 async def _create(params, session):
+
     if params["port"]:
         _json = await get_device_info(session, build_url(params), params["port"])
     else:
@@ -288,8 +308,7 @@ async def _create(params, session):
         if "_update" in globals():
             params["port"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = (
@@ -317,10 +336,9 @@ async def _create(params, session):
         return await update_changed_flag(_json, resp.status, "create")
 
 
-# template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type(
         "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
     )
@@ -340,10 +358,9 @@ async def _delete(params, session):
         return await update_changed_flag(_json, resp.status, "delete")
 
 
-# template: FUNC_WITH_DATA_TPL
 async def _disconnect(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["disconnect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
     subdevice_type = get_subdevice_type(
         "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/disconnect"
     )
@@ -364,9 +381,8 @@ async def _disconnect(params, session):
         return await update_changed_flag(_json, resp.status, "disconnect")
 
 
-# FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = (
         "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
     ).format(**params)
@@ -378,17 +394,6 @@ async def _update(params, session):
             elif "spec" in payload:
                 if k in payload["spec"] and payload["spec"][k] == v:
                     del payload["spec"][k]
-
-        # NOTE: workaround for vcenter_vm_hardware, upgrade_version needs the upgrade_policy
-        # option. So we ensure it's here.
-        try:
-            if (
-                payload["spec"]["upgrade_version"]
-                and "upgrade_policy" not in payload["spec"]
-            ):
-                payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
-        except KeyError:
-            pass
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

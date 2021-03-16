@@ -1,10 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_host
 short_description: Manage the host of a vCenter
 description: Manage the host of a vCenter
@@ -117,21 +122,10 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
-- name: Look up the different folders
-  set_fact:
-    my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
-      }}'
-- name: Connect the host(s)
-  vmware.vmware_rest.vcenter_host:
-    hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-    user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
-    password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-    thumbprint_verification: NONE
-    folder: '{{ my_host_folder.folder }}'
+EXAMPLES = r"""
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -164,10 +158,10 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -177,6 +171,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -241,8 +237,22 @@ def prepare_argument_spec():
 
 
 async def main():
+    required_if = list(
+        [
+            ["state", "absent", ["host"], True],
+            [
+                "state",
+                "present",
+                ["hostname", "password", "thumbprint_verification", "user_name"],
+                True,
+            ],
+        ]
+    )
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -263,13 +273,13 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL
+# template: default_module.j2
 def build_url(params):
     return ("https://{vcenter_hostname}" "/rest/vcenter/host").format(**params)
 
 
-# template: main_content
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -281,11 +291,12 @@ async def entry_point(module, session):
         operation = module.params["state"]
 
     func = globals()["_" + operation]
+
     return await func(module.params, session)
 
 
-# FUNC_WITH_DATA_CREATE_TPL
 async def _create(params, session):
+
     if params["host"]:
         _json = await get_device_info(session, build_url(params), params["host"])
     else:
@@ -294,8 +305,7 @@ async def _create(params, session):
         if "_update" in globals():
             params["host"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/rest/vcenter/host").format(**params)
@@ -321,10 +331,9 @@ async def _create(params, session):
         return await update_changed_flag(_json, resp.status, "create")
 
 
-# template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
     subdevice_type = get_subdevice_type("/rest/vcenter/host/{host}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))

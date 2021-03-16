@@ -1,5 +1,7 @@
 import hashlib
 import importlib
+import json
+
 from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.parsing.convert_bool import boolean
 
@@ -121,6 +123,13 @@ def gen_args(params, in_query_parameter):
 async def update_changed_flag(data, status, operation):
     if not data:
         data = {}
+    elif isinstance(data, list):  # e.g: appliance_infraprofile_configs_info
+        data = {"value": data}
+    elif isinstance(data, str) and data[0] in [
+        "{",
+        "]",
+    ]:  # e.g: appliance_infraprofile_configs
+        data = {"value": json.loads(data)}
     if operation == "create" and status in [200, 201]:
         data["failed"] = False
         data["changed"] = True
@@ -136,6 +145,16 @@ async def update_changed_flag(data, status, operation):
     elif operation == "delete" and status in [200, 204]:
         data["failed"] = False
         data["changed"] = True
+    elif data.get("type") == "com.vmware.vapi.std.errors.not_found":
+        if operation == "delete":
+            data["failed"] = False
+            data["changed"] = False
+        else:
+            data["failed"] = True
+            data["changed"] = False
+    elif operation in ["get", "list"] and status in [200]:
+        data["failed"] = False
+        data["changed"] = False
     elif data.get("type") == "com.vmware.vapi.std.errors.already_in_desired_state":
         data["failed"] = False
         data["changed"] = False
@@ -178,8 +197,10 @@ async def build_full_device_list(session, url, device_list):
 
     device_ids = []
     for i in device_list["value"]:
+        # Content library returns string {"value": "library_id"}
+        if isinstance(i, str):
+            return device_list
         fields = list(i.values())
-        key = list(i.keys())[0]
         if len(fields) != 1:
             # The list already comes with all the details
             return device_list

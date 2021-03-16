@@ -1,10 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_vm_info
 short_description: Collect the  information from a VM
 description: Collect the  information from a VM
@@ -14,8 +19,8 @@ options:
     - Clusters that must contain the virtual machine for the virtual machine to match
       the filter.
     - If unset or empty, virtual machines in any cluster match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_cluster_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_cluster_info).
     elements: str
     type: list
   filter_datacenters:
@@ -23,8 +28,8 @@ options:
     - Datacenters that must contain the virtual machine for the virtual machine to
       match the filter.
     - If unset or empty, virtual machines in any datacenter match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_datacenter_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_datacenter_info).
     elements: str
     type: list
   filter_folders:
@@ -32,8 +37,8 @@ options:
     - Folders that must contain the virtual machine for the virtual machine to match
       the filter.
     - If unset or empty, virtual machines in any folder match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_folder_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_folder_info).
     elements: str
     type: list
   filter_hosts:
@@ -41,8 +46,8 @@ options:
     - Hosts that must contain the virtual machine for the virtual machine to match
       the filter.
     - If unset or empty, virtual machines on any host match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_host_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_host_info).
     elements: str
     type: list
   filter_names:
@@ -62,16 +67,16 @@ options:
     - Resource pools that must contain the virtual machine for the virtual machine
       to match the filter.
     - If unset or empty, virtual machines in any resource pool match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_resourcepool_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_resourcepool_info).
     elements: str
     type: list
   filter_vms:
     description:
     - Identifiers of virtual machines that can match the filter.
     - If unset or empty, virtual machines with any identifier match the filter.
-    - 'When clients pass a value of this structure as a parameter, the field must
-      contain the id of resources returned by M(vcenter_vm_info). '
+    - When clients pass a value of this structure as a parameter, the field must contain
+      the id of resources returned by M(vcenter_vm_info).
     elements: str
     type: list
   vcenter_hostname:
@@ -114,7 +119,8 @@ options:
   vm:
     description:
     - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
+    - The parameter must be the id of a resource returned by M(vcenter_vm_info). Required
+      with I(state=['get'])
     type: str
 author:
 - Goneri Le Bouder (@goneri) <goneri@lebouder.net>
@@ -124,92 +130,10 @@ requirements:
 - aiohttp
 """
 
-EXAMPLES = """
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Collect the list of the existing VM
-  vmware.vmware_rest.vcenter_vm_info:
-  register: existing_vms
-  until: existing_vms is not failed
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-- name: Search with an invalid filter
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names: test_vm1_does_not_exists
+EXAMPLES = r"""
 """
 
-RETURN = """
-# content generated by the update_return_section callback# task: Collect information about a specific VM
-id:
-  description: moid of the resource
-  returned: On success
-  sample: vm-1329
-  type: str
-value:
-  description: Collect information about a specific VM
-  returned: On success
-  sample:
-    boot:
-      delay: 0
-      enter_setup_mode: 0
-      retry: 0
-      retry_delay: 10000
-      type: BIOS
-    boot_devices: []
-    cdroms: []
-    cpu:
-      cores_per_socket: 1
-      count: 1
-      hot_add_enabled: 0
-      hot_remove_enabled: 0
-    disks:
-    - key: '2000'
-      value:
-        backing:
-          type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_9/test_vm1.vmdk'
-        capacity: 17179869184
-        label: Hard disk 1
-        scsi:
-          bus: 0
-          unit: 0
-        type: SCSI
-    floppies: []
-    guest_OS: DEBIAN_8_64
-    hardware:
-      upgrade_policy: NEVER
-      upgrade_status: NONE
-      version: VMX_11
-    identity:
-      bios_uuid: 423371c6-fb2f-8b9c-3fc9-e2740edf57db
-      instance_uuid: 5033998f-164f-ca7e-f6e2-dc5b33aba813
-      name: test_vm1
-    instant_clone_frozen: 0
-    memory:
-      hot_add_enabled: 1
-      size_MiB: 1024
-    name: test_vm1
-    nics: []
-    nvme_adapters: []
-    parallel_ports: []
-    power_state: POWERED_OFF
-    sata_adapters: []
-    scsi_adapters:
-    - key: '1000'
-      value:
-        label: SCSI controller 0
-        scsi:
-          bus: 0
-          unit: 7
-        sharing: NONE
-        type: PVSCSI
-    serial_ports: []
-  type: dict
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -297,10 +221,10 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -310,6 +234,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -366,8 +292,12 @@ def prepare_argument_spec():
 
 
 async def main():
+    required_if = list([["state", "get", ["vm"], True],])
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -388,25 +318,26 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL_WITH_LIST
+# template: info_list_and_get_module.j2
 def build_url(params):
-    if params["vm"]:
+    if params.get("vm"):
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
-        return ("https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}").format(
-            **params
-        ) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(
-            **params
-        ) + gen_args(params, _in_query_parameters)
+        return (
+            ("https://{vcenter_hostname}" "/rest/vcenter/vm/").format(**params)
+            + params["vm"]
+            + gen_args(params, _in_query_parameters)
+        )
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return ("https://{vcenter_hostname}" "/rest/vcenter/vm").format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
 
 
-# template: FUNC
 async def entry_point(module, session):
     url = build_url(module.params)
     async with session.get(url) as resp:
         _json = await resp.json()
+
         if module.params.get("vm"):
             _json["id"] = module.params.get("vm")
         elif module.params.get("label"):  # TODO extend the list of filter
