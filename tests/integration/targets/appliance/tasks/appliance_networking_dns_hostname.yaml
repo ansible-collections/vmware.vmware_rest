@@ -1,5 +1,5 @@
 - name: Get the hostname configuration
-  appliance_networking_dns_hostname_info:
+  vmware.vmware_rest.appliance_networking_dns_hostname_info:
   register: result
 - debug: var=result
 
@@ -11,7 +11,7 @@
 #   # Fails with: "Host name is used as a network identity, the set operation is not allowed."
 
 - name: Test the hostname configuration
-  appliance_networking_dns_hostname:
+  vmware.vmware_rest.appliance_networking_dns_hostname:
     state: test
     name: vcenter.test
   register: result

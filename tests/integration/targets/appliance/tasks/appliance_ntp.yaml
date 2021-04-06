@@ -1,13 +1,13 @@
 - name: Get the NTP configuration
-  appliance_ntp_info:
+  vmware.vmware_rest.appliance_ntp_info:
 
 - name: Adjust the NTP configuration
-  appliance_ntp:
+  vmware.vmware_rest.appliance_ntp:
     servers:
       - time.google.com
 
 - name: Adjust the NTP configuration (again)
-  appliance_ntp:
+  vmware.vmware_rest.appliance_ntp:
     servers:
       - time.google.com
   register: result
@@ -20,7 +20,7 @@
   ignore_errors: True
 
 - name: Get the NTP configuration
-  appliance_ntp_info:
+  vmware.vmware_rest.appliance_ntp_info:
   register: result
 
 - debug: var=result
@@ -30,7 +30,7 @@
       - result.value == ["time.google.com"]
 
 - name: Test the NTP configuration
-  appliance_ntp:
+  vmware.vmware_rest.appliance_ntp:
     state: test
     servers:
       - time.google.com

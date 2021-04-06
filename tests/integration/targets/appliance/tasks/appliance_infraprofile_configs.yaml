@@ -1,10 +1,10 @@
 - name: List infraprofile configs
-  appliance_infraprofile_configs_info:
+  vmware.vmware_rest.appliance_infraprofile_configs_info:
   register: result
 - debug: var=result
 
 - name: Export the ApplianceManagement profile
-  appliance_infraprofile_configs:
+  vmware.vmware_rest.appliance_infraprofile_configs:
     state: export
     profiles:
       - ApplianceManagement

@@ -1,10 +1,10 @@
 - name: Get the firewall inbound configuration
-  appliance_networking_firewall_inbound_info:
+  vmware.vmware_rest.appliance_networking_firewall_inbound_info:
   register: result
 - debug: var=result
 
 - name: Ensure the rules parameter is mandatory
-  appliance_networking_firewall_inbound:
+  vmware.vmware_rest.appliance_networking_firewall_inbound:
   register: result
   failed_when:
   - not(result.failed)
@@ -12,7 +12,7 @@
 - debug: var=result
 
 - name: Set a firewall rule
-  appliance_networking_firewall_inbound:
+  vmware.vmware_rest.appliance_networking_firewall_inbound:
     rules:
       - address: 1.2.3.4
         prefix: 32

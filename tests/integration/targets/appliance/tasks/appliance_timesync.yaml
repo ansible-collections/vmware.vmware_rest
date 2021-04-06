@@ -1,9 +1,9 @@
 - name: Get information regarding the clock synchronization
-  appliance_timesync_info:
+  vmware.vmware_rest.appliance_timesync_info:
   register: result
 
 - debug: var=result
 
 - name: Ensure we use NTP
-  appliance_timesync:
+  vmware.vmware_rest.appliance_timesync:
     mode: NTP

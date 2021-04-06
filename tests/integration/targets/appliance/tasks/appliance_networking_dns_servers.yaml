@@ -1,25 +1,25 @@
 - name: Get the DNS servers
-  appliance_networking_dns_servers_info:
+  vmware.vmware_rest.appliance_networking_dns_servers_info:
   register: result
   ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
 - name: Set the DNS servers
-  appliance_networking_dns_servers:
+  vmware.vmware_rest.appliance_networking_dns_servers:
     foo: var
   register: result
   ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
 - name: Set the DNS servers (again)
-  appliance_networking_dns_servers:
+  vmware.vmware_rest.appliance_networking_dns_servers:
     foo: var
   register: result
   ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
 - name: Test the DNS servers
-  appliance_networking_dns_servers:
+  vmware.vmware_rest.appliance_networking_dns_servers:
     state: test
     servers:
       - var

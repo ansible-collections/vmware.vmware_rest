@@ -1,12 +1,12 @@
 - name: Collect the IPv6 network information
-  appliance_networking_interfaces_ipv6_info:
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6_info:
     interface_name: nic0
   register: result
 
 - debug: var=result
 
 - name: Set the IPv6 network information of nic99 (which does not exist)
-  appliance_networking_interfaces_ipv6:
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
     interface_name: nic99
     config:
       mode: DHCP

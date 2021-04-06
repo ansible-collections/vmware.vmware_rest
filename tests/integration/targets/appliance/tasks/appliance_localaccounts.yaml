@@ -1,15 +1,15 @@
 - name: Get the global policy of the local accounts
-  appliance_localaccounts_globalpolicy_info:
+  vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
   register: result
 
 - debug: var=result
 
 - name: Update the global policy of the local accounts
-  appliance_localaccounts_globalpolicy:
+  vmware.vmware_rest.appliance_localaccounts_globalpolicy:
     warn_days: 5
 
 - name: Update the global policy of the local accounts (idempotency)
-  appliance_localaccounts_globalpolicy:
+  vmware.vmware_rest.appliance_localaccounts_globalpolicy:
     warn_days: 5
   register: result
 - debug: var=result
@@ -21,18 +21,18 @@
   ignore_errors: True
 
 - name: List the local accounts
-  appliance_localaccounts_info:
+  vmware.vmware_rest.appliance_localaccounts_info:
   register: result
 
 - debug: var=result
 
 - name: _Ensure there is no existing account
-  appliance_localaccounts:
+  vmware.vmware_rest.appliance_localaccounts:
     username: foobar
     state: absent
 
 - name: Add a local accounts
-  appliance_localaccounts:
+  vmware.vmware_rest.appliance_localaccounts:
     username: foobar
     config:
       full_name: Foobar
@@ -47,7 +47,7 @@
 - debug: var=result
 
 - name: Add a local accounts (idempotency)
-  appliance_localaccounts:
+  vmware.vmware_rest.appliance_localaccounts:
     username: foobar
     config:
       full_name: Foobar
@@ -69,7 +69,7 @@
   ignore_errors: True
 
 - name: Change account email address
-  appliance_localaccounts:
+  vmware.vmware_rest.appliance_localaccounts:
     username: foobar
     config:
       full_name: Foobar
@@ -83,13 +83,13 @@
 - debug: var=result
 
 - name: Get the information about the new account
-  appliance_localaccounts_info:
+  vmware.vmware_rest.appliance_localaccounts_info:
     username: foobar
   register: result
 - debug: var=result
 
 - name: Delete a local accounts
-  appliance_localaccounts:
+  vmware.vmware_rest.appliance_localaccounts:
     username: foobar
     state: absent
   register: result

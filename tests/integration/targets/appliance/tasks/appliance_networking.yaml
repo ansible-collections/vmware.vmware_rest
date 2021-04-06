@@ -1,11 +1,11 @@
 - name: Get network information
-  appliance_networking_info:
+  vmware.vmware_rest.appliance_networking_info:
   register: result
 - debug: var=result
 
 
 - name: Set network information
-  appliance_networking:
+  vmware.vmware_rest.appliance_networking:
     ipv6_enabled: False
   register: result
 - debug: var=result

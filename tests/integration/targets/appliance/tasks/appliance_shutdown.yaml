@@ -1,5 +1,5 @@
 - name: Ensure there is no ongoing shutdown
-  appliance_shutdown_info:
+  vmware.vmware_rest.appliance_shutdown_info:
   register: result
 
 - debug: var=result
@@ -8,7 +8,7 @@
       - result.value.action == ""
 
 - name: Shutdown the appliance
-  appliance_shutdown:
+  vmware.vmware_rest.appliance_shutdown:
     state: poweroff
     reason: this is an example
     delay: 5
@@ -16,13 +16,13 @@
 - debug: var=result
 
 - name: Abort the shutdown of the appliance
-  appliance_shutdown:
+  vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result
 - debug: var=result
 
 - name: Reboot the appliance
-  appliance_shutdown:
+  vmware.vmware_rest.appliance_shutdown:
     state: reboot
     reason: this is an example
     delay: 5
@@ -30,7 +30,7 @@
 - debug: var=result
 
 - name: Abort the reboot
-  appliance_shutdown:
+  vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result
 - debug: var=result
@@ -42,7 +42,7 @@
   ignore_errors: True
 
 - name: Abort the reboot (again)
-  appliance_shutdown:
+  vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result
 - debug: var=result

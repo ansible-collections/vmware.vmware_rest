@@ -1,11 +1,11 @@
 - name: Get DNS domains configuration
-  appliance_networking_dns_domains_info:
+  vmware.vmware_rest.appliance_networking_dns_domains_info:
   register: result
 
 - debug: var=result
 
 - name: Update the domain configuration
-  appliance_networking_dns_domains:
+  vmware.vmware_rest.appliance_networking_dns_domains:
     domains:
       - foobar
   register: result
@@ -13,7 +13,7 @@
 - debug: var=result
 
 - name: Update the domain configuration (again)
-  appliance_networking_dns_domains:
+  vmware.vmware_rest.appliance_networking_dns_domains:
     domains:
       - foobar
   register: result
@@ -26,7 +26,7 @@
   ignore_errors: True
 
 - name: Add another domain configuration
-  appliance_networking_dns_domains:
+  vmware.vmware_rest.appliance_networking_dns_domains:
     domain: barfoo
     state: add
   register: result

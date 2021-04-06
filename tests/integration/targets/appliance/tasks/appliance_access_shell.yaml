@@ -1,16 +1,16 @@
 - name: Check if the Shell is enabled
-  appliance_access_shell_info:
+  vmware.vmware_rest.appliance_access_shell_info:
   register: result
 
 - debug: var=result
 
 - name: Disable the Shell
-  appliance_access_shell:
+  vmware.vmware_rest.appliance_access_shell:
     enabled: False
     timeout: 600
 
 - name: _Disable the Shell (again)
-  appliance_access_shell:
+  vmware.vmware_rest.appliance_access_shell:
     enabled: False
     timeout: 600
   register: result
@@ -23,7 +23,7 @@
   ignore_errors: True
 
 - name: Enable the Shell with a timeout
-  appliance_access_shell:
+  vmware.vmware_rest.appliance_access_shell:
     enabled: True
     timeout: 600
   register: result
