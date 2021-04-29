@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_cpu
 ******************************************
 
-**Manage the cpu of a VM**
+**Updates the CPU-related settings of a virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the cpu of a VM
+- Updates the CPU-related settings of a virtual machine.
 
 
 
@@ -52,8 +52,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New number of CPU cores per socket. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>New number of CPU cores per socket.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
                 </td>
             </tr>
             <tr>
@@ -68,12 +67,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
-                        <div>The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</div>
-                        <div></div>
-                        <div>If the virtual machine is running, the number of CPU cores may only be increased if <em>hot_add_enabled</em> is true, and may only be decreased if <em>hot_remove_enabled</em> is true.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>New number of CPU cores.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket. The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, the number of CPU cores may only be increased if {@link Info#hotAddEnabled} is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true.</div>
                 </td>
             </tr>
             <tr>
@@ -92,10 +86,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled.</div>
-                        <div>This field may only be modified if the virtual machine is powered off.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
                 </td>
             </tr>
             <tr>
@@ -114,10 +105,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled.</div>
-                        <div>This field may only be modified if the virtual machine is powered off.</div>
-                        <div></div>
-                        <div>If unset, the value is unchanged.</div>
+                        <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
                 </td>
             </tr>
             <tr>
@@ -234,13 +222,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -320,4 +308,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

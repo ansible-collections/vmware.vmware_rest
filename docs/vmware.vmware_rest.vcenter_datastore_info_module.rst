@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datastore_info
 *****************************************
 
-**Collect the information associated with the vCenter datastores**
+**Retrieves information about the datastore indicated by {@param.name datastore}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the information associated with the vCenter datastores
+- Retrieves information about the datastore indicated by {@param.name datastore}.
 
 
 
@@ -43,23 +43,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>datastore</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Identifier of the datastore for which information should be retrieved.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_datastore_info</span>.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datacenters</b>
+                    <b>datacenters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -70,14 +54,28 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the datastore for the datastore to match the filter.</div>
-                        <div>If unset or empty, datastores in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datastores</b>
+                    <b>datastore</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Identifier of the datastore for which information should be retrieved. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>datastores</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -88,14 +86,12 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of datastores that can match the filter.</div>
-                        <div>If unset or empty, datastores with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datastore_info</span>.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_folders</b>
+                    <b>folders</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -106,14 +102,13 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the datastore for the datastore to match the filter.</div>
-                        <div>If unset or empty, datastores in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_names</b>
+                    <b>names</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -123,14 +118,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that datastores must have to match the filter (see <em>name</em>).</div>
-                        <div>If unset or empty, datastores with any name match the filter.</div>
+                        <div>Names that datastores must have to match the filter (see {@link Info#name}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_types</b>
+                    <b>types</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -140,8 +135,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Types that datastores must have to match the filter (see <em>type</em>).</div>
-                        <div>If unset or empty, datastores with any type match the filter.</div>
+                        <div>Types that datastores must have to match the filter (see {@link Summary#type}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_types</div>
                 </td>
             </tr>
             <tr>
@@ -282,7 +277,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve a list of all the datastores</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1323&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1324&#x27;, &#x27;free_space&#x27;: 24638259200, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1325&#x27;, &#x27;free_space&#x27;: 24638259200, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1240&#x27;, &#x27;free_space&#x27;: 24422141952, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1241&#x27;, &#x27;free_space&#x27;: 24481603584, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 15032385536, &#x27;datastore&#x27;: &#x27;datastore-1242&#x27;, &#x27;free_space&#x27;: 13523484672, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}]</div>
                 </td>
             </tr>
     </table>
@@ -296,4 +291,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

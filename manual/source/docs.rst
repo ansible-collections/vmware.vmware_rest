@@ -5,6 +5,74 @@ Manual of the vmware.vmware_rest modules
 .. toctree::
     :maxdepth: 1
 
+    docs/vmware.vmware_rest.appliance_access_consolecli_info_module
+    docs/vmware.vmware_rest.appliance_access_consolecli_module
+    docs/vmware.vmware_rest.appliance_access_dcui_info_module
+    docs/vmware.vmware_rest.appliance_access_dcui_module
+    docs/vmware.vmware_rest.appliance_access_shell_info_module
+    docs/vmware.vmware_rest.appliance_access_shell_module
+    docs/vmware.vmware_rest.appliance_access_ssh_info_module
+    docs/vmware.vmware_rest.appliance_access_ssh_module
+    docs/vmware.vmware_rest.appliance_health_applmgmt_info_module
+    docs/vmware.vmware_rest.appliance_health_database_info_module
+    docs/vmware.vmware_rest.appliance_health_databasestorage_info_module
+    docs/vmware.vmware_rest.appliance_health_load_info_module
+    docs/vmware.vmware_rest.appliance_health_mem_info_module
+    docs/vmware.vmware_rest.appliance_health_softwarepackages_info_module
+    docs/vmware.vmware_rest.appliance_health_storage_info_module
+    docs/vmware.vmware_rest.appliance_health_swap_info_module
+    docs/vmware.vmware_rest.appliance_health_system_info_module
+    docs/vmware.vmware_rest.appliance_infraprofile_configs_info_module
+    docs/vmware.vmware_rest.appliance_infraprofile_configs_module
+    docs/vmware.vmware_rest.appliance_localaccounts_globalpolicy_info_module
+    docs/vmware.vmware_rest.appliance_localaccounts_globalpolicy_module
+    docs/vmware.vmware_rest.appliance_localaccounts_info_module
+    docs/vmware.vmware_rest.appliance_localaccounts_module
+    docs/vmware.vmware_rest.appliance_monitoring_info_module
+    docs/vmware.vmware_rest.appliance_monitoring_query_module
+    docs/vmware.vmware_rest.appliance_networking_dns_domains_info_module
+    docs/vmware.vmware_rest.appliance_networking_dns_domains_module
+    docs/vmware.vmware_rest.appliance_networking_dns_hostname_info_module
+    docs/vmware.vmware_rest.appliance_networking_dns_hostname_module
+    docs/vmware.vmware_rest.appliance_networking_dns_servers_info_module
+    docs/vmware.vmware_rest.appliance_networking_dns_servers_module
+    docs/vmware.vmware_rest.appliance_networking_firewall_inbound_info_module
+    docs/vmware.vmware_rest.appliance_networking_firewall_inbound_module
+    docs/vmware.vmware_rest.appliance_networking_info_module
+    docs/vmware.vmware_rest.appliance_networking_interfaces_info_module
+    docs/vmware.vmware_rest.appliance_networking_interfaces_ipv4_info_module
+    docs/vmware.vmware_rest.appliance_networking_interfaces_ipv4_module
+    docs/vmware.vmware_rest.appliance_networking_interfaces_ipv6_info_module
+    docs/vmware.vmware_rest.appliance_networking_interfaces_ipv6_module
+    docs/vmware.vmware_rest.appliance_networking_module
+    docs/vmware.vmware_rest.appliance_networking_noproxy_info_module
+    docs/vmware.vmware_rest.appliance_networking_noproxy_module
+    docs/vmware.vmware_rest.appliance_networking_proxy_info_module
+    docs/vmware.vmware_rest.appliance_networking_proxy_module
+    docs/vmware.vmware_rest.appliance_ntp_info_module
+    docs/vmware.vmware_rest.appliance_ntp_module
+    docs/vmware.vmware_rest.appliance_services_info_module
+    docs/vmware.vmware_rest.appliance_services_module
+    docs/vmware.vmware_rest.appliance_shutdown_info_module
+    docs/vmware.vmware_rest.appliance_shutdown_module
+    docs/vmware.vmware_rest.appliance_system_globalfips_info_module
+    docs/vmware.vmware_rest.appliance_system_globalfips_module
+    docs/vmware.vmware_rest.appliance_system_storage_info_module
+    docs/vmware.vmware_rest.appliance_system_storage_module
+    docs/vmware.vmware_rest.appliance_system_time_info_module
+    docs/vmware.vmware_rest.appliance_system_time_timezone_info_module
+    docs/vmware.vmware_rest.appliance_system_time_timezone_module
+    docs/vmware.vmware_rest.appliance_system_version_info_module
+    docs/vmware.vmware_rest.appliance_timesync_info_module
+    docs/vmware.vmware_rest.appliance_timesync_module
+    docs/vmware.vmware_rest.appliance_update_info_module
+    docs/vmware.vmware_rest.appliance_vmon_service_info_module
+    docs/vmware.vmware_rest.appliance_vmon_service_module
+    docs/vmware.vmware_rest.content_library_item_info_module
+    docs/vmware.vmware_rest.content_locallibrary_info_module
+    docs/vmware.vmware_rest.content_locallibrary_module
+    docs/vmware.vmware_rest.content_subscribedlibrary_info_module
+    docs/vmware.vmware_rest.content_subscribedlibrary_module
     docs/vmware.vmware_rest.vcenter_cluster_info_module
     docs/vmware.vmware_rest.vcenter_datacenter_info_module
     docs/vmware.vmware_rest.vcenter_datacenter_module
@@ -16,11 +84,22 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.vcenter_resourcepool_info_module
     docs/vmware.vmware_rest.vcenter_resourcepool_module
     docs/vmware.vmware_rest.vcenter_storage_policies_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_customization_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_environment_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_directories_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_files_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_files_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_module
     docs/vmware.vmware_rest.vcenter_vm_guest_identity_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_networking_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info_module
     docs/vmware.vmware_rest.vcenter_vm_guest_networking_routes_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_operations_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_power_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_power_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_processes_info_module
+    docs/vmware.vmware_rest.vcenter_vm_guest_processes_module
     docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info_module
     docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_module
     docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info_module
@@ -53,7 +132,10 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.vcenter_vm_power_info_module
     docs/vmware.vmware_rest.vcenter_vm_power_module
     docs/vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info_module
+    docs/vmware.vmware_rest.vcenter_vm_storage_policy_compliance_module
     docs/vmware.vmware_rest.vcenter_vm_storage_policy_info_module
     docs/vmware.vmware_rest.vcenter_vm_storage_policy_module
     docs/vmware.vmware_rest.vcenter_vm_tools_info_module
+    docs/vmware.vmware_rest.vcenter_vm_tools_installer_info_module
+    docs/vmware.vmware_rest.vcenter_vm_tools_installer_module
     docs/vmware.vmware_rest.vcenter_vm_tools_module

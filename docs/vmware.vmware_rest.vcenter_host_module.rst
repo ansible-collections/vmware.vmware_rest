@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_host
 *******************************
 
-**Manage the host of a vCenter**
+**Connect to the host corresponding to {@param.name host} previously added to the vCenter server.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the host of a vCenter
+- Connect to the host corresponding to {@param.name host} previously added to the vCenter server.
 
 
 
@@ -53,8 +53,6 @@ Parameters
                 </td>
                 <td>
                         <div>Host and cluster folder in which the new standalone host should be created.</div>
-                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the host; if a folder cannot be chosen, the host creation operation will fail.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -74,7 +72,6 @@ Parameters
                 </td>
                 <td>
                         <div>Whether host should be added to the vCenter Server even if it is being managed by another vCenter Server. The original vCenterServer loses connection to the host.</div>
-                        <div>If unset, forceAdd is default to false.</div>
                 </td>
             </tr>
             <tr>
@@ -89,8 +86,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the host to be deleted.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_host_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Identifier of the host to be disconnected. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -136,7 +132,6 @@ Parameters
                 </td>
                 <td>
                         <div>The port of the host.</div>
-                        <div>If unset, port 443 will be used.</div>
                 </td>
             </tr>
             <tr>
@@ -151,6 +146,8 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li>absent</li>
+                                    <li>connect</li>
+                                    <li>disconnect</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
@@ -170,7 +167,6 @@ Parameters
                 </td>
                 <td>
                         <div>The thumbprint of the SSL certificate, which the host is expected to have. The thumbprint is always computed using the SHA1 hash and is the string representation of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx where, &#x27;x&#x27; represents a hexadecimal digit.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>thumbprint_verification</em> is THUMBPRINT.</div>
                 </td>
             </tr>
             <tr>
@@ -189,7 +185,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>thumbprint_verification</em> enumerated type defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The {@name ThumbprintVerification} defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -322,6 +318,38 @@ Examples
 
 
 
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Connect the host(s)</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1239</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
+
 
 Status
 ------
@@ -330,4 +358,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

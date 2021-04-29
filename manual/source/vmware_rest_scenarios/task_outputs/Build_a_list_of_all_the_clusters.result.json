@@ -1,8 +1,8 @@
 {
     "value": [
         {
-            "drs_enabled": false,
-            "cluster": "domain-c1315",
+            "drs_enabled": true,
+            "cluster": "domain-c1231",
             "name": "my_cluster",
             "ha_enabled": false
         }

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_folder_info
 **************************************
 
-**Collect the information associated with the vCenter folders**
+**Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the {@link FilterSpec}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the information associated with the vCenter folders
+- Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the {@link FilterSpec}.
 
 
 
@@ -43,7 +43,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datacenters</b>
+                    <b>datacenters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -54,14 +54,13 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the folder for the folder to match the filter.</div>
-                        <div>If unset or empty, folder in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_folders</b>
+                    <b>folders</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -72,14 +71,13 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of folders that can match the filter.</div>
-                        <div>If unset or empty, folders with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_names</b>
+                    <b>names</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -89,14 +87,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that folders must have to match the filter (see <em>name</em>).</div>
-                        <div>If unset or empty, folders with any name match the filter.</div>
+                        <div>Names that folders must have to match the filter (see {@link Summary#name}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_parent_folders</b>
+                    <b>parent_folders</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -107,14 +105,12 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the folder for the folder to match the filter.</div>
-                        <div>If unset or empty, folder in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_type</b>
+                    <b>type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -130,7 +126,8 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>type</em> enumerated type defines the type of a vCenter Server folder. The type of a folder determines what what kinds of children can be contained in the folder.</div>
+                        <div>The {@name Type} defines the type of a vCenter Server folder.  The type of a folder determines what what kinds of children can be contained in the folder.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_type</div>
                 </td>
             </tr>
             <tr>
@@ -281,7 +278,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Build a list of all the folders with the type VIRTUAL_MACHINE and called vm</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1310&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1226&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
                 </td>
             </tr>
     </table>
@@ -295,4 +292,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

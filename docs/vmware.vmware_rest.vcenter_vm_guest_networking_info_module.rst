@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_networking_info
 ***************************************************
 
-**Collect the guest networking information**
+**Returns information about the network configuration in the guest operating system.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the guest networking information
+- Returns information about the network configuration in the guest operating system.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine ID</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine ID Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -192,8 +191,6 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Get guest networking information</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;dns&#x27;: {&#x27;ip_addresses&#x27;: [&#x27;10.0.2.3&#x27;], &#x27;search_domains&#x27;: [&#x27;localdomain&#x27;]}, &#x27;dns_values&#x27;: {&#x27;domain_name&#x27;: &#x27;localdomain&#x27;, &#x27;host_name&#x27;: &#x27;localhost.localdomain&#x27;}}</div>
                 </td>
             </tr>
     </table>
@@ -207,4 +204,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_libraryitem_info
 **********************************************
 
-**Collect the libraryitem  information from a VM**
+**Returns the information about the library item associated with the virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the libraryitem  information from a VM
+- Returns the information about the library item associated with the virtual machine.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the virtual machine.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Identifier of the virtual machine. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -205,4 +204,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

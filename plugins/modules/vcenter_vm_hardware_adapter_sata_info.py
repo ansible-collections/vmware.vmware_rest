@@ -1,21 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_vm_hardware_adapter_sata_info
-short_description: Collect the SATA adapter information from a VM
-description: Collect the SATA adapter information from a VM
+short_description: Returns information about a virtual SATA adapter.
+description: Returns information about a virtual SATA adapter.
 options:
   adapter:
     description:
-    - Virtual SATA adapter identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_adapter_sata).
+    - Virtual SATA adapter identifier. Required with I(state=['get'])
     type: str
   label:
-    description: []
+    description:
+    - The name of the item
     type: str
   vcenter_hostname:
     description:
@@ -56,41 +61,37 @@ options:
     type: bool
   vm:
     description:
-    - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
+    - Virtual machine identifier. This parameter is mandatory.
+    required: true
     type: str
 author:
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)
 version_added: 1.0.0
 requirements:
 - python >= 3.6
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
-        "body": {
-            "bus": "spec/bus",
-            "pci_slot_number": "spec/pci_slot_number",
-            "type": "spec/type",
-        },
+        "body": {"bus": "bus", "pci_slot_number": "pci_slot_number", "type": "type"},
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "get": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
-}
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -100,6 +101,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -144,14 +147,18 @@ def prepare_argument_spec():
 
     argument_spec["adapter"] = {"type": "str"}
     argument_spec["label"] = {"type": "str"}
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["vm"] = {"required": True, "type": "str"}
 
     return argument_spec
 
 
 async def main():
+    required_if = list([])
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -172,26 +179,32 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL_WITH_LIST
+# template: info_list_and_get_module.j2
 def build_url(params):
-    if params["adapter"]:
+    if params.get("adapter"):
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
         return (
-            "https://{vcenter_hostname}"
-            "/rest/vcenter/vm/{vm}/hardware/adapter/sata/{adapter}"
-        ).format(**params) + gen_args(params, _in_query_parameters)
-    else:
-        _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-        return (
-            "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/adapter/sata"
-        ).format(**params) + gen_args(params, _in_query_parameters)
+            (
+                "https://{vcenter_hostname}"
+                "/api/vcenter/vm/{vm}/hardware/adapter/sata/"
+            ).format(**params)
+            + params["adapter"]
+            + gen_args(params, _in_query_parameters)
+        )
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return (
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/adapter/sata"
+    ).format(**params) + gen_args(params, _in_query_parameters)
 
 
-# template: FUNC
 async def entry_point(module, session):
     url = build_url(module.params)
     async with session.get(url) as resp:
         _json = await resp.json()
+
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
+
         if module.params.get("adapter"):
             _json["id"] = module.params.get("adapter")
         elif module.params.get("label"):  # TODO extend the list of filter

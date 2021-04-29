@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_cdrom
 ********************************************
 
-**Manage the cdrom of a VM**
+**Adds a virtual CD-ROM device to the virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the cdrom of a VM
+- Adds a virtual CD-ROM device to the virtual machine.
 
 
 
@@ -57,7 +57,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the guest can connect and disconnect the device.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -72,23 +71,20 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Physical resource backing for the virtual CD-ROM device.</div>
-                        <div>If unset, defaults to automatic detection of a suitable host device.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>device_access_type</code> (str): This option defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
-                        <div>- Accepted values:</div>
-                        <div>- EMULATION</div>
-                        <div>- PASSTHRU</div>
-                        <div>- PASSTHRU_EXCLUSIVE</div>
-                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing.</div>
-                        <div>If unset, the virtual CD-ROM device will be configured to automatically detect a suitable host device.</div>
-                        <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is ISO_FILE.</div>
-                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual CD-ROM device.</div>
+                        <div>Physical resource backing for the virtual CD-ROM device. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>type</code> (str): The {@name BackingType} defines the valid backing types for a virtual CD-ROM device.</div>
                         <div>- Accepted values:</div>
                         <div>- ISO_FILE</div>
                         <div>- HOST_DEVICE</div>
                         <div>- CLIENT_DEVICE</div>
+                        <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
+                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing.</div>
+                        <div>- <code>device_access_type</code> (str): The {@name DeviceAccessType} defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
+                        <div>- Accepted values:</div>
+                        <div>- EMULATION</div>
+                        <div>- PASSTHRU</div>
+                        <div>- PASSTHRU_EXCLUSIVE</div>
                 </td>
             </tr>
             <tr>
@@ -103,8 +99,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual CD-ROM device identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_cdrom</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>Virtual CD-ROM device identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -120,12 +115,9 @@ Parameters
                 </td>
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
-                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
-                        <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
-                        <div>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</div>
+                        <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -140,6 +132,7 @@ Parameters
                 <td>
                 </td>
                 <td>
+                        <div>The name of the item</div>
                 </td>
             </tr>
             <tr>
@@ -154,12 +147,10 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Address for attaching the device to a virtual SATA adapter.</div>
-                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
-                        <div>Valide attributes are:</div>
+                        <div>Address for attaching the device to a virtual SATA adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
                         <div>- <code>unit</code> (int): Unit number of the device.</div>
-                        <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</div>
                 </td>
             </tr>
             <tr>
@@ -179,7 +170,6 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -218,7 +208,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <em>host_bus_adapter_type</em> enumerated type defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
+                        <div>The {@name HostBusAdapterType} defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -318,13 +308,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -413,4 +403,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

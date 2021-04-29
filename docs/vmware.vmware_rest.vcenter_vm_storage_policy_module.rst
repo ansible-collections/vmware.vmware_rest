@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_storage_policy
 ********************************************
 
-**Manage the storage policy of a VM**
+**Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the storage policy of a VM
+- Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.
 
 
 
@@ -46,27 +46,13 @@ Parameters
                     <b>disks</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=dictionary</span>
+                        <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
                         <div>Storage policy or policies to be used when reconfiguring virtual machine diks.</div>
-                        <div>if unset the current storage policy is retained.</div>
-                        <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>key</code> (str):</div>
-                        <div>- <code>value</code> (dict):</div>
-                        <div>- Accepted keys:</div>
-                        <div>- policy (string): Storage Policy identification.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is USE_SPECIFIED_POLICY.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>
-                        <div>- type (string): This option defines the choices for how to specify the policy to be associated with a virtual disk.</div>
-                        <div>Accepted value for this field:</div>
-                        <div>- <code>USE_SPECIFIED_POLICY</code></div>
-                        <div>- <code>USE_DEFAULT_POLICY</code></div>
                 </td>
             </tr>
             <tr>
@@ -183,13 +169,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -199,21 +185,19 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Storage policy to be used when reconfiguring the virtual machine home.</div>
-                        <div>if unset the current storage policy is retained.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>policy</code> (str): Storage Policy identification.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is USE_SPECIFIED_POLICY.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_storage_policies</span>.</div>
-                        <div>- <code>type</code> (str): This option defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory.</div>
+                        <div>Storage policy to be used when reconfiguring the virtual machine home. This parameter is mandatory.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>type</code> (str): The {@name PolicyType} defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory.</div>
                         <div>- Accepted values:</div>
                         <div>- USE_SPECIFIED_POLICY</div>
                         <div>- USE_DEFAULT_POLICY</div>
+                        <div>- <code>policy</code> (str): Storage Policy identification.</div>
                 </td>
             </tr>
     </table>
@@ -231,13 +215,16 @@ Examples
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
+    - name: Prepare the disk policy dict
+      set_fact:
+        vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy,\
+          \ 'type': 'USE_SPECIFIED_POLICY'} }) }}"
     - name: Adjust VM storage policy
       vmware.vmware_rest.vcenter_vm_storage_policy:
         vm: '{{ test_vm1_info.id }}'
-        disks:
-        - key: '{{ my_new_disk.id }}'
-          value:
-            type: USE_DEFAULT_POLICY
+        vm_home:
+          type: USE_DEFAULT_POLICY
+        disks: '{{ vm_disk_policy }}'
 
 
 
@@ -268,6 +255,21 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <br/>
                 </td>
             </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Adjust VM storage policy</div>
+                    <br/>
+                </td>
+            </tr>
     </table>
     <br/><br/>
 
@@ -279,4 +281,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

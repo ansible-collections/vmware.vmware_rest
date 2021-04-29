@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_resourcepool_info
 ********************************************
 
-**Collect the information associated with the vCenter resourcepools**
+**Retrieves information about the resource pool indicated by {@param.name resourcePool}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the information associated with the vCenter resourcepools
+- Retrieves information about the resource pool indicated by {@param.name resourcePool}.
 
 
 
@@ -43,7 +43,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_clusters</b>
+                    <b>clusters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -54,14 +54,12 @@ Parameters
                 </td>
                 <td>
                         <div>Clusters that must contain the resource pool for the resource pool to match the filter.</div>
-                        <div>If unset or empty, resource pools in any cluster match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datacenters</b>
+                    <b>datacenters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -72,14 +70,13 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the resource pool for the resource pool to match the filter.</div>
-                        <div>If unset or empty, resource pools in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_hosts</b>
+                    <b>hosts</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -90,14 +87,12 @@ Parameters
                 </td>
                 <td>
                         <div>Hosts that must contain the resource pool for the resource pool to match the filter.</div>
-                        <div>If unset or empty, resource pools in any host match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_names</b>
+                    <b>names</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -107,14 +102,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that resource pools must have to match the filter (see <em>name</em>).</div>
-                        <div>If unset or empty, resource pools with any name match the filter.</div>
+                        <div>Names that resource pools must have to match the filter (see {@link Info#name}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_parent_resource_pools</b>
+                    <b>parent_resource_pools</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -125,26 +120,6 @@ Parameters
                 </td>
                 <td>
                         <div>Resource pools that must contain the resource pool for the resource pool to match the filter.</div>
-                        <div>If unset or empty, resource pools in any resource pool match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_resource_pools</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Identifiers of resource pools that can match the filter.</div>
-                        <div>If unset or empty, resource pools with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -159,8 +134,23 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the resource pool for which information should be retrieved.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_resourcepool_info</span>.</div>
+                        <div>Identifier of the resource pool for which information should be retrieved. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>resource_pools</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Identifiers of resource pools that can match the filter.</div>
                 </td>
             </tr>
             <tr>
@@ -307,7 +297,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1060</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1235</div>
                 </td>
             </tr>
             <tr>
@@ -338,4 +328,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_network_info
 ***************************************
 
-**Collect the information associated with the vCenter networks**
+**Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the {@link FilterSpec}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the information associated with the vCenter networks
+- Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the {@link FilterSpec}.
 
 
 
@@ -43,7 +43,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_datacenters</b>
+                    <b>datacenters</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -54,14 +54,13 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the network for the network to match the filter.</div>
-                        <div>If unset or empty, networks in any datacenter match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_datacenter_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_folders</b>
+                    <b>folders</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -72,14 +71,13 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the network for the network to match the filter.</div>
-                        <div>If unset or empty, networks in any folder match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_folder_info</span>.</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_names</b>
+                    <b>names</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -89,14 +87,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that networks must have to match the filter (see <em>name</em>).</div>
-                        <div>If unset or empty, networks with any name match the filter.</div>
+                        <div>Names that networks must have to match the filter (see {@link Summary#name}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_networks</b>
+                    <b>networks</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -107,14 +105,12 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of networks that can match the filter.</div>
-                        <div>If unset or empty, networks with any identifier match the filter.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_network_info</span>.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter_types</b>
+                    <b>types</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -124,8 +120,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Types that networks must have to match the filter (see <em>type</em>).</div>
-                        <div>If unset, networks with any type match the filter.</div>
+                        <div>Types that networks must have to match the filter (see {@link Summary#type}).</div>
+                        <div style="font-size: small; color: darkgreen"><br/>aliases: filter_types</div>
                 </td>
             </tr>
             <tr>
@@ -265,7 +261,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get a list of the networks</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1326&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1327&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1328&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1245&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1246&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1247&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
                 </td>
             </tr>
     </table>
@@ -279,4 +275,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

@@ -11,6 +11,11 @@
             "policy": "f4e5bade-15a2-4805-bf8e-52318c4ce443"
         },
         {
+            "name": "Management Storage Policy - Stretched Lite",
+            "description": "Management Storage policy used for smaller VMC Stretched Cluster configuration.",
+            "policy": "d109de24-c966-428f-8da2-d281e6671e35"
+        },
+        {
             "name": "VM Encryption Policy",
             "description": "Sample storage policy for VMware's VM and virtual disk encryption",
             "policy": "4d5f673c-536f-11e6-beb8-9e71128cae77"

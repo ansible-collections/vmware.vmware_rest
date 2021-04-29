@@ -1,0 +1,53 @@
+- name: Ensure there is no ongoing shutdown
+  vmware.vmware_rest.appliance_shutdown_info:
+  register: result
+
+- debug: var=result
+- assert:
+    that:
+      - result.value.action == ""
+
+- name: Shutdown the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: poweroff
+    reason: this is an example
+    delay: 600
+  register: result
+- debug: var=result
+
+- name: Abort the shutdown of the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  register: result
+- debug: var=result
+
+- name: Reboot the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: reboot
+    reason: this is an example
+    delay: 600
+  register: result
+- debug: var=result
+
+- name: Abort the reboot
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  register: result
+- debug: var=result
+
+- name: Ensure the first call change the status (broken)
+  assert:
+    that:
+      - result.changed
+  ignore_errors: True
+
+- name: Abort the reboot (again)
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  register: result
+- debug: var=result
+
+- name: Ensure the second call don't change the status
+  assert:
+    that:
+      - not result.changed

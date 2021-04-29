@@ -1,52 +1,50 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: Ansible Project
+# Copyright: (c) 2021, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# template: DEFAULT_MODULE
+# template: header.j2
 
-DOCUMENTATION = """
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
 module: vcenter_vm_hardware_parallel
-short_description: Manage the parallel of a VM
-description: Manage the parallel of a VM
+short_description: Adds a virtual parallel port to the virtual machine.
+description: Adds a virtual parallel port to the virtual machine.
 options:
   allow_guest_control:
     description:
     - Flag indicating whether the guest can connect and disconnect the device.
-    - If unset, the value is unchanged.
     type: bool
   backing:
     description:
-    - Physical resource backing for the virtual parallel port.
-    - If unset, defaults to automatic detection of a suitable host device.
-    - 'Valide attributes are:'
-    - ' - C(file) (str): Path of the file that should be used as the virtual parallel
-      port backing.'
-    - This field is optional and it is only relevant when the value of I(type) is
-      FILE.
-    - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      parallel port backing.'
-    - If unset, the virtual parallel port will be configured to automatically detect
-      a suitable host device.
-    - ' - C(type) (str): This option defines the valid backing types for a virtual
-      parallel port.'
+    - Physical resource backing for the virtual parallel port. Required with I(state=['present'])
+    - 'Valid attributes are:'
+    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
+      a virtual parallel port.'
     - '   - Accepted values:'
     - '     - FILE'
     - '     - HOST_DEVICE'
+    - ' - C(file) (str): Path of the file that should be used as the virtual parallel
+      port backing.'
+    - ' - C(host_device) (str): Name of the device that should be used as the virtual
+      parallel port backing.'
     type: dict
   label:
-    description: []
+    description:
+    - The name of the item
     type: str
   port:
     description:
-    - Virtual parallel port identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_hardware_parallel).
-      Required with I(state=['absent', 'connect', 'disconnect'])
+    - Virtual parallel port identifier. Required with I(state=['absent', 'connect',
+      'disconnect', 'present'])
     type: str
   start_connected:
     description:
     - Flag indicating whether the virtual device should be connected whenever the
       virtual machine is powered on.
-    - If unset, the value is unchanged.
     type: bool
   state:
     choices:
@@ -96,52 +94,52 @@ options:
     type: bool
   vm:
     description:
-    - Virtual machine identifier.
-    - The parameter must be the id of a resource returned by M(vcenter_vm_info).
+    - Virtual machine identifier. This parameter is mandatory.
+    required: true
     type: str
 author:
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)
 version_added: 1.0.0
 requirements:
 - python >= 3.6
 - aiohttp
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 """
 
-RETURN = """
+RETURN = r"""
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
-            "allow_guest_control": "spec/allow_guest_control",
-            "backing": "spec/backing",
-            "start_connected": "spec/start_connected",
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "list": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "get": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
-            "allow_guest_control": "spec/allow_guest_control",
-            "backing": "spec/backing",
-            "start_connected": "spec/start_connected",
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
         },
         "path": {"port": "port", "vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-}
+}  # pylint: disable=line-too-long
 
-import socket
 import json
+import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -151,6 +149,8 @@ try:
     from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
         AnsibleTurboModule as AnsibleModule,
     )
+
+    AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
@@ -203,14 +203,18 @@ def prepare_argument_spec():
         "choices": ["absent", "connect", "disconnect", "present"],
         "default": "present",
     }
-    argument_spec["vm"] = {"type": "str"}
+    argument_spec["vm"] = {"required": True, "type": "str"}
 
     return argument_spec
 
 
 async def main():
+    required_if = list([])
+
     module_args = prepare_argument_spec()
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+    )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
     if not module.params["vcenter_username"]:
@@ -231,15 +235,15 @@ async def main():
     module.exit_json(**result)
 
 
-# template: URL
+# template: default_module.j2
 def build_url(params):
     return (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/parallel"
     ).format(**params)
 
 
-# template: main_content
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -251,15 +255,15 @@ async def entry_point(module, session):
         operation = module.params["state"]
 
     func = globals()["_" + operation]
+
     return await func(module.params, session)
 
 
-# template: FUNC_WITH_DATA_TPL
 async def _connect(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["connect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["connect"])
     subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect"
+        "/api/vcenter/vm/{vm}/hardware/parallel/{port}?action=connect"
     )
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -267,7 +271,8 @@ async def _connect(params, session):
             params[subdevice_type] = _json["id"]
     _url = (
         "https://{vcenter_hostname}"
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/connect"
+        # aa
+        "/api/vcenter/vm/{vm}/hardware/parallel/{port}?action=connect"
     ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:
         try:
@@ -275,25 +280,28 @@ async def _connect(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        if "value" not in _json:  # 7.0.2
+            _json = {"value": _json}
         return await update_changed_flag(_json, resp.status, "connect")
 
 
-# FUNC_WITH_DATA_CREATE_TPL
 async def _create(params, session):
+
     if params["port"]:
         _json = await get_device_info(session, build_url(params), params["port"])
     else:
         _json = await exists(params, session, build_url(params), ["port"])
     if _json:
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
         if "_update" in globals():
             params["port"] = _json["id"]
             return await globals()["_update"](params, session)
-        else:
-            return await update_changed_flag(_json, 200, "get")
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/parallel"
     ).format(**params)
     async with session.post(_url, json=payload) as resp:
         if resp.status == 500:
@@ -306,30 +314,31 @@ async def _create(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        # Update the value field with all the details
-        if (resp.status in [200, 201]) and "value" in _json:
-            if isinstance(_json["value"], dict):
+
+        if resp.status in [200, 201]:
+            if isinstance(_json, str):  # 7.0.2 and greater
+                _id = _json  # TODO: fetch the object
+            elif isinstance(_json, dict) and "value" not in _json:
                 _id = list(_json["value"].values())[0]
-            else:
+            elif isinstance(_json, dict) and "value" in _json:
                 _id = _json["value"]
-            _json = await get_device_info(session, _url, _id)
+            _json_device_info = await get_device_info(session, _url, _id)
+            if _json_device_info:
+                _json = _json_device_info
 
         return await update_changed_flag(_json, resp.status, "create")
 
 
-# template: FUNC_WITH_DATA_DELETE_TPL
 async def _delete(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
-    subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
-    )
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("/api/vcenter/vm/{vm}/hardware/parallel/{port}")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
     _url = (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/parallel/{port}"
     ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.delete(_url, json=payload) as resp:
         try:
@@ -340,12 +349,11 @@ async def _delete(params, session):
         return await update_changed_flag(_json, resp.status, "delete")
 
 
-# template: FUNC_WITH_DATA_TPL
 async def _disconnect(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["disconnect"]["query"].keys()
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["disconnect"])
     subdevice_type = get_subdevice_type(
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/disconnect"
+        "/api/vcenter/vm/{vm}/hardware/parallel/{port}?action=disconnect"
     )
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
@@ -353,7 +361,8 @@ async def _disconnect(params, session):
             params[subdevice_type] = _json["id"]
     _url = (
         "https://{vcenter_hostname}"
-        "/rest/vcenter/vm/{vm}/hardware/parallel/{port}/disconnect"
+        # aa
+        "/api/vcenter/vm/{vm}/hardware/parallel/{port}?action=disconnect"
     ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload) as resp:
         try:
@@ -361,37 +370,33 @@ async def _disconnect(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        if "value" not in _json:  # 7.0.2
+            _json = {"value": _json}
         return await update_changed_flag(_json, resp.status, "disconnect")
 
 
-# FUNC_WITH_DATA_UPDATE_TPL
 async def _update(params, session):
-    payload = payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = (
-        "https://{vcenter_hostname}" "/rest/vcenter/vm/{vm}/hardware/parallel/{port}"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/parallel/{port}"
     ).format(**params)
     async with session.get(_url) as resp:
         _json = await resp.json()
-        for k, v in _json["value"].items():
+        if "value" in _json:
+            value = _json["value"]
+        else:  # 7.0.2 and greater
+            value = _json
+        for k, v in value.items():
             if k in payload and payload[k] == v:
                 del payload[k]
             elif "spec" in payload:
                 if k in payload["spec"] and payload["spec"][k] == v:
                     del payload["spec"][k]
 
-        # NOTE: workaround for vcenter_vm_hardware, upgrade_version needs the upgrade_policy
-        # option. So we ensure it's here.
-        try:
-            if (
-                payload["spec"]["upgrade_version"]
-                and "upgrade_policy" not in payload["spec"]
-            ):
-                payload["spec"]["upgrade_policy"] = _json["value"]["upgrade_policy"]
-        except KeyError:
-            pass
-
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed
+            if "value" not in _json:  # 7.0.2
+                _json = {"value": _json}
             _json["id"] = params.get("port")
             return await update_changed_flag(_json, resp.status, "get")
     async with session.patch(_url, json=payload) as resp:
@@ -400,6 +405,8 @@ async def _update(params, session):
                 _json = await resp.json()
         except KeyError:
             _json = {}
+        if "value" not in _json:  # 7.0.2
+            _json = {"value": _json}
         _json["id"] = params.get("port")
         return await update_changed_flag(_json, resp.status, "update")
 

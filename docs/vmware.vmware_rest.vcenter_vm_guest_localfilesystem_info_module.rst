@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info
 ********************************************************
 
-**Collect the guest localfilesystem information**
+**Returns details of the local file systems in the guest operating system.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the guest localfilesystem information
+- Returns details of the local file systems in the guest operating system.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the virtual machine.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Identifier of the virtual machine. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -189,7 +188,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">list</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
@@ -197,7 +196,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest filesystem information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;key&#x27;: &#x27;/&#x27;, &#x27;value&#x27;: {&#x27;capacity&#x27;: 2515173376, &#x27;free_space&#x27;: 774766592, &#x27;mappings&#x27;: []}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error_type&#x27;: &#x27;SERVICE_UNAVAILABLE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&#x27;vm-1248:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27;], &#x27;default_message&#x27;: &quot;VMware Tools in the virtual machine with identifier &#x27;vm-1248:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27; provided no information.&quot;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.guest.information_not_available&#x27;}]}</div>
                 </td>
             </tr>
     </table>
@@ -211,4 +210,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

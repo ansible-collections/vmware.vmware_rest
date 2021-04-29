@@ -1,14 +1,15 @@
 {
     "value": {
-        "full_name": {
-            "args": [],
-            "default_message": "Red Hat Fedora (64-bit)",
-            "id": "vmsg.guestos.fedora64Guest.label"
-        },
-        "name": "FEDORA_64",
-        "ip_address": "192.168.122.87",
-        "family": "LINUX",
-        "host_name": "localhost.localdomain"
+        "error_type": "SERVICE_UNAVAILABLE",
+        "messages": [
+            {
+                "args": [
+                    "vm-1248:059dd233-dedf-4960-bba8-ab6710e6aeb4"
+                ],
+                "default_message": "VMware Tools in the virtual machine with identifier 'vm-1248:059dd233-dedf-4960-bba8-ab6710e6aeb4' provided no information.",
+                "id": "com.vmware.api.vcenter.vm.guest.information_not_available"
+            }
+        ]
     },
     "changed": false
 }

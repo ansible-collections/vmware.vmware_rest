@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_storage_policy_info
 *************************************************
 
-**Collect the storage policy  information from a VM**
+**Returns Information about Storage Policy associated with a virtual machine's home directory and/or its virtual hard disks.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Collect the storage policy  information from a VM
+- Returns Information about Storage Policy associated with a virtual machine's home directory and/or its virtual hard disks.
 
 
 
@@ -142,8 +142,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
     </table>
@@ -193,7 +192,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get VM storage policy</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: []}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: {}}</div>
                 </td>
             </tr>
     </table>
@@ -207,4 +206,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

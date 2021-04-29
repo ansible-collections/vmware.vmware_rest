@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_boot_device
 **************************************************
 
-**Manage the boot device of a VM**
+**Sets the virtual devices that will be used to boot the virtual machine.  The virtual machine will check the devices in order, attempting to boot from each, until the virtual machine boots successfully.  If the {@term list} is empty, the virtual machine will use a default boot sequence. There should be no more than one instance of {@link Entry} for a given device type except {@link Device.Type#ETHERNET} in the {@term list}.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Manage the boot device of a VM
+- Sets the virtual devices that will be used to boot the virtual machine.  The virtual machine will check the devices in order, attempting to boot from each, until the virtual machine boots successfully.  If the {@term list} is empty, the virtual machine will use a default boot sequence. There should be no more than one instance of {@link Entry} for a given device type except {@link Device.Type#ETHERNET} in the {@term list}.
 
 
 
@@ -48,25 +48,23 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=dictionary</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Ordered list of boot devices.</div>
-                        <div>Valide attributes are:</div>
-                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is DISK.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vcenter_vm_hardware_disk</span>.</div>
-                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry.</div>
-                        <div>This field is optional and it is only relevant when the value of <em>type</em> is ETHERNET.</div>
-                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vcenter_vm_hardware_ethernet</span>.</div>
-                        <div>- <code>type</code> (str): This option defines the valid device types that may be used as bootable devices.</div>
+                        <div>Ordered list of boot devices. This parameter is mandatory.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>type</code> (str): The {@name Type} defines the valid device types that may be used as bootable devices.</div>
+                        <div>This key is required.</div>
                         <div>- Accepted values:</div>
                         <div>- CDROM</div>
                         <div>- DISK</div>
                         <div>- ETHERNET</div>
                         <div>- FLOPPY</div>
+                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry.</div>
+                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
                 </td>
             </tr>
             <tr>
@@ -183,13 +181,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>vcenter_vm_info</span>.</div>
+                        <div>Virtual machine identifier. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -215,6 +213,36 @@ Examples
 
 
 
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Set a boot device</div>
+                    <br/>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
+
 
 Status
 ------
@@ -223,4 +251,4 @@ Status
 Authors
 ~~~~~~~
 
-- Goneri Le Bouder (@goneri) <goneri@lebouder.net>
+- Ansible Cloud Team (@ansible-collections)

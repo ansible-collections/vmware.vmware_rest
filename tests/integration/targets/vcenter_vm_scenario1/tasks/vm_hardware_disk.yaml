@@ -38,21 +38,6 @@
 
 - debug: var=_result
 
-- name: Adjust VM storage policy
-  vmware.vmware_rest.vcenter_vm_storage_policy:
-    vm: '{{ test_vm1_info.id }}'
-    disks:
-      - key: '{{ my_new_disk.id }}'
-        value:
-          type: USE_DEFAULT_POLICY
-  register: _result
-
-- debug: var=_result
-
-- assert:
-    that:
-      - _result is changed
-
 - name: List existing storage policies
   vmware.vmware_rest.vcenter_storage_policies_info:
   register: storage_policies
@@ -62,17 +47,34 @@
 - name: Look up the VM Encryption Policy
   set_fact:
     my_storage_policy: "{{ (storage_policies.value |  selectattr('name', 'equalto', 'VVol No Requirements Policy') | list | first) }}"
-
 - debug: var=my_storage_policy
+
+- name: Prepare the disk policy dict
+  set_fact:
+    vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+- debug: var=vm_disk_policy
+
+- name: Adjust VM storage policy
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: '{{ test_vm1_info.id }}'
+    vm_home:
+      type: USE_DEFAULT_POLICY
+    disks: '{{ vm_disk_policy }}'
+  register: _result
+
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
 
 - name: _Adjust VM storage policy (again)
   vmware.vmware_rest.vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
-    disks:
-      - key: '{{ my_new_disk.id }}'
-        value:
-          policy: "{{ my_storage_policy.policy }}"
-          type: USE_SPECIFIED_POLICY
+    vm_home:
+      type: USE_DEFAULT_POLICY
+    disks: '{{ vm_disk_policy }}'
+
   register: _result
 
 - debug: var=_result
