@@ -1,0 +1,102 @@
+---
+- name: Define datastore_name and local_library_name
+  set_fact:
+    datastore_name: "rw_datastore"
+    local_library_name: "local_library_001"
+
+- name: _Get Datastore id required for local library creation
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+      - "{{ datastore_name }}"
+  register: result
+
+- name: Set datastore id
+  set_fact:
+    datastore_id: "{{ result.value[0].datastore }}"
+
+- name: Debug output for datastore id
+  debug:
+    msg: "{{ datastore_id }}"
+
+- name: Create a new content library
+  vmware.vmware_rest.content_locallibrary:
+    name: "{{ local_library_name }}"
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: 'NONE'
+    storage_backings:
+      - datastore_id: '{{ datastore_id }}'
+        type: 'DATASTORE'
+    state: present
+  register: result
+
+- name: Retrieve the local content library information
+  vmware.vmware_rest.content_locallibrary_info:
+  register: result
+
+- debug: var=result
+
+- name: Assert that the local content library id is available
+  assert:
+    that:
+      - result.value is defined
+
+- name: Set test local library id for further testing
+  set_fact:
+    test_library_id: '{{ result.value[0] }}'
+
+- name: Retrieve the local content library information based upon id check mode
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ test_library_id }}'
+  register: result
+  check_mode: true
+
+- name: Assert that result is available in check mode
+  assert:
+    that:
+      - not result.changed
+      - result.value is defined
+      - result.value['name'] is defined
+      - result.value['id'] is defined
+      - result.value['description'] is defined
+      - result.value['server_guid'] is defined
+      - result.value['creation_time'] is defined
+      - result.value['last_modified_time'] is defined
+      - result.value['storage_backings'] is defined
+      - result.value['version'] is defined
+      - result.value['id'] == test_library_id
+      - result.value['type'] == 'LOCAL'
+
+- name: Retrieve the local content library information based upon id
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ test_library_id }}'
+  register: result
+
+- debug: var=result
+
+- name: Check the content library id details
+  assert:
+    that:
+      - result.value is defined
+      - result.value['name'] is defined
+      - result.value['id'] is defined
+      - result.value['description'] is defined
+      - result.value['server_guid'] is defined
+      - result.value['creation_time'] is defined
+      - result.value['last_modified_time'] is defined
+      - result.value['storage_backings'] is defined
+      - result.value['version'] is defined
+      - result.value['id'] == test_library_id
+      - result.value['type'] == 'LOCAL'
+
+- name: Delete local content library
+  vmware.vmware_rest.content_locallibrary:
+    library_id: "{{ test_library_id }}"
+    state: absent
+  register: result
+
+- name: Assert that local content library is deleted
+  assert:
+    that:
+      - result.changed
