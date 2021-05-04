@@ -1,5 +1,5 @@
 ---
-- name: Set variables
+- name: Define datastore_name and local_library_name
   set_fact:
     datastore_name: "rw_datastore"
     local_library_name: "local_library_001"
@@ -13,7 +13,6 @@
 - name: Set datastore id
   set_fact:
     datastore_id: "{{ result.value[0].datastore }}"
-  when: result is defined
 
 - name: Debug output for datastore id
   debug:
@@ -30,76 +29,74 @@
       - datastore_id: '{{ datastore_id }}'
         type: 'DATASTORE'
     state: present
-  register: _result
-
-- debug: var=_result
+  register: result
 
 - name: Retrieve the local content library information
   vmware.vmware_rest.content_locallibrary_info:
-  register: _result
+  register: result
 
-- debug: var=_result
+- debug: var=result
 
 - name: Assert that the local content library id is available
   assert:
     that:
-      - _result.value is defined
+      - result.value is defined
 
 - name: Set test local library id for further testing
   set_fact:
-    test_library_id: '{{ _result.value[0] }}'
+    test_library_id: '{{ result.value[0] }}'
 
 - name: Retrieve the local content library information based upon id check mode
   vmware.vmware_rest.content_locallibrary_info:
     library_id: '{{ test_library_id }}'
-  register: _result
+  register: result
   check_mode: true
 
 - name: Assert that result is available in check mode
   assert:
     that:
-      - not _result.changed
-      - _result.value is defined
-      - _result.value['name'] is defined
-      - _result.value['id'] is defined
-      - _result.value['description'] is defined
-      - _result.value['server_guid'] is defined
-      - _result.value['creation_time'] is defined
-      - _result.value['last_modified_time'] is defined
-      - _result.value['storage_backings'] is defined
-      - _result.value['version'] is defined
-      - _result.value['id'] == test_library_id
-      - _result.value['type'] == 'LOCAL'
+      - not result.changed
+      - result.value is defined
+      - result.value['name'] is defined
+      - result.value['id'] is defined
+      - result.value['description'] is defined
+      - result.value['server_guid'] is defined
+      - result.value['creation_time'] is defined
+      - result.value['last_modified_time'] is defined
+      - result.value['storage_backings'] is defined
+      - result.value['version'] is defined
+      - result.value['id'] == test_library_id
+      - result.value['type'] == 'LOCAL'
 
 - name: Retrieve the local content library information based upon id
   vmware.vmware_rest.content_locallibrary_info:
     library_id: '{{ test_library_id }}'
-  register: _result
+  register: result
 
-- debug: var=_result
+- debug: var=result
 
 - name: Check the content library id details
   assert:
     that:
-      - _result.value is defined
-      - _result.value['name'] is defined
-      - _result.value['id'] is defined
-      - _result.value['description'] is defined
-      - _result.value['server_guid'] is defined
-      - _result.value['creation_time'] is defined
-      - _result.value['last_modified_time'] is defined
-      - _result.value['storage_backings'] is defined
-      - _result.value['version'] is defined
-      - _result.value['id'] == test_library_id
-      - _result.value['type'] == 'LOCAL'
+      - result.value is defined
+      - result.value['name'] is defined
+      - result.value['id'] is defined
+      - result.value['description'] is defined
+      - result.value['server_guid'] is defined
+      - result.value['creation_time'] is defined
+      - result.value['last_modified_time'] is defined
+      - result.value['storage_backings'] is defined
+      - result.value['version'] is defined
+      - result.value['id'] == test_library_id
+      - result.value['type'] == 'LOCAL'
 
 - name: Delete local content library
   vmware.vmware_rest.content_locallibrary:
     library_id: "{{ test_library_id }}"
     state: absent
-  register: _result
+  register: result
 
 - name: Assert that local content library is deleted
   assert:
     that:
-      - _result.changed
+      - result.changed
