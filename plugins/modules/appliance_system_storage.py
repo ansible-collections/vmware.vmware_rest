@@ -67,14 +67,15 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Resize the first partition
-  vmware.vmware_rest.appliance_system_storage:
-    state: resize
-  register: result
 - name: Resize the first partition and return the state of the partition before and
     after the operation
   vmware.vmware_rest.appliance_system_storage:
     state: resize_ex
+  register: result
+
+- name: Resize the first partition
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize
   register: result
 """
 
@@ -84,10 +85,7 @@ value:
   description: Resize the first partition and return the state of the partition before
     and after the operation
   returned: On success
-  sample:
-    lv_root_0:
-      new_size: 104312832
-      old_size: 93048832
+  sample: {}
   type: dict
 """
 

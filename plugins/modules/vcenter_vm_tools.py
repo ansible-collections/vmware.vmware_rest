@@ -11,12 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_tools
-short_description: 'Begins the Tools upgrade process. To monitor the status of the
-  Tools upgrade, clients should check the Tools status by calling {@link #get} and
-  examining {@name Info#versionStatus} and {@name Info#runState}.'
-description: 'Begins the Tools upgrade process. To monitor the status of the Tools
-  upgrade, clients should check the Tools status by calling {@link #get} and examining
-  {@name Info#versionStatus} and {@name Info#runState}.'
+short_description: Update the properties of VMware Tools.
+description: Update the properties of VMware Tools.
 options:
   command_line_options:
     description:
@@ -89,21 +85,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Change vm-tools upgrade policy to MANUAL
-  vmware.vmware_rest.vcenter_vm_tools:
-    vm: '{{ test_vm1_info.id }}'
-    upgrade_policy: MANUAL
-- name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
-  vmware.vmware_rest.vcenter_vm_tools:
-    vm: '{{ test_vm1_info.id }}'
-    upgrade_policy: UPGRADE_AT_POWER_CYCLE
-- name: Retrive vm-tools information
-  vmware.vmware_rest.vcenter_vm_tools:
-    vm: '{{ test_vm1_info.id }}'
 """
 
 RETURN = r"""

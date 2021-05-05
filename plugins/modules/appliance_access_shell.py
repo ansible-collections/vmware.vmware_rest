@@ -83,6 +83,7 @@ EXAMPLES = r"""
   vmware.vmware_rest.appliance_access_shell:
     enabled: false
     timeout: 600
+
 - name: Enable the Shell with a timeout
   vmware.vmware_rest.appliance_access_shell:
     enabled: true

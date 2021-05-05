@@ -98,6 +98,7 @@ EXAMPLES = r"""
 - name: Get a list of the networks
   vmware.vmware_rest.vcenter_network_info:
   register: my_network_value
+
 - name: Get a list of the networks with a filter
   vmware.vmware_rest.vcenter_network_info:
     filter_types: STANDARD_PORTGROUP
@@ -110,11 +111,11 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: dvswitch1-DVUplinks-1245
-    network: dvportgroup-1246
+  - name: dvswitch1-DVUplinks-1069
+    network: dvportgroup-1070
     type: DISTRIBUTED_PORTGROUP
   - name: my-portrgoup
-    network: dvportgroup-1247
+    network: dvportgroup-1071
     type: DISTRIBUTED_PORTGROUP
   type: list
 """

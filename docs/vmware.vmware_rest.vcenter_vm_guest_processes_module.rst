@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_processes
 *********************************************
 
-**Terminates a process in the guest OS. <p> On Posix guests, the process is sent a TERM signal.  If that doesn't terminate the process, a KILL signal is sent.  A process may still be running if it's stuck. <p>**
+**Starts a program in the guest operating system**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Terminates a process in the guest OS. <p> On Posix guests, the process is sent a TERM signal.  If that doesn't terminate the process, a KILL signal is sent.  A process may still be running if it's stuck. <p>
+- Starts a program in the guest operating system. <p> A process started this way can have its status queried with {@link #list} or {@link #get}. When the process completes, its exit code and end time will be available for 5 minutes after completion. <p>
 
 
 

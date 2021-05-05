@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_ntp
 ********************************
 
-**Test the connection to a list of ntp servers.**
+**Set NTP servers**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Test the connection to a list of ntp servers.
+- Set NTP servers. This method updates old NTP servers from configuration and sets the input NTP servers in the configuration. If NTP based time synchronization is used internally, the NTP daemon will be restarted to reload given NTP configuration. In case NTP based time synchronization is not used, this method only replaces servers in the NTP configuration.
 
 
 
@@ -180,11 +180,13 @@ Examples
       vmware.vmware_rest.appliance_ntp:
         servers:
         - time.google.com
+
     - name: Adjust the NTP configuration (again)
       vmware.vmware_rest.appliance_ntp:
         servers:
         - time.google.com
       register: result
+
     - name: Test the NTP configuration
       vmware.vmware_rest.appliance_ntp:
         state: test

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_power
 *****************************************
 
-**Issues a request to the guest operating system asking it to perform a reboot. This request returns immediately and does not wait for the guest operating system to complete the operation.**
+**Issues a request to the guest operating system asking it to perform a reboot**
 
 
 Version added: 1.0.0

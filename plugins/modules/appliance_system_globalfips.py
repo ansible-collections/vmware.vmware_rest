@@ -11,8 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_system_globalfips
-short_description: Enable/Disable Global FIPS mode for the appliance. <p><b>Caution:</b>
-  Changing the value of this setting will reboot the Appliance.
+short_description: Enable/Disable Global FIPS mode for the appliance
 description: Enable/Disable Global FIPS mode for the appliance. <p><b>Caution:</b>
   Changing the value of this setting will reboot the Appliance.
 options:
@@ -72,10 +71,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Turn off the FIPS mode and reboot
-  vmware.vmware_rest.appliance_system_globalfips:
-    enabled: false
-  register: result
 """
 
 RETURN = r"""

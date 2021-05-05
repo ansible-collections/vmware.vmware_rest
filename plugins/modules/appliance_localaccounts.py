@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_localaccounts
-short_description: Update selected fields in local user account properties.
-description: Update selected fields in local user account properties.
+short_description: Create a new local user account.
+description: Create a new local user account.
 options:
   config:
     description:
@@ -165,6 +165,7 @@ EXAMPLES = r"""
       - superAdmin
     state: present
   register: result
+
 - name: Add a local accounts (idempotency)
   vmware.vmware_rest.appliance_localaccounts:
     username: foobar
@@ -178,6 +179,7 @@ EXAMPLES = r"""
       - superAdmin
     state: present
   register: result
+
 - name: Change account email address
   vmware.vmware_rest.appliance_localaccounts:
     username: foobar
@@ -190,6 +192,7 @@ EXAMPLES = r"""
       - superAdmin
     state: present
   register: result
+
 - name: Delete a local accounts
   vmware.vmware_rest.appliance_localaccounts:
     username: foobar
@@ -212,7 +215,7 @@ value:
     enabled: 1
     fullname: Foobar
     has_password: 1
-    last_password_change: '2021-04-27T00:00:00.000Z'
+    last_password_change: '2021-05-05T00:00:00.000Z'
     max_days_between_password_change: -1
     min_days_between_password_change: -1
     roles:

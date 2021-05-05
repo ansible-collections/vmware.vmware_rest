@@ -66,10 +66,17 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
 - name: Get VM storage policy compliance information
   vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
     vm: '{{ test_vm1_info.id }}'
@@ -83,7 +90,7 @@ value:
   sample:
     disks:
       '16000':
-        check_time: '2021-04-27T17:04:37.354Z'
+        check_time: '2021-05-05T14:32:09.023Z'
         failure_cause: []
         policy: f4e5bade-15a2-4805-bf8e-52318c4ce443
         status: NOT_APPLICABLE

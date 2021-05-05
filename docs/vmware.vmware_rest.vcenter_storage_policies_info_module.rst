@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_storage_policies_info
 ************************************************
 
-**Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter. These storage policies can be used for provisioning virtual machines or disks.**
+**Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter**
 
 
 Version added: 1.0.0

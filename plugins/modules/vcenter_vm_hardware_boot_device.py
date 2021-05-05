@@ -12,11 +12,7 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_vm_hardware_boot_device
 short_description: Sets the virtual devices that will be used to boot the virtual
-  machine.  The virtual machine will check the devices in order, attempting to boot
-  from each, until the virtual machine boots successfully.  If the {@term list} is
-  empty, the virtual machine will use a default boot sequence. There should be no
-  more than one instance of {@link Entry} for a given device type except {@link Device.Type#ETHERNET}
-  in the {@term list}.
+  machine
 description: Sets the virtual devices that will be used to boot the virtual machine.  The
   virtual machine will check the devices in order, attempting to boot from each, until
   the virtual machine boots successfully.  If the {@term list} is empty, the virtual
@@ -99,10 +95,17 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
 - name: Set a boot device
   vmware.vmware_rest.vcenter_vm_hardware_boot_device:
     vm: '{{ test_vm1_info.id }}'

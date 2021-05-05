@@ -11,8 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_hardware_boot_device_info
-short_description: Returns an ordered list of boot devices for the virtual machine.
-  If the {@term list} is empty, the virtual machine uses a default boot sequence.
+short_description: Returns an ordered list of boot devices for the virtual machine
 description: Returns an ordered list of boot devices for the virtual machine. If the
   {@term list} is empty, the virtual machine uses a default boot sequence.
 options:
@@ -66,13 +65,21 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
 - name: Get boot device info
   vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
     vm: '{{ test_vm1_info.id }}'
+
 - name: Get information about the boot device
   vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
     vm: '{{ test_vm1_info.id }}'

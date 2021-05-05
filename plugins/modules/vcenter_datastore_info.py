@@ -102,6 +102,7 @@ EXAMPLES = r"""
 - name: Retrieve a list of all the datastores
   vmware.vmware_rest.vcenter_datastore_info:
   register: my_datastores
+
 - name: We can also use filter to limit the number of result
   vmware.vmware_rest.vcenter_datastore_info:
     filter_names:
@@ -116,18 +117,18 @@ value:
   returned: On success
   sample:
   - capacity: 26831990784
-    datastore: datastore-1240
-    free_space: 24422141952
+    datastore: datastore-1063
+    free_space: 24422379520
     name: ro_datastore
     type: NFS
   - capacity: 26831990784
-    datastore: datastore-1241
-    free_space: 24481603584
+    datastore: datastore-1064
+    free_space: 24410484736
     name: rw_datastore
     type: NFS
-  - capacity: 15032385536
-    datastore: datastore-1242
-    free_space: 13523484672
+  - capacity: 11542724608
+    datastore: datastore-1065
+    free_space: 10033823744
     name: local
     type: VMFS
   type: list

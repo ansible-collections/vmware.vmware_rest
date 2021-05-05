@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_networking_dns_hostname
-short_description: Test the Fully Qualified Domain Name.
-description: Test the Fully Qualified Domain Name.
+short_description: Set the Fully Qualified Domain Name.
+description: Set the Fully Qualified Domain Name.
 options:
   name:
     description:

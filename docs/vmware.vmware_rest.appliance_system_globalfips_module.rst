@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_system_globalfips
 **********************************************
 
-**Enable/Disable Global FIPS mode for the appliance. <p><b>Caution:</b> Changing the value of this setting will reboot the Appliance.**
+**Enable/Disable Global FIPS mode for the appliance**
 
 
 Version added: 1.0.0
@@ -172,15 +172,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Turn off the FIPS mode and reboot
-      vmware.vmware_rest.appliance_system_globalfips:
-        enabled: false
-      register: result
 
 
 

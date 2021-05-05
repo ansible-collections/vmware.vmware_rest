@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware
 **************************************
 
-**Upgrades the virtual machine to a newer virtual hardware version.**
+**Updates the virtual hardware settings of a virtual machine.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Upgrades the virtual machine to a newer virtual hardware version.
+- Updates the virtual hardware settings of a virtual machine.
 
 
 
@@ -261,10 +261,17 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Look up the VM called test_vm1 in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - test_vm1
+
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
+
     - name: Upgrade the VM hardware version
       vmware.vmware_rest.vcenter_vm_hardware:
         upgrade_policy: AFTER_CLEAN_SHUTDOWN

@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking_firewall_inbound_info
 *************************************************************
 
-**Get the ordered list of firewall rules. Within the list of traffic rules, rules are processed in order of appearance, from top to bottom. When a connection matches a firewall rule, further processing for the connection stops, and the appliance ignores any additional firewall rules you have set.**
+**Get the ordered list of firewall rules**
 
 
 Version added: 1.0.0
@@ -172,6 +172,8 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Get the firewall inbound configuration</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;address&#x27;: &#x27;1.2.3.4&#x27;, &#x27;interface_name&#x27;: &#x27;*&#x27;, &#x27;policy&#x27;: &#x27;ACCEPT&#x27;, &#x27;prefix&#x27;: 32}]</div>
                 </td>
             </tr>
     </table>

@@ -151,18 +151,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Get guest network routes information
-      vmware.vmware_rest.vcenter_vm_guest_networking_routes_info:
-        vm: '{{ test_vm1_info.id }}'
 
 
 

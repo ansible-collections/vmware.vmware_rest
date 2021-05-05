@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_services
 *************************************
 
-**Stops a service**
+**Restarts a service**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Stops a service
+- Restarts a service
 
 
 
@@ -172,26 +172,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Restart the ntpd service
-      vmware.vmware_rest.appliance_services:
-        service: ntpd
-        state: restart
-      register: result
-    - name: Start the ntpd service
-      vmware.vmware_rest.appliance_services:
-        service: ntpd
-        state: start
-      register: result
-    - name: Stop the ntpd service
-      vmware.vmware_rest.appliance_services:
-        service: ntpd
-        state: stop
-      register: result
 
 
 

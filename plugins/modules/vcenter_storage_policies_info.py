@@ -12,8 +12,7 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_storage_policies_info
 short_description: Returns information about at most 1024 visible (subject to permission
-  checks) storage solicies availabe in vCenter. These storage policies can be used
-  for provisioning virtual machines or disks.
+  checks) storage solicies availabe in vCenter
 description: Returns information about at most 1024 visible (subject to permission
   checks) storage solicies availabe in vCenter. These storage policies can be used
   for provisioning virtual machines or disks.

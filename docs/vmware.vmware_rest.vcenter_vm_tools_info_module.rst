@@ -151,24 +151,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Wait until my VM is ready
-      vmware.vmware_rest.vcenter_vm_tools_info:
-        vm: '{{ test_vm1_info.id }}'
-      register: vm_tools_info
-      until:
-      - vm_tools_info is not failed
-      - vm_tools_info.value.run_state == "RUNNING"
-      retries: 60
-      delay: 5
 
 
 

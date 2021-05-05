@@ -105,16 +105,21 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Get the existing resource pools
+  vmware.vmware_rest.vcenter_resourcepool_info:
+  register: resource_pools
+
 - name: Get the existing resource pool
   vmware.vmware_rest.vcenter_resourcepool_info:
     resource_pool: '{{ resource_pools.value[0].resource_pool }}'
   register: my_resource_pool
-- name: Get the existing resource pools
-  vmware.vmware_rest.vcenter_resourcepool_info:
-  register: resource_pools
-- name: Get the existing resource pools
-  vmware.vmware_rest.vcenter_resourcepool_info:
-  register: resource_pools
+
+- name: Create a generic resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    parent: '{{ resource_pools.value[0].resource_pool }}'
+  register: my_resource_pool
+
 - name: Read details from a specific resource pool
   vmware.vmware_rest.vcenter_resourcepool_info:
     resource_pool: '{{ my_resource_pool.id }}'
@@ -126,7 +131,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1235
+  sample: resgroup-1058
   type: str
 value:
   description: Read details from a specific resource pool

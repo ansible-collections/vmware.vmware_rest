@@ -187,13 +187,17 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Look up the VM called test_vm1 in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - test_vm1
+
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
-    - name: List the cdrom devices on the guest
-      vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
-        vm: '{{ test_vm1_info.id }}'
+
     - name: List the cdrom devices on the guest
       vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
         vm: '{{ test_vm1_info.id }}'

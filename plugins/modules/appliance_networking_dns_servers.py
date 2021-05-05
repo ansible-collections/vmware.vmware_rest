@@ -11,8 +11,9 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_networking_dns_servers
-short_description: Test if dns servers are reachable.
-description: Test if dns servers are reachable.
+short_description: Set the DNS server configuration
+description: Set the DNS server configuration. If you set the mode argument to "DHCP",
+  a DHCP refresh is forced.
 options:
   mode:
     choices:
@@ -91,12 +92,14 @@ EXAMPLES = r"""
     - 1.1.1.1
   register: result
   ignore_errors: true  # May be failing because of the CI set-up
+
 - name: Set the DNS servers (again)
   vmware.vmware_rest.appliance_networking_dns_servers:
     servers:
     - 1.1.1.1
   register: result
   ignore_errors: true  # May be failing because of the CI set-up
+
 - name: Test the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
     state: test

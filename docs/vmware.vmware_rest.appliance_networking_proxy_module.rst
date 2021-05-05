@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking_proxy
 *********************************************
 
-**Tests a proxy configuration by testing the connection to the proxy server and test host.**
+**Configures which proxy server to use for the specified protocol**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Tests a proxy configuration by testing the connection to the proxy server and test host.
+- Configures which proxy server to use for the specified protocol. This operation sets environment variables for using proxy. In order for this configuration to take effect a logout / service restart is required.
 
 
 
@@ -291,12 +291,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Delete the HTTP proxy configuration
-      vmware.vmware_rest.appliance_networking_proxy:
-        config: {}
-        protocol: http
-        state: absent
-      register: result
     - name: Set the HTTP proxy configuration
       vmware.vmware_rest.appliance_networking_proxy:
         config:
@@ -305,6 +299,7 @@ Examples
           port: 443
         protocol: http
       register: result
+
     - name: Set the HTTP proxy configuration (again)
       vmware.vmware_rest.appliance_networking_proxy:
         config:
@@ -312,6 +307,13 @@ Examples
           server: https://www.google.com
           port: 443
         protocol: http
+      register: result
+
+    - name: Delete the HTTP proxy configuration
+      vmware.vmware_rest.appliance_networking_proxy:
+        config: {}
+        protocol: http
+        state: absent
       register: result
 
 

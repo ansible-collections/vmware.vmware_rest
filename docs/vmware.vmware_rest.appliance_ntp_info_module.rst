@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_ntp_info
 *************************************
 
-**Get the NTP configuration status. If you run the 'timesync.get' command, you can retrieve the current time synchronization method (NTP- or VMware Tools-based). The 'ntp' command always returns the NTP server information, even when the time synchronization mode is not set to NTP. If the time synchronization mode is not NTP-based, the NTP server status is displayed as down.**
+**Get the NTP configuration status**
 
 
 Version added: 1.0.0
@@ -143,6 +143,7 @@ Examples
 
     - name: Get the NTP configuration
       vmware.vmware_rest.appliance_ntp_info:
+
     - name: Get the NTP configuration
       vmware.vmware_rest.appliance_ntp_info:
       register: result
@@ -175,7 +176,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the NTP configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;time.nist.gov&#x27;]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;time.google.com&#x27;]</div>
                 </td>
             </tr>
     </table>

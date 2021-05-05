@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking
 ***************************************
 
-**Enable or Disable ipv6 on all interfaces**
+**Reset and restarts network configuration on all interfaces, also this will renew the DHCP lease for DHCP IP address.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Enable or Disable ipv6 on all interfaces
+- Reset and restarts network configuration on all interfaces, also this will renew the DHCP lease for DHCP IP address.
 
 
 
@@ -284,15 +284,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Set network information
-      vmware.vmware_rest.appliance_networking:
-        ipv6_enabled: false
-      register: result
 
 
 

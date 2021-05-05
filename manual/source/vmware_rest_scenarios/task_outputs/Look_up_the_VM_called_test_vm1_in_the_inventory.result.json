@@ -2,7 +2,7 @@
     "value": [
         {
             "memory_size_MiB": 1024,
-            "vm": "vm-1248",
+            "vm": "vm-1072",
             "name": "test_vm1",
             "power_state": "POWERED_OFF",
             "cpu_count": 1

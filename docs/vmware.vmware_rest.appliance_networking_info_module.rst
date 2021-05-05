@@ -136,14 +136,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get network information
-      vmware.vmware_rest.appliance_networking_info:
-      register: result
 
 
 

@@ -12,10 +12,7 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: appliance_health_softwarepackages_info
 short_description: Get information on available software updates available in the
-  remote vSphere Update Manager repository. Red indicates that security updates are
-  available. Orange indicates that non-security updates are available. Green indicates
-  that there are no updates available. Gray indicates that there was an error retreiving
-  information on software updates.
+  remote vSphere Update Manager repository
 description: Get information on available software updates available in the remote
   vSphere Update Manager repository. Red indicates that security updates are available.
   Orange indicates that non-security updates are available. Green indicates that there

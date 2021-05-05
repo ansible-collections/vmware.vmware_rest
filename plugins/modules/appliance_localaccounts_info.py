@@ -64,12 +64,13 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: List the local accounts
+  vmware.vmware_rest.appliance_localaccounts_info:
+  register: result
+
 - name: Get the information about the new account
   vmware.vmware_rest.appliance_localaccounts_info:
     username: foobar
-  register: result
-- name: List the local accounts
-  vmware.vmware_rest.appliance_localaccounts_info:
   register: result
 """
 
@@ -88,7 +89,7 @@ value:
     enabled: 1
     fullname: Foobar
     has_password: 1
-    last_password_change: '2021-04-27T00:00:00.000Z'
+    last_password_change: '2021-05-05T00:00:00.000Z'
     max_days_between_password_change: -1
     min_days_between_password_change: -1
     roles:

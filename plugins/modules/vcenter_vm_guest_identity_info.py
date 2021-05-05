@@ -64,16 +64,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-- name: Get guest identity information
-  vmware.vmware_rest.vcenter_vm_guest_identity_info:
-    vm: '{{ test_vm1_info.id }}'
-- name: Guest identity
-  vmware.vmware_rest.vcenter_vm_guest_identity_info:
-    vm: '{{ test_vm1_info.id }}'
 """
 
 RETURN = r"""
@@ -85,8 +75,8 @@ value:
     error_type: SERVICE_UNAVAILABLE
     messages:
     - args:
-      - vm-1248:059dd233-dedf-4960-bba8-ab6710e6aeb4
-      default_message: VMware Tools in the virtual machine with identifier 'vm-1248:059dd233-dedf-4960-bba8-ab6710e6aeb4'
+      - vm-1072:059dd233-dedf-4960-bba8-ab6710e6aeb4
+      default_message: VMware Tools in the virtual machine with identifier 'vm-1072:059dd233-dedf-4960-bba8-ab6710e6aeb4'
         provided no information.
       id: com.vmware.api.vcenter.vm.guest.information_not_available
   type: dict

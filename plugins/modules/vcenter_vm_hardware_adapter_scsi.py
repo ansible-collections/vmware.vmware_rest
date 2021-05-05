@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_hardware_adapter_scsi
-short_description: Updates the configuration of a virtual SCSI adapter.
-description: Updates the configuration of a virtual SCSI adapter.
+short_description: Adds a virtual SCSI adapter to the virtual machine.
+description: Adds a virtual SCSI adapter to the virtual machine.
 options:
   adapter:
     description:
@@ -106,14 +106,22 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
 - name: Create a SCSI adapter at PCI slot 35
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 35
+
 - name: Drop the SCSI controller
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
     vm: '{{ test_vm1_info.id }}'

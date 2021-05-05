@@ -124,10 +124,7 @@ failed_when_result:
 msg:
   description: Set the IPv6 network information of nic99 (which does not exist)
   returned: On success
-  sample: 'Unsupported parameters for (vmware.vmware_rest.appliance_networking_interfaces_ipv6)
-    module: config Supported parameters include: addresses, autoconf, default_gateway,
-    dhcp, interface_name, state, vcenter_hostname, vcenter_password, vcenter_rest_log_file,
-    vcenter_username, vcenter_validate_certs'
+  sample: 'missing required arguments: addresses, autoconf, default_gateway, dhcp'
   type: str
 """
 

@@ -11,10 +11,13 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_host
-short_description: Connect to the host corresponding to {@param.name host} previously
-  added to the vCenter server.
-description: Connect to the host corresponding to {@param.name host} previously added
-  to the vCenter server.
+short_description: Add a new standalone host in the vCenter inventory
+description: Add a new standalone host in the vCenter inventory. The newly connected
+  host will be in connected state. The vCenter Server will verify the SSL certificate
+  before adding the host to its inventory. In the case where the SSL certificate cannot
+  be verified because the Certificate Authority is not recognized or the certificate
+  is self signed, the vCenter Server will fall back to thumbprint verification mode
+  as defined by {@link CreateSpec.ThumbprintVerification}.
 options:
   folder:
     description:
@@ -117,10 +120,15 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Build a list of all the folders
+  vmware.vmware_rest.vcenter_folder_info:
+  register: my_folders
+
 - name: Look up the different folders
   set_fact:
     my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
       }}'
+
 - name: Connect the host(s)
   vmware.vmware_rest.vcenter_host:
     hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
@@ -135,7 +143,7 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1239
+  sample: host-1062
   type: str
 """
 
