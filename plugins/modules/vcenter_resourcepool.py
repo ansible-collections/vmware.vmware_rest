@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_resourcepool
-short_description: Updates the configuration of a resource pool.
-description: Updates the configuration of a resource pool.
+short_description: Creates a resource pool.
+description: Creates a resource pool.
 options:
   cpu_allocation:
     description:
@@ -142,18 +142,10 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Read details from a specific resource pool
-  vmware.vmware_rest.vcenter_resourcepool_info:
-    resource_pool: '{{ my_resource_pool.id }}'
-  register: my_resource_pool
 - name: Get the existing resource pools
   vmware.vmware_rest.vcenter_resourcepool_info:
   register: resource_pools
-- name: Create a generic resource pool
-  vmware.vmware_rest.vcenter_resourcepool:
-    name: my_resource_pool
-    parent: '{{ resource_pools.value[0].resource_pool }}'
-  register: my_resource_pool
+
 - name: Create an Ad hoc resource pool
   vmware.vmware_rest.vcenter_resourcepool:
     name: my_resource_pool
@@ -171,6 +163,18 @@ EXAMPLES = r"""
       shares:
         level: NORMAL
   register: my_resource_pool
+
+- name: Remove a resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: '{{ my_resource_pool.id }}'
+    state: absent
+
+- name: Create a generic resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    parent: '{{ resource_pools.value[0].resource_pool }}'
+  register: my_resource_pool
+
 - name: Modify a resource pool
   vmware.vmware_rest.vcenter_resourcepool:
     resource_pool: '{{ my_resource_pool.id }}'
@@ -186,10 +190,6 @@ EXAMPLES = r"""
       reservation: 0
       shares:
         level: NORMAL
-- name: Remove a resource pool
-  vmware.vmware_rest.vcenter_resourcepool:
-    resource_pool: '{{ my_resource_pool.id }}'
-    state: absent
 """
 
 RETURN = r"""
@@ -197,7 +197,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1235
+  sample: resgroup-1058
   type: str
 value:
   description: Create a generic resource pool

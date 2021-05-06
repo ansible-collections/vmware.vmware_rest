@@ -84,6 +84,7 @@ EXAMPLES = r"""
 - name: Update the global policy of the local accounts
   vmware.vmware_rest.appliance_localaccounts_globalpolicy:
     warn_days: 5
+
 - name: Update the global policy of the local accounts (idempotency)
   vmware.vmware_rest.appliance_localaccounts_globalpolicy:
     warn_days: 5

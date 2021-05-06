@@ -11,12 +11,12 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: content_subscribedlibrary
-short_description: Updates the properties of a subscribed library. <p> This is an
-  incremental update to the subscribed library. {@term Fields} that are {@term unset}
-  in the update specification will be left unchanged.
-description: Updates the properties of a subscribed library. <p> This is an incremental
-  update to the subscribed library. {@term Fields} that are {@term unset} in the update
-  specification will be left unchanged.
+short_description: Creates a new subscribed library
+description: Creates a new subscribed library. <p> Once created, the subscribed library
+  will be empty. If the {@link LibraryModel#subscriptionInfo} property is set, the
+  Content Library Service will attempt to synchronize to the remote source. This is
+  an asynchronous operation so the content of the published library may not immediately
+  appear.
 options:
   client_token:
     description:

@@ -11,10 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_guest_environment_info
-short_description: Reads a single environment variable from the guest operating system.
-  <p> If the authentication uses {@link Credentials#interactiveSession}, then the
-  environment being read will be that of the user logged into the desktop. Otherwise
-  it's the environment of the system user. <p>
+short_description: Reads a single environment variable from the guest operating system
 description: Reads a single environment variable from the guest operating system.
   <p> If the authentication uses {@link Credentials#interactiveSession}, then the
   environment being read will be that of the user logged into the desktop. Otherwise

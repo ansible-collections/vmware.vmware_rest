@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_hardware_disk
 *******************************************
 
-**Updates the configuration of a virtual disk.  An update {@term operation} can be used to detach the existing VMDK file and attach another VMDK file to the virtual machine.**
+**Adds a virtual disk to the virtual machine**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Updates the configuration of a virtual disk.  An update {@term operation} can be used to detach the existing VMDK file and attach another VMDK file to the virtual machine.
+- Adds a virtual disk to the virtual machine.  While adding the virtual disk, a new VMDK file may be created or an existing VMDK file may be used to back the virtual disk.
 
 
 
@@ -320,10 +320,17 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Look up the VM called test_vm1 in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - test_vm1
+
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
+
     - name: Create a new disk
       vmware.vmware_rest.vcenter_vm_hardware_disk:
         vm: '{{ test_vm1_info.id }}'
@@ -331,6 +338,7 @@ Examples
         new_vmdk:
           capacity: 320000
       register: my_new_disk
+
     - name: Delete the disk
       vmware.vmware_rest.vcenter_vm_hardware_disk:
         vm: '{{ test_vm1_info.id }}'

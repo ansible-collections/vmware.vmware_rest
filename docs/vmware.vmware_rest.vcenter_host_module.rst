@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_host
 *******************************
 
-**Connect to the host corresponding to {@param.name host} previously added to the vCenter server.**
+**Add a new standalone host in the vCenter inventory**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Connect to the host corresponding to {@param.name host} previously added to the vCenter server.
+- Add a new standalone host in the vCenter inventory. The newly connected host will be in connected state. The vCenter Server will verify the SSL certificate before adding the host to its inventory. In the case where the SSL certificate cannot be verified because the Certificate Authority is not recognized or the certificate is self signed, the vCenter Server will fall back to thumbprint verification mode as defined by {@link CreateSpec.ThumbprintVerification}.
 
 
 
@@ -304,10 +304,15 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Build a list of all the folders
+      vmware.vmware_rest.vcenter_folder_info:
+      register: my_folders
+
     - name: Look up the different folders
       set_fact:
         my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
           }}'
+
     - name: Connect the host(s)
       vmware.vmware_rest.vcenter_host:
         hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
@@ -344,7 +349,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Connect the host(s)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1239</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1062</div>
                 </td>
             </tr>
     </table>

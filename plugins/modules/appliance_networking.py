@@ -11,8 +11,10 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_networking
-short_description: Enable or Disable ipv6 on all interfaces
-description: Enable or Disable ipv6 on all interfaces
+short_description: Reset and restarts network configuration on all interfaces, also
+  this will renew the DHCP lease for DHCP IP address.
+description: Reset and restarts network configuration on all interfaces, also this
+  will renew the DHCP lease for DHCP IP address.
 options:
   SSO_password:
     description:
@@ -130,10 +132,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Set network information
-  vmware.vmware_rest.appliance_networking:
-    ipv6_enabled: false
-  register: result
 """
 
 RETURN = r"""

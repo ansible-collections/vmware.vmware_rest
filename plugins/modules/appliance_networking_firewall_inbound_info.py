@@ -11,10 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_networking_firewall_inbound_info
-short_description: Get the ordered list of firewall rules. Within the list of traffic
-  rules, rules are processed in order of appearance, from top to bottom. When a connection
-  matches a firewall rule, further processing for the connection stops, and the appliance
-  ignores any additional firewall rules you have set.
+short_description: Get the ordered list of firewall rules
 description: Get the ordered list of firewall rules. Within the list of traffic rules,
   rules are processed in order of appearance, from top to bottom. When a connection
   matches a firewall rule, further processing for the connection stops, and the appliance
@@ -76,7 +73,11 @@ RETURN = r"""
 value:
   description: Get the firewall inbound configuration
   returned: On success
-  sample: []
+  sample:
+  - address: 1.2.3.4
+    interface_name: '*'
+    policy: ACCEPT
+    prefix: 32
   type: list
 """
 

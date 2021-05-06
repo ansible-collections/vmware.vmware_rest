@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_health_softwarepackages_info
 *********************************************************
 
-**Get information on available software updates available in the remote vSphere Update Manager repository. Red indicates that security updates are available. Orange indicates that non-security updates are available. Green indicates that there are no updates available. Gray indicates that there was an error retreiving information on software updates.**
+**Get information on available software updates available in the remote vSphere Update Manager repository**
 
 
 Version added: 1.0.0

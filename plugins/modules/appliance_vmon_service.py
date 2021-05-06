@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_vmon_service
-short_description: Stops a service
-description: Stops a service
+short_description: Lists details of services managed by vMon.
+description: Lists details of services managed by vMon.
 options:
   service:
     description:

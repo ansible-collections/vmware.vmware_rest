@@ -70,7 +70,9 @@ RETURN = r"""
 value:
   description: Get DNS domains configuration
   returned: On success
-  sample: []
+  sample:
+  - foobar
+  - barfoo
   type: list
 """
 

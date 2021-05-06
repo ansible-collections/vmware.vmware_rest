@@ -117,17 +117,20 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2021-04-27T17:06:21+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"description":"Appliance
-    Mangment Service","name":"ApplianceManagement","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
-    shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
-    zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
-    servers":["time.nist.gov"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail server":null},"/etc/vmware-syslog/syslog.conf":{"Port
-    [2]":null,"Port [1]":null,"Port [0]":null,"Protocol [2]":null,"Remote Syslog Host
-    [1]":null,"Protocol [1]":null,"Remote Syslog Host [0]":null,"Protocol [0]":null,"Remote
-    Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny Login after these many
-    Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On Error Login
-    will be.":null,"Include Root user for SSH lockout.":null,"Unlock user after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
-    Waring before this No of Days.":null,"Password validity (days)":null}}}}}'
+  sample: '{"creationTime":"2021-05-05T14:34:03+0000","version":"7.0.2.00000","action":"RESTART_SERVICE","productName":"VMware
+    vCenter Server","profiles":{"ApplianceManagement":{"version":"7.0","description":"Appliance
+    Mangment Service","action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
+    shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/applmgmt/appliance/localaccounts.conf":{"Email
+    Address used by Root for Password Reminder.":null},"/etc/sysconfig/clock":{"Time
+    zone":"\"UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
+    servers":["time.google.com"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail
+    server":null},"/etc/vmware-syslog/syslog.conf":{"Port [2]":null,"Port [1]":null,"Port
+    [0]":null,"Protocol [2]":null,"Remote Syslog Host [1]":null,"Protocol [1]":null,"Remote
+    Syslog Host [0]":null,"Protocol [0]":null,"Remote Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny
+    Login after these many Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On
+    Error Login will be.":null,"Include Root user for SSH lockout.":null,"Unlock user
+    after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
+    Waring before this No of Days.":null,"Password validity (days)":null}},"name":"ApplianceManagement"}}}'
   type: str
 """
 

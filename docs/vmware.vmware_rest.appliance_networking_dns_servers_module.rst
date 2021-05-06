@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking_dns_servers
 ***************************************************
 
-**Test if dns servers are reachable.**
+**Set the DNS server configuration**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Test if dns servers are reachable.
+- Set the DNS server configuration. If you set the mode argument to "DHCP", a DHCP refresh is forced.
 
 
 
@@ -216,12 +216,14 @@ Examples
         - 1.1.1.1
       register: result
       ignore_errors: true  # May be failing because of the CI set-up
+
     - name: Set the DNS servers (again)
       vmware.vmware_rest.appliance_networking_dns_servers:
         servers:
         - 1.1.1.1
       register: result
       ignore_errors: true  # May be failing because of the CI set-up
+
     - name: Test the DNS servers
       vmware.vmware_rest.appliance_networking_dns_servers:
         state: test

@@ -44,8 +44,8 @@
         "floppies": {},
         "identity": {
             "name": "test_vm1",
-            "instance_uuid": "502618c0-76c7-ccf8-5bef-d05a90e5cd5b",
-            "bios_uuid": "4226cb9f-88dd-5cb8-79b0-8fd4443b19f3"
+            "instance_uuid": "502641dc-ab55-1b41-99c8-57d7e616af83",
+            "bios_uuid": "42267e63-e4e0-c681-b5dd-f69dfa981039"
         },
         "nvme_adapters": {},
         "name": "test_vm1",
@@ -66,6 +66,6 @@
             "version": "VMX_11"
         }
     },
-    "id": "vm-1248",
+    "id": "vm-1072",
     "changed": false
 }

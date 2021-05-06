@@ -11,11 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_ntp_info
-short_description: Get the NTP configuration status. If you run the 'timesync.get'
-  command, you can retrieve the current time synchronization method (NTP- or VMware
-  Tools-based). The 'ntp' command always returns the NTP server information, even
-  when the time synchronization mode is not set to NTP. If the time synchronization
-  mode is not NTP-based, the NTP server status is displayed as down.
+short_description: Get the NTP configuration status
 description: Get the NTP configuration status. If you run the 'timesync.get' command,
   you can retrieve the current time synchronization method (NTP- or VMware Tools-based).
   The 'ntp' command always returns the NTP server information, even when the time
@@ -70,6 +66,7 @@ requirements:
 EXAMPLES = r"""
 - name: Get the NTP configuration
   vmware.vmware_rest.appliance_ntp_info:
+
 - name: Get the NTP configuration
   vmware.vmware_rest.appliance_ntp_info:
   register: result
@@ -81,7 +78,7 @@ value:
   description: Get the NTP configuration
   returned: On success
   sample:
-  - time.nist.gov
+  - time.google.com
   type: list
 """
 

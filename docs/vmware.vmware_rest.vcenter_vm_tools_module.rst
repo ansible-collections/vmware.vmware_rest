@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_tools
 ***********************************
 
-**Begins the Tools upgrade process. To monitor the status of the Tools upgrade, clients should check the Tools status by calling {@link #get} and examining {@name Info#versionStatus} and {@name Info#runState}.**
+**Update the properties of VMware Tools.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Begins the Tools upgrade process. To monitor the status of the Tools upgrade, clients should check the Tools status by calling {@link #get} and examining {@name Info#versionStatus} and {@name Info#runState}.
+- Update the properties of VMware Tools.
 
 
 
@@ -204,26 +204,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-    - name: Change vm-tools upgrade policy to MANUAL
-      vmware.vmware_rest.vcenter_vm_tools:
-        vm: '{{ test_vm1_info.id }}'
-        upgrade_policy: MANUAL
-    - name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
-      vmware.vmware_rest.vcenter_vm_tools:
-        vm: '{{ test_vm1_info.id }}'
-        upgrade_policy: UPGRADE_AT_POWER_CYCLE
-    - name: Retrive vm-tools information
-      vmware.vmware_rest.vcenter_vm_tools:
-        vm: '{{ test_vm1_info.id }}'
 
 
 

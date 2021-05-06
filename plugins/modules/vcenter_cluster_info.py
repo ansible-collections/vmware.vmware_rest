@@ -92,18 +92,20 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
 - name: get parent cluster for resource pool
   vmware.vmware_rest.vcenter_cluster_info:
     filter_names:
     - my_cluster
   register: my_cluster
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
 """
 
 RETURN = r"""
@@ -111,14 +113,14 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1231
+  sample: domain-c1055
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1232
+    resource_pool: resgroup-1056
   type: dict
 """
 

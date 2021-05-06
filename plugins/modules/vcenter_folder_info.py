@@ -104,21 +104,17 @@ EXAMPLES = r"""
 - name: Build a list of all the folders
   vmware.vmware_rest.vcenter_folder_info:
   register: my_folders
-- name: Build a list of all the folders
+
+- name: Build a list of the folders, with a filter
   vmware.vmware_rest.vcenter_folder_info:
-  register: my_folders
-- name: Build a list of all the folders
-  vmware.vmware_rest.vcenter_folder_info:
-  register: my_folders
+    filter_type: DATASTORE
+
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
     filter_type: VIRTUAL_MACHINE
     filter_names:
     - vm
   register: my_folders
-- name: Build a list of the folders, with a filter
-  vmware.vmware_rest.vcenter_folder_info:
-    filter_type: DATASTORE
 """
 
 RETURN = r"""
@@ -128,7 +124,7 @@ value:
     vm
   returned: On success
   sample:
-  - folder: group-v1226
+  - folder: group-v1050
     name: vm
     type: VIRTUAL_MACHINE
   type: list

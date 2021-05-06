@@ -1,14 +1,14 @@
 {
     "value": [
         {
-            "name": "dvswitch1-DVUplinks-1245",
+            "name": "dvswitch1-DVUplinks-1069",
             "type": "DISTRIBUTED_PORTGROUP",
-            "network": "dvportgroup-1246"
+            "network": "dvportgroup-1070"
         },
         {
             "name": "my-portrgoup",
             "type": "DISTRIBUTED_PORTGROUP",
-            "network": "dvportgroup-1247"
+            "network": "dvportgroup-1071"
         }
     ],
     "changed": false

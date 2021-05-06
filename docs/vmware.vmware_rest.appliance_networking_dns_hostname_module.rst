@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking_dns_hostname
 ****************************************************
 
-**Test the Fully Qualified Domain Name.**
+**Set the Fully Qualified Domain Name.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Test the Fully Qualified Domain Name.
+- Set the Fully Qualified Domain Name.
 
 
 

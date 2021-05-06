@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_shutdown
-short_description: Reboot the appliance.
-description: Reboot the appliance.
+short_description: Cancel pending shutdown action.
+description: Cancel pending shutdown action.
 options:
   delay:
     description:
@@ -77,29 +77,33 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Abort the reboot
+- name: Shutdown the appliance
   vmware.vmware_rest.appliance_shutdown:
-    state: cancel
+    state: poweroff
+    reason: this is an example
+    delay: 600
   register: result
-- name: Abort the reboot (again)
-  vmware.vmware_rest.appliance_shutdown:
-    state: cancel
-  register: result
+
 - name: Abort the shutdown of the appliance
   vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result
+
 - name: Reboot the appliance
   vmware.vmware_rest.appliance_shutdown:
     state: reboot
     reason: this is an example
     delay: 600
   register: result
-- name: Shutdown the appliance
+
+- name: Abort the reboot
   vmware.vmware_rest.appliance_shutdown:
-    state: poweroff
-    reason: this is an example
-    delay: 600
+    state: cancel
+  register: result
+
+- name: Abort the reboot (again)
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
   register: result
 """
 

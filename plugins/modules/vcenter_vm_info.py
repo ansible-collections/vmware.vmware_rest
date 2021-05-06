@@ -116,22 +116,25 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
 - name: Collect the list of the existing VM
   vmware.vmware_rest.vcenter_vm_info:
   register: existing_vms
   until: existing_vms is not failed
+
+- name: Search with an invalid filter
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names: test_vm1_does_not_exists
+
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
     filter_names:
     - test_vm1
-- name: Search with an invalid filter
+
+- name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
-    filter_names: test_vm1_does_not_exists
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
 """
 
 RETURN = r"""
@@ -139,7 +142,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1248
+  sample: vm-1072
   type: str
 value:
   description: Collect information about a specific VM
@@ -176,8 +179,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 4226cb9f-88dd-5cb8-79b0-8fd4443b19f3
-      instance_uuid: 502618c0-76c7-ccf8-5bef-d05a90e5cd5b
+      bios_uuid: 42267e63-e4e0-c681-b5dd-f69dfa981039
+      instance_uuid: 502641dc-ab55-1b41-99c8-57d7e616af83
       name: test_vm1
     instant_clone_frozen: 0
     memory:

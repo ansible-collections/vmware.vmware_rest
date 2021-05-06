@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking_dns_domains
 ***************************************************
 
-**Add domain to DNS search domains.**
+**Set DNS search domains.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Add domain to DNS search domains.
+- Set DNS search domains.
 
 
 
@@ -190,20 +190,22 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Add another domain configuration
-      vmware.vmware_rest.appliance_networking_dns_domains:
-        domain: barfoo
-        state: add
-      register: result
     - name: Update the domain configuration
       vmware.vmware_rest.appliance_networking_dns_domains:
         domains:
         - foobar
       register: result
+
     - name: Update the domain configuration (again)
       vmware.vmware_rest.appliance_networking_dns_domains:
         domains:
         - foobar
+      register: result
+
+    - name: Add another domain configuration
+      vmware.vmware_rest.appliance_networking_dns_domains:
+        domain: barfoo
+        state: add
       register: result
 
 

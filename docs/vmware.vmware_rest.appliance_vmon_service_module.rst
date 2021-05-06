@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_vmon_service
 *****************************************
 
-**Stops a service**
+**Lists details of services managed by vMon.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Stops a service
+- Lists details of services managed by vMon.
 
 
 

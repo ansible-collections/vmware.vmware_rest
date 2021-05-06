@@ -144,9 +144,6 @@ Examples
     - name: Get HTTP noproxy configuration
       vmware.vmware_rest.appliance_networking_noproxy_info:
       register: result
-    - name: Get HTTP noproxy configuration
-      vmware.vmware_rest.appliance_networking_noproxy_info:
-      register: result
 
 
 

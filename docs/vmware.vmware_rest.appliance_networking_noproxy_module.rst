@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_networking_noproxy
 ***********************************************
 
-**Sets servers for which no proxy configuration should be applied. This operation sets environment variables. In order for this operation to take effect, a logout from appliance or a service restart is required. If IPv4 is enabled, "127.0.0.1" and "localhost" will always bypass the proxy (even if they are not explicitly configured).**
+**Sets servers for which no proxy configuration should be applied**
 
 
 Version added: 1.0.0
@@ -175,21 +175,23 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Remove the noproxy entries
-      vmware.vmware_rest.appliance_networking_noproxy:
-        servers: []
-      register: result
     - name: Set HTTP noproxy configuration
       vmware.vmware_rest.appliance_networking_noproxy:
         servers:
         - redhat.com
         - ansible.com
       register: result
+
     - name: Set HTTP noproxy configuration (again)
       vmware.vmware_rest.appliance_networking_noproxy:
         servers:
         - redhat.com
         - ansible.com
+      register: result
+
+    - name: Remove the noproxy entries
+      vmware.vmware_rest.appliance_networking_noproxy:
+        servers: []
       register: result
 
 

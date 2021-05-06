@@ -11,10 +11,10 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_networking_proxy
-short_description: Tests a proxy configuration by testing the connection to the proxy
-  server and test host.
-description: Tests a proxy configuration by testing the connection to the proxy server
-  and test host.
+short_description: Configures which proxy server to use for the specified protocol
+description: Configures which proxy server to use for the specified protocol. This
+  operation sets environment variables for using proxy. In order for this configuration
+  to take effect a logout / service restart is required.
 options:
   config:
     description:
@@ -120,12 +120,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Delete the HTTP proxy configuration
-  vmware.vmware_rest.appliance_networking_proxy:
-    config: {}
-    protocol: http
-    state: absent
-  register: result
 - name: Set the HTTP proxy configuration
   vmware.vmware_rest.appliance_networking_proxy:
     config:
@@ -134,6 +128,7 @@ EXAMPLES = r"""
       port: 443
     protocol: http
   register: result
+
 - name: Set the HTTP proxy configuration (again)
   vmware.vmware_rest.appliance_networking_proxy:
     config:
@@ -141,6 +136,13 @@ EXAMPLES = r"""
       server: https://www.google.com
       port: 443
     protocol: http
+  register: result
+
+- name: Delete the HTTP proxy configuration
+  vmware.vmware_rest.appliance_networking_proxy:
+    config: {}
+    protocol: http
+    state: absent
   register: result
 """
 

@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_services
-short_description: Stops a service
-description: Stops a service
+short_description: Restarts a service
+description: Restarts a service
 options:
   service:
     description:
@@ -73,21 +73,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Restart the ntpd service
-  vmware.vmware_rest.appliance_services:
-    service: ntpd
-    state: restart
-  register: result
-- name: Start the ntpd service
-  vmware.vmware_rest.appliance_services:
-    service: ntpd
-    state: start
-  register: result
-- name: Stop the ntpd service
-  vmware.vmware_rest.appliance_services:
-    service: ntpd
-    state: stop
-  register: result
 """
 
 RETURN = r"""

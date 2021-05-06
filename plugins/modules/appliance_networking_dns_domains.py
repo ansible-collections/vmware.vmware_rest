@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_networking_dns_domains
-short_description: Add domain to DNS search domains.
-description: Add domain to DNS search domains.
+short_description: Set DNS search domains.
+description: Set DNS search domains.
 options:
   domain:
     description:
@@ -76,20 +76,22 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Add another domain configuration
-  vmware.vmware_rest.appliance_networking_dns_domains:
-    domain: barfoo
-    state: add
-  register: result
 - name: Update the domain configuration
   vmware.vmware_rest.appliance_networking_dns_domains:
     domains:
     - foobar
   register: result
+
 - name: Update the domain configuration (again)
   vmware.vmware_rest.appliance_networking_dns_domains:
     domains:
     - foobar
+  register: result
+
+- name: Add another domain configuration
+  vmware.vmware_rest.appliance_networking_dns_domains:
+    domain: barfoo
+    state: add
   register: result
 """
 

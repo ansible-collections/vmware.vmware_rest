@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_environment_info
 ****************************************************
 
-**Reads a single environment variable from the guest operating system. <p> If the authentication uses {@link Credentials#interactiveSession}, then the environment being read will be that of the user logged into the desktop. Otherwise it's the environment of the system user. <p>**
+**Reads a single environment variable from the guest operating system**
 
 
 Version added: 1.0.0

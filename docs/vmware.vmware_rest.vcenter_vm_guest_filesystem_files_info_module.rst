@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_filesystem_files_info
 *********************************************************
 
-**Returns information about a file or directory in the guest. <p>**
+**Returns information about a file or directory in the guest**
 
 
 Version added: 1.0.0

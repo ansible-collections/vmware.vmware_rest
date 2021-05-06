@@ -64,13 +64,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Get information about ntpd
-  vmware.vmware_rest.appliance_services_info:
-    service: ntpd
-  register: result
-- name: List all the services
-  vmware.vmware_rest.appliance_services_info:
-  register: result
 """
 
 RETURN = r"""

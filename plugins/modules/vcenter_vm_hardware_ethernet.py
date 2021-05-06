@@ -160,10 +160,23 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
+- name: Retrieve details about the portgroup
+  community.vmware.vmware_dvs_portgroup_info:
+    validate_certs: no
+    datacenter: my_dc
+  register: my_portgroup_info
+
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
     vm: '{{ test_vm1_info.id }}'
@@ -173,6 +186,7 @@ EXAMPLES = r"""
       network: '{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}'
     start_connected: false
   register: vm_hardware_ethernet_1
+
 - name: Turn the NIC's start_connected flag on
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
     nic: '{{ vm_hardware_ethernet_1.id }}'
@@ -193,13 +207,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1107666745
+      connection_cookie: 259473160
       distributed_port: '2'
-      distributed_switch_uuid: 50 26 fa 60 df 9b f8 27-8c 63 8b cc 31 1f ca 53
-      network: dvportgroup-1247
+      distributed_switch_uuid: 50 26 09 a3 ee e6 25 39-ac da 42 f4 f7 74 5e 41
+      network: dvportgroup-1071
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:a6:eb:d7
+    mac_address: 00:50:56:a6:5e:89
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0

@@ -295,7 +295,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Set the IPv4 network information of nic99 (which does not exist)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">Unsupported parameters for (vmware.vmware_rest.appliance_networking_interfaces_ipv4) module: config Supported parameters include: address, default_gateway, interface_name, mode, prefix, state, vcenter_hostname, vcenter_password, vcenter_rest_log_file, vcenter_username, vcenter_validate_certs</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">missing required arguments: mode</div>
                 </td>
             </tr>
     </table>

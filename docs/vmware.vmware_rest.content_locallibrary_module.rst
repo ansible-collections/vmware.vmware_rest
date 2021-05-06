@@ -5,7 +5,7 @@
 vmware.vmware_rest.content_locallibrary
 ***************************************
 
-**Updates the properties of a local library. <p> This is an incremental update to the local library. {@term Fields} that are {@term unset} in the update specification will be left unchanged.**
+**Creates a new local library.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Updates the properties of a local library. <p> This is an incremental update to the local library. {@term Fields} that are {@term unset} in the update specification will be left unchanged.
+- Creates a new local library.
 
 
 
@@ -439,8 +439,103 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Define datastore_name and local_library_name
+      set_fact:
+        datastore_name: rw_datastore
+        local_library_name: local_library_001
+
+    - name: Adjust vpxd configuration
+      vmware.vmware_rest.appliance_vmon_service:
+        service: vpxd
+        startup_type: AUTOMATIC
+      register: result
+
+    - name: Set datastore id
+      set_fact:
+        datastore_id: '{{ result.value[0].datastore }}'
+
+    - name: Create a new content library
+      vmware.vmware_rest.content_locallibrary:
+        name: '{{ local_library_name }}'
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: '{{ datastore_id }}'
+          type: DATASTORE
+        state: present
+      register: result
+
+    - name: Retrieve the local content library information
+      vmware.vmware_rest.content_locallibrary_info:
+      register: result
+
+    - name: Set test local library id for further testing
+      set_fact:
+        test_library_id: '{{ result.value[0] }}'
+
+    - name: Delete local content library
+      vmware.vmware_rest.content_locallibrary:
+        library_id: '{{ test_library_id }}'
+        state: absent
+      register: result
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>id</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>moid of the resource</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">2c80c874-2914-49c5-b38f-325edc65d116</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Create a new content library</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-05-05T14:35:42.786Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;2c80c874-2914-49c5-b38f-325edc65d116&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-05-05T14:35:42.786Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/2c80c874-2914-49c5-b38f-325edc65d116/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1089&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

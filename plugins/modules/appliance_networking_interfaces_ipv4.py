@@ -122,10 +122,7 @@ failed_when_result:
 msg:
   description: Set the IPv4 network information of nic99 (which does not exist)
   returned: On success
-  sample: 'Unsupported parameters for (vmware.vmware_rest.appliance_networking_interfaces_ipv4)
-    module: config Supported parameters include: address, default_gateway, interface_name,
-    mode, prefix, state, vcenter_hostname, vcenter_password, vcenter_rest_log_file,
-    vcenter_username, vcenter_validate_certs'
+  sample: 'missing required arguments: mode'
   type: str
 """
 

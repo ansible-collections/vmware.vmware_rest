@@ -11,9 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm
-short_description: Creates a virtual machine from existing virtual machine files on
-  storage.
-description: Creates a virtual machine from existing virtual machine files on storage.
+short_description: Creates a virtual machine.
+description: Creates a virtual machine.
 options:
   bios_uuid:
     description:
@@ -731,6 +730,43 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
   register: existing_vms
   until: existing_vms is not failed
+
+- name: Delete some VM
+  vmware.vmware_rest.vcenter_vm:
+    state: absent
+    vm: '{{ item.vm }}'
+  with_items: '{{ existing_vms.value }}'
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
+
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+    - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
+
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
+    filter_names:
+    - vm
+  register: my_folders
+
+- name: Set my_virtual_machine_folder
+  set_fact:
+    my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
@@ -744,11 +780,6 @@ EXAMPLES = r"""
     memory:
       hot_add_enabled: true
       size_MiB: 1024
-- name: Delete some VM
-  vmware.vmware_rest.vcenter_vm:
-    state: absent
-    vm: '{{ item.vm }}'
-  with_items: '{{ existing_vms.value }}'
 """
 
 RETURN = r"""
@@ -764,10 +795,10 @@ results:
   sample:
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1221
+      memory_size_MiB: 128
+      name: vCLS (1)
+      power_state: POWERED_OFF
+      vm: vm-1047
     _ansible_no_log: 0
     _debug_info:
       operation: delete
@@ -812,73 +843,14 @@ results:
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 'no'
-        vm: vm-1221
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1221
-    value: {}
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 128
-      name: vCLS (1)
-      power_state: POWERED_OFF
-      vm: vm-1223
-    _ansible_no_log: 0
-    _debug_info:
-      operation: delete
-      status: 204
-    ansible_loop_var: item
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        bios_uuid: null
-        boot: null
-        boot_devices: null
-        cdroms: null
-        cpu: null
-        datastore: null
-        datastore_path: null
-        disconnect_all_nics: null
-        disks: null
-        disks_to_remove: null
-        disks_to_update: null
-        floppies: null
-        guest_OS: null
-        guest_customization_spec: null
-        hardware_version: null
-        memory: null
-        name: null
-        nics: null
-        nics_to_update: null
-        parallel_ports: null
-        parallel_ports_to_update: null
-        path: null
-        placement: null
-        power_on: null
-        sata_adapters: null
-        scsi_adapters: null
-        serial_ports: null
-        serial_ports_to_update: null
-        source: null
-        state: absent
-        storage_policy: null
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 'no'
-        vm: vm-1223
+        vcenter_validate_certs: 0
+        vm: vm-1047
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1223
+      vm: vm-1047
     value: {}
   type: list
 """

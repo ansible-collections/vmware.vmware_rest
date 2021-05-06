@@ -1,7 +1,7 @@
 {
     "value": [
         {
-            "host": "host-1239",
+            "host": "host-1062",
             "name": "esxi1.test",
             "connection_state": "CONNECTED",
             "power_state": "POWERED_ON"

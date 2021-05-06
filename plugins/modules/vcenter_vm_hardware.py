@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_hardware
-short_description: Upgrades the virtual machine to a newer virtual hardware version.
-description: Upgrades the virtual machine to a newer virtual hardware version.
+short_description: Updates the virtual hardware settings of a virtual machine.
+description: Updates the virtual hardware settings of a virtual machine.
 options:
   state:
     choices:
@@ -127,10 +127,17 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
 - name: Upgrade the VM hardware version
   vmware.vmware_rest.vcenter_vm_hardware:
     upgrade_policy: AFTER_CLEAN_SHUTDOWN

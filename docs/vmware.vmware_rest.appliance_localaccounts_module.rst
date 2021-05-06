@@ -5,7 +5,7 @@
 vmware.vmware_rest.appliance_localaccounts
 ******************************************
 
-**Update selected fields in local user account properties.**
+**Create a new local user account.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Update selected fields in local user account properties.
+- Create a new local user account.
 
 
 
@@ -426,6 +426,7 @@ Examples
           - superAdmin
         state: present
       register: result
+
     - name: Add a local accounts (idempotency)
       vmware.vmware_rest.appliance_localaccounts:
         username: foobar
@@ -439,6 +440,7 @@ Examples
           - superAdmin
         state: present
       register: result
+
     - name: Change account email address
       vmware.vmware_rest.appliance_localaccounts:
         username: foobar
@@ -451,6 +453,7 @@ Examples
           - superAdmin
         state: present
       register: result
+
     - name: Delete a local accounts
       vmware.vmware_rest.appliance_localaccounts:
         username: foobar
@@ -502,7 +505,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Change account email address</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;email&#x27;: &#x27;********@vsphere.local&#x27;, &#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;Foobar&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-04-27T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;operator&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 5}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;email&#x27;: &#x27;********@vsphere.local&#x27;, &#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;Foobar&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-05-05T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;operator&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 5}</div>
                 </td>
             </tr>
     </table>

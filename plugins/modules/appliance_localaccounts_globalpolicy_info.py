@@ -71,9 +71,9 @@ value:
   description: Get the global policy of the local accounts
   returned: On success
   sample:
-    max_days: 90
-    min_days: 1
-    warn_days: 7
+    max_days: -1
+    min_days: -1
+    warn_days: 5
   type: dict
 """
 

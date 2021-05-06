@@ -12,8 +12,7 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_vm_guest_power
 short_description: Issues a request to the guest operating system asking it to perform
-  a reboot. This request returns immediately and does not wait for the guest operating
-  system to complete the operation.
+  a reboot
 description: Issues a request to the guest operating system asking it to perform a
   reboot. This request returns immediately and does not wait for the guest operating
   system to complete the operation.

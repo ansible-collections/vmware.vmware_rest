@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_resourcepool
 ***************************************
 
-**Updates the configuration of a resource pool.**
+**Creates a resource pool.**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Updates the configuration of a resource pool.
+- Creates a resource pool.
 
 
 
@@ -260,18 +260,10 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Read details from a specific resource pool
-      vmware.vmware_rest.vcenter_resourcepool_info:
-        resource_pool: '{{ my_resource_pool.id }}'
-      register: my_resource_pool
     - name: Get the existing resource pools
       vmware.vmware_rest.vcenter_resourcepool_info:
       register: resource_pools
-    - name: Create a generic resource pool
-      vmware.vmware_rest.vcenter_resourcepool:
-        name: my_resource_pool
-        parent: '{{ resource_pools.value[0].resource_pool }}'
-      register: my_resource_pool
+
     - name: Create an Ad hoc resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: my_resource_pool
@@ -289,6 +281,18 @@ Examples
           shares:
             level: NORMAL
       register: my_resource_pool
+
+    - name: Remove a resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        resource_pool: '{{ my_resource_pool.id }}'
+        state: absent
+
+    - name: Create a generic resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        name: my_resource_pool
+        parent: '{{ resource_pools.value[0].resource_pool }}'
+      register: my_resource_pool
+
     - name: Modify a resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         resource_pool: '{{ my_resource_pool.id }}'
@@ -304,10 +308,6 @@ Examples
           reservation: 0
           shares:
             level: NORMAL
-    - name: Remove a resource pool
-      vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: '{{ my_resource_pool.id }}'
-        state: absent
 
 
 
@@ -337,7 +337,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1235</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1058</div>
                 </td>
             </tr>
             <tr>

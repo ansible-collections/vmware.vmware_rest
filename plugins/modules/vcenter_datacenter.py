@@ -86,20 +86,27 @@ EXAMPLES = r"""
 - name: Get a list of all the datacenters
   register: existing_datacenters
   vmware.vmware_rest.vcenter_datacenter_info:
-- name: Set my_datacenter_folder
-  set_fact:
-    my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first
-      }}'
-- name: Create datacenter my_dc
-  vmware.vmware_rest.vcenter_datacenter:
-    name: my_dc
-    folder: '{{ my_datacenter_folder.folder }}'
+
 - name: Force delete the existing DC
   vmware.vmware_rest.vcenter_datacenter:
     state: absent
     datacenter: '{{ item.datacenter }}'
     force: true
   with_items: '{{ existing_datacenters.value }}'
+
+- name: Build a list of all the folders
+  vmware.vmware_rest.vcenter_folder_info:
+  register: my_folders
+
+- name: Set my_datacenter_folder
+  set_fact:
+    my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first
+      }}'
+
+- name: Create datacenter my_dc
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_dc
+    folder: '{{ my_datacenter_folder.folder }}'
 """
 
 RETURN = r"""
@@ -114,7 +121,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1200
+      datacenter: datacenter-1025
       name: my_dc
     _ansible_no_log: 0
     _debug_info:
@@ -125,7 +132,7 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1200
+        datacenter: datacenter-1025
         folder: null
         force: 1
         name: null
@@ -134,9 +141,9 @@ results:
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 'no'
+        vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1200
+      datacenter: datacenter-1025
       name: my_dc
     value: {}
   type: list

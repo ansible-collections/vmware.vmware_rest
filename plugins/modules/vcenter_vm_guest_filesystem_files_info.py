@@ -11,7 +11,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_guest_filesystem_files_info
-short_description: Returns information about a file or directory in the guest. <p>
+short_description: Returns information about a file or directory in the guest
 description: Returns information about a file or directory in the guest. <p>
 options:
   credentials:

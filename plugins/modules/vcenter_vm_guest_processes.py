@@ -11,12 +11,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_guest_processes
-short_description: Terminates a process in the guest OS. <p> On Posix guests, the
-  process is sent a TERM signal.  If that doesn't terminate the process, a KILL signal
-  is sent.  A process may still be running if it's stuck. <p>
-description: Terminates a process in the guest OS. <p> On Posix guests, the process
-  is sent a TERM signal.  If that doesn't terminate the process, a KILL signal is
-  sent.  A process may still be running if it's stuck. <p>
+short_description: Starts a program in the guest operating system
+description: 'Starts a program in the guest operating system. <p> A process started
+  this way can have its status queried with {@link #list} or {@link #get}. When the
+  process completes, its exit code and end time will be available for 5 minutes after
+  completion. <p>'
 options:
   arguments:
     description:

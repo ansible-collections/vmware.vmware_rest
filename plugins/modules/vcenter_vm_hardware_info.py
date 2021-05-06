@@ -69,6 +69,7 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     filter_names:
     - test_vm1
+
 - name: Collect the hardware information
   vmware.vmware_rest.vcenter_vm_hardware_info:
     vm: '{{ search_result.value[0].vm }}'

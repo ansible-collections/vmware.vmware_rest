@@ -136,14 +136,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get the status of the Federal Information Processing Standard mode
-      vmware.vmware_rest.appliance_system_globalfips_info:
-      register: result
 
 
 

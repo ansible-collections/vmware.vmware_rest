@@ -70,7 +70,7 @@ RETURN = r"""
 value:
   description: Get the timezone configuration
   returned: On success
-  sample: Etc/UTC
+  sample: UTC
   type: str
 """
 

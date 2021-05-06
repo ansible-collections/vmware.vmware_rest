@@ -268,15 +268,23 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Look up the VM called test_vm1 in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - test_vm1
+
     - name: Collect information about a specific VM
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
+
     - name: Add a floppy disk drive
       vmware.vmware_rest.vcenter_vm_hardware_floppy:
         vm: '{{ test_vm1_info.id }}'
         allow_guest_control: true
       register: my_floppy_drive
+
     - name: Remove a floppy drive
       vmware.vmware_rest.vcenter_vm_hardware_floppy:
         vm: '{{ test_vm1_info.id }}'

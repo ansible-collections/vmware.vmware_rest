@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_filesystem_directories
 **********************************************************
 
-**Creates a temporary directory. <p> Creates a new unique temporary directory for the user to use as needed. The guest operating system may clean up the directory after a guest specific amount of time if {@param.name parentPath} is not set, or the user can remove the directory when no longer needed. <p> The new directory name will be created in a guest-specific format using {@param.name prefix}, a guest generated string and {@param.name suffix} in {@param.name parentPath}. <p>**
+**Creates a directory in the guest operating system**
 
 
 Version added: 1.0.0
@@ -17,7 +17,7 @@ Version added: 1.0.0
 
 Synopsis
 --------
-- Creates a temporary directory. <p> Creates a new unique temporary directory for the user to use as needed. The guest operating system may clean up the directory after a guest specific amount of time if {@param.name parentPath} is not set, or the user can remove the directory when no longer needed. <p> The new directory name will be created in a guest-specific format using {@param.name prefix}, a guest generated string and {@param.name suffix} in {@param.name parentPath}. <p>
+- Creates a directory in the guest operating system. <p>
 
 
 

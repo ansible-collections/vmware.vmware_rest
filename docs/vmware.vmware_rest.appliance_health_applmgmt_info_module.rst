@@ -136,14 +136,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get the health state of applmgmt
-      vmware.vmware_rest.appliance_health_applmgmt_info:
-      register: result
 
 
 

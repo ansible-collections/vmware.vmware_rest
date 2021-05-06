@@ -11,8 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_power
-short_description: Powers off a powered-on or suspended virtual machine.
-description: Powers off a powered-on or suspended virtual machine.
+short_description: Resets a powered-on virtual machine.
+description: Resets a powered-on virtual machine.
 options:
   state:
     choices:
@@ -78,16 +78,25 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
   register: existing_vms
   until: existing_vms is not failed
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
+
 - name: Turn off the VM
   vmware.vmware_rest.vcenter_vm_power:
     state: stop
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
   ignore_errors: yes
+
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
 - name: Turn the power of the VM on
   vmware.vmware_rest.vcenter_vm_power:
     state: start
