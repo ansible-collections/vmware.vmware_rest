@@ -1,9 +1,0 @@
-{
-    "value": [
-        {
-            "name": "my_dc",
-            "datacenter": "datacenter-1025"
-        }
-    ],
-    "changed": false
-}

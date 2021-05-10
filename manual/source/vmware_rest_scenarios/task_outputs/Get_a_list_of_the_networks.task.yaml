@@ -1,3 +1,0 @@
-- name: Get a list of the networks
-  vmware.vmware_rest.vcenter_network_info:
-  register: my_network_value

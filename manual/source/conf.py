@@ -18,17 +18,17 @@
 # -- Project information -----------------------------------------------------
 
 project = 'vmware_rest examples'
-copyright = '2020, Ansible contributors'
+copyright = '2020-2021, Ansible contributors'
 author = 'Ansible contributors'
-
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['sphinxcontrib.sphinx_ansible', 'sphinxcontrib.restbuilder']
+ansible_roles_path = ['~/.ansible/collections/ansible_collections/vmware/vmware_rest/tests/integration/targets']
+ansible_tmp_dir = '/tmp/sphinx-ansible'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -38,13 +38,12 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_ansible_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

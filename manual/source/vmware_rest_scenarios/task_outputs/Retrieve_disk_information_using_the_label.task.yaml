@@ -1,5 +1,0 @@
-- name: Retrieve disk information using the label
-  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
-    vm: '{{ test_vm1_info.id }}'
-    label: "Hard disk 1"
-  register: _result

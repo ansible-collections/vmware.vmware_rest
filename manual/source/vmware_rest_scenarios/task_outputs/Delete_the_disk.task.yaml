@@ -1,6 +1,0 @@
-- name: Delete the disk
-  vmware.vmware_rest.vcenter_vm_hardware_disk:
-    vm: '{{ test_vm1_info.id }}'
-    disk:  '{{ my_new_disk.id }}'
-    state: absent
-  register: _result
