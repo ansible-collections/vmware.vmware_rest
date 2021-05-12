@@ -4,10 +4,6 @@
 Configure the console and SSH access
 ************************************
 
-.. contents::
-  :local:
-
-
 Introduction
 ============
 
@@ -18,8 +14,8 @@ Scenario requirements
 
 You've got an up and running vCenter Server Appliance.
 
-Manage the Shell access
----------------------------------------------------
+Manage the shell access
+-----------------------
 
 Detect if the Shell is enabled.
 
@@ -27,4 +23,48 @@ Detect if the Shell is enabled.
 
   - name: Check if the Shell is enabled
     vmware.vmware_rest.appliance_access_shell_info:
-    register: result
+
+Or turn on the Shell access with a timeout:
+
+.. ansible-task::
+
+  - name: Disable the Shell
+    vmware.vmware_rest.appliance_access_shell:
+      enabled: False
+      timeout: 600
+
+Manage the Direct Console User Interface (DCUI)
+-----------------------------------------------
+
+You can use :ref:`vmware.vmware_rest.appliance_access_dcui_info_module` to get the current state of the configuration:
+
+.. ansible-task::
+
+  - name: Check if the Direct Console User Interface is enabled
+    vmware.vmware_rest.appliance_access_dcui_info:
+
+You can enable or disable the interface with appliance_access_dcui:
+
+.. ansible-task::
+
+   - name: Disable the Direct Console User Interface
+     vmware.vmware_rest.appliance_access_dcui:
+       enabled: False
+
+Manage the SSH interface
+------------------------
+
+You can also get the status of the SSH interface with appliance_access_ssh_info:
+
+.. ansible-task::
+
+  - name: Check is the SSH access is enabled
+    vmware.vmware_rest.appliance_access_ssh_info:
+
+And to enable the SSH interface:
+
+.. ansible-task::
+
+  - name: Ensure the SSH access ie enabled
+    vmware.vmware_rest.appliance_access_ssh:
+      enabled: true

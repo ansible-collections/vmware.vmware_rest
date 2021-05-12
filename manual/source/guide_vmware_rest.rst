@@ -4,8 +4,8 @@
 .. toctree::
    :maxdepth: 1
 
-   vcenter/1_installation
-   vcenter/1_authentication
+   vmware_rest_scenarios/vcenter/1_installation
+   vmware_rest_scenarios/vcenter/1_authentication
 
 *******************************
 Life cycle of a Virtual Machine
@@ -32,3 +32,7 @@ Manage a vCenter Server Appliance (VCSA)
    :maxdepth: 1
 
    vmware_rest_scenarios/appliance/appliance_access
+   vmware_rest_scenarios/appliance/health
+   vmware_rest_scenarios/appliance/network
+   vmware_rest_scenarios/appliance/services
+   vmware_rest_scenarios/appliance/system_managment
