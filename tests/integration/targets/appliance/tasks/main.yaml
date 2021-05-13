@@ -14,7 +14,7 @@
 - import_tasks: appliance_networking_interfaces_ipv6.yaml
 - import_tasks: appliance_networking_proxy.yaml
 - import_tasks: appliance_ntp.yaml
-#- import_tasks: appliance_services.yaml
+- import_tasks: appliance_services.yaml
 - import_tasks: appliance_shutdown.yaml
 - import_tasks: appliance_system.yaml
 #- import_tasks: appliance_system_globalfips.yaml -- off because it reboots the vcenter
