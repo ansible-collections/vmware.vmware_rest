@@ -181,7 +181,10 @@ async def update_changed_flag(data, status, operation):
     elif data.get("type") == "com.vmware.vapi.std.errors.already_exists":
         data["failed"] = False
         data["changed"] = False
-    elif data.get("value", {}).get("error_type") == "ALREADY_EXISTS":
+    elif data.get("value", {}).get("error_type") in [
+        "ALREADY_EXISTS",
+        "ALREADY_IN_DESIRED_STATE",
+    ]:
         data["failed"] = False
         data["changed"] = False
     elif data.get("type") == "com.vmware.vapi.std.errors.resource_in_use":
