@@ -1,4 +1,4 @@
-# Ansible Collection: vmware.vmware_rest
+# Ansible Collection: vmware.vmware_rest 
 
 This repo hosts the `vmware.vmware_rest` Ansible Collection.
 
