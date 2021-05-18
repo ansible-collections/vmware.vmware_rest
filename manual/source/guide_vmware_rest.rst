@@ -1,4 +1,9 @@
-.. _vcenter:
+.. _vmware_rest_ansible:
+
+*******************
+VMware Guide (REST)
+*******************
+
 
 
 .. toctree::
@@ -7,9 +12,8 @@
    vcenter/1_installation
    vcenter/1_authentication
 
-*******************************
 Life cycle of a Virtual Machine
-*******************************
+###############################
 
 These scenarios teach you how to accomplish common VMware tasks using the REST API and the Ansible ``vmware.vmware_rest`` collection. To get started, please select the task you want to accomplish.
 
@@ -24,9 +28,8 @@ These scenarios teach you how to accomplish common VMware tasks using the REST A
    vmware_rest_scenarios/vcenter/7_vm_tool_information
    vmware_rest_scenarios/vcenter/8_vm_tool_configuration
 
-****************************************
 Manage a vCenter Server Appliance (VCSA)
-****************************************
+########################################
 
 .. toctree::
    :maxdepth: 1
