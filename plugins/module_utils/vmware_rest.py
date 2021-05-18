@@ -112,7 +112,10 @@ def gen_args(params, in_query_parameter):
             args += "&"
         if isinstance(v, list):
             for j in v:
-                args += (i + "=") + j
+                if j == v[-1]:
+                    args += (i + "=") + j
+                else:
+                    args += (i + "=") + j + '&'
         elif isinstance(v, bool) and v:
             args += i + "=true"
         else:
