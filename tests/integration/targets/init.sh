@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2155,SC2086
-INVENTORY_PATH="${INVENTORY_PATH:-../../inventory.networking}"
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]}")
+if [ -z "${INVENTORY_PATH}" ]; then
+    if [ -f /tmp/inventory-vmware_rest ]; then
+        INVENTORY_PATH=/tmp/inventory-vmware_rest
+    else
+        INVENTORY_PATH=${BASE_DIR}/../inventory.networking
+    fi
+fi
 
 # The inventory file should have the following format:
 # [vmware_rest]
@@ -21,4 +29,4 @@ export ESXI2_HOSTNAME=$(sed 's,^esxi2_hostname=\(.*\),\1,;t;d' ${INVENTORY_PATH}
 export ESXI2_USERNAME=$(sed 's,^esxi2_username=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export ESXI2_PASSWORD=$(sed 's,^esxi2_password=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_VALIDATE_CERTS=no
-export ANSIBLE_ROLES_PATH=..
+export ANSIBLE_ROLES_PATH=${BASE_DIR}
