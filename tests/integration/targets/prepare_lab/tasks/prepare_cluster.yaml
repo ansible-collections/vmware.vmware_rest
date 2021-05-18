@@ -13,7 +13,7 @@
     enable_drs: yes
   delegate_to: localhost
 
-- name: get parent cluster for resource pool
+- name: get all the clusters called my_cluster
   vmware.vmware_rest.vcenter_cluster_info:
     filter_names:
     - my_cluster

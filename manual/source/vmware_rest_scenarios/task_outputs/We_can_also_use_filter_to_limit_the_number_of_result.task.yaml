@@ -1,5 +1,0 @@
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-      - rw_datastore
-  register: my_datastores

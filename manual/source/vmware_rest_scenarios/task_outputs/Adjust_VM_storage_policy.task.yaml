@@ -1,7 +1,0 @@
-- name: Adjust VM storage policy
-  vmware.vmware_rest.vcenter_vm_storage_policy:
-    vm: '{{ test_vm1_info.id }}'
-    vm_home:
-      type: USE_DEFAULT_POLICY
-    disks: '{{ vm_disk_policy }}'
-  register: _result
