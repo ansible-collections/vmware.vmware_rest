@@ -180,7 +180,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest filesystem information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error_type&#x27;: &#x27;SERVICE_UNAVAILABLE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&#x27;vm-1072:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27;], &#x27;default_message&#x27;: &quot;VMware Tools in the virtual machine with identifier &#x27;vm-1072:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27; provided no information.&quot;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.guest.information_not_available&#x27;}]}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error_type&#x27;: &#x27;SERVICE_UNAVAILABLE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&#x27;vm-1414:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27;], &#x27;default_message&#x27;: &quot;VMware Tools in the virtual machine with identifier &#x27;vm-1414:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27; provided no information.&quot;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.guest.information_not_available&#x27;}]}</div>
                 </td>
             </tr>
     </table>

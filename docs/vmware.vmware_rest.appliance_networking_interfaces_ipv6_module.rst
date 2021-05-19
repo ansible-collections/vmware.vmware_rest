@@ -255,8 +255,7 @@ Examples
     - name: Set the IPv6 network information of nic99 (which does not exist)
       vmware.vmware_rest.appliance_networking_interfaces_ipv6:
         interface_name: nic99
-        config:
-          mode: DHCP
+        mode: DHCP
       failed_when:
       - not(result.failed)
       - result.value.messages[0].default_message msg == "The interface is unknown."
@@ -305,7 +304,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Set the IPv6 network information of nic99 (which does not exist)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">missing required arguments: addresses, autoconf, default_gateway, dhcp</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">Unsupported parameters for (vmware.vmware_rest.appliance_networking_interfaces_ipv6) module: mode Supported parameters include: addresses, autoconf, default_gateway, dhcp, interface_name, state, vcenter_hostname, vcenter_password, vcenter_rest_log_file, vcenter_username, vcenter_validate_certs</div>
                 </td>
             </tr>
     </table>

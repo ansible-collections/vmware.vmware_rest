@@ -302,7 +302,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1058</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1400</div>
                 </td>
             </tr>
             <tr>

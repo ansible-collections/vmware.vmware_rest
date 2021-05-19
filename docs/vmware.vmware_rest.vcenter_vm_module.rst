@@ -1050,14 +1050,16 @@ Examples
         vm: '{{ item.vm }}'
       with_items: '{{ existing_vms.value }}'
 
-    - name: Build a list of all the clusters
-      vmware.vmware_rest.vcenter_cluster_info:
-      register: all_the_clusters
+    - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+      vmware.vmware_rest.vcenter_folder_info:
+        filter_type: VIRTUAL_MACHINE
+        filter_names:
+        - vm
+      register: my_folders
 
-    - name: Retrieve details about the first cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        cluster: '{{ all_the_clusters.value[0].cluster }}'
-      register: my_cluster_info
+    - name: Set my_virtual_machine_folder
+      set_fact:
+        my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
     - name: We can also use filter to limit the number of result
       vmware.vmware_rest.vcenter_datastore_info:
@@ -1069,16 +1071,14 @@ Examples
       set_fact:
         my_datastore: '{{ my_datastores.value|first }}'
 
-    - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-      vmware.vmware_rest.vcenter_folder_info:
-        filter_type: VIRTUAL_MACHINE
-        filter_names:
-        - vm
-      register: my_folders
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: all_the_clusters
 
-    - name: Set my_virtual_machine_folder
-      set_fact:
-        my_virtual_machine_folder: '{{ my_folders.value|first }}'
+    - name: Retrieve details about the first cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: '{{ all_the_clusters.value[0].cluster }}'
+      register: my_cluster_info
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
@@ -1139,7 +1139,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Delete some VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1047&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 204}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1047&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1047&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1385&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 204}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: &#x27;no&#x27;, &#x27;vm&#x27;: &#x27;vm-1385&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1385&#x27;}, &#x27;value&#x27;: {}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1387&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 204}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: &#x27;no&#x27;, &#x27;vm&#x27;: &#x27;vm-1387&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1387&#x27;}, &#x27;value&#x27;: {}}]</div>
                 </td>
             </tr>
     </table>
