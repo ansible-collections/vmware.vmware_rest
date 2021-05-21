@@ -1,4 +1,4 @@
-vcrpy
+coverage==4.5.4
 antsibull_changelog
 
 # functional tests
