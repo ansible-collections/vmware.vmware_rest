@@ -200,6 +200,9 @@ source .virtualenv/py37/bin/activate
 pip install -r requirements.txt -r test-requirements.txt
 ansible-test network-integration --python 3.7 --inventory /tmp/inventory-vmware_rest vcenter_vm_scenario1
 ```
+## Code of Conduct
+
+This project is governed by the [Ansible Community code of conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)
 
 ## Communication
 
