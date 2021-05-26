@@ -14,6 +14,32 @@ A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.
 <!--end requires_ansible-->
 
+## Installation and Usage
+
+### Install the dependencies
+
+The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
+
+This collection depends on Python 3.6 or greater and [aiohttp](https://docs.aiohttp.org/en/stable/).
+
+You can either install ``aiohttp`` using your OS package manager or using Python virtual environment.
+
+Notes:
+For RHEL, there is no ``python3-aiohttp`` package available (yet), you can either get it from EPEL or install ``aiohttp`` using pip.
+
+### Installing the Collection from Ansible Galaxy
+
+Before using the VMware collection, you need to install the collection with the `ansible-galaxy` CLI:
+
+    ansible-galaxy collection install vmware.vmware_rest
+
+You can also include it in a `requirements.yml` file and install it via `ansible-galaxy collection install -r requirements.yml` using the format:
+
+```yaml
+collections:
+- name: vmware.vmware_rest
+```
+
 ## Content
 
 <!--start collection content-->
@@ -157,31 +183,6 @@ Name | Description
 
 <!--end collection content-->
 
-## Installation and Usage
-
-### Install the dependencies
-
-The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
-
-This collection depends on Python 3.6 or greater and [aiohttp](https://docs.aiohttp.org/en/stable/).
-
-You can either install ``aiohttp`` using your OS package manager or using Python virtual environment.
-
-Notes:
-For RHEL, there is no ``python3-aiohttp`` package available (yet), you can either get it from EPEL or install ``aiohttp`` using pip.
-
-### Installing the Collection from Ansible Galaxy
-
-Before using the VMware collection, you need to install the collection with the `ansible-galaxy` CLI:
-
-    ansible-galaxy collection install vmware.vmware_rest
-
-You can also include it in a `requirements.yml` file and install it via `ansible-galaxy collection install -r requirements.yml` using the format:
-
-```yaml
-collections:
-- name: vmware.vmware_rest
-```
 
 ### Documentation
 
