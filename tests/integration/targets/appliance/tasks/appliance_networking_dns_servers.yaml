@@ -12,7 +12,7 @@
   ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
-- name: Set the DNS servers (again)
+- name: _Set the DNS servers (again)
   vmware.vmware_rest.appliance_networking_dns_servers:
     servers:
       - 1.1.1.1
