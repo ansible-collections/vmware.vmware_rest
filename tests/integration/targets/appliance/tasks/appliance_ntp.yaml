@@ -6,7 +6,7 @@
     servers:
       - time.google.com
 
-- name: Adjust the NTP configuration (again)
+- name: _Adjust the NTP configuration (again)
   vmware.vmware_rest.appliance_ntp:
     servers:
       - time.google.com

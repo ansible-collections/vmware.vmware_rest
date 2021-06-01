@@ -14,7 +14,7 @@
 - debug: var=result
 
 
-- name: Set the HTTP proxy configuration (again)
+- name: _Set the HTTP proxy configuration (again)
   vmware.vmware_rest.appliance_networking_proxy:
     enabled: true
     server: http://47.244.50.194
@@ -44,7 +44,7 @@
   register: result
 - debug: var=result
 
-- name: Set HTTP noproxy configuration (again)
+- name: _Set HTTP noproxy configuration (again)
   vmware.vmware_rest.appliance_networking_noproxy:
     servers:
       - redhat.com

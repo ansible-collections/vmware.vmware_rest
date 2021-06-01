@@ -41,7 +41,7 @@
       - result.changed
   ignore_errors: True
 
-- name: Abort the reboot (again)
+- name: _Abort the reboot (again)
   vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result

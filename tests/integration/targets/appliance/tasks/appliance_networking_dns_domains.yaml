@@ -12,7 +12,7 @@
 
 - debug: var=result
 
-- name: Update the domain configuration (again)
+- name: _Update the domain configuration (again)
   vmware.vmware_rest.appliance_networking_dns_domains:
     domains:
       - foobar
