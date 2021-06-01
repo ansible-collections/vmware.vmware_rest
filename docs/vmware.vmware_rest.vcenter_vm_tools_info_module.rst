@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_tools_info
 **Get the properties of VMware Tools.**
 
 
-Version added: 1.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 

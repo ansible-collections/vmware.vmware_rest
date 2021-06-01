@@ -1,3 +1,6 @@
+# This file is maintained in the vmware_rest_code_generator project
+# https://github.com/ansible-collections/vmware_rest_code_generator
+
 import hashlib
 import importlib
 import json
@@ -112,7 +115,10 @@ def gen_args(params, in_query_parameter):
             args += "&"
         if isinstance(v, list):
             for j in v:
-                args += (i + "=") + j
+                if j == v[-1]:
+                    args += (i + "=") + j
+                else:
+                    args += (i + "=") + j + "&"
         elif isinstance(v, bool) and v:
             args += i + "=true"
         else:
@@ -181,10 +187,7 @@ async def update_changed_flag(data, status, operation):
     elif data.get("type") == "com.vmware.vapi.std.errors.already_exists":
         data["failed"] = False
         data["changed"] = False
-    elif data.get("value", {}).get("error_type") in [
-        "ALREADY_EXISTS",
-        "ALREADY_IN_DESIRED_STATE",
-    ]:
+    elif data.get("value", {}).get("error_type") == "ALREADY_EXISTS":
         data["failed"] = False
         data["changed"] = False
     elif data.get("type") == "com.vmware.vapi.std.errors.resource_in_use":

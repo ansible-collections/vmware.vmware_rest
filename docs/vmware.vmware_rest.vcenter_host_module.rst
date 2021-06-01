@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_host
 **Add a new standalone host in the vCenter inventory**
 
 
-Version added: 1.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -349,7 +350,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Connect the host(s)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1062</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1147</div>
                 </td>
             </tr>
     </table>

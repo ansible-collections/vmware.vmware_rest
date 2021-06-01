@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_firewall_inbound_info
 **Get the ordered list of firewall rules**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -173,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the firewall inbound configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;address&#x27;: &#x27;1.2.3.4&#x27;, &#x27;interface_name&#x27;: &#x27;*&#x27;, &#x27;policy&#x27;: &#x27;ACCEPT&#x27;, &#x27;prefix&#x27;: 32}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;address&#x27;: &#x27;1.2.3.0&#x27;, &#x27;interface_name&#x27;: &#x27;*&#x27;, &#x27;policy&#x27;: &#x27;REJECT&#x27;, &#x27;prefix&#x27;: 24}]</div>
                 </td>
             </tr>
     </table>
