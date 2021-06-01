@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_proxy
 **Configures which proxy server to use for the specified protocol**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -293,25 +294,14 @@ Examples
 
     - name: Set the HTTP proxy configuration
       vmware.vmware_rest.appliance_networking_proxy:
-        config:
-          enabled: true
-          server: https://www.google.com
-          port: 443
-        protocol: http
-      register: result
-
-    - name: Set the HTTP proxy configuration (again)
-      vmware.vmware_rest.appliance_networking_proxy:
-        config:
-          enabled: true
-          server: https://www.google.com
-          port: 443
+        enabled: true
+        server: http://47.244.50.194
+        port: 8081
         protocol: http
       register: result
 
     - name: Delete the HTTP proxy configuration
       vmware.vmware_rest.appliance_networking_proxy:
-        config: {}
         protocol: http
         state: absent
       register: result
@@ -341,7 +331,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Set the HTTP proxy configuration (again)</div>
+                            <div>Set the HTTP proxy configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
                         <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;enabled&#x27;: 0, &#x27;port&#x27;: -1, &#x27;server&#x27;: &#x27;&#x27;}</div>

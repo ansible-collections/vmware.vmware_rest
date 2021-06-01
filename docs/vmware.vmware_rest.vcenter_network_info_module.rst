@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_network_info
 **Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the {@link FilterSpec}.**
 
 
-Version added: 1.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -262,7 +263,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get a list of the networks</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1069&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1070&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1071&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1097&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1103&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1101&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1102&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
                 </td>
             </tr>
     </table>

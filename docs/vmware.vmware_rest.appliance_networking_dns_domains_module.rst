@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_dns_domains
 **Set DNS search domains.**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -196,12 +197,6 @@ Examples
         - foobar
       register: result
 
-    - name: Update the domain configuration (again)
-      vmware.vmware_rest.appliance_networking_dns_domains:
-        domains:
-        - foobar
-      register: result
-
     - name: Add another domain configuration
       vmware.vmware_rest.appliance_networking_dns_domains:
         domain: barfoo
@@ -228,15 +223,13 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">list</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Update the domain configuration (again)</div>
+                            <div>Add another domain configuration</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;foobar&#x27;]</div>
                 </td>
             </tr>
     </table>

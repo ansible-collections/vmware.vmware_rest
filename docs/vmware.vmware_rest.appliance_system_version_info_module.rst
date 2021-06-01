@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_version_info
 **Get the version.**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -173,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the VCSA version</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;build&#x27;: &#x27;17694817&#x27;, &#x27;install_time&#x27;: &#x27;2021-03-26T20:55:10.845Z&#x27;, &#x27;product&#x27;: &#x27;VMware vCenter Server&#x27;, &#x27;releasedate&#x27;: &#x27;March 9, 2021&#x27;, &#x27;summary&#x27;: &#x27;VMware vCenter Server 7.0 Update 2&#x27;, &#x27;type&#x27;: &#x27;vCenter Server with an embedded Platform Services Controller&#x27;, &#x27;version&#x27;: &#x27;7.0.2.00000&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;build&#x27;: &#x27;17694817&#x27;, &#x27;install_time&#x27;: &#x27;2021-05-26T17:01:52.148Z&#x27;, &#x27;product&#x27;: &#x27;VMware vCenter Server&#x27;, &#x27;releasedate&#x27;: &#x27;March 9, 2021&#x27;, &#x27;summary&#x27;: &#x27;VMware vCenter Server 7.0 Update 2&#x27;, &#x27;type&#x27;: &#x27;vCenter Server with an embedded Platform Services Controller&#x27;, &#x27;version&#x27;: &#x27;7.0.2.00000&#x27;}</div>
                 </td>
             </tr>
     </table>

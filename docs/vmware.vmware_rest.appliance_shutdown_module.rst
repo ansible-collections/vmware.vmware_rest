@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_shutdown
 **Cancel pending shutdown action.**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -215,11 +216,6 @@ Examples
         state: cancel
       register: result
 
-    - name: Abort the reboot (again)
-      vmware.vmware_rest.appliance_shutdown:
-        state: cancel
-      register: result
-
 
 
 Return Values
@@ -245,7 +241,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Abort the reboot (again)</div>
+                            <div>Abort the reboot</div>
                     <br/>
                 </td>
             </tr>

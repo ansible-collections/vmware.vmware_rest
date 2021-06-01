@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_time_info
 **Get system time.**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -173,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the current time</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Wed 05-05-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;02:34:50 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Tue 06-01-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;07:20:40 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
                 </td>
             </tr>
     </table>

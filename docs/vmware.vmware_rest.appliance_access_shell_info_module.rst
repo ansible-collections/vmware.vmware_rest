@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_shell_info
 **Get enabled state of BASH, that is, access to BASH from within the controlled CLI.**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -173,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Check if the Shell is enabled</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;enabled&#x27;: 0, &#x27;timeout&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;enabled&#x27;: 1, &#x27;timeout&#x27;: 340}</div>
                 </td>
             </tr>
     </table>
