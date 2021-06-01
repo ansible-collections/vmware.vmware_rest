@@ -161,6 +161,8 @@ Name | Description
 
 ### Install the dependencies
 
+The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
+
 This collection depends on Python 3.6 or greater and [aiohttp](https://docs.aiohttp.org/en/stable/).
 
 You can either install ``aiohttp`` using your OS package manager or using Python virtual environment.
