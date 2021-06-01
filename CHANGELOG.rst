@@ -5,6 +5,106 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.0.0
+======
+
+Minor Changes
+-------------
+
+- Handle import error with correct exception raised while importing aiohttp
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- The vmware_rest 2.0.0 support vSphere 7.0.2 onwards.
+- vcenter_vm_storage_policy - the format of the ``disks`` parameter has changed.
+- vcenter_vm_storage_policy - the module has a new mandatory paramter: ``vm_home``.
+
+Bugfixes
+--------
+
+- Properly handle ``validate_certs`` as a boolean and accept all the standard Ansible values (``yes``, ``true``, ``y``, ``no``, etc).
+
+New Modules
+-----------
+
+- appliance_access_consolecli - Set enabled state of the console-based controlled CLI (TTY1).
+- appliance_access_consolecli_info - Get enabled state of the console-based controlled CLI (TTY1).
+- appliance_access_dcui - Set enabled state of Direct Console User Interface (DCUI TTY2).
+- appliance_access_dcui_info - Get enabled state of Direct Console User Interface (DCUI TTY2).
+- appliance_access_shell - Set enabled state of BASH, that is, access to BASH from within the controlled CLI.
+- appliance_access_shell_info - Get enabled state of BASH, that is, access to BASH from within the controlled CLI.
+- appliance_access_ssh - Set enabled state of the SSH-based controlled CLI.
+- appliance_access_ssh_info - Get enabled state of the SSH-based controlled CLI.
+- appliance_health_applmgmt_info - Get health status of applmgmt services.
+- appliance_health_database_info - Returns the health status of the database.
+- appliance_health_databasestorage_info - Get database storage health.
+- appliance_health_load_info - Get load health.
+- appliance_health_mem_info - Get memory health.
+- appliance_health_softwarepackages_info - Get information on available software updates available in the remote vSphere Update Manager repository
+- appliance_health_storage_info - Get storage health.
+- appliance_health_swap_info - Get swap health.
+- appliance_health_system_info - Get overall health of system.
+- appliance_infraprofile_configs - Exports the desired profile specification.
+- appliance_infraprofile_configs_info - List all the profiles which are registered.
+- appliance_localaccounts - Create a new local user account.
+- appliance_localaccounts_globalpolicy - Set the global password policy.
+- appliance_localaccounts_globalpolicy_info - Get the global password policy.
+- appliance_localaccounts_info - Get the local user account information.
+- appliance_monitoring_info - Get monitored item info
+- appliance_monitoring_query - Get monitoring data.
+- appliance_networking - Reset and restarts network configuration on all interfaces, also this will renew the DHCP lease for DHCP IP address.
+- appliance_networking_dns_domains - Set DNS search domains.
+- appliance_networking_dns_domains_info - Get list of DNS search domains.
+- appliance_networking_dns_hostname - Set the Fully Qualified Domain Name.
+- appliance_networking_dns_hostname_info - Get the Fully Qualified Doman Name.
+- appliance_networking_dns_servers - Set the DNS server configuration
+- appliance_networking_dns_servers_info - Get DNS server configuration.
+- appliance_networking_firewall_inbound - Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses
+- appliance_networking_firewall_inbound_info - Get the ordered list of firewall rules
+- appliance_networking_info - Get Networking information for all configured interfaces.
+- appliance_networking_interfaces_info - Get information about a particular network interface.
+- appliance_networking_interfaces_ipv4 - Set IPv4 network configuration for specific network interface.
+- appliance_networking_interfaces_ipv4_info - Get IPv4 network configuration for specific NIC.
+- appliance_networking_interfaces_ipv6 - Set IPv6 network configuration for specific interface.
+- appliance_networking_interfaces_ipv6_info - Get IPv6 network configuration for specific interface.
+- appliance_networking_noproxy - Sets servers for which no proxy configuration should be applied
+- appliance_networking_noproxy_info - Returns servers for which no proxy configuration will be applied.
+- appliance_networking_proxy - Configures which proxy server to use for the specified protocol
+- appliance_networking_proxy_info - Gets the proxy configuration for a specific protocol.
+- appliance_ntp - Set NTP servers
+- appliance_ntp_info - Get the NTP configuration status
+- appliance_services - Restarts a service
+- appliance_services_info - Returns the state of a service.
+- appliance_shutdown - Cancel pending shutdown action.
+- appliance_shutdown_info - Get details about the pending shutdown action.
+- appliance_system_globalfips - Enable/Disable Global FIPS mode for the appliance
+- appliance_system_globalfips_info - Get current appliance FIPS settings.
+- appliance_system_storage - Resize all partitions to 100 percent of disk size.
+- appliance_system_storage_info - Get disk to partition mapping.
+- appliance_system_time_info - Get system time.
+- appliance_system_time_timezone - Set time zone.
+- appliance_system_time_timezone_info - Get time zone.
+- appliance_system_version_info - Get the version.
+- appliance_timesync - Set time synchronization mode.
+- appliance_timesync_info - Get time synchronization mode.
+- appliance_update_info - Gets the current status of the appliance update.
+- appliance_vmon_service - Lists details of services managed by vMon.
+- appliance_vmon_service_info - Returns the state of a service.
+- content_library_item_info - Returns the {@link ItemModel} with the given identifier.
+- content_locallibrary - Creates a new local library.
+- content_locallibrary_info - Returns a given local library.
+- content_subscribedlibrary - Creates a new subscribed library
+- content_subscribedlibrary_info - Returns a given subscribed library.
+- vcenter_vm_guest_environment_info - Reads a single environment variable from the guest operating system
+- vcenter_vm_guest_filesystem - Initiates an operation to transfer a file to or from the guest
+- vcenter_vm_guest_filesystem_directories - Creates a directory in the guest operating system
+- vcenter_vm_guest_filesystem_files - Creates a temporary file
+- vcenter_vm_guest_filesystem_files_info - Returns information about a file or directory in the guest
+- vcenter_vm_guest_operations_info - Get information about the guest operation status.
+- vcenter_vm_guest_processes - Starts a program in the guest operating system
+- vcenter_vm_guest_processes_info - Returns the status of a process running in the guest operating system, including those started by {@link Processes#create} that may have recently completed
+
 v1.0.2
 ======
 
