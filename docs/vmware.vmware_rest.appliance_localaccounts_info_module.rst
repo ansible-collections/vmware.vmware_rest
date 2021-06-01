@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_localaccounts_info
 **Get the local user account information.**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -210,7 +211,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the information about the new account</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;email&#x27;: &#x27;********@vsphere.local&#x27;, &#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;Foobar&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-05-05T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;operator&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 5}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;email&#x27;: &#x27;********@vsphere.local&#x27;, &#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;Foobar&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-06-01T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;operator&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 5}</div>
                 </td>
             </tr>
     </table>

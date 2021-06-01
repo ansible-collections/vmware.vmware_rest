@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_storage_policies_info
 **Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter**
 
 
-Version added: 1.0.0
+Version added: 0.3.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 

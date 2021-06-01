@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy
 **Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.**
 
 
-Version added: 1.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -211,6 +212,11 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Prepare the disk policy dict
+      set_fact:
+        vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy,\
+          \ 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+
     - name: Look up the VM called test_vm1 in the inventory
       register: search_result
       vmware.vmware_rest.vcenter_vm_info:
@@ -221,11 +227,6 @@ Examples
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
-
-    - name: Prepare the disk policy dict
-      set_fact:
-        vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy,\
-          \ 'type': 'USE_SPECIFIED_POLICY'} }) }}"
 
     - name: Adjust VM storage policy
       vmware.vmware_rest.vcenter_vm_storage_policy:

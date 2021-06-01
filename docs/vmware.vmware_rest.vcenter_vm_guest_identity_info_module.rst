@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_identity_info
 **Return information about the guest.**
 
 
-Version added: 1.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -180,7 +181,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest identity information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error_type&#x27;: &#x27;SERVICE_UNAVAILABLE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&#x27;vm-1072:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27;], &#x27;default_message&#x27;: &quot;VMware Tools in the virtual machine with identifier &#x27;vm-1072:059dd233-dedf-4960-bba8-ab6710e6aeb4&#x27; provided no information.&quot;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.guest.information_not_available&#x27;}]}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error_type&#x27;: &#x27;SERVICE_UNAVAILABLE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&#x27;vm-1158:34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27;], &#x27;default_message&#x27;: &quot;VMware Tools in the virtual machine with identifier &#x27;vm-1158:34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27; provided no information.&quot;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.guest.information_not_available&#x27;}]}</div>
                 </td>
             </tr>
     </table>

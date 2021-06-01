@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_noproxy
 **Sets servers for which no proxy configuration should be applied**
 
 
-Version added: 1.0.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,6 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
+- vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 
@@ -182,13 +183,6 @@ Examples
         - ansible.com
       register: result
 
-    - name: Set HTTP noproxy configuration (again)
-      vmware.vmware_rest.appliance_networking_noproxy:
-        servers:
-        - redhat.com
-        - ansible.com
-      register: result
-
     - name: Remove the noproxy entries
       vmware.vmware_rest.appliance_networking_noproxy:
         servers: []
@@ -214,15 +208,13 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">list</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Set HTTP noproxy configuration (again)</div>
+                            <div>Remove the noproxy entries</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[&#x27;redhat.com&#x27;, &#x27;ansible.com&#x27;, &#x27;localhost&#x27;, &#x27;127.0.0.1&#x27;]</div>
                 </td>
             </tr>
     </table>
