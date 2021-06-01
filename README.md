@@ -207,7 +207,7 @@ This project is governed by the [Ansible Community code of conduct](https://docs
 ## Communication
 
 We have a dedicated Working Group for VMware.
-You can find other people interested in this in `#ansible-vmware` on Freenode IRC.
+You can find other people interested in this in `#ansible-vmware` on [libera.chat](https://libera.chat/) IRC.
 For more information about communities, meetings and agendas see https://github.com/ansible/community/wiki/VMware.
 
 ## License
