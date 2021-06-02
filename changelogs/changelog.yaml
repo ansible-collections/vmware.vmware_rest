@@ -246,3 +246,256 @@ releases:
     fragments:
     - resourcepool.yaml
     release_date: '2020-10-23'
+  2.0.0:
+    changes:
+      breaking_changes:
+      - The vmware_rest 2.0.0 support vSphere 7.0.2 onwards.
+      - vcenter_vm_storage_policy - the format of the ``disks`` parameter has changed.
+      - 'vcenter_vm_storage_policy - the module has a new mandatory paramter: ``vm_home``.'
+      bugfixes:
+      - Properly handle ``validate_certs`` as a boolean and accept all the standard
+        Ansible values (``yes``, ``true``, ``y``, ``no``, etc).
+      minor_changes:
+      - Handle import error with correct exception raised while importing aiohttp
+    fragments:
+    - 7_0_2_only.yaml
+    - ensure_Handle_import_error_for_aiohttp.yaml
+    - ensure_validate_certs_is_boolean.yaml
+    - vcenter_vm_storage_policy_home_vm.yaml
+    modules:
+    - description: Set enabled state of the console-based controlled CLI (TTY1).
+      name: appliance_access_consolecli
+      namespace: ''
+    - description: Get enabled state of the console-based controlled CLI (TTY1).
+      name: appliance_access_consolecli_info
+      namespace: ''
+    - description: Set enabled state of Direct Console User Interface (DCUI TTY2).
+      name: appliance_access_dcui
+      namespace: ''
+    - description: Get enabled state of Direct Console User Interface (DCUI TTY2).
+      name: appliance_access_dcui_info
+      namespace: ''
+    - description: Set enabled state of BASH, that is, access to BASH from within
+        the controlled CLI.
+      name: appliance_access_shell
+      namespace: ''
+    - description: Get enabled state of BASH, that is, access to BASH from within
+        the controlled CLI.
+      name: appliance_access_shell_info
+      namespace: ''
+    - description: Set enabled state of the SSH-based controlled CLI.
+      name: appliance_access_ssh
+      namespace: ''
+    - description: Get enabled state of the SSH-based controlled CLI.
+      name: appliance_access_ssh_info
+      namespace: ''
+    - description: Get health status of applmgmt services.
+      name: appliance_health_applmgmt_info
+      namespace: ''
+    - description: Returns the health status of the database.
+      name: appliance_health_database_info
+      namespace: ''
+    - description: Get database storage health.
+      name: appliance_health_databasestorage_info
+      namespace: ''
+    - description: Get load health.
+      name: appliance_health_load_info
+      namespace: ''
+    - description: Get memory health.
+      name: appliance_health_mem_info
+      namespace: ''
+    - description: Get information on available software updates available in the
+        remote vSphere Update Manager repository
+      name: appliance_health_softwarepackages_info
+      namespace: ''
+    - description: Get storage health.
+      name: appliance_health_storage_info
+      namespace: ''
+    - description: Get swap health.
+      name: appliance_health_swap_info
+      namespace: ''
+    - description: Get overall health of system.
+      name: appliance_health_system_info
+      namespace: ''
+    - description: Exports the desired profile specification.
+      name: appliance_infraprofile_configs
+      namespace: ''
+    - description: List all the profiles which are registered.
+      name: appliance_infraprofile_configs_info
+      namespace: ''
+    - description: Create a new local user account.
+      name: appliance_localaccounts
+      namespace: ''
+    - description: Set the global password policy.
+      name: appliance_localaccounts_globalpolicy
+      namespace: ''
+    - description: Get the global password policy.
+      name: appliance_localaccounts_globalpolicy_info
+      namespace: ''
+    - description: Get the local user account information.
+      name: appliance_localaccounts_info
+      namespace: ''
+    - description: Get monitored item info
+      name: appliance_monitoring_info
+      namespace: ''
+    - description: Get monitoring data.
+      name: appliance_monitoring_query
+      namespace: ''
+    - description: Reset and restarts network configuration on all interfaces, also
+        this will renew the DHCP lease for DHCP IP address.
+      name: appliance_networking
+      namespace: ''
+    - description: Set DNS search domains.
+      name: appliance_networking_dns_domains
+      namespace: ''
+    - description: Get list of DNS search domains.
+      name: appliance_networking_dns_domains_info
+      namespace: ''
+    - description: Set the Fully Qualified Domain Name.
+      name: appliance_networking_dns_hostname
+      namespace: ''
+    - description: Get the Fully Qualified Doman Name.
+      name: appliance_networking_dns_hostname_info
+      namespace: ''
+    - description: Set the DNS server configuration
+      name: appliance_networking_dns_servers
+      namespace: ''
+    - description: Get DNS server configuration.
+      name: appliance_networking_dns_servers_info
+      namespace: ''
+    - description: Set the ordered list of firewall rules to allow or deny traffic
+        from one or more incoming IP addresses
+      name: appliance_networking_firewall_inbound
+      namespace: ''
+    - description: Get the ordered list of firewall rules
+      name: appliance_networking_firewall_inbound_info
+      namespace: ''
+    - description: Get Networking information for all configured interfaces.
+      name: appliance_networking_info
+      namespace: ''
+    - description: Get information about a particular network interface.
+      name: appliance_networking_interfaces_info
+      namespace: ''
+    - description: Set IPv4 network configuration for specific network interface.
+      name: appliance_networking_interfaces_ipv4
+      namespace: ''
+    - description: Get IPv4 network configuration for specific NIC.
+      name: appliance_networking_interfaces_ipv4_info
+      namespace: ''
+    - description: Set IPv6 network configuration for specific interface.
+      name: appliance_networking_interfaces_ipv6
+      namespace: ''
+    - description: Get IPv6 network configuration for specific interface.
+      name: appliance_networking_interfaces_ipv6_info
+      namespace: ''
+    - description: Sets servers for which no proxy configuration should be applied
+      name: appliance_networking_noproxy
+      namespace: ''
+    - description: Returns servers for which no proxy configuration will be applied.
+      name: appliance_networking_noproxy_info
+      namespace: ''
+    - description: Configures which proxy server to use for the specified protocol
+      name: appliance_networking_proxy
+      namespace: ''
+    - description: Gets the proxy configuration for a specific protocol.
+      name: appliance_networking_proxy_info
+      namespace: ''
+    - description: Set NTP servers
+      name: appliance_ntp
+      namespace: ''
+    - description: Get the NTP configuration status
+      name: appliance_ntp_info
+      namespace: ''
+    - description: Restarts a service
+      name: appliance_services
+      namespace: ''
+    - description: Returns the state of a service.
+      name: appliance_services_info
+      namespace: ''
+    - description: Cancel pending shutdown action.
+      name: appliance_shutdown
+      namespace: ''
+    - description: Get details about the pending shutdown action.
+      name: appliance_shutdown_info
+      namespace: ''
+    - description: Enable/Disable Global FIPS mode for the appliance
+      name: appliance_system_globalfips
+      namespace: ''
+    - description: Get current appliance FIPS settings.
+      name: appliance_system_globalfips_info
+      namespace: ''
+    - description: Resize all partitions to 100 percent of disk size.
+      name: appliance_system_storage
+      namespace: ''
+    - description: Get disk to partition mapping.
+      name: appliance_system_storage_info
+      namespace: ''
+    - description: Get system time.
+      name: appliance_system_time_info
+      namespace: ''
+    - description: Set time zone.
+      name: appliance_system_time_timezone
+      namespace: ''
+    - description: Get time zone.
+      name: appliance_system_time_timezone_info
+      namespace: ''
+    - description: Get the version.
+      name: appliance_system_version_info
+      namespace: ''
+    - description: Set time synchronization mode.
+      name: appliance_timesync
+      namespace: ''
+    - description: Get time synchronization mode.
+      name: appliance_timesync_info
+      namespace: ''
+    - description: Gets the current status of the appliance update.
+      name: appliance_update_info
+      namespace: ''
+    - description: Lists details of services managed by vMon.
+      name: appliance_vmon_service
+      namespace: ''
+    - description: Returns the state of a service.
+      name: appliance_vmon_service_info
+      namespace: ''
+    - description: Returns the {@link ItemModel} with the given identifier.
+      name: content_library_item_info
+      namespace: ''
+    - description: Creates a new local library.
+      name: content_locallibrary
+      namespace: ''
+    - description: Returns a given local library.
+      name: content_locallibrary_info
+      namespace: ''
+    - description: Creates a new subscribed library
+      name: content_subscribedlibrary
+      namespace: ''
+    - description: Returns a given subscribed library.
+      name: content_subscribedlibrary_info
+      namespace: ''
+    - description: Reads a single environment variable from the guest operating system
+      name: vcenter_vm_guest_environment_info
+      namespace: ''
+    - description: Initiates an operation to transfer a file to or from the guest
+      name: vcenter_vm_guest_filesystem
+      namespace: ''
+    - description: Creates a directory in the guest operating system
+      name: vcenter_vm_guest_filesystem_directories
+      namespace: ''
+    - description: Creates a temporary file
+      name: vcenter_vm_guest_filesystem_files
+      namespace: ''
+    - description: Returns information about a file or directory in the guest
+      name: vcenter_vm_guest_filesystem_files_info
+      namespace: ''
+    - description: Get information about the guest operation status.
+      name: vcenter_vm_guest_operations_info
+      namespace: ''
+    - description: Starts a program in the guest operating system
+      name: vcenter_vm_guest_processes
+      namespace: ''
+    - description: Returns the status of a process running in the guest operating
+        system, including those started by {@link Processes#create} that may have
+        recently completed
+      name: vcenter_vm_guest_processes_info
+      namespace: ''
+    release_date: '2021-06-01'
