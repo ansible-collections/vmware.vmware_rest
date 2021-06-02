@@ -20,7 +20,7 @@
 - import_tasks: vm_libraryitem.yaml
 - import_tasks: vm_power.yaml
 
-- vcenter_vm_info:
+- vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
 
 - when: wait_for_vm is defined
