@@ -15,4 +15,3 @@
   assert:
     that:
       - not (result.changed)
-  ignore_errors: True

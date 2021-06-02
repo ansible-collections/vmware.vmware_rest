@@ -16,11 +16,10 @@
   register: result
 
 - debug: var=result
-- name: Idempotency is broken
+- name: Validate the idemptency
   assert:
     that:
       - not (result.changed)
-  ignore_errors: True
 
 - name: Enable the Shell with a timeout
   vmware.vmware_rest.appliance_access_shell:

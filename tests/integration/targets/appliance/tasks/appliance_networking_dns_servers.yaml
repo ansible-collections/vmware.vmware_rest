@@ -1,7 +1,6 @@
 - name: Get the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers_info:
   register: result
-  ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
 - name: Set the DNS servers
@@ -9,7 +8,6 @@
     servers:
       - 1.1.1.1
   register: result
-  ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
 - name: _Set the DNS servers (again)
@@ -17,7 +15,6 @@
     servers:
       - 1.1.1.1
   register: result
-  ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result
 
 - name: Test the DNS servers
@@ -26,5 +23,4 @@
     servers:
       - var
   register: result
-  #ignore_errors: True  # May be failing because of the CI set-up
 - debug: var=result

@@ -11,8 +11,7 @@
   register: result
 
 - debug: var=result
-- name: Idempotency is broken
+- name: Validate the idempotency
   assert:
     that:
       - not (result.changed)
-  ignore_errors: True
