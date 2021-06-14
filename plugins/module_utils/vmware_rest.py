@@ -162,13 +162,16 @@ async def update_changed_flag(data, status, operation):
     elif operation == "delete" and status in [200, 204]:
         data["failed"] = False
         data["changed"] = True
+    elif operation == "delete" and status == 404:
+        data["failed"] = False
+        data["changed"] = False
     elif operation in ["get", "list"] and status in [200]:
         data["failed"] = False
         data["changed"] = False
     elif operation in ["get", "list"] and status in [404]:
         data["failed"] = True
         data["changed"] = False
-    elif status == 400:
+    elif status >= 400:
         data["failed"] = True
         data["changed"] = False
 
@@ -187,7 +190,10 @@ async def update_changed_flag(data, status, operation):
     elif data.get("type") == "com.vmware.vapi.std.errors.already_exists":
         data["failed"] = False
         data["changed"] = False
-    elif data.get("value", {}).get("error_type") == "ALREADY_EXISTS":
+    elif data.get("value", {}).get("error_type") in [
+        "ALREADY_EXISTS",
+        "ALREADY_IN_DESIRED_STATE",
+    ]:
         data["failed"] = False
         data["changed"] = False
     elif data.get("type") == "com.vmware.vapi.std.errors.resource_in_use":
@@ -209,7 +215,6 @@ async def update_changed_flag(data, status, operation):
     elif data.get("type", "").startswith("com.vmware.vapi.std.errors"):
         data["failed"] = True
 
-    data["_debug_info"] = {"status": status, "operation": operation}
     return data
 
 
@@ -233,7 +238,8 @@ async def build_full_device_list(session, url, device_list):
     for i in value:
         # Content library returns string {"value": "library_id"}
         if isinstance(i, str):
-            return device_list
+            device_ids = value
+            break
         fields = list(i.values())
         if len(fields) != 1:
             # The list already comes with all the details
@@ -248,7 +254,12 @@ async def build_full_device_list(session, url, device_list):
 
 
 async def get_device_info(session, url, _id):
-    async with session.get(url + "/" + _id) as resp:
+    # workaround for content_library_item_info
+    if "item?library_id=" in url:
+        item_url = url.split("?")[0] + "/" + _id
+    else:
+        item_url = url + "/" + _id
+    async with session.get(item_url) as resp:
         if resp.status == 200:
             _json = await resp.json()
             if "value" not in _json:  # 7.0.2+

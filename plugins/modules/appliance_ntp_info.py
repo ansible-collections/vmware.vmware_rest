@@ -28,7 +28,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -80,7 +80,7 @@ value:
   description: Get the NTP configuration
   returned: On success
   sample:
-  - time.google.com
+  - time.nist.gov
   type: list
 """
 

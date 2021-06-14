@@ -137,7 +137,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -244,7 +244,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>collect a list of the datacenters</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1134&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1001&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
                 </td>
             </tr>
     </table>

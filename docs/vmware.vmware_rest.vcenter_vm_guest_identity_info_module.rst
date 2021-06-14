@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -181,7 +181,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest identity information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error_type&#x27;: &#x27;SERVICE_UNAVAILABLE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&#x27;vm-1158:34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27;], &#x27;default_message&#x27;: &quot;VMware Tools in the virtual machine with identifier &#x27;vm-1158:34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27; provided no information.&quot;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.guest.information_not_available&#x27;}]}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;family&#x27;: &#x27;LINUX&#x27;, &#x27;full_name&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Red Hat Fedora (64-bit)&#x27;, &#x27;id&#x27;: &#x27;vmsg.guestos.fedora64Guest.label&#x27;}, &#x27;host_name&#x27;: &#x27;localhost.localdomain&#x27;, &#x27;name&#x27;: &#x27;FEDORA_64&#x27;}</div>
                 </td>
             </tr>
     </table>

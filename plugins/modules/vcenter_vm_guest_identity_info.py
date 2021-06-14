@@ -24,7 +24,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -74,13 +74,13 @@ value:
   description: Get guest identity information
   returned: On success
   sample:
-    error_type: SERVICE_UNAVAILABLE
-    messages:
-    - args:
-      - vm-1158:34049aff-97a3-4ebb-bd32-c3f3bf314ee2
-      default_message: VMware Tools in the virtual machine with identifier 'vm-1158:34049aff-97a3-4ebb-bd32-c3f3bf314ee2'
-        provided no information.
-      id: com.vmware.api.vcenter.vm.guest.information_not_available
+    family: LINUX
+    full_name:
+      args: []
+      default_message: Red Hat Fedora (64-bit)
+      id: vmsg.guestos.fedora64Guest.label
+    host_name: localhost.localdomain
+    name: FEDORA_64
   type: dict
 """
 

@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -174,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the current time</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Tue 06-01-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;09:16:00 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Wed 06-16-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;08:58:31 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
                 </td>
             </tr>
     </table>

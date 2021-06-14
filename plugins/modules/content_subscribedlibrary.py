@@ -240,7 +240,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -287,6 +287,15 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Build a list of subscribed libraries
+  vmware.vmware_rest.content_subscribedlibrary_info:
+  register: result
+
+- name: Delete all the subscribed libraries
+  vmware.vmware_rest.content_subscribedlibrary:
+    library_id: '{{ item.id }}'
+    state: absent
+  with_items: '{{ result.value }}'
 """
 
 RETURN = r"""
@@ -294,6 +303,25 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {"library_id": "library_id"},
+    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -318,28 +346,9 @@ PAYLOAD_FORMAT = {
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {"library_id": "library_id"},
-    },
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -474,10 +483,14 @@ async def entry_point(module, session):
 
 async def _create(params, session):
 
+    unicity_keys = ["library_id"]
+
+    unicity_keys += ["name"]
+
     if params["library_id"]:
         _json = await get_device_info(session, build_url(params), params["library_id"])
     else:
-        _json = await exists(params, session, build_url(params), ["library_id"])
+        _json = await exists(params, session, build_url(params), unicity_keys)
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}
@@ -624,9 +637,14 @@ async def _update(params, session):
         else:  # 7.0.2 and greater
             value = _json
         for k, v in value.items():
-            if k in payload and payload[k] == v:
-                del payload[k]
-            elif "spec" in payload:
+            if k in payload:
+                if isinstance(payload[k], dict) and isinstance(v, dict):
+                    for _k in list(payload[k].keys()):
+                        if payload[k][_k] == v.get(_k):
+                            del payload[k][_k]
+                if payload[k] == v or payload[k] == {}:
+                    del payload[k]
+            elif "spec" in payload:  # 7.0.2 <
                 if k in payload["spec"] and payload["spec"][k] == v:
                     del payload["spec"][k]
 
@@ -644,6 +662,14 @@ async def _update(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
+        # e.g: content_configuration
+        if not _json and resp.status == 204:
+            async with session.get(_url) as resp_get:
+                _json_get = await resp_get.json()
+                if _json_get:
+                    _json = _json_get
+
         _json["id"] = params.get("library_id")
         return await update_changed_flag(_json, resp.status, "update")
 

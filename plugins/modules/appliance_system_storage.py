@@ -31,7 +31,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -87,14 +87,17 @@ value:
   description: Resize the first partition and return the state of the partition before
     and after the operation
   returned: On success
-  sample: {}
+  sample:
+    lv_root_0:
+      new_size: 104312832
+      old_size: 93048832
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "resize": {"query": {}, "body": {}, "path": {}},
     "resize_ex": {"query": {}, "body": {}, "path": {}},
+    "resize": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

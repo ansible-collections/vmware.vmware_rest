@@ -50,7 +50,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -93,7 +93,6 @@ EXAMPLES = r"""
     servers:
     - 1.1.1.1
   register: result
-  ignore_errors: true  # May be failing because of the CI set-up
 
 - name: Test the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
@@ -101,7 +100,6 @@ EXAMPLES = r"""
     servers:
     - var
   register: result
-  #ignore_errors: True  # May be failing because of the CI set-up
 """
 
 RETURN = r"""
@@ -119,9 +117,9 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "set": {"query": {}, "body": {"mode": "mode", "servers": "servers"}, "path": {}},
     "add": {"query": {}, "body": {"server": "server"}, "path": {}},
     "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
+    "set": {"query": {}, "body": {"mode": "mode", "servers": "servers"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

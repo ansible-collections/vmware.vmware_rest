@@ -59,7 +59,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -113,14 +113,14 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: my-portrgoup
-    network: dvportgroup-1157
-    type: DISTRIBUTED_PORTGROUP
   - name: VM Network
-    network: network-1151
+    network: network-1017
     type: STANDARD_PORTGROUP
-  - name: dvswitch1-DVUplinks-1154
-    network: dvportgroup-1155
+  - name: dvswitch1-DVUplinks-1021
+    network: dvportgroup-1022
+    type: DISTRIBUTED_PORTGROUP
+  - name: my-portrgoup
+    network: dvportgroup-1023
     type: DISTRIBUTED_PORTGROUP
   type: list
 """

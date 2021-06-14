@@ -26,7 +26,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -75,7 +75,11 @@ RETURN = r"""
 value:
   description: Get guest network interfaces information
   returned: On success
-  sample: []
+  sample:
+  - ip:
+      ip_addresses: []
+    mac_address: 00:50:56:9c:93:dd
+    nic: '4000'
   type: list
 """
 

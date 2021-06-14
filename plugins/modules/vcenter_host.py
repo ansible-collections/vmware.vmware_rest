@@ -84,7 +84,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -145,12 +145,13 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1147
+  sample: host-1014
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -165,9 +166,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -321,10 +321,12 @@ async def _connect(params, session):
 
 async def _create(params, session):
 
+    unicity_keys = ["host"]
+
     if params["host"]:
         _json = await get_device_info(session, build_url(params), params["host"])
     else:
-        _json = await exists(params, session, build_url(params), ["host"])
+        _json = await exists(params, session, build_url(params), unicity_keys)
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}

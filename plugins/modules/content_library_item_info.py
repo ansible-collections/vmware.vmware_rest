@@ -32,7 +32,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -70,6 +70,69 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Create a content library pointing on the NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: result
+
+- name: Adjust vpxd configuration
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    startup_type: AUTOMATIC
+  register: result
+
+- name: Set datastore id
+  set_fact:
+    datastore_id: '{{ result.value[0].datastore }}'
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: '{{ datastore_id }}'
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Get the (empty) list of items of the library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+
+- name: Create subscribed library
+  content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: '{{ datastore_id }}'
+      type: DATASTORE
+  register: sub_lib
+
+- name: Ensure the OVA is here
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ sub_lib.id }}'
+  register: result
 """
 
 RETURN = r"""
@@ -179,7 +242,7 @@ def build_url(params):
             + gen_args(params, _in_query_parameters)
         )
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/api/content/library/item?library_id").format(
+    return ("https://{vcenter_hostname}" "/api/content/library/item").format(
         **params
     ) + gen_args(params, _in_query_parameters)
 
@@ -196,17 +259,14 @@ async def entry_point(module, session):
             _json["id"] = module.params.get("library_item_id")
         elif module.params.get("label"):  # TODO extend the list of filter
             _json = await exists(module.params, session, url)
-        else:  # list context, retrieve the details of each entry
-            try:
-                if (
-                    isinstance(_json["value"][0]["library_item_id"], str)
-                    and len(list(_json["value"][0].values())) == 1
-                ):
-                    # this is a list of id, we fetch the details
-                    full_device_list = await build_full_device_list(session, url, _json)
-                    _json = {"value": [i["value"] for i in full_device_list]}
-            except (TypeError, KeyError, IndexError):
-                pass
+        elif (
+            isinstance(_json["value"], list)
+            and len(_json["value"]) > 0
+            and isinstance(_json["value"][0], str)
+        ):
+            # this is a list of id, we fetch the details
+            full_device_list = await build_full_device_list(session, url, _json)
+            _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")
 

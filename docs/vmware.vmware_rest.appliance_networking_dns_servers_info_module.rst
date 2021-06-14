@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -145,7 +145,6 @@ Examples
     - name: Get the DNS servers
       vmware.vmware_rest.appliance_networking_dns_servers_info:
       register: result
-      ignore_errors: true  # May be failing because of the CI set-up
 
 
 

@@ -91,7 +91,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -290,10 +290,12 @@ async def entry_point(module, session):
 
 async def _create(params, session):
 
+    unicity_keys = ["None"]
+
     if params["None"]:
         _json = await get_device_info(session, build_url(params), params["None"])
     else:
-        _json = await exists(params, session, build_url(params), ["None"])
+        _json = await exists(params, session, build_url(params), unicity_keys)
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}

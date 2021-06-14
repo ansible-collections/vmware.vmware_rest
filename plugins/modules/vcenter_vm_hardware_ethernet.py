@@ -113,7 +113,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -209,13 +209,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1358032189
+      connection_cookie: 1321470538
       distributed_port: '2'
-      distributed_switch_uuid: 50 1c a7 7e 80 eb 0b 12-9f 5f 45 dc d9 43 1b 27
-      network: dvportgroup-1157
+      distributed_switch_uuid: 50 1c 41 af 52 4a 43 7f-81 91 6e 19 d8 bd fa c8
+      network: dvportgroup-1023
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:9c:65:07
+    mac_address: 00:50:56:9c:93:dd
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -228,6 +228,19 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -243,22 +256,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
     "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -422,10 +422,12 @@ async def _connect(params, session):
 
 async def _create(params, session):
 
+    unicity_keys = ["nic"]
+
     if params["nic"]:
         _json = await get_device_info(session, build_url(params), params["nic"])
     else:
-        _json = await exists(params, session, build_url(params), ["nic"])
+        _json = await exists(params, session, build_url(params), unicity_keys)
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}
@@ -522,9 +524,14 @@ async def _update(params, session):
         else:  # 7.0.2 and greater
             value = _json
         for k, v in value.items():
-            if k in payload and payload[k] == v:
-                del payload[k]
-            elif "spec" in payload:
+            if k in payload:
+                if isinstance(payload[k], dict) and isinstance(v, dict):
+                    for _k in list(payload[k].keys()):
+                        if payload[k][_k] == v.get(_k):
+                            del payload[k][_k]
+                if payload[k] == v or payload[k] == {}:
+                    del payload[k]
+            elif "spec" in payload:  # 7.0.2 <
                 if k in payload["spec"] and payload["spec"][k] == v:
                     del payload["spec"][k]
 
@@ -542,6 +549,14 @@ async def _update(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
+        # e.g: content_configuration
+        if not _json and resp.status == 204:
+            async with session.get(_url) as resp_get:
+                _json_get = await resp_get.json()
+                if _json_get:
+                    _json = _json_get
+
         _json["id"] = params.get("nic")
         return await update_changed_flag(_json, resp.status, "update")
 

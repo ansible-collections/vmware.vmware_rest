@@ -153,7 +153,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -267,7 +267,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1140</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1007</div>
                 </td>
             </tr>
             <tr>
@@ -284,7 +284,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve details about the first cluster</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1141&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1008&#x27;}</div>
                 </td>
             </tr>
     </table>
