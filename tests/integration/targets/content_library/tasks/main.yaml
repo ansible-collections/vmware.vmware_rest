@@ -9,7 +9,21 @@
   set_fact:
     datastore_id: "{{ result.value[0].datastore }}"
 
-- name: Create a new content library
+- name: Create a content library pointing on the NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_vms_library
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: 'NONE'
+    storage_backings:
+      - storage_uri: 'nfs://datastore.test/srv/share/content-library'
+        type: 'OTHER'
+    state: present
+  register: nfs_lib
+
+
+- name: Create a new local content library
   vmware.vmware_rest.content_locallibrary:
     name: local_library_001
     description: automated
