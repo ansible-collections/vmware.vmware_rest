@@ -108,7 +108,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -203,7 +203,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">integer</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>

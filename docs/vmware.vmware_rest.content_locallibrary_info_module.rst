@@ -86,7 +86,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -157,26 +157,74 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Retrieve the local content library information
+    - name: Build a list of local libraries
       vmware.vmware_rest.content_locallibrary_info:
       register: result
 
-    - name: Set test local library id for further testing
+    - name: Get a list of the local libraries
+      vmware.vmware_rest.content_locallibrary_info:
+      register: result
+
+    - name: Adjust vpxd configuration
+      vmware.vmware_rest.appliance_vmon_service:
+        service: vpxd
+        startup_type: AUTOMATIC
+      register: result
+
+    - name: Set datastore id
       set_fact:
-        test_library_id: '{{ result.value[0] }}'
+        datastore_id: '{{ result.value[0].datastore }}'
+
+    - name: Create a new local content library
+      vmware.vmware_rest.content_locallibrary:
+        name: local_library_001
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: '{{ datastore_id }}'
+          type: DATASTORE
+        state: present
+      register: ds_lib
 
     - name: Retrieve the local content library information based upon id check mode
       vmware.vmware_rest.content_locallibrary_info:
-        library_id: '{{ test_library_id }}'
+        library_id: '{{ ds_lib.id }}'
       register: result
       check_mode: true
 
-    - name: Retrieve the local content library information based upon id
-      vmware.vmware_rest.content_locallibrary_info:
-        library_id: '{{ test_library_id }}'
-      register: result
 
 
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Build a list of local libraries</div>
+                    <br/>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

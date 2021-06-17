@@ -342,7 +342,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -423,6 +423,20 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Build a list of subscribed libraries
+      vmware.vmware_rest.content_subscribedlibrary_info:
+      register: result
+
+    - name: Delete all the subscribed libraries
+      vmware.vmware_rest.content_subscribedlibrary:
+        library_id: '{{ item.id }}'
+        state: absent
+      with_items: '{{ result.value }}'
 
 
 

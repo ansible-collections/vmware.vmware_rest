@@ -68,7 +68,11 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.appliance_update_info_module
     docs/vmware.vmware_rest.appliance_vmon_service_info_module
     docs/vmware.vmware_rest.appliance_vmon_service_module
+    docs/vmware.vmware_rest.content_configuration_info_module
+    docs/vmware.vmware_rest.content_configuration_module
+    docs/vmware.vmware_rest.content_library_info_module
     docs/vmware.vmware_rest.content_library_item_info_module
+    docs/vmware.vmware_rest.content_library_item_module
     docs/vmware.vmware_rest.content_locallibrary_info_module
     docs/vmware.vmware_rest.content_locallibrary_module
     docs/vmware.vmware_rest.content_subscribedlibrary_info_module

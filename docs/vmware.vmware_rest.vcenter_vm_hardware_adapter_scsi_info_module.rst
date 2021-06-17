@@ -101,7 +101,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -231,7 +231,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>List the SCSI adapter of a given VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;adapter&#x27;: &#x27;1000&#x27;}]</div>
                 </td>
             </tr>
     </table>

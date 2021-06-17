@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -180,6 +180,8 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Get guest network interfaces information</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;ip&#x27;: {&#x27;ip_addresses&#x27;: []}, &#x27;mac_address&#x27;: &#x27;00:50:56:9c:93:dd&#x27;, &#x27;nic&#x27;: &#x27;4000&#x27;}]</div>
                 </td>
             </tr>
     </table>

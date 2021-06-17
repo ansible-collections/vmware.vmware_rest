@@ -27,7 +27,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -75,11 +75,7 @@ RETURN = r"""
 value:
   description: Get the firewall inbound configuration
   returned: On success
-  sample:
-  - address: 1.2.3.0
-    interface_name: '*'
-    policy: REJECT
-    prefix: 24
+  sample: []
   type: list
 """
 

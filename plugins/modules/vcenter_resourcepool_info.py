@@ -69,7 +69,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -133,7 +133,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1143
+  sample: resgroup-1010
   type: str
 value:
   description: Read details from a specific resource pool
@@ -303,17 +303,14 @@ async def entry_point(module, session):
             _json["id"] = module.params.get("resource_pool")
         elif module.params.get("label"):  # TODO extend the list of filter
             _json = await exists(module.params, session, url)
-        else:  # list context, retrieve the details of each entry
-            try:
-                if (
-                    isinstance(_json["value"][0]["resource_pool"], str)
-                    and len(list(_json["value"][0].values())) == 1
-                ):
-                    # this is a list of id, we fetch the details
-                    full_device_list = await build_full_device_list(session, url, _json)
-                    _json = {"value": [i["value"] for i in full_device_list]}
-            except (TypeError, KeyError, IndexError):
-                pass
+        elif (
+            isinstance(_json["value"], list)
+            and len(_json["value"]) > 0
+            and isinstance(_json["value"][0], str)
+        ):
+            # this is a list of id, we fetch the details
+            full_device_list = await build_full_device_list(session, url, _json)
+            _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")
 

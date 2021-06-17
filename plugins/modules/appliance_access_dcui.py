@@ -35,7 +35,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -83,8 +83,8 @@ RETURN = r"""
 value:
   description: Disable the Direct Console User Interface
   returned: On success
-  sample: 0
-  type: int
+  sample: {}
+  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points

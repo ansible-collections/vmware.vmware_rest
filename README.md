@@ -109,6 +109,8 @@ Name | Description
 [vmware.vmware_rest.appliance_update_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.appliance_update_info_module.rst)|Gets the current status of the appliance update.
 [vmware.vmware_rest.appliance_vmon_service](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.appliance_vmon_service_module.rst)|Lists details of services managed by vMon.
 [vmware.vmware_rest.appliance_vmon_service_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.appliance_vmon_service_info_module.rst)|Returns the state of a service.
+[vmware.vmware_rest.content_configuration](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.content_configuration_module.rst)|Updates the configuration
+[vmware.vmware_rest.content_configuration_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.content_configuration_info_module.rst)|Retrieves the current configuration values.
 [vmware.vmware_rest.content_library_item_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.content_library_item_info_module.rst)|Returns the {@link ItemModel} with the given identifier.
 [vmware.vmware_rest.content_locallibrary](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.content_locallibrary_module.rst)|Creates a new local library.
 [vmware.vmware_rest.content_locallibrary_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.content_locallibrary_info_module.rst)|Returns a given local library.

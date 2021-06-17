@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -174,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the timezone configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">UTC</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">Etc/UTC</div>
                 </td>
             </tr>
     </table>

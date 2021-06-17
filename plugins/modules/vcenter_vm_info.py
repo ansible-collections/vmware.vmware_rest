@@ -71,7 +71,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -144,7 +144,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1158
+  sample: vm-1024
   type: str
 value:
   description: Collect information about a specific VM
@@ -167,7 +167,7 @@ value:
       '2000':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_3/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -181,8 +181,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 421cca12-de16-7a79-8138-113a4609e56e
-      instance_uuid: 501c239d-966b-108b-8c6a-e3a07627de71
+      bios_uuid: 421ca850-4060-1086-b1e1-b0200df6578e
+      instance_uuid: 501ce92f-fdc0-5274-5c71-62ad3dc6fa21
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -359,17 +359,14 @@ async def entry_point(module, session):
             _json["id"] = module.params.get("vm")
         elif module.params.get("label"):  # TODO extend the list of filter
             _json = await exists(module.params, session, url)
-        else:  # list context, retrieve the details of each entry
-            try:
-                if (
-                    isinstance(_json["value"][0]["vm"], str)
-                    and len(list(_json["value"][0].values())) == 1
-                ):
-                    # this is a list of id, we fetch the details
-                    full_device_list = await build_full_device_list(session, url, _json)
-                    _json = {"value": [i["value"] for i in full_device_list]}
-            except (TypeError, KeyError, IndexError):
-                pass
+        elif (
+            isinstance(_json["value"], list)
+            and len(_json["value"]) > 0
+            and isinstance(_json["value"][0], str)
+        ):
+            # this is a list of id, we fetch the details
+            full_device_list = await build_full_device_list(session, url, _json)
+            _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")
 

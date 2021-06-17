@@ -86,7 +86,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -183,35 +183,18 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">VALUE_SPECIFIED_IN_NO_LOG_PARAMETER</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
+                      <span style="color: purple">list</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Get the information about the new account</div>
+                            <div>List the local accounts</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;email&#x27;: &#x27;********@vsphere.local&#x27;, &#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;Foobar&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-06-01T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;operator&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 5}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;root&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-06-16T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 0, &#x27;password_expires_at&#x27;: &#x27;2021-09-14T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;superAdmin&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;last_password_change&#x27;: &#x27;2021-05-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 1, &#x27;password_expires_at&#x27;: &#x27;2021-08-24T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;last_password_change&#x27;: &#x27;2021-05-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: -1}, {&#x27;email&#x27;: &#x27;foobar@vsphere.local&#x27;, &#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;Foobar&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2021-05-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 1, &#x27;password_expires_at&#x27;: &#x27;2021-08-24T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;operator&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}]</div>
                 </td>
             </tr>
     </table>

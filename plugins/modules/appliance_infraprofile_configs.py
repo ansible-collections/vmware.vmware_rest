@@ -68,7 +68,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -119,33 +119,23 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","creationTime":"2021-06-01T21:15:14+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"action":"RESTART_SERVICE","description":"Appliance
-    Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
-    shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/applmgmt/appliance/localaccounts.conf":{"Email
+  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","version":"7.0.2.00000","creationTime":"2021-06-16T20:57:34+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"version":"7.0","description":"Appliance
+    Mangment Service","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is shell
+    Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/applmgmt/appliance/localaccounts.conf":{"Email
     Address used by Root for Password Reminder.":null},"/etc/sysconfig/clock":{"Time
-    zone":"\"UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
-    servers":["time.google.com"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail
-    server":null},"/etc/vmware-syslog/syslog.conf":{"Port [2]":null,"Port [1]":null,"Port
-    [0]":null,"Protocol [2]":null,"Remote Syslog Host [1]":null,"Protocol [1]":null,"Remote
-    Syslog Host [0]":null,"Protocol [0]":null,"Remote Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny
-    Login after these many Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On
-    Error Login will be.":null,"Include Root user for SSH lockout.":null,"Unlock user
-    after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
+    zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
+    servers":["time.nist.gov"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail server":null},"/etc/vmware-syslog/syslog.conf":{"Port
+    [2]":null,"Port [1]":null,"Port [0]":null,"Protocol [2]":null,"Remote Syslog Host
+    [1]":null,"Protocol [1]":null,"Remote Syslog Host [0]":null,"Protocol [0]":null,"Remote
+    Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny Login after these many
+    Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On Error Login
+    will be.":null,"Include Root user for SSH lockout.":null,"Unlock user after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"foobar":{"maximumDays":"90","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
     Waring before this No of Days.":null,"Password validity (days)":null}},"name":"ApplianceManagement"}}}'
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "export": {
-        "query": {},
-        "body": {
-            "description": "description",
-            "encryption_key": "encryption_key",
-            "profiles": "profiles",
-        },
-        "path": {},
-    },
     "validate": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
@@ -154,6 +144,15 @@ PAYLOAD_FORMAT = {
     "import_profile": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
+        "path": {},
+    },
+    "export": {
+        "query": {},
+        "body": {
+            "description": "description",
+            "encryption_key": "encryption_key",
+            "profiles": "profiles",
+        },
         "path": {},
     },
 }  # pylint: disable=line-too-long

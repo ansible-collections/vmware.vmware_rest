@@ -26,7 +26,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -75,7 +75,15 @@ RETURN = r"""
 value:
   description: Get guest networking information
   returned: On success
-  sample: {}
+  sample:
+    dns:
+      ip_addresses:
+      - 10.0.2.3
+      search_domains:
+      - localdomain
+    dns_values:
+      domain_name: localdomain
+      host_name: localhost.localdomain
   type: dict
 """
 

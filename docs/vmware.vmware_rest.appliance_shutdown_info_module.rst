@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -146,6 +146,10 @@ Examples
       vmware.vmware_rest.appliance_shutdown_info:
       register: result
 
+    - name: Get the ongoing shutdown
+      vmware.vmware_rest.appliance_shutdown_info:
+      register: result
+
 
 
 Return Values
@@ -171,10 +175,10 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Ensure there is no ongoing shutdown</div>
+                            <div>Get the ongoing shutdown</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;&#x27;, &#x27;reason&#x27;: &#x27;&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2021-06-17T06:58:20.000Z&#x27;}</div>
                 </td>
             </tr>
     </table>

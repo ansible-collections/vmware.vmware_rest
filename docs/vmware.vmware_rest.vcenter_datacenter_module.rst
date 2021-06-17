@@ -153,7 +153,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -266,7 +266,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>msg</b>
+                    <b>id</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
                       <span style="color: purple">string</span>
@@ -274,27 +274,27 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Force delete the existing DC</div>
+                            <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">All items completed</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">datacenter-1001</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>results</b>
+                    <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">list</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Force delete the existing DC</div>
+                            <div>Create datacenter my_dc</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1106&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;_debug_info&#x27;: {&#x27;operation&#x27;: &#x27;delete&#x27;, &#x27;status&#x27;: 204}, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1106&#x27;, &#x27;folder&#x27;: None, &#x27;force&#x27;: 1, &#x27;name&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0}}, &#x27;item&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1106&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;datastore_folder&#x27;: &#x27;group-s1004&#x27;, &#x27;host_folder&#x27;: &#x27;group-h1003&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;, &#x27;network_folder&#x27;: &#x27;group-n1005&#x27;, &#x27;vm_folder&#x27;: &#x27;group-v1002&#x27;}</div>
                 </td>
             </tr>
     </table>

@@ -51,7 +51,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -104,7 +104,7 @@ value:
   description: collect a list of the datacenters
   returned: On success
   sample:
-  - datacenter: datacenter-1134
+  - datacenter: datacenter-1001
     name: my_dc
   type: list
 """
@@ -248,17 +248,14 @@ async def entry_point(module, session):
             _json["id"] = module.params.get("datacenter")
         elif module.params.get("label"):  # TODO extend the list of filter
             _json = await exists(module.params, session, url)
-        else:  # list context, retrieve the details of each entry
-            try:
-                if (
-                    isinstance(_json["value"][0]["datacenter"], str)
-                    and len(list(_json["value"][0].values())) == 1
-                ):
-                    # this is a list of id, we fetch the details
-                    full_device_list = await build_full_device_list(session, url, _json)
-                    _json = {"value": [i["value"] for i in full_device_list]}
-            except (TypeError, KeyError, IndexError):
-                pass
+        elif (
+            isinstance(_json["value"], list)
+            and len(_json["value"]) > 0
+            and isinstance(_json["value"][0], str)
+        ):
+            # this is a list of id, we fetch the details
+            full_device_list = await build_full_device_list(session, url, _json)
+            _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")
 

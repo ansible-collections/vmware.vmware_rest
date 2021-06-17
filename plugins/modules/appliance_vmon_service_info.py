@@ -30,7 +30,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -220,7 +220,7 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: DEGRADED
+      health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args: []
         default_message: health.statsReoptInitalizer.illegalStateEx
@@ -328,10 +328,10 @@ value:
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-06-01T21:13:35UTC
-        - 2021-06-01T21:13:35UTC
-        default_message: Configuration health status is created between 2021-06-01T21:13:35UTC
-          and 2021-06-01T21:13:35UTC.
+        - 2021-06-16T20:53:45UTC
+        - 2021-06-16T20:54:24UTC
+        default_message: Configuration health status is created between 2021-06-16T20:53:45UTC
+          and 2021-06-16T20:54:24UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -398,7 +398,7 @@ value:
         id: vc.health.statuscode
       - args: []
         default_message: ''
-        id: vc.health.error.dbjob3
+        id: vc.health.error.dbjob2
       name_key: cis.vpxd.ServiceName
       startup_type: AUTOMATIC
       state: STARTED

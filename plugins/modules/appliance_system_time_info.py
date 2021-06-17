@@ -24,7 +24,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -73,9 +73,9 @@ value:
   description: Get the current time
   returned: On success
   sample:
-    date: Tue 06-01-2021
+    date: Wed 06-16-2021
     seconds_since_epoch: null
-    time: 09:16:00 PM
+    time: 08:58:31 PM
     timezone: UTC
   type: dict
 """

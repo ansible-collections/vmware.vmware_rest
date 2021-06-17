@@ -24,7 +24,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -65,7 +65,6 @@ EXAMPLES = r"""
 - name: Get the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers_info:
   register: result
-  ignore_errors: true  # May be failing because of the CI set-up
 """
 
 RETURN = r"""

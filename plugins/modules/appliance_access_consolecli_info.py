@@ -24,7 +24,7 @@ options:
     type: str
   vcenter_password:
     description:
-    - The vSphere vCenter username
+    - The vSphere vCenter password
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_PASSWORD) will be used instead.
     required: true
@@ -71,7 +71,7 @@ RETURN = r"""
 value:
   description: Check if the Console CLI is enabled
   returned: On success
-  sample: 0
+  sample: 1
   type: int
 """
 

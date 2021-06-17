@@ -71,7 +71,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The vSphere vCenter username</div>
+                        <div>The vSphere vCenter password</div>
                         <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
@@ -174,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>List infraprofile configs</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;info&#x27;: &#x27;Appliance Mangment Service&#x27;, &#x27;name&#x27;: &#x27;ApplianceManagement&#x27;}, {&#x27;info&#x27;: &#x27;ApplianceNetwork&#x27;, &#x27;name&#x27;: &#x27;ApplianceNetwork&#x27;}, {&#x27;info&#x27;: &#x27;Authentication &amp; Authorization Management&#x27;, &#x27;name&#x27;: &#x27;AuthManagement&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;info&#x27;: &#x27;ApplianceManagement&#x27;, &#x27;name&#x27;: &#x27;ApplianceManagement&#x27;}, {&#x27;info&#x27;: &#x27;ApplianceNetwork&#x27;, &#x27;name&#x27;: &#x27;ApplianceNetwork&#x27;}, {&#x27;info&#x27;: &#x27;Authentication &amp; Authorization Management&#x27;, &#x27;name&#x27;: &#x27;AuthManagement&#x27;}]</div>
                 </td>
             </tr>
     </table>
