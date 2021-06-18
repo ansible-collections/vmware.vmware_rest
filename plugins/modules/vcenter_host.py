@@ -145,13 +145,12 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1014
+  sample: host-1123
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -168,6 +167,7 @@ PAYLOAD_FORMAT = {
     },
     "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -349,7 +349,7 @@ async def _create(params, session):
         except KeyError:
             _json = {}
 
-        if resp.status in [200, 201]:
+        if (resp.status in [200, 201]) and "error" not in _json:
             if isinstance(_json, str):  # 7.0.2 and greater
                 _id = _json  # TODO: fetch the object
             elif isinstance(_json, dict) and "value" not in _json:

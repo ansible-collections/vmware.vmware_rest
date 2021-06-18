@@ -1,14 +1,14 @@
-.. _vmware.vmware_rest.vcenter_host_module:
+.. _vmware.vmware_rest.vcenter_ovf_libraryitem_module:
 
 
-*******************************
-vmware.vmware_rest.vcenter_host
-*******************************
+******************************************
+vmware.vmware_rest.vcenter_ovf_libraryitem
+******************************************
 
-**Add a new standalone host in the vCenter inventory**
+**Creates a library item in content library from a virtual machine or virtual appliance**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Add a new standalone host in the vCenter inventory. The newly connected host will be in connected state. The vCenter Server will verify the SSL certificate before adding the host to its inventory. In the case where the SSL certificate cannot be verified because the Certificate Authority is not recognized or the certificate is self signed, the vCenter Server will fall back to thumbprint verification mode as defined by {@link CreateSpec.ThumbprintVerification}.
+- Creates a library item in content library from a virtual machine or virtual appliance. <p> This {@term operation} creates a library item in content library whose content is an OVF package derived from a source virtual machine or virtual appliance, using the supplied create specification. The OVF package may be stored as in a newly created library item or in an in an existing library item. For an existing library item whose content is updated by this {@term operation}, the original content is overwritten. Meta data such as name and description is not updated for the exisitng library item. </p>
 
 
 
@@ -44,7 +44,7 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>folder</b>
+                    <b>client_token</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -53,32 +53,63 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Host and cluster folder in which the new standalone host should be created.</div>
+                        <div>Client-generated token used to retry a request if the client fails to get a response from the server. If the original request succeeded, the result of that request will be returned, otherwise the operation will be retried.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>force_add</b>
+                    <b>create_spec</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
+                        <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
                 </td>
                 <td>
-                        <div>Whether host should be added to the vCenter Server even if it is being managed by another vCenter Server. The original vCenterServer loses connection to the host.</div>
+                        <div>Information used to create the OVF package from the source virtual machine or virtual appliance. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>name</code> (str): Name to use in the OVF descriptor stored in the library item.</div>
+                        <div>- <code>description</code> (str): Description to use in the OVF descriptor stored in the library item.</div>
+                        <div>- <code>flags</code> (list): Flags to use for OVF package creation. The supported flags can be obtained using {@link ExportFlag#list}.</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>host</b>
+                    <b>deployment_spec</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Specification of how the OVF package should be deployed to the target. Required with <em>state=[&#x27;deploy&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>name</code> (str): Name assigned to the deployed target virtual machine or virtual appliance.</div>
+                        <div>- <code>annotation</code> (str): Annotation assigned to the deployed target virtual machine or virtual appliance.</div>
+                        <div>- <code>accept_all_EULA</code> (bool): Whether to accept all End User License Agreements. See {@link OvfSummary#eulas}.</div>
+                        <div>- <code>network_mappings</code> (dict): Specification of the target network to use for sections of type ovf:NetworkSection in the OVF descriptor. The key in the {@term map} is the section identifier of the ovf:NetworkSection section in the OVF descriptor and the value is the target network to be used for deployment.</div>
+                        <div>- <code>storage_mappings</code> (dict): Specification of the target storage to use for sections of type vmw:StorageGroupSection in the OVF descriptor. The key in the {@term map} is the section identifier of the ovf:StorageGroupSection section in the OVF descriptor and the value is the target storage specification to be used for deployment. See {@link StorageGroupMapping}.</div>
+                        <div>- <code>storage_provisioning</code> (str): The {@name DiskProvisioningType} defines the virtual disk provisioning types that can be set for a disk on the target platform.</div>
+                        <div>- Accepted values:</div>
+                        <div>- thin</div>
+                        <div>- thick</div>
+                        <div>- eagerZeroedThick</div>
+                        <div>- <code>storage_profile_id</code> (str): Default storage profile to use for all sections of type vmw:StorageSection in the OVF descriptor.</div>
+                        <div>- <code>locale</code> (str): The locale to use for parsing the OVF descriptor.</div>
+                        <div>- <code>flags</code> (list): Flags to be use for deployment. The supported flag values can be obtained using {@link ImportFlag#list}.</div>
+                        <div>- <code>additional_parameters</code> (list): Additional OVF parameters that may be needed for the deployment. Additional OVF parameters may be required by the OVF descriptor of the OVF package in the library item. Examples of OVF parameters that can be specified through this field include, but are not limited to: &lt;ul&gt; &lt;li&gt;{@link DeploymentOptionParams}&lt;/li&gt; &lt;li&gt;{@link ExtraConfigParams}&lt;/li&gt; &lt;li&gt;{@link IpAllocationParams}&lt;/li&gt; &lt;li&gt;{@link PropertyParams}&lt;/li&gt; &lt;li&gt;{@link ScaleOutParams}&lt;/li&gt; &lt;li&gt;{@link VcenterExtensionParams}&lt;/li&gt; &lt;/ul&gt;</div>
+                        <div>- <code>default_datastore_id</code> (str): Default datastore to use for all sections of type vmw:StorageSection in the OVF descriptor.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>ovf_library_item_id</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -87,52 +118,25 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the host to be disconnected. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>Identifier of the content library item containing the OVF package to be deployed. Required with <em>state=[&#x27;deploy&#x27;, &#x27;filter&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>hostname</b>
+                    <b>source</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>The IP address or DNS resolvable name of the host. Required with <em>state=[&#x27;present&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>password</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>The password for the administrator account on the host. Required with <em>state=[&#x27;present&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>port</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>The port of the host.</div>
+                        <div>Identifier of the virtual machine or virtual appliance to use as the source. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>type</code> (str): Type of the deployable resource.</div>
+                        <div>- <code>id</code> (str): Identifier of the deployable resource.</div>
                 </td>
             </tr>
             <tr>
@@ -146,9 +150,8 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>absent</li>
-                                    <li>connect</li>
-                                    <li>disconnect</li>
+                                    <li>deploy</li>
+                                    <li>filter</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
@@ -158,50 +161,20 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>thumbprint</b>
+                    <b>target</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">dictionary</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>The thumbprint of the SSL certificate, which the host is expected to have. The thumbprint is always computed using the SHA1 hash and is the string representation of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx where, &#x27;x&#x27; represents a hexadecimal digit.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>thumbprint_verification</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>NONE</li>
-                                    <li>THUMBPRINT</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>The {@name ThumbprintVerification} defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>user_name</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>The administrator account on the host. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Specification of the target content library and library item. This parameter is mandatory.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>library_id</code> (str): Identifier of the library in which a new library item should be created. This field is not used if the {@name #libraryItemId} field is specified.</div>
+                        <div>- <code>library_item_id</code> (str): Identifier of the library item that should be should be updated.</div>
                 </td>
             </tr>
             <tr>
@@ -305,22 +278,87 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of all the folders
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: all_the_clusters
+
+    - name: Retrieve details about the first cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: '{{ all_the_clusters.value[0].cluster }}'
+      register: my_cluster_info
+
+    - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
       vmware.vmware_rest.vcenter_folder_info:
+        filter_type: VIRTUAL_MACHINE
+        filter_names:
+        - vm
       register: my_folders
 
-    - name: Look up the different folders
+    - name: Set my_virtual_machine_folder
       set_fact:
-        my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
-          }}'
+        my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
-    - name: Connect the host(s)
-      vmware.vmware_rest.vcenter_host:
-        hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-        user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
-        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-        thumbprint_verification: NONE
-        folder: '{{ my_host_folder.folder }}'
+    - name: We can also use filter to limit the number of result
+      vmware.vmware_rest.vcenter_datastore_info:
+        filter_names:
+        - rw_datastore
+      register: my_datastores
+
+    - name: Set my_datastore
+      set_fact:
+        my_datastore: '{{ my_datastores.value|first }}'
+
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: '{{ my_cluster_info.id }}'
+          datastore: '{{ my_datastore.datastore }}'
+          folder: '{{ my_virtual_machine_folder.folder }}'
+          resource_pool: '{{ my_cluster_info.value.resource_pool }}'
+        name: test_vm1
+        guest_OS: DEBIAN_8_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+      register: my_vm
+
+    - name: Create a content library pointing on a NFS share
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_nfs
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - storage_uri: nfs://datastore.test/srv/share/content-library
+          type: OTHER
+        state: present
+      register: nfs_lib
+
+    - name: Export the VM as an OVF on the library
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        source:
+          type: VirtualMachine
+          id: '{{ my_vm.id }}'
+        target:
+          library_id: '{{ nfs_lib.id }}'
+        create_spec:
+          name: my_vm
+          description: an OVF example
+          flags: []
+        state: present
+
+    - name: Create a new VM from the OVF
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        ovf_library_item_id: '{{ (result.value|selectattr("name", "equalto", "my_vm")|first).id
+          }}'
+        state: deploy
+        target:
+          resource_pool_id: '{{ my_cluster_info.value.resource_pool }}'
+        deployment_spec:
+          name: my_vm_from_ovf
+          accept_all_EULA: true
 
 
 
@@ -342,15 +380,15 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">string</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Connect the host(s)</div>
+                            <div>Create a new VM from the OVF</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1123</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1137&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

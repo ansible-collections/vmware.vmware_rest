@@ -181,7 +181,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1/test_vm1_1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_4/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -193,11 +193,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {"backing": "backing"},
-        "path": {"disk": "disk", "vm": "vm"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -209,6 +204,11 @@ PAYLOAD_FORMAT = {
             "type": "type",
         },
         "path": {"vm": "vm"},
+    },
+    "update": {
+        "query": {},
+        "body": {"backing": "backing"},
+        "path": {"disk": "disk", "vm": "vm"},
     },
     "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
 }  # pylint: disable=line-too-long
@@ -369,7 +369,7 @@ async def _create(params, session):
         except KeyError:
             _json = {}
 
-        if resp.status in [200, 201]:
+        if (resp.status in [200, 201]) and "error" not in _json:
             if isinstance(_json, str):  # 7.0.2 and greater
                 _id = _json  # TODO: fetch the object
             elif isinstance(_json, dict) and "value" not in _json:

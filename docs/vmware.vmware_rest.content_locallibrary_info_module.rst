@@ -161,6 +161,35 @@ Examples
       vmware.vmware_rest.content_locallibrary_info:
       register: result
 
+    - name: We can also use filter to limit the number of result
+      vmware.vmware_rest.vcenter_datastore_info:
+        filter_names:
+        - rw_datastore
+      register: my_datastores
+
+    - name: Set my_datastore
+      set_fact:
+        my_datastore: '{{ my_datastores.value|first }}'
+
+    - name: Create a new local content library
+      vmware.vmware_rest.content_locallibrary:
+        name: local_library_001
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: '{{ my_datastore.datastore }}'
+          type: DATASTORE
+        state: present
+      register: ds_lib
+
+    - name: Retrieve the local content library information based upon id check mode
+      vmware.vmware_rest.content_locallibrary_info:
+        library_id: '{{ ds_lib.id }}'
+      register: result
+      check_mode: true
+
     - name: Get a list of the local libraries
       vmware.vmware_rest.content_locallibrary_info:
       register: result
@@ -187,12 +216,6 @@ Examples
           type: DATASTORE
         state: present
       register: ds_lib
-
-    - name: Retrieve the local content library information based upon id check mode
-      vmware.vmware_rest.content_locallibrary_info:
-        library_id: '{{ ds_lib.id }}'
-      register: result
-      check_mode: true
 
 
 
@@ -221,6 +244,8 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Build a list of local libraries</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;creation_time&#x27;: &#x27;2021-06-18T00:45:57.831Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;6d64aa52-ae93-4c86-9e18-d8db6d695ed9&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-06-18T00:45:57.831Z&#x27;, &#x27;name&#x27;: &#x27;my_library_on_nfs&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/6d64aa52-ae93-4c86-9e18-d8db6d695ed9/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27;, &#x27;storage_backings&#x27;: [{&#x27;storage_uri&#x27;: &#x27;nfs://datastore.test/srv/share/content-library&#x27;, &#x27;type&#x27;: &#x27;OTHER&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}, {&#x27;creation_time&#x27;: &#x27;2021-06-18T00:48:26.564Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;a3117f42-9089-4354-a4c0-b433f71ea252&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-06-18T00:48:26.564Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/a3117f42-9089-4354-a4c0-b433f71ea252/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1099&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}]</div>
                 </td>
             </tr>
     </table>

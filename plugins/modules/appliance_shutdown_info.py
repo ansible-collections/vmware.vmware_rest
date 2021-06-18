@@ -79,7 +79,7 @@ value:
   sample:
     action: reboot
     reason: this is an example
-    shutdown_time: '2021-06-17T06:58:20.000Z'
+    shutdown_time: '2021-06-18T11:00:33.000Z'
   type: dict
 """
 

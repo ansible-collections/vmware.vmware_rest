@@ -157,15 +157,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"floppy": "floppy", "vm": "vm"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -175,9 +166,18 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"floppy": "floppy", "vm": "vm"},
+    },
     "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -359,7 +359,7 @@ async def _create(params, session):
         except KeyError:
             _json = {}
 
-        if resp.status in [200, 201]:
+        if (resp.status in [200, 201]) and "error" not in _json:
             if isinstance(_json, str):  # 7.0.2 and greater
                 _id = _json  # TODO: fetch the object
             elif isinstance(_json, dict) and "value" not in _json:

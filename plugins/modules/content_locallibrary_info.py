@@ -70,6 +70,35 @@ EXAMPLES = r"""
   vmware.vmware_rest.content_locallibrary_info:
   register: result
 
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+    - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: '{{ my_datastore.datastore }}'
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Retrieve the local content library information based upon id check mode
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+  check_mode: true
+
 - name: Get a list of the local libraries
   vmware.vmware_rest.content_locallibrary_info:
   register: result
@@ -96,12 +125,6 @@ EXAMPLES = r"""
       type: DATASTORE
     state: present
   register: ds_lib
-
-- name: Retrieve the local content library information based upon id check mode
-  vmware.vmware_rest.content_locallibrary_info:
-    library_id: '{{ ds_lib.id }}'
-  register: result
-  check_mode: true
 """
 
 RETURN = r"""
@@ -109,7 +132,41 @@ RETURN = r"""
 value:
   description: Build a list of local libraries
   returned: On success
-  sample: []
+  sample:
+  - creation_time: '2021-06-18T00:45:57.831Z'
+    description: automated
+    id: 6d64aa52-ae93-4c86-9e18-d8db6d695ed9
+    last_modified_time: '2021-06-18T00:45:57.831Z'
+    name: my_library_on_nfs
+    publish_info:
+      authentication_method: NONE
+      persist_json_enabled: 0
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/6d64aa52-ae93-4c86-9e18-d8db6d695ed9/lib.json
+      published: 1
+      user_name: vcsp
+    server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    type: LOCAL
+    version: '2'
+  - creation_time: '2021-06-18T00:48:26.564Z'
+    description: automated
+    id: a3117f42-9089-4354-a4c0-b433f71ea252
+    last_modified_time: '2021-06-18T00:48:26.564Z'
+    name: local_library_001
+    publish_info:
+      authentication_method: NONE
+      persist_json_enabled: 0
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/a3117f42-9089-4354-a4c0-b433f71ea252/lib.json
+      published: 1
+      user_name: vcsp
+    server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
+    storage_backings:
+    - datastore_id: datastore-1099
+      type: DATASTORE
+    type: LOCAL
+    version: '2'
   type: list
 """
 

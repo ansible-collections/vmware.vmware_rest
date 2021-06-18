@@ -87,17 +87,14 @@ value:
   description: Resize the first partition and return the state of the partition before
     and after the operation
   returned: On success
-  sample:
-    lv_root_0:
-      new_size: 104312832
-      old_size: 93048832
+  sample: {}
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "resize_ex": {"query": {}, "body": {}, "path": {}},
     "resize": {"query": {}, "body": {}, "path": {}},
+    "resize_ex": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

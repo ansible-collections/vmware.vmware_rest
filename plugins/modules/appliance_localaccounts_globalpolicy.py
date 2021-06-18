@@ -93,7 +93,10 @@ RETURN = r"""
 value:
   description: Update the global policy of the local accounts
   returned: On success
-  sample: {}
+  sample:
+    max_days: -1
+    min_days: -1
+    warn_days: 5
   type: dict
 """
 

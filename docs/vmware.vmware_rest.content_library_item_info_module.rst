@@ -172,7 +172,7 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Create a content library pointing on the NFS share
+    - name: Create a content library pointing on a NFS share
       vmware.vmware_rest.content_locallibrary:
         name: my_library_on_nfs
         description: automated
@@ -189,6 +189,65 @@ Examples
       vmware.vmware_rest.content_library_item_info:
         library_id: '{{ nfs_lib.id }}'
       register: result
+
+    - name: We can also use filter to limit the number of result
+      vmware.vmware_rest.vcenter_datastore_info:
+        filter_names:
+        - rw_datastore
+      register: my_datastores
+
+    - name: Set my_datastore
+      set_fact:
+        my_datastore: '{{ my_datastores.value|first }}'
+
+    - name: Create a new local content library
+      vmware.vmware_rest.content_locallibrary:
+        name: local_library_001
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: '{{ my_datastore.datastore }}'
+          type: DATASTORE
+        state: present
+      register: ds_lib
+
+    - name: Get the (empty) list of items of the library
+      vmware.vmware_rest.content_library_item_info:
+        library_id: '{{ ds_lib.id }}'
+      register: result
+
+    - name: Create subscribed library
+      content_subscribedlibrary:
+        name: sub_lib
+        subscription_info:
+          subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+          authentication_method: NONE
+          automatic_sync_enabled: false
+          on_demand: true
+        storage_backings:
+        - datastore_id: '{{ my_datastore.datastore }}'
+          type: DATASTORE
+      register: sub_lib
+
+    - name: Ensure the OVF is here
+      vmware.vmware_rest.content_library_item_info:
+        library_id: '{{ sub_lib.id }}'
+      register: result
+
+    - name: create a content library pointing on the nfs share
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_nfs
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - storage_uri: nfs://datastore.test/srv/share/content-library
+          type: OTHER
+        state: present
+      register: nfs_lib
 
     - name: Adjust vpxd configuration
       vmware.vmware_rest.appliance_vmon_service:
@@ -213,11 +272,6 @@ Examples
         state: present
       register: ds_lib
 
-    - name: Get the (empty) list of items of the library
-      vmware.vmware_rest.content_library_item_info:
-        library_id: '{{ ds_lib.id }}'
-      register: result
-
     - name: Create subscribed library
       content_subscribedlibrary:
         name: sub_lib
@@ -237,6 +291,38 @@ Examples
       register: result
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Ensure the OVF is here</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-06-18T00:57:37.491Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;7aedaad0-9274-4dd4-8af5-e5c4dd9e38eb&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-06-18T00:57:37.691Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-06-18T00:57:37.690Z&#x27;, &#x27;library_id&#x27;: &#x27;64e4e0ec-8ef8-40dc-8a5d-79ecc27f23e4&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;d077c68b-78e9-484e-872f-71974382aacb&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

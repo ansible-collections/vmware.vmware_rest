@@ -80,6 +80,15 @@ plugins/modules/vcenter_network_info.py import-3.5!skip
 plugins/modules/vcenter_network_info.py future-import-boilerplate!skip
 plugins/modules/vcenter_network_info.py metaclass-boilerplate!skip
 plugins/modules/vcenter_network_info.py import-3.10!skip
+plugins/modules/vcenter_ovf_libraryitem.py compile-2.6!skip
+plugins/modules/vcenter_ovf_libraryitem.py compile-2.7!skip
+plugins/modules/vcenter_ovf_libraryitem.py compile-3.5!skip
+plugins/modules/vcenter_ovf_libraryitem.py import-2.6!skip
+plugins/modules/vcenter_ovf_libraryitem.py import-2.7!skip
+plugins/modules/vcenter_ovf_libraryitem.py import-3.5!skip
+plugins/modules/vcenter_ovf_libraryitem.py future-import-boilerplate!skip
+plugins/modules/vcenter_ovf_libraryitem.py metaclass-boilerplate!skip
+plugins/modules/vcenter_ovf_libraryitem.py import-3.10!skip
 plugins/modules/vcenter_resourcepool_info.py compile-2.6!skip
 plugins/modules/vcenter_resourcepool_info.py compile-2.7!skip
 plugins/modules/vcenter_resourcepool_info.py compile-3.5!skip

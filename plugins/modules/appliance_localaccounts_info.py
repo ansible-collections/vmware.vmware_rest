@@ -69,11 +69,6 @@ EXAMPLES = r"""
 - name: List the local accounts
   vmware.vmware_rest.appliance_localaccounts_info:
   register: result
-
-- name: Get the information about the new account
-  vmware.vmware_rest.appliance_localaccounts_info:
-    username: foobar
-  register: result
 """
 
 RETURN = r"""
@@ -85,10 +80,10 @@ value:
   - enabled: 1
     fullname: root
     has_password: 1
-    last_password_change: '2021-06-16T00:00:00.000Z'
+    last_password_change: '2021-06-17T00:00:00.000Z'
     max_days_between_password_change: 90
     min_days_between_password_change: 0
-    password_expires_at: '2021-09-14T00:00:00.000Z'
+    password_expires_at: '2021-09-15T00:00:00.000Z'
     roles:
     - superAdmin
     warn_days_before_password_expiration: 7
