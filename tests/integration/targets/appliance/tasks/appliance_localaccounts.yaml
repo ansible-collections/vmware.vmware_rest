@@ -25,70 +25,73 @@
 
 - debug: var=result
 
-- name: _Ensure there is no existing account
-  vmware.vmware_rest.appliance_localaccounts:
-    username: foobar
-    state: absent
-
-- name: Add a local accounts
-  vmware.vmware_rest.appliance_localaccounts:
-    username: foobar
-    config:
-      full_name: Foobar
-      email: foobar@vsphere.local
-      password: Foobar56^$7
-      roles:
-      - operator
-      - admin
-      - superAdmin
-    state: present
-  register: result
-- debug: var=result
-
-- name: _Add a local accounts (idempotency)
-  vmware.vmware_rest.appliance_localaccounts:
-    username: foobar
-    config:
-      full_name: Foobar
-      email: foobar@vsphere.local
-      # password: foobar
-      roles:
-      - operator
-      - admin
-      - superAdmin
-    state: present
-  register: result
-- debug: var=result
-
-- debug: var=result
-- name: Validate the idempotency
-  assert:
-    that:
-      - not (result.changed)
-
-- name: Change account email address
-  vmware.vmware_rest.appliance_localaccounts:
-    username: foobar
-    config:
-      full_name: Foobar
-      email: foobar2@vsphere.local
-      roles:
-      - operator
-      - admin
-      - superAdmin
-    state: present
-  register: result
-- debug: var=result
-
-- name: Get the information about the new account
-  vmware.vmware_rest.appliance_localaccounts_info:
-    username: foobar
-  register: result
-- debug: var=result
-
-- name: Delete a local accounts
-  vmware.vmware_rest.appliance_localaccounts:
-    username: foobar
-    state: absent
-  register: result
-- debug: var=result
+# commented out since with 7.0.2, the accounts don't work
+# broken shell/sudo configuration.
+# 
+#- name: _Ensure there is no existing account
+#  vmware.vmware_rest.appliance_localaccounts:
+#    username: foobar
+#    state: absent
+#
+#- name: Add a local accounts
+#  vmware.vmware_rest.appliance_localaccounts:
+#    username: foobar
+#    config:
+#      full_name: Foobar
+#      email: foobar@vsphere.local
+#      password: Foobar56^$7
+#      roles:
+#      - operator
+#      - admin
+#      - superAdmin
+#    state: present
+#  register: result
+#- debug: var=result
+#
+#- name: _Add a local accounts (idempotency)
+#  vmware.vmware_rest.appliance_localaccounts:
+#    username: foobar
+#    config:
+#      full_name: Foobar
+#      email: foobar@vsphere.local
+#      # password: foobar
+#      roles:
+#      - operator
+#      - admin
+#      - superAdmin
+#    state: present
+#  register: result
+#- debug: var=result
+#
+#- debug: var=result
+#- name: Validate the idempotency
+#  assert:
+#    that:
+#      - not (result.changed)
+#
+#- name: Change account email address
+#  vmware.vmware_rest.appliance_localaccounts:
+#    username: foobar
+#    config:
+#      full_name: Foobar
+#      email: foobar2@vsphere.local
+#      roles:
+#      - operator
+#      - admin
+#      - superAdmin
+#    state: present
+#  register: result
+#- debug: var=result
+#
+#- name: Get the information about the new account
+#  vmware.vmware_rest.appliance_localaccounts_info:
+#    username: foobar
+#  register: result
+#- debug: var=result
+#
+#- name: Delete a local accounts
+#  vmware.vmware_rest.appliance_localaccounts:
+#    username: foobar
+#    state: absent
+#  register: result
+#- debug: var=result
