@@ -1,4 +1,5 @@
 - import_tasks: purge_vms.yaml
+- import_tasks: purge_libraries.yaml
 - import_tasks: cleanup.yaml
 
 - import_tasks: prepare_datacenter.yaml
