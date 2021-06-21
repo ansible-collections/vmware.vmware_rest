@@ -235,6 +235,8 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Update the global policy of the local accounts</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;max_days&#x27;: -1, &#x27;min_days&#x27;: -1, &#x27;warn_days&#x27;: 5}</div>
                 </td>
             </tr>
     </table>

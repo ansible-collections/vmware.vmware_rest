@@ -290,20 +290,6 @@ async def entry_point(module, session):
 
 async def _create(params, session):
 
-    unicity_keys = ["None"]
-
-    if params["None"]:
-        _json = await get_device_info(session, build_url(params), params["None"])
-    else:
-        _json = await exists(params, session, build_url(params), unicity_keys)
-    if _json:
-        if "value" not in _json:  # 7.0.2+
-            _json = {"value": _json}
-        if "_update" in globals():
-            params["None"] = _json["id"]
-            return await globals()["_update"](params, session)
-        return await update_changed_flag(_json, 200, "get")
-
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = (
         "https://{vcenter_hostname}"
@@ -321,7 +307,7 @@ async def _create(params, session):
         except KeyError:
             _json = {}
 
-        if resp.status in [200, 201]:
+        if (resp.status in [200, 201]) and "error" not in _json:
             if isinstance(_json, str):  # 7.0.2 and greater
                 _id = _json  # TODO: fetch the object
             elif isinstance(_json, dict) and "value" not in _json:

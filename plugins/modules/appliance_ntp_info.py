@@ -80,7 +80,7 @@ value:
   description: Get the NTP configuration
   returned: On success
   sample:
-  - time.nist.gov
+  - time.google.com
   type: list
 """
 

@@ -300,7 +300,7 @@ async def _create(params, session):
         except KeyError:
             _json = {}
 
-        if resp.status in [200, 201]:
+        if (resp.status in [200, 201]) and "error" not in _json:
             if isinstance(_json, str):  # 7.0.2 and greater
                 _id = _json  # TODO: fetch the object
             elif isinstance(_json, dict) and "value" not in _json:

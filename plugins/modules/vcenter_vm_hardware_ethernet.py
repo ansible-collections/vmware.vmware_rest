@@ -209,13 +209,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1321470538
+      connection_cookie: 1360904217
       distributed_port: '2'
-      distributed_switch_uuid: 50 1c 41 af 52 4a 43 7f-81 91 6e 19 d8 bd fa c8
-      network: dvportgroup-1023
+      distributed_switch_uuid: 50 1c a1 86 b7 fe a1 ef-e6 80 4e b2 92 e4 37 e9
+      network: dvportgroup-1131
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:9c:93:dd
+    mac_address: 00:50:56:9c:ac:d1
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -228,19 +228,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -256,9 +243,22 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
     "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -452,7 +452,7 @@ async def _create(params, session):
         except KeyError:
             _json = {}
 
-        if resp.status in [200, 201]:
+        if (resp.status in [200, 201]) and "error" not in _json:
             if isinstance(_json, str):  # 7.0.2 and greater
                 _id = _json  # TODO: fetch the object
             elif isinstance(_json, dict) and "value" not in _json:

@@ -188,6 +188,8 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Build a list of subscribed libraries</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;creation_time&#x27;: &#x27;2021-06-18T00:48:28.671Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;486556f8-8016-4508-976e-803894380a31&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-06-18T00:48:28.671Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-06-18T00:48:31.261Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1099&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/6d64aa52-ae93-4c86-9e18-d8db6d695ed9/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;4&#x27;}]</div>
                 </td>
             </tr>
     </table>

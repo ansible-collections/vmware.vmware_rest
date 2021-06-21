@@ -75,8 +75,8 @@ value:
   description: Check if the Shell is enabled
   returned: On success
   sample:
-    enabled: 0
-    timeout: 0
+    enabled: 1
+    timeout: 57
   type: dict
 """
 
