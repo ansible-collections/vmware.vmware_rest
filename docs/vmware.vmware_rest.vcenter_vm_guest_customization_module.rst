@@ -56,20 +56,20 @@ Parameters
                 <td>
                         <div>Settings to be applied to the guest during the customization. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>windows_config</code> (dict): Guest customization specification for a Windows guest operating system</div>
+                        <div>- <code>windows_config</code> (dict): Guest customization specification for a Windows guest operating system ([&#x27;set&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- reboot (string): The {@name RebootOption} specifies what should be done to the guest after the customization.</div>
+                        <div>- reboot (string): The <code>reboot_option</code> specifies what should be done to the guest after the customization.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>REBOOT</code></div>
                         <div>- <code>NO_REBOOT</code></div>
                         <div>- <code>SHUTDOWN</code></div>
-                        <div>- sysprep (object): Customization settings like user details, administrator details, etc for the windows guest operating system. Exactly one of {@name #sysprep} or {@name #sysprepXml} must be specified.</div>
-                        <div>- sysprep_xml (string): All settings specified in a XML format. This is the content of a typical answer.xml file that is used by System administrators during the Windows image customization. Check https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs Exactly one of {@name #sysprep} or {@name #sysprepXml} must be specified.</div>
-                        <div>- <code>linux_config</code> (dict): Guest customization specification for a linux guest operating system</div>
+                        <div>- sysprep (object): Customization settings like user details, administrator details, etc for the windows guest operating system. Exactly one of <code>#sysprep</code> or <code>#sysprep_xml</code> must be specified.</div>
+                        <div>- sysprep_xml (string): All settings specified in a XML format. This is the content of a typical answer.xml file that is used by System administrators during the Windows image customization. Check https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs Exactly one of <code>#sysprep</code> or <code>#sysprep_xml</code> must be specified.</div>
+                        <div>- <code>linux_config</code> (dict): Guest customization specification for a linux guest operating system ([&#x27;set&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- hostname (object): The computer name of the (Windows) virtual machine. A computer name may contain letters (A-Z), numbers(0-9) and hyphens (-) but no spaces or periods (.). The name may not consist entirely of digits. A computer name is restricted to 15 characters in length. If the computer name is longer than 15 characters, it will be truncated to 15 characters. Check {@link HostnameGenerator} for various options.</div>
                         <div>- domain (string): The fully qualified domain name.</div>
-                        <div>- time_zone (string): The case-sensitive time zone, such as Europe/Sofia. Valid time zone values are based on the tz (time zone) database used by Linux. The values are strings ({@term string}) in the form &quot;Area/Location,&quot; in which Area is a continent or ocean name, and Location is the city, island, or other regional designation. See the https://kb.vmware.com/kb/2145518 for a list of supported time zones for different versions in Linux.</div>
+                        <div>- time_zone (string): The case-sensitive time zone, such as Europe/Sofia. Valid time zone values are based on the tz (time zone) database used by Linux. The values are strings  in the form &quot;Area/Location,&quot; in which Area is a continent or ocean name, and Location is the city, island, or other regional designation. See the https://kb.vmware.com/kb/2145518 for a list of supported time zones for different versions in Linux.</div>
                         <div>- script_text (string): The script to run before and after Linux guest customization.&lt;br&gt; The max size of the script is 1500 bytes. As long as the script (shell, perl, python...) has the right &quot;#!&quot; in the header, it is supported. The caller should not assume any environment variables when the script is run. The script is invoked by the customization engine using the command line: 1) with argument &quot;precustomization&quot; before customization, 2) with argument &quot;postcustomization&quot; after customization. The script should parse this argument and implement pre-customization or post-customization task code details in the corresponding block. A Linux shell script example: &lt;code&gt; #!/bin/sh&lt;br&gt; if [ x$1 == x&quot;precustomization&quot; ]; then&lt;br&gt; echo &quot;Do Precustomization tasks&quot;&lt;br&gt; #code for pre-customization actions...&lt;br&gt; elif [ x$1 == x&quot;postcustomization&quot; ]; then&lt;br&gt; echo &quot;Do Postcustomization tasks&quot;&lt;br&gt; #code for post-customization actions...&lt;br&gt; fi&lt;br&gt; &lt;/code&gt;</div>
                 </td>
             </tr>
@@ -88,8 +88,8 @@ Parameters
                 <td>
                         <div>Global DNS settings constitute the DNS settings that are not specific to a particular virtual network adapter. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>dns_suffix_list</code> (list): List of name resolution suffixes for the virtual network adapter. This list applies to both Windows and Linux guest customization. For Linux, this setting is global, whereas in Windows, this setting is listed on a per-adapter basis.</div>
-                        <div>- <code>dns_servers</code> (list): List of DNS servers, for a virtual network adapter with a static IP address. If this list is empty, then the guest operating system is expected to use a DHCP server to get its DNS server settings. These settings configure the virtual machine to use the specified DNS servers. These DNS server settings are listed in the order of preference.</div>
+                        <div>- <code>dns_suffix_list</code> (list): List of name resolution suffixes for the virtual network adapter. This list applies to both Windows and Linux guest customization. For Linux, this setting is global, whereas in Windows, this setting is listed on a per-adapter basis. ([&#x27;set&#x27;])</div>
+                        <div>- <code>dns_servers</code> (list): List of DNS servers, for a virtual network adapter with a static IP address. If this list is empty, then the guest operating system is expected to use a DHCP server to get its DNS server settings. These settings configure the virtual machine to use the specified DNS servers. These DNS server settings are listed in the order of preference. ([&#x27;set&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -108,9 +108,9 @@ Parameters
                 <td>
                         <div>IP settings that are specific to a particular virtual network adapter. The {@link AdapterMapping} {@term structure} maps a network adapter&#x27;s MAC address to its {@link IPSettings}. May be empty if there are no network adapters, else should match number of network adapters configured for the VM. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>mac_address</code> (str): The MAC address of a network adapter being customized.</div>
-                        <div>- <code>adapter</code> (dict): The IP settings for the associated virtual network adapter.</div>
-                        <div>This key is required.</div>
+                        <div>- <code>mac_address</code> (str): The MAC address of a network adapter being customized. ([&#x27;set&#x27;])</div>
+                        <div>- <code>adapter</code> (dict): The IP settings for the associated virtual network adapter. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- Accepted keys:</div>
                         <div>- ipv4 (object): Specification to configure IPv4 address, subnet mask and gateway info for this virtual network adapter.</div>
                         <div>- ipv6 (object): Specification to configure IPv6 address, subnet mask and gateway info for this virtual network adapter.</div>

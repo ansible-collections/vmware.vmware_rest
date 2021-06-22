@@ -110,7 +110,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name NetworkProtocol} defines the valid network boot protocols supported when booting a virtual machine with {@link Type#EFI} firmware over the network.</div>
+                        <div>The <code>network_protocol</code> defines the valid network boot protocols supported when booting a virtual machine with {@link Type#EFI} firmware over the network.</div>
                 </td>
             </tr>
             <tr>
@@ -180,7 +180,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Type} defines the valid firmware types for a virtual machine.</div>
+                        <div>The <code>type</code> defines the valid firmware types for a virtual machine.</div>
                 </td>
             </tr>
             <tr>

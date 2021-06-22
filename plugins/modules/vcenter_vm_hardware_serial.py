@@ -23,8 +23,8 @@ options:
     description:
     - Physical resource backing for the virtual serial port. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
-      a virtual serial port.'
+    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
+      virtual serial port. ([''present''])'
     - '   - Accepted values:'
     - '     - FILE'
     - '     - HOST_DEVICE'
@@ -32,24 +32,24 @@ options:
     - '     - PIPE_CLIENT'
     - '     - NETWORK_SERVER'
     - '     - NETWORK_CLIENT'
-    - ' - C(file) (str): Path of the file backing the virtual serial port.'
+    - ' - C(file) (str): Path of the file backing the virtual serial port. ([''present''])'
     - ' - C(host_device) (str): Name of the device backing the virtual serial port.
-      <p>'
-    - ' - C(pipe) (str): Name of the pipe backing the virtual serial port.'
+      ([''present''])'
+    - ' - C(pipe) (str): Name of the pipe backing the virtual serial port. ([''present''])'
     - ' - C(no_rx_loss) (bool): Flag that enables optimized data transfer over the
       pipe. When the value is true, the host buffers data to prevent data overrun.  This
       allows the virtual machine to read all of the data transferred over the pipe
-      with no data loss.'
+      with no data loss. ([''present''])'
     - ' - C(network_location) (str): URI specifying the location of the network service
       backing the virtual serial port. <ul> <li>If {@link #type} is {@link BackingType#NETWORK_SERVER},
       this field is the location used by clients to connect to this server.  The hostname
       part of the URI should either be empty or should specify the address of the
       host on which the virtual machine is running.</li> <li>If {@link #type} is {@link
       BackingType#NETWORK_CLIENT}, this field is the location used by the virtual
-      machine to connect to the remote server.</li> </ul>'
+      machine to connect to the remote server.</li> </ul> ([''present''])'
     - ' - C(proxy) (str): Proxy service that provides network access to the network
       backing.  If set, the virtual machine initiates a connection with the proxy
-      service and forwards the traffic to the proxy.'
+      service and forwards the traffic to the proxy. ([''present''])'
     type: dict
   label:
     description:
@@ -207,16 +207,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-            "yield_on_poll": "yield_on_poll",
-        },
-        "path": {"vm": "vm"},
-    },
     "update": {
         "query": {},
         "body": {
@@ -227,9 +217,19 @@ PAYLOAD_FORMAT = {
         },
         "path": {"port": "port", "vm": "vm"},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+            "yield_on_poll": "yield_on_poll",
+        },
+        "path": {"vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json

@@ -68,8 +68,8 @@ options:
     - NONE
     - THUMBPRINT
     description:
-    - The {@name ThumbprintVerification} defines the thumbprint verification schemes
-      for a host's SSL certificate. Required with I(state=['present'])
+    - The C(thumbprint_verification) defines the thumbprint verification schemes for
+      a host's SSL certificate. Required with I(state=['present'])
     type: str
   user_name:
     description:
@@ -145,12 +145,15 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1123
+  sample: host-1151
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -165,9 +168,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json

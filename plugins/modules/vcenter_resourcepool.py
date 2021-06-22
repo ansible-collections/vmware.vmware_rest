@@ -22,20 +22,21 @@ options:
     - ' - C(reservation) (int): Amount of resource that is guaranteed available to
       a resource pool. Reserved resources are not wasted if they are not used. If
       the utilization is less than the reservation, the resources can be utilized
-      by other running virtual machines. Units are MB fo memory, and MHz for CPU.'
+      by other running virtual machines. Units are MB fo memory, and MHz for CPU.
+      ([''present''])'
     - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
       reservation, the reservation can grow beyond the specified value, if the parent
       resource pool has unreserved resources. A non-expandable reservation is called
-      a fixed reservation.'
+      a fixed reservation. ([''present''])'
     - ' - C(limit) (int): The utilization of a resource pool will not exceed this
       limit, even if there are available resources. This is typically used to ensure
       a consistent performance of resource pools independent of available resources.
       If set to -1, then there is no fixed limit on resource usage (only bounded by
-      available resources and shares). Units are MB for memory, and MHz for CPU.'
-    - ' - C(shares) (dict): Shares are used in case of resource contention.'
+      available resources and shares). Units are MB for memory, and MHz for CPU. ([''present''])'
+    - ' - C(shares) (dict): Shares are used in case of resource contention. ([''present''])'
     - '   - Accepted keys:'
-    - '     - level (string): The {@name Level} defines the possible values for the
-      allocation level.'
+    - '     - level (string): The C(level) defines the possible values for the allocation
+      level.'
     - 'Accepted value for this field:'
     - '       - C(LOW)'
     - '       - C(NORMAL)'
@@ -53,20 +54,21 @@ options:
     - ' - C(reservation) (int): Amount of resource that is guaranteed available to
       a resource pool. Reserved resources are not wasted if they are not used. If
       the utilization is less than the reservation, the resources can be utilized
-      by other running virtual machines. Units are MB fo memory, and MHz for CPU.'
+      by other running virtual machines. Units are MB fo memory, and MHz for CPU.
+      ([''present''])'
     - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
       reservation, the reservation can grow beyond the specified value, if the parent
       resource pool has unreserved resources. A non-expandable reservation is called
-      a fixed reservation.'
+      a fixed reservation. ([''present''])'
     - ' - C(limit) (int): The utilization of a resource pool will not exceed this
       limit, even if there are available resources. This is typically used to ensure
       a consistent performance of resource pools independent of available resources.
       If set to -1, then there is no fixed limit on resource usage (only bounded by
-      available resources and shares). Units are MB for memory, and MHz for CPU.'
-    - ' - C(shares) (dict): Shares are used in case of resource contention.'
+      available resources and shares). Units are MB for memory, and MHz for CPU. ([''present''])'
+    - ' - C(shares) (dict): Shares are used in case of resource contention. ([''present''])'
     - '   - Accepted keys:'
-    - '     - level (string): The {@name Level} defines the possible values for the
-      allocation level.'
+    - '     - level (string): The C(level) defines the possible values for the allocation
+      level.'
     - 'Accepted value for this field:'
     - '       - C(LOW)'
     - '       - C(NORMAL)'
@@ -199,7 +201,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1119
+  sample: resgroup-1147
   type: str
 value:
   description: Create a generic resource pool
@@ -224,6 +226,16 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "update": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "cpu_allocation",
+            "memory_allocation": "memory_allocation",
+            "name": "name",
+        },
+        "path": {"resource_pool": "resource_pool"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -234,16 +246,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "cpu_allocation": "cpu_allocation",
-            "memory_allocation": "memory_allocation",
-            "name": "name",
-        },
-        "path": {"resource_pool": "resource_pool"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
 }  # pylint: disable=line-too-long
 
 import json

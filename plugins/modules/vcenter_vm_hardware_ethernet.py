@@ -23,15 +23,15 @@ options:
     description:
     - Physical resource backing for the virtual Ethernet adapter. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
-      a virtual Ethernet adapter.'
+    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
+      virtual Ethernet adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - STANDARD_PORTGROUP'
     - '     - HOST_DEVICE'
     - '     - DISTRIBUTED_PORTGROUP'
     - '     - OPAQUE_NETWORK'
     - ' - C(network) (str): Identifier of the network that backs the virtual Ethernet
-      adapter.'
+      adapter. ([''present''])'
     - ' - C(distributed_port) (str): Key of the distributed virtual port that backs
       the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port
       may be specified using this field. If the portgroup type is early-binding (also
@@ -40,7 +40,7 @@ options:
       based on the value of this field. If the portgroup type is ephemeral, the port
       is created and assigned to a virtual machine when it is powered on and the Ethernet
       adapter is connected.  This field cannot be specified as no free ports exist
-      before use.'
+      before use. ([''present''])'
     type: dict
   label:
     description:
@@ -57,7 +57,7 @@ options:
     - GENERATED
     - MANUAL
     description:
-    - The {@name MacAddressType} defines the valid MAC address origins for a virtual
+    - The C(mac_address_type) defines the valid MAC address origins for a virtual
       Ethernet adapter.
     type: str
   nic:
@@ -94,7 +94,7 @@ options:
     - VMXNET2
     - VMXNET3
     description:
-    - The {@name EmulationType} defines the valid emulation types for a virtual Ethernet
+    - The C(emulation_type) defines the valid emulation types for a virtual Ethernet
       adapter.
     type: str
   upt_compatibility_enabled:
@@ -162,12 +162,6 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Retrieve details about the portgroup
-  community.vmware.vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: my_portgroup_info
-
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -178,6 +172,12 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
+- name: Retrieve details about the portgroup
+  community.vmware.vmware_dvs_portgroup_info:
+    validate_certs: no
+    datacenter: my_dc
+  register: my_portgroup_info
 
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -209,13 +209,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1360904217
+      connection_cookie: 1432930666
       distributed_port: '2'
-      distributed_switch_uuid: 50 1c a1 86 b7 fe a1 ef-e6 80 4e b2 92 e4 37 e9
-      network: dvportgroup-1131
+      distributed_switch_uuid: 50 1c 52 bd 0c 73 68 c2-2c 7d 7e ec f7 0a 55 e8
+      network: dvportgroup-1161
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:9c:ac:d1
+    mac_address: 00:50:56:9c:59:aa
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -228,6 +228,22 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -243,22 +259,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

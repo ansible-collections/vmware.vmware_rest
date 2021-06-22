@@ -35,7 +35,7 @@ options:
     type: str
   id:
     description:
-    - An identifier which uniquely identifies this Library.
+    - An identifier which uniquely identifies this C(library_model).
     type: str
   last_modified_time:
     description:
@@ -67,13 +67,13 @@ options:
     - ' - C(optimize_remote_publishing) (bool): If set to C(True) then library would
       be optimized for remote publishing. Turn it on if remote publishing is dominant
       use case for this library. Remote publishing means here that publisher and subscribers
-      are not the part of the same vCenter SSO domain. Any optimizations could be
-      done as result of turning on this optimization during library creation. For
+      are not the part of the same C(vcenter) SSO domain. Any optimizations could
+      be done as result of turning on this optimization during library creation. For
       example, library content could be stored in different format but optimizations
       are not limited to just storage format. Note, that value of this toggle could
       be set only during creation of the library and you would need to migrate your
       library in case you need to change this value (optimize the library for different
-      use case).'
+      use case). ([''present''])'
     type: dict
   publish_info:
     description:
@@ -82,19 +82,20 @@ options:
       this local library is accessible. A local library is only published publically
       if C(publish_info.published) is C(True).
     - 'Valid attributes are:'
-    - ' - C(authentication_method) (str): The authentication_method indicates how
-      a subscribed library should authenticate to the published library endpoint.'
+    - ' - C(authentication_method) (str): The C(authentication_method) indicates how
+      a subscribed library should authenticate to the published library endpoint.
+      ([''present''])'
     - '   - Accepted values:'
     - '     - BASIC'
     - '     - NONE'
-    - ' - C(published) (bool): Whether the local library is published.'
+    - ' - C(published) (bool): Whether the local library is published. ([''present''])'
     - ' - C(publish_url) (str): The URL to which the library metadata is published
       by the Content Library Service. This value can be used to set the C(subscription_info.subscriptionurl)
-      property when creating a subscribed library.'
-    - ' - C(user_name) (str): The username to require for authentication.'
-    - ' - C(password) (str): The new password to require for authentication.'
+      property when creating a subscribed library. ([''present''])'
+    - ' - C(user_name) (str): The username to require for authentication. ([''present''])'
+    - ' - C(password) (str): The new password to require for authentication. ([''present''])'
     - ' - C(current_password) (str): The current password to verify. This field is
-      available starting in vSphere 6.7.'
+      available starting in vSphere 6.7. ([''present''])'
     - ' - C(persist_json_enabled) (bool): Whether library and library item metadata
       are persisted in the storage backing as JSON files. This flag only applies if
       the local library is published. Enabling JSON persistence allows you to synchronize
@@ -106,7 +107,7 @@ options:
       by a datastore, the library JSON file will be stored at the path contentlib-{library_id}/lib.json
       on the datastore. For a library backed by a remote file system, the library
       JSON file will be stored at {library_id}/lib.json in the remote file system
-      path.'
+      path. ([''present''])'
     type: dict
   server_guid:
     description:
@@ -132,12 +133,12 @@ options:
       storage backing. Multiple default storage locations are not currently supported
       but may become supported in future releases.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name Type} specifies the type of the storage backing.'
+    - ' - C(type) (str): The C(type) specifies the type of the storage backing. ([''present''])'
     - '   - Accepted values:'
     - '     - DATASTORE'
     - '     - OTHER'
     - ' - C(datastore_id) (str): Identifier of the datastore used to store the content
-      in the library.'
+      in the library. ([''present''])'
     - ' - C(storage_uri) (str): URI identifying the location used to store the content
       in the library. The following URI formats are supported: vSphere 6.5 <ul> <li>nfs://server/path?version=4
       (for vCenter Server Appliance only) - Specifies an NFS Version 4 server.</li>
@@ -152,7 +153,7 @@ options:
       6.0 <ul> <li>nfs://server:/path (for vCenter Server Appliance only)</li> <li>file://unc-server/path
       (for vCenter Server for Windows only)</li> <li>file:///path - Local file URIs
       are supported but strongly discouraged because it may interfere with the performance
-      of vCenter Server.</li> </ul>'
+      of vCenter Server.</li> </ul> ([''present''])'
     elements: dict
     type: list
   subscription_info:
@@ -166,40 +167,41 @@ options:
       subscription but will not remove existing cached data.
     - 'Valid attributes are:'
     - ' - C(authentication_method) (str): Indicate how the subscribed library should
-      authenticate with the published library endpoint.'
+      authenticate with the published library endpoint. ([''present'', ''probe''])'
     - '   - Accepted values:'
     - '     - BASIC'
     - '     - NONE'
     - ' - C(automatic_sync_enabled) (bool): Whether the library should participate
       in automatic library synchronization. In order for automatic synchronization
-      to happen, the global C(configuration_model.automaticSyncEnabled) option must
+      to happen, the global C(configuration_model.automatic_sync_enabled) option must
       also be true. The subscription is still active even when automatic synchronization
       is turned off, but synchronization is only activated with an explicit call to
-      Subscribed Library Sync or Subscribed Item Sync. In other words, manual synchronization
-      is still available even when automatic synchronization is disabled.'
+      M(content_subscribedlibrary) with C(state=sync) or M(content_library_item) with
+      C(state=sync). In other words, manual synchronization is still available even
+      when automatic synchronization is disabled. ([''present'', ''probe''])'
     - ' - C(on_demand) (bool): Indicates whether a library item''s content will be
       synchronized only on demand. If this is set to C(True), then the library item''s
       metadata will be synchronized but the item''s content (its files) will not be
       synchronized. The Content Library Service will synchronize the content upon
       request only. This can cause the first use of the content to have a noticeable
       delay. Items without synchronized content can be forcefully synchronized in
-      advance using the Subscribed Item Sync call with C(forceSyncContent} set to
-      true. Once content has been synchronized, the content can removed with the {@link
-      SubscribedItem#evict) call. If this value is set to C(False), all content will
-      be synchronized in advance.'
+      advance using the M(content_library_item) with C(state=sync) call with C(force_sync_content)
+      set to true. Once content has been synchronized, the content can removed with
+      the M(content_library_item) with C(state=sync) call. If this value is set to
+      C(False), all content will be synchronized in advance. ([''present'', ''probe''])'
     - ' - C(password) (str): The password to use when authenticating. The password
       must be set when using a password-based authentication method; empty strings
-      are not allowed.'
+      are not allowed. ([''present'', ''probe''])'
     - ' - C(ssl_thumbprint) (str): An optional SHA-1 hash of the SSL certificate for
       the remote endpoint. If this value is defined the SSL certificate will be verified
       by comparing it to the SSL thumbprint. The SSL certificate must verify against
       the thumbprint. When specified, the standard certificate chain validation behavior
       is not used. The certificate chain is validated normally if this value is not
-      set.'
+      set. ([''present'', ''probe''])'
     - ' - C(subscription_url) (str): The URL of the endpoint where the metadata for
-      the remotely published library is being served. This URL can be the C(publish_info.publishUrl)
+      the remotely published library is being served. This URL can be the C(publish_info.publish_url)
       of the published library (for example, https://server/path/lib.json). If the
-      source content comes from a published library with C(publish_info.persistJsonEnabled),
+      source content comes from a published library with C(publish_info.persist_json_enabled),
       the subscription URL can be a URL pointing to the library JSON file on a datastore
       or remote file system. The supported formats are: vSphere 6.5 <ul> <li>ds:///vmfs/volumes/{uuid}/mylibrary/lib.json
       (for datastore)</li> <li>nfs://server/path/mylibrary/lib.json (for NFSv3 server
@@ -209,15 +211,15 @@ options:
       (for UNC server on vCenter Server for Windows)</li> <li>file:///path/mylibrary/lib.json
       (for local file system)</li> </ul> When you specify a DS subscription URL, the
       datastore must be on the same vCenter Server as the subscribed library. When
-      you specify an NFS or SMB subscription URL, the C(Storage Backing URI) of the
-      subscribed library must be on the same remote file server and should share a
-      common parent path with the subscription URL.'
+      you specify an NFS or SMB subscription URL, the C(storage_backings.storage_uri)
+      of the subscribed library must be on the same remote file server and should
+      share a common parent path with the subscription URL. ([''present'', ''probe''])'
     - ' - C(user_name) (str): The username to use when authenticating. The username
       must be set when using a password-based authentication method. Empty strings
-      are allowed for usernames.'
+      are allowed for usernames. ([''present'', ''probe''])'
     - ' - C(source_info) (dict): Information about the source published library. This
       field will be set for a subscribed library which is associated with a subscription
-      of the published library.'
+      of the published library. ([''present'', ''probe''])'
     - '   - Accepted keys:'
     - '     - source_library (string): Identifier of the published library.'
     - '     - subscription (string): Identifier of the subscription associated with
@@ -228,8 +230,8 @@ options:
     - LOCAL
     - SUBSCRIBED
     description:
-    - The Library Type defines the type of a Library. The type of a library can be
-      used to determine which additional services can be performed with a library.
+    - The C(library_type) defines the type of a Library. The type of a library can
+      be used to determine which additional services can be performed with a library.
     type: str
   vcenter_hostname:
     description:
@@ -299,104 +301,37 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Delete all the subscribed libraries
-msg:
-  description: Delete all the subscribed libraries
+# content generated by the update_return_section callback# task: Create subscribed library (again)
+id:
+  description: moid of the resource
   returned: On success
-  sample: All items completed
+  sample: 899184df-f3ab-4284-ac9b-02407fd9536e
   type: str
-results:
-  description: Delete all the subscribed libraries
+value:
+  description: Create subscribed library (again)
   returned: On success
   sample:
-  - _ansible_item_label:
-      creation_time: '2021-06-18T00:48:28.671Z'
-      description: ''
-      id: 486556f8-8016-4508-976e-803894380a31
-      last_modified_time: '2021-06-18T00:48:28.671Z'
-      last_sync_time: '2021-06-18T00:48:31.261Z'
-      name: sub_lib
-      server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
-      storage_backings:
-      - datastore_id: datastore-1099
-        type: DATASTORE
-      subscription_info:
-        authentication_method: NONE
-        automatic_sync_enabled: 0
-        on_demand: 1
-        subscription_url: https://vcenter.test:443/cls/vcsp/lib/6d64aa52-ae93-4c86-9e18-d8db6d695ed9/lib.json
-      type: SUBSCRIBED
-      version: '4'
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        client_token: null
-        creation_time: null
-        description: null
-        id: null
-        last_modified_time: null
-        last_sync_time: null
-        library_id: 486556f8-8016-4508-976e-803894380a31
-        name: null
-        optimization_info: null
-        publish_info: null
-        server_guid: null
-        state: absent
-        storage_backings: null
-        subscription_info: null
-        type: null
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        version: null
-    item:
-      creation_time: '2021-06-18T00:48:28.671Z'
-      description: ''
-      id: 486556f8-8016-4508-976e-803894380a31
-      last_modified_time: '2021-06-18T00:48:28.671Z'
-      last_sync_time: '2021-06-18T00:48:31.261Z'
-      name: sub_lib
-      server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
-      storage_backings:
-      - datastore_id: datastore-1099
-        type: DATASTORE
-      subscription_info:
-        authentication_method: NONE
-        automatic_sync_enabled: 0
-        on_demand: 1
-        subscription_url: https://vcenter.test:443/cls/vcsp/lib/6d64aa52-ae93-4c86-9e18-d8db6d695ed9/lib.json
-      type: SUBSCRIBED
-      version: '4'
-    value: {}
-  type: list
+    creation_time: '2021-06-23T23:32:55.275Z'
+    description: ''
+    id: 899184df-f3ab-4284-ac9b-02407fd9536e
+    last_modified_time: '2021-06-23T23:32:55.275Z'
+    name: sub_lib
+    server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
+    storage_backings:
+    - datastore_id: datastore-1153
+      type: DATASTORE
+    subscription_info:
+      authentication_method: NONE
+      automatic_sync_enabled: 0
+      on_demand: 1
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/8b15be3f-e63d-4227-bb77-ee0750124ed7/lib.json
+    type: SUBSCRIBED
+    version: '2'
+  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {},
-    },
     "update": {
         "query": {},
         "body": {
@@ -416,13 +351,32 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {},
+    },
     "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 

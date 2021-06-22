@@ -174,7 +174,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the firewall inbound configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;address&#x27;: &#x27;1.2.3.4&#x27;, &#x27;interface_name&#x27;: &#x27;*&#x27;, &#x27;policy&#x27;: &#x27;ACCEPT&#x27;, &#x27;prefix&#x27;: 32}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;address&#x27;: &#x27;1.2.3.0&#x27;, &#x27;interface_name&#x27;: &#x27;*&#x27;, &#x27;policy&#x27;: &#x27;REJECT&#x27;, &#x27;prefix&#x27;: 24}]</div>
                 </td>
             </tr>
     </table>

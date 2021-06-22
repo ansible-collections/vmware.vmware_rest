@@ -57,7 +57,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>{@name DNSServerMode} Describes DNS Server source (DHCP,static) Required with <em>state=[&#x27;set&#x27;]</em></div>
+                        <div><code>dns_server_mode</code> Describes DNS Server source (DHCP,static) Required with <em>state=[&#x27;set&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

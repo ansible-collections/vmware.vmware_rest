@@ -20,29 +20,29 @@ description: 'Starts a program in the guest operating system. <p> A process star
 options:
   arguments:
     description:
-    - 'The arguments to the program. Characters which must be escaped to the shell
-      should also be escaped in {@name #arguments}. In Linux and Solaris guest operating
+    - The arguments to the program. Characters which must be escaped to the shell
+      should also be escaped in C(#arguments). In Linux and Solaris guest operating
       systems, stdio redirection arguments may be used. For Windows, stdio redirection
-      can be added to the argments if {@name #path} is prefixed with <code>c:\windows\system32\cmd.exe
-      /c</code>.'
+      can be added to the argments if C(#path) is prefixed with <code>c:\windows\system32\cmd.exe
+      /c</code>.
     type: str
   credentials:
     description:
-    - The guest authentication data.  See {@link Credentials}. Required with I(state=['absent'])
+    - The guest authentication data.  Required with I(state=['absent'])
     - 'Valid attributes are:'
     - ' - C(interactive_session) (bool): If {@term set}, the {@term operation} will
       interact with the logged-in desktop session in the guest. This requires that
       the logged-on user matches the user specified by the {@link Credentials}. This
-      is currently only supported for {@link Type#USERNAME_PASSWORD}.'
-    - ' - C(type) (str): Types of guest credentials'
+      is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''absent''])'
+    - ' - C(type) (str): Types of guest credentials ([''absent''])'
     - '   - Accepted values:'
     - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
-      this is the guest username.'
-    - ' - C(password) (str): password'
-    - ' - C(saml_token) (str): SAML Bearer Token'
+      this is the guest username. ([''absent''])'
+    - ' - C(password) (str): password ([''absent''])'
+    - ' - C(saml_token) (str): SAML Bearer Token ([''absent''])'
     type: dict
   environment_variables:
     description:
@@ -54,17 +54,16 @@ options:
     type: dict
   path:
     description:
-    - 'The absolute path to the program to start. For Linux guest operating systems,
+    - The absolute path to the program to start. For Linux guest operating systems,
       /bin/bash is used to start the program. For Solaris guest operating systems,
       if /bin/bash exists, its used to start the program, otherwise /bin/sh is used.
-      If /bin/sh is used, then the process ID returned by {@link Processes#create}
-      will be that of the shell used to start the program, rather than the program
-      itself, due to the differences in how /bin/sh and /bin/bash work.  This PID
-      will still be usable for watching the process with {@link Processes#list} to
-      find its exit code and elapsed time. For Windows, no shell is used. Using a
-      simple batch file instead by prepending <code>c:\windows\system32\cmd.exe /c</code>
-      will allow stdio redirection to work if passed in the {@name #arguments} parameter.
-      Required with I(state=[''present''])'
+      If /bin/sh is used, then the process ID returned by process will be that of
+      the shell used to start the program, rather than the program itself, due to
+      the differences in how /bin/sh and /bin/bash work.  This PID will still be usable
+      for watching the process with {@link Processes#list} to find its exit code and
+      elapsed time. For Windows, no shell is used. Using a simple batch file instead
+      by prepending <code>c:\windows\system32\cmd.exe /c</code> will allow stdio redirection
+      to work if passed in the C(#arguments) parameter. Required with I(state=['present'])
     type: str
   pid:
     description:
@@ -146,6 +145,11 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {
+        "query": {},
+        "body": {"credentials": "credentials"},
+        "path": {"pid": "pid", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -156,11 +160,6 @@ PAYLOAD_FORMAT = {
             "working_directory": "spec/working_directory",
         },
         "path": {"vm": "vm"},
-    },
-    "delete": {
-        "query": {},
-        "body": {"credentials": "credentials"},
-        "path": {"pid": "pid", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 

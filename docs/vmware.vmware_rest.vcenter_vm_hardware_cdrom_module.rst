@@ -74,14 +74,14 @@ Parameters
                 <td>
                         <div>Physical resource backing for the virtual CD-ROM device. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name BackingType} defines the valid backing types for a virtual CD-ROM device.</div>
+                        <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- ISO_FILE</div>
                         <div>- HOST_DEVICE</div>
                         <div>- CLIENT_DEVICE</div>
-                        <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
-                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing.</div>
-                        <div>- <code>device_access_type</code> (str): The {@name DeviceAccessType} defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
+                        <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing. ([&#x27;present&#x27;])</div>
+                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing. ([&#x27;present&#x27;])</div>
+                        <div>- <code>device_access_type</code> (str): The <code>device_access_type</code> defines the valid device access types for a physical device packing of a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- EMULATION</div>
                         <div>- PASSTHRU</div>
@@ -117,8 +117,8 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
-                        <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
+                        <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine. ([&#x27;present&#x27;])</div>
+                        <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -150,8 +150,8 @@ Parameters
                 <td>
                         <div>Address for attaching the device to a virtual SATA adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached.</div>
-                        <div>- <code>unit</code> (int): Unit number of the device.</div>
+                        <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached. ([&#x27;present&#x27;])</div>
+                        <div>- <code>unit</code> (int): Unit number of the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -209,7 +209,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name HostBusAdapterType} defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
+                        <div>The <code>host_bus_adapter_type</code> defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
                 </td>
             </tr>
             <tr>

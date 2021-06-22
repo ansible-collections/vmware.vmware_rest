@@ -134,7 +134,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Type} defines the valid emulation types for a virtual SATA adapter.</div>
+                        <div>The <code>type</code> defines the valid emulation types for a virtual SATA adapter.</div>
                 </td>
             </tr>
             <tr>

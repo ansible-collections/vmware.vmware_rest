@@ -54,16 +54,16 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The guest authentication data.  See {@link Credentials}. This parameter is mandatory.</div>
+                        <div>The guest authentication data.  This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}.</div>
-                        <div>- <code>type</code> (str): Types of guest credentials</div>
+                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;get&#x27;, &#x27;list&#x27;])</div>
+                        <div>- <code>type</code> (str): Types of guest credentials ([&#x27;get&#x27;, &#x27;list&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- USERNAME_PASSWORD</div>
                         <div>- SAML_BEARER_TOKEN</div>
-                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username.</div>
-                        <div>- <code>password</code> (str): password</div>
-                        <div>- <code>saml_token</code> (str): SAML Bearer Token</div>
+                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username. ([&#x27;get&#x27;, &#x27;list&#x27;])</div>
+                        <div>- <code>password</code> (str): password ([&#x27;get&#x27;, &#x27;list&#x27;])</div>
+                        <div>- <code>saml_token</code> (str): SAML Bearer Token ([&#x27;get&#x27;, &#x27;list&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -80,7 +80,7 @@ Parameters
                 <td>
                         <div>Specification to match files for which information should be returned.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>match_pattern</code> (str): The perl-compatible regular expression used to filter the returned files.</div>
+                        <div>- <code>match_pattern</code> (str): The perl-compatible regular expression used to filter the returned files. ([&#x27;list&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -97,8 +97,8 @@ Parameters
                 <td>
                         <div>The specification of a page of results to be retrieved.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>size</code> (int): Specifies the maximum number of results to return.</div>
-                        <div>- <code>index</code> (int): Which result to start the list with. If this value exceeds the number of results, an empty list will be returned.</div>
+                        <div>- <code>size</code> (int): Specifies the maximum number of results to return. ([&#x27;list&#x27;])</div>
+                        <div>- <code>index</code> (int): Which result to start the list with. If this value exceeds the number of results, an empty list will be returned. ([&#x27;list&#x27;])</div>
                 </td>
             </tr>
             <tr>

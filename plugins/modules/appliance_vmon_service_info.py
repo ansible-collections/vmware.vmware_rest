@@ -220,7 +220,7 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: DEGRADED
+      health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args: []
         default_message: health.statsReoptInitalizer.illegalStateEx
@@ -328,10 +328,10 @@ value:
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-06-18T00:55:02UTC
-        - 2021-06-18T00:55:03UTC
-        default_message: Configuration health status is created between 2021-06-18T00:55:02UTC
-          and 2021-06-18T00:55:03UTC.
+        - 2021-06-23T23:31:09UTC
+        - 2021-06-23T23:31:10UTC
+        default_message: Configuration health status is created between 2021-06-23T23:31:09UTC
+          and 2021-06-23T23:31:10UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -398,7 +398,7 @@ value:
         id: vc.health.statuscode
       - args: []
         default_message: ''
-        id: vc.health.error.dbjob3
+        id: vc.health.error.dbjob2
       name_key: cis.vpxd.ServiceName
       startup_type: AUTOMATIC
       state: STARTED

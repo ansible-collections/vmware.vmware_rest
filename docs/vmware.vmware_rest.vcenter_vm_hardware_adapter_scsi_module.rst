@@ -118,7 +118,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Sharing} defines the valid bus sharing modes for a virtual SCSI adapter.</div>
+                        <div>The <code>sharing</code> defines the valid bus sharing modes for a virtual SCSI adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -157,7 +157,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Type} defines the valid emulation types for a virtual SCSI adapter.</div>
+                        <div>The <code>type</code> defines the valid emulation types for a virtual SCSI adapter.</div>
                 </td>
             </tr>
             <tr>

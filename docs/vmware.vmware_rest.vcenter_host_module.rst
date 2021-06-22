@@ -186,7 +186,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name ThumbprintVerification} defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The <code>thumbprint_verification</code> defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -350,7 +350,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Connect the host(s)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1123</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1151</div>
                 </td>
             </tr>
     </table>

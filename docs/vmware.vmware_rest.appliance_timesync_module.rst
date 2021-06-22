@@ -59,7 +59,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name TimeSyncMode} defines time synchronization modes This parameter is mandatory.</div>
+                        <div>The <code>time_sync_mode</code> defines time synchronization modes This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>

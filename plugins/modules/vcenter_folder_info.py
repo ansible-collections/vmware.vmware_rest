@@ -53,8 +53,8 @@ options:
     - NETWORK
     - VIRTUAL_MACHINE
     description:
-    - The {@name Type} defines the type of a vCenter Server folder.  The type of a
-      folder determines what what kinds of children can be contained in the folder.
+    - The C(type) defines the type of a vCenter Server folder.  The type of a folder
+      determines what what kinds of children can be contained in the folder.
     type: str
   vcenter_hostname:
     description:
@@ -126,7 +126,7 @@ value:
     vm
   returned: On success
   sample:
-  - folder: group-v1111
+  - folder: group-v1139
     name: vm
     type: VIRTUAL_MACHINE
   type: list

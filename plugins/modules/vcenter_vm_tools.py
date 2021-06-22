@@ -32,8 +32,7 @@ options:
     - MANUAL
     - UPGRADE_AT_POWER_CYCLE
     description:
-    - The {@name UpgradePolicy} defines when Tools are auto-upgraded for a virtual
-      machine.
+    - The C(upgrade_policy) defines when Tools are auto-upgraded for a virtual machine.
     type: str
   vcenter_hostname:
     description:
@@ -113,14 +112,14 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "upgrade": {
-        "query": {},
-        "body": {"command_line_options": "command_line_options"},
-        "path": {"vm": "vm"},
-    },
     "update": {
         "query": {},
         "body": {"upgrade_policy": "upgrade_policy"},
+        "path": {"vm": "vm"},
+    },
+    "upgrade": {
+        "query": {},
+        "body": {"command_line_options": "command_line_options"},
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long

@@ -70,19 +70,19 @@ Parameters
                 <td>
                         <div>Boot configuration.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name Type} defines the valid firmware types for a virtual machine.</div>
+                        <div>- <code>type</code> (str): The <code>type</code> defines the valid firmware types for a virtual machine. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- BIOS</div>
                         <div>- EFI</div>
-                        <div>- <code>efi_legacy_boot</code> (bool): Flag indicating whether to use EFI legacy boot mode.</div>
-                        <div>- <code>network_protocol</code> (str): The {@name NetworkProtocol} defines the valid network boot protocols supported when booting a virtual machine with {@link Type#EFI} firmware over the network.</div>
+                        <div>- <code>efi_legacy_boot</code> (bool): Flag indicating whether to use EFI legacy boot mode. ([&#x27;present&#x27;])</div>
+                        <div>- <code>network_protocol</code> (str): The <code>network_protocol</code> defines the valid network boot protocols supported when booting a virtual machine with {@link Type#EFI} firmware over the network. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- IPV4</div>
                         <div>- IPV6</div>
-                        <div>- <code>delay</code> (int): Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on.  This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
-                        <div>- <code>retry</code> (bool): Flag indicating whether the virtual machine should automatically retry the boot process after a failure.</div>
-                        <div>- <code>retry_delay</code> (int): Delay in milliseconds before retrying the boot process after a failure; applicable only when {@link Info#retry} is true.</div>
-                        <div>- <code>enter_setup_mode</code> (bool): Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots.  Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</div>
+                        <div>- <code>delay</code> (int): Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on.  This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode. ([&#x27;present&#x27;])</div>
+                        <div>- <code>retry</code> (bool): Flag indicating whether the virtual machine should automatically retry the boot process after a failure. ([&#x27;present&#x27;])</div>
+                        <div>- <code>retry_delay</code> (int): Delay in milliseconds before retrying the boot process after a failure; applicable only when {@link Info#retry} is true. ([&#x27;present&#x27;])</div>
+                        <div>- <code>enter_setup_mode</code> (bool): Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots.  Note that this flag will automatically be reset to false once the virtual machine enters setup mode. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -100,8 +100,8 @@ Parameters
                 <td>
                         <div>Boot device configuration.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name Type} defines the valid device types that may be used as bootable devices.</div>
-                        <div>This key is required.</div>
+                        <div>- <code>type</code> (str): The <code>type</code> defines the valid device types that may be used as bootable devices. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- CDROM</div>
                         <div>- DISK</div>
@@ -124,34 +124,34 @@ Parameters
                 <td>
                         <div>List of CD-ROMs.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name HostBusAdapterType} defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
+                        <div>- <code>type</code> (str): The <code>host_bus_adapter_type</code> defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- IDE</div>
                         <div>- SATA</div>
-                        <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter.</div>
+                        <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
                         <div>- master (boolean): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
-                        <div>- <code>sata</code> (dict): Address for attaching the device to a virtual SATA adapter.</div>
+                        <div>- <code>sata</code> (dict): Address for attaching the device to a virtual SATA adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- bus (integer): Bus number of the adapter to which the device should be attached.</div>
                         <div>- unit (integer): Unit number of the device.</div>
-                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual CD-ROM device.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual CD-ROM device. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- type (string): The {@name BackingType} defines the valid backing types for a virtual CD-ROM device.</div>
+                        <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual CD-ROM device.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>ISO_FILE</code></div>
                         <div>- <code>HOST_DEVICE</code></div>
                         <div>- <code>CLIENT_DEVICE</code></div>
                         <div>- iso_file (string): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
                         <div>- host_device (string): Name of the device that should be used as the virtual CD-ROM device backing.</div>
-                        <div>- device_access_type (string): The {@name DeviceAccessType} defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
+                        <div>- device_access_type (string): The <code>device_access_type</code> defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>EMULATION</code></div>
                         <div>- <code>PASSTHRU</code></div>
                         <div>- <code>PASSTHRU_EXCLUSIVE</code></div>
-                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -168,10 +168,10 @@ Parameters
                 <td>
                         <div>CPU configuration.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>count</code> (int): New number of CPU cores.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket. The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, the number of CPU cores may only be increased if {@link Info#hotAddEnabled} is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true.</div>
-                        <div>- <code>cores_per_socket</code> (int): New number of CPU cores per socket.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
-                        <div>- <code>hot_add_enabled</code> (bool): Flag indicating whether adding CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
-                        <div>- <code>hot_remove_enabled</code> (bool): Flag indicating whether removing CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
+                        <div>- <code>count</code> (int): New number of CPU cores.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket. The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, the number of CPU cores may only be increased if {@link Info#hotAddEnabled} is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true. ([&#x27;present&#x27;])</div>
+                        <div>- <code>cores_per_socket</code> (int): New number of CPU cores per socket.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket. ([&#x27;present&#x27;])</div>
+                        <div>- <code>hot_add_enabled</code> (bool): Flag indicating whether adding CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off. ([&#x27;present&#x27;])</div>
+                        <div>- <code>hot_remove_enabled</code> (bool): Flag indicating whether removing CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -238,34 +238,34 @@ Parameters
                 <td>
                         <div>Individual disk relocation map.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name HostBusAdapterType} defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine.</div>
+                        <div>- <code>type</code> (str): The <code>host_bus_adapter_type</code> defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- IDE</div>
                         <div>- SCSI</div>
                         <div>- SATA</div>
-                        <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter.</div>
+                        <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
                         <div>- master (boolean): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
-                        <div>- <code>scsi</code> (dict): Address for attaching the device to a virtual SCSI adapter.</div>
+                        <div>- <code>scsi</code> (dict): Address for attaching the device to a virtual SCSI adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- bus (integer): Bus number of the adapter to which the device should be attached.</div>
                         <div>- unit (integer): Unit number of the device.</div>
-                        <div>- <code>sata</code> (dict): Address for attaching the device to a virtual SATA adapter.</div>
+                        <div>- <code>sata</code> (dict): Address for attaching the device to a virtual SATA adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- bus (integer): Bus number of the adapter to which the device should be attached.</div>
                         <div>- unit (integer): Unit number of the device.</div>
-                        <div>- <code>backing</code> (dict): Existing physical resource backing for the virtual disk. Exactly one of {@name #backing} or {@name #newVmdk} must be specified.</div>
+                        <div>- <code>backing</code> (dict): Existing physical resource backing for the virtual disk. Exactly one of <code>#backing</code> or <code>#new_vmdk</code> must be specified. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- type (string): The {@name BackingType} defines the valid backing types for a virtual disk.</div>
+                        <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual disk.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>VMDK_FILE</code></div>
                         <div>- vmdk_file (string): Path of the VMDK file backing the virtual disk.</div>
-                        <div>- <code>new_vmdk</code> (dict): Specification for creating a new VMDK backing for the virtual disk.  Exactly one of {@name #backing} or {@name #newVmdk} must be specified.</div>
+                        <div>- <code>new_vmdk</code> (dict): Specification for creating a new VMDK backing for the virtual disk.  Exactly one of <code>#backing</code> or <code>#new_vmdk</code> must be specified. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- name (string): Base name of the VMDK file.  The name should not include the &#x27;.vmdk&#x27; file extension.</div>
                         <div>- capacity (integer): Capacity of the virtual disk backing in bytes.</div>
-                        <div>- storage_policy (object): The {@name StoragePolicySpec} {@term structure} contains information about the storage policy that is to be associated the with VMDK file.</div>
+                        <div>- storage_policy (object): The <code>storage_policy_spec</code> {@term structure} contains information about the storage policy that is to be associated the with VMDK file.</div>
                 </td>
             </tr>
             <tr>
@@ -314,17 +314,17 @@ Parameters
                 <td>
                         <div>List of floppy drives.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual floppy drive.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual floppy drive. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- type (string): The {@name BackingType} defines the valid backing types for a virtual floppy drive.</div>
+                        <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual floppy drive.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>IMAGE_FILE</code></div>
                         <div>- <code>HOST_DEVICE</code></div>
                         <div>- <code>CLIENT_DEVICE</code></div>
                         <div>- image_file (string): Path of the image file that should be used as the virtual floppy drive backing.</div>
                         <div>- host_device (string): Name of the device that should be used as the virtual floppy drive backing.</div>
-                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -341,7 +341,7 @@ Parameters
                 <td>
                         <div>Guest customization spec to apply to the virtual machine after the virtual machine is deployed.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>name</code> (str): Name of the customization specification.</div>
+                        <div>- <code>name</code> (str): Name of the customization specification. ([&#x27;clone&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -539,7 +539,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name GuestOS} defines the valid guest operating system types used for configuring a virtual machine. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The <code>guest_o_s</code> defines the valid guest operating system types used for configuring a virtual machine. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -572,7 +572,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Version} defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                        <div>The <code>version</code> defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
                 </td>
             </tr>
             <tr>
@@ -589,8 +589,8 @@ Parameters
                 <td>
                         <div>Memory configuration.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>size_MiB</code> (int): New memory size in mebibytes. The supported range of memory sizes is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, this value may only be changed if {@link Info#hotAddEnabled} is true, and the new memory size must satisfy the constraints specified by {@link Info#hotAddIncrementSizeMiB} and {@link Info#hotAddLimitMiB}.</div>
-                        <div>- <code>hot_add_enabled</code> (bool): Flag indicating whether adding memory while the virtual machine is running should be enabled. Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running. This field may only be modified if the virtual machine is not powered on.</div>
+                        <div>- <code>size_MiB</code> (int): New memory size in mebibytes. The supported range of memory sizes is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, this value may only be changed if {@link Info#hotAddEnabled} is true, and the new memory size must satisfy the constraints specified by {@link Info#hotAddIncrementSizeMiB} and {@link Info#hotAddLimitMiB}. ([&#x27;present&#x27;])</div>
+                        <div>- <code>hot_add_enabled</code> (bool): Flag indicating whether adding memory while the virtual machine is running should be enabled. Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running. This field may only be modified if the virtual machine is not powered on. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -623,7 +623,7 @@ Parameters
                 <td>
                         <div>List of Ethernet adapters.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name EmulationType} defines the valid emulation types for a virtual Ethernet adapter.</div>
+                        <div>- <code>type</code> (str): The <code>emulation_type</code> defines the valid emulation types for a virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- E1000</div>
                         <div>- E1000E</div>
@@ -631,18 +631,18 @@ Parameters
                         <div>- VMXNET</div>
                         <div>- VMXNET2</div>
                         <div>- VMXNET3</div>
-                        <div>- <code>upt_compatibility_enabled</code> (bool): Flag indicating whether Universal Pass-Through (UPT) compatibility is enabled on this virtual Ethernet adapter.</div>
-                        <div>- <code>mac_type</code> (str): The {@name MacAddressType} defines the valid MAC address origins for a virtual Ethernet adapter.</div>
+                        <div>- <code>upt_compatibility_enabled</code> (bool): Flag indicating whether Universal Pass-Through (UPT) compatibility is enabled on this virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
+                        <div>- <code>mac_type</code> (str): The <code>mac_address_type</code> defines the valid MAC address origins for a virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- MANUAL</div>
                         <div>- GENERATED</div>
                         <div>- ASSIGNED</div>
-                        <div>- <code>mac_address</code> (str): MAC address.</div>
-                        <div>- <code>pci_slot_number</code> (int): Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</div>
-                        <div>- <code>wake_on_lan_enabled</code> (bool): Flag indicating whether wake-on-LAN is enabled on this virtual Ethernet adapter.</div>
-                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual Ethernet adapter.</div>
+                        <div>- <code>mac_address</code> (str): MAC address. ([&#x27;present&#x27;])</div>
+                        <div>- <code>pci_slot_number</code> (int): Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added. ([&#x27;present&#x27;])</div>
+                        <div>- <code>wake_on_lan_enabled</code> (bool): Flag indicating whether wake-on-LAN is enabled on this virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- type (string): The {@name BackingType} defines the valid backing types for a virtual Ethernet adapter.</div>
+                        <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual Ethernet adapter.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>STANDARD_PORTGROUP</code></div>
                         <div>- <code>HOST_DEVICE</code></div>
@@ -650,8 +650,8 @@ Parameters
                         <div>- <code>OPAQUE_NETWORK</code></div>
                         <div>- network (string): Identifier of the network that backs the virtual Ethernet adapter.</div>
                         <div>- distributed_port (string): Key of the distributed virtual port that backs the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected.  This field cannot be specified as no free ports exist before use.</div>
-                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -684,16 +684,16 @@ Parameters
                 <td>
                         <div>List of parallel ports.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual parallel port.</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual parallel port. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- type (string): The {@name BackingType} defines the valid backing types for a virtual parallel port.</div>
+                        <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual parallel port.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>FILE</code></div>
                         <div>- <code>HOST_DEVICE</code></div>
                         <div>- file (string): Path of the file that should be used as the virtual parallel port backing.</div>
                         <div>- host_device (string): Name of the device that should be used as the virtual parallel port backing.</div>
-                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -740,11 +740,11 @@ Parameters
                 <td>
                         <div>Virtual machine placement information.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>folder</code> (str): Virtual machine folder into which the virtual machine should be placed.</div>
-                        <div>- <code>resource_pool</code> (str): Resource pool into which the virtual machine should be placed.</div>
-                        <div>- <code>host</code> (str): Host onto which the virtual machine should be placed. If {@name #host} and {@name #resourcePool} are both specified, {@name #resourcePool} must belong to {@name #host}. If {@name #host} and {@name #cluster} are both specified, {@name #host} must be a member of {@name #cluster}.</div>
-                        <div>- <code>cluster</code> (str): Cluster into which the virtual machine should be placed. If {@name #cluster} and {@name #resourcePool} are both specified, {@name #resourcePool} must belong to {@name #cluster}. If {@name #cluster} and {@name #host} are both specified, {@name #host} must be a member of {@name #cluster}.</div>
-                        <div>- <code>datastore</code> (str): Datastore on which the virtual machine&#x27;s configuration state should be stored.  This datastore will also be used for any virtual disks that are created as part of the virtual machine creation operation.</div>
+                        <div>- <code>folder</code> (str): Virtual machine folder into which the virtual machine should be placed. ([&#x27;clone&#x27;, &#x27;instant_clone&#x27;, &#x27;present&#x27;, &#x27;register&#x27;, &#x27;relocate&#x27;])</div>
+                        <div>- <code>resource_pool</code> (str): Resource pool into which the virtual machine should be placed. ([&#x27;clone&#x27;, &#x27;instant_clone&#x27;, &#x27;present&#x27;, &#x27;register&#x27;, &#x27;relocate&#x27;])</div>
+                        <div>- <code>host</code> (str): Host onto which the virtual machine should be placed. If <code>#host</code> and <code>#resource_pool</code> are both specified, <code>#resource_pool</code> must belong to <code>#host</code>. If <code>#host</code> and <code>#cluster</code> are both specified, <code>#host</code> must be a member of <code>#cluster</code>. ([&#x27;clone&#x27;, &#x27;present&#x27;, &#x27;register&#x27;, &#x27;relocate&#x27;])</div>
+                        <div>- <code>cluster</code> (str): Cluster into which the virtual machine should be placed. If <code>#cluster</code> and <code>#resource_pool</code> are both specified, <code>#resource_pool</code> must belong to <code>#cluster</code>. If <code>#cluster</code> and <code>#host</code> are both specified, <code>#host</code> must be a member of <code>#cluster</code>. ([&#x27;clone&#x27;, &#x27;present&#x27;, &#x27;register&#x27;, &#x27;relocate&#x27;])</div>
+                        <div>- <code>datastore</code> (str): Datastore on which the virtual machine&#x27;s configuration state should be stored.  This datastore will also be used for any virtual disks that are associated with the virtual machine, unless individually overridden. ([&#x27;clone&#x27;, &#x27;instant_clone&#x27;, &#x27;present&#x27;, &#x27;relocate&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -781,11 +781,11 @@ Parameters
                 <td>
                         <div>List of SATA adapters.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name Type} defines the valid emulation types for a virtual SATA adapter.</div>
+                        <div>- <code>type</code> (str): The <code>type</code> defines the valid emulation types for a virtual SATA adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- AHCI</div>
-                        <div>- <code>bus</code> (int): SATA bus number.</div>
-                        <div>- <code>pci_slot_number</code> (int): Address of the SATA adapter on the PCI bus.</div>
+                        <div>- <code>bus</code> (int): SATA bus number. ([&#x27;present&#x27;])</div>
+                        <div>- <code>pci_slot_number</code> (int): Address of the SATA adapter on the PCI bus. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -803,15 +803,15 @@ Parameters
                 <td>
                         <div>List of SCSI adapters.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name Type} defines the valid emulation types for a virtual SCSI adapter.</div>
+                        <div>- <code>type</code> (str): The <code>type</code> defines the valid emulation types for a virtual SCSI adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- BUSLOGIC</div>
                         <div>- LSILOGIC</div>
                         <div>- LSILOGICSAS</div>
                         <div>- PVSCSI</div>
-                        <div>- <code>bus</code> (int): SCSI bus number.</div>
-                        <div>- <code>pci_slot_number</code> (int): Address of the SCSI adapter on the PCI bus.  If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added.</div>
-                        <div>- <code>sharing</code> (str): The {@name Sharing} defines the valid bus sharing modes for a virtual SCSI adapter.</div>
+                        <div>- <code>bus</code> (int): SCSI bus number. ([&#x27;present&#x27;])</div>
+                        <div>- <code>pci_slot_number</code> (int): Address of the SCSI adapter on the PCI bus.  If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added. ([&#x27;present&#x27;])</div>
+                        <div>- <code>sharing</code> (str): The <code>sharing</code> defines the valid bus sharing modes for a virtual SCSI adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- NONE</div>
                         <div>- VIRTUAL</div>
@@ -833,10 +833,10 @@ Parameters
                 <td>
                         <div>List of serial ports.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>yield_on_poll</code> (bool): CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host.</div>
-                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual serial port.</div>
+                        <div>- <code>yield_on_poll</code> (bool): CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host. ([&#x27;present&#x27;])</div>
+                        <div>- <code>backing</code> (dict): Physical resource backing for the virtual serial port. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- type (string): The {@name BackingType} defines the valid backing types for a virtual serial port.</div>
+                        <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual serial port.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>FILE</code></div>
                         <div>- <code>HOST_DEVICE</code></div>
@@ -850,8 +850,8 @@ Parameters
                         <div>- no_rx_loss (boolean): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun.  This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</div>
                         <div>- network_location (string): URI specifying the location of the network service backing the virtual serial port. &lt;ul&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_SERVER}, this field is the location used by clients to connect to this server.  The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.&lt;/li&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_CLIENT}, this field is the location used by the virtual machine to connect to the remote server.&lt;/li&gt; &lt;/ul&gt;</div>
                         <div>- proxy (string): Proxy service that provides network access to the network backing.  If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</div>
-                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
-                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
+                        <div>- <code>allow_guest_control</code> (bool): Flag indicating whether the guest can connect and disconnect the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -919,9 +919,9 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The {@name StoragePolicySpec} {@term structure} contains information about the storage policy that is to be associated with the virtual machine home (which contains the configuration and log files). Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The <code>storage_policy_spec</code> {@term structure} contains information about the storage policy that is to be associated with the virtual machine home (which contains the configuration and log files). Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>policy</code> (str): Identifier of the storage policy which should be associated with the virtual machine.</div>
+                        <div>- <code>policy</code> (str): Identifier of the storage policy which should be associated with the virtual machine. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -1060,6 +1060,16 @@ Examples
         cluster: '{{ all_the_clusters.value[0].cluster }}'
       register: my_cluster_info
 
+    - name: We can also use filter to limit the number of result
+      vmware.vmware_rest.vcenter_datastore_info:
+        filter_names:
+        - rw_datastore
+      register: my_datastores
+
+    - name: Set my_datastore
+      set_fact:
+        my_datastore: '{{ my_datastores.value|first }}'
+
     - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
       vmware.vmware_rest.vcenter_folder_info:
         filter_type: VIRTUAL_MACHINE
@@ -1070,16 +1080,6 @@ Examples
     - name: Set my_virtual_machine_folder
       set_fact:
         my_virtual_machine_folder: '{{ my_folders.value|first }}'
-
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
-
-    - name: Set my_datastore
-      set_fact:
-        my_datastore: '{{ my_datastores.value|first }}'
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
@@ -1141,7 +1141,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Delete some VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1103&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1103&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1103&#x27;}, &#x27;value&#x27;: {}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1107&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1107&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1107&#x27;}, &#x27;value&#x27;: {}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;my_vm_from_ovf&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1108&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1108&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;my_vm_from_ovf&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1108&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1132&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1132&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1132&#x27;}, &#x27;value&#x27;: {}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1136&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1136&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1136&#x27;}, &#x27;value&#x27;: {}}]</div>
                 </td>
             </tr>
     </table>

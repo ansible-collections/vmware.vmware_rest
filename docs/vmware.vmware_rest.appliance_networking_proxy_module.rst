@@ -55,11 +55,11 @@ Parameters
                 <td>
                         <div>Proxy configuration for the specific protocol. Required with <em>state=[&#x27;test&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>server</code> (str): URL of the proxy server</div>
-                        <div>- <code>port</code> (int): Port to connect to the proxy server. In a &#x27;get&#x27; call, indicates the port connected to the proxy server. In a &#x27;set&#x27; call, specifies the port to connect to the proxy server. A value of -1 indicates the default port.</div>
-                        <div>- <code>username</code> (str): Username for proxy server.</div>
-                        <div>- <code>password</code> (str): Password for proxy server.</div>
-                        <div>- <code>enabled</code> (bool): In the result of the {@name #get} and {@name #list} {@term operations} this field indicates whether proxying is enabled for a particular protocol. In the input to the {@name test} and {@name set} {@term operations} this field specifies whether proxying should be enabled for a particular protocol.</div>
+                        <div>- <code>server</code> (str): URL of the proxy server ([&#x27;test&#x27;])</div>
+                        <div>- <code>port</code> (int): Port to connect to the proxy server. In a &#x27;get&#x27; call, indicates the port connected to the proxy server. In a &#x27;set&#x27; call, specifies the port to connect to the proxy server. A value of -1 indicates the default port. ([&#x27;test&#x27;])</div>
+                        <div>- <code>username</code> (str): Username for proxy server. ([&#x27;test&#x27;])</div>
+                        <div>- <code>password</code> (str): Password for proxy server. ([&#x27;test&#x27;])</div>
+                        <div>- <code>enabled</code> (bool): In the result of the <code>#get</code> and <code>#list</code> {@term operations} this field indicates whether proxying is enabled for a particular protocol. In the input to the <code>test</code> and <code>set</code> {@term operations} this field specifies whether proxying should be enabled for a particular protocol. ([&#x27;test&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -78,7 +78,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>In the result of the {@name #get} and {@name #list} {@term operations} this field indicates whether proxying is enabled for a particular protocol. In the input to the {@name test} and {@name set} {@term operations} this field specifies whether proxying should be enabled for a particular protocol. Required with <em>state=[&#x27;set&#x27;]</em></div>
+                        <div>In the result of the <code>#get</code> and <code>#list</code> {@term operations} this field indicates whether proxying is enabled for a particular protocol. In the input to the <code>test</code> and <code>set</code> {@term operations} this field specifies whether proxying should be enabled for a particular protocol. Required with <em>state=[&#x27;set&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

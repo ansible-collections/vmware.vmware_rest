@@ -19,10 +19,11 @@ options:
     description:
     - The list of addresses to be statically assigned. This parameter is mandatory.
     - 'Valid attributes are:'
-    - ' - C(address) (str): The IPv6 address, for example, fc00:10:20:83:20c:29ff:fe94:bb5a.'
-    - '   This key is required.'
-    - ' - C(prefix) (int): The IPv6 CIDR prefix, for example, 64.'
-    - '   This key is required.'
+    - ' - C(address) (str): The IPv6 address, for example, fc00:10:20:83:20c:29ff:fe94:bb5a.
+      ([''set''])'
+    - '   This key is required with [''set''].'
+    - ' - C(prefix) (int): The IPv6 CIDR prefix, for example, 64. ([''set''])'
+    - '   This key is required with [''set''].'
     elements: dict
     required: true
     type: list

@@ -23,18 +23,19 @@ options:
     description:
     - Physical resource backing for the virtual CD-ROM device. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
-      a virtual CD-ROM device.'
+    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
+      virtual CD-ROM device. ([''present''])'
     - '   - Accepted values:'
     - '     - ISO_FILE'
     - '     - HOST_DEVICE'
     - '     - CLIENT_DEVICE'
     - ' - C(iso_file) (str): Path of the image file that should be used as the virtual
-      CD-ROM device backing.'
+      CD-ROM device backing. ([''present''])'
     - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      CD-ROM device backing.'
-    - ' - C(device_access_type) (str): The {@name DeviceAccessType} defines the valid
-      device access types for a physical device packing of a virtual CD-ROM device.'
+      CD-ROM device backing. ([''present''])'
+    - ' - C(device_access_type) (str): The C(device_access_type) defines the valid
+      device access types for a physical device packing of a virtual CD-ROM device.
+      ([''present''])'
     - '   - Accepted values:'
     - '     - EMULATION'
     - '     - PASSTHRU'
@@ -50,9 +51,9 @@ options:
     - Address for attaching the device to a virtual IDE adapter.
     - 'Valid attributes are:'
     - ' - C(primary) (bool): Flag specifying whether the device should be attached
-      to the primary or secondary IDE adapter of the virtual machine.'
+      to the primary or secondary IDE adapter of the virtual machine. ([''present''])'
     - ' - C(master) (bool): Flag specifying whether the device should be the master
-      or slave device on the IDE adapter.'
+      or slave device on the IDE adapter. ([''present''])'
     type: dict
   label:
     description:
@@ -62,8 +63,9 @@ options:
     description:
     - Address for attaching the device to a virtual SATA adapter. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
-    - ' - C(unit) (int): Unit number of the device.'
+    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
+      ([''present''])'
+    - ' - C(unit) (int): Unit number of the device. ([''present''])'
     type: dict
   start_connected:
     description:
@@ -84,8 +86,8 @@ options:
     - IDE
     - SATA
     description:
-    - The {@name HostBusAdapterType} defines the valid types of host bus adapters
-      that may be used for attaching a Cdrom to a virtual machine.
+    - The C(host_bus_adapter_type) defines the valid types of host bus adapters that
+      may be used for attaching a Cdrom to a virtual machine.
     type: str
   vcenter_hostname:
     description:
@@ -190,6 +192,18 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"cdrom": "cdrom", "vm": "vm"},
+    },
+    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -202,18 +216,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"cdrom": "cdrom", "vm": "vm"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

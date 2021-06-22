@@ -21,8 +21,7 @@ options:
     - HOST
     - NTP
     description:
-    - The {@name TimeSyncMode} defines time synchronization modes This parameter is
-      mandatory.
+    - The C(time_sync_mode) defines time synchronization modes This parameter is mandatory.
     required: true
     type: str
   state:
