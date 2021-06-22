@@ -21,8 +21,7 @@ options:
     - dhcp
     - is_static
     description:
-    - '{@name DNSServerMode} Describes DNS Server source (DHCP,static) Required with
-      I(state=[''set''])'
+    - C(dns_server_mode) Describes DNS Server source (DHCP,static) Required with I(state=['set'])
     type: str
   server:
     description:
@@ -118,8 +117,8 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "add": {"query": {}, "body": {"server": "server"}, "path": {}},
-    "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
     "set": {"query": {}, "body": {"mode": "mode", "servers": "servers"}, "path": {}},
+    "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

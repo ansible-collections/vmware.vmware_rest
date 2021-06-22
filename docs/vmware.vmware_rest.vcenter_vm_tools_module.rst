@@ -90,7 +90,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name UpgradePolicy} defines when Tools are auto-upgraded for a virtual machine.</div>
+                        <div>The <code>upgrade_policy</code> defines when Tools are auto-upgraded for a virtual machine.</div>
                 </td>
             </tr>
             <tr>

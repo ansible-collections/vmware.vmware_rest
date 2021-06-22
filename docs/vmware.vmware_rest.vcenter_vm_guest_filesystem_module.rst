@@ -55,15 +55,15 @@ Parameters
                 <td>
                         <div>Details about the file to be transferred into the guest.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>size</code> (int): The size in bytes of the file to be transferred into the guest.</div>
-                        <div>- <code>overwrite</code> (bool): Whether an existing file should be overwritten.</div>
-                        <div>- <code>last_modified</code> (str): The date and time the file was last modified.</div>
-                        <div>- <code>last_accessed</code> (str): The date and time the file was last accessed.</div>
-                        <div>- <code>windows</code> (dict): Windows-specific file creation information.</div>
+                        <div>- <code>size</code> (int): The size in bytes of the file to be transferred into the guest. ([&#x27;present&#x27;])</div>
+                        <div>- <code>overwrite</code> (bool): Whether an existing file should be overwritten. ([&#x27;present&#x27;])</div>
+                        <div>- <code>last_modified</code> (str): The date and time the file was last modified. ([&#x27;present&#x27;])</div>
+                        <div>- <code>last_accessed</code> (str): The date and time the file was last accessed. ([&#x27;present&#x27;])</div>
+                        <div>- <code>windows</code> (dict): Windows-specific file creation information. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- hidden (boolean): The file is hidden.</div>
                         <div>- read_only (boolean): The file is read-only.</div>
-                        <div>- <code>posix</code> (dict): Posix-specific file creation information.</div>
+                        <div>- <code>posix</code> (dict): Posix-specific file creation information. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- owner_id (integer): The owner ID. If this property is not specified when passing a {@link PosixFileAttributesCreateSpec} object to {@link Transfers#create}, the default value will be the owner Id of the user who invoked the file transfer operation.</div>
                         <div>- group_id (integer): The group ID. If this property is not specified when passing a {@link PosixFileAttributesCreateSpec} object to {@link Transfers#create}, the default value will be the group Id of the user who invoked the file transfer operation.</div>

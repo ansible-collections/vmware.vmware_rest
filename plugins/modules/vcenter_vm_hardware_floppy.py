@@ -23,16 +23,16 @@ options:
     description:
     - Physical resource backing for the virtual floppy drive. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
-      a virtual floppy drive.'
+    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
+      virtual floppy drive. ([''present''])'
     - '   - Accepted values:'
     - '     - IMAGE_FILE'
     - '     - HOST_DEVICE'
     - '     - CLIENT_DEVICE'
     - ' - C(image_file) (str): Path of the image file that should be used as the virtual
-      floppy drive backing.'
+      floppy drive backing. ([''present''])'
     - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      floppy drive backing.'
+      floppy drive backing. ([''present''])'
     type: dict
   floppy:
     description:
@@ -157,15 +157,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"vm": "vm"},
-    },
     "update": {
         "query": {},
         "body": {
@@ -175,9 +166,18 @@ PAYLOAD_FORMAT = {
         },
         "path": {"floppy": "floppy", "vm": "vm"},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json

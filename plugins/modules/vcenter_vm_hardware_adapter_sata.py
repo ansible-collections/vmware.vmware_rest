@@ -42,7 +42,7 @@ options:
     choices:
     - AHCI
     description:
-    - The {@name Type} defines the valid emulation types for a virtual SATA adapter.
+    - The C(type) defines the valid emulation types for a virtual SATA adapter.
     type: str
   vcenter_hostname:
     description:
@@ -139,12 +139,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {"bus": "bus", "pci_slot_number": "pci_slot_number", "type": "type"},
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

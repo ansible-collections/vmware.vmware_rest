@@ -57,10 +57,10 @@ Parameters
                 <td>
                         <div>The list of addresses to be statically assigned. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>address</code> (str): The IPv6 address, for example, fc00:10:20:83:20c:29ff:fe94:bb5a.</div>
-                        <div>This key is required.</div>
-                        <div>- <code>prefix</code> (int): The IPv6 CIDR prefix, for example, 64.</div>
-                        <div>This key is required.</div>
+                        <div>- <code>address</code> (str): The IPv6 address, for example, fc00:10:20:83:20c:29ff:fe94:bb5a. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
+                        <div>- <code>prefix</code> (int): The IPv6 CIDR prefix, for example, 64. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
                 </td>
             </tr>
             <tr>

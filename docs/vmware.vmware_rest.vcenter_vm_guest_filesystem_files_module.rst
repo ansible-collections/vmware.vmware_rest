@@ -54,16 +54,16 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The guest authentication data.  See {@link Credentials}. This parameter is mandatory.</div>
+                        <div>The guest authentication data.  This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}.</div>
-                        <div>- <code>type</code> (str): Types of guest credentials</div>
+                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>type</code> (str): Types of guest credentials ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- USERNAME_PASSWORD</div>
                         <div>- SAML_BEARER_TOKEN</div>
-                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username.</div>
-                        <div>- <code>password</code> (str): password</div>
-                        <div>- <code>saml_token</code> (str): SAML Bearer Token</div>
+                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>password</code> (str): password ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>saml_token</code> (str): SAML Bearer Token ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -78,15 +78,15 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Specifies the different file attributes of the guest file to be changed. See {@link FileAttributesUpdateSpec}. Required with <em>state=[]</em></div>
+                        <div>Specifies the different file attributes of the guest file to be changed. Required with <em>state=[]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>last_modified</code> (str): The date and time the file was last modified.</div>
-                        <div>- <code>last_accessed</code> (str): The date and time the file was last accessed.</div>
-                        <div>- <code>windows</code> (dict): Windows-specific file update information.</div>
+                        <div>- <code>last_modified</code> (str): The date and time the file was last modified. ([&#x27;present&#x27;])</div>
+                        <div>- <code>last_accessed</code> (str): The date and time the file was last accessed. ([&#x27;present&#x27;])</div>
+                        <div>- <code>windows</code> (dict): Windows-specific file update information. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- hidden (boolean): The file is hidden.</div>
                         <div>- read_only (boolean): The file is read-only.</div>
-                        <div>- <code>posix</code> (dict): Posix-specific file update information.</div>
+                        <div>- <code>posix</code> (dict): Posix-specific file update information. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- owner_id (integer): The owner ID.</div>
                         <div>- group_id (integer): The group ID.</div>

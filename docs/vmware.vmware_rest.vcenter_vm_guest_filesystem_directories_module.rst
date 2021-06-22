@@ -73,16 +73,16 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The guest authentication data.  See {@link Credentials}. This parameter is mandatory.</div>
+                        <div>The guest authentication data.  This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}.</div>
-                        <div>- <code>type</code> (str): Types of guest credentials</div>
+                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>type</code> (str): Types of guest credentials ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- USERNAME_PASSWORD</div>
                         <div>- SAML_BEARER_TOKEN</div>
-                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username.</div>
-                        <div>- <code>password</code> (str): password</div>
-                        <div>- <code>saml_token</code> (str): SAML Bearer Token</div>
+                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>password</code> (str): password ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>saml_token</code> (str): SAML Bearer Token ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>

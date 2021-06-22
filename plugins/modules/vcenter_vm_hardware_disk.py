@@ -19,14 +19,14 @@ description: Adds a virtual disk to the virtual machine.  While adding the virtu
 options:
   backing:
     description:
-    - 'Existing physical resource backing for the virtual disk. Exactly one of {@name
-      #backing} or {@name #newVmdk} must be specified. Required with I(state=[''present''])'
+    - Existing physical resource backing for the virtual disk. Exactly one of C(#backing)
+      or C(#new_vmdk) must be specified. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
-      a virtual disk.'
+    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
+      virtual disk. ([''present''])'
     - '   - Accepted values:'
     - '     - VMDK_FILE'
-    - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk.'
+    - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk. ([''present''])'
     type: dict
   disk:
     description:
@@ -37,9 +37,9 @@ options:
     - Address for attaching the device to a virtual IDE adapter.
     - 'Valid attributes are:'
     - ' - C(primary) (bool): Flag specifying whether the device should be attached
-      to the primary or secondary IDE adapter of the virtual machine.'
+      to the primary or secondary IDE adapter of the virtual machine. ([''present''])'
     - ' - C(master) (bool): Flag specifying whether the device should be the master
-      or slave device on the IDE adapter.'
+      or slave device on the IDE adapter. ([''present''])'
     type: dict
   label:
     description:
@@ -47,15 +47,15 @@ options:
     type: str
   new_vmdk:
     description:
-    - 'Specification for creating a new VMDK backing for the virtual disk.  Exactly
-      one of {@name #backing} or {@name #newVmdk} must be specified.'
+    - Specification for creating a new VMDK backing for the virtual disk.  Exactly
+      one of C(#backing) or C(#new_vmdk) must be specified.
     - 'Valid attributes are:'
     - ' - C(name) (str): Base name of the VMDK file.  The name should not include
-      the ''.vmdk'' file extension.'
-    - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes.'
-    - ' - C(storage_policy) (dict): The {@name StoragePolicySpec} {@term structure}
-      contains information about the storage policy that is to be associated the with
-      VMDK file.'
+      the ''.vmdk'' file extension. ([''present''])'
+    - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes. ([''present''])'
+    - ' - C(storage_policy) (dict): The C(storage_policy_spec) {@term structure} contains
+      information about the storage policy that is to be associated the with VMDK
+      file. ([''present''])'
     - '   - Accepted keys:'
     - '     - policy (string): Identifier of the storage policy which should be associated
       with the VMDK file.'
@@ -64,15 +64,17 @@ options:
     description:
     - Address for attaching the device to a virtual SATA adapter. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
-    - ' - C(unit) (int): Unit number of the device.'
+    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
+      ([''present''])'
+    - ' - C(unit) (int): Unit number of the device. ([''present''])'
     type: dict
   scsi:
     description:
     - Address for attaching the device to a virtual SCSI adapter. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.'
-    - ' - C(unit) (int): Unit number of the device.'
+    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
+      ([''present''])'
+    - ' - C(unit) (int): Unit number of the device. ([''present''])'
     type: dict
   state:
     choices:
@@ -87,8 +89,8 @@ options:
     - SATA
     - SCSI
     description:
-    - The {@name HostBusAdapterType} defines the valid types of host bus adapters
-      that may be used for attaching a virtual storage device to a virtual machine.
+    - The C(host_bus_adapter_type) defines the valid types of host bus adapters that
+      may be used for attaching a virtual storage device to a virtual machine.
     type: str
   vcenter_hostname:
     description:
@@ -181,7 +183,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1_4/test_vm1_1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_3/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -193,6 +195,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"backing": "backing"},
+        "path": {"disk": "disk", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -205,12 +213,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {"backing": "backing"},
-        "path": {"disk": "disk", "vm": "vm"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

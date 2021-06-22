@@ -34,11 +34,12 @@ options:
     - Information used to create the OVF package from the source virtual machine or
       virtual appliance. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(name) (str): Name to use in the OVF descriptor stored in the library item.'
+    - ' - C(name) (str): Name to use in the OVF descriptor stored in the library item.
+      ([''present''])'
     - ' - C(description) (str): Description to use in the OVF descriptor stored in
-      the library item.'
+      the library item. ([''present''])'
     - ' - C(flags) (list): Flags to use for OVF package creation. The supported flags
-      can be obtained using {@link ExportFlag#list}.'
+      can be obtained using {@link ExportFlag#list}. ([''present''])'
     type: dict
   deployment_spec:
     description:
@@ -46,41 +47,41 @@ options:
       with I(state=['deploy'])
     - 'Valid attributes are:'
     - ' - C(name) (str): Name assigned to the deployed target virtual machine or virtual
-      appliance.'
+      appliance. ([''deploy''])'
     - ' - C(annotation) (str): Annotation assigned to the deployed target virtual
-      machine or virtual appliance.'
+      machine or virtual appliance. ([''deploy''])'
     - ' - C(accept_all_EULA) (bool): Whether to accept all End User License Agreements.
-      See {@link OvfSummary#eulas}.'
+      ([''deploy''])'
     - ' - C(network_mappings) (dict): Specification of the target network to use for
       sections of type ovf:NetworkSection in the OVF descriptor. The key in the {@term
       map} is the section identifier of the ovf:NetworkSection section in the OVF
-      descriptor and the value is the target network to be used for deployment.'
+      descriptor and the value is the target network to be used for deployment. ([''deploy''])'
     - ' - C(storage_mappings) (dict): Specification of the target storage to use for
       sections of type vmw:StorageGroupSection in the OVF descriptor. The key in the
       {@term map} is the section identifier of the ovf:StorageGroupSection section
       in the OVF descriptor and the value is the target storage specification to be
-      used for deployment. See {@link StorageGroupMapping}.'
-    - ' - C(storage_provisioning) (str): The {@name DiskProvisioningType} defines
-      the virtual disk provisioning types that can be set for a disk on the target
-      platform.'
+      used for deployment. ([''deploy''])'
+    - ' - C(storage_provisioning) (str): The C(disk_provisioning_type) defines the
+      virtual disk provisioning types that can be set for a disk on the target platform.
+      ([''deploy''])'
     - '   - Accepted values:'
     - '     - thin'
     - '     - thick'
     - '     - eagerZeroedThick'
     - ' - C(storage_profile_id) (str): Default storage profile to use for all sections
-      of type vmw:StorageSection in the OVF descriptor.'
-    - ' - C(locale) (str): The locale to use for parsing the OVF descriptor.'
+      of type vmw:StorageSection in the OVF descriptor. ([''deploy''])'
+    - ' - C(locale) (str): The locale to use for parsing the OVF descriptor. ([''deploy''])'
     - ' - C(flags) (list): Flags to be use for deployment. The supported flag values
-      can be obtained using {@link ImportFlag#list}.'
+      can be obtained using {@link ImportFlag#list}. ([''deploy''])'
     - ' - C(additional_parameters) (list): Additional OVF parameters that may be needed
       for the deployment. Additional OVF parameters may be required by the OVF descriptor
       of the OVF package in the library item. Examples of OVF parameters that can
       be specified through this field include, but are not limited to: <ul> <li>{@link
       DeploymentOptionParams}</li> <li>{@link ExtraConfigParams}</li> <li>{@link IpAllocationParams}</li>
       <li>{@link PropertyParams}</li> <li>{@link ScaleOutParams}</li> <li>{@link VcenterExtensionParams}</li>
-      </ul>'
+      </ul> ([''deploy''])'
     - ' - C(default_datastore_id) (str): Default datastore to use for all sections
-      of type vmw:StorageSection in the OVF descriptor.'
+      of type vmw:StorageSection in the OVF descriptor. ([''deploy''])'
     type: dict
   ovf_library_item_id:
     description:
@@ -92,8 +93,8 @@ options:
     - Identifier of the virtual machine or virtual appliance to use as the source.
       Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): Type of the deployable resource.'
-    - ' - C(id) (str): Identifier of the deployable resource.'
+    - ' - C(type) (str): Type of the deployable resource. ([''present''])'
+    - ' - C(id) (str): Identifier of the deployable resource. ([''present''])'
     type: dict
   state:
     choices:
@@ -109,10 +110,19 @@ options:
       is mandatory.
     - 'Valid attributes are:'
     - ' - C(library_id) (str): Identifier of the library in which a new library item
-      should be created. This field is not used if the {@name #libraryItemId} field
-      is specified.'
+      should be created. This field is not used if the C(#library_item_id) field is
+      specified. ([''present''])'
     - ' - C(library_item_id) (str): Identifier of the library item that should be
-      should be updated.'
+      should be updated. ([''present''])'
+    - ' - C(resource_pool_id) (str): Identifier of the resource pool to which the
+      virtual machine or virtual appliance should be attached. ([''deploy'', ''filter''])'
+    - ' - C(host_id) (str): Identifier of the target host on which the virtual machine
+      or virtual appliance will run. The target host must be a member of the cluster
+      that contains the resource pool identified by {@link #resourcePoolId}. ([''deploy'',
+      ''filter''])'
+    - ' - C(folder_id) (str): Identifier of the vCenter folder that should contain
+      the virtual machine or virtual appliance. The folder must be virtual machine
+      folder. ([''deploy'', ''filter''])'
     required: true
     type: dict
   vcenter_hostname:
@@ -162,6 +172,19 @@ requirements:
 """
 
 EXAMPLES = r"""
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
   register: all_the_clusters
@@ -170,6 +193,16 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_cluster_info:
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
+
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+    - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
@@ -181,16 +214,6 @@ EXAMPLES = r"""
 - name: Set my_virtual_machine_folder
   set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
-
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -206,19 +229,6 @@ EXAMPLES = r"""
       hot_add_enabled: true
       size_MiB: 1024
   register: my_vm
-
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -252,18 +262,33 @@ value:
   returned: On success
   sample:
     error:
-      errors: []
+      errors:
+      - category: SERVER
+        error:
+          error_type: UNABLE_TO_ALLOCATE_RESOURCE
+          messages:
+          - args:
+            - Insufficient disk space on datastore 'local'.
+            default_message: The operation failed due to Insufficient disk space on
+              datastore 'local'.
+            id: com.vmware.vdcs.util.unable_to_allocate_resource
+          - args: []
+            default_message: File system specific implementation of SetFileAttributes[file]
+              failed
+            id: vob.fssvec.SetFileAttributes.file.failed
       information: []
       warnings: []
-    resource_id:
-      id: vm-1137
-      type: VirtualMachine
-    succeeded: 1
+    succeeded: 0
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
+    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
@@ -272,11 +297,6 @@ PAYLOAD_FORMAT = {
     "filter": {
         "query": {},
         "body": {"target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long

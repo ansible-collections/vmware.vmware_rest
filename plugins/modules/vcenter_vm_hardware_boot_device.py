@@ -25,17 +25,18 @@ options:
     description:
     - Ordered list of boot devices. This parameter is mandatory.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name Type} defines the valid device types that may
-      be used as bootable devices.'
-    - '   This key is required.'
+    - ' - C(type) (str): The C(type) defines the valid device types that may be used
+      as bootable devices. ([''set''])'
+    - '   This key is required with [''set''].'
     - '   - Accepted values:'
     - '     - CDROM'
     - '     - DISK'
     - '     - ETHERNET'
     - '     - FLOPPY'
     - ' - C(nic) (str): Virtual Ethernet device. Ethernet device to use as boot device
-      for this entry.'
-    - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot order.'
+      for this entry. ([''set''])'
+    - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot order.
+      ([''set''])'
     elements: dict
     required: true
     type: list

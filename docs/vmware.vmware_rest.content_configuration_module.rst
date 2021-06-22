@@ -218,15 +218,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Adjust the automatic sync start and stop hours
-      vmware.vmware_rest.content_configuration:
-        automatic_sync_start_hour: 6
-        automatic_sync_stop_hour: 18
 
 
 

@@ -29,11 +29,12 @@ options:
     description:
     - DNS Configuration to set for the machine Required with I(state=['change'])
     - 'Valid attributes are:'
-    - ' - C(mode) (str): {@name DNSServerMode} Describes DNS Server source (DHCP,static)'
+    - ' - C(mode) (str): C(dns_server_mode) Describes DNS Server source (DHCP,static)
+      ([''change''])'
     - '   - Accepted values:'
     - '     - dhcp'
     - '     - is_static'
-    - ' - C(servers) (list): List of the currently used DNS servers.'
+    - ' - C(servers) (list): List of the currently used DNS servers. ([''change''])'
     type: dict
   hostname:
     description:
@@ -44,36 +45,36 @@ options:
     description:
     - IPv4 Configuration to set for the machine Required with I(state=['change'])
     - 'Valid attributes are:'
-    - ' - C(mode) (str): The {@name Mode} defines different IPv4 address assignment
-      modes.'
+    - ' - C(mode) (str): The C(mode) defines different IPv4 address assignment modes.
+      ([''change''])'
     - '   - Accepted values:'
     - '     - DHCP'
     - '     - STATIC'
     - '     - UNCONFIGURED'
-    - ' - C(address) (str): The IPv4 address, for example, "10.20.80.191".'
+    - ' - C(address) (str): The IPv4 address, for example, "10.20.80.191". ([''change''])'
     - ' - C(prefix) (int): The IPv4 CIDR prefix, for example, 24.  See http://www.oav.net/mirrors/cidr.html
-      for netmask-to-prefix conversion.'
+      for netmask-to-prefix conversion. ([''change''])'
     - ' - C(default_gateway) (str): The IPv4 address of the default gateway. This
       configures the global default gateway on the appliance with the specified gateway
       address and interface. This gateway replaces the existing default gateway configured
       on the appliance. However, if the gateway address is link-local, then it is
       added for that interface. This does not support configuration of multiple global
-      default gateways through different interfaces.'
+      default gateways through different interfaces. ([''change''])'
     type: dict
   ipv6:
     description:
     - IPv6 Configuration to set for the machine Required with I(state=['change'])
     - 'Valid attributes are:'
-    - ' - C(dhcp) (bool): An address will be assigned by a DHCP server.'
+    - ' - C(dhcp) (bool): An address will be assigned by a DHCP server. ([''change''])'
     - ' - C(autoconf) (bool): An address will be assigned by Stateless Address Autoconfiguration
-      (SLAAC).'
-    - ' - C(addresses) (list): The list of addresses to be statically assigned.'
+      (SLAAC). ([''change''])'
+    - ' - C(addresses) (list): The list of addresses to be statically assigned. ([''change''])'
     - ' - C(default_gateway) (str): The default gateway for static IP address assignment.
       This configures the global IPv6 default gateway on the appliance with the specified
       gateway address and interface. This gateway replaces the existing default gateway
       configured on the appliance. However, if the gateway address is link-local,
       then it is added for that interface. This does not support configuration of
-      multiple global default gateways through different interfaces.'
+      multiple global default gateways through different interfaces. ([''change''])'
     type: dict
   ipv6_enabled:
     description:
@@ -142,6 +143,7 @@ RETURN = r"""
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "reset": {"query": {}, "body": {}, "path": {}},
+    "update": {"query": {}, "body": {"ipv6_enabled": "ipv6_enabled"}, "path": {}},
     "change": {
         "query": {},
         "body": {
@@ -154,7 +156,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "update": {"query": {}, "body": {"ipv6_enabled": "ipv6_enabled"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

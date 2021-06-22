@@ -194,11 +194,11 @@ Parameters
                 <td>
                         <div>Storage policy to be used when reconfiguring the virtual machine home. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name PolicyType} defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory.</div>
+                        <div>- <code>type</code> (str): The <code>policy_type</code> defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- USE_SPECIFIED_POLICY</div>
                         <div>- USE_DEFAULT_POLICY</div>
-                        <div>- <code>policy</code> (str): Storage Policy identification.</div>
+                        <div>- <code>policy</code> (str): Storage Policy identification. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
     </table>

@@ -457,6 +457,12 @@ releases:
     - description: Returns the state of a service.
       name: appliance_vmon_service_info
       namespace: ''
+    - description: Updates the configuration
+      name: content_configuration
+      namespace: ''
+    - description: Retrieves the current configuration values.
+      name: content_configuration_info
+      namespace: ''
     - description: Returns the {@link ItemModel} with the given identifier.
       name: content_library_item_info
       namespace: ''
@@ -471,6 +477,10 @@ releases:
       namespace: ''
     - description: Returns a given subscribed library.
       name: content_subscribedlibrary_info
+      namespace: ''
+    - description: Creates a library item in content library from a virtual machine
+        or virtual appliance
+      name: vcenter_ovf_libraryitem
       namespace: ''
     - description: Reads a single environment variable from the guest operating system
       name: vcenter_vm_guest_environment_info

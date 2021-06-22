@@ -76,10 +76,10 @@ value:
   description: Get the firewall inbound configuration
   returned: On success
   sample:
-  - address: 1.2.3.4
+  - address: 1.2.3.0
     interface_name: '*'
-    policy: ACCEPT
-    prefix: 32
+    policy: REJECT
+    prefix: 24
   type: list
 """
 

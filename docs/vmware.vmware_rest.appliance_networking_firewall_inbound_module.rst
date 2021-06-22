@@ -57,18 +57,18 @@ Parameters
                 <td>
                         <div>List of address-based firewall rules. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>address</code> (str): IPv4 or IPv6 address.</div>
-                        <div>This key is required.</div>
-                        <div>- <code>prefix</code> (int): CIDR prefix used to mask address. For example, an IPv4 prefix of 24 ignores the low-order 8 bits of address.</div>
-                        <div>This key is required.</div>
-                        <div>- <code>policy</code> (str): {@name Policy} Defines firewall rule policies.</div>
-                        <div>This key is required.</div>
+                        <div>- <code>address</code> (str): IPv4 or IPv6 address. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
+                        <div>- <code>prefix</code> (int): CIDR prefix used to mask address. For example, an IPv4 prefix of 24 ignores the low-order 8 bits of address. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
+                        <div>- <code>policy</code> (str): <code>policy</code> Defines firewall rule policies. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- IGNORE</div>
                         <div>- ACCEPT</div>
                         <div>- REJECT</div>
                         <div>- RETURN</div>
-                        <div>- <code>interface_name</code> (str): The interface to which this rule applies. An empty string indicates that the rule applies to all interfaces.</div>
+                        <div>- <code>interface_name</code> (str): The interface to which this rule applies. An empty string indicates that the rule applies to all interfaces. ([&#x27;set&#x27;])</div>
                 </td>
             </tr>
             <tr>

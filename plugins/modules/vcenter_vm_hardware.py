@@ -28,8 +28,8 @@ options:
     - ALWAYS
     - NEVER
     description:
-    - The {@name UpgradePolicy} defines the valid virtual hardware upgrade policies
-      for a virtual machine.
+    - The C(upgrade_policy) defines the valid virtual hardware upgrade policies for
+      a virtual machine.
     type: str
   upgrade_version:
     choices:
@@ -50,9 +50,9 @@ options:
     - VMX_18
     - VMX_19
     description:
-    - The {@name Version} defines the valid virtual hardware versions for a virtual
-      machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware
-      versions (1003746)).
+    - The C(version) defines the valid virtual hardware versions for a virtual machine.
+      See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions
+      (1003746)).
     type: str
   vcenter_hostname:
     description:
@@ -110,9 +110,9 @@ options:
     - VMX_18
     - VMX_19
     description:
-    - The {@name Version} defines the valid virtual hardware versions for a virtual
-      machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware
-      versions (1003746)).
+    - The C(version) defines the valid virtual hardware versions for a virtual machine.
+      See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions
+      (1003746)).
     type: str
   vm:
     description:
@@ -163,7 +163,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -172,6 +171,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

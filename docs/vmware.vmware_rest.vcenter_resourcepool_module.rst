@@ -55,12 +55,12 @@ Parameters
                 <td>
                         <div>Resource allocation for CPU.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
-                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
-                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
-                        <div>- <code>shares</code> (dict): Shares are used in case of resource contention.</div>
+                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation. ([&#x27;present&#x27;])</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
+                        <div>- <code>shares</code> (dict): Shares are used in case of resource contention. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- level (string): The {@name Level} defines the possible values for the allocation level.</div>
+                        <div>- level (string): The <code>level</code> defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
@@ -83,12 +83,12 @@ Parameters
                 <td>
                         <div>Resource allocation for CPU.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
-                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
-                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
-                        <div>- <code>shares</code> (dict): Shares are used in case of resource contention.</div>
+                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation. ([&#x27;present&#x27;])</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
+                        <div>- <code>shares</code> (dict): Shares are used in case of resource contention. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- level (string): The {@name Level} defines the possible values for the allocation level.</div>
+                        <div>- level (string): The <code>level</code> defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
@@ -338,7 +338,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1119</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1147</div>
                 </td>
             </tr>
             <tr>

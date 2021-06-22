@@ -21,24 +21,23 @@ options:
     description:
     - Proxy configuration for the specific protocol. Required with I(state=['test'])
     - 'Valid attributes are:'
-    - ' - C(server) (str): URL of the proxy server'
+    - ' - C(server) (str): URL of the proxy server ([''test''])'
     - ' - C(port) (int): Port to connect to the proxy server. In a ''get'' call, indicates
       the port connected to the proxy server. In a ''set'' call, specifies the port
-      to connect to the proxy server. A value of -1 indicates the default port.'
-    - ' - C(username) (str): Username for proxy server.'
-    - ' - C(password) (str): Password for proxy server.'
-    - ' - C(enabled) (bool): In the result of the {@name #get} and {@name #list} {@term
-      operations} this field indicates whether proxying is enabled for a particular
-      protocol. In the input to the {@name test} and {@name set} {@term operations}
-      this field specifies whether proxying should be enabled for a particular protocol.'
+      to connect to the proxy server. A value of -1 indicates the default port. ([''test''])'
+    - ' - C(username) (str): Username for proxy server. ([''test''])'
+    - ' - C(password) (str): Password for proxy server. ([''test''])'
+    - ' - C(enabled) (bool): In the result of the C(#get) and C(#list) {@term operations}
+      this field indicates whether proxying is enabled for a particular protocol.
+      In the input to the C(test) and C(set) {@term operations} this field specifies
+      whether proxying should be enabled for a particular protocol. ([''test''])'
     type: dict
   enabled:
     description:
-    - 'In the result of the {@name #get} and {@name #list} {@term operations} this
-      field indicates whether proxying is enabled for a particular protocol. In the
-      input to the {@name test} and {@name set} {@term operations} this field specifies
-      whether proxying should be enabled for a particular protocol. Required with
-      I(state=[''set''])'
+    - In the result of the C(#get) and C(#list) {@term operations} this field indicates
+      whether proxying is enabled for a particular protocol. In the input to the C(test)
+      and C(set) {@term operations} this field specifies whether proxying should be
+      enabled for a particular protocol. Required with I(state=['set'])
     type: bool
   host:
     description:
@@ -151,6 +150,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
     "test": {
         "query": {},
         "body": {"config": "config", "host": "host"},
@@ -167,7 +167,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"protocol": "protocol"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
 }  # pylint: disable=line-too-long
 
 import json

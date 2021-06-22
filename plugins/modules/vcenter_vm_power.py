@@ -121,7 +121,7 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1103
+      vm: vm-1132
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -134,13 +134,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1103
+        vm: vm-1132
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1103
+      vm: vm-1132
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -156,7 +156,7 @@ results:
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1107
+      vm: vm-1136
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -169,58 +169,23 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1107
+        vm: vm-1136
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1107
+      vm: vm-1136
     value: {}
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1108
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 0
-    failed: 0
-    invocation:
-      module_args:
-        state: stop
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1108
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1108
-    value:
-      error_type: ALREADY_IN_DESIRED_STATE
-      messages:
-      - args: []
-        default_message: Virtual machine is already powered off.
-        id: com.vmware.api.vcenter.vm.power.already_powered_off
-      - args: []
-        default_message: The attempted operation cannot be performed in the current
-          state (Powered off).
-        id: vmsg.InvalidPowerState.summary
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

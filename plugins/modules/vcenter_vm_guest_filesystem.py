@@ -28,15 +28,15 @@ options:
     - Details about the file to be transferred into the guest.
     - 'Valid attributes are:'
     - ' - C(size) (int): The size in bytes of the file to be transferred into the
-      guest.'
-    - ' - C(overwrite) (bool): Whether an existing file should be overwritten.'
-    - ' - C(last_modified) (str): The date and time the file was last modified.'
-    - ' - C(last_accessed) (str): The date and time the file was last accessed.'
-    - ' - C(windows) (dict): Windows-specific file creation information.'
+      guest. ([''present''])'
+    - ' - C(overwrite) (bool): Whether an existing file should be overwritten. ([''present''])'
+    - ' - C(last_modified) (str): The date and time the file was last modified. ([''present''])'
+    - ' - C(last_accessed) (str): The date and time the file was last accessed. ([''present''])'
+    - ' - C(windows) (dict): Windows-specific file creation information. ([''present''])'
     - '   - Accepted keys:'
     - '     - hidden (boolean): The file is hidden.'
     - '     - read_only (boolean): The file is read-only.'
-    - ' - C(posix) (dict): Posix-specific file creation information.'
+    - ' - C(posix) (dict): Posix-specific file creation information. ([''present''])'
     - '   - Accepted keys:'
     - '     - owner_id (integer): The owner ID. If this property is not specified
       when passing a {@link PosixFileAttributesCreateSpec} object to {@link Transfers#create},

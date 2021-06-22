@@ -31,20 +31,20 @@ options:
     description:
     - List of address-based firewall rules. This parameter is mandatory.
     - 'Valid attributes are:'
-    - ' - C(address) (str): IPv4 or IPv6 address.'
-    - '   This key is required.'
+    - ' - C(address) (str): IPv4 or IPv6 address. ([''set''])'
+    - '   This key is required with [''set''].'
     - ' - C(prefix) (int): CIDR prefix used to mask address. For example, an IPv4
-      prefix of 24 ignores the low-order 8 bits of address.'
-    - '   This key is required.'
-    - ' - C(policy) (str): {@name Policy} Defines firewall rule policies.'
-    - '   This key is required.'
+      prefix of 24 ignores the low-order 8 bits of address. ([''set''])'
+    - '   This key is required with [''set''].'
+    - ' - C(policy) (str): C(policy) Defines firewall rule policies. ([''set''])'
+    - '   This key is required with [''set''].'
     - '   - Accepted values:'
     - '     - IGNORE'
     - '     - ACCEPT'
     - '     - REJECT'
     - '     - RETURN'
     - ' - C(interface_name) (str): The interface to which this rule applies. An empty
-      string indicates that the rule applies to all interfaces.'
+      string indicates that the rule applies to all interfaces. ([''set''])'
     elements: dict
     required: true
     type: list

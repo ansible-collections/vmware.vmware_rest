@@ -17,21 +17,21 @@ description: Returns information about a file or directory in the guest. <p>
 options:
   credentials:
     description:
-    - The guest authentication data.  See {@link Credentials}. This parameter is mandatory.
+    - The guest authentication data.  This parameter is mandatory.
     - 'Valid attributes are:'
     - ' - C(interactive_session) (bool): If {@term set}, the {@term operation} will
       interact with the logged-in desktop session in the guest. This requires that
       the logged-on user matches the user specified by the {@link Credentials}. This
-      is currently only supported for {@link Type#USERNAME_PASSWORD}.'
-    - ' - C(type) (str): Types of guest credentials'
+      is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''get'', ''list''])'
+    - ' - C(type) (str): Types of guest credentials ([''get'', ''list''])'
     - '   - Accepted values:'
     - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
-      this is the guest username.'
-    - ' - C(password) (str): password'
-    - ' - C(saml_token) (str): SAML Bearer Token'
+      this is the guest username. ([''get'', ''list''])'
+    - ' - C(password) (str): password ([''get'', ''list''])'
+    - ' - C(saml_token) (str): SAML Bearer Token ([''get'', ''list''])'
     required: true
     type: dict
   filter:
@@ -39,15 +39,15 @@ options:
     - Specification to match files for which information should be returned.
     - 'Valid attributes are:'
     - ' - C(match_pattern) (str): The perl-compatible regular expression used to filter
-      the returned files.'
+      the returned files. ([''list''])'
     type: dict
   iteration:
     description:
     - The specification of a page of results to be retrieved.
     - 'Valid attributes are:'
-    - ' - C(size) (int): Specifies the maximum number of results to return.'
+    - ' - C(size) (int): Specifies the maximum number of results to return. ([''list''])'
     - ' - C(index) (int): Which result to start the list with. If this value exceeds
-      the number of results, an empty list will be returned.'
+      the number of results, an empty list will be returned. ([''list''])'
     type: dict
   path:
     description:

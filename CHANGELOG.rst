@@ -91,11 +91,14 @@ New Modules
 - appliance_update_info - Gets the current status of the appliance update.
 - appliance_vmon_service - Lists details of services managed by vMon.
 - appliance_vmon_service_info - Returns the state of a service.
+- content_configuration - Updates the configuration
+- content_configuration_info - Retrieves the current configuration values.
 - content_library_item_info - Returns the {@link ItemModel} with the given identifier.
 - content_locallibrary - Creates a new local library.
 - content_locallibrary_info - Returns a given local library.
 - content_subscribedlibrary - Creates a new subscribed library
 - content_subscribedlibrary_info - Returns a given subscribed library.
+- vcenter_ovf_libraryitem - Creates a library item in content library from a virtual machine or virtual appliance
 - vcenter_vm_guest_environment_info - Reads a single environment variable from the guest operating system
 - vcenter_vm_guest_filesystem - Initiates an operation to transfer a file to or from the guest
 - vcenter_vm_guest_filesystem_directories - Creates a directory in the guest operating system

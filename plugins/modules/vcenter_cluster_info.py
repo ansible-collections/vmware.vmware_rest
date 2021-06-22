@@ -115,14 +115,14 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1116
+  sample: domain-c1144
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1117
+    resource_pool: resgroup-1145
   type: dict
 """
 
