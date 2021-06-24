@@ -38,7 +38,7 @@ options:
     - PHYSICAL
     - VIRTUAL
     description:
-    - The {@name Sharing} defines the valid bus sharing modes for a virtual SCSI adapter.
+    - The C(sharing) defines the valid bus sharing modes for a virtual SCSI adapter.
     type: str
   state:
     choices:
@@ -54,7 +54,7 @@ options:
     - LSILOGICSAS
     - PVSCSI
     description:
-    - The {@name Type} defines the valid emulation types for a virtual SCSI adapter.
+    - The C(type) defines the valid emulation types for a virtual SCSI adapter.
     type: str
   vcenter_hostname:
     description:
@@ -154,6 +154,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"sharing": "sharing"},
+        "path": {"adapter": "adapter", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -164,12 +170,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {"sharing": "sharing"},
-        "path": {"adapter": "adapter", "vm": "vm"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

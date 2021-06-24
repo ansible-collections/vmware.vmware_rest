@@ -23,15 +23,15 @@ options:
     description:
     - Physical resource backing for the virtual parallel port. Required with I(state=['present'])
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name BackingType} defines the valid backing types for
-      a virtual parallel port.'
+    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
+      virtual parallel port. ([''present''])'
     - '   - Accepted values:'
     - '     - FILE'
     - '     - HOST_DEVICE'
     - ' - C(file) (str): Path of the file that should be used as the virtual parallel
-      port backing.'
+      port backing. ([''present''])'
     - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      parallel port backing.'
+      parallel port backing. ([''present''])'
     type: dict
   label:
     description:
@@ -115,15 +115,6 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"vm": "vm"},
-    },
     "update": {
         "query": {},
         "body": {
@@ -133,9 +124,18 @@ PAYLOAD_FORMAT = {
         },
         "path": {"port": "port", "vm": "vm"},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json

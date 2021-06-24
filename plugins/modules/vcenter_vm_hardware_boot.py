@@ -36,8 +36,8 @@ options:
     - IPV4
     - IPV6
     description:
-    - The {@name NetworkProtocol} defines the valid network boot protocols supported
-      when booting a virtual machine with {@link Type#EFI} firmware over the network.
+    - The C(network_protocol) defines the valid network boot protocols supported when
+      booting a virtual machine with {@link Type#EFI} firmware over the network.
     type: str
   retry:
     description:
@@ -60,7 +60,7 @@ options:
     - BIOS
     - EFI
     description:
-    - The {@name Type} defines the valid firmware types for a virtual machine.
+    - The C(type) defines the valid firmware types for a virtual machine.
     type: str
   vcenter_hostname:
     description:

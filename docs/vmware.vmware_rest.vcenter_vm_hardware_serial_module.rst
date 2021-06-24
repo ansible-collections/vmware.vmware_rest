@@ -74,7 +74,7 @@ Parameters
                 <td>
                         <div>Physical resource backing for the virtual serial port. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name BackingType} defines the valid backing types for a virtual serial port.</div>
+                        <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual serial port. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- FILE</div>
                         <div>- HOST_DEVICE</div>
@@ -82,12 +82,12 @@ Parameters
                         <div>- PIPE_CLIENT</div>
                         <div>- NETWORK_SERVER</div>
                         <div>- NETWORK_CLIENT</div>
-                        <div>- <code>file</code> (str): Path of the file backing the virtual serial port.</div>
-                        <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port. &lt;p&gt;</div>
-                        <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port.</div>
-                        <div>- <code>no_rx_loss</code> (bool): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun.  This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</div>
-                        <div>- <code>network_location</code> (str): URI specifying the location of the network service backing the virtual serial port. &lt;ul&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_SERVER}, this field is the location used by clients to connect to this server.  The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.&lt;/li&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_CLIENT}, this field is the location used by the virtual machine to connect to the remote server.&lt;/li&gt; &lt;/ul&gt;</div>
-                        <div>- <code>proxy</code> (str): Proxy service that provides network access to the network backing.  If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</div>
+                        <div>- <code>file</code> (str): Path of the file backing the virtual serial port. ([&#x27;present&#x27;])</div>
+                        <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port. ([&#x27;present&#x27;])</div>
+                        <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port. ([&#x27;present&#x27;])</div>
+                        <div>- <code>no_rx_loss</code> (bool): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun.  This allows the virtual machine to read all of the data transferred over the pipe with no data loss. ([&#x27;present&#x27;])</div>
+                        <div>- <code>network_location</code> (str): URI specifying the location of the network service backing the virtual serial port. &lt;ul&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_SERVER}, this field is the location used by clients to connect to this server.  The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.&lt;/li&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_CLIENT}, this field is the location used by the virtual machine to connect to the remote server.&lt;/li&gt; &lt;/ul&gt; ([&#x27;present&#x27;])</div>
+                        <div>- <code>proxy</code> (str): Proxy service that provides network access to the network backing.  If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>

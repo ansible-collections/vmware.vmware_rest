@@ -20,21 +20,21 @@ description: Reads a single environment variable from the guest operating system
 options:
   credentials:
     description:
-    - The guest authentication data.  See {@link Credentials}. This parameter is mandatory.
+    - The guest authentication data.  This parameter is mandatory.
     - 'Valid attributes are:'
     - ' - C(interactive_session) (bool): If {@term set}, the {@term operation} will
       interact with the logged-in desktop session in the guest. This requires that
       the logged-on user matches the user specified by the {@link Credentials}. This
-      is currently only supported for {@link Type#USERNAME_PASSWORD}.'
-    - ' - C(type) (str): Types of guest credentials'
+      is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''get'', ''list''])'
+    - ' - C(type) (str): Types of guest credentials ([''get'', ''list''])'
     - '   - Accepted values:'
     - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
-      this is the guest username.'
-    - ' - C(password) (str): password'
-    - ' - C(saml_token) (str): SAML Bearer Token'
+      this is the guest username. ([''get'', ''list''])'
+    - ' - C(password) (str): password ([''get'', ''list''])'
+    - ' - C(saml_token) (str): SAML Bearer Token ([''get'', ''list''])'
     required: true
     type: dict
   name:

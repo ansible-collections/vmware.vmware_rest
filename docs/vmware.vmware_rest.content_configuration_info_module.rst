@@ -137,13 +137,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Retrieve the content library configuration
-      vmware.vmware_rest.content_configuration_info:
 
 
 

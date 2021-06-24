@@ -123,7 +123,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1083
+      datacenter: datacenter-1112
       name: my_dc
     _ansible_no_log: 0
     ansible_loop_var: item
@@ -131,7 +131,7 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1083
+        datacenter: datacenter-1112
         folder: null
         force: 1
         name: null
@@ -142,7 +142,7 @@ results:
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1083
+      datacenter: datacenter-1112
       name: my_dc
     value: {}
   type: list
@@ -150,12 +150,12 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
     "delete": {
         "query": {"force": "force"},
         "body": {},
         "path": {"datacenter": "datacenter"},
     },
+    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

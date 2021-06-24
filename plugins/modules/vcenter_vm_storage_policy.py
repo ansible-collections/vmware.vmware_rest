@@ -74,12 +74,12 @@ options:
     - Storage policy to be used when reconfiguring the virtual machine home. This
       parameter is mandatory.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name PolicyType} defines the choices for how to specify
-      the policy to be associated with the virtual machine home''s directory.'
+    - ' - C(type) (str): The C(policy_type) defines the choices for how to specify
+      the policy to be associated with the virtual machine home''s directory. ([''present''])'
     - '   - Accepted values:'
     - '     - USE_SPECIFIED_POLICY'
     - '     - USE_DEFAULT_POLICY'
-    - ' - C(policy) (str): Storage Policy identification.'
+    - ' - C(policy) (str): Storage Policy identification. ([''present''])'
     required: true
     type: dict
 author:

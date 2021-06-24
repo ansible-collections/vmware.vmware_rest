@@ -76,7 +76,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>{@name FunctionType} Defines aggregation function This parameter is mandatory.</div>
+                        <div><code>function_type</code> Defines aggregation function This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -99,7 +99,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>{@name IntervalType} Defines interval between the values in hours and mins,                    for which aggregation will apply This parameter is mandatory.</div>
+                        <div><code>interval_type</code> Defines interval between the values in hours and mins,                    for which aggregation will apply This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>

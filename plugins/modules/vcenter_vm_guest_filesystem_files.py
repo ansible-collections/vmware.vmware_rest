@@ -21,35 +21,39 @@ description: Creates a temporary file. <p> Creates a new unique temporary file f
 options:
   credentials:
     description:
-    - The guest authentication data.  See {@link Credentials}. This parameter is mandatory.
+    - The guest authentication data.  This parameter is mandatory.
     - 'Valid attributes are:'
     - ' - C(interactive_session) (bool): If {@term set}, the {@term operation} will
       interact with the logged-in desktop session in the guest. This requires that
       the logged-on user matches the user specified by the {@link Credentials}. This
-      is currently only supported for {@link Type#USERNAME_PASSWORD}.'
-    - ' - C(type) (str): Types of guest credentials'
+      is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''absent'',
+      ''create_temporary'', ''move'', ''present''])'
+    - ' - C(type) (str): Types of guest credentials ([''absent'', ''create_temporary'',
+      ''move'', ''present''])'
     - '   - Accepted values:'
     - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
-      this is the guest username.'
-    - ' - C(password) (str): password'
-    - ' - C(saml_token) (str): SAML Bearer Token'
+      this is the guest username. ([''absent'', ''create_temporary'', ''move'', ''present''])'
+    - ' - C(password) (str): password ([''absent'', ''create_temporary'', ''move'',
+      ''present''])'
+    - ' - C(saml_token) (str): SAML Bearer Token ([''absent'', ''create_temporary'',
+      ''move'', ''present''])'
     required: true
     type: dict
   file_attributes:
     description:
-    - Specifies the different file attributes of the guest file to be changed. See
-      {@link FileAttributesUpdateSpec}. Required with I(state=[])
+    - Specifies the different file attributes of the guest file to be changed. Required
+      with I(state=[])
     - 'Valid attributes are:'
-    - ' - C(last_modified) (str): The date and time the file was last modified.'
-    - ' - C(last_accessed) (str): The date and time the file was last accessed.'
-    - ' - C(windows) (dict): Windows-specific file update information.'
+    - ' - C(last_modified) (str): The date and time the file was last modified. ([''present''])'
+    - ' - C(last_accessed) (str): The date and time the file was last accessed. ([''present''])'
+    - ' - C(windows) (dict): Windows-specific file update information. ([''present''])'
     - '   - Accepted keys:'
     - '     - hidden (boolean): The file is hidden.'
     - '     - read_only (boolean): The file is read-only.'
-    - ' - C(posix) (dict): Posix-specific file update information.'
+    - ' - C(posix) (dict): Posix-specific file update information. ([''present''])'
     - '   - Accepted keys:'
     - '     - owner_id (integer): The owner ID.'
     - '     - group_id (integer): The group ID.'
@@ -161,6 +165,15 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "update": {
+        "query": {},
+        "body": {
+            "credentials": "credentials",
+            "file_attributes": "file_attributes",
+            "path": "path",
+        },
+        "path": {"vm": "vm"},
+    },
     "create_temporary": {
         "query": {},
         "body": {
@@ -168,15 +181,6 @@ PAYLOAD_FORMAT = {
             "parent_path": "parent_path",
             "prefix": "prefix",
             "suffix": "suffix",
-        },
-        "path": {"vm": "vm"},
-    },
-    "update": {
-        "query": {},
-        "body": {
-            "credentials": "credentials",
-            "file_attributes": "file_attributes",
-            "path": "path",
         },
         "path": {"vm": "vm"},
     },

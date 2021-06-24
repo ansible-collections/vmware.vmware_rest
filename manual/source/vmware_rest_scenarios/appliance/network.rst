@@ -46,17 +46,6 @@ You can also use the ``interface_name`` parameter to just focus on one single en
       interface_name: nic0
 
 
-You can adjust the IPv4 network configuration of a NIC with with appliance_networking_interfaces_ipv4:
-
-.. ansible-task::
-
-  - name: Enforce the use of DHCP for nic0
-    vmware.vmware_rest.appliance_networking_interfaces_ipv4:
-      interface_name: nic0
-      mode: DHCP
-
-The appliance_networking_interfaces_ipv6 and appliance_networking_interfaces_ipv6_info allow you do the same with IPv6.
-
 DNS configuration
 =================
 

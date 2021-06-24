@@ -57,15 +57,15 @@ Parameters
                 <td>
                         <div>Ordered list of boot devices. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The {@name Type} defines the valid device types that may be used as bootable devices.</div>
-                        <div>This key is required.</div>
+                        <div>- <code>type</code> (str): The <code>type</code> defines the valid device types that may be used as bootable devices. ([&#x27;set&#x27;])</div>
+                        <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- CDROM</div>
                         <div>- DISK</div>
                         <div>- ETHERNET</div>
                         <div>- FLOPPY</div>
-                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry.</div>
-                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
+                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry. ([&#x27;set&#x27;])</div>
+                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order. ([&#x27;set&#x27;])</div>
                 </td>
             </tr>
             <tr>

@@ -24,39 +24,39 @@ options:
     description:
     - Boot configuration.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name Type} defines the valid firmware types for a virtual
-      machine.'
+    - ' - C(type) (str): The C(type) defines the valid firmware types for a virtual
+      machine. ([''present''])'
     - '   - Accepted values:'
     - '     - BIOS'
     - '     - EFI'
     - ' - C(efi_legacy_boot) (bool): Flag indicating whether to use EFI legacy boot
-      mode.'
-    - ' - C(network_protocol) (str): The {@name NetworkProtocol} defines the valid
-      network boot protocols supported when booting a virtual machine with {@link
-      Type#EFI} firmware over the network.'
+      mode. ([''present''])'
+    - ' - C(network_protocol) (str): The C(network_protocol) defines the valid network
+      boot protocols supported when booting a virtual machine with {@link Type#EFI}
+      firmware over the network. ([''present''])'
     - '   - Accepted values:'
     - '     - IPV4'
     - '     - IPV6'
     - ' - C(delay) (int): Delay in milliseconds before beginning the firmware boot
       process when the virtual machine is powered on.  This delay may be used to provide
       a time window for users to connect to the virtual machine console and enter
-      BIOS setup mode.'
+      BIOS setup mode. ([''present''])'
     - ' - C(retry) (bool): Flag indicating whether the virtual machine should automatically
-      retry the boot process after a failure.'
+      retry the boot process after a failure. ([''present''])'
     - ' - C(retry_delay) (int): Delay in milliseconds before retrying the boot process
-      after a failure; applicable only when {@link Info#retry} is true.'
+      after a failure; applicable only when {@link Info#retry} is true. ([''present''])'
     - ' - C(enter_setup_mode) (bool): Flag indicating whether the firmware boot process
       should automatically enter setup mode the next time the virtual machine boots.  Note
       that this flag will automatically be reset to false once the virtual machine
-      enters setup mode.'
+      enters setup mode. ([''present''])'
     type: dict
   boot_devices:
     description:
     - Boot device configuration.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name Type} defines the valid device types that may
-      be used as bootable devices.'
-    - '   This key is required.'
+    - ' - C(type) (str): The C(type) defines the valid device types that may be used
+      as bootable devices. ([''present''])'
+    - '   This key is required with [''present''].'
     - '   - Accepted values:'
     - '     - CDROM'
     - '     - DISK'
@@ -68,26 +68,29 @@ options:
     description:
     - List of CD-ROMs.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name HostBusAdapterType} defines the valid types of
-      host bus adapters that may be used for attaching a Cdrom to a virtual machine.'
+    - ' - C(type) (str): The C(host_bus_adapter_type) defines the valid types of host
+      bus adapters that may be used for attaching a Cdrom to a virtual machine. ([''present''])'
     - '   - Accepted values:'
     - '     - IDE'
     - '     - SATA'
-    - ' - C(ide) (dict): Address for attaching the device to a virtual IDE adapter.'
+    - ' - C(ide) (dict): Address for attaching the device to a virtual IDE adapter.
+      ([''present''])'
     - '   - Accepted keys:'
     - '     - primary (boolean): Flag specifying whether the device should be attached
       to the primary or secondary IDE adapter of the virtual machine.'
     - '     - master (boolean): Flag specifying whether the device should be the master
       or slave device on the IDE adapter.'
-    - ' - C(sata) (dict): Address for attaching the device to a virtual SATA adapter.'
+    - ' - C(sata) (dict): Address for attaching the device to a virtual SATA adapter.
+      ([''present''])'
     - '   - Accepted keys:'
     - '     - bus (integer): Bus number of the adapter to which the device should
       be attached.'
     - '     - unit (integer): Unit number of the device.'
-    - ' - C(backing) (dict): Physical resource backing for the virtual CD-ROM device.'
+    - ' - C(backing) (dict): Physical resource backing for the virtual CD-ROM device.
+      ([''present''])'
     - '   - Accepted keys:'
-    - '     - type (string): The {@name BackingType} defines the valid backing types
-      for a virtual CD-ROM device.'
+    - '     - type (string): The C(backing_type) defines the valid backing types for
+      a virtual CD-ROM device.'
     - 'Accepted value for this field:'
     - '       - C(ISO_FILE)'
     - '       - C(HOST_DEVICE)'
@@ -96,17 +99,16 @@ options:
       virtual CD-ROM device backing.'
     - '     - host_device (string): Name of the device that should be used as the
       virtual CD-ROM device backing.'
-    - '     - device_access_type (string): The {@name DeviceAccessType} defines the
-      valid device access types for a physical device packing of a virtual CD-ROM
-      device.'
+    - '     - device_access_type (string): The C(device_access_type) defines the valid
+      device access types for a physical device packing of a virtual CD-ROM device.'
     - 'Accepted value for this field:'
     - '       - C(EMULATION)'
     - '       - C(PASSTHRU)'
     - '       - C(PASSTHRU_EXCLUSIVE)'
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
-      be connected whenever the virtual machine is powered on.'
+      be connected whenever the virtual machine is powered on. ([''present''])'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
-      and disconnect the device.'
+      and disconnect the device. ([''present''])'
     elements: dict
     type: list
   cpu:
@@ -118,16 +120,17 @@ options:
       range of CPU counts is constrained by the configured guest operating system
       and virtual hardware version of the virtual machine. If the virtual machine
       is running, the number of CPU cores may only be increased if {@link Info#hotAddEnabled}
-      is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true.'
+      is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true.
+      ([''present''])'
     - ' - C(cores_per_socket) (int): New number of CPU cores per socket.  The number
       of CPU cores in the virtual machine must be a multiple of the number of cores
-      per socket.'
+      per socket. ([''present''])'
     - ' - C(hot_add_enabled) (bool): Flag indicating whether adding CPUs while the
       virtual machine is running is enabled. This field may only be modified if the
-      virtual machine is powered off.'
+      virtual machine is powered off. ([''present''])'
     - ' - C(hot_remove_enabled) (bool): Flag indicating whether removing CPUs while
       the virtual machine is running is enabled. This field may only be modified if
-      the virtual machine is powered off.'
+      the virtual machine is powered off. ([''present''])'
     type: dict
   datastore:
     description:
@@ -148,44 +151,48 @@ options:
     description:
     - Individual disk relocation map.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name HostBusAdapterType} defines the valid types of
-      host bus adapters that may be used for attaching a virtual storage device to
-      a virtual machine.'
+    - ' - C(type) (str): The C(host_bus_adapter_type) defines the valid types of host
+      bus adapters that may be used for attaching a virtual storage device to a virtual
+      machine. ([''present''])'
     - '   - Accepted values:'
     - '     - IDE'
     - '     - SCSI'
     - '     - SATA'
-    - ' - C(ide) (dict): Address for attaching the device to a virtual IDE adapter.'
+    - ' - C(ide) (dict): Address for attaching the device to a virtual IDE adapter.
+      ([''present''])'
     - '   - Accepted keys:'
     - '     - primary (boolean): Flag specifying whether the device should be attached
       to the primary or secondary IDE adapter of the virtual machine.'
     - '     - master (boolean): Flag specifying whether the device should be the master
       or slave device on the IDE adapter.'
-    - ' - C(scsi) (dict): Address for attaching the device to a virtual SCSI adapter.'
+    - ' - C(scsi) (dict): Address for attaching the device to a virtual SCSI adapter.
+      ([''present''])'
     - '   - Accepted keys:'
     - '     - bus (integer): Bus number of the adapter to which the device should
       be attached.'
     - '     - unit (integer): Unit number of the device.'
-    - ' - C(sata) (dict): Address for attaching the device to a virtual SATA adapter.'
+    - ' - C(sata) (dict): Address for attaching the device to a virtual SATA adapter.
+      ([''present''])'
     - '   - Accepted keys:'
     - '     - bus (integer): Bus number of the adapter to which the device should
       be attached.'
     - '     - unit (integer): Unit number of the device.'
     - ' - C(backing) (dict): Existing physical resource backing for the virtual disk.
-      Exactly one of {@name #backing} or {@name #newVmdk} must be specified.'
+      Exactly one of C(#backing) or C(#new_vmdk) must be specified. ([''present''])'
     - '   - Accepted keys:'
-    - '     - type (string): The {@name BackingType} defines the valid backing types
-      for a virtual disk.'
+    - '     - type (string): The C(backing_type) defines the valid backing types for
+      a virtual disk.'
     - 'Accepted value for this field:'
     - '       - C(VMDK_FILE)'
     - '     - vmdk_file (string): Path of the VMDK file backing the virtual disk.'
     - ' - C(new_vmdk) (dict): Specification for creating a new VMDK backing for the
-      virtual disk.  Exactly one of {@name #backing} or {@name #newVmdk} must be specified.'
+      virtual disk.  Exactly one of C(#backing) or C(#new_vmdk) must be specified.
+      ([''present''])'
     - '   - Accepted keys:'
     - '     - name (string): Base name of the VMDK file.  The name should not include
       the ''.vmdk'' file extension.'
     - '     - capacity (integer): Capacity of the virtual disk backing in bytes.'
-    - '     - storage_policy (object): The {@name StoragePolicySpec} {@term structure}
+    - '     - storage_policy (object): The C(storage_policy_spec) {@term structure}
       contains information about the storage policy that is to be associated the with
       VMDK file.'
     elements: dict
@@ -203,10 +210,11 @@ options:
     description:
     - List of floppy drives.
     - 'Valid attributes are:'
-    - ' - C(backing) (dict): Physical resource backing for the virtual floppy drive.'
+    - ' - C(backing) (dict): Physical resource backing for the virtual floppy drive.
+      ([''present''])'
     - '   - Accepted keys:'
-    - '     - type (string): The {@name BackingType} defines the valid backing types
-      for a virtual floppy drive.'
+    - '     - type (string): The C(backing_type) defines the valid backing types for
+      a virtual floppy drive.'
     - 'Accepted value for this field:'
     - '       - C(IMAGE_FILE)'
     - '       - C(HOST_DEVICE)'
@@ -216,9 +224,9 @@ options:
     - '     - host_device (string): Name of the device that should be used as the
       virtual floppy drive backing.'
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
-      be connected whenever the virtual machine is powered on.'
+      be connected whenever the virtual machine is powered on. ([''present''])'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
-      and disconnect the device.'
+      and disconnect the device. ([''present''])'
     elements: dict
     type: list
   guest_OS:
@@ -405,15 +413,15 @@ options:
     - WIN_XP_PRO
     - WIN_XP_PRO_64
     description:
-    - The {@name GuestOS} defines the valid guest operating system types used for
-      configuring a virtual machine. Required with I(state=['present'])
+    - The C(guest_o_s) defines the valid guest operating system types used for configuring
+      a virtual machine. Required with I(state=['present'])
     type: str
   guest_customization_spec:
     description:
     - Guest customization spec to apply to the virtual machine after the virtual machine
       is deployed.
     - 'Valid attributes are:'
-    - ' - C(name) (str): Name of the customization specification.'
+    - ' - C(name) (str): Name of the customization specification. ([''clone''])'
     type: dict
   hardware_version:
     choices:
@@ -434,9 +442,9 @@ options:
     - VMX_18
     - VMX_19
     description:
-    - The {@name Version} defines the valid virtual hardware versions for a virtual
-      machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware
-      versions (1003746)).
+    - The C(version) defines the valid virtual hardware versions for a virtual machine.
+      See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions
+      (1003746)).
     type: str
   memory:
     description:
@@ -447,12 +455,12 @@ options:
       hardware version of the virtual machine. If the virtual machine is running,
       this value may only be changed if {@link Info#hotAddEnabled} is true, and the
       new memory size must satisfy the constraints specified by {@link Info#hotAddIncrementSizeMiB}
-      and {@link Info#hotAddLimitMiB}.'
+      and {@link Info#hotAddLimitMiB}. ([''present''])'
     - ' - C(hot_add_enabled) (bool): Flag indicating whether adding memory while the
       virtual machine is running should be enabled. Some guest operating systems may
       consume more resources or perform less efficiently when they run on hardware
       that supports adding memory while the machine is running. This field may only
-      be modified if the virtual machine is not powered on.'
+      be modified if the virtual machine is not powered on. ([''present''])'
     type: dict
   name:
     description:
@@ -462,8 +470,8 @@ options:
     description:
     - List of Ethernet adapters.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name EmulationType} defines the valid emulation types
-      for a virtual Ethernet adapter.'
+    - ' - C(type) (str): The C(emulation_type) defines the valid emulation types for
+      a virtual Ethernet adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - E1000'
     - '     - E1000E'
@@ -472,23 +480,24 @@ options:
     - '     - VMXNET2'
     - '     - VMXNET3'
     - ' - C(upt_compatibility_enabled) (bool): Flag indicating whether Universal Pass-Through
-      (UPT) compatibility is enabled on this virtual Ethernet adapter.'
-    - ' - C(mac_type) (str): The {@name MacAddressType} defines the valid MAC address
-      origins for a virtual Ethernet adapter.'
+      (UPT) compatibility is enabled on this virtual Ethernet adapter. ([''present''])'
+    - ' - C(mac_type) (str): The C(mac_address_type) defines the valid MAC address
+      origins for a virtual Ethernet adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - MANUAL'
     - '     - GENERATED'
     - '     - ASSIGNED'
-    - ' - C(mac_address) (str): MAC address.'
+    - ' - C(mac_address) (str): MAC address. ([''present''])'
     - ' - C(pci_slot_number) (int): Address of the virtual Ethernet adapter on the
       PCI bus.  If the PCI address is invalid, the server will change when it the
-      VM is started or as the device is hot added.'
+      VM is started or as the device is hot added. ([''present''])'
     - ' - C(wake_on_lan_enabled) (bool): Flag indicating whether wake-on-LAN is enabled
-      on this virtual Ethernet adapter.'
-    - ' - C(backing) (dict): Physical resource backing for the virtual Ethernet adapter.'
+      on this virtual Ethernet adapter. ([''present''])'
+    - ' - C(backing) (dict): Physical resource backing for the virtual Ethernet adapter.
+      ([''present''])'
     - '   - Accepted keys:'
-    - '     - type (string): The {@name BackingType} defines the valid backing types
-      for a virtual Ethernet adapter.'
+    - '     - type (string): The C(backing_type) defines the valid backing types for
+      a virtual Ethernet adapter.'
     - 'Accepted value for this field:'
     - '       - C(STANDARD_PORTGROUP)'
     - '       - C(HOST_DEVICE)'
@@ -506,9 +515,9 @@ options:
       adapter is connected.  This field cannot be specified as no free ports exist
       before use.'
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
-      be connected whenever the virtual machine is powered on.'
+      be connected whenever the virtual machine is powered on. ([''present''])'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
-      and disconnect the device.'
+      and disconnect the device. ([''present''])'
     elements: dict
     type: list
   nics_to_update:
@@ -519,10 +528,11 @@ options:
     description:
     - List of parallel ports.
     - 'Valid attributes are:'
-    - ' - C(backing) (dict): Physical resource backing for the virtual parallel port.'
+    - ' - C(backing) (dict): Physical resource backing for the virtual parallel port.
+      ([''present''])'
     - '   - Accepted keys:'
-    - '     - type (string): The {@name BackingType} defines the valid backing types
-      for a virtual parallel port.'
+    - '     - type (string): The C(backing_type) defines the valid backing types for
+      a virtual parallel port.'
     - 'Accepted value for this field:'
     - '       - C(FILE)'
     - '       - C(HOST_DEVICE)'
@@ -531,9 +541,9 @@ options:
     - '     - host_device (string): Name of the device that should be used as the
       virtual parallel port backing.'
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
-      be connected whenever the virtual machine is powered on.'
+      be connected whenever the virtual machine is powered on. ([''present''])'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
-      and disconnect the device.'
+      and disconnect the device. ([''present''])'
     elements: dict
     type: list
   parallel_ports_to_update:
@@ -550,20 +560,21 @@ options:
     - Virtual machine placement information.
     - 'Valid attributes are:'
     - ' - C(folder) (str): Virtual machine folder into which the virtual machine should
-      be placed.'
+      be placed. ([''clone'', ''instant_clone'', ''present'', ''register'', ''relocate''])'
     - ' - C(resource_pool) (str): Resource pool into which the virtual machine should
-      be placed.'
+      be placed. ([''clone'', ''instant_clone'', ''present'', ''register'', ''relocate''])'
     - ' - C(host) (str): Host onto which the virtual machine should be placed. If
-      {@name #host} and {@name #resourcePool} are both specified, {@name #resourcePool}
-      must belong to {@name #host}. If {@name #host} and {@name #cluster} are both
-      specified, {@name #host} must be a member of {@name #cluster}.'
+      C(#host) and C(#resource_pool) are both specified, C(#resource_pool) must belong
+      to C(#host). If C(#host) and C(#cluster) are both specified, C(#host) must be
+      a member of C(#cluster). ([''clone'', ''present'', ''register'', ''relocate''])'
     - ' - C(cluster) (str): Cluster into which the virtual machine should be placed.
-      If {@name #cluster} and {@name #resourcePool} are both specified, {@name #resourcePool}
-      must belong to {@name #cluster}. If {@name #cluster} and {@name #host} are both
-      specified, {@name #host} must be a member of {@name #cluster}.'
+      If C(#cluster) and C(#resource_pool) are both specified, C(#resource_pool) must
+      belong to C(#cluster). If C(#cluster) and C(#host) are both specified, C(#host)
+      must be a member of C(#cluster). ([''clone'', ''present'', ''register'', ''relocate''])'
     - ' - C(datastore) (str): Datastore on which the virtual machine''s configuration
       state should be stored.  This datastore will also be used for any virtual disks
-      that are created as part of the virtual machine creation operation.'
+      that are associated with the virtual machine, unless individually overridden.
+      ([''clone'', ''instant_clone'', ''present'', ''relocate''])'
     type: dict
   power_on:
     description:
@@ -573,31 +584,31 @@ options:
     description:
     - List of SATA adapters.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name Type} defines the valid emulation types for a
-      virtual SATA adapter.'
+    - ' - C(type) (str): The C(type) defines the valid emulation types for a virtual
+      SATA adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - AHCI'
-    - ' - C(bus) (int): SATA bus number.'
-    - ' - C(pci_slot_number) (int): Address of the SATA adapter on the PCI bus.'
+    - ' - C(bus) (int): SATA bus number. ([''present''])'
+    - ' - C(pci_slot_number) (int): Address of the SATA adapter on the PCI bus. ([''present''])'
     elements: dict
     type: list
   scsi_adapters:
     description:
     - List of SCSI adapters.
     - 'Valid attributes are:'
-    - ' - C(type) (str): The {@name Type} defines the valid emulation types for a
-      virtual SCSI adapter.'
+    - ' - C(type) (str): The C(type) defines the valid emulation types for a virtual
+      SCSI adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - BUSLOGIC'
     - '     - LSILOGIC'
     - '     - LSILOGICSAS'
     - '     - PVSCSI'
-    - ' - C(bus) (int): SCSI bus number.'
+    - ' - C(bus) (int): SCSI bus number. ([''present''])'
     - ' - C(pci_slot_number) (int): Address of the SCSI adapter on the PCI bus.  If
       the PCI address is invalid, the server will change it when the VM is started
-      or as the device is hot added.'
-    - ' - C(sharing) (str): The {@name Sharing} defines the valid bus sharing modes
-      for a virtual SCSI adapter.'
+      or as the device is hot added. ([''present''])'
+    - ' - C(sharing) (str): The C(sharing) defines the valid bus sharing modes for
+      a virtual SCSI adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - NONE'
     - '     - VIRTUAL'
@@ -611,11 +622,12 @@ options:
     - ' - C(yield_on_poll) (bool): CPU yield behavior. If set to true, the virtual
       machine will periodically relinquish the processor if its sole task is polling
       the virtual serial port. The amount of time it takes to regain the processor
-      will depend on the degree of other virtual machine activity on the host.'
-    - ' - C(backing) (dict): Physical resource backing for the virtual serial port.'
+      will depend on the degree of other virtual machine activity on the host. ([''present''])'
+    - ' - C(backing) (dict): Physical resource backing for the virtual serial port.
+      ([''present''])'
     - '   - Accepted keys:'
-    - '     - type (string): The {@name BackingType} defines the valid backing types
-      for a virtual serial port.'
+    - '     - type (string): The C(backing_type) defines the valid backing types for
+      a virtual serial port.'
     - 'Accepted value for this field:'
     - '       - C(FILE)'
     - '       - C(HOST_DEVICE)'
@@ -642,9 +654,9 @@ options:
       backing.  If set, the virtual machine initiates a connection with the proxy
       service and forwards the traffic to the proxy.'
     - ' - C(start_connected) (bool): Flag indicating whether the virtual device should
-      be connected whenever the virtual machine is powered on.'
+      be connected whenever the virtual machine is powered on. ([''present''])'
     - ' - C(allow_guest_control) (bool): Flag indicating whether the guest can connect
-      and disconnect the device.'
+      and disconnect the device. ([''present''])'
     elements: dict
     type: list
   serial_ports_to_update:
@@ -669,12 +681,12 @@ options:
     type: str
   storage_policy:
     description:
-    - The {@name StoragePolicySpec} {@term structure} contains information about the
+    - The C(storage_policy_spec) {@term structure} contains information about the
       storage policy that is to be associated with the virtual machine home (which
       contains the configuration and log files). Required with I(state=['present'])
     - 'Valid attributes are:'
     - ' - C(policy) (str): Identifier of the storage policy which should be associated
-      with the virtual machine.'
+      with the virtual machine. ([''present''])'
     type: dict
   vcenter_hostname:
     description:
@@ -748,6 +760,16 @@ EXAMPLES = r"""
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
 
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+    - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
+
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
     filter_type: VIRTUAL_MACHINE
@@ -758,16 +780,6 @@ EXAMPLES = r"""
 - name: Set my_virtual_machine_folder
   set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
-
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -801,7 +813,7 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1103
+      vm: vm-1132
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -844,20 +856,20 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1103
+        vm: vm-1132
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1103
+      vm: vm-1132
     value: {}
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1107
+      vm: vm-1136
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -900,75 +912,64 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1107
+        vm: vm-1136
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1107
-    value: {}
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1108
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        bios_uuid: null
-        boot: null
-        boot_devices: null
-        cdroms: null
-        cpu: null
-        datastore: null
-        datastore_path: null
-        disconnect_all_nics: null
-        disks: null
-        disks_to_remove: null
-        disks_to_update: null
-        floppies: null
-        guest_OS: null
-        guest_customization_spec: null
-        hardware_version: null
-        memory: null
-        name: null
-        nics: null
-        nics_to_update: null
-        parallel_ports: null
-        parallel_ports_to_update: null
-        path: null
-        placement: null
-        power_on: null
-        sata_adapters: null
-        scsi_adapters: null
-        serial_ports: null
-        serial_ports_to_update: null
-        source: null
-        state: absent
-        storage_policy: null
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1108
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1108
+      vm: vm-1136
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
+            "name": "name",
+            "placement": "placement",
+            "power_on": "power_on",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
+            "name": "name",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
+            "placement": "placement",
+            "serial_ports_to_update": "serial_ports_to_update",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
+    },
     "create": {
         "query": {},
         "body": {
@@ -989,51 +990,6 @@ PAYLOAD_FORMAT = {
             "scsi_adapters": "scsi_adapters",
             "serial_ports": "serial_ports",
             "storage_policy": "storage_policy",
-        },
-        "path": {},
-    },
-    "instant_clone": {
-        "query": {},
-        "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
-            "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
-            "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
-            "source": "source",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "clone": {
-        "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
-            "source": "source",
-        },
-        "path": {},
-    },
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "register": {
-        "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
         },
         "path": {},
     },

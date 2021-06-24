@@ -76,7 +76,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name UpgradePolicy} defines the valid virtual hardware upgrade policies for a virtual machine.</div>
+                        <div>The <code>upgrade_policy</code> defines the valid virtual hardware upgrade policies for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -109,7 +109,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Version} defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                        <div>The <code>version</code> defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
                 </td>
             </tr>
             <tr>
@@ -232,7 +232,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Version} defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                        <div>The <code>version</code> defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
                 </td>
             </tr>
             <tr>

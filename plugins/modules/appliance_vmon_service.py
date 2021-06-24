@@ -115,7 +115,7 @@ value:
       id: vc.health.statuscode
     - args: []
       default_message: ''
-      id: vc.health.error.dbjob3
+      id: vc.health.error.dbjob2
     name_key: cis.vpxd.ServiceName
     startup_type: AUTOMATIC
     state: STARTED
@@ -124,6 +124,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "list_details": {"query": {}, "body": {}, "path": {}},
     "start": {"query": {}, "body": {}, "path": {"service": "service"}},
     "update": {
         "query": {},
@@ -132,7 +133,6 @@ PAYLOAD_FORMAT = {
     },
     "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
     "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "list_details": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

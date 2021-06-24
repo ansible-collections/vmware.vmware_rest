@@ -78,7 +78,7 @@ value:
   sample:
   - ip:
       ip_addresses: []
-    mac_address: 00:50:56:9c:ac:d1
+    mac_address: 00:50:56:9c:59:aa
     nic: '4000'
   type: list
 """

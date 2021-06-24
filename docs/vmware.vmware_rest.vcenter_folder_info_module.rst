@@ -127,7 +127,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Type} defines the type of a vCenter Server folder.  The type of a folder determines what what kinds of children can be contained in the folder.</div>
+                        <div>The <code>type</code> defines the type of a vCenter Server folder.  The type of a folder determines what what kinds of children can be contained in the folder.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_type</div>
                 </td>
             </tr>
@@ -275,7 +275,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Build a list of all the folders with the type VIRTUAL_MACHINE and called vm</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1111&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1139&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
                 </td>
             </tr>
     </table>

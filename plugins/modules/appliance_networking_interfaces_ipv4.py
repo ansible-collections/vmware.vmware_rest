@@ -39,7 +39,7 @@ options:
     - STATIC
     - UNCONFIGURED
     description:
-    - The {@name Mode} defines different IPv4 address assignment modes. This parameter
+    - The C(mode) defines different IPv4 address assignment modes. This parameter
       is mandatory.
     required: true
     type: str

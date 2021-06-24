@@ -105,7 +105,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The {@name Mode} defines different IPv4 address assignment modes. This parameter is mandatory.</div>
+                        <div>The <code>mode</code> defines different IPv4 address assignment modes. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>

@@ -27,7 +27,7 @@ options:
     - MAX
     - MIN
     description:
-    - '{@name FunctionType} Defines aggregation function This parameter is mandatory.'
+    - C(function_type) Defines aggregation function This parameter is mandatory.
     required: true
     type: str
   interval:
@@ -38,8 +38,8 @@ options:
     - MINUTES30
     - MINUTES5
     description:
-    - '{@name IntervalType} Defines interval between the values in hours and mins,                    for
-      which aggregation will apply This parameter is mandatory.'
+    - C(interval_type) Defines interval between the values in hours and mins,                    for
+      which aggregation will apply This parameter is mandatory.
     required: true
     type: str
   names:

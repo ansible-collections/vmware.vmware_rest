@@ -35,13 +35,14 @@ options:
     - information to export the profile.
     - 'Valid attributes are:'
     - ' - C(encryption_key) (str): Encryption Key to encrypt/decrypt profiles.'
-    - If unset encryption will not be used for the profile.
+    - If unset encryption will not be used for the profile. (['import_profile', 'validate'])
     - ' - C(description) (str): Custom description provided by the user.'
-    - If unset description will be empty.
+    - If unset description will be empty. (['import_profile', 'validate'])
     - ' - C(profiles) (list): Profiles to be exported/imported.'
     - If unset or empty, all profiles will be returned.
     - When clients pass a value of this structure as a parameter, the field must contain
-      the id of resources returned by M(appliance_infraprofile_configs).
+      the id of resources returned by M(appliance_infraprofile_configs). (['import_profile',
+      'validate'])
     type: dict
   profiles:
     description:
@@ -119,9 +120,9 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","version":"7.0.2.00000","creationTime":"2021-06-18T00:59:51+0000","profiles":{"ApplianceManagement":{"actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"action":"RESTART_SERVICE","version":"7.0","description":"Appliance
-    Mangment Service","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is shell
-    Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/applmgmt/appliance/localaccounts.conf":{"Email
+  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","creationTime":"2021-06-23T23:35:40+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"action":"RESTART_SERVICE","description":"Appliance
+    Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
+    shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/applmgmt/appliance/localaccounts.conf":{"Email
     Address used by Root for Password Reminder.":null},"/etc/sysconfig/clock":{"Time
     zone":"\"UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
     servers":["time.google.com"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail
@@ -137,6 +138,11 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "validate": {
+        "query": {},
+        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
+        "path": {},
+    },
     "export": {
         "query": {},
         "body": {
@@ -147,11 +153,6 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "import_profile": {
-        "query": {},
-        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
-        "path": {},
-    },
-    "validate": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},

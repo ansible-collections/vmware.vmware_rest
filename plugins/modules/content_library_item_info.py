@@ -133,60 +133,6 @@ EXAMPLES = r"""
   vmware.vmware_rest.content_library_item_info:
     library_id: '{{ sub_lib.id }}'
   register: result
-
-- name: create a content library pointing on the nfs share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
-
-- name: Adjust vpxd configuration
-  vmware.vmware_rest.appliance_vmon_service:
-    service: vpxd
-    startup_type: AUTOMATIC
-  register: result
-
-- name: Set datastore id
-  set_fact:
-    datastore_id: '{{ result.value[0].datastore }}'
-
-- name: Create a new local content library
-  vmware.vmware_rest.content_locallibrary:
-    name: local_library_001
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - datastore_id: '{{ datastore_id }}'
-      type: DATASTORE
-    state: present
-  register: ds_lib
-
-- name: Create subscribed library
-  content_subscribedlibrary:
-    name: sub_lib
-    subscription_info:
-      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
-      authentication_method: NONE
-      automatic_sync_enabled: false
-      on_demand: true
-    storage_backings:
-    - datastore_id: '{{ datastore_id }}'
-      type: DATASTORE
-  register: sub_lib
-
-- name: Ensure the OVA is here
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ sub_lib.id }}'
-  register: result
 """
 
 RETURN = r"""
@@ -197,16 +143,16 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2021-06-18T00:57:37.491Z'
+    creation_time: '2021-06-23T23:32:56.088Z'
     description: an OVF example
-    id: 7aedaad0-9274-4dd4-8af5-e5c4dd9e38eb
-    last_modified_time: '2021-06-18T00:57:37.691Z'
-    last_sync_time: '2021-06-18T00:57:37.690Z'
-    library_id: 64e4e0ec-8ef8-40dc-8a5d-79ecc27f23e4
+    id: 9f8398fd-b4c4-4bb4-afe5-8302dcdc4a2b
+    last_modified_time: '2021-06-23T23:32:56.552Z'
+    last_sync_time: '2021-06-23T23:32:56.551Z'
+    library_id: 899184df-f3ab-4284-ac9b-02407fd9536e
     metadata_version: '1'
     name: my_vm
     size: 0
-    source_id: d077c68b-78e9-484e-872f-71974382aacb
+    source_id: 2d564ff7-4b74-41d6-961a-7f892bb11fdb
     type: ovf
     version: '1'
   type: list

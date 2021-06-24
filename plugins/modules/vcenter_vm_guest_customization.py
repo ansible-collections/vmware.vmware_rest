@@ -29,23 +29,23 @@ options:
       is mandatory.
     - 'Valid attributes are:'
     - ' - C(windows_config) (dict): Guest customization specification for a Windows
-      guest operating system'
+      guest operating system ([''set''])'
     - '   - Accepted keys:'
-    - '     - reboot (string): The {@name RebootOption} specifies what should be done
+    - '     - reboot (string): The C(reboot_option) specifies what should be done
       to the guest after the customization.'
     - 'Accepted value for this field:'
     - '       - C(REBOOT)'
     - '       - C(NO_REBOOT)'
     - '       - C(SHUTDOWN)'
     - '     - sysprep (object): Customization settings like user details, administrator
-      details, etc for the windows guest operating system. Exactly one of {@name #sysprep}
-      or {@name #sysprepXml} must be specified.'
+      details, etc for the windows guest operating system. Exactly one of C(#sysprep)
+      or C(#sysprep_xml) must be specified.'
     - '     - sysprep_xml (string): All settings specified in a XML format. This is
       the content of a typical answer.xml file that is used by System administrators
       during the Windows image customization. Check https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs
-      Exactly one of {@name #sysprep} or {@name #sysprepXml} must be specified.'
+      Exactly one of C(#sysprep) or C(#sysprep_xml) must be specified.'
     - ' - C(linux_config) (dict): Guest customization specification for a linux guest
-      operating system'
+      operating system ([''set''])'
     - '   - Accepted keys:'
     - '     - hostname (object): The computer name of the (Windows) virtual machine.
       A computer name may contain letters (A-Z), numbers(0-9) and hyphens (-) but
@@ -56,10 +56,10 @@ options:
     - '     - domain (string): The fully qualified domain name.'
     - '     - time_zone (string): The case-sensitive time zone, such as Europe/Sofia.
       Valid time zone values are based on the tz (time zone) database used by Linux.
-      The values are strings ({@term string}) in the form "Area/Location," in which
-      Area is a continent or ocean name, and Location is the city, island, or other
-      regional designation. See the https://kb.vmware.com/kb/2145518 for a list of
-      supported time zones for different versions in Linux.'
+      The values are strings  in the form "Area/Location," in which Area is a continent
+      or ocean name, and Location is the city, island, or other regional designation.
+      See the https://kb.vmware.com/kb/2145518 for a list of supported time zones
+      for different versions in Linux.'
     - '     - script_text (string): The script to run before and after Linux guest
       customization.<br> The max size of the script is 1500 bytes. As long as the
       script (shell, perl, python...) has the right "#!" in the header, it is supported.
@@ -82,12 +82,12 @@ options:
     - ' - C(dns_suffix_list) (list): List of name resolution suffixes for the virtual
       network adapter. This list applies to both Windows and Linux guest customization.
       For Linux, this setting is global, whereas in Windows, this setting is listed
-      on a per-adapter basis.'
+      on a per-adapter basis. ([''set''])'
     - ' - C(dns_servers) (list): List of DNS servers, for a virtual network adapter
       with a static IP address. If this list is empty, then the guest operating system
       is expected to use a DHCP server to get its DNS server settings. These settings
       configure the virtual machine to use the specified DNS servers. These DNS server
-      settings are listed in the order of preference.'
+      settings are listed in the order of preference. ([''set''])'
     required: true
     type: dict
   interfaces:
@@ -97,9 +97,11 @@ options:
       {@link IPSettings}. May be empty if there are no network adapters, else should
       match number of network adapters configured for the VM. This parameter is mandatory.
     - 'Valid attributes are:'
-    - ' - C(mac_address) (str): The MAC address of a network adapter being customized.'
-    - ' - C(adapter) (dict): The IP settings for the associated virtual network adapter.'
-    - '   This key is required.'
+    - ' - C(mac_address) (str): The MAC address of a network adapter being customized.
+      ([''set''])'
+    - ' - C(adapter) (dict): The IP settings for the associated virtual network adapter.
+      ([''set''])'
+    - '   This key is required with [''set''].'
     - '   - Accepted keys:'
     - '     - ipv4 (object): Specification to configure IPv4 address, subnet mask
       and gateway info for this virtual network adapter.'

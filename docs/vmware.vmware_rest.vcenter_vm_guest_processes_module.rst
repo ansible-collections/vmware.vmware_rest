@@ -53,7 +53,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The arguments to the program. Characters which must be escaped to the shell should also be escaped in {@name #arguments}. In Linux and Solaris guest operating systems, stdio redirection arguments may be used. For Windows, stdio redirection can be added to the argments if {@name #path} is prefixed with &lt;code&gt;c:\windows\system32\cmd.exe /c&lt;/code&gt;.</div>
+                        <div>The arguments to the program. Characters which must be escaped to the shell should also be escaped in <code>#arguments</code>. In Linux and Solaris guest operating systems, stdio redirection arguments may be used. For Windows, stdio redirection can be added to the argments if <code>#path</code> is prefixed with &lt;code&gt;c:\windows\system32\cmd.exe /c&lt;/code&gt;.</div>
                 </td>
             </tr>
             <tr>
@@ -68,16 +68,16 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The guest authentication data.  See {@link Credentials}. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>The guest authentication data.  Required with <em>state=[&#x27;absent&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}.</div>
-                        <div>- <code>type</code> (str): Types of guest credentials</div>
+                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;absent&#x27;])</div>
+                        <div>- <code>type</code> (str): Types of guest credentials ([&#x27;absent&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- USERNAME_PASSWORD</div>
                         <div>- SAML_BEARER_TOKEN</div>
-                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username.</div>
-                        <div>- <code>password</code> (str): password</div>
-                        <div>- <code>saml_token</code> (str): SAML Bearer Token</div>
+                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username. ([&#x27;absent&#x27;])</div>
+                        <div>- <code>password</code> (str): password ([&#x27;absent&#x27;])</div>
+                        <div>- <code>saml_token</code> (str): SAML Bearer Token ([&#x27;absent&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -107,7 +107,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The absolute path to the program to start. For Linux guest operating systems, /bin/bash is used to start the program. For Solaris guest operating systems, if /bin/bash exists, its used to start the program, otherwise /bin/sh is used. If /bin/sh is used, then the process ID returned by {@link Processes#create} will be that of the shell used to start the program, rather than the program itself, due to the differences in how /bin/sh and /bin/bash work.  This PID will still be usable for watching the process with {@link Processes#list} to find its exit code and elapsed time. For Windows, no shell is used. Using a simple batch file instead by prepending &lt;code&gt;c:\windows\system32\cmd.exe /c&lt;/code&gt; will allow stdio redirection to work if passed in the {@name #arguments} parameter. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The absolute path to the program to start. For Linux guest operating systems, /bin/bash is used to start the program. For Solaris guest operating systems, if /bin/bash exists, its used to start the program, otherwise /bin/sh is used. If /bin/sh is used, then the process ID returned by process will be that of the shell used to start the program, rather than the program itself, due to the differences in how /bin/sh and /bin/bash work.  This PID will still be usable for watching the process with {@link Processes#list} to find its exit code and elapsed time. For Windows, no shell is used. Using a simple batch file instead by prepending &lt;code&gt;c:\windows\system32\cmd.exe /c&lt;/code&gt; will allow stdio redirection to work if passed in the <code>#arguments</code> parameter. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
