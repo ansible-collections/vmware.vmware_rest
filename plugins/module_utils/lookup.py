@@ -436,6 +436,9 @@ class Lookup:
         result = ''
         filters = {}
 
+        if not object_path:
+            return ''
+
         # Split object_path for transversal
         self._options['_terms'] = object_path
         object_path = self.replace_space(object_path)

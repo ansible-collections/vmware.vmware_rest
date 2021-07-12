@@ -57,7 +57,7 @@ options:
         type: bool
 author:
     - Alina Buzachis <@alinabuzachis>
-version_added: 1.0.1
+version_added: 2.0.1
 requirements:
     - vSphere 7.0.2 or greater
     - python >= 3.6
