@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 # Copyright: (c) 2021, Alina Buzachis <@alinabuzachis>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -464,7 +462,7 @@ class Lookup:
                 filters["names"] = _path[-1]
             else:
                 filters["names"] = ''
-            result, _ = await self._get_cluster_moid(_path, filters)
+            result, _obj_path = await self._get_cluster_moid(_path, filters)
 
         if object_type in ('datastore', 'network'):
             filters = self._init_filter()
@@ -472,12 +470,12 @@ class Lookup:
             result = await self._get_subset_moid(_path, filters)
 
         if object_type == 'resource_pool':
-            result, _ = await self._helper_get_resource_pool_moid(_path, filters)
+            result, _obj_path = await self._helper_get_resource_pool_moid(_path, filters)
 
         if object_type == 'vm':
             result = await self._get_subset_moid(_path, filters)
 
         if object_type == 'host':
-            result, _ = await self._get_host_moid(_path, filters)
+            result, _obj_path = await self._get_host_moid(_path, filters)
 
         return result
