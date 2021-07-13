@@ -34,11 +34,10 @@ EXAMPLES = r'''
         vcenter_password: "1234"
 
 - name: lookup MoID of the object
-  debug: msg="{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources/my_resource_pool'},
-                        **connection_args) }}"
+  debug: msg="{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources/my_resource_pool', **connection_args) }}"
 
 - name: lookup MoID of the object inside the path
-  debug: msg="{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources/'}) }}"
+  debug: msg="{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources/') }}"
 '''
 
 
@@ -46,6 +45,7 @@ RETURN = r'''
 _raw:
     description: MoID of the vSphere resource pool object
     type: str
+    sample: resgroup-1008
 '''
 
 
@@ -63,4 +63,4 @@ class LookupModule(LookupBase):
         self.set_option('object_type', 'resource_pool')
         loop = asyncio.get_event_loop()
 
-        return loop.run_until_complete(asyncio.gather(self.entry_point(terms, self._options)))
+        return loop.run_until_complete(asyncio.gather(Lookup.entry_point(terms, self._options)))

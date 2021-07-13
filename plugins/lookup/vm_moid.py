@@ -34,11 +34,10 @@ EXAMPLES = r'''
         vcenter_password: "1234"
 
 - name: lookup MoID of the object
-  debug: msg="{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/host/my_cluster/esxi1.test/test_vm1'},
-                        **connection_args) }}"
+  debug: msg="{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/host/my_cluster/esxi1.test/test_vm1', **connection_args) }}"
 
 - name: lookup MoID of the object inside the path
-  debug: msg="{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/'}) }}"
+  debug: msg="{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/') }}"
 '''
 
 
@@ -46,6 +45,7 @@ RETURN = r'''
 _raw:
     description: MoID of the vSphere vm object
     type: str
+    sample: vm-1026
 '''
 
 
@@ -63,4 +63,4 @@ class LookupModule(LookupBase):
         self.set_option('object_type', 'vm')
         loop = asyncio.get_event_loop()
 
-        return loop.run_until_complete(asyncio.gather(self.entry_point(terms, self._options)))
+        return loop.run_until_complete(asyncio.gather(Lookup.entry_point(terms, self._options)))
