@@ -189,7 +189,7 @@ class Lookup:
             return ''
         if result and len(result) > 1:
             raise exceptions.AnsibleError("More than one object available: [%s]."
-                                          % ", ".join(list(item[object_type] for item in result)))
+                                          % ", ".join(list(f"{item['name']} => {item[object_type]}" for item in result)))
         try:
             object_moid = result[0][object_type]
         except (TypeError, KeyError, IndexError) as e:
