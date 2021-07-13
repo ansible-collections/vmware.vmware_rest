@@ -107,6 +107,8 @@ from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_native
 
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import gen_args
+from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import EmbeddedModuleFailure
+from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import open_session
 
 
 def get_credentials(**options):
@@ -122,6 +124,38 @@ def get_credentials(**options):
 class Lookup:
     def __init__(self, options):
         self._options = options
+
+    @classmethod
+    async def entry_point(cls, terms, options):
+        session = None
+
+        if not options.get("vcenter_hostname"):
+            raise AnsibleError("vcenter_hostname cannot be empty")
+        if not options.get("vcenter_username"):
+            raise AnsibleError("vcenter_username cannot be empty")
+        if not options.get("vcenter_password"):
+            raise AnsibleError("vcenter_password cannot be empty")
+
+        try:
+            session = await open_session(
+                vcenter_hostname=options.get("vcenter_hostname"),
+                vcenter_username=options.get("vcenter_username"),
+                vcenter_password=options.get("vcenter_password"),
+                validate_certs=bool(options.get("vcenter_validate_certs")),
+                log_file=options.get("vcenter_rest_log_file"),
+            )
+        except EmbeddedModuleFailure as e:
+            raise AnsibleError("Error connecting: %s" % to_native(e))
+
+        lookup = cls(options)
+        lookup._options["session"] = session
+
+        if not terms:
+            raise AnsibleError("No object has been specified.")
+
+        task = asyncio.ensure_future(lookup.moid(terms[0]))
+
+        return await task
 
     async def fetch(self, url):
         async with self._options['session'].get(url) as response:
