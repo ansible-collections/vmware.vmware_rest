@@ -102,6 +102,7 @@ INVENTORY = {
 
 import asyncio
 import os
+import importlib
 
 from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_native
@@ -109,6 +110,10 @@ from ansible.module_utils._text import to_native
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import gen_args
 from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import EmbeddedModuleFailure
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import open_session
+
+exceptions = importlib.import_module(
+        "ansible.errors"
+    )
 
 
 def get_credentials(**options):
@@ -130,11 +135,11 @@ class Lookup:
         session = None
 
         if not options.get("vcenter_hostname"):
-            raise AnsibleError("vcenter_hostname cannot be empty")
+            raise exceptions.AnsibleError("vcenter_hostname cannot be empty")
         if not options.get("vcenter_username"):
-            raise AnsibleError("vcenter_username cannot be empty")
+            raise exceptions.AnsibleError("vcenter_username cannot be empty")
         if not options.get("vcenter_password"):
-            raise AnsibleError("vcenter_password cannot be empty")
+            raise exceptions.AnsibleError("vcenter_password cannot be empty")
 
         try:
             session = await open_session(
@@ -145,13 +150,13 @@ class Lookup:
                 log_file=options.get("vcenter_rest_log_file"),
             )
         except EmbeddedModuleFailure as e:
-            raise AnsibleError("Error connecting: %s" % to_native(e))
+            raise exceptions.AnsibleError("Error connecting: %s" % to_native(e))
 
         lookup = cls(options)
         lookup._options["session"] = session
 
         if not terms:
-            raise AnsibleError("No object has been specified.")
+            raise exceptions.AnsibleError("No object has been specified.")
 
         task = asyncio.ensure_future(lookup.moid(terms[0]))
 
@@ -168,7 +173,7 @@ class Lookup:
             if object_type == 'resource_pool':
                 object_type = object_type.replace('_', '-')
         except KeyError:
-            raise AnsibleError(
+            raise exceptions.AnsibleError(
                 "object_type must be one of [%s]." % ", ".join(list(INVENTORY.keys()))
             )
 
@@ -183,12 +188,12 @@ class Lookup:
         if not result or object_name and object_name not in result[0].values():
             return ''
         if result and len(result) > 1:
-            raise AnsibleError("More than one object available: [%s]."
-                               % ", ".join(list(item[object_type] for item in result)))
+            raise exceptions.AnsibleError("More than one object available: [%s]."
+                                          % ", ".join(list(item[object_type] for item in result)))
         try:
             object_moid = result[0][object_type]
         except (TypeError, KeyError, IndexError) as e:
-            raise AnsibleError(to_native(e))
+            raise exceptions.AnsibleError(to_native(e))
         return object_moid
 
     def _init_filter(self):
