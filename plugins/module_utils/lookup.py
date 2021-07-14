@@ -1,9 +1,9 @@
+
 # Copyright: (c) 2021, Alina Buzachis <@alinabuzachis>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 
 from __future__ import absolute_import, division, print_function
-
 
 __metaclass__ = type
 
@@ -185,6 +185,11 @@ class Lookup:
     def ensure_result(result, object_type, object_name=None):
         if not result or object_name and object_name not in result[0].values():
             return ''
+
+        def _filter_result(result):
+            return [obj for obj in result if '%2f' not in obj['name']]
+
+        result = _filter_result(result)
         if result and len(result) > 1:
             raise AnsibleLookupError("More than one object available: [%s]."
                                      % ", ".join(list(f"{item['name']} => {item[object_type]}" for item in result)))
@@ -202,14 +207,23 @@ class Lookup:
     async def _get_datacenter_moid(self, path):
         filters = {}
         dc_name = ''
+        dc_moid = ''
         _result = ''
+        folder_moid = ''
+        _path = path
 
-        if path:
-            dc_name = path[0]
+        # Retrieve folders MoID if any
+        folder_moid, _path = await self._get_folder_moid(path, filters)
+
+        if _path:
+            dc_name = _path[0]
 
         filters['names'] = dc_name
+        filters['folders'] = folder_moid
         _result = await self._helper_fetch('datacenter', filters)
-        self._options['dc_moid'] = self.ensure_result(_result, 'datacenter', dc_name)
+        dc_moid = self.ensure_result(_result, 'datacenter', dc_name)
+
+        return dc_moid, _path
 
     async def _fetch_result(self, object_path, object_type, filters):
         _result = ''
@@ -404,10 +418,10 @@ class Lookup:
         # GET MoID of all the objects specified in the path
         filters['names'] = list(set(object_path))
 
-        if object_type == 'vm':
+        if self._options['object_type'] == 'vm':
             filters['type'] = 'VIRTUAL_MACHINE'
-        elif object_type not in ('resource_pool', 'folder', 'cluster'):
-            filters['type'] = object_type.upper()  # HOST, DATASTORE, DATACENTER, NETWORK
+        elif self._options['object_type'] not in ('resource_pool', 'cluster', 'folder'):
+            filters['type'] = self._options['object_type'].upper()  # HOST, DATASTORE, DATACENTER, NETWORK
 
         return await self._helper_fetch(object_type, filters)
 
@@ -417,7 +431,6 @@ class Lookup:
             # GET MoID of all the objects specified in the path
             result = []
             objects_moid = await self.get_all_objects_path_moid(object_path, object_type, filters)
-
             if not objects_moid:
                 return ''
             elif len(objects_moid) == 1:
@@ -461,8 +474,9 @@ class Lookup:
                 result = objects_moid
             return result
 
-        # Update parent_object
-        parent_object = result[-1][object_type]
+        if result:
+            # Update parent_object
+            parent_object = result[-1][object_type]
         return await self.recursive_folder_or_rp_moid_search(object_path[1:], object_type, filters,
                                                              parent_object, objects_moid[1:], result)
 
@@ -470,6 +484,7 @@ class Lookup:
         folder_moid = ''
         result = ''
         filters = {}
+        _path = []
 
         if not object_path:
             return ''
@@ -481,14 +496,17 @@ class Lookup:
         path = tuple(filter(None, object_path.split('/')))
 
         # Retrieve datacenter MoID
-        await self._get_datacenter_moid(path)
-
-        if object_type == 'datacenter' or not self._options['dc_moid']:
-            return self._options['dc_moid']
+        dc_moid, _path = await self._get_datacenter_moid(path)
+        if object_type == 'datacenter' or not dc_moid:
+            return dc_moid
+        self._options['dc_moid'] = dc_moid
         filters['datacenters'] = self._options['dc_moid']
 
+        if _path:
+            _path = _path[1:]
+
         # Retrieve folders MoID
-        folder_moid, _path = await self._get_folder_moid(path[1:], filters)
+        folder_moid, _path = await self._get_folder_moid(_path, filters)
         if object_type == 'folder' or not folder_moid:
             return folder_moid
         filters['folders'] = folder_moid

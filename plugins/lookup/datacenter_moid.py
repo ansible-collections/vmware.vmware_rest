@@ -37,7 +37,7 @@ EXAMPLES = r'''
   debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc', **connection_args) }}"
 
 - name: lookup MoID of the object inside the path
-  debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/') }}"
+  debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_folder/') }}"
 '''
 
 
