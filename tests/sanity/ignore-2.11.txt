@@ -1378,3 +1378,4 @@ plugins/module_utils/lookup.py future-import-boilerplate!skip
 plugins/module_utils/lookup.py metaclass-boilerplate!skip
 plugins/module_utils/lookup.py validate-modules:missing-if-name-main
 plugins/module_utils/lookup.py validate-modules:missing-main-call
+plugins/module_utils/lookup.py pylint:ansible-bad-module-import

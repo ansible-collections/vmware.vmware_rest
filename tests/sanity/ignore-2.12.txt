@@ -1240,3 +1240,4 @@ plugins/module_utils/lookup.py import-2.7!skip
 plugins/module_utils/lookup.py import-3.5!skip
 plugins/module_utils/lookup.py future-import-boilerplate!skip
 plugins/module_utils/lookup.py metaclass-boilerplate!skip
+plugins/module_utils/lookup.py pylint:ansible-bad-module-import
