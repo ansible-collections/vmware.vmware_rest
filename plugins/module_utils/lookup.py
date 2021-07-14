@@ -8,6 +8,20 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
+import asyncio
+import os
+
+from ansible.module_utils._text import to_native
+
+from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import EmbeddedModuleFailure
+from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import open_session, gen_args
+
+try:
+    from ansible.errors import AnsibleLookupError
+except ImportError:
+    pass
+
+
 INVENTORY = {
     "resource_pool": {
         "list": {
@@ -100,22 +114,6 @@ INVENTORY = {
 }
 
 
-import asyncio
-import os
-import importlib
-
-from ansible.module_utils._text import to_native
-
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import gen_args
-from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import EmbeddedModuleFailure
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import open_session
-
-try:
-    from ansible.errors import AnsibleLookupError
-except ImportError:
-    pass
-
-
 def get_credentials(**options):
     credentials = {}
     credentials['vcenter_hostname'] = options.get('vcenter_hostname') or os.getenv('VMWARE_HOST')
@@ -150,7 +148,7 @@ class Lookup:
                 log_file=options.get("vcenter_rest_log_file"),
             )
         except EmbeddedModuleFailure as e:
-            raise AnsibleLookupError("Error connecting: %s" % to_native(e))
+            raise AnsibleLookupError(f'Unable to connect to vCenter or ESXi API at {options.get("vcenter_hostname")}: {to_native(e)}')
 
         lookup = cls(options)
         lookup._options["session"] = session
@@ -189,7 +187,7 @@ class Lookup:
             return ''
         if result and len(result) > 1:
             raise AnsibleLookupError("More than one object available: [%s]."
-                               % ", ".join(list(f"{item['name']} => {item[object_type]}" for item in result)))
+                                     % ", ".join(list(f"{item['name']} => {item[object_type]}" for item in result)))
         try:
             object_moid = result[0][object_type]
         except (TypeError, KeyError, IndexError) as e:

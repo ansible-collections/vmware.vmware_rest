@@ -53,14 +53,16 @@ import asyncio
 
 from ansible.plugins.lookup import LookupBase
 
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.lookup import Lookup
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.lookup import get_credentials
+from ansible_collections.vmware.vmware_rest.plugins.module_utils.lookup import (
+    Lookup,
+    get_credentials
+)
 
 
 class LookupModule(LookupBase):
     def run(self, terms, variables, **kwargs):
         self.set_options(var_options=variables, direct=get_credentials(**kwargs))
-        self.set_option('object_type', 'folder')
+        self.set_option('object_type', 'cluster')
         loop = asyncio.get_event_loop()
 
         return loop.run_until_complete(asyncio.gather(Lookup.entry_point(terms, self._options)))

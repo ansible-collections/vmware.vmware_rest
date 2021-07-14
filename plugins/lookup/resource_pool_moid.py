@@ -53,8 +53,10 @@ import asyncio
 
 from ansible.plugins.lookup import LookupBase
 
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.lookup import Lookup
-from ansible_collections.vmware.vmware_rest.plugins.module_utils.lookup import get_credentials
+from ansible_collections.vmware.vmware_rest.plugins.module_utils.lookup import (
+    Lookup,
+    get_credentials
+)
 
 
 class LookupModule(LookupBase):
