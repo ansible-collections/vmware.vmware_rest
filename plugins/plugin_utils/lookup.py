@@ -12,14 +12,10 @@ import asyncio
 import os
 
 from ansible.module_utils._text import to_native
+from ansible.errors import AnsibleLookupError
 
 from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import EmbeddedModuleFailure
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import open_session, gen_args
-
-try:
-    from ansible.errors import AnsibleLookupError
-except ImportError:
-    pass
 
 
 INVENTORY = {
