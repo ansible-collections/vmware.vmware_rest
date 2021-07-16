@@ -1371,5 +1371,7 @@ plugins/modules/appliance_vmon_service.py validate-modules:missing-main-call
 plugins/plugin_utils/lookup.py compile-2.6!skip
 plugins/plugin_utils/lookup.py compile-2.7!skip
 plugins/plugin_utils/lookup.py compile-3.5!skip
+plugins/plugin_utils/lookup.py import-2.7!skip
+plugins/plugin_utils/lookup.py import-3.5!skip
 plugins/plugin_utils/lookup.py future-import-boilerplate!skip
 plugins/plugin_utils/lookup.py metaclass-boilerplate!skip

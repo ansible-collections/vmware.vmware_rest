@@ -49,8 +49,6 @@ _raw:
 '''
 
 
-import asyncio
-
 from ansible.plugins.lookup import LookupBase
 
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
@@ -61,6 +59,8 @@ from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
 
 class LookupModule(LookupBase):
     def run(self, terms, variables, **kwargs):
+        import asyncio
+
         self.set_options(var_options=variables, direct=get_credentials(**kwargs))
         self.set_option('object_type', 'cluster')
         loop = asyncio.get_event_loop()
