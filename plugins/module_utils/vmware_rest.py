@@ -85,6 +85,7 @@ async def open_session(
 
     session_id = json["value"]
     session = aiohttp.ClientSession(
+        timeout=aiohttp.ClientTimeout(total=600),
         connector=connector,
         headers={
             "vmware-api-session-id": session_id,
