@@ -7,7 +7,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 lookup: host_moid
 short_description: Look up MoID for vSphere host objects using vCenter REST API
 description:
@@ -21,10 +21,10 @@ requirements:
     - aiohttp
 extends_documentation_fragment:
 - vmware.vmware_rest.moid
-'''
+"""
 
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 # lookup sample
 - name: set connection info
   set_fact:
@@ -38,22 +38,22 @@ EXAMPLES = r'''
 
 - name: lookup MoID of the object inside the path
   debug: msg="{{ lookup('vmware.vmware_rest.host_moid', '/my_dc/host/my_cluster/') }}"
-'''
+"""
 
 
-RETURN = r'''
+RETURN = r"""
 _raw:
     description: MoID of the vSphere host object
     type: str
     sample: host-1014
-'''
+"""
 
 
 from ansible.plugins.lookup import LookupBase
 
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
     Lookup,
-    get_credentials
+    get_credentials,
 )
 
 
@@ -62,7 +62,9 @@ class LookupModule(LookupBase):
         import asyncio
 
         self.set_options(var_options=variables, direct=get_credentials(**kwargs))
-        self.set_option('object_type', 'host')
+        self.set_option("object_type", "host")
         loop = asyncio.get_event_loop()
 
-        return loop.run_until_complete(asyncio.gather(Lookup.entry_point(terms, self._options)))
+        return loop.run_until_complete(
+            asyncio.gather(Lookup.entry_point(terms, self._options))
+        )

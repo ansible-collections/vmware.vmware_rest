@@ -7,7 +7,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 lookup: datastore_moid
 short_description: Look up MoID for vSphere datastore objects using vCenter REST API
 description:
@@ -21,10 +21,10 @@ requirements:
     - aiohttp
 extends_documentation_fragment:
 - vmware.vmware_rest.moid
-'''
+"""
 
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 # lookup sample
 - name: set connection info
   set_fact:
@@ -38,22 +38,22 @@ EXAMPLES = r'''
 
 - name: lookup MoID of the object inside the path
   debug: msg="{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/') }}"
-'''
+"""
 
 
-RETURN = r'''
+RETURN = r"""
 _raw:
     description: MoID of the vSphere datastore object
     type: str
     sample: datastore-1019
-'''
+"""
 
 
 from ansible.plugins.lookup import LookupBase
 
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
     Lookup,
-    get_credentials
+    get_credentials,
 )
 
 
@@ -62,7 +62,9 @@ class LookupModule(LookupBase):
         import asyncio
 
         self.set_options(var_options=variables, direct=get_credentials(**kwargs))
-        self.set_option('object_type', 'datastore')
+        self.set_option("object_type", "datastore")
         loop = asyncio.get_event_loop()
 
-        return loop.run_until_complete(asyncio.gather(Lookup.entry_point(terms, self._options)))
+        return loop.run_until_complete(
+            asyncio.gather(Lookup.entry_point(terms, self._options))
+        )

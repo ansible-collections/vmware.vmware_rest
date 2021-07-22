@@ -2,12 +2,13 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 
 class ModuleDocFragment(object):
     # Parameters for the Lookup Managed Object Reference (MoID) plugins
-    DOCUMENTATION = r'''
+    DOCUMENTATION = r"""
     options:
         _terms:
             description: Path to query.
@@ -49,4 +50,4 @@ class ModuleDocFragment(object):
                 - If the value is not specified in the task, the value of environment variable
                   C(VMWARE_VALIDATE_CERTS) will be used instead.
             type: bool
-'''
+"""
