@@ -14,6 +14,10 @@ A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.
 <!--end requires_ansible-->
 
+## Python version compatibility
+
+As the `aiohttp` for Python has [requirement](https://github.com/aio-libs/aiohttp#requirements) of Python 3.7 or greater, this collection requires Python 3.7 or greater.
+
 ## Installation and Usage
 
 ### Install the dependencies
@@ -185,7 +189,6 @@ Name | Description
 
 <!--end collection content-->
 
-
 ### Documentation
 
 The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/scenario_guides/guide_vmware_rest.html) gives a step by step introduction of the collection.
@@ -205,15 +208,39 @@ source .virtualenv/py37/bin/activate
 pip install -r requirements.txt -r test-requirements.txt
 ansible-test network-integration --python 3.7 --inventory /tmp/inventory-vmware_rest vcenter_vm_scenario1
 ```
-## Code of Conduct
 
-This project is governed by the [Ansible Community code of conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)
+## Release notes
+
+See [CHANGELOG.rst](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/CHANGELOG.rst).
+
+## Releasing, Versioning and Deprecation
+
+This collection follows [Semantic Versioning](https://semver.org/). More details on versioning can be found [in the Ansible docs](https://docs.ansible.com/ansible/latest/dev_guide/developing_collections.html#collection-versions).
+
+We plan to regularly release new minor or bugfix versions once new features or bugfixes have been implemented.
+
+Releasing the current major version happens from the `main` branch.
+
+We currently are not planning any deprecations or new major releases like 2.0.0 containing backwards incompatible changes. If backwards incompatible changes are needed, we plan to deprecate the old behavior as early as possible. We also plan to backport at least bugfixes for the old major version for some time after releasing a new major version. We will not block community members from backporting other bugfixes and features from the latest stable version to older release branches, under the condition that these backports are of reasonable quality.
 
 ## Communication
 
 We have a dedicated Working Group for VMware.
 You can find other people interested in this in `#ansible-vmware` on [libera.chat](https://libera.chat/) IRC.
 For more information about communities, meetings and agendas see https://github.com/ansible/community/wiki/VMware.
+
+## Code of Conduct
+
+This repository adheres to the [Ansible Community code of conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)
+
+
+## More information
+
+<!-- List out where the user can find additional information, such as working group meeting times, slack/IRC channels, or documentation for the product this collection automates. At a minimum, link to: -->
+
+- [Ansible Collection overview](https://github.com/ansible-collections/overview)
+- [Ansible User guide](https://docs.ansible.com/ansible/latest/user_guide/index.html)
+- [Ansible Developer guide](https://docs.ansible.com/ansible/latest/dev_guide/index.html)
 
 ## License
 
