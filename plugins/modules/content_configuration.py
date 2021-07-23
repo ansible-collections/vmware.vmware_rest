@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: content_configuration
 short_description: Updates the configuration
 description: Updates the configuration. The update is incremental. Any {@term field}
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   in the {@link ConfigurationModel} {@term structure} that is {@term unset} will not
   be modified. Note that this update {@term operation} doesn't guarantee an atomic
   change of all the properties. In the case of a system crash or failure, some of
@@ -206,6 +210,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

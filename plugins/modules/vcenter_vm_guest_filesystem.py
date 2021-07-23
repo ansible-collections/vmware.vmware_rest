@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: vcenter_vm_guest_filesystem
 short_description: Initiates an operation to transfer a file to or from the guest
 description: 'Initiates an operation to transfer a file to or from the guest. <p>
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   If the power state of the Virtual Machine is changed when the file transfer is in
   progress, or the Virtual Machine is migrated, then the transfer operation is aborted.
   <p> When transferring a file into the guest and overwriting an existing file, the
@@ -206,6 +210,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

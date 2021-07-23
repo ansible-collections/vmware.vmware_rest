@@ -15,6 +15,10 @@ module: appliance_health_softwarepackages_info
 short_description: Get information on available software updates available in the
   remote vSphere Update Manager repository
 description: Get information on available software updates available in the remote
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   vSphere Update Manager repository. Red indicates that security updates are available.
   Orange indicates that non-security updates are available. Green indicates that there
   are no updates available. Gray indicates that there was an error retreiving information
@@ -164,6 +168,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: appliance_networking_firewall_inbound_info
 short_description: Get the ordered list of firewall rules
 description: Get the ordered list of firewall rules. Within the list of traffic rules,
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   rules are processed in order of appearance, from top to bottom. When a connection
   matches a firewall rule, further processing for the connection stops, and the appliance
   ignores any additional firewall rules you have set.
@@ -166,6 +170,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

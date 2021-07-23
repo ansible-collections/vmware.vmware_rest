@@ -15,6 +15,10 @@ module: appliance_networking_firewall_inbound
 short_description: Set the ordered list of firewall rules to allow or deny traffic
   from one or more incoming IP addresses
 description: 'Set the ordered list of firewall rules to allow or deny traffic from
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   one or more incoming IP addresses. This overwrites the existing firewall rules and
   creates a new rule list. Within the list of traffic rules, rules are processed in
   order of appearance, from top to bottom. For example, the list of rules can be as
@@ -217,6 +221,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

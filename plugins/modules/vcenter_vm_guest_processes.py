@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: vcenter_vm_guest_processes
 short_description: Starts a program in the guest operating system
 description: 'Starts a program in the guest operating system. <p> A process started
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   this way can have its status queried with {@link #list} or {@link #get}. When the
   process completes, its exit code and end time will be available for 5 minutes after
   completion. <p>'
@@ -255,6 +259,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

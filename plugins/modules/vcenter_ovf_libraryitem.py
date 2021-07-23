@@ -15,6 +15,10 @@ module: vcenter_ovf_libraryitem
 short_description: Creates a library item in content library from a virtual machine
   or virtual appliance
 description: Creates a library item in content library from a virtual machine or virtual
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   appliance. <p> This {@term operation} creates a library item in content library
   whose content is an OVF package derived from a source virtual machine or virtual
   appliance, using the supplied create specification. The OVF package may be stored
@@ -391,6 +395,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

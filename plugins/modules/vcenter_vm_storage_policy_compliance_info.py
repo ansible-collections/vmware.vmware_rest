@@ -15,6 +15,10 @@ module: vcenter_vm_storage_policy_compliance_info
 short_description: Returns the cached storage policy compliance information of a virtual
   machine.
 description: Returns the cached storage policy compliance information of a virtual
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   machine.
 options:
   vcenter_hostname:
@@ -185,6 +189,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

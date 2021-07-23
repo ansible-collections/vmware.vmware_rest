@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: vcenter_host
 short_description: Add a new standalone host in the vCenter inventory
 description: Add a new standalone host in the vCenter inventory. The newly connected
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   host will be in connected state. The vCenter Server will verify the SSL certificate
   before adding the host to its inventory. In the case where the SSL certificate cannot
   be verified because the Certificate Authority is not recognized or the certificate
@@ -266,6 +270,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

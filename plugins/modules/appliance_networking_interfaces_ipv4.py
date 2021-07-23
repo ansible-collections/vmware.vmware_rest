@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: appliance_networking_interfaces_ipv4
 short_description: Set IPv4 network configuration for specific network interface.
 description: Set IPv4 network configuration for specific network interface.
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
 options:
   address:
     description:
@@ -231,6 +235,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: vcenter_vm_guest_filesystem_files
 short_description: Creates a temporary file
 description: Creates a temporary file. <p> Creates a new unique temporary file for
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   the user to use as needed. The user is responsible for removing it when it is no
   longer needed. <p> The new file name will be created in a guest-specific format
   using {@param.name prefix}, a guest generated string and {@param.name suffix} in
@@ -284,6 +288,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

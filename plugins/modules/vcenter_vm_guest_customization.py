@@ -15,6 +15,10 @@ module: vcenter_vm_guest_customization
 short_description: Applies a customization specification in {@param.name spec} on
   the virtual machine in {@param.name vm}
 description: Applies a customization specification in {@param.name spec} on the virtual
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   machine in {@param.name vm}. This {@term operation} only sets the specification
   settings for the virtual machine. The actual customization happens inside the guest
   when the virtual machine is powered on. If {@param.name spec} has {@term unset}
@@ -266,6 +270,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

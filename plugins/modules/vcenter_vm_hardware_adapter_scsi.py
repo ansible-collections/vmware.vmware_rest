@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: vcenter_vm_hardware_adapter_scsi
 short_description: Adds a virtual SCSI adapter to the virtual machine.
 description: Adds a virtual SCSI adapter to the virtual machine.
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
 options:
   adapter:
     description:
@@ -269,6 +273,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

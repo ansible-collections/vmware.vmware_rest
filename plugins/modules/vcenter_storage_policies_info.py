@@ -15,6 +15,10 @@ module: vcenter_storage_policies_info
 short_description: Returns information about at most 1024 visible (subject to permission
   checks) storage solicies availabe in vCenter
 description: Returns information about at most 1024 visible (subject to permission
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   checks) storage solicies availabe in vCenter. These storage policies can be used
   for provisioning virtual machines or disks.
 options:
@@ -205,6 +209,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

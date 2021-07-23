@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: appliance_networking_proxy
 short_description: Configures which proxy server to use for the specified protocol
 description: Configures which proxy server to use for the specified protocol. This
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   operation sets environment variables for using proxy. In order for this configuration
   to take effect a logout / service restart is required.
 options:
@@ -261,6 +265,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

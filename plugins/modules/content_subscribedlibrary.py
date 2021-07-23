@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: content_subscribedlibrary
 short_description: Creates a new subscribed library
 description: Creates a new subscribed library. <p> Once created, the subscribed library
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   will be empty. If the {@link LibraryModel#subscriptionInfo} property is set, the
   Content Library Service will attempt to synchronize to the remote source. This is
   an asynchronous operation so the content of the published library may not immediately
@@ -479,6 +483,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

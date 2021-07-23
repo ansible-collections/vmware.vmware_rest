@@ -15,6 +15,10 @@ module: vcenter_network_info
 short_description: Returns information about at most 1000 visible (subject to permission
   checks) networks in vCenter matching the {@link FilterSpec}.
 description: Returns information about at most 1000 visible (subject to permission
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   checks) networks in vCenter matching the {@link FilterSpec}.
 options:
   datacenters:
@@ -240,6 +244,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

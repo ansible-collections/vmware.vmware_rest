@@ -14,6 +14,10 @@ DOCUMENTATION = r"""
 module: appliance_networking_noproxy
 short_description: Sets servers for which no proxy configuration should be applied
 description: Sets servers for which no proxy configuration should be applied. This
+
+extends_documentation_fragment:
+  - vmware.vmware_rest.vmware_rest_session
+
   operation sets environment variables. In order for this operation to take effect,
   a logout from appliance or a service restart is required. If IPv4 is enabled, "127.0.0.1"
   and "localhost" will always bypass the proxy (even if they are not explicitly configured).
@@ -186,6 +190,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())
