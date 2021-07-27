@@ -15,6 +15,7 @@ async def open_session(
     vcenter_password=None,
     validate_certs=True,
     log_file=None,
+    session_timeout=300,
 ):
     validate_certs = boolean(validate_certs)
     m = hashlib.sha256()
@@ -85,7 +86,6 @@ async def open_session(
 
     session_id = json["value"]
     session = aiohttp.ClientSession(
-        timeout=aiohttp.ClientTimeout(total=600),
         connector=connector,
         headers={
             "vmware-api-session-id": session_id,
@@ -93,6 +93,7 @@ async def open_session(
         },
         connector_owner=False,
         trace_configs=trace_configs,
+        timeout=aiohttp.ClientTimeout(total=session_timeout),
     )
     open_session._pool[digest] = session
     return session

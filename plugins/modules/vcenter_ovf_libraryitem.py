@@ -147,6 +147,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -172,18 +180,16 @@ requirements:
 """
 
 EXAMPLES = r"""
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
+    filter_names:
+    - vm
+  register: my_folders
+
+- name: Set my_virtual_machine_folder
+  set_fact:
+    my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
@@ -204,17 +210,6 @@ EXAMPLES = r"""
   set_fact:
     my_datastore: '{{ my_datastores.value|first }}'
 
-- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-  vmware.vmware_rest.vcenter_folder_info:
-    filter_type: VIRTUAL_MACHINE
-    filter_names:
-    - vm
-  register: my_folders
-
-- name: Set my_virtual_machine_folder
-  set_fact:
-    my_virtual_machine_folder: '{{ my_folders.value|first }}'
-
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
@@ -229,6 +224,19 @@ EXAMPLES = r"""
       hot_add_enabled: true
       size_MiB: 1024
   register: my_vm
+
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -262,33 +270,18 @@ value:
   returned: On success
   sample:
     error:
-      errors:
-      - category: SERVER
-        error:
-          error_type: UNABLE_TO_ALLOCATE_RESOURCE
-          messages:
-          - args:
-            - Insufficient disk space on datastore 'local'.
-            default_message: The operation failed due to Insufficient disk space on
-              datastore 'local'.
-            id: com.vmware.vdcs.util.unable_to_allocate_resource
-          - args: []
-            default_message: File system specific implementation of SetFileAttributes[file]
-              failed
-            id: vob.fssvec.SetFileAttributes.file.failed
+      errors: []
       information: []
       warnings: []
-    succeeded: 0
+    resource_id:
+      id: vm-1511
+      type: VirtualMachine
+    succeeded: 1
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
@@ -297,6 +290,11 @@ PAYLOAD_FORMAT = {
     "filter": {
         "query": {},
         "body": {"target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long
@@ -354,6 +352,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["client_token"] = {"no_log": True, "type": "str"}
@@ -391,6 +394,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

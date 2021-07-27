@@ -301,6 +301,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -381,6 +399,12 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Retrieve details about the portgroup
+      community.vmware.vmware_dvs_portgroup_info:
+        validate_certs: no
+        datacenter: my_dc
+      register: my_portgroup_info
+
     - name: Look up the VM called test_vm1 in the inventory
       register: search_result
       vmware.vmware_rest.vcenter_vm_info:
@@ -391,12 +415,6 @@ Examples
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
-
-    - name: Retrieve details about the portgroup
-      community.vmware.vmware_dvs_portgroup_info:
-        validate_certs: no
-        datacenter: my_dc
-      register: my_portgroup_info
 
     - name: Attach a VM to a dvswitch
       vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -459,7 +477,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Attach a VM to a dvswitch</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 1432930666, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 1c 52 bd 0c 73 68 c2-2c 7d 7e ec f7 0a 55 e8&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1161&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:9c:59:aa&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 992411141, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 2d c4 fa 32 59 73 3f-ed 71 a9 a4 09 14 50 12&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1507&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:ad:ec:79&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
                 </td>
             </tr>
     </table>

@@ -43,6 +43,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -220,7 +228,7 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: DEGRADED
       health_messages:
       - args: []
         default_message: health.statsReoptInitalizer.illegalStateEx
@@ -323,15 +331,15 @@ value:
       health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args:
-        - 950e39fe-cb71-4bb2-9b85-56fbd8f4bbf8\com.vmware.cis.ds
-        default_message: Failed to connect to 950e39fe-cb71-4bb2-9b85-56fbd8f4bbf8\com.vmware.cis.ds
+        - 042a6bda-c522-48f9-8df1-5d48265dea2d\com.vmware.cis.ds
+        default_message: Failed to connect to 042a6bda-c522-48f9-8df1-5d48265dea2d\com.vmware.cis.ds
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-06-23T23:31:09UTC
-        - 2021-06-23T23:31:10UTC
-        default_message: Configuration health status is created between 2021-06-23T23:31:09UTC
-          and 2021-06-23T23:31:10UTC.
+        - 2021-07-27T15:41:31UTC
+        - 2021-07-27T15:41:32UTC
+        default_message: Configuration health status is created between 2021-07-27T15:41:31UTC
+          and 2021-07-27T15:41:32UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -389,16 +397,18 @@ value:
   - key: vpxd
     value:
       description_key: cis.vpxd.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: HEALTHY
       health_messages:
       - args:
         - vCenter Server
         - GREEN
         default_message: '{0} health is {1}'
         id: vc.health.statuscode
-      - args: []
-        default_message: ''
-        id: vc.health.error.dbjob2
+      - args:
+        - VirtualCenter Database
+        - GREEN
+        default_message: '{0} health is {1}'
+        id: vc.health.statuscode
       name_key: cis.vpxd.ServiceName
       startup_type: AUTOMATIC
       state: STARTED
@@ -523,6 +533,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["service"] = {"type": "str"}
@@ -550,6 +565,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

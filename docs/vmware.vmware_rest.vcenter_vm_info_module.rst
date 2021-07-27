@@ -212,6 +212,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -336,7 +354,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">vm-1162</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">vm-1510</div>
                 </td>
             </tr>
             <tr>
@@ -353,7 +371,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Collect information about a specific VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_3/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;421c2718-c229-449f-1a8f-dba0b6e54ff4&#x27;, &#x27;instance_uuid&#x27;: &#x27;501c14c2-f032-4d19-b6ec-b69ccf6880ae&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_9/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;422deb8f-6c1d-43d7-0378-3e4e9f615f27&#x27;, &#x27;instance_uuid&#x27;: &#x27;502d2166-8b28-9c34-cea7-a86f29fb2ca9&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
                 </td>
             </tr>
     </table>

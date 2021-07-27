@@ -710,6 +710,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -751,6 +759,17 @@ EXAMPLES = r"""
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
 
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
+    filter_names:
+    - vm
+  register: my_folders
+
+- name: Set my_virtual_machine_folder
+  set_fact:
+    my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
   register: all_the_clusters
@@ -769,17 +788,6 @@ EXAMPLES = r"""
 - name: Set my_datastore
   set_fact:
     my_datastore: '{{ my_datastores.value|first }}'
-
-- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-  vmware.vmware_rest.vcenter_folder_info:
-    filter_type: VIRTUAL_MACHINE
-    filter_names:
-    - vm
-  register: my_folders
-
-- name: Set my_virtual_machine_folder
-  set_fact:
-    my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -813,7 +821,7 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1132
+      vm: vm-1478
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -854,22 +862,23 @@ results:
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
         vcenter_rest_log_file: null
+        vcenter_rest_session_timeout: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1132
+        vm: vm-1478
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1132
+      vm: vm-1478
     value: {}
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1136
+      vm: vm-1482
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -910,15 +919,16 @@ results:
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
         vcenter_rest_log_file: null
+        vcenter_rest_session_timeout: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1136
+        vm: vm-1482
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1136
+      vm: vm-1482
     value: {}
   type: list
 """
@@ -929,46 +939,6 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {"disks": "disks", "placement": "placement"},
         "path": {"vm": "vm"},
-    },
-    "clone": {
-        "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
-            "source": "source",
-        },
-        "path": {},
-    },
-    "instant_clone": {
-        "query": {},
-        "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
-            "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
-            "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
-            "source": "source",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "register": {
-        "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
-        },
-        "path": {},
     },
     "create": {
         "query": {},
@@ -990,6 +960,46 @@ PAYLOAD_FORMAT = {
             "scsi_adapters": "scsi_adapters",
             "serial_ports": "serial_ports",
             "storage_policy": "storage_policy",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
+    },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
+            "name": "name",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
+            "placement": "placement",
+            "serial_ports_to_update": "serial_ports_to_update",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
+            "name": "name",
+            "placement": "placement",
+            "power_on": "power_on",
+            "source": "source",
         },
         "path": {},
     },
@@ -1047,6 +1057,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -1323,6 +1338,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

@@ -255,6 +255,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -305,26 +313,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: 899184df-f3ab-4284-ac9b-02407fd9536e
+  sample: 4bbf6895-761f-4459-b7b9-281457204add
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2021-06-23T23:32:55.275Z'
+    creation_time: '2021-07-27T15:42:59.737Z'
     description: ''
-    id: 899184df-f3ab-4284-ac9b-02407fd9536e
-    last_modified_time: '2021-06-23T23:32:55.275Z'
+    id: 4bbf6895-761f-4459-b7b9-281457204add
+    last_modified_time: '2021-07-27T15:42:59.737Z'
     name: sub_lib
-    server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
+    server_guid: a775463f-9e84-4133-9528-d154d0271bc9
     storage_backings:
-    - datastore_id: datastore-1153
+    - datastore_id: datastore-1501
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/8b15be3f-e63d-4227-bb77-ee0750124ed7/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/2fcef0db-cff3-4f26-b158-4e11c2b22248/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -332,6 +340,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
         "body": {
@@ -370,13 +379,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
@@ -433,6 +441,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["client_token"] = {"no_log": True, "type": "str"}
@@ -479,6 +492,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

@@ -76,6 +76,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -118,18 +126,18 @@ value:
   description: Retrieve a list of all the datastores
   returned: On success
   sample:
-  - capacity: 26831990784
-    datastore: datastore-1152
-    free_space: 24459153408
+  - capacity: 26354073600
+    datastore: datastore-1500
+    free_space: 23566606336
     name: ro_datastore
     type: NFS
-  - capacity: 26831990784
-    datastore: datastore-1153
-    free_space: 24445435904
+  - capacity: 26354073600
+    datastore: datastore-1501
+    free_space: 23782502400
     name: rw_datastore
     type: NFS
   - capacity: 11542724608
-    datastore: datastore-1154
+    datastore: datastore-1502
     free_space: 10033823744
     name: local
     type: VMFS
@@ -205,6 +213,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["datacenters"] = {
@@ -253,6 +266,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

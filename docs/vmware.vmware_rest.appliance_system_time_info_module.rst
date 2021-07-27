@@ -97,6 +97,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -174,7 +192,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the current time</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Wed 06-23-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;11:36:33 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Tue 07-27-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;03:46:17 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
                 </td>
             </tr>
     </table>

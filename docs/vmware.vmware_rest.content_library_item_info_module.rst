@@ -127,6 +127,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -264,7 +282,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Ensure the OVF is here</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-06-23T23:32:56.088Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;9f8398fd-b4c4-4bb4-afe5-8302dcdc4a2b&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-06-23T23:32:56.552Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-06-23T23:32:56.551Z&#x27;, &#x27;library_id&#x27;: &#x27;899184df-f3ab-4284-ac9b-02407fd9536e&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;2d564ff7-4b74-41d6-961a-7f892bb11fdb&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-07-27T15:43:00.122Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;3ab09ff8-623c-4b1f-b9c0-5505487bf494&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-07-27T15:43:00.319Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-07-27T15:43:00.318Z&#x27;, &#x27;library_id&#x27;: &#x27;4bbf6895-761f-4459-b7b9-281457204add&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;201a03c2-a707-4dd5-9c5f-7fc993293d74&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
                 </td>
             </tr>
     </table>

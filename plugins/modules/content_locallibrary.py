@@ -258,6 +258,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -344,26 +352,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: e06ea8f1-6dad-4f6d-abfc-bddd774e9ab1
+  sample: 8813aa2f-2025-4537-9fe0-7cda4f0ede06
   type: str
 value:
   description: Create a new local content library
   returned: On success
   sample:
-    creation_time: '2021-06-23T23:32:51.470Z'
+    creation_time: '2021-07-27T15:42:57.830Z'
     description: automated
-    id: e06ea8f1-6dad-4f6d-abfc-bddd774e9ab1
-    last_modified_time: '2021-06-23T23:32:51.470Z'
+    id: 8813aa2f-2025-4537-9fe0-7cda4f0ede06
+    last_modified_time: '2021-07-27T15:42:57.830Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/e06ea8f1-6dad-4f6d-abfc-bddd774e9ab1/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/8813aa2f-2025-4537-9fe0-7cda4f0ede06/lib.json
       published: 1
       user_name: vcsp
-    server_guid: 34049aff-97a3-4ebb-bd32-c3f3bf314ee2
+    server_guid: a775463f-9e84-4133-9528-d154d0271bc9
     storage_backings:
-    - datastore_id: datastore-1153
+    - datastore_id: datastore-1501
       type: DATASTORE
     type: LOCAL
     version: '2'
@@ -372,6 +380,26 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "publish": {
         "query": {},
         "body": {"subscriptions": "subscriptions"},
@@ -396,26 +424,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -471,6 +479,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["client_token"] = {"no_log": True, "type": "str"}
@@ -518,6 +531,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

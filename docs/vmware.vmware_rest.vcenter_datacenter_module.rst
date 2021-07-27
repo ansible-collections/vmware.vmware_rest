@@ -179,6 +179,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>vcenter_rest_session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_username</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -294,7 +312,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Force delete the existing DC</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1112&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1112&#x27;, &#x27;folder&#x27;: None, &#x27;force&#x27;: 1, &#x27;name&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0}}, &#x27;item&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1112&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1458&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1458&#x27;, &#x27;folder&#x27;: None, &#x27;force&#x27;: 1, &#x27;name&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_rest_session_timeout&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0}}, &#x27;item&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1458&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;value&#x27;: {}}]</div>
                 </td>
             </tr>
     </table>

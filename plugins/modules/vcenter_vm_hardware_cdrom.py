@@ -111,6 +111,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -192,6 +200,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -201,9 +210,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"cdrom": "cdrom", "vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -216,6 +222,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -271,6 +279,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["allow_guest_control"] = {"type": "bool"}
@@ -311,6 +324,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

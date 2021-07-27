@@ -45,6 +45,14 @@ options:
     - 'If the value is not specified in the task, the value of '
     - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
     type: str
+  vcenter_rest_session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_username:
     description:
     - The vSphere vCenter username
@@ -143,16 +151,16 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2021-06-23T23:32:56.088Z'
+    creation_time: '2021-07-27T15:43:00.122Z'
     description: an OVF example
-    id: 9f8398fd-b4c4-4bb4-afe5-8302dcdc4a2b
-    last_modified_time: '2021-06-23T23:32:56.552Z'
-    last_sync_time: '2021-06-23T23:32:56.551Z'
-    library_id: 899184df-f3ab-4284-ac9b-02407fd9536e
+    id: 3ab09ff8-623c-4b1f-b9c0-5505487bf494
+    last_modified_time: '2021-07-27T15:43:00.319Z'
+    last_sync_time: '2021-07-27T15:43:00.318Z'
+    library_id: 4bbf6895-761f-4459-b7b9-281457204add
     metadata_version: '1'
     name: my_vm
     size: 0
-    source_id: 2d564ff7-4b74-41d6-961a-7f892bb11fdb
+    source_id: 201a03c2-a707-4dd5-9c5f-7fc993293d74
     type: ovf
     version: '1'
   type: list
@@ -217,6 +225,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "vcenter_rest_session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["library_id"] = {"type": "str"}
@@ -245,6 +258,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["vcenter_rest_session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())
