@@ -62,6 +62,14 @@ options:
       to match the filter.
     elements: str
     type: list
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -144,7 +152,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1162
+  sample: vm-1728
   type: str
 value:
   description: Collect information about a specific VM
@@ -167,7 +175,7 @@ value:
       '2000':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_3/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1_15/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -181,8 +189,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 421c2718-c229-449f-1a8f-dba0b6e54ff4
-      instance_uuid: 501c14c2-f032-4d19-b6ec-b69ccf6880ae
+      bios_uuid: 422d1430-3d95-62e7-50e1-467b4c233527
+      instance_uuid: 502dbea2-5563-6239-df45-94bc3af93977
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -278,6 +286,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["clusters"] = {"type": "list", "elements": "str"}
@@ -325,6 +338,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

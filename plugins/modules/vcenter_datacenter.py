@@ -31,6 +31,14 @@ options:
     description:
     - The name of the datacenter to be created. Required with I(state=['present'])
     type: str
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - absent
@@ -123,7 +131,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1112
+      datacenter: datacenter-1678
       name: my_dc
     _ansible_no_log: 0
     ansible_loop_var: item
@@ -131,10 +139,11 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1112
+        datacenter: datacenter-1678
         folder: null
         force: 1
         name: null
+        session_timeout: null
         state: absent
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
@@ -142,7 +151,7 @@ results:
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1112
+      datacenter: datacenter-1678
       name: my_dc
     value: {}
   type: list
@@ -150,12 +159,12 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
     "delete": {
         "query": {"force": "force"},
         "body": {},
         "path": {"datacenter": "datacenter"},
     },
-    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -211,6 +220,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["datacenter"] = {"type": "str"}
@@ -246,6 +260,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

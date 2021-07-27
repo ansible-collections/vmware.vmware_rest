@@ -21,6 +21,14 @@ options:
     - The parameter must be the id of a resource returned by M(appliance_vmon_service).
       Required with I(state=['restart', 'start', 'stop'])
     type: str
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   startup_type:
     choices:
     - AUTOMATIC
@@ -106,16 +114,18 @@ value:
   returned: On success
   sample:
     description_key: cis.vpxd.ServiceDescription
-    health: HEALTHY_WITH_WARNINGS
+    health: HEALTHY
     health_messages:
     - args:
       - vCenter Server
       - GREEN
       default_message: '{0} health is {1}'
       id: vc.health.statuscode
-    - args: []
-      default_message: ''
-      id: vc.health.error.dbjob2
+    - args:
+      - VirtualCenter Database
+      - GREEN
+      default_message: '{0} health is {1}'
+      id: vc.health.statuscode
     name_key: cis.vpxd.ServiceName
     startup_type: AUTOMATIC
     state: STARTED
@@ -124,15 +134,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
     "list_details": {"query": {}, "body": {}, "path": {}},
-    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
     "update": {
         "query": {},
         "body": {"startup_type": "spec/startup_type"},
         "path": {"service": "service"},
     },
+    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
     "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -188,6 +198,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["service"] = {"type": "str"}
@@ -224,6 +239,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

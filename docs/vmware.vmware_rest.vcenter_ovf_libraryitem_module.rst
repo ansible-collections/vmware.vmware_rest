@@ -124,6 +124,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>source</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -341,6 +359,7 @@ Examples
 
     - name: Export the VM as an OVF on the library
       vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 1200
         source:
           type: VirtualMachine
           id: '{{ my_vm.id }}'
@@ -391,7 +410,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [{&#x27;category&#x27;: &#x27;SERVER&#x27;, &#x27;error&#x27;: {&#x27;error_type&#x27;: &#x27;UNABLE_TO_ALLOCATE_RESOURCE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&quot;Insufficient disk space on datastore &#x27;local&#x27;.&quot;], &#x27;default_message&#x27;: &quot;The operation failed due to Insufficient disk space on datastore &#x27;local&#x27;.&quot;, &#x27;id&#x27;: &#x27;com.vmware.vdcs.util.unable_to_allocate_resource&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;File system specific implementation of SetFileAttributes[file] failed&#x27;, &#x27;id&#x27;: &#x27;vob.fssvec.SetFileAttributes.file.failed&#x27;}]}}], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;succeeded&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1729&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

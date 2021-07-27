@@ -111,6 +111,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -275,7 +293,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Build a list of all the folders with the type VIRTUAL_MACHINE and called vm</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1139&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1705&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
                 </td>
             </tr>
     </table>

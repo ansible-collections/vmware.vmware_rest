@@ -111,6 +111,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>types</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -263,7 +281,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get a list of the networks</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1157&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1158&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1155&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1161&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1721&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1725&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1723&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1724&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
                 </td>
             </tr>
     </table>

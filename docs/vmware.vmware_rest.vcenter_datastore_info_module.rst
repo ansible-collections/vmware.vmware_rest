@@ -126,6 +126,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>types</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -279,7 +297,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve a list of all the datastores</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1152&#x27;, &#x27;free_space&#x27;: 24459153408, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26831990784, &#x27;datastore&#x27;: &#x27;datastore-1153&#x27;, &#x27;free_space&#x27;: 24445435904, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 11542724608, &#x27;datastore&#x27;: &#x27;datastore-1154&#x27;, &#x27;free_space&#x27;: 10033823744, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 26354073600, &#x27;datastore&#x27;: &#x27;datastore-1718&#x27;, &#x27;free_space&#x27;: 23566487552, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26354073600, &#x27;datastore&#x27;: &#x27;datastore-1719&#x27;, &#x27;free_space&#x27;: 23782383616, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 11542724608, &#x27;datastore&#x27;: &#x27;datastore-1720&#x27;, &#x27;free_space&#x27;: 10033823744, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}]</div>
                 </td>
             </tr>
     </table>

@@ -88,6 +88,14 @@ options:
     - Identifier of the content library item containing the OVF package to be deployed.
       Required with I(state=['deploy', 'filter'])
     type: str
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   source:
     description:
     - Identifier of the virtual machine or virtual appliance to use as the source.
@@ -232,6 +240,7 @@ EXAMPLES = r"""
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 1200
     source:
       type: VirtualMachine
       id: '{{ my_vm.id }}'
@@ -262,31 +271,21 @@ value:
   returned: On success
   sample:
     error:
-      errors:
-      - category: SERVER
-        error:
-          error_type: UNABLE_TO_ALLOCATE_RESOURCE
-          messages:
-          - args:
-            - Insufficient disk space on datastore 'local'.
-            default_message: The operation failed due to Insufficient disk space on
-              datastore 'local'.
-            id: com.vmware.vdcs.util.unable_to_allocate_resource
-          - args: []
-            default_message: File system specific implementation of SetFileAttributes[file]
-              failed
-            id: vob.fssvec.SetFileAttributes.file.failed
+      errors: []
       information: []
       warnings: []
-    succeeded: 0
+    resource_id:
+      id: vm-1729
+      type: VirtualMachine
+    succeeded: 1
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+    "filter": {
+        "query": {},
+        "body": {"target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
     "create": {
@@ -294,9 +293,9 @@ PAYLOAD_FORMAT = {
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
     },
-    "filter": {
-        "query": {},
-        "body": {"target": "target"},
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long
@@ -354,6 +353,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["client_token"] = {"no_log": True, "type": "str"}
@@ -391,6 +395,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

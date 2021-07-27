@@ -71,6 +71,14 @@ options:
       is invalid, the server will change when it the VM is started or as the device
       is hot added.
     type: int
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   start_connected:
     description:
     - Flag indicating whether the virtual device should be connected whenever the
@@ -209,13 +217,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1432930666
+      connection_cookie: 496131746
       distributed_port: '2'
-      distributed_switch_uuid: 50 1c 52 bd 0c 73 68 c2-2c 7d 7e ec f7 0a 55 e8
-      network: dvportgroup-1161
+      distributed_switch_uuid: 50 2d 2f d8 53 9f c4 50-47 7f 78 62 3c ad 98 63
+      network: dvportgroup-1725
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:9c:59:aa
+    mac_address: 00:50:56:ad:3c:7c
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -228,6 +236,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -241,9 +251,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"nic": "nic", "vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -314,6 +322,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["allow_guest_control"] = {"type": "bool"}
@@ -363,6 +376,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

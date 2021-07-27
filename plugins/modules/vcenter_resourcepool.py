@@ -92,6 +92,14 @@ options:
     - Identifier of the resource pool to be deleted. Required with I(state=['absent',
       'present'])
     type: str
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - absent
@@ -201,7 +209,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1147
+  sample: resgroup-1713
   type: str
 value:
   description: Create a generic resource pool
@@ -226,7 +234,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
     "update": {
         "query": {},
         "body": {
@@ -246,6 +253,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -301,6 +309,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["cpu_allocation"] = {"type": "dict"}
@@ -337,6 +350,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

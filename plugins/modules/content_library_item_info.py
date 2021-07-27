@@ -23,6 +23,14 @@ options:
     description:
     - Identifier of the library item to return. Required with I(state=['get'])
     type: str
+  session_timeout:
+    default: '300'
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -143,16 +151,16 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2021-06-23T23:32:56.088Z'
+    creation_time: '2021-07-27T17:22:05.483Z'
     description: an OVF example
-    id: 9f8398fd-b4c4-4bb4-afe5-8302dcdc4a2b
-    last_modified_time: '2021-06-23T23:32:56.552Z'
-    last_sync_time: '2021-06-23T23:32:56.551Z'
-    library_id: 899184df-f3ab-4284-ac9b-02407fd9536e
+    id: 8ff04dfa-61bd-48e0-b40d-29ada9219efa
+    last_modified_time: '2021-07-27T17:22:05.713Z'
+    last_sync_time: '2021-07-27T17:22:05.713Z'
+    library_id: d87ab3f2-aa35-4338-a925-2c30a51039c1
     metadata_version: '1'
     name: my_vm
     size: 0
-    source_id: 2d564ff7-4b74-41d6-961a-7f892bb11fdb
+    source_id: 3a3d0f55-404b-42ac-ba1d-6705a87f9ce8
     type: ovf
     version: '1'
   type: list
@@ -217,6 +225,11 @@ def prepare_argument_spec():
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
         ),
+        "session_timeout": dict(
+            type="float",
+            default=300,
+            fallback=(env_fallback, ["VMWARE_REST_SESSION_TIMEOUT"]),
+        ),
     }
 
     argument_spec["library_id"] = {"type": "str"}
@@ -245,6 +258,7 @@ async def main():
             vcenter_password=module.params["vcenter_password"],
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
+            session_timeout=module.params["session_timeout"],
         )
     except EmbeddedModuleFailure as err:
         module.fail_json(err.get_message())

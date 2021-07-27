@@ -44,6 +44,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                        <b>Default:</b><br/><div style="color: blue">"300"</div>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_hostname</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -174,7 +192,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the VCSA version</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;build&#x27;: &#x27;17694817&#x27;, &#x27;install_time&#x27;: &#x27;2021-05-26T17:01:52.148Z&#x27;, &#x27;product&#x27;: &#x27;VMware vCenter Server&#x27;, &#x27;releasedate&#x27;: &#x27;March 9, 2021&#x27;, &#x27;summary&#x27;: &#x27;VMware vCenter Server 7.0 Update 2&#x27;, &#x27;type&#x27;: &#x27;vCenter Server with an embedded Platform Services Controller&#x27;, &#x27;version&#x27;: &#x27;7.0.2.00000&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;build&#x27;: &#x27;17694817&#x27;, &#x27;install_time&#x27;: &#x27;2021-07-26T20:15:27.153Z&#x27;, &#x27;product&#x27;: &#x27;VMware vCenter Server&#x27;, &#x27;releasedate&#x27;: &#x27;March 9, 2021&#x27;, &#x27;summary&#x27;: &#x27;VMware vCenter Server 7.0 Update 2&#x27;, &#x27;type&#x27;: &#x27;vCenter Server with an embedded Platform Services Controller&#x27;, &#x27;version&#x27;: &#x27;7.0.2.00000&#x27;}</div>
                 </td>
             </tr>
     </table>

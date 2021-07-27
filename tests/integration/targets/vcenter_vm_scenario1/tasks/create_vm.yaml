@@ -71,6 +71,7 @@
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 1200
     source:
       type: VirtualMachine
       id: "{{ my_vm.id }}"
