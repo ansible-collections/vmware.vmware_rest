@@ -1368,3 +1368,8 @@ plugins/modules/appliance_vmon_service.py future-import-boilerplate!skip
 plugins/modules/appliance_vmon_service.py metaclass-boilerplate!skip
 plugins/modules/appliance_vmon_service.py validate-modules:missing-if-name-main
 plugins/modules/appliance_vmon_service.py validate-modules:missing-main-call
+plugins/plugin_utils/lookup.py compile-2.6!skip
+plugins/plugin_utils/lookup.py compile-2.7!skip
+plugins/plugin_utils/lookup.py compile-3.5!skip
+plugins/plugin_utils/lookup.py future-import-boilerplate!skip
+plugins/plugin_utils/lookup.py metaclass-boilerplate!skip
