@@ -85,7 +85,6 @@ async def open_session(
 
     session_id = json["value"]
     session = aiohttp.ClientSession(
-        timeout=aiohttp.ClientTimeout(total=600),
         connector=connector,
         headers={
             "vmware-api-session-id": session_id,
@@ -99,6 +98,25 @@ async def open_session(
 
 
 open_session._pool = {}
+
+
+def build_additionnal_args(params, payload=None):
+    kwargs = {}
+    if payload:
+        kwargs["json"] = payload
+    if params.get("session_timeout"):
+        exceptions = importlib.import_module(
+            "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
+        )
+        try:
+            aiohttp = importlib.import_module("aiohttp")
+        except ImportError:
+            raise exceptions.EmbeddedModuleFailure(msg=missing_required_lib("aiohttp"))
+
+        if not aiohttp:
+            raise exceptions.EmbeddedModuleFailure(msg="Failed to import aiohttp")
+        kwargs["timeout"] = aiohttp.ClientTimeout(total=params.get("session_timeout"))
+    return kwargs
 
 
 def gen_args(params, in_query_parameter):
@@ -219,15 +237,13 @@ async def update_changed_flag(data, status, operation):
     return data
 
 
-async def list_devices(session, url):
-    existing_entries = []
-
-    async with session.get(url) as resp:
+async def list_devices(session, url, params):
+    async with session.get(url, **build_additionnal_args(params)) as resp:
         _json = await resp.json()
         return _json
 
 
-async def build_full_device_list(session, url, device_list):
+async def build_full_device_list(session, url, device_list, params):
     import asyncio
 
     device_ids = []
@@ -248,19 +264,20 @@ async def build_full_device_list(session, url, device_list):
         device_ids.append(fields[0])
 
     tasks = [
-        asyncio.ensure_future(get_device_info(session, url, _id)) for _id in device_ids
+        asyncio.ensure_future(get_device_info(session, url, _id, params))
+        for _id in device_ids
     ]
 
     return [await i for i in tasks]
 
 
-async def get_device_info(session, url, _id):
+async def get_device_info(session, url, _id, params):
     # workaround for content_library_item_info
     if "item?library_id=" in url:
         item_url = url.split("?")[0] + "/" + _id
     else:
         item_url = url + "/" + _id
-    async with session.get(item_url) as resp:
+    async with session.get(item_url, **build_additionnal_args(params)) as resp:
         if resp.status == 200:
             _json = await resp.json()
             if "value" not in _json:  # 7.0.2+
@@ -275,8 +292,8 @@ async def exists(params, session, url, unicity_keys=None):
 
     unicity_keys += ["label", "pci_slot_number", "sata"]
 
-    devices = await list_devices(session, url)
-    full_devices = await build_full_device_list(session, url, devices)
+    devices = await list_devices(session, url, params)
+    full_devices = await build_full_device_list(session, url, devices, params)
 
     for device in full_devices:
         for k in unicity_keys:
