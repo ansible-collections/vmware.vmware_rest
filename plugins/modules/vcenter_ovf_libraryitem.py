@@ -162,6 +162,10 @@ options:
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_VALIDATE_CERTS) will be used instead.
     type: bool
+  session_timeout:
+    description:
+    - Override default timeout for all request.
+    type: float
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0
@@ -326,6 +330,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -353,6 +358,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -428,7 +438,7 @@ async def _create(params, session):
     _url = ("https://{vcenter_hostname}" "/api/vcenter/ovf/library-item").format(
         **params
     )
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -469,7 +479,7 @@ async def _deploy(params, session):
         # aa
         "/api/vcenter/ovf/library-item/{ovf_library_item_id}?action=deploy"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -495,7 +505,7 @@ async def _filter(params, session):
         # aa
         "/api/vcenter/ovf/library-item/{ovf_library_item_id}?action=filter"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
