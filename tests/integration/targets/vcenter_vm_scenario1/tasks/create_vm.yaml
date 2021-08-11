@@ -1,5 +1,5 @@
 - debug: var=my_datastore.datastore
-- name: Create a VM
+- name: Create a VM using the lookup plugins
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
@@ -17,7 +17,7 @@
     that:
       - my_vm is changed
 
-- name: _Create a VM (again)
+- name: _Create a VM (again) and without the lookup plugins
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
@@ -29,7 +29,7 @@
     hardware_version: VMX_11
     memory:
       hot_add_enabled: true
-      size_MiB: 1024
+      size_MiB: 512
   register: result
 - assert:
     that:
