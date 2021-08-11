@@ -11,7 +11,7 @@
     hardware_version: VMX_11
     memory:
       hot_add_enabled: true
-      size_MiB: 1024
+      size_MiB: 512
   register: my_vm
 - assert:
     that:
@@ -29,7 +29,7 @@
     hardware_version: VMX_11
     memory:
       hot_add_enabled: true
-      size_MiB: 512
+      size_MiB: 1024
   register: result
 - assert:
     that:
