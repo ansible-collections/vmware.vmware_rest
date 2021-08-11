@@ -2,10 +2,10 @@
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
-      cluster: "{{ my_cluster_info.id }}"
-      datastore: "{{ my_datastore.datastore }}"
-      folder: "{{ my_virtual_machine_folder.folder }}"
-      resource_pool: "{{ my_cluster_info.value.resource_pool }}"
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
     name: test_vm1
     guest_OS: DEBIAN_8_64
     hardware_version: VMX_11
