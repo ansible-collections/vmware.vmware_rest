@@ -49,22 +49,20 @@ _raw:
 """
 
 
-from ansible.plugins.lookup import LookupBase
-
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
     Lookup,
     get_credentials,
 )
+from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
+    TurboLookupBase as LookupBase,
+)
 
 
 class LookupModule(LookupBase):
-    def run(self, terms, variables, **kwargs):
-        import asyncio
-
+    async def _run(self, terms, variables, **kwargs):
         self.set_options(var_options=variables, direct=get_credentials(**kwargs))
         self.set_option("object_type", "folder")
-        loop = asyncio.get_event_loop()
+        result = await Lookup.entry_point(terms, self._options)
+        return [result]
 
-        return loop.run_until_complete(
-            asyncio.gather(Lookup.entry_point(terms, self._options))
-        )
+    run = _run if not hasattr(LookupBase, "run_on_daemon") else LookupBase.run_on_daemon
