@@ -47,6 +47,14 @@ options:
     - Names that clusters must have to match the filter (see {@link Info#name}).
     elements: str
     type: list
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -115,14 +123,14 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1144
+  sample: domain-c1033
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1145
+    resource_pool: resgroup-1034
   type: dict
 """
 
@@ -166,6 +174,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -193,6 +202,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -261,7 +275,7 @@ def build_url(params):
 
 async def entry_point(module, session):
     url = build_url(module.params)
-    async with session.get(url) as resp:
+    async with session.get(url, **session_timeout(module.params)) as resp:
         _json = await resp.json()
 
         if "value" not in _json:  # 7.0.2+

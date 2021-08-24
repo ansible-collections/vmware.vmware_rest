@@ -15,6 +15,14 @@ module: appliance_localaccounts_info
 short_description: Get the local user account information.
 description: Get the local user account information.
 options:
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   username:
     description:
     - User login name Required with I(state=['get'])
@@ -80,41 +88,30 @@ value:
   - enabled: 1
     fullname: root
     has_password: 1
-    last_password_change: '2021-06-23T00:00:00.000Z'
+    last_password_change: '2021-08-24T00:00:00.000Z'
     max_days_between_password_change: 90
     min_days_between_password_change: 0
-    password_expires_at: '2021-09-21T00:00:00.000Z'
+    password_expires_at: '2021-11-22T00:00:00.000Z'
     roles:
     - superAdmin
     warn_days_before_password_expiration: 7
   - enabled: 0
     has_password: 0
-    last_password_change: '2021-05-26T00:00:00.000Z'
+    last_password_change: '2021-07-26T00:00:00.000Z'
     max_days_between_password_change: 90
     min_days_between_password_change: 1
-    password_expires_at: '2021-08-24T00:00:00.000Z'
+    password_expires_at: '2021-10-24T00:00:00.000Z'
     roles:
     - ''
     warn_days_before_password_expiration: 7
   - enabled: 0
     has_password: 0
-    last_password_change: '2021-05-26T00:00:00.000Z'
+    last_password_change: '2021-07-26T00:00:00.000Z'
     max_days_between_password_change: -1
     min_days_between_password_change: -1
     roles:
     - ''
     warn_days_before_password_expiration: -1
-  - email: foobar@vsphere.local
-    enabled: 1
-    fullname: Foobar
-    has_password: 1
-    last_password_change: '2021-05-26T00:00:00.000Z'
-    max_days_between_password_change: 90
-    min_days_between_password_change: 1
-    password_expires_at: '2021-08-24T00:00:00.000Z'
-    roles:
-    - operator
-    warn_days_before_password_expiration: 7
   type: list
 """
 
@@ -149,6 +146,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -176,6 +174,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -230,7 +233,7 @@ def build_url(params):
 
 async def entry_point(module, session):
     url = build_url(module.params)
-    async with session.get(url) as resp:
+    async with session.get(url, **session_timeout(module.params)) as resp:
         _json = await resp.json()
 
         if "value" not in _json:  # 7.0.2+

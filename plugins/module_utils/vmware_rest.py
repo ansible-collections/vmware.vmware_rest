@@ -85,7 +85,6 @@ async def open_session(
 
     session_id = json["value"]
     session = aiohttp.ClientSession(
-        timeout=aiohttp.ClientTimeout(total=600),
         connector=connector,
         headers={
             "vmware-api-session-id": session_id,
@@ -125,6 +124,23 @@ def gen_args(params, in_query_parameter):
         else:
             args += (i + "=") + v
     return args
+
+
+def session_timeout(params):
+    exceptions = importlib.import_module(
+        "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
+    )
+    try:
+        aiohttp = importlib.import_module("aiohttp")
+    except ImportError:
+        raise exceptions.EmbeddedModuleFailure(msg=missing_required_lib("aiohttp"))
+
+    if not aiohttp:
+        raise exceptions.EmbeddedModuleFailure(msg="Failed to import aiohttp")
+    out = {}
+    if params.get("session_timeout"):
+        out["timeout"] = aiohttp.ClientTimeout(total=params.get("session_timeout"))
+    return out
 
 
 async def update_changed_flag(data, status, operation):

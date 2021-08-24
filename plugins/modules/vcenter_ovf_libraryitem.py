@@ -88,6 +88,14 @@ options:
     - Identifier of the content library item containing the OVF package to be deployed.
       Required with I(state=['deploy', 'filter'])
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   source:
     description:
     - Identifier of the virtual machine or virtual appliance to use as the source.
@@ -185,15 +193,6 @@ EXAMPLES = r"""
     state: present
   register: nfs_lib
 
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
-
 - name: We can also use filter to limit the number of result
   vmware.vmware_rest.vcenter_datastore_info:
     filter_names:
@@ -203,6 +202,15 @@ EXAMPLES = r"""
 - name: Set my_datastore
   set_fact:
     my_datastore: '{{ my_datastores.value|first }}'
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
 
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
@@ -232,6 +240,7 @@ EXAMPLES = r"""
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 900
     source:
       type: VirtualMachine
       id: '{{ my_vm.id }}'
@@ -245,6 +254,7 @@ EXAMPLES = r"""
 
 - name: Create a new VM from the OVF
   vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 900
     ovf_library_item_id: '{{ (result.value|selectattr("name", "equalto", "my_vm")|first).id
       }}'
     state: deploy
@@ -284,11 +294,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
@@ -297,6 +302,11 @@ PAYLOAD_FORMAT = {
     "filter": {
         "query": {},
         "body": {"target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long
@@ -326,6 +336,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -353,6 +364,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -428,7 +444,7 @@ async def _create(params, session):
     _url = ("https://{vcenter_hostname}" "/api/vcenter/ovf/library-item").format(
         **params
     )
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -469,7 +485,7 @@ async def _deploy(params, session):
         # aa
         "/api/vcenter/ovf/library-item/{ovf_library_item_id}?action=deploy"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -495,7 +511,7 @@ async def _filter(params, session):
         # aa
         "/api/vcenter/ovf/library-item/{ovf_library_item_id}?action=filter"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

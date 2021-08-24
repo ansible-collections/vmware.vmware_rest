@@ -31,6 +31,14 @@ options:
     description:
     - The name of the datacenter to be created. Required with I(state=['present'])
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - absent
@@ -123,7 +131,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1112
+      datacenter: datacenter-1001
       name: my_dc
     _ansible_no_log: 0
     ansible_loop_var: item
@@ -131,10 +139,11 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1112
+        datacenter: datacenter-1001
         folder: null
         force: 1
         name: null
+        session_timeout: null
         state: absent
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
@@ -142,7 +151,7 @@ results:
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1112
+      datacenter: datacenter-1001
       name: my_dc
     value: {}
   type: list
@@ -150,12 +159,12 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
     "delete": {
         "query": {"force": "force"},
         "body": {},
         "path": {"datacenter": "datacenter"},
     },
-    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -183,6 +192,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -210,6 +220,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -293,7 +308,7 @@ async def _create(params, session):
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/api/vcenter/datacenter").format(**params)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -330,7 +345,7 @@ async def _delete(params, session):
     _url = ("https://{vcenter_hostname}" "/api/vcenter/datacenter/{datacenter}").format(
         **params
     ) + gen_args(params, _in_query_parameters)
-    async with session.delete(_url, json=payload) as resp:
+    async with session.delete(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

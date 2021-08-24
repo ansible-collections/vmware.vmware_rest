@@ -20,6 +20,14 @@ options:
     - Command line options passed to the installer to modify the installation procedure
       for Tools.
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - present
@@ -112,14 +120,14 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {"upgrade_policy": "upgrade_policy"},
-        "path": {"vm": "vm"},
-    },
     "upgrade": {
         "query": {},
         "body": {"command_line_options": "command_line_options"},
+        "path": {"vm": "vm"},
+    },
+    "update": {
+        "query": {},
+        "body": {"upgrade_policy": "upgrade_policy"},
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long
@@ -149,6 +157,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -176,6 +185,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -246,7 +260,7 @@ async def entry_point(module, session):
 async def _update(params, session):
     payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
     _url = ("https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/tools").format(**params)
-    async with session.get(_url) as resp:
+    async with session.get(_url, **session_timeout(params)) as resp:
         _json = await resp.json()
         if "value" in _json:
             value = _json["value"]
@@ -270,7 +284,7 @@ async def _update(params, session):
                 _json = {"value": _json}
             _json["id"] = params.get("None")
             return await update_changed_flag(_json, resp.status, "get")
-    async with session.patch(_url, json=payload) as resp:
+    async with session.patch(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -281,7 +295,7 @@ async def _update(params, session):
 
         # e.g: content_configuration
         if not _json and resp.status == 204:
-            async with session.get(_url) as resp_get:
+            async with session.get(_url, **session_timeout(params)) as resp_get:
                 _json_get = await resp_get.json()
                 if _json_get:
                     _json = _json_get
@@ -303,7 +317,7 @@ async def _upgrade(params, session):
         # aa
         "/api/vcenter/vm/{vm}/tools?action=upgrade"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

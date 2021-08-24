@@ -124,6 +124,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                        <div>The default value is 300s.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>source</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -294,15 +312,6 @@ Examples
         state: present
       register: nfs_lib
 
-    - name: Build a list of all the clusters
-      vmware.vmware_rest.vcenter_cluster_info:
-      register: all_the_clusters
-
-    - name: Retrieve details about the first cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        cluster: '{{ all_the_clusters.value[0].cluster }}'
-      register: my_cluster_info
-
     - name: We can also use filter to limit the number of result
       vmware.vmware_rest.vcenter_datastore_info:
         filter_names:
@@ -312,6 +321,15 @@ Examples
     - name: Set my_datastore
       set_fact:
         my_datastore: '{{ my_datastores.value|first }}'
+
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: all_the_clusters
+
+    - name: Retrieve details about the first cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: '{{ all_the_clusters.value[0].cluster }}'
+      register: my_cluster_info
 
     - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
       vmware.vmware_rest.vcenter_folder_info:
@@ -341,6 +359,7 @@ Examples
 
     - name: Export the VM as an OVF on the library
       vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 900
         source:
           type: VirtualMachine
           id: '{{ my_vm.id }}'
@@ -354,6 +373,7 @@ Examples
 
     - name: Create a new VM from the OVF
       vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 900
         ovf_library_item_id: '{{ (result.value|selectattr("name", "equalto", "my_vm")|first).id
           }}'
         state: deploy

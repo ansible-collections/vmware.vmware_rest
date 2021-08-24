@@ -59,6 +59,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                        <div>The default value is 300s.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_hostname</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -207,35 +225,18 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">e06ea8f1-6dad-4f6d-abfc-bddd774e9ab1</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
+                      <span style="color: purple">list</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Retrieve the local content library information based upon id check mode</div>
+                            <div>Build a list of local libraries</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-06-23T23:32:51.470Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;e06ea8f1-6dad-4f6d-abfc-bddd774e9ab1&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-06-23T23:32:51.470Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/e06ea8f1-6dad-4f6d-abfc-bddd774e9ab1/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;34049aff-97a3-4ebb-bd32-c3f3bf314ee2&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1153&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;creation_time&#x27;: &#x27;2021-08-24T17:24:50.731Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;1dc57288-2562-4e94-a06a-83ce1e5b9b18&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-08-24T17:24:50.731Z&#x27;, &#x27;name&#x27;: &#x27;my_library_on_nfs&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/1dc57288-2562-4e94-a06a-83ce1e5b9b18/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;storage_uri&#x27;: &#x27;nfs://datastore.test/srv/share/content-library&#x27;, &#x27;type&#x27;: &#x27;OTHER&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}, {&#x27;creation_time&#x27;: &#x27;2021-08-24T17:27:30.635Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;8017757d-becd-4495-a28f-08637e4bdfad&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-08-24T17:27:30.635Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/8017757d-becd-4495-a28f-08637e4bdfad/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1019&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}]</div>
                 </td>
             </tr>
     </table>

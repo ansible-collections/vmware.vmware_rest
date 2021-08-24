@@ -20,6 +20,14 @@ options:
     - Time zone name. This parameter is mandatory.
     required: true
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - set
@@ -84,8 +92,8 @@ RETURN = r"""
 value:
   description: Use the UTC timezone
   returned: On success
-  sample: UTC
-  type: str
+  sample: {}
+  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -118,6 +126,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -145,6 +154,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -216,10 +230,10 @@ async def _set(params, session):
     _url = ("https://{vcenter_hostname}" "/api/appliance/system/time/timezone").format(
         **params
     ) + gen_args(params, _in_query_parameters)
-    async with session.get(_url, json=payload) as resp:
+    async with session.get(_url, json=payload, **session_timeout(params)) as resp:
         before = await resp.json()
 
-    async with session.put(_url, json=payload) as resp:
+    async with session.put(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -229,7 +243,9 @@ async def _set(params, session):
             _json = {"value": _json}
         # The PUT answer does not let us know if the resource has actually been
         # modified
-        async with session.get(_url, json=payload) as resp_get:
+        async with session.get(
+            _url, json=payload, **session_timeout(params)
+        ) as resp_get:
             after = await resp_get.json()
             if before == after:
                 return await update_changed_flag(after, resp_get.status, "get")

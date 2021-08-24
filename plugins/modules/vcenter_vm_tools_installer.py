@@ -23,6 +23,14 @@ description: Connects the VMware Tools CD installer as a CD-ROM for the guest op
   clients should check the {@name vcenter.vm.Tools.Info#versionStatus} and {@name
   vcenter.vm.Tools.Info#runState} from {@link vcenter.vm.Tools#get}
 options:
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - connect
@@ -118,6 +126,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -145,6 +154,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -224,7 +238,7 @@ async def _connect(params, session):
         # aa
         "/api/vcenter/vm/{vm}/tools/installer?action=connect"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -250,7 +264,7 @@ async def _disconnect(params, session):
         # aa
         "/api/vcenter/vm/{vm}/tools/installer?action=disconnect"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

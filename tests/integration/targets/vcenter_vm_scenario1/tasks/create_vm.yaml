@@ -1,23 +1,23 @@
 - debug: var=my_datastore.datastore
-- name: Create a VM using the lookup plugins
+- name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
-      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+      cluster: "{{ my_cluster_info.id }}"
+      datastore: "{{ my_datastore.datastore }}"
+      folder: "{{ my_virtual_machine_folder.folder }}"
+      resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
     guest_OS: DEBIAN_8_64
     hardware_version: VMX_11
     memory:
       hot_add_enabled: true
-      size_MiB: 512
+      size_MiB: 1024
   register: my_vm
 - assert:
     that:
       - my_vm is changed
 
-- name: _Create a VM (again) and without the lookup plugins
+- name: _Create a VM (again)
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
@@ -68,3 +68,155 @@
         type: 'OTHER'
     state: present
   register: nfs_lib
+
+- name: Export the VM as an OVF on the library
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 2900
+    source:
+      type: VirtualMachine
+      id: "{{ my_vm.id }}"
+    target:
+      library_id: "{{ nfs_lib.id }}"
+    create_spec:
+      name: my_vm
+      description: an OVF example
+      flags: []
+    state: present
+
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: result
+
+- name: Create a new VM from the OVF
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 2900
+    ovf_library_item_id: '{{ (result.value|selectattr("name", "equalto", "my_vm")|first).id }}'
+    state: deploy
+    target:
+      resource_pool_id: "{{ my_cluster_info.value.resource_pool }}"
+    deployment_spec:
+      name: my_vm_from_ovf
+      accept_all_EULA: true
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: 'NONE'
+    storage_backings:
+      - datastore_id: "{{ my_datastore.datastore }}"
+        type: 'DATASTORE'
+    state: present
+  register: ds_lib
+
+- name: Retrieve the local content library information based upon id check mode
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+  check_mode: true
+
+- name: Assert that result is available in check mode
+  assert:
+    that:
+      - not result.changed
+      - result.value is defined
+      - result.value['name'] is defined
+      - result.value['id'] is defined
+      - result.value['description'] is defined
+      - result.value['server_guid'] is defined
+      - result.value['creation_time'] is defined
+      - result.value['last_modified_time'] is defined
+      - result.value['storage_backings'] is defined
+      - result.value['version'] is defined
+      - result.value['id'] == ds_lib.id
+      - result.value['type'] == 'LOCAL'
+
+- name: _Retrieve the local content library information based upon id
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+
+- debug: var=result
+
+- name: _check the content library id details
+  assert:
+    that:
+      - result.value is defined
+      - result.value['name'] is defined
+      - result.value['id'] is defined
+      - result.value['description'] is defined
+      - result.value['server_guid'] is defined
+      - result.value['creation_time'] is defined
+      - result.value['last_modified_time'] is defined
+      - result.value['storage_backings'] is defined
+      - result.value['version'] is defined
+      - result.value['id'] == ds_lib.id
+      - result.value['type'] == 'LOCAL'
+
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: result
+
+- name: Get the (empty) list of items of the library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+
+- assert:
+    that:
+      - result.value|length == 0
+
+- name: Create subscribed library
+  content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: "{{ nfs_lib.value.publish_info.publish_url }}"
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+      - datastore_id: "{{ my_datastore.datastore }}"
+        type: 'DATASTORE'
+  register: sub_lib
+
+- name: Create subscribed library (again)
+  content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: "{{ nfs_lib.value.publish_info.publish_url }}"
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+      - datastore_id: "{{ my_datastore.datastore }}"
+        type: 'DATASTORE'
+  register: result
+- name: Assert the resource has not been changed
+  assert:
+    that:
+      - not result.changed
+  ignore_errors: true
+
+- name: Ensure the OVF is here
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ sub_lib.id }}'
+  register: result
+- assert:
+    that:
+      - result.value|length > 0
+
+- name: Clean up the cache
+  content_subscribedlibrary:
+    name: sub_lib
+    library_id: "{{ sub_lib.id }}"
+    state: evict
+
+- name: Trigger a library sync
+  content_subscribedlibrary:
+    name: sub_lib
+    library_id: "{{ sub_lib.id }}"
+    state: sync

@@ -21,6 +21,14 @@ options:
     - The parameter must be the id of a resource returned by M(appliance_vmon_service).
       Required with I(state=['get'])
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -220,7 +228,7 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: DEGRADED
       health_messages:
       - args: []
         default_message: health.statsReoptInitalizer.illegalStateEx
@@ -323,15 +331,15 @@ value:
       health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args:
-        - 950e39fe-cb71-4bb2-9b85-56fbd8f4bbf8\com.vmware.cis.ds
-        default_message: Failed to connect to 950e39fe-cb71-4bb2-9b85-56fbd8f4bbf8\com.vmware.cis.ds
+        - 042a6bda-c522-48f9-8df1-5d48265dea2d\com.vmware.cis.ds
+        default_message: Failed to connect to 042a6bda-c522-48f9-8df1-5d48265dea2d\com.vmware.cis.ds
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-06-23T23:31:09UTC
-        - 2021-06-23T23:31:10UTC
-        default_message: Configuration health status is created between 2021-06-23T23:31:09UTC
-          and 2021-06-23T23:31:10UTC.
+        - 2021-08-24T17:46:21UTC
+        - 2021-08-24T17:46:22UTC
+        default_message: Configuration health status is created between 2021-08-24T17:46:21UTC
+          and 2021-08-24T17:46:22UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -389,16 +397,18 @@ value:
   - key: vpxd
     value:
       description_key: cis.vpxd.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: HEALTHY
       health_messages:
       - args:
         - vCenter Server
         - GREEN
         default_message: '{0} health is {1}'
         id: vc.health.statuscode
-      - args: []
-        default_message: ''
-        id: vc.health.error.dbjob2
+      - args:
+        - VirtualCenter Database
+        - GREEN
+        default_message: '{0} health is {1}'
+        id: vc.health.statuscode
       name_key: cis.vpxd.ServiceName
       startup_type: AUTOMATIC
       state: STARTED
@@ -495,6 +505,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -522,6 +533,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -574,7 +590,7 @@ async def _info(params, session):
     _url = ("https://{vcenter_hostname}" "/rest/appliance/vmon/service").format(
         **params
     ) + gen_args(params, _in_query_parameters)
-    async with session.get(_url) as resp:
+    async with session.get(_url, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

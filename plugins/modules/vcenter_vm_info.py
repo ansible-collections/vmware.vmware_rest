@@ -62,6 +62,14 @@ options:
       to match the filter.
     elements: str
     type: list
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -144,7 +152,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1162
+  sample: vm-1051
   type: str
 value:
   description: Collect information about a specific VM
@@ -167,7 +175,7 @@ value:
       '2000':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_3/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1_1/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -181,8 +189,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 421c2718-c229-449f-1a8f-dba0b6e54ff4
-      instance_uuid: 501c14c2-f032-4d19-b6ec-b69ccf6880ae
+      bios_uuid: 422dcbf5-806d-9f48-510f-d0ad16c00c97
+      instance_uuid: 502da0f9-6a71-75e7-09b7-4865082dfcc6
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -250,6 +258,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -277,6 +286,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -349,7 +363,7 @@ def build_url(params):
 
 async def entry_point(module, session):
     url = build_url(module.params)
-    async with session.get(url) as resp:
+    async with session.get(url, **session_timeout(module.params)) as resp:
         _json = await resp.json()
 
         if "value" not in _json:  # 7.0.2+
