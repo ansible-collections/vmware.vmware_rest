@@ -67,6 +67,7 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.appliance_update_info_module
     docs/vmware.vmware_rest.appliance_vmon_service_info_module
     docs/vmware.vmware_rest.appliance_vmon_service_module
+    docs/vmware.vmware_rest.cluster_moid_lookup
     docs/vmware.vmware_rest.content_configuration_info_module
     docs/vmware.vmware_rest.content_configuration_module
     docs/vmware.vmware_rest.content_library_item_info_module
@@ -74,6 +75,12 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.content_locallibrary_module
     docs/vmware.vmware_rest.content_subscribedlibrary_info_module
     docs/vmware.vmware_rest.content_subscribedlibrary_module
+    docs/vmware.vmware_rest.datacenter_moid_lookup
+    docs/vmware.vmware_rest.datastore_moid_lookup
+    docs/vmware.vmware_rest.folder_moid_lookup
+    docs/vmware.vmware_rest.host_moid_lookup
+    docs/vmware.vmware_rest.network_moid_lookup
+    docs/vmware.vmware_rest.resource_pool_moid_lookup
     docs/vmware.vmware_rest.vcenter_cluster_info_module
     docs/vmware.vmware_rest.vcenter_datacenter_info_module
     docs/vmware.vmware_rest.vcenter_datacenter_module
@@ -141,3 +148,4 @@ Manual of the vmware.vmware_rest modules
     docs/vmware.vmware_rest.vcenter_vm_tools_installer_info_module
     docs/vmware.vmware_rest.vcenter_vm_tools_installer_module
     docs/vmware.vmware_rest.vcenter_vm_tools_module
+    docs/vmware.vmware_rest.vm_moid_lookup

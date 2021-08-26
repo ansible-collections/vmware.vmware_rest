@@ -47,6 +47,14 @@ options:
     - Names that datastores must have to match the filter (see {@link Info#name}).
     elements: str
     type: list
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   types:
     aliases:
     - filter_types
@@ -118,18 +126,18 @@ value:
   description: Retrieve a list of all the datastores
   returned: On success
   sample:
-  - capacity: 26831990784
-    datastore: datastore-1152
-    free_space: 24459153408
+  - capacity: 26354073600
+    datastore: datastore-1042
+    free_space: 23983575040
     name: ro_datastore
     type: NFS
-  - capacity: 26831990784
-    datastore: datastore-1153
-    free_space: 24445435904
+  - capacity: 26354073600
+    datastore: datastore-1043
+    free_space: 23763972096
     name: rw_datastore
     type: NFS
   - capacity: 11542724608
-    datastore: datastore-1154
+    datastore: datastore-1044
     free_space: 10033823744
     name: local
     type: VMFS
@@ -177,6 +185,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -204,6 +213,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -277,7 +291,7 @@ def build_url(params):
 
 async def entry_point(module, session):
     url = build_url(module.params)
-    async with session.get(url) as resp:
+    async with session.get(url, **session_timeout(module.params)) as resp:
         _json = await resp.json()
 
         if "value" not in _json:  # 7.0.2+

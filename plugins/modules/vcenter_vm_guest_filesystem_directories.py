@@ -66,6 +66,14 @@ options:
     - If true, all files and subdirectories are also deleted. If false, the directory
       must be empty for the operation to succeed.
     type: bool
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - absent
@@ -138,6 +146,15 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {
+        "query": {},
+        "body": {
+            "create_parents": "create_parents",
+            "credentials": "credentials",
+            "path": "path",
+        },
+        "path": {"vm": "vm"},
+    },
     "delete": {
         "query": {},
         "body": {
@@ -154,15 +171,6 @@ PAYLOAD_FORMAT = {
             "parent_path": "parent_path",
             "prefix": "prefix",
             "suffix": "suffix",
-        },
-        "path": {"vm": "vm"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "create_parents": "create_parents",
-            "credentials": "credentials",
-            "path": "path",
         },
         "path": {"vm": "vm"},
     },
@@ -198,6 +206,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -225,6 +234,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -305,7 +319,7 @@ async def _create(params, session):
         "https://{vcenter_hostname}"
         "/api/vcenter/vm/{vm}/guest/filesystem/directories?action=create"
     ).format(**params)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -346,7 +360,7 @@ async def _create_temporary(params, session):
         # aa
         "/api/vcenter/vm/{vm}/guest/filesystem/directories?action=createTemporary"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -371,7 +385,7 @@ async def _delete(params, session):
         "https://{vcenter_hostname}"
         "/api/vcenter/vm/{vm}/guest/filesystem/directories?action=delete"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -395,7 +409,7 @@ async def _move(params, session):
         # aa
         "/api/vcenter/vm/{vm}/guest/filesystem/directories?action=move"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

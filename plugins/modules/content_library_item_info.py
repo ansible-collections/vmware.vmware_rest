@@ -23,6 +23,14 @@ options:
     description:
     - Identifier of the library item to return. Required with I(state=['get'])
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -143,16 +151,16 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2021-06-23T23:32:56.088Z'
+    creation_time: '2021-08-24T17:45:45.976Z'
     description: an OVF example
-    id: 9f8398fd-b4c4-4bb4-afe5-8302dcdc4a2b
-    last_modified_time: '2021-06-23T23:32:56.552Z'
-    last_sync_time: '2021-06-23T23:32:56.551Z'
-    library_id: 899184df-f3ab-4284-ac9b-02407fd9536e
+    id: cabdd975-622b-47d2-bb5e-7faa72aaf5ee
+    last_modified_time: '2021-08-24T17:45:46.309Z'
+    last_sync_time: '2021-08-24T17:45:46.296Z'
+    library_id: 89f58ba0-e959-443a-b2f0-fbb57cb334cf
     metadata_version: '1'
     name: my_vm
     size: 0
-    source_id: 2d564ff7-4b74-41d6-961a-7f892bb11fdb
+    source_id: 3db19e53-f55d-4aa9-95b5-8dc229a554bf
     type: ovf
     version: '1'
   type: list
@@ -189,6 +197,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -216,6 +225,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -269,7 +283,7 @@ def build_url(params):
 
 async def entry_point(module, session):
     url = build_url(module.params)
-    async with session.get(url) as resp:
+    async with session.get(url, **session_timeout(module.params)) as resp:
         _json = await resp.json()
 
         if "value" not in _json:  # 7.0.2+

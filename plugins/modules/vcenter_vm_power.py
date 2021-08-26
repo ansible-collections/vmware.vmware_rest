@@ -15,6 +15,14 @@ module: vcenter_vm_power
 short_description: Resets a powered-on virtual machine.
 description: Resets a powered-on virtual machine.
 options:
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - reset
@@ -121,26 +129,27 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1132
+      vm: vm-1022
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     failed: 0
     invocation:
       module_args:
+        session_timeout: null
         state: stop
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1132
+        vm: vm-1022
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1132
+      vm: vm-1022
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -156,36 +165,37 @@ results:
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1136
+      vm: vm-1024
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     failed: 0
     invocation:
       module_args:
+        session_timeout: null
         state: stop
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1136
+        vm: vm-1024
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1136
+      vm: vm-1024
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -213,6 +223,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -240,6 +251,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -315,7 +331,7 @@ async def _reset(params, session):
         # aa
         "/api/vcenter/vm/{vm}/power?action=reset"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -339,7 +355,7 @@ async def _start(params, session):
         # aa
         "/api/vcenter/vm/{vm}/power?action=start"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -363,7 +379,7 @@ async def _stop(params, session):
         # aa
         "/api/vcenter/vm/{vm}/power?action=stop"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -387,7 +403,7 @@ async def _suspend(params, session):
         # aa
         "/api/vcenter/vm/{vm}/power?action=suspend"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

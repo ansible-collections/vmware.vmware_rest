@@ -60,6 +60,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                        <div>The default value is 300s.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>startup_type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -250,7 +268,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Adjust vpxd configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;description_key&#x27;: &#x27;cis.vpxd.ServiceDescription&#x27;, &#x27;health&#x27;: &#x27;HEALTHY_WITH_WARNINGS&#x27;, &#x27;health_messages&#x27;: [{&#x27;args&#x27;: [&#x27;vCenter Server&#x27;, &#x27;GREEN&#x27;], &#x27;default_message&#x27;: &#x27;{0} health is {1}&#x27;, &#x27;id&#x27;: &#x27;vc.health.statuscode&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;vc.health.error.dbjob2&#x27;}], &#x27;name_key&#x27;: &#x27;cis.vpxd.ServiceName&#x27;, &#x27;startup_type&#x27;: &#x27;AUTOMATIC&#x27;, &#x27;state&#x27;: &#x27;STARTED&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;description_key&#x27;: &#x27;cis.vpxd.ServiceDescription&#x27;, &#x27;health&#x27;: &#x27;HEALTHY&#x27;, &#x27;health_messages&#x27;: [{&#x27;args&#x27;: [&#x27;vCenter Server&#x27;, &#x27;GREEN&#x27;], &#x27;default_message&#x27;: &#x27;{0} health is {1}&#x27;, &#x27;id&#x27;: &#x27;vc.health.statuscode&#x27;}, {&#x27;args&#x27;: [&#x27;VirtualCenter Database&#x27;, &#x27;GREEN&#x27;], &#x27;default_message&#x27;: &#x27;{0} health is {1}&#x27;, &#x27;id&#x27;: &#x27;vc.health.statuscode&#x27;}], &#x27;name_key&#x27;: &#x27;cis.vpxd.ServiceName&#x27;, &#x27;startup_type&#x27;: &#x27;AUTOMATIC&#x27;, &#x27;state&#x27;: &#x27;STARTED&#x27;}</div>
                 </td>
             </tr>
     </table>

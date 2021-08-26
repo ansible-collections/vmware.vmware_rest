@@ -44,6 +44,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>session_timeout</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">float</span>
+                    </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 2.1.0</div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Timeout settings for client session.</div>
+                        <div>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</div>
+                        <div>The default value is 300s.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>vcenter_hostname</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -174,7 +192,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the database heath status</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;DB state is Degraded&#x27;, &#x27;id&#x27;: &#x27;desc&#x27;}, &#x27;severity&#x27;: &#x27;WARNING&#x27;}], &#x27;status&#x27;: &#x27;DEGRADED&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Unable to get DB health state&#x27;, &#x27;id&#x27;: &#x27;desc&#x27;}, &#x27;severity&#x27;: &#x27;ERROR&#x27;}], &#x27;status&#x27;: &#x27; &#x27;}</div>
                 </td>
             </tr>
     </table>

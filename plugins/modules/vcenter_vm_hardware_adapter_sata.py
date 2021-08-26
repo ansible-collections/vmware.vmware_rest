@@ -31,6 +31,14 @@ options:
     description:
     - Address of the SATA adapter on the PCI bus.
     type: int
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - absent
@@ -139,12 +147,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {"bus": "bus", "pci_slot_number": "pci_slot_number", "type": "type"},
         "path": {"vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -172,6 +180,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -199,6 +208,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -288,7 +302,7 @@ async def _create(params, session):
     _url = (
         "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/adapter/sata"
     ).format(**params)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -328,7 +342,7 @@ async def _delete(params, session):
         "https://{vcenter_hostname}"
         "/api/vcenter/vm/{vm}/hardware/adapter/sata/{adapter}"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.delete(_url, json=payload) as resp:
+    async with session.delete(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

@@ -17,6 +17,14 @@ short_description: Returns the cached storage policy compliance information of a
 description: Returns the cached storage policy compliance information of a virtual
   machine.
 options:
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -92,7 +100,7 @@ value:
   sample:
     disks:
       '16000':
-        check_time: '2021-06-23T23:33:25.262Z'
+        check_time: '2021-08-24T17:46:13.054Z'
         failure_cause: []
         policy: f4e5bade-15a2-4805-bf8e-52318c4ce443
         status: NOT_APPLICABLE
@@ -130,6 +138,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -157,6 +166,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -209,7 +223,7 @@ async def _info(params, session):
     _url = (
         "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/storage/policy/compliance"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.get(_url) as resp:
+    async with session.get(_url, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

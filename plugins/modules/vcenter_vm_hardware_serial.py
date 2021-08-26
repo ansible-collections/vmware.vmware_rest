@@ -60,6 +60,14 @@ options:
     - Virtual serial port identifier. Required with I(state=['absent', 'connect',
       'disconnect', 'present'])
     type: str
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   start_connected:
     description:
     - Flag indicating whether the virtual device should be connected whenever the
@@ -207,18 +215,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-            "yield_on_poll": "yield_on_poll",
-        },
-        "path": {"port": "port", "vm": "vm"},
-    },
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "create": {
         "query": {},
@@ -230,6 +226,18 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+            "yield_on_poll": "yield_on_poll",
+        },
+        "path": {"port": "port", "vm": "vm"},
+    },
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -257,6 +265,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -284,6 +293,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -369,7 +383,7 @@ async def _connect(params, session):
         # aa
         "/api/vcenter/vm/{vm}/hardware/serial/{port}?action=connect"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -400,7 +414,7 @@ async def _create(params, session):
     _url = ("https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/serial").format(
         **params
     )
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -437,7 +451,7 @@ async def _delete(params, session):
     _url = (
         "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/serial/{port}"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.delete(_url, json=payload) as resp:
+    async with session.delete(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -461,7 +475,7 @@ async def _disconnect(params, session):
         # aa
         "/api/vcenter/vm/{vm}/hardware/serial/{port}?action=disconnect"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -477,7 +491,7 @@ async def _update(params, session):
     _url = (
         "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/serial/{port}"
     ).format(**params)
-    async with session.get(_url) as resp:
+    async with session.get(_url, **session_timeout(params)) as resp:
         _json = await resp.json()
         if "value" in _json:
             value = _json["value"]
@@ -501,7 +515,7 @@ async def _update(params, session):
                 _json = {"value": _json}
             _json["id"] = params.get("port")
             return await update_changed_flag(_json, resp.status, "get")
-    async with session.patch(_url, json=payload) as resp:
+    async with session.patch(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -512,7 +526,7 @@ async def _update(params, session):
 
         # e.g: content_configuration
         if not _json and resp.status == 204:
-            async with session.get(_url) as resp_get:
+            async with session.get(_url, **session_timeout(params)) as resp_get:
                 _json_get = await resp_get.json()
                 if _json_get:
                     _json = _json_get

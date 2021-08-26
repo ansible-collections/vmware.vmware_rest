@@ -16,6 +16,14 @@ short_description: Returns an ordered list of boot devices for the virtual machi
 description: Returns an ordered list of boot devices for the virtual machine. If the
   {@term list} is empty, the virtual machine uses a default boot sequence.
 options:
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -127,6 +135,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -154,6 +163,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -206,7 +220,7 @@ async def _info(params, session):
     _url = (
         "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/hardware/boot/device"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.get(_url) as resp:
+    async with session.get(_url, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

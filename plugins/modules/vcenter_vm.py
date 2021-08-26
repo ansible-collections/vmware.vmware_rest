@@ -663,6 +663,14 @@ options:
     description:
     - Map of serial ports to Update.
     type: dict
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   source:
     description:
     - Virtual machine to InstantClone from. Required with I(state=['clone', 'instant_clone'])
@@ -751,15 +759,6 @@ EXAMPLES = r"""
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
 
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
-
 - name: We can also use filter to limit the number of result
   vmware.vmware_rest.vcenter_datastore_info:
     filter_names:
@@ -769,6 +768,15 @@ EXAMPLES = r"""
 - name: Set my_datastore
   set_fact:
     my_datastore: '{{ my_datastores.value|first }}'
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
 
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
@@ -813,7 +821,7 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1132
+      vm: vm-1022
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -848,6 +856,7 @@ results:
         scsi_adapters: null
         serial_ports: null
         serial_ports_to_update: null
+        session_timeout: null
         source: null
         state: absent
         storage_policy: null
@@ -856,20 +865,20 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1132
+        vm: vm-1022
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1132
+      vm: vm-1022
     value: {}
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1136
+      vm: vm-1024
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -904,6 +913,7 @@ results:
         scsi_adapters: null
         serial_ports: null
         serial_ports_to_update: null
+        session_timeout: null
         source: null
         state: absent
         storage_policy: null
@@ -912,13 +922,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1136
+        vm: vm-1024
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1136
+      vm: vm-1024
     value: {}
   type: list
 """
@@ -930,6 +940,42 @@ PAYLOAD_FORMAT = {
         "body": {"disks": "disks", "placement": "placement"},
         "path": {"vm": "vm"},
     },
+    "create": {
+        "query": {},
+        "body": {
+            "boot": "boot",
+            "boot_devices": "boot_devices",
+            "cdroms": "cdroms",
+            "cpu": "cpu",
+            "disks": "disks",
+            "floppies": "floppies",
+            "guest_OS": "guest_OS",
+            "hardware_version": "hardware_version",
+            "memory": "memory",
+            "name": "name",
+            "nics": "nics",
+            "parallel_ports": "parallel_ports",
+            "placement": "placement",
+            "sata_adapters": "sata_adapters",
+            "scsi_adapters": "scsi_adapters",
+            "serial_ports": "serial_ports",
+            "storage_policy": "storage_policy",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "clone": {
         "query": {},
         "body": {
@@ -954,42 +1000,6 @@ PAYLOAD_FORMAT = {
             "placement": "placement",
             "serial_ports_to_update": "serial_ports_to_update",
             "source": "source",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "register": {
-        "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
-        },
-        "path": {},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "boot": "boot",
-            "boot_devices": "boot_devices",
-            "cdroms": "cdroms",
-            "cpu": "cpu",
-            "disks": "disks",
-            "floppies": "floppies",
-            "guest_OS": "guest_OS",
-            "hardware_version": "hardware_version",
-            "memory": "memory",
-            "name": "name",
-            "nics": "nics",
-            "parallel_ports": "parallel_ports",
-            "placement": "placement",
-            "sata_adapters": "sata_adapters",
-            "scsi_adapters": "scsi_adapters",
-            "serial_ports": "serial_ports",
-            "storage_policy": "storage_policy",
         },
         "path": {},
     },
@@ -1020,6 +1030,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -1047,6 +1058,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -1365,7 +1381,7 @@ async def _clone(params, session):
         # aa
         "/api/vcenter/vm?action=clone&vmw-task=true"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1394,7 +1410,7 @@ async def _create(params, session):
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/api/vcenter/vm").format(**params)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -1431,7 +1447,7 @@ async def _delete(params, session):
     _url = ("https://{vcenter_hostname}" "/api/vcenter/vm/{vm}").format(
         **params
     ) + gen_args(params, _in_query_parameters)
-    async with session.delete(_url, json=payload) as resp:
+    async with session.delete(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1453,7 +1469,7 @@ async def _instant_clone(params, session):
         # aa
         "/api/vcenter/vm?action=instant-clone"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1477,7 +1493,7 @@ async def _register(params, session):
         # aa
         "/api/vcenter/vm?action=register"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1503,7 +1519,7 @@ async def _relocate(params, session):
         # aa
         "/api/vcenter/vm/{vm}?action=relocate&vmw-task=true"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -1527,7 +1543,7 @@ async def _unregister(params, session):
         # aa
         "/api/vcenter/vm/{vm}?action=unregister"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

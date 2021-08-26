@@ -47,6 +47,14 @@ options:
     description:
     - The port of the host.
     type: int
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   state:
     choices:
     - absent
@@ -145,15 +153,12 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1151
+  sample: host-1040
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -168,6 +173,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -195,6 +203,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -222,6 +231,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -308,7 +322,7 @@ async def _connect(params, session):
         # aa
         "/api/vcenter/host/{host}?action=connect"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -337,7 +351,7 @@ async def _create(params, session):
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/api/vcenter/host").format(**params)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
             raise EmbeddedModuleFailure(
@@ -374,7 +388,7 @@ async def _delete(params, session):
     _url = ("https://{vcenter_hostname}" "/api/vcenter/host/{host}").format(
         **params
     ) + gen_args(params, _in_query_parameters)
-    async with session.delete(_url, json=payload) as resp:
+    async with session.delete(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
@@ -396,7 +410,7 @@ async def _disconnect(params, session):
         # aa
         "/api/vcenter/host/{host}?action=disconnect"
     ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload) as resp:
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()

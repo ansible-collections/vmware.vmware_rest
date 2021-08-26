@@ -15,6 +15,14 @@ module: appliance_monitoring_info
 short_description: Get monitored item info
 description: Get monitored item info
 options:
+  session_timeout:
+    description:
+    - 'Timeout settings for client session. '
+    - 'The maximal number of seconds for the whole operation including connection
+      establishment, request sending and response. '
+    - The default value is 300s.
+    type: float
+    version_added: 2.1.0
   stat_id:
     description:
     - statistic item id Required with I(state=['get'])
@@ -365,36 +373,18 @@ value:
     instance: ''
     name: com.vmware.applmgmt.mon.name.mem.total
     units: com.vmware.applmgmt.mon.unit.kb
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
-    id: storage.totalsize.directory.vcdb_hourly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.memory
     description: com.vmware.applmgmt.mon.descr.mem.usage
     id: mem.usage
     instance: ''
     name: com.vmware.applmgmt.mon.name.mem.usage
     units: com.vmware.applmgmt.mon.unit.percent
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats
-    id: storage.totalsize.directory.vcdb_daily_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.rx.error.eth0
     id: net.rx.error.eth0
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.rx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats
-    id: storage.totalsize.directory.vcdb_monthly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.rx.error.lo
     id: net.rx.error.lo
@@ -402,10 +392,10 @@ value:
     name: com.vmware.applmgmt.mon.name.net.rx.error.lo
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
   - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_yearly_stats
-    id: storage.totalsize.directory.vcdb_yearly_stats
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
+    id: storage.totalsize.directory.vcdb_hourly_stats
     instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_yearly_stats
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
     units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.eth0
@@ -413,18 +403,36 @@ value:
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.tx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_stats
-    id: storage.totalsize.directory.vcdb_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_stats
-    units: com.vmware.applmgmt.mon.unit.percent
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.lo
     id: net.tx.error.lo
     instance: lo
     name: com.vmware.applmgmt.mon.name.net.tx.error.lo
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats
+    id: storage.totalsize.directory.vcdb_daily_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats
+    id: storage.totalsize.directory.vcdb_monthly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_yearly_stats
+    id: storage.totalsize.directory.vcdb_yearly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_yearly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_stats
+    id: storage.totalsize.directory.vcdb_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_stats
+    units: com.vmware.applmgmt.mon.unit.percent
   - category: com.vmware.applmgmt.mon.cat.storage
     description: com.vmware.applmgmt.mon.descr.storage.totalsize.filesystem.seat
     id: storage.totalsize.filesystem.seat
@@ -897,6 +905,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
     prepare_payload,
     update_changed_flag,
+    session_timeout,
 )
 
 
@@ -924,6 +933,11 @@ def prepare_argument_spec():
             type="str",
             required=False,
             fallback=(env_fallback, ["VMWARE_REST_LOG_FILE"]),
+        ),
+        "session_timeout": dict(
+            type="float",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }
 
@@ -976,7 +990,7 @@ def build_url(params):
 
 async def entry_point(module, session):
     url = build_url(module.params)
-    async with session.get(url) as resp:
+    async with session.get(url, **session_timeout(module.params)) as resp:
         _json = await resp.json()
 
         if "value" not in _json:  # 7.0.2+

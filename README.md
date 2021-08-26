@@ -47,6 +47,18 @@ collections:
 ## Content
 
 <!--start collection content-->
+### Lookup plugins
+Name | Description
+--- | ---
+[vmware.vmware_rest.cluster_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.cluster_moid_lookup.rst)|Look up MoID for vSphere cluster objects using vCenter REST API
+[vmware.vmware_rest.datacenter_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.datacenter_moid_lookup.rst)|Look up MoID for vSphere datacenter objects using vCenter REST API
+[vmware.vmware_rest.datastore_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.datastore_moid_lookup.rst)|Look up MoID for vSphere datastore objects using vCenter REST API
+[vmware.vmware_rest.folder_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.folder_moid_lookup.rst)|Look up MoID for vSphere folder objects using vCenter REST API
+[vmware.vmware_rest.host_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.host_moid_lookup.rst)|Look up MoID for vSphere host objects using vCenter REST API
+[vmware.vmware_rest.network_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.network_moid_lookup.rst)|Look up MoID for vSphere network objects using vCenter REST API
+[vmware.vmware_rest.resource_pool_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.resource_pool_moid_lookup.rst)|Look up MoID for vSphere resource pool objects using vCenter REST API
+[vmware.vmware_rest.vm_moid](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vm_moid_lookup.rst)|Look up MoID for vSphere vm objects using vCenter REST API
+
 ### Modules
 Name | Description
 --- | ---
