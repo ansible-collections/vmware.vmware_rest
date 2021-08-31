@@ -30,3 +30,8 @@ export ESXI2_USERNAME=$(sed 's,^esxi2_username=\(.*\),\1,;t;d' ${INVENTORY_PATH}
 export ESXI2_PASSWORD=$(sed 's,^esxi2_password=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_VALIDATE_CERTS=no
 export ANSIBLE_ROLES_PATH=${BASE_DIR}
+export GOVC_PASSWORD=$VMWARE_PASSWORD
+export GOVC_HOST=$VMWARE_HOST
+export GOVC_USERNAME=$VMWARE_USER
+export GOVC_URL="https://${VMWARE_HOST}/sdk"
+export GOVC_INSECURE=1
