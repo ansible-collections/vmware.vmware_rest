@@ -177,6 +177,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -193,25 +195,6 @@ EXAMPLES = r"""
     state: present
   register: nfs_lib
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
-
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
     filter_type: VIRTUAL_MACHINE
@@ -222,6 +205,25 @@ EXAMPLES = r"""
 - name: Set my_virtual_machine_folder
   set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
+
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+    - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -240,7 +242,7 @@ EXAMPLES = r"""
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    session_timeout: 900
+    session_timeout: 2900
     source:
       type: VirtualMachine
       id: '{{ my_vm.id }}'
@@ -254,7 +256,7 @@ EXAMPLES = r"""
 
 - name: Create a new VM from the OVF
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    session_timeout: 900
+    session_timeout: 2900
     ovf_library_item_id: '{{ (result.value|selectattr("name", "equalto", "my_vm")|first).id
       }}'
     state: deploy
@@ -272,33 +274,18 @@ value:
   returned: On success
   sample:
     error:
-      errors:
-      - category: SERVER
-        error:
-          error_type: UNABLE_TO_ALLOCATE_RESOURCE
-          messages:
-          - args:
-            - Insufficient disk space on datastore 'local'.
-            default_message: The operation failed due to Insufficient disk space on
-              datastore 'local'.
-            id: com.vmware.vdcs.util.unable_to_allocate_resource
-          - args: []
-            default_message: File system specific implementation of SetFileAttributes[file]
-              failed
-            id: vob.fssvec.SetFileAttributes.file.failed
+      errors: []
       information: []
       warnings: []
-    succeeded: 0
+    resource_id:
+      id: vm-1079
+      type: VirtualMachine
+    succeeded: 1
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
-        "path": {},
-    },
     "filter": {
         "query": {},
         "body": {"target": "target"},
@@ -308,6 +295,11 @@ PAYLOAD_FORMAT = {
         "query": {"client_token": "client_token"},
         "body": {"deployment_spec": "deployment_spec", "target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
+    },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
+        "path": {},
     },
 }  # pylint: disable=line-too-long
 
@@ -493,6 +485,7 @@ async def _deploy(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "deploy")
 
 
@@ -519,6 +512,7 @@ async def _filter(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "filter")
 
 

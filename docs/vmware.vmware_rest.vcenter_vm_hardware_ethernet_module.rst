@@ -392,12 +392,24 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
 --------
 
 .. code-block:: yaml
+
+    - name: Retrieve details about the portgroup
+      community.vmware.vmware_dvs_portgroup_info:
+        validate_certs: no
+        datacenter: my_dc
+      register: my_portgroup_info
 
     - name: Look up the VM called test_vm1 in the inventory
       register: search_result
@@ -409,12 +421,6 @@ Examples
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
-
-    - name: Retrieve details about the portgroup
-      community.vmware.vmware_dvs_portgroup_info:
-        validate_certs: no
-        datacenter: my_dc
-      register: my_portgroup_info
 
     - name: Attach a VM to a dvswitch
       vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -477,7 +483,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Attach a VM to a dvswitch</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 903867346, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 2d a0 9f 80 ed 48 b8-f0 fb 33 c1 a1 64 ef de&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1050&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:ad:37:3e&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 986882158, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 2d 42 bf 5a a0 13 32-cd 4c c5 a4 ea ab 1c b4&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1077&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:ad:7a:3b&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
                 </td>
             </tr>
     </table>

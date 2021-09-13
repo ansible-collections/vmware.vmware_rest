@@ -222,6 +222,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -229,17 +235,32 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Set the DNS servers
+    - name: Set static DNS servers
       vmware.vmware_rest.appliance_networking_dns_servers:
         servers:
         - 1.1.1.1
+        mode: is_static
+        state: set
+      register: result
+
+    - name: Add another DNS server
+      vmware.vmware_rest.appliance_networking_dns_servers:
+        server: 8.8.4.4
+        state: add
+      register: result
+
+    - name: Use the DNS servers from the DHCP
+      vmware.vmware_rest.appliance_networking_dns_servers:
+        mode: dhcp
+        servers: []
+        state: set
       register: result
 
     - name: Test the DNS servers
       vmware.vmware_rest.appliance_networking_dns_servers:
         state: test
         servers:
-        - var
+        - google.com
       register: result
 
 
@@ -270,7 +291,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Test the DNS servers</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: &quot;Failed to reach &#x27;var&#x27;.&quot;, &#x27;result&#x27;: &#x27;failure&#x27;}], &#x27;status&#x27;: &#x27;red&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: &quot;&#x27;google.com&#x27; is reachable.&quot;, &#x27;result&#x27;: &#x27;success&#x27;}], &#x27;status&#x27;: &#x27;green&#x27;}</div>
                 </td>
             </tr>
     </table>

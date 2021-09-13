@@ -297,6 +297,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -359,15 +361,15 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      creation_time: '2021-08-24T17:24:50.731Z'
+      creation_time: '2021-09-13T20:05:48.917Z'
       description: automated
-      id: 1dc57288-2562-4e94-a06a-83ce1e5b9b18
-      last_modified_time: '2021-08-24T17:24:50.731Z'
+      id: d97a16df-c55e-4e24-852b-a5f17bd6db0e
+      last_modified_time: '2021-09-13T20:05:48.917Z'
       name: my_library_on_nfs
       publish_info:
         authentication_method: NONE
         persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/1dc57288-2562-4e94-a06a-83ce1e5b9b18/lib.json
+        publish_url: https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json
         published: 1
         user_name: vcsp
       server_guid: a775463f-9e84-4133-9528-d154d0271bc9
@@ -388,7 +390,7 @@ results:
         id: null
         last_modified_time: null
         last_sync_time: null
-        library_id: 1dc57288-2562-4e94-a06a-83ce1e5b9b18
+        library_id: d97a16df-c55e-4e24-852b-a5f17bd6db0e
         name: null
         optimization_info: null
         publish_info: null
@@ -406,15 +408,15 @@ results:
         vcenter_validate_certs: 0
         version: null
     item:
-      creation_time: '2021-08-24T17:24:50.731Z'
+      creation_time: '2021-09-13T20:05:48.917Z'
       description: automated
-      id: 1dc57288-2562-4e94-a06a-83ce1e5b9b18
-      last_modified_time: '2021-08-24T17:24:50.731Z'
+      id: d97a16df-c55e-4e24-852b-a5f17bd6db0e
+      last_modified_time: '2021-09-13T20:05:48.917Z'
       name: my_library_on_nfs
       publish_info:
         authentication_method: NONE
         persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/1dc57288-2562-4e94-a06a-83ce1e5b9b18/lib.json
+        publish_url: https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json
         published: 1
         user_name: vcsp
       server_guid: a775463f-9e84-4133-9528-d154d0271bc9
@@ -425,20 +427,20 @@ results:
       version: '2'
     value: {}
   - _ansible_item_label:
-      creation_time: '2021-08-24T17:27:30.635Z'
+      creation_time: '2021-09-13T20:08:32.355Z'
       description: automated
-      id: 8017757d-becd-4495-a28f-08637e4bdfad
-      last_modified_time: '2021-08-24T17:27:30.635Z'
+      id: ac0354f4-f12a-4ea1-b977-fd303ecaead0
+      last_modified_time: '2021-09-13T20:08:32.355Z'
       name: local_library_001
       publish_info:
         authentication_method: NONE
         persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/8017757d-becd-4495-a28f-08637e4bdfad/lib.json
+        publish_url: https://vcenter.test:443/cls/vcsp/lib/ac0354f4-f12a-4ea1-b977-fd303ecaead0/lib.json
         published: 1
         user_name: vcsp
       server_guid: a775463f-9e84-4133-9528-d154d0271bc9
       storage_backings:
-      - datastore_id: datastore-1019
+      - datastore_id: datastore-1042
         type: DATASTORE
       type: LOCAL
       version: '2'
@@ -454,7 +456,7 @@ results:
         id: null
         last_modified_time: null
         last_sync_time: null
-        library_id: 8017757d-becd-4495-a28f-08637e4bdfad
+        library_id: ac0354f4-f12a-4ea1-b977-fd303ecaead0
         name: null
         optimization_info: null
         publish_info: null
@@ -472,20 +474,20 @@ results:
         vcenter_validate_certs: 0
         version: null
     item:
-      creation_time: '2021-08-24T17:27:30.635Z'
+      creation_time: '2021-09-13T20:08:32.355Z'
       description: automated
-      id: 8017757d-becd-4495-a28f-08637e4bdfad
-      last_modified_time: '2021-08-24T17:27:30.635Z'
+      id: ac0354f4-f12a-4ea1-b977-fd303ecaead0
+      last_modified_time: '2021-09-13T20:08:32.355Z'
       name: local_library_001
       publish_info:
         authentication_method: NONE
         persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/8017757d-becd-4495-a28f-08637e4bdfad/lib.json
+        publish_url: https://vcenter.test:443/cls/vcsp/lib/ac0354f4-f12a-4ea1-b977-fd303ecaead0/lib.json
         published: 1
         user_name: vcsp
       server_guid: a775463f-9e84-4133-9528-d154d0271bc9
       storage_backings:
-      - datastore_id: datastore-1019
+      - datastore_id: datastore-1042
         type: DATASTORE
       type: LOCAL
       version: '2'
@@ -495,25 +497,6 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {},
-    },
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
@@ -538,6 +521,25 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {"subscriptions": "subscriptions"},
         "path": {"library_id": "library_id"},
+    },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {},
     },
 }  # pylint: disable=line-too-long
 
@@ -765,6 +767,7 @@ async def _publish(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "publish")
 
 

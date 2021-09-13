@@ -123,6 +123,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -152,7 +154,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1051
+  sample: vm-1078
   type: str
 value:
   description: Collect information about a specific VM
@@ -175,7 +177,7 @@ value:
       '2000':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_1/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1_23/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -189,8 +191,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 422dcbf5-806d-9f48-510f-d0ad16c00c97
-      instance_uuid: 502da0f9-6a71-75e7-09b7-4865082dfcc6
+      bios_uuid: 422d0dbb-a5d0-f13f-7da7-df04ba94ee93
+      instance_uuid: 502d7c15-15a3-e2f3-be49-45be360620dd
       name: test_vm1
     instant_clone_frozen: 0
     memory:

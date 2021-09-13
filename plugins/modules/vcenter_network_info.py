@@ -102,6 +102,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -122,13 +124,13 @@ value:
   returned: On success
   sample:
   - name: VM Network
-    network: network-1045
+    network: network-1072
     type: STANDARD_PORTGROUP
-  - name: dvswitch1-DVUplinks-1048
-    network: dvportgroup-1049
-    type: DISTRIBUTED_PORTGROUP
   - name: my-portrgoup
-    network: dvportgroup-1050
+    network: dvportgroup-1077
+    type: DISTRIBUTED_PORTGROUP
+  - name: dvswitch1-DVUplinks-1075
+    network: dvportgroup-1076
     type: DISTRIBUTED_PORTGROUP
   type: list
 """

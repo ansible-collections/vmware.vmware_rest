@@ -745,6 +745,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -759,25 +761,6 @@ EXAMPLES = r"""
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
-
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
     filter_type: VIRTUAL_MACHINE
@@ -788,6 +771,25 @@ EXAMPLES = r"""
 - name: Set my_virtual_machine_folder
   set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
+
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
+    filter_names:
+    - rw_datastore
+  register: my_datastores
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -821,7 +823,7 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1022
+      vm: vm-1049
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -865,20 +867,20 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1022
+        vm: vm-1049
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1022
+      vm: vm-1049
     value: {}
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1024
+      vm: vm-1051
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -922,48 +924,19 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1024
+        vm: vm-1051
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1024
+      vm: vm-1051
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "boot": "boot",
-            "boot_devices": "boot_devices",
-            "cdroms": "cdroms",
-            "cpu": "cpu",
-            "disks": "disks",
-            "floppies": "floppies",
-            "guest_OS": "guest_OS",
-            "hardware_version": "hardware_version",
-            "memory": "memory",
-            "name": "name",
-            "nics": "nics",
-            "parallel_ports": "parallel_ports",
-            "placement": "placement",
-            "sata_adapters": "sata_adapters",
-            "scsi_adapters": "scsi_adapters",
-            "serial_ports": "serial_ports",
-            "storage_policy": "storage_policy",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "register": {
         "query": {},
         "body": {
@@ -989,6 +962,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
     "instant_clone": {
         "query": {},
         "body": {
@@ -1000,6 +979,29 @@ PAYLOAD_FORMAT = {
             "placement": "placement",
             "serial_ports_to_update": "serial_ports_to_update",
             "source": "source",
+        },
+        "path": {},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "boot": "boot",
+            "boot_devices": "boot_devices",
+            "cdroms": "cdroms",
+            "cpu": "cpu",
+            "disks": "disks",
+            "floppies": "floppies",
+            "guest_OS": "guest_OS",
+            "hardware_version": "hardware_version",
+            "memory": "memory",
+            "name": "name",
+            "nics": "nics",
+            "parallel_ports": "parallel_ports",
+            "placement": "placement",
+            "sata_adapters": "sata_adapters",
+            "scsi_adapters": "scsi_adapters",
+            "serial_ports": "serial_ports",
+            "storage_policy": "storage_policy",
         },
         "path": {},
     },
@@ -1389,6 +1391,7 @@ async def _clone(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "clone")
 
 
@@ -1477,6 +1480,7 @@ async def _instant_clone(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "instant_clone")
 
 
@@ -1501,6 +1505,7 @@ async def _register(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "register")
 
 
@@ -1527,6 +1532,7 @@ async def _relocate(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "relocate")
 
 
@@ -1551,6 +1557,7 @@ async def _unregister(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "unregister")
 
 

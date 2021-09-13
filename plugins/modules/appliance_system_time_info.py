@@ -67,6 +67,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -81,9 +83,9 @@ value:
   description: Get the current time
   returned: On success
   sample:
-    date: Tue 08-24-2021
+    date: Mon 09-13-2021
     seconds_since_epoch: null
-    time: 05:49:21 PM
+    time: 08:26:18 PM
     timezone: UTC
   type: dict
 """

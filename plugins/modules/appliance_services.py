@@ -80,6 +80,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -113,8 +115,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
     "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
     "start": {"query": {}, "body": {}, "path": {"service": "service"}},
 }  # pylint: disable=line-too-long
 
@@ -261,6 +263,7 @@ async def _restart(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "restart")
 
 
@@ -287,6 +290,7 @@ async def _start(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "start")
 
 
@@ -311,6 +315,7 @@ async def _stop(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "stop")
 
 

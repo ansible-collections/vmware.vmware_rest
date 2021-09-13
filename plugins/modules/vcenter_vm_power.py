@@ -12,8 +12,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_power
-short_description: Resets a powered-on virtual machine.
-description: Resets a powered-on virtual machine.
+short_description: Operate a boot, hard shutdown, hard reset or hard suspend on a
+  guest.
+description: Ask the vCenter to boot, force shutdown or force reset a guest. If you
+  want to do a soft shutdown or a soft reset, you can use M(vmware.vmware_rest.vmware_vm_guest_power)
+  instead.
 options:
   session_timeout:
     description:
@@ -81,6 +84,12 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+seealso:
+- description: Issues a request to the guest operating system asking it to perform
+    a soft shutdown, standby (suspend) or soft reboot
+  module: vmware.vmware_rest.vcenter_vm_guest_power
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -129,7 +138,7 @@ results:
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1022
+      vm: vm-1049
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -143,13 +152,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1022
+        vm: vm-1049
     item:
       cpu_count: 1
       memory_size_MiB: 128
       name: vCLS (1)
       power_state: POWERED_OFF
-      vm: vm-1022
+      vm: vm-1049
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -165,7 +174,7 @@ results:
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1024
+      vm: vm-1051
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -179,13 +188,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1024
+        vm: vm-1051
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1024
+      vm: vm-1051
     value: {}
   type: list
 """
@@ -193,8 +202,8 @@ results:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
@@ -339,6 +348,7 @@ async def _reset(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "reset")
 
 
@@ -363,6 +373,7 @@ async def _start(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "start")
 
 
@@ -387,6 +398,7 @@ async def _stop(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "stop")
 
 
@@ -411,6 +423,7 @@ async def _suspend(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "suspend")
 
 

@@ -12,15 +12,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_guest_customization
-short_description: Applies a customization specification in {@param.name spec} on
-  the virtual machine in {@param.name vm}
-description: Applies a customization specification in {@param.name spec} on the virtual
-  machine in {@param.name vm}. This {@term operation} only sets the specification
-  settings for the virtual machine. The actual customization happens inside the guest
-  when the virtual machine is powered on. If {@param.name spec} has {@term unset}
-  values, then any pending customization settings for the virtual machine are cleared.
-  If there is a pending customization for the virtual machine and {@param.name spec}
-  has valid content, then the existing customization setting will be overwritten with
+short_description: Applies a customization specification on the virtual machine
+description: Applies a customization specification on the virtual machine in {@param.name
+  vm}. The actual customization happens inside the guest when the virtual machine
+  is powered on. If there is a pending customization for the virtual machine and a
+  new one is set, then the existing customization setting will be overwritten with
   the new settings.
 options:
   configuration_spec:
@@ -170,6 +166,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -323,14 +321,16 @@ async def _set(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         # The PUT answer does not let us know if the resource has actually been
         # modified
-        async with session.get(
-            _url, json=payload, **session_timeout(params)
-        ) as resp_get:
-            after = await resp_get.json()
-            if before == after:
-                return await update_changed_flag(after, resp_get.status, "get")
+        if resp.status < 300:
+            async with session.get(
+                _url, json=payload, **session_timeout(params)
+            ) as resp_get:
+                after = await resp_get.json()
+                if before == after:
+                    return await update_changed_flag(after, resp_get.status, "get")
         return await update_changed_flag(_json, resp.status, "set")
 
 

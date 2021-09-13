@@ -136,6 +136,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -146,21 +148,26 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {},
-        "body": {
-            "create_parents": "create_parents",
-            "credentials": "credentials",
-            "path": "path",
-        },
-        "path": {"vm": "vm"},
-    },
     "delete": {
         "query": {},
         "body": {
             "credentials": "credentials",
             "path": "path",
             "recursive": "recursive",
+        },
+        "path": {"vm": "vm"},
+    },
+    "move": {
+        "query": {},
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
+        "path": {"vm": "vm"},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "create_parents": "create_parents",
+            "credentials": "credentials",
+            "path": "path",
         },
         "path": {"vm": "vm"},
     },
@@ -172,11 +179,6 @@ PAYLOAD_FORMAT = {
             "prefix": "prefix",
             "suffix": "suffix",
         },
-        "path": {"vm": "vm"},
-    },
-    "move": {
-        "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long
@@ -368,6 +370,7 @@ async def _create_temporary(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "create_temporary")
 
 
@@ -417,6 +420,7 @@ async def _move(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "move")
 
 

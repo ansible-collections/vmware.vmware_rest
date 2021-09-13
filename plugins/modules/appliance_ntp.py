@@ -84,6 +84,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -263,14 +265,16 @@ async def _set(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         # The PUT answer does not let us know if the resource has actually been
         # modified
-        async with session.get(
-            _url, json=payload, **session_timeout(params)
-        ) as resp_get:
-            after = await resp_get.json()
-            if before == after:
-                return await update_changed_flag(after, resp_get.status, "get")
+        if resp.status < 300:
+            async with session.get(
+                _url, json=payload, **session_timeout(params)
+            ) as resp_get:
+                after = await resp_get.json()
+                if before == after:
+                    return await update_changed_flag(after, resp_get.status, "get")
         return await update_changed_flag(_json, resp.status, "set")
 
 
@@ -295,6 +299,7 @@ async def _test(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "test")
 
 

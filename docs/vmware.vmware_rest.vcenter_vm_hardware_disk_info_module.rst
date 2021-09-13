@@ -199,6 +199,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -271,7 +277,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve disk information using the label</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_1/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1_23/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}</div>
                 </td>
             </tr>
     </table>

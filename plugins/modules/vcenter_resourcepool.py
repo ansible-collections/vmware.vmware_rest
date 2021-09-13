@@ -151,6 +151,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -209,7 +211,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1036
+  sample: resgroup-1063
   type: str
 value:
   description: Create a generic resource pool
@@ -234,16 +236,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {},
-        "body": {
-            "cpu_allocation": "cpu_allocation",
-            "memory_allocation": "memory_allocation",
-            "name": "name",
-            "parent": "parent",
-        },
-        "path": {},
-    },
     "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
     "update": {
         "query": {},
@@ -253,6 +245,16 @@ PAYLOAD_FORMAT = {
             "name": "name",
         },
         "path": {"resource_pool": "resource_pool"},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "cpu_allocation",
+            "memory_allocation": "memory_allocation",
+            "name": "name",
+            "parent": "parent",
+        },
+        "path": {},
     },
 }  # pylint: disable=line-too-long
 

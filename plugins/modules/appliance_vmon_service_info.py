@@ -73,6 +73,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -336,10 +338,10 @@ value:
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-08-24T17:46:21UTC
-        - 2021-08-24T17:46:22UTC
-        default_message: Configuration health status is created between 2021-08-24T17:46:21UTC
-          and 2021-08-24T17:46:22UTC.
+        - 2021-09-13T20:20:31UTC
+        - 2021-09-13T20:20:31UTC
+        default_message: Configuration health status is created between 2021-09-13T20:20:31UTC
+          and 2021-09-13T20:20:31UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC

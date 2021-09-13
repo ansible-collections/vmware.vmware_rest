@@ -108,6 +108,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -134,7 +136,7 @@ value:
     vm
   returned: On success
   sample:
-  - folder: group-v1028
+  - folder: group-v1055
     name: vm
     type: VIRTUAL_MACHINE
   type: list

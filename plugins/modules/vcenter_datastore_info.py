@@ -106,6 +106,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -126,18 +128,18 @@ value:
   description: Retrieve a list of all the datastores
   returned: On success
   sample:
-  - capacity: 26354073600
-    datastore: datastore-1042
-    free_space: 23983575040
+  - capacity: 26831990784
+    datastore: datastore-1069
+    free_space: 23885451264
     name: ro_datastore
     type: NFS
-  - capacity: 26354073600
-    datastore: datastore-1043
-    free_space: 23763972096
+  - capacity: 26831990784
+    datastore: datastore-1070
+    free_space: 23876730880
     name: rw_datastore
     type: NFS
   - capacity: 11542724608
-    datastore: datastore-1044
+    datastore: datastore-1071
     free_space: 10033823744
     name: local
     type: VMFS

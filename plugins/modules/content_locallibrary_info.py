@@ -71,6 +71,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -114,15 +116,15 @@ value:
   description: Build a list of local libraries
   returned: On success
   sample:
-  - creation_time: '2021-08-24T17:24:50.731Z'
+  - creation_time: '2021-09-13T20:05:48.917Z'
     description: automated
-    id: 1dc57288-2562-4e94-a06a-83ce1e5b9b18
-    last_modified_time: '2021-08-24T17:24:50.731Z'
+    id: d97a16df-c55e-4e24-852b-a5f17bd6db0e
+    last_modified_time: '2021-09-13T20:05:48.917Z'
     name: my_library_on_nfs
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/1dc57288-2562-4e94-a06a-83ce1e5b9b18/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json
       published: 1
       user_name: vcsp
     server_guid: a775463f-9e84-4133-9528-d154d0271bc9
@@ -131,20 +133,20 @@ value:
       type: OTHER
     type: LOCAL
     version: '2'
-  - creation_time: '2021-08-24T17:27:30.635Z'
+  - creation_time: '2021-09-13T20:08:32.355Z'
     description: automated
-    id: 8017757d-becd-4495-a28f-08637e4bdfad
-    last_modified_time: '2021-08-24T17:27:30.635Z'
+    id: ac0354f4-f12a-4ea1-b977-fd303ecaead0
+    last_modified_time: '2021-09-13T20:08:32.355Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/8017757d-becd-4495-a28f-08637e4bdfad/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/ac0354f4-f12a-4ea1-b977-fd303ecaead0/lib.json
       published: 1
       user_name: vcsp
     server_guid: a775463f-9e84-4133-9528-d154d0271bc9
     storage_backings:
-    - datastore_id: datastore-1019
+    - datastore_id: datastore-1042
       type: DATASTORE
     type: LOCAL
     version: '2'

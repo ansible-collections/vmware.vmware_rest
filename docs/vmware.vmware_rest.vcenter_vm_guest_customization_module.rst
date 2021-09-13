@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_customization
 *************************************************
 
-**Applies a customization specification in {@param.name spec} on the virtual machine in {@param.name vm}**
+**Applies a customization specification on the virtual machine**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Applies a customization specification in {@param.name spec} on the virtual machine in {@param.name vm}. This {@term operation} only sets the specification settings for the virtual machine. The actual customization happens inside the guest when the virtual machine is powered on. If {@param.name spec} has {@term unset} values, then any pending customization settings for the virtual machine are cleared. If there is a pending customization for the virtual machine and {@param.name spec} has valid content, then the existing customization setting will be overwritten with the new settings.
+- Applies a customization specification on the virtual machine in {@param.name vm}. The actual customization happens inside the guest when the virtual machine is powered on. If there is a pending customization for the virtual machine and a new one is set, then the existing customization setting will be overwritten with the new settings.
 
 
 
@@ -244,6 +244,12 @@ Parameters
     </table>
     <br/>
 
+
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
 
 
 

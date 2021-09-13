@@ -99,6 +99,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -123,14 +125,14 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1033
+  sample: domain-c1060
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1034
+    resource_pool: resgroup-1061
   type: dict
 """
 

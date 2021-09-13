@@ -168,50 +168,16 @@ Parameters
     <br/>
 
 
+Notes
+-----
 
-
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get the HTTP proxy configuration
-      vmware.vmware_rest.appliance_networking_proxy_info:
-      register: result
+.. note::
+   - Tested on vSphere 7.0.2
 
 
 
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
 
-.. raw:: html
 
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Get the HTTP proxy configuration</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;ftp&#x27;: {&#x27;enabled&#x27;: 0, &#x27;port&#x27;: -1, &#x27;server&#x27;: &#x27;&#x27;}, &#x27;http&#x27;: {&#x27;enabled&#x27;: 0, &#x27;port&#x27;: -1, &#x27;server&#x27;: &#x27;&#x27;}, &#x27;https&#x27;: {&#x27;enabled&#x27;: 0, &#x27;port&#x27;: -1, &#x27;server&#x27;: &#x27;&#x27;}}</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

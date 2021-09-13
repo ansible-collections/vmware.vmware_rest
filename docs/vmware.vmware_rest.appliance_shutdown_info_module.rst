@@ -153,6 +153,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -196,7 +202,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the ongoing shutdown</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2021-08-25T03:49:09.000Z&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2021-09-14T06:26:07.000Z&#x27;}</div>
                 </td>
             </tr>
     </table>

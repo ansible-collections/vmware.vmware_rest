@@ -92,20 +92,37 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
-- name: Set the DNS servers
+- name: Set static DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
     servers:
     - 1.1.1.1
+    mode: is_static
+    state: set
+  register: result
+
+- name: Add another DNS server
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    server: 8.8.4.4
+    state: add
+  register: result
+
+- name: Use the DNS servers from the DHCP
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    mode: dhcp
+    servers: []
+    state: set
   register: result
 
 - name: Test the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
     state: test
     servers:
-    - var
+    - google.com
   register: result
 """
 
@@ -116,9 +133,9 @@ value:
   returned: On success
   sample:
     messages:
-    - message: Failed to reach 'var'.
-      result: failure
-    status: red
+    - message: '''google.com'' is reachable.'
+      result: success
+    status: green
   type: dict
 """
 
@@ -274,6 +291,25 @@ async def _add(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
+        if (
+            resp.status == 500
+            and "messages" in _json["value"]
+            and _json["value"]["messages"]
+            and "id" in _json["value"]["messages"][0]
+            and _json["value"]["messages"][0]["id"]
+            == "com.vmware.applmgmt.err_operation_failed"
+            and "args" in _json["value"]["messages"][0]
+            and "changing state RUNNING → CLOSED"
+            in _json["value"]["messages"][0]["args"][0]
+        ):
+            # vSphere 7.0.2, a network configuration changes of the appliance raise a systemd error,
+            # but the change is applied. The problem can be resolved by a yum update.
+            async with session.get(
+                _url, json=payload, **session_timeout(params)
+            ) as resp:
+                _json = {"value": await resp.json()}
+
         return await update_changed_flag(_json, resp.status, "add")
 
 
@@ -299,14 +335,34 @@ async def _set(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
+        if (
+            resp.status == 500
+            and "messages" in _json["value"]
+            and _json["value"]["messages"]
+            and "id" in _json["value"]["messages"][0]
+            and _json["value"]["messages"][0]["id"]
+            == "com.vmware.applmgmt.err_operation_failed"
+            and "args" in _json["value"]["messages"][0]
+            and "changing state RUNNING → CLOSED"
+            in _json["value"]["messages"][0]["args"][0]
+        ):
+            # vSphere 7.0.2, a network configuration changes of the appliance raise a systemd error,
+            # but the change is applied. The problem can be resolved by a yum update.
+            async with session.get(
+                _url, json=payload, **session_timeout(params)
+            ) as resp:
+                _json = {"value": await resp.json()}
+
         # The PUT answer does not let us know if the resource has actually been
         # modified
-        async with session.get(
-            _url, json=payload, **session_timeout(params)
-        ) as resp_get:
-            after = await resp_get.json()
-            if before == after:
-                return await update_changed_flag(after, resp_get.status, "get")
+        if resp.status < 300:
+            async with session.get(
+                _url, json=payload, **session_timeout(params)
+            ) as resp_get:
+                after = await resp_get.json()
+                if before == after:
+                    return await update_changed_flag(after, resp_get.status, "get")
         return await update_changed_flag(_json, resp.status, "set")
 
 
@@ -333,6 +389,7 @@ async def _test(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "test")
 
 

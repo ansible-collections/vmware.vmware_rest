@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_power
 ***********************************
 
-**Resets a powered-on virtual machine.**
+**Operate a boot, hard shutdown, hard reset or hard suspend on a guest.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Resets a powered-on virtual machine.
+- Ask the vCenter to boot, force shutdown or force reset a guest. If you want to do a soft shutdown or a soft reset, you can use :ref:`vmware.vmware_rest.vmware_vm_guest_power <vmware.vmware_rest.vmware_vm_guest_power_module>` instead.
 
 
 
@@ -190,6 +190,20 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
+
+See Also
+--------
+
+.. seealso::
+
+   :ref:`vmware.vmware_rest.vcenter_vm_guest_power_module`
+       Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot
 
 
 Examples
@@ -270,7 +284,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Turn off the VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1022&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1022&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1022&#x27;}, &#x27;value&#x27;: {&#x27;error_type&#x27;: &#x27;ALREADY_IN_DESIRED_STATE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Virtual machine is already powered off.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.power.already_powered_off&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;The attempted operation cannot be performed in the current state (Powered off).&#x27;, &#x27;id&#x27;: &#x27;vmsg.InvalidPowerState.summary&#x27;}]}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1049&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1049&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS (1)&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1049&#x27;}, &#x27;value&#x27;: {&#x27;error_type&#x27;: &#x27;ALREADY_IN_DESIRED_STATE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Virtual machine is already powered off.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.power.already_powered_off&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;The attempted operation cannot be performed in the current state (Powered off).&#x27;, &#x27;id&#x27;: &#x27;vmsg.InvalidPowerState.summary&#x27;}]}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1051&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1051&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1051&#x27;}, &#x27;value&#x27;: {}}]</div>
                 </td>
             </tr>
     </table>

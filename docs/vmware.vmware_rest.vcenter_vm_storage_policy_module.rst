@@ -223,12 +223,23 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
 --------
 
 .. code-block:: yaml
+
+    - name: Prepare the disk policy dict
+      set_fact:
+        vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy,\
+          \ 'type': 'USE_SPECIFIED_POLICY'} }) }}"
 
     - name: Look up the VM called test_vm1 in the inventory
       register: search_result
@@ -240,11 +251,6 @@ Examples
       vmware.vmware_rest.vcenter_vm_info:
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
-
-    - name: Prepare the disk policy dict
-      set_fact:
-        vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy,\
-          \ 'type': 'USE_SPECIFIED_POLICY'} }) }}"
 
     - name: Adjust VM storage policy
       vmware.vmware_rest.vcenter_vm_storage_policy:

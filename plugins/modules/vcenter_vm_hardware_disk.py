@@ -149,6 +149,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -191,7 +193,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1_1/test_vm1_1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_23/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -203,6 +205,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"backing": "backing"},
+        "path": {"disk": "disk", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -214,12 +222,6 @@ PAYLOAD_FORMAT = {
             "type": "type",
         },
         "path": {"vm": "vm"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {"backing": "backing"},
-        "path": {"disk": "disk", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 

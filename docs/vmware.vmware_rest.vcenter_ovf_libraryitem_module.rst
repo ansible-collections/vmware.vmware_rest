@@ -292,6 +292,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -312,25 +318,6 @@ Examples
         state: present
       register: nfs_lib
 
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
-
-    - name: Set my_datastore
-      set_fact:
-        my_datastore: '{{ my_datastores.value|first }}'
-
-    - name: Build a list of all the clusters
-      vmware.vmware_rest.vcenter_cluster_info:
-      register: all_the_clusters
-
-    - name: Retrieve details about the first cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        cluster: '{{ all_the_clusters.value[0].cluster }}'
-      register: my_cluster_info
-
     - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
       vmware.vmware_rest.vcenter_folder_info:
         filter_type: VIRTUAL_MACHINE
@@ -341,6 +328,25 @@ Examples
     - name: Set my_virtual_machine_folder
       set_fact:
         my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: all_the_clusters
+
+    - name: Retrieve details about the first cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: '{{ all_the_clusters.value[0].cluster }}'
+      register: my_cluster_info
+
+    - name: We can also use filter to limit the number of result
+      vmware.vmware_rest.vcenter_datastore_info:
+        filter_names:
+        - rw_datastore
+      register: my_datastores
+
+    - name: Set my_datastore
+      set_fact:
+        my_datastore: '{{ my_datastores.value|first }}'
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
@@ -359,7 +365,7 @@ Examples
 
     - name: Export the VM as an OVF on the library
       vmware.vmware_rest.vcenter_ovf_libraryitem:
-        session_timeout: 900
+        session_timeout: 2900
         source:
           type: VirtualMachine
           id: '{{ my_vm.id }}'
@@ -373,7 +379,7 @@ Examples
 
     - name: Create a new VM from the OVF
       vmware.vmware_rest.vcenter_ovf_libraryitem:
-        session_timeout: 900
+        session_timeout: 2900
         ovf_library_item_id: '{{ (result.value|selectattr("name", "equalto", "my_vm")|first).id
           }}'
         state: deploy
@@ -411,7 +417,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [{&#x27;category&#x27;: &#x27;SERVER&#x27;, &#x27;error&#x27;: {&#x27;error_type&#x27;: &#x27;UNABLE_TO_ALLOCATE_RESOURCE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&quot;Insufficient disk space on datastore &#x27;local&#x27;.&quot;], &#x27;default_message&#x27;: &quot;The operation failed due to Insufficient disk space on datastore &#x27;local&#x27;.&quot;, &#x27;id&#x27;: &#x27;com.vmware.vdcs.util.unable_to_allocate_resource&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;File system specific implementation of SetFileAttributes[file] failed&#x27;, &#x27;id&#x27;: &#x27;vob.fssvec.SetFileAttributes.file.failed&#x27;}]}}], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;succeeded&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1079&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

@@ -71,6 +71,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -88,10 +90,10 @@ value:
   - enabled: 1
     fullname: root
     has_password: 1
-    last_password_change: '2021-08-24T00:00:00.000Z'
+    last_password_change: '2021-09-13T00:00:00.000Z'
     max_days_between_password_change: 90
     min_days_between_password_change: 0
-    password_expires_at: '2021-11-22T00:00:00.000Z'
+    password_expires_at: '2021-12-12T00:00:00.000Z'
     roles:
     - superAdmin
     warn_days_before_password_expiration: 7
