@@ -1,0 +1,5 @@
+---
+minor_changes:
+- "``appliance_networking_dns_servers`` - Adjust the examples."
+bugfixes:
+- "``appliance_networking_dns_servers`` - returns error on failure."

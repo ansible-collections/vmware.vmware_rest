@@ -509,3 +509,18 @@ releases:
       name: vcenter_vm_guest_processes_info
       namespace: ''
     release_date: '2021-06-01'
+  2.1.0:
+    changes:
+      bugfixes:
+      - '``appliance_networking_dns_servers`` - returns error on failure.'
+      - '``vcenter_vm_guest_customization`` returns error on failure.'
+      minor_changes:
+      - '``appliance_networking_dns_servers`` - Adjust the examples.'
+      - bump the default timeout to 600s to give more time to the slow operations.
+      - use turbo mode cache for lookup plugins.
+    fragments:
+    - bump_timeout.yaml
+    - fix_appliance_networking_dns_servers.yaml
+    - fix_vcenter_vm_guest_customization.yaml
+    - lookup_turbo_mode.yaml
+    release_date: '2021-09-14'

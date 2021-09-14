@@ -5,6 +5,22 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Minor Changes
+-------------
+
+- ``appliance_networking_dns_servers`` - Adjust the examples.
+- bump the default timeout to 600s to give more time to the slow operations.
+- use turbo mode cache for lookup plugins.
+
+Bugfixes
+--------
+
+- ``appliance_networking_dns_servers`` - returns error on failure.
+- ``vcenter_vm_guest_customization`` returns error on failure.
+
 v2.0.0
 ======
 

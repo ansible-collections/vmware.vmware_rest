@@ -1,0 +1,3 @@
+---
+bugfixes:
+- "``vcenter_vm_guest_customization`` returns error on failure."
