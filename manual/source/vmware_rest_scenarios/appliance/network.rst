@@ -79,6 +79,7 @@ The appliance_networking_dns_servers can be used to set a different name server.
     vmware.vmware_rest.appliance_networking_dns_servers:
       servers:
         - 192.168.123.1
+      mode: is_static
 
 You can test a list of servers if you set ``state=test``:
 
@@ -153,9 +154,9 @@ In this example, we will set up a proxy and configure the ``noproxy`` for ``redh
   - name: Set the HTTP proxy configuration
     vmware.vmware_rest.appliance_networking_proxy:
       enabled: true
-      server: http://47.244.50.194
-      port: 8081
-      protocol: http
+      server: https://datastore.test
+      port: 3128
+      protocol: https
   - name: Set HTTP noproxy configuration
     vmware.vmware_rest.appliance_networking_noproxy:
       servers:
