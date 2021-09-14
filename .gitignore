@@ -390,5 +390,4 @@ changelogs/.plugin-cache.yaml
 manual/source/vmware_rest_scenarios/task_outputs
 commit_message
 tests/integration/inventory.networking
-manual/rst
 manual/build
