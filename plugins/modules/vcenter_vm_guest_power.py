@@ -13,10 +13,10 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_vm_guest_power
 short_description: Issues a request to the guest operating system asking it to perform
-  a reboot
+  a soft shutdown, standby (suspend) or soft reboot
 description: Issues a request to the guest operating system asking it to perform a
-  reboot. This request returns immediately and does not wait for the guest operating
-  system to complete the operation.
+  soft shutdown, standby (suspend) or soft reboot. This request returns immediately
+  and does not wait for the guest operating.
 options:
   session_timeout:
     description:
@@ -83,6 +83,11 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+seealso:
+- description: A module to boot, hard shutdown and hard reset guest
+  module: vmware.vmware_rest.vcenter_vm_power
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -93,9 +98,9 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "shutdown": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "standby": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reboot": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "standby": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "shutdown": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -243,6 +248,7 @@ async def _reboot(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "reboot")
 
 
@@ -269,6 +275,7 @@ async def _shutdown(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "shutdown")
 
 
@@ -295,6 +302,7 @@ async def _standby(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "standby")
 
 

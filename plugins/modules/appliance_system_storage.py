@@ -74,6 +74,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -104,8 +106,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "resize": {"query": {}, "body": {}, "path": {}},
     "resize_ex": {"query": {}, "body": {}, "path": {}},
+    "resize": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -250,6 +252,7 @@ async def _resize(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "resize")
 
 
@@ -276,6 +279,7 @@ async def _resize_ex(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "resize_ex")
 
 

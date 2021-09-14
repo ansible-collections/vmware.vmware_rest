@@ -294,6 +294,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -320,21 +322,21 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      creation_time: '2021-08-24T17:27:32.957Z'
+      creation_time: '2021-09-13T20:08:34.472Z'
       description: ''
-      id: 40985307-d3f5-4381-af3e-2983c8227475
-      last_modified_time: '2021-08-24T17:27:32.957Z'
-      last_sync_time: '2021-08-24T17:27:35.534Z'
+      id: b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9
+      last_modified_time: '2021-09-13T20:08:34.472Z'
+      last_sync_time: '2021-09-13T20:08:36.826Z'
       name: sub_lib
       server_guid: a775463f-9e84-4133-9528-d154d0271bc9
       storage_backings:
-      - datastore_id: datastore-1019
+      - datastore_id: datastore-1042
         type: DATASTORE
       subscription_info:
         authentication_method: NONE
         automatic_sync_enabled: 0
         on_demand: 1
-        subscription_url: https://vcenter.test:443/cls/vcsp/lib/1dc57288-2562-4e94-a06a-83ce1e5b9b18/lib.json
+        subscription_url: https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json
       type: SUBSCRIBED
       version: '4'
     _ansible_no_log: 0
@@ -349,7 +351,7 @@ results:
         id: null
         last_modified_time: null
         last_sync_time: null
-        library_id: 40985307-d3f5-4381-af3e-2983c8227475
+        library_id: b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9
         name: null
         optimization_info: null
         publish_info: null
@@ -366,21 +368,21 @@ results:
         vcenter_validate_certs: 0
         version: null
     item:
-      creation_time: '2021-08-24T17:27:32.957Z'
+      creation_time: '2021-09-13T20:08:34.472Z'
       description: ''
-      id: 40985307-d3f5-4381-af3e-2983c8227475
-      last_modified_time: '2021-08-24T17:27:32.957Z'
-      last_sync_time: '2021-08-24T17:27:35.534Z'
+      id: b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9
+      last_modified_time: '2021-09-13T20:08:34.472Z'
+      last_sync_time: '2021-09-13T20:08:36.826Z'
       name: sub_lib
       server_guid: a775463f-9e84-4133-9528-d154d0271bc9
       storage_backings:
-      - datastore_id: datastore-1019
+      - datastore_id: datastore-1042
         type: DATASTORE
       subscription_info:
         authentication_method: NONE
         automatic_sync_enabled: 0
         on_demand: 1
-        subscription_url: https://vcenter.test:443/cls/vcsp/lib/1dc57288-2562-4e94-a06a-83ce1e5b9b18/lib.json
+        subscription_url: https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json
       type: SUBSCRIBED
       version: '4'
     value: {}
@@ -389,6 +391,25 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {"library_id": "library_id"},
+    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -409,31 +430,12 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
-    },
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "update": {
-        "query": {},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {"library_id": "library_id"},
     },
 }  # pylint: disable=line-too-long
 
@@ -664,6 +666,7 @@ async def _evict(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "evict")
 
 
@@ -688,6 +691,7 @@ async def _probe(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "probe")
 
 
@@ -714,6 +718,7 @@ async def _sync(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "sync")
 
 

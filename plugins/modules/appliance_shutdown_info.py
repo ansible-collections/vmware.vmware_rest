@@ -67,6 +67,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -87,7 +89,7 @@ value:
   sample:
     action: reboot
     reason: this is an example
-    shutdown_time: '2021-08-25T03:49:09.000Z'
+    shutdown_time: '2021-09-14T06:26:07.000Z'
   type: dict
 """
 

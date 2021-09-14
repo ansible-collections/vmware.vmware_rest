@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_guest_power
 *****************************************
 
-**Issues a request to the guest operating system asking it to perform a reboot**
+**Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Issues a request to the guest operating system asking it to perform a reboot. This request returns immediately and does not wait for the guest operating system to complete the operation.
+- Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot. This request returns immediately and does not wait for the guest operating.
 
 
 
@@ -189,6 +189,20 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
+
+See Also
+--------
+
+.. seealso::
+
+   :ref:`vmware.vmware_rest.vcenter_vm_power_module`
+       A module to boot, hard shutdown and hard reset guest
 
 
 

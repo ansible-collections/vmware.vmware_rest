@@ -112,6 +112,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -128,17 +130,16 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2021-08-24T17:48:27+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"description":"Appliance
+  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","version":"7.0.2.00000","creationTime":"2021-09-13T20:24:59+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"description":"Appliance
     Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
     shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
-    servers":["time.google.com"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail
-    server":null},"/etc/vmware-syslog/syslog.conf":{"Port [2]":null,"Port [1]":null,"Port
-    [0]":null,"Protocol [2]":null,"Remote Syslog Host [1]":null,"Protocol [1]":null,"Remote
-    Syslog Host [0]":null,"Protocol [0]":null,"Remote Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny
-    Login after these many Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On
-    Error Login will be.":null,"Include Root user for SSH lockout.":null,"Unlock user
-    after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
+    servers":["time.nist.gov"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail server":null},"/etc/vmware-syslog/syslog.conf":{"Port
+    [2]":null,"Port [1]":null,"Port [0]":null,"Protocol [2]":null,"Remote Syslog Host
+    [1]":null,"Protocol [1]":null,"Remote Syslog Host [0]":null,"Protocol [0]":null,"Remote
+    Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny Login after these many
+    Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On Error Login
+    will be.":null,"Include Root user for SSH lockout.":null,"Unlock user after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
     Waring before this No of Days.":null,"Password validity (days)":null}},"name":"ApplianceManagement"}}}'
   type: str
 """
@@ -154,12 +155,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "import_profile": {
+    "validate": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
     },
-    "validate": {
+    "import_profile": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
@@ -315,6 +316,7 @@ async def _export(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "export")
 
 
@@ -341,6 +343,7 @@ async def _import_profile(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "import_profile")
 
 
@@ -367,6 +370,7 @@ async def _validate(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "validate")
 
 

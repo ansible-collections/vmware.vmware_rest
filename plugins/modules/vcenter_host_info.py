@@ -110,6 +110,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -125,7 +127,7 @@ value:
   returned: On success
   sample:
   - connection_state: CONNECTED
-    host: host-1040
+    host: host-1067
     name: esxi1.test
     power_state: POWERED_ON
   type: list

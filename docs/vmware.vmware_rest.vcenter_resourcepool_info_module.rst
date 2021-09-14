@@ -266,6 +266,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -321,7 +327,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1036</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1063</div>
                 </td>
             </tr>
             <tr>

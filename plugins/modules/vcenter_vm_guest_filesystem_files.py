@@ -153,6 +153,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -168,13 +170,12 @@ PAYLOAD_FORMAT = {
         "body": {"credentials": "credentials"},
         "path": {"path": "path", "vm": "vm"},
     },
-    "create_temporary": {
+    "update": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "parent_path": "parent_path",
-            "prefix": "prefix",
-            "suffix": "suffix",
+            "file_attributes": "file_attributes",
+            "path": "path",
         },
         "path": {"vm": "vm"},
     },
@@ -188,12 +189,13 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
+    "create_temporary": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "file_attributes": "file_attributes",
-            "path": "path",
+            "parent_path": "parent_path",
+            "prefix": "prefix",
+            "suffix": "suffix",
         },
         "path": {"vm": "vm"},
     },
@@ -353,6 +355,7 @@ async def _create_temporary(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "create_temporary")
 
 
@@ -402,6 +405,7 @@ async def _move(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "move")
 
 

@@ -75,6 +75,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -151,16 +153,16 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2021-08-24T17:45:45.976Z'
+    creation_time: '2021-09-13T20:22:26.632Z'
     description: an OVF example
-    id: cabdd975-622b-47d2-bb5e-7faa72aaf5ee
-    last_modified_time: '2021-08-24T17:45:46.309Z'
-    last_sync_time: '2021-08-24T17:45:46.296Z'
-    library_id: 89f58ba0-e959-443a-b2f0-fbb57cb334cf
+    id: fd817fef-4e74-488d-a20f-05b4f9b98876
+    last_modified_time: '2021-09-13T20:22:26.856Z'
+    last_sync_time: '2021-09-13T20:22:26.856Z'
+    library_id: b34efd00-5686-4e0e-9231-e9bd060d3f9c
     metadata_version: '1'
     name: my_vm
     size: 0
-    source_id: 3db19e53-f55d-4aa9-95b5-8dc229a554bf
+    source_id: 9e99e730-ee11-4e8f-baf8-9164a9ecfe6b
     type: ovf
     version: '1'
   type: list

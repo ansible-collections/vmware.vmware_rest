@@ -127,6 +127,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -153,12 +155,15 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1040
+  sample: host-1067
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -173,9 +178,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -330,6 +332,7 @@ async def _connect(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "connect")
 
 
@@ -418,6 +421,7 @@ async def _disconnect(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "disconnect")
 
 

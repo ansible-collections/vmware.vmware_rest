@@ -73,6 +73,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -100,7 +102,7 @@ value:
   sample:
     disks:
       '16000':
-        check_time: '2021-08-24T17:46:13.054Z'
+        check_time: '2021-09-13T20:22:50.477Z'
         failure_cause: []
         policy: f4e5bade-15a2-4805-bf8e-52318c4ce443
         status: NOT_APPLICABLE

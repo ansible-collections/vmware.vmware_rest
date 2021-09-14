@@ -44,7 +44,7 @@ async def open_session(
         trace_config = aiohttp.TraceConfig()
 
         async def on_request_end(session, trace_config_ctx, params):
-            with open(log_file, "a+") as fd:
+            with open(log_file, "a+", encoding="utf-8") as fd:
                 answer = await params.response.text()
                 fd.write(
                     f"{params.method}: {params.url}\n"

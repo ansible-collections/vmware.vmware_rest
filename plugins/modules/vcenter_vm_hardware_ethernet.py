@@ -167,9 +167,17 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
+- name: Retrieve details about the portgroup
+  community.vmware.vmware_dvs_portgroup_info:
+    validate_certs: no
+    datacenter: my_dc
+  register: my_portgroup_info
+
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -180,12 +188,6 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
-
-- name: Retrieve details about the portgroup
-  community.vmware.vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: my_portgroup_info
 
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -217,13 +219,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 903867346
+      connection_cookie: 986882158
       distributed_port: '2'
-      distributed_switch_uuid: 50 2d a0 9f 80 ed 48 b8-f0 fb 33 c1 a1 64 ef de
-      network: dvportgroup-1050
+      distributed_switch_uuid: 50 2d 42 bf 5a a0 13 32-cd 4c c5 a4 ea ab 1c b4
+      network: dvportgroup-1077
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:ad:37:3e
+    mac_address: 00:50:56:ad:7a:3b
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -237,6 +239,21 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -252,21 +269,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -431,6 +433,7 @@ async def _connect(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "connect")
 
 
@@ -523,6 +526,7 @@ async def _disconnect(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "disconnect")
 
 

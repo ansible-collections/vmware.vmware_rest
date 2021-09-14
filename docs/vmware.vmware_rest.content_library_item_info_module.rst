@@ -183,6 +183,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -282,7 +288,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Ensure the OVF is here</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-08-24T17:45:45.976Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;cabdd975-622b-47d2-bb5e-7faa72aaf5ee&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-08-24T17:45:46.309Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-08-24T17:45:46.296Z&#x27;, &#x27;library_id&#x27;: &#x27;89f58ba0-e959-443a-b2f0-fbb57cb334cf&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;3db19e53-f55d-4aa9-95b5-8dc229a554bf&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-09-13T20:22:26.632Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;fd817fef-4e74-488d-a20f-05b4f9b98876&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-13T20:22:26.856Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-09-13T20:22:26.856Z&#x27;, &#x27;library_id&#x27;: &#x27;b34efd00-5686-4e0e-9231-e9bd060d3f9c&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;9e99e730-ee11-4e8f-baf8-9164a9ecfe6b&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
                 </td>
             </tr>
     </table>

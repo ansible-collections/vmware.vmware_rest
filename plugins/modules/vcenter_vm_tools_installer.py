@@ -87,6 +87,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -97,8 +99,8 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -246,6 +248,7 @@ async def _connect(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "connect")
 
 
@@ -272,6 +275,7 @@ async def _disconnect(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "disconnect")
 
 

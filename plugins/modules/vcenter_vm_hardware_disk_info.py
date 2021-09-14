@@ -80,6 +80,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -117,7 +119,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1_1/test_vm1.vmdk'
+      vmdk_file: '[rw_datastore] test_vm1_23/test_vm1.vmdk'
     capacity: 17179869184
     label: Hard disk 1
     scsi:

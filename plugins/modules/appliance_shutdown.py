@@ -84,6 +84,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -123,13 +125,13 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
+    "cancel": {"query": {}, "body": {}, "path": {}},
     "poweroff": {
         "query": {},
         "body": {"delay": "delay", "reason": "reason"},
         "path": {},
     },
-    "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
-    "cancel": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -274,6 +276,7 @@ async def _cancel(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "cancel")
 
 
@@ -298,6 +301,7 @@ async def _poweroff(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "poweroff")
 
 
@@ -322,6 +326,7 @@ async def _reboot(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "reboot")
 
 

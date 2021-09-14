@@ -168,6 +168,12 @@ Parameters
     <br/>
 
 
+Notes
+-----
+
+.. note::
+   - Tested on vSphere 7.0.2
+
 
 
 Examples
@@ -218,7 +224,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get VM storage policy compliance information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;check_time&#x27;: &#x27;2021-08-24T17:46:13.054Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}, &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;check_time&#x27;: &#x27;2021-09-13T20:22:50.477Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}, &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
                 </td>
             </tr>
     </table>

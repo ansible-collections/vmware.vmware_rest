@@ -92,6 +92,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -135,14 +137,14 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "list_details": {"query": {}, "body": {}, "path": {}},
-    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
     "update": {
         "query": {},
         "body": {"startup_type": "spec/startup_type"},
         "path": {"service": "service"},
     },
+    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "list_details": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -292,6 +294,7 @@ async def _list_details(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "list_details")
 
 
@@ -318,6 +321,7 @@ async def _restart(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "restart")
 
 
@@ -342,6 +346,7 @@ async def _start(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "start")
 
 
@@ -366,6 +371,7 @@ async def _stop(params, session):
             _json = {}
         if "value" not in _json:  # 7.0.2
             _json = {"value": _json}
+
         return await update_changed_flag(_json, resp.status, "stop")
 
 

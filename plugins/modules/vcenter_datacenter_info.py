@@ -94,6 +94,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -112,7 +114,7 @@ value:
   description: collect a list of the datacenters
   returned: On success
   sample:
-  - datacenter: datacenter-1027
+  - datacenter: datacenter-1054
     name: my_dc
   type: list
 """

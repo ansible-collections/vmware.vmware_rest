@@ -73,6 +73,8 @@ requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
+notes:
+- Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
@@ -86,7 +88,7 @@ value:
   sample:
   - ip:
       ip_addresses: []
-    mac_address: 00:50:56:ad:37:3e
+    mac_address: 00:50:56:ad:7a:3b
     nic: '4000'
   type: list
 """
