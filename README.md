@@ -16,15 +16,15 @@ PEP440 is the schema used to describe the versions of Ansible.
 
 ## Python version compatibility
 
-As the `aiohttp` for Python has [requirement](https://github.com/aio-libs/aiohttp#requirements) of Python 3.7 or greater, this collection requires Python 3.7 or greater.
+The collection depends on ``aiohttp`` has [requirement](https://docs.aiohttp.org/en/stable/) which requires Python 3.6 or greater.
+
+## vSphere compatibility
+
+The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
 
 ## Installation and Usage
 
 ### Install the dependencies
-
-The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
-
-This collection depends on Python 3.6 or greater and [aiohttp](https://docs.aiohttp.org/en/stable/).
 
 You can either install ``aiohttp`` using your OS package manager or using Python virtual environment.
 
