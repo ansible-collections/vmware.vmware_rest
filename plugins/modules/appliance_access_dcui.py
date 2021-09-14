@@ -93,8 +93,8 @@ RETURN = r"""
 value:
   description: Disable the Direct Console User Interface
   returned: On success
-  sample: 0
-  type: int
+  sample: {}
+  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points

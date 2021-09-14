@@ -231,18 +231,35 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
+                    <b>id</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">list</span>
+                      <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Build a list of local libraries</div>
+                            <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;creation_time&#x27;: &#x27;2021-09-13T20:05:48.917Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;d97a16df-c55e-4e24-852b-a5f17bd6db0e&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-13T20:05:48.917Z&#x27;, &#x27;name&#x27;: &#x27;my_library_on_nfs&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;storage_uri&#x27;: &#x27;nfs://datastore.test/srv/share/content-library&#x27;, &#x27;type&#x27;: &#x27;OTHER&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}, {&#x27;creation_time&#x27;: &#x27;2021-09-13T20:08:32.355Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;ac0354f4-f12a-4ea1-b977-fd303ecaead0&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-13T20:08:32.355Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/ac0354f4-f12a-4ea1-b977-fd303ecaead0/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1042&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">33ea1df7-7f22-4916-a954-4f04cf25f987</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Retrieve the local content library information based upon id check mode</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-09-14T23:19:08.859Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;33ea1df7-7f22-4916-a954-4f04cf25f987&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-14T23:19:08.859Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/33ea1df7-7f22-4916-a954-4f04cf25f987/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1018&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
                 </td>
             </tr>
     </table>

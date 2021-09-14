@@ -81,7 +81,7 @@ RETURN = r"""
 value:
   description: Check if the Console CLI is enabled
   returned: On success
-  sample: 0
+  sample: 1
   type: int
 """
 

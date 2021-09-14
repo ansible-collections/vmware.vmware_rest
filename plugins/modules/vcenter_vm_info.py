@@ -154,7 +154,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1078
+  sample: vm-1024
   type: str
 value:
   description: Collect information about a specific VM
@@ -177,7 +177,7 @@ value:
       '2000':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1_23/test_vm1.vmdk'
+          vmdk_file: '[rw_datastore] test_vm1/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -191,8 +191,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 422d0dbb-a5d0-f13f-7da7-df04ba94ee93
-      instance_uuid: 502d7c15-15a3-e2f3-be49-45be360620dd
+      bios_uuid: 422dc09a-d4c2-acf3-a60e-19444165fc5a
+      instance_uuid: 502d5467-407d-0fe3-6df4-0f5c07b0a99d
       name: test_vm1
     instant_clone_frozen: 0
     memory:

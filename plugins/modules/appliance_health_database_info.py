@@ -86,10 +86,10 @@ value:
     messages:
     - message:
         args: []
-        default_message: Unable to get DB health state
+        default_message: DB state is Degraded
         id: desc
-      severity: ERROR
-    status: ' '
+      severity: WARNING
+    status: DEGRADED
   type: dict
 """
 

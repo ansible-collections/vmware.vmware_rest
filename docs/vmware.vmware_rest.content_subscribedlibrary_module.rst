@@ -479,7 +479,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>msg</b>
+                    <b>id</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
                       <span style="color: purple">string</span>
@@ -487,27 +487,27 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Delete all the subscribed libraries</div>
+                            <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">All items completed</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">b24ff5c5-0375-4153-baaa-f9d423280ff0</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>results</b>
+                    <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">list</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Delete all the subscribed libraries</div>
+                            <div>Create subscribed library (again)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;creation_time&#x27;: &#x27;2021-09-13T20:08:34.472Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-13T20:08:34.472Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-09-13T20:08:36.826Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1042&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;4&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;client_token&#x27;: None, &#x27;creation_time&#x27;: None, &#x27;description&#x27;: None, &#x27;id&#x27;: None, &#x27;last_modified_time&#x27;: None, &#x27;last_sync_time&#x27;: None, &#x27;library_id&#x27;: &#x27;b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9&#x27;, &#x27;name&#x27;: None, &#x27;optimization_info&#x27;: None, &#x27;publish_info&#x27;: None, &#x27;server_guid&#x27;: None, &#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_backings&#x27;: None, &#x27;subscription_info&#x27;: None, &#x27;type&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;version&#x27;: None}}, &#x27;item&#x27;: {&#x27;creation_time&#x27;: &#x27;2021-09-13T20:08:34.472Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-13T20:08:34.472Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-09-13T20:08:36.826Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1042&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;4&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-09-14T23:19:11.483Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;b24ff5c5-0375-4153-baaa-f9d423280ff0&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-14T23:19:11.483Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1018&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/c007a048-7295-409c-a21e-2d906c6c1d9b/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
                 </td>
             </tr>
     </table>

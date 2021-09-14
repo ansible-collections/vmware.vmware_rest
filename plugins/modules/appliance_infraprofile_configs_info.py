@@ -83,7 +83,7 @@ value:
   description: List infraprofile configs
   returned: On success
   sample:
-  - info: Appliance Mangment Service
+  - info: ApplianceManagement
     name: ApplianceManagement
   - info: ApplianceNetwork
     name: ApplianceNetwork

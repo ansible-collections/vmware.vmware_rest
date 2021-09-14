@@ -265,7 +265,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Abort the reboot</div>
+                            <div>Reboot the appliance</div>
                     <br/>
                 </td>
             </tr>
