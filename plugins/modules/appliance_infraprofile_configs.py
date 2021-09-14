@@ -130,7 +130,7 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","version":"7.0.2.00000","creationTime":"2021-09-14T23:22:05+0000","profiles":{"ApplianceManagement":{"actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"action":"RESTART_SERVICE","description":"Appliance
+  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2021-09-15T16:41:55+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"description":"Appliance
     Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
     shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time

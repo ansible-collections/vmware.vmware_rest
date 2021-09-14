@@ -99,8 +99,8 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "connect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

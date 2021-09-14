@@ -5,6 +5,22 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Minor Changes
+-------------
+
+- ``vcenter_vm_guest_customization`` - remove the module until vSphere API end-point work properly.
+- bump the default timeout to 600s to give more time to the slow operations.
+- new moid lookup filter plugins to convert a resource path to a MOID.
+- use turbo mode cache for lookup plugins.
+
+Bugfixes
+--------
+
+- ``appliance_networking_dns_servers`` - returns error on failure.
+
 v2.0.0
 ======
 

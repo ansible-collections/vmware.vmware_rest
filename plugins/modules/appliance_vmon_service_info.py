@@ -338,10 +338,10 @@ value:
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-09-14T23:18:41UTC
-        - 2021-09-14T23:18:42UTC
-        default_message: Configuration health status is created between 2021-09-14T23:18:41UTC
-          and 2021-09-14T23:18:42UTC.
+        - 2021-09-15T16:41:10UTC
+        - 2021-09-15T16:41:11UTC
+        default_message: Configuration health status is created between 2021-09-15T16:41:10UTC
+          and 2021-09-15T16:41:11UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC

@@ -1,3 +1,0 @@
----
-bugfixes:
-- Properly handle ``validate_certs`` as a boolean and accept all the standard Ansible values (``yes``, ``true``, ``y``, ``no``, etc). 

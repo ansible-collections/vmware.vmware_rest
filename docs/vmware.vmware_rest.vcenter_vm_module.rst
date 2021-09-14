@@ -1075,16 +1075,15 @@ Examples
         vm: '{{ item.vm }}'
       with_items: '{{ existing_vms.value }}'
 
-    - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-      vmware.vmware_rest.vcenter_folder_info:
-        filter_type: VIRTUAL_MACHINE
+    - name: We can also use filter to limit the number of result
+      vmware.vmware_rest.vcenter_datastore_info:
         filter_names:
-        - vm
-      register: my_folders
+        - rw_datastore
+      register: my_datastores
 
-    - name: Set my_virtual_machine_folder
+    - name: Set my_datastore
       set_fact:
-        my_virtual_machine_folder: '{{ my_folders.value|first }}'
+        my_datastore: '{{ my_datastores.value|first }}'
 
     - name: Build a list of all the clusters
       vmware.vmware_rest.vcenter_cluster_info:
@@ -1095,15 +1094,16 @@ Examples
         cluster: '{{ all_the_clusters.value[0].cluster }}'
       register: my_cluster_info
 
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
+    - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+      vmware.vmware_rest.vcenter_folder_info:
+        filter_type: VIRTUAL_MACHINE
         filter_names:
-        - rw_datastore
-      register: my_datastores
+        - vm
+      register: my_folders
 
-    - name: Set my_datastore
+    - name: Set my_virtual_machine_folder
       set_fact:
-        my_datastore: '{{ my_datastores.value|first }}'
+        my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
@@ -1165,7 +1165,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;422dc09a-d4c2-acf3-a60e-19444165fc5a&#x27;, &#x27;instance_uuid&#x27;: &#x27;502d5467-407d-0fe3-6df4-0f5c07b0a99d&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;422d4a3f-e02f-b8bd-9804-f44e29bf2498&#x27;, &#x27;instance_uuid&#x27;: &#x27;502df327-9305-2674-87fc-c7913abfa6bf&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
                 </td>
             </tr>
     </table>

@@ -202,7 +202,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -212,8 +211,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {"cdrom": "cdrom", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {

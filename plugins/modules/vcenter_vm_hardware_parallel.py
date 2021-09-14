@@ -125,7 +125,6 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -135,8 +134,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {"port": "port", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {

@@ -180,9 +180,9 @@ response
    {
        "changed": false,
        "value": {
-           "date": "Tue 09-14-2021",
-           "seconds_since_epoch": 1631661877.7295494,
-           "time": "11:24:37 PM",
+           "date": "Wed 09-15-2021",
+           "seconds_since_epoch": 1631724271.196873,
+           "time": "04:44:31 PM",
            "timezone": "UTC"
        }
    }

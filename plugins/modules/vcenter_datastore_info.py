@@ -135,12 +135,12 @@ value:
     type: VMFS
   - capacity: 26831990784
     datastore: datastore-1017
-    free_space: 24454291456
+    free_space: 24159457280
     name: ro_datastore
     type: NFS
   - capacity: 26831990784
     datastore: datastore-1018
-    free_space: 24454291456
+    free_space: 24159457280
     name: rw_datastore
     type: NFS
   type: list

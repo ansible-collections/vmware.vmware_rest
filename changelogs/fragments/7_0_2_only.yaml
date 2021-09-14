@@ -1,3 +1,0 @@
----
-breaking_changes:
-- The vmware_rest 2.0.0 support vSphere 7.0.2 onwards.

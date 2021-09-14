@@ -191,8 +191,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 422dc09a-d4c2-acf3-a60e-19444165fc5a
-      instance_uuid: 502d5467-407d-0fe3-6df4-0f5c07b0a99d
+      bios_uuid: 422d4a3f-e02f-b8bd-9804-f44e29bf2498
+      instance_uuid: 502df327-9305-2674-87fc-c7913abfa6bf
       name: test_vm1
     instant_clone_frozen: 0
     memory:

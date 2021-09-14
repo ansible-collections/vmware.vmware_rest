@@ -315,16 +315,16 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: b24ff5c5-0375-4153-baaa-f9d423280ff0
+  sample: b218d850-2261-457f-86e9-31dec9196a07
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2021-09-14T23:19:11.483Z'
+    creation_time: '2021-09-15T16:39:06.484Z'
     description: ''
-    id: b24ff5c5-0375-4153-baaa-f9d423280ff0
-    last_modified_time: '2021-09-14T23:19:11.483Z'
+    id: b218d850-2261-457f-86e9-31dec9196a07
+    last_modified_time: '2021-09-15T16:39:06.484Z'
     name: sub_lib
     server_guid: a775463f-9e84-4133-9528-d154d0271bc9
     storage_backings:
@@ -334,7 +334,7 @@ value:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/c007a048-7295-409c-a21e-2d906c6c1d9b/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/d3db521d-ab73-4c11-a245-0de86b3a7f81/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -342,7 +342,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
         "body": {
@@ -362,12 +362,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "create": {
         "query": {"client_token": "client_token"},

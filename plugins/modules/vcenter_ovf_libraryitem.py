@@ -182,16 +182,15 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-  vmware.vmware_rest.vcenter_folder_info:
-    filter_type: VIRTUAL_MACHINE
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
     filter_names:
-    - vm
-  register: my_folders
+    - rw_datastore
+  register: my_datastores
 
-- name: Set my_virtual_machine_folder
+- name: Set my_datastore
   set_fact:
-    my_virtual_machine_folder: '{{ my_folders.value|first }}'
+    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
@@ -202,15 +201,16 @@ EXAMPLES = r"""
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
     filter_names:
-    - rw_datastore
-  register: my_datastores
+    - vm
+  register: my_folders
 
-- name: Set my_datastore
+- name: Set my_virtual_machine_folder
   set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
+    my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -296,11 +296,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "filter": {
-        "query": {},
-        "body": {"target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "deploy": {
         "query": {"client_token": "client_token"},
         "body": {"deployment_spec": "deployment_spec", "target": "target"},
@@ -310,6 +305,11 @@ PAYLOAD_FORMAT = {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
+    },
+    "filter": {
+        "query": {},
+        "body": {"target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long
 

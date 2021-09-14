@@ -387,42 +387,42 @@ value:
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.rx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
-    id: storage.totalsize.directory.vcdb_hourly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.rx.error.lo
     id: net.rx.error.lo
     instance: lo
     name: com.vmware.applmgmt.mon.name.net.rx.error.lo
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats
-    id: storage.totalsize.directory.vcdb_daily_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.eth0
     id: net.tx.error.eth0
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.tx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats
-    id: storage.totalsize.directory.vcdb_monthly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.lo
     id: net.tx.error.lo
     instance: lo
     name: com.vmware.applmgmt.mon.name.net.tx.error.lo
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
+    id: storage.totalsize.directory.vcdb_hourly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats
+    id: storage.totalsize.directory.vcdb_daily_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats
+    id: storage.totalsize.directory.vcdb_monthly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.storage
     description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_yearly_stats
     id: storage.totalsize.directory.vcdb_yearly_stats

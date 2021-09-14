@@ -145,8 +145,8 @@ response
                "version": "VMX_11"
            },
            "identity": {
-               "bios_uuid": "422d6319-de10-b043-73af-b99630e11e16",
-               "instance_uuid": "502d866f-f914-7e79-c221-302297df664d",
+               "bios_uuid": "422da849-f1f2-3468-3028-67c32f866b8f",
+               "instance_uuid": "502db950-f84e-894c-3740-d835486f9c59",
                "name": "test_vm1"
            },
            "instant_clone_frozen": false,
