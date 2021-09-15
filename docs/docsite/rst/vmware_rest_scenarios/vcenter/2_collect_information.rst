@@ -150,8 +150,8 @@ response
        "value": [
            {
                "capacity": 26831990784,
-               "datastore": "datastore-1042",
-               "free_space": 24181452800,
+               "datastore": "datastore-1043",
+               "free_space": 23943524352,
                "name": "rw_datastore",
                "type": "NFS"
            }
@@ -174,8 +174,8 @@ response
        "ansible_facts": {
            "my_datastore": {
                "capacity": 26831990784,
-               "datastore": "datastore-1042",
-               "free_space": 24181452800,
+               "datastore": "datastore-1043",
+               "free_space": 23943524352,
                "name": "rw_datastore",
                "type": "NFS"
            }
@@ -230,12 +230,12 @@ response
            },
            {
                "folder": "group-v1037",
-               "name": "Discovered virtual machine",
+               "name": "vCLS",
                "type": "VIRTUAL_MACHINE"
            },
            {
-               "folder": "group-v1046",
-               "name": "vCLS",
+               "folder": "group-v1038",
+               "name": "Discovered virtual machine",
                "type": "VIRTUAL_MACHINE"
            }
        ]

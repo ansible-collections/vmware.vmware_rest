@@ -172,12 +172,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Retrieve details about the portgroup
-  community.vmware.vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: my_portgroup_info
-
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -188,6 +182,12 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
+- name: Retrieve details about the portgroup
+  community.vmware.vmware_dvs_portgroup_info:
+    validate_certs: no
+    datacenter: my_dc
+  register: my_portgroup_info
 
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -219,13 +219,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1364288995
+      connection_cookie: 1476039389
       distributed_port: '2'
-      distributed_switch_uuid: 50 2d 90 34 00 d8 8f 61-6d d3 18 eb e0 a5 a1 28
-      network: dvportgroup-1023
+      distributed_switch_uuid: 50 2d 72 f2 64 a8 8c 5e-70 42 1e 39 90 71 f9 8c
+      network: dvportgroup-1022
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:ad:a3:6c
+    mac_address: 00:50:56:ad:56:5b
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -238,7 +238,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -252,8 +251,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {"nic": "nic", "vm": "vm"},
     },
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {

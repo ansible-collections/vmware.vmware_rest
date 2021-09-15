@@ -1,3 +1,0 @@
----
-minor_changes:
-- Handle import error with correct exception raised while importing aiohttp

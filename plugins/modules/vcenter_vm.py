@@ -761,16 +761,15 @@ EXAMPLES = r"""
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
 
-- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-  vmware.vmware_rest.vcenter_folder_info:
-    filter_type: VIRTUAL_MACHINE
+- name: We can also use filter to limit the number of result
+  vmware.vmware_rest.vcenter_datastore_info:
     filter_names:
-    - vm
-  register: my_folders
+    - rw_datastore
+  register: my_datastores
 
-- name: Set my_virtual_machine_folder
+- name: Set my_datastore
   set_fact:
-    my_virtual_machine_folder: '{{ my_folders.value|first }}'
+    my_datastore: '{{ my_datastores.value|first }}'
 
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
@@ -781,15 +780,16 @@ EXAMPLES = r"""
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
     filter_names:
-    - rw_datastore
-  register: my_datastores
+    - vm
+  register: my_folders
 
-- name: Set my_datastore
+- name: Set my_virtual_machine_folder
   set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
+    my_virtual_machine_folder: '{{ my_folders.value|first }}'
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -849,8 +849,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 422dc09a-d4c2-acf3-a60e-19444165fc5a
-      instance_uuid: 502d5467-407d-0fe3-6df4-0f5c07b0a99d
+      bios_uuid: 422d4a3f-e02f-b8bd-9804-f44e29bf2498
+      instance_uuid: 502df327-9305-2674-87fc-c7913abfa6bf
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -877,18 +877,10 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "clone": {
+    "relocate": {
         "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
-            "source": "source",
-        },
-        "path": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
     },
     "register": {
         "query": {},
@@ -901,12 +893,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "instant_clone": {
         "query": {},
         "body": {
@@ -921,6 +907,20 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
+            "name": "name",
+            "placement": "placement",
+            "power_on": "power_on",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {

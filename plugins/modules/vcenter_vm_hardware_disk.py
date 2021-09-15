@@ -205,6 +205,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {"backing": "backing"},
@@ -222,7 +223,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

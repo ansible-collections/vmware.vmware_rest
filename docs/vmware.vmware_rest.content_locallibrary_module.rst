@@ -543,7 +543,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">33ea1df7-7f22-4916-a954-4f04cf25f987</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">46214ff0-1f87-4150-b868-50d32d234242</div>
                 </td>
             </tr>
             <tr>
@@ -560,7 +560,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new local content library</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-09-14T23:19:08.859Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;33ea1df7-7f22-4916-a954-4f04cf25f987&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-14T23:19:08.859Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/33ea1df7-7f22-4916-a954-4f04cf25f987/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1018&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-09-15T16:39:04.164Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;46214ff0-1f87-4150-b868-50d32d234242&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-15T16:39:04.164Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/46214ff0-1f87-4150-b868-50d32d234242/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1018&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
                 </td>
             </tr>
     </table>

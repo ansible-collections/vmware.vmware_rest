@@ -98,9 +98,9 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "shutdown": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "standby": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reboot": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "shutdown": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

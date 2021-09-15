@@ -124,13 +124,13 @@ value:
   returned: On success
   sample:
   - name: my-portrgoup
-    network: dvportgroup-1023
+    network: dvportgroup-1022
     type: DISTRIBUTED_PORTGROUP
   - name: VM Network
     network: network-1016
     type: STANDARD_PORTGROUP
-  - name: dvswitch1-DVUplinks-1020
-    network: dvportgroup-1021
+  - name: dvswitch1-DVUplinks-1019
+    network: dvportgroup-1020
     type: DISTRIBUTED_PORTGROUP
   type: list
 """

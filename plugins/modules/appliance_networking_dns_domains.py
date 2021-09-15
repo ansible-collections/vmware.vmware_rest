@@ -112,8 +112,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "set": {"query": {}, "body": {"domains": "domains"}, "path": {}},
     "add": {"query": {}, "body": {"domain": "domain"}, "path": {}},
+    "set": {"query": {}, "body": {"domains": "domains"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

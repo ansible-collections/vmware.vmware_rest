@@ -148,6 +148,24 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {
+        "query": {},
+        "body": {
+            "credentials": "credentials",
+            "path": "path",
+            "recursive": "recursive",
+        },
+        "path": {"vm": "vm"},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "create_parents": "create_parents",
+            "credentials": "credentials",
+            "path": "path",
+        },
+        "path": {"vm": "vm"},
+    },
     "create_temporary": {
         "query": {},
         "body": {
@@ -161,24 +179,6 @@ PAYLOAD_FORMAT = {
     "move": {
         "query": {},
         "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
-        "path": {"vm": "vm"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "create_parents": "create_parents",
-            "credentials": "credentials",
-            "path": "path",
-        },
-        "path": {"vm": "vm"},
-    },
-    "delete": {
-        "query": {},
-        "body": {
-            "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
-        },
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long
