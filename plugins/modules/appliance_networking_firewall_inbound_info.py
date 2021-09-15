@@ -85,11 +85,7 @@ RETURN = r"""
 value:
   description: Get the firewall inbound configuration
   returned: On success
-  sample:
-  - address: 1.2.3.4
-    interface_name: '*'
-    policy: ACCEPT
-    prefix: 32
+  sample: []
   type: list
 """
 

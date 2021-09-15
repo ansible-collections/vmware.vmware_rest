@@ -86,24 +86,7 @@ RETURN = r"""
 value:
   description: Build a list of subscribed libraries
   returned: On success
-  sample:
-  - creation_time: '2021-09-13T20:08:34.472Z'
-    description: ''
-    id: b66f1b57-1fec-4e9e-8dc1-3fae95f7e3f9
-    last_modified_time: '2021-09-13T20:08:34.472Z'
-    last_sync_time: '2021-09-13T20:08:36.826Z'
-    name: sub_lib
-    server_guid: a775463f-9e84-4133-9528-d154d0271bc9
-    storage_backings:
-    - datastore_id: datastore-1042
-      type: DATASTORE
-    subscription_info:
-      authentication_method: NONE
-      automatic_sync_enabled: 0
-      on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/d97a16df-c55e-4e24-852b-a5f17bd6db0e/lib.json
-    type: SUBSCRIBED
-    version: '4'
+  sample: []
   type: list
 """
 

@@ -93,8 +93,8 @@ RETURN = r"""
 value:
   description: Disable the Console CLI
   returned: On success
-  sample: 0
-  type: int
+  sample: {}
+  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points

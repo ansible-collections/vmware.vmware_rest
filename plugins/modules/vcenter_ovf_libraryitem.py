@@ -182,19 +182,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
-
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
     filter_type: VIRTUAL_MACHINE
@@ -240,6 +227,19 @@ EXAMPLES = r"""
       size_MiB: 1024
   register: my_vm
 
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
     session_timeout: 2900
@@ -274,13 +274,23 @@ value:
   returned: On success
   sample:
     error:
-      errors: []
+      errors:
+      - category: SERVER
+        error:
+          error_type: UNABLE_TO_ALLOCATE_RESOURCE
+          messages:
+          - args:
+            - Insufficient disk space on datastore 'local'.
+            default_message: The operation failed due to Insufficient disk space on
+              datastore 'local'.
+            id: com.vmware.vdcs.util.unable_to_allocate_resource
+          - args: []
+            default_message: File system specific implementation of SetFileAttributes[file]
+              failed
+            id: vob.fssvec.SetFileAttributes.file.failed
       information: []
       warnings: []
-    resource_id:
-      id: vm-1079
-      type: VirtualMachine
-    succeeded: 1
+    succeeded: 0
   type: dict
 """
 
