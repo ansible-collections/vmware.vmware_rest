@@ -20,10 +20,6 @@
       - rw_datastore
   register: my_datastores
 
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
 - name: Build a list of all the folders
   vmware.vmware_rest.vcenter_folder_info:
   register: my_folders
@@ -39,3 +35,7 @@
 - name: Set my_virtual_machine_folder
   set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+- name: Set my_datastore
+  set_fact:
+    my_datastore: 'local'
