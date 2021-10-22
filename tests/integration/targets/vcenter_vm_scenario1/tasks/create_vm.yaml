@@ -171,7 +171,7 @@
       - result.value|length == 0
 
 - name: Create subscribed library
-  content_subscribedlibrary:
+  vmware.vmware_rest.content_subscribedlibrary:
     name: sub_lib
     subscription_info:
       subscription_url: "{{ nfs_lib.value.publish_info.publish_url }}"
@@ -184,7 +184,7 @@
   register: sub_lib
 
 - name: Create subscribed library (again)
-  content_subscribedlibrary:
+  vmware.vmware_rest.content_subscribedlibrary:
     name: sub_lib
     subscription_info:
       subscription_url: "{{ nfs_lib.value.publish_info.publish_url }}"
@@ -210,13 +210,13 @@
       - result.value|length > 0
 
 - name: Clean up the cache
-  content_subscribedlibrary:
+  vmware.vmware_rest.content_subscribedlibrary:
     name: sub_lib
     library_id: "{{ sub_lib.id }}"
     state: evict
 
 - name: Trigger a library sync
-  content_subscribedlibrary:
+  vmware.vmware_rest.content_subscribedlibrary:
     name: sub_lib
     library_id: "{{ sub_lib.id }}"
     state: sync
