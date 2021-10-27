@@ -28,4 +28,19 @@
     esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
     esxi_username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
     esxi_password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-  no_log: true
+
+- name: Add a second VMware vSwitch
+  community.vmware.vmware_vswitch:
+    hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+    username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+    password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
+    switch: second_vswitch
+
+- name: Create another standard portgroup on the host
+  community.vmware.vmware_portgroup:
+    switch: second_vswitch
+    portgroup: second_vswitch
+    hosts: ["esxi1.test"]
+    hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+    username: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+    password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
