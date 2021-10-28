@@ -114,23 +114,7 @@ id:
 value:
   description: Adjust vpxd configuration
   returned: On success
-  sample:
-    description_key: cis.vpxd.ServiceDescription
-    health: HEALTHY
-    health_messages:
-    - args:
-      - vCenter Server
-      - GREEN
-      default_message: '{0} health is {1}'
-      id: vc.health.statuscode
-    - args:
-      - VirtualCenter Database
-      - GREEN
-      default_message: '{0} health is {1}'
-      id: vc.health.statuscode
-    name_key: cis.vpxd.ServiceName
-    startup_type: AUTOMATIC
-    state: STARTED
+  sample: {}
   type: dict
 """
 
@@ -141,10 +125,10 @@ PAYLOAD_FORMAT = {
         "body": {"startup_type": "spec/startup_type"},
         "path": {"service": "service"},
     },
-    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "list_details": {"query": {}, "body": {}, "path": {}},
     "start": {"query": {}, "body": {}, "path": {"service": "service"}},
     "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "list_details": {"query": {}, "body": {}, "path": {}},
+    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -389,14 +373,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

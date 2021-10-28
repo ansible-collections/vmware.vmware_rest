@@ -6,7 +6,6 @@ plugins/module_utils/vmware_rest.py import-2.7!skip
 plugins/module_utils/vmware_rest.py import-3.5!skip
 plugins/module_utils/vmware_rest.py metaclass-boilerplate!skip
 plugins/module_utils/vmware_rest.py future-import-boilerplate!skip
-plugins/modules/vcenter_vm_guest_customization.py pep8!skip
 plugins/modules/appliance_infraprofile_configs.py pep8!skip
 plugins/modules/vcenter_cluster_info.py compile-2.6!skip
 plugins/modules/vcenter_cluster_info.py compile-2.7!skip
@@ -148,16 +147,6 @@ plugins/modules/vcenter_vm.py future-import-boilerplate!skip
 plugins/modules/vcenter_vm.py metaclass-boilerplate!skip
 plugins/modules/vcenter_vm.py validate-modules:missing-if-name-main
 plugins/modules/vcenter_vm.py validate-modules:missing-main-call
-plugins/modules/vcenter_vm_guest_customization.py compile-2.6!skip
-plugins/modules/vcenter_vm_guest_customization.py compile-2.7!skip
-plugins/modules/vcenter_vm_guest_customization.py compile-3.5!skip
-plugins/modules/vcenter_vm_guest_customization.py import-2.6!skip
-plugins/modules/vcenter_vm_guest_customization.py import-2.7!skip
-plugins/modules/vcenter_vm_guest_customization.py import-3.5!skip
-plugins/modules/vcenter_vm_guest_customization.py future-import-boilerplate!skip
-plugins/modules/vcenter_vm_guest_customization.py metaclass-boilerplate!skip
-plugins/modules/vcenter_vm_guest_customization.py validate-modules:missing-if-name-main
-plugins/modules/vcenter_vm_guest_customization.py validate-modules:missing-main-call
 plugins/modules/vcenter_vm_guest_environment_info.py compile-2.6!skip
 plugins/modules/vcenter_vm_guest_environment_info.py compile-2.7!skip
 plugins/modules/vcenter_vm_guest_environment_info.py compile-3.5!skip

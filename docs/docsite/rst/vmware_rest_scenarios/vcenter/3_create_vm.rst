@@ -1,4 +1,4 @@
-.. _vmware-rest-create-vm:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-create-vm:
 
 
 How to create a Virtual Machine
@@ -20,9 +20,8 @@ This section shows you how to use Ansible to create a virtual machine.
 Scenario requirements
 =====================
 
-You"ve already followed `How to collect information about your
-environment <2_collect_information.rst#vmware-rest-collect-info>`_ and
-you"ve got the following variables defined:
+You"ve already followed vmware_rest_collect_info and you"ve got the
+following variables defined:
 
 *  ``my_cluster_info``
 
@@ -62,7 +61,7 @@ response
 
    {
        "changed": true,
-       "id": "vm-1051",
+       "id": "vm-1055",
        "value": {
            "boot": {
                "delay": 0,
@@ -83,7 +82,7 @@ response
                "2000": {
                    "backing": {
                        "type": "VMDK_FILE",
-                       "vmdk_file": "[rw_datastore] test_vm1_1/test_vm1.vmdk"
+                       "vmdk_file": "[rw_datastore] test_vm1/test_vm1.vmdk"
                    },
                    "capacity": 17179869184,
                    "label": "Hard disk 1",
@@ -102,8 +101,8 @@ response
                "version": "VMX_11"
            },
            "identity": {
-               "bios_uuid": "422da849-f1f2-3468-3028-67c32f866b8f",
-               "instance_uuid": "502db950-f84e-894c-3740-d835486f9c59",
+               "bios_uuid": "42124616-96de-8f95-993b-efb0e94636da",
+               "instance_uuid": "50124ffe-894a-4486-72eb-7161b668582d",
                "name": "test_vm1"
            },
            "instant_clone_frozen": false,

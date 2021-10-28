@@ -84,9 +84,10 @@ options:
     - 'Valid attributes are:'
     - ' - C(type) (str): The C(policy_type) defines the choices for how to specify
       the policy to be associated with the virtual machine home''s directory. ([''present''])'
+    - '   This key is required with [''present''].'
     - '   - Accepted values:'
-    - '     - USE_SPECIFIED_POLICY'
     - '     - USE_DEFAULT_POLICY'
+    - '     - USE_SPECIFIED_POLICY'
     - ' - C(policy) (str): Storage Policy identification. ([''present''])'
     required: true
     type: dict
@@ -287,14 +288,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

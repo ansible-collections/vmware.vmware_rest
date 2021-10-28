@@ -31,10 +31,12 @@ options:
     - 'Valid attributes are:'
     - ' - C(mode) (str): C(dns_server_mode) Describes DNS Server source (DHCP,static)
       ([''change''])'
+    - '   This key is required with [''change''].'
     - '   - Accepted values:'
     - '     - dhcp'
     - '     - is_static'
     - ' - C(servers) (list): List of the currently used DNS servers. ([''change''])'
+    - '   This key is required with [''change''].'
     type: dict
   hostname:
     description:
@@ -47,6 +49,7 @@ options:
     - 'Valid attributes are:'
     - ' - C(mode) (str): The C(mode) defines different IPv4 address assignment modes.
       ([''change''])'
+    - '   This key is required with [''change''].'
     - '   - Accepted values:'
     - '     - DHCP'
     - '     - STATIC'
@@ -66,15 +69,19 @@ options:
     - IPv6 Configuration to set for the machine Required with I(state=['change'])
     - 'Valid attributes are:'
     - ' - C(dhcp) (bool): An address will be assigned by a DHCP server. ([''change''])'
+    - '   This key is required with [''change''].'
     - ' - C(autoconf) (bool): An address will be assigned by Stateless Address Autoconfiguration
       (SLAAC). ([''change''])'
+    - '   This key is required with [''change''].'
     - ' - C(addresses) (list): The list of addresses to be statically assigned. ([''change''])'
+    - '   This key is required with [''change''].'
     - ' - C(default_gateway) (str): The default gateway for static IP address assignment.
       This configures the global IPv6 default gateway on the appliance with the specified
       gateway address and interface. This gateway replaces the existing default gateway
       configured on the appliance. However, if the gateway address is link-local,
       then it is added for that interface. This does not support configuration of
       multiple global default gateways through different interfaces. ([''change''])'
+    - '   This key is required with [''change''].'
     type: dict
   ipv6_enabled:
     description:
@@ -152,7 +159,6 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {"query": {}, "body": {"ipv6_enabled": "ipv6_enabled"}, "path": {}},
     "reset": {"query": {}, "body": {}, "path": {}},
     "change": {
         "query": {},
@@ -166,6 +172,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "update": {"query": {}, "body": {"ipv6_enabled": "ipv6_enabled"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -358,14 +365,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

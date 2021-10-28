@@ -75,11 +75,12 @@ Parameters
                         <div>Physical resource backing for the virtual Ethernet adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
-                        <div>- STANDARD_PORTGROUP</div>
-                        <div>- HOST_DEVICE</div>
                         <div>- DISTRIBUTED_PORTGROUP</div>
+                        <div>- HOST_DEVICE</div>
                         <div>- OPAQUE_NETWORK</div>
+                        <div>- STANDARD_PORTGROUP</div>
                         <div>- <code>network</code> (str): Identifier of the network that backs the virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
                         <div>- <code>distributed_port</code> (str): Key of the distributed virtual port that backs the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected.  This field cannot be specified as no free ports exist before use. ([&#x27;present&#x27;])</div>
                 </td>
@@ -438,6 +439,47 @@ Examples
         start_connected: true
         vm: '{{ test_vm1_info.id }}'
 
+    - name: Attach the VM to a standard portgroup
+      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+        vm: '{{ test_vm1_info.id }}'
+        pci_slot_number: 4
+        backing:
+          type: STANDARD_PORTGROUP
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+            \ }}"
+
+    - name: Attach the VM to a standard portgroup (again)
+      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+        vm: '{{ test_vm1_info.id }}'
+        pci_slot_number: 4
+        backing:
+          type: STANDARD_PORTGROUP
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+            \ }}"
+
+    - name: Collect a list of the NIC for a given VM
+      vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+        vm: '{{ test_vm1_info.id }}'
+      register: vm_nic
+
+    - name: Attach the VM to a standard portgroup (again) using the nic ID
+      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+        vm: '{{ test_vm1_info.id }}'
+        nic: '{{ vm_nic.value[0].nic }}'
+        backing:
+          type: STANDARD_PORTGROUP
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+            \ }}"
+
+    - name: Attach to another standard portgroup
+      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+        vm: '{{ test_vm1_info.id }}'
+        nic: '{{ vm_nic.value[0].nic }}'
+        backing:
+          type: STANDARD_PORTGROUP
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch')\
+            \ }}"
+
 
 
 Return Values
@@ -483,7 +525,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Attach a VM to a dvswitch</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 1476039389, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 2d 72 f2 64 a8 8c 5e-70 42 1e 39 90 71 f9 8c&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1022&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:ad:56:5b&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 1516333575, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 12 86 73 74 99 eb b8-28 41 a4 44 d3 87 f4 3c&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1024&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:92:e7:08&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
                 </td>
             </tr>
     </table>

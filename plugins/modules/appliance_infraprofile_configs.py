@@ -130,7 +130,7 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2021-09-15T16:41:55+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"description":"Appliance
+  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","creationTime":"2021-10-29T14:46:18+0000","version":"7.0.2.00000","profiles":{"ApplianceManagement":{"actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"action":"RESTART_SERVICE","description":"Appliance
     Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
     shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
@@ -146,13 +146,9 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "export": {
+    "validate": {
         "query": {},
-        "body": {
-            "description": "description",
-            "encryption_key": "encryption_key",
-            "profiles": "profiles",
-        },
+        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
     },
     "import_profile": {
@@ -160,9 +156,13 @@ PAYLOAD_FORMAT = {
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
     },
-    "validate": {
+    "export": {
         "query": {},
-        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
+        "body": {
+            "description": "description",
+            "encryption_key": "encryption_key",
+            "profiles": "profiles",
+        },
         "path": {},
     },
 }  # pylint: disable=line-too-long

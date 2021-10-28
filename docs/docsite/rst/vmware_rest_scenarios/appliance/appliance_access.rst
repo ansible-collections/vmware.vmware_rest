@@ -1,4 +1,4 @@
-.. _vmware-rest-appliance-access:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-appliance-access:
 
 
 Configure the console and SSH access
@@ -36,7 +36,7 @@ response
        "changed": false,
        "value": {
            "enabled": true,
-           "timeout": 454
+           "timeout": 419
        }
    }
 

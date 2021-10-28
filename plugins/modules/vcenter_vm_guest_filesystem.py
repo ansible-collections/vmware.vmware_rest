@@ -29,6 +29,7 @@ options:
     - 'Valid attributes are:'
     - ' - C(size) (int): The size in bytes of the file to be transferred into the
       guest. ([''present''])'
+    - '   This key is required with [''present''].'
     - ' - C(overwrite) (bool): Whether an existing file should be overwritten. ([''present''])'
     - ' - C(last_modified) (str): The date and time the file was last modified. ([''present''])'
     - ' - C(last_accessed) (str): The date and time the file was last accessed. ([''present''])'

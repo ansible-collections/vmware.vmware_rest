@@ -56,6 +56,7 @@ Parameters
                         <div>Existing physical resource backing for the virtual disk. Exactly one of <code>#backing</code> or <code>#new_vmdk</code> must be specified. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual disk. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- VMDK_FILE</div>
                         <div>- <code>vmdk_file</code> (str): Path of the VMDK file backing the virtual disk. ([&#x27;present&#x27;])</div>
@@ -145,6 +146,7 @@ Parameters
                         <div>Address for attaching the device to a virtual SATA adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- <code>unit</code> (int): Unit number of the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
@@ -163,6 +165,7 @@ Parameters
                         <div>Address for attaching the device to a virtual SCSI adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- <code>unit</code> (int): Unit number of the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
@@ -415,7 +418,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new disk</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1/test_vm1_1.vmdk&#x27;}, &#x27;capacity&#x27;: 320000, &#x27;label&#x27;: &#x27;Hard disk 2&#x27;, &#x27;sata&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SATA&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[local] test_vm1/test_vm1_1.vmdk&#x27;}, &#x27;capacity&#x27;: 320000, &#x27;label&#x27;: &#x27;Hard disk 2&#x27;, &#x27;sata&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SATA&#x27;}</div>
                 </td>
             </tr>
     </table>

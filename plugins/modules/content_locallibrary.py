@@ -325,16 +325,6 @@ EXAMPLES = r"""
     state: present
   register: nfs_lib
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
 - name: Create a new local content library
   vmware.vmware_rest.content_locallibrary:
     name: local_library_001
@@ -343,7 +333,8 @@ EXAMPLES = r"""
       published: true
       authentication_method: NONE
     storage_backings:
-    - datastore_id: '{{ my_datastore.datastore }}'
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
       type: DATASTORE
     state: present
   register: ds_lib
@@ -354,26 +345,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: 46214ff0-1f87-4150-b868-50d32d234242
+  sample: 85921c7c-323c-4558-9b31-63c064cf4b4c
   type: str
 value:
   description: Create a new local content library
   returned: On success
   sample:
-    creation_time: '2021-09-15T16:39:04.164Z'
+    creation_time: '2021-10-29T14:43:09.131Z'
     description: automated
-    id: 46214ff0-1f87-4150-b868-50d32d234242
-    last_modified_time: '2021-09-15T16:39:04.164Z'
+    id: 85921c7c-323c-4558-9b31-63c064cf4b4c
+    last_modified_time: '2021-10-29T14:43:09.131Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/46214ff0-1f87-4150-b868-50d32d234242/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/85921c7c-323c-4558-9b31-63c064cf4b4c/lib.json
       published: 1
       user_name: vcsp
-    server_guid: a775463f-9e84-4133-9528-d154d0271bc9
+    server_guid: 51f0bcdc-b94e-4c97-9222-b25861f63230
     storage_backings:
-    - datastore_id: datastore-1018
+    - datastore_id: datastore-1015
       type: DATASTORE
     type: LOCAL
     version: '2'
@@ -382,24 +373,9 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "update": {
+    "publish": {
         "query": {},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
+        "body": {"subscriptions": "subscriptions"},
         "path": {"library_id": "library_id"},
     },
     "create": {
@@ -421,9 +397,24 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "publish": {
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "update": {
         "query": {},
-        "body": {"subscriptions": "subscriptions"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
         "path": {"library_id": "library_id"},
     },
 }  # pylint: disable=line-too-long
@@ -670,14 +661,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

@@ -308,6 +308,59 @@ EXAMPLES = r"""
     library_id: '{{ item.id }}'
     state: absent
   with_items: '{{ result.value }}'
+
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Create subscribed library
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+  register: sub_lib
+
+- name: Create subscribed library (again)
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+  register: result
+
+- name: Clean up the cache
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    library_id: '{{ sub_lib.id }}'
+    state: evict
+
+- name: Trigger a library sync
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    library_id: '{{ sub_lib.id }}'
+    state: sync
 """
 
 RETURN = r"""
@@ -315,26 +368,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: b218d850-2261-457f-86e9-31dec9196a07
+  sample: 77d1d28a-af4a-4075-9cc6-52780789bb4c
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2021-09-15T16:39:06.484Z'
+    creation_time: '2021-10-29T14:43:11.266Z'
     description: ''
-    id: b218d850-2261-457f-86e9-31dec9196a07
-    last_modified_time: '2021-09-15T16:39:06.484Z'
+    id: 77d1d28a-af4a-4075-9cc6-52780789bb4c
+    last_modified_time: '2021-10-29T14:43:11.266Z'
     name: sub_lib
-    server_guid: a775463f-9e84-4133-9528-d154d0271bc9
+    server_guid: 51f0bcdc-b94e-4c97-9222-b25861f63230
     storage_backings:
-    - datastore_id: datastore-1018
+    - datastore_id: datastore-1015
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/d3db521d-ab73-4c11-a245-0de86b3a7f81/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/a8585def-d83d-4ed1-99c2-4bbec58bfacc/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -342,7 +395,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
         "body": {
@@ -362,13 +415,13 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -687,14 +740,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

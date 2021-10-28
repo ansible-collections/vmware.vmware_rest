@@ -62,10 +62,10 @@ Parameters
                         <div>- Accepted keys:</div>
                         <div>- level (string): The <code>level</code> defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
+                        <div>- <code>CUSTOM</code></div>
+                        <div>- <code>HIGH</code></div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
-                        <div>- <code>HIGH</code></div>
-                        <div>- <code>CUSTOM</code></div>
                         <div>- shares (integer): When {@link #level} is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored. There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
                 </td>
             </tr>
@@ -90,10 +90,10 @@ Parameters
                         <div>- Accepted keys:</div>
                         <div>- level (string): The <code>level</code> defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
+                        <div>- <code>CUSTOM</code></div>
+                        <div>- <code>HIGH</code></div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
-                        <div>- <code>HIGH</code></div>
-                        <div>- <code>CUSTOM</code></div>
                         <div>- shares (integer): When {@link #level} is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored. There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
                 </td>
             </tr>

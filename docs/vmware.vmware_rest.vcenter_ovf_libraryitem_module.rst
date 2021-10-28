@@ -92,13 +92,14 @@ Parameters
                         <div>- <code>name</code> (str): Name assigned to the deployed target virtual machine or virtual appliance. ([&#x27;deploy&#x27;])</div>
                         <div>- <code>annotation</code> (str): Annotation assigned to the deployed target virtual machine or virtual appliance. ([&#x27;deploy&#x27;])</div>
                         <div>- <code>accept_all_EULA</code> (bool): Whether to accept all End User License Agreements. ([&#x27;deploy&#x27;])</div>
+                        <div>This key is required with [&#x27;deploy&#x27;].</div>
                         <div>- <code>network_mappings</code> (dict): Specification of the target network to use for sections of type ovf:NetworkSection in the OVF descriptor. The key in the {@term map} is the section identifier of the ovf:NetworkSection section in the OVF descriptor and the value is the target network to be used for deployment. ([&#x27;deploy&#x27;])</div>
                         <div>- <code>storage_mappings</code> (dict): Specification of the target storage to use for sections of type vmw:StorageGroupSection in the OVF descriptor. The key in the {@term map} is the section identifier of the ovf:StorageGroupSection section in the OVF descriptor and the value is the target storage specification to be used for deployment. ([&#x27;deploy&#x27;])</div>
                         <div>- <code>storage_provisioning</code> (str): The <code>disk_provisioning_type</code> defines the virtual disk provisioning types that can be set for a disk on the target platform. ([&#x27;deploy&#x27;])</div>
                         <div>- Accepted values:</div>
-                        <div>- thin</div>
-                        <div>- thick</div>
                         <div>- eagerZeroedThick</div>
+                        <div>- thick</div>
+                        <div>- thin</div>
                         <div>- <code>storage_profile_id</code> (str): Default storage profile to use for all sections of type vmw:StorageSection in the OVF descriptor. ([&#x27;deploy&#x27;])</div>
                         <div>- <code>locale</code> (str): The locale to use for parsing the OVF descriptor. ([&#x27;deploy&#x27;])</div>
                         <div>- <code>flags</code> (list): Flags to be use for deployment. The supported flag values can be obtained using {@link ImportFlag#list}. ([&#x27;deploy&#x27;])</div>
@@ -154,7 +155,9 @@ Parameters
                         <div>Identifier of the virtual machine or virtual appliance to use as the source. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): Type of the deployable resource. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- <code>id</code> (str): Identifier of the deployable resource. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                 </td>
             </tr>
             <tr>
@@ -194,6 +197,7 @@ Parameters
                         <div>- <code>library_id</code> (str): Identifier of the library in which a new library item should be created. This field is not used if the <code>#library_item_id</code> field is specified. ([&#x27;present&#x27;])</div>
                         <div>- <code>library_item_id</code> (str): Identifier of the library item that should be should be updated. ([&#x27;present&#x27;])</div>
                         <div>- <code>resource_pool_id</code> (str): Identifier of the resource pool to which the virtual machine or virtual appliance should be attached. ([&#x27;deploy&#x27;, &#x27;filter&#x27;])</div>
+                        <div>This key is required with [&#x27;deploy&#x27;, &#x27;filter&#x27;].</div>
                         <div>- <code>host_id</code> (str): Identifier of the target host on which the virtual machine or virtual appliance will run. The target host must be a member of the cluster that contains the resource pool identified by {@link #resourcePoolId}. ([&#x27;deploy&#x27;, &#x27;filter&#x27;])</div>
                         <div>- <code>folder_id</code> (str): Identifier of the vCenter folder that should contain the virtual machine or virtual appliance. The folder must be virtual machine folder. ([&#x27;deploy&#x27;, &#x27;filter&#x27;])</div>
                 </td>
@@ -305,16 +309,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
-
-    - name: Set my_datastore
-      set_fact:
-        my_datastore: '{{ my_datastores.value|first }}'
-
     - name: Build a list of all the clusters
       vmware.vmware_rest.vcenter_cluster_info:
       register: all_the_clusters
@@ -339,7 +333,8 @@ Examples
       vmware.vmware_rest.vcenter_vm:
         placement:
           cluster: '{{ my_cluster_info.id }}'
-          datastore: '{{ my_datastore.datastore }}'
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
           folder: '{{ my_virtual_machine_folder.folder }}'
           resource_pool: '{{ my_cluster_info.value.resource_pool }}'
         name: test_vm1

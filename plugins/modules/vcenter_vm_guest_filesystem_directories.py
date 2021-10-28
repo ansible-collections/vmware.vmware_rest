@@ -29,11 +29,13 @@ options:
       the logged-on user matches the user specified by the {@link Credentials}. This
       is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''absent'',
       ''create_temporary'', ''move'', ''present''])'
+    - '   This key is required with [''absent'', ''create_temporary'', ''move'', ''present''].'
     - ' - C(type) (str): Types of guest credentials ([''absent'', ''create_temporary'',
       ''move'', ''present''])'
+    - '   This key is required with [''absent'', ''create_temporary'', ''move'', ''present''].'
     - '   - Accepted values:'
-    - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
+    - '     - USERNAME_PASSWORD'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
       this is the guest username. ([''absent'', ''create_temporary'', ''move'', ''present''])'
@@ -148,22 +150,9 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {
+    "move": {
         "query": {},
-        "body": {
-            "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
-        },
-        "path": {"vm": "vm"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "create_parents": "create_parents",
-            "credentials": "credentials",
-            "path": "path",
-        },
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
     "create_temporary": {
@@ -176,9 +165,22 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "move": {
+    "create": {
         "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
+        "body": {
+            "create_parents": "create_parents",
+            "credentials": "credentials",
+            "path": "path",
+        },
+        "path": {"vm": "vm"},
+    },
+    "delete": {
+        "query": {},
+        "body": {
+            "credentials": "credentials",
+            "path": "path",
+            "recursive": "recursive",
+        },
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long

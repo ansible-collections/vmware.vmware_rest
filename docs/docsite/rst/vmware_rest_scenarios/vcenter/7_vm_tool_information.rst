@@ -1,4 +1,4 @@
-.. _vmware-rest-vm-tool-information:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-vm-tool-information:
 
 
 How to get information from a running virtual machine
@@ -31,9 +31,8 @@ virtual machine.
 Scenario requirements
 =====================
 
-You"ve already followed `How to run a virtual machine
-<6_run_a_vm.rst#vmware-rest-run-a-vm>`_ and your virtual machine runs
-VMware Tools.
+You"ve already followed vmware_rest_run_a_vm and your virtual machine
+runs VMware Tools.
 
 
 How to collect information
@@ -67,7 +66,7 @@ response
 ::
 
    {
-       "attempts": 6,
+       "attempts": 7,
        "changed": false,
        "value": {
            "/": {
@@ -106,7 +105,7 @@ response
                "id": "vmsg.guestos.fedora64Guest.label"
            },
            "host_name": "localhost.localdomain",
-           "ip_address": "192.168.122.19",
+           "ip_address": "192.168.122.92",
            "name": "FEDORA_64"
        }
    }
@@ -154,8 +153,7 @@ Network interfaces
 ``vcenter_vm_guest_networking_interfaces_info`` will return a list of
 NIC configurations.
 
-See also `How to attach a VM to a network
-<5_vm_hardware_tuning.rst#vmware-rest-attach-a-network>`_.
+See also vmware_rest_attach_a_network.
 
 ::
 
@@ -175,18 +173,18 @@ response
                "ip": {
                    "ip_addresses": [
                        {
-                           "ip_address": "192.168.122.19",
+                           "ip_address": "192.168.122.92",
                            "prefix_length": 24,
                            "state": "PREFERRED"
                        },
                        {
-                           "ip_address": "fe80::b657:e7d5:da67:dd23",
+                           "ip_address": "fe80::e928:5306:8633:bdb9",
                            "prefix_length": 64,
                            "state": "UNKNOWN"
                        }
                    ]
                },
-               "mac_address": "00:50:56:ad:67:f4",
+               "mac_address": "00:50:56:92:42:5e",
                "nic": "4000"
            }
        ]
@@ -231,7 +229,7 @@ response
            },
            {
                "interface_index": 0,
-               "network": "fe80::b657:e7d5:da67:dd23",
+               "network": "fe80::e928:5306:8633:bdb9",
                "prefix_length": 128
            },
            {

@@ -1,4 +1,4 @@
-.. _vmware-rest-run-a-vm:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-run-a-vm:
 
 
 How to run a virtual machine
@@ -89,7 +89,7 @@ response
 ::
 
    {
-       "attempts": 8,
+       "attempts": 7,
        "changed": false,
        "value": {
            "auto_update_supported": false,

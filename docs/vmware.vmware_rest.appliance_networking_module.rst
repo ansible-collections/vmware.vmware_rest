@@ -56,10 +56,12 @@ Parameters
                         <div>DNS Configuration to set for the machine Required with <em>state=[&#x27;change&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>mode</code> (str): <code>dns_server_mode</code> Describes DNS Server source (DHCP,static) ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- dhcp</div>
                         <div>- is_static</div>
                         <div>- <code>servers</code> (list): List of the currently used DNS servers. ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                 </td>
             </tr>
             <tr>
@@ -92,6 +94,7 @@ Parameters
                         <div>IPv4 Configuration to set for the machine Required with <em>state=[&#x27;change&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>mode</code> (str): The <code>mode</code> defines different IPv4 address assignment modes. ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- DHCP</div>
                         <div>- STATIC</div>
@@ -116,9 +119,13 @@ Parameters
                         <div>IPv6 Configuration to set for the machine Required with <em>state=[&#x27;change&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>dhcp</code> (bool): An address will be assigned by a DHCP server. ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                         <div>- <code>autoconf</code> (bool): An address will be assigned by Stateless Address Autoconfiguration (SLAAC). ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                         <div>- <code>addresses</code> (list): The list of addresses to be statically assigned. ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                         <div>- <code>default_gateway</code> (str): The default gateway for static IP address assignment. This configures the global IPv6 default gateway on the appliance with the specified gateway address and interface. This gateway replaces the existing default gateway configured on the appliance. However, if the gateway address is link-local, then it is added for that interface. This does not support configuration of multiple global default gateways through different interfaces. ([&#x27;change&#x27;])</div>
+                        <div>This key is required with [&#x27;change&#x27;].</div>
                 </td>
             </tr>
             <tr>

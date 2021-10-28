@@ -80,16 +80,6 @@ EXAMPLES = r"""
   vmware.vmware_rest.content_locallibrary_info:
   register: result
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
 - name: Create a new local content library
   vmware.vmware_rest.content_locallibrary:
     name: local_library_001
@@ -98,7 +88,8 @@ EXAMPLES = r"""
       published: true
       authentication_method: NONE
     storage_backings:
-    - datastore_id: '{{ my_datastore.datastore }}'
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
       type: DATASTORE
     state: present
   register: ds_lib
@@ -115,27 +106,27 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: 46214ff0-1f87-4150-b868-50d32d234242
+  sample: 85921c7c-323c-4558-9b31-63c064cf4b4c
   type: str
 value:
   description: Retrieve the local content library information based upon id check
     mode
   returned: On success
   sample:
-    creation_time: '2021-09-15T16:39:04.164Z'
+    creation_time: '2021-10-29T14:43:09.131Z'
     description: automated
-    id: 46214ff0-1f87-4150-b868-50d32d234242
-    last_modified_time: '2021-09-15T16:39:04.164Z'
+    id: 85921c7c-323c-4558-9b31-63c064cf4b4c
+    last_modified_time: '2021-10-29T14:43:09.131Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/46214ff0-1f87-4150-b868-50d32d234242/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/85921c7c-323c-4558-9b31-63c064cf4b4c/lib.json
       published: 1
       user_name: vcsp
-    server_guid: a775463f-9e84-4133-9528-d154d0271bc9
+    server_guid: 51f0bcdc-b94e-4c97-9222-b25861f63230
     storage_backings:
-    - datastore_id: datastore-1018
+    - datastore_id: datastore-1015
       type: DATASTORE
     type: LOCAL
     version: '2'

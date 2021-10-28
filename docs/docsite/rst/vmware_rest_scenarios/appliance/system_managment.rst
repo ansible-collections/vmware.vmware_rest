@@ -1,4 +1,4 @@
-.. _vmware-rest-appliance-shutdown:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-appliance-shutdown:
 
 
 System managment
@@ -180,9 +180,9 @@ response
    {
        "changed": false,
        "value": {
-           "date": "Wed 09-15-2021",
-           "seconds_since_epoch": 1631724271.196873,
-           "time": "04:44:31 PM",
+           "date": "Fri 10-29-2021",
+           "seconds_since_epoch": 1635518968.5181327,
+           "time": "02:49:28 PM",
            "timezone": "UTC"
        }
    }

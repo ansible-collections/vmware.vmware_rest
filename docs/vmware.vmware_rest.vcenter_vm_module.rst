@@ -140,9 +140,9 @@ Parameters
                         <div>- Accepted keys:</div>
                         <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual CD-ROM device.</div>
                         <div>Accepted value for this field:</div>
-                        <div>- <code>ISO_FILE</code></div>
-                        <div>- <code>HOST_DEVICE</code></div>
                         <div>- <code>CLIENT_DEVICE</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>ISO_FILE</code></div>
                         <div>- iso_file (string): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
                         <div>- host_device (string): Name of the device that should be used as the virtual CD-ROM device backing.</div>
                         <div>- device_access_type (string): The <code>device_access_type</code> defines the valid device access types for a physical device packing of a virtual CD-ROM device.</div>
@@ -241,8 +241,8 @@ Parameters
                         <div>- <code>type</code> (str): The <code>host_bus_adapter_type</code> defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- IDE</div>
-                        <div>- SCSI</div>
                         <div>- SATA</div>
+                        <div>- SCSI</div>
                         <div>- <code>ide</code> (dict): Address for attaching the device to a virtual IDE adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
                         <div>- primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
@@ -318,9 +318,9 @@ Parameters
                         <div>- Accepted keys:</div>
                         <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual floppy drive.</div>
                         <div>Accepted value for this field:</div>
-                        <div>- <code>IMAGE_FILE</code></div>
-                        <div>- <code>HOST_DEVICE</code></div>
                         <div>- <code>CLIENT_DEVICE</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
+                        <div>- <code>IMAGE_FILE</code></div>
                         <div>- image_file (string): Path of the image file that should be used as the virtual floppy drive backing.</div>
                         <div>- host_device (string): Name of the device that should be used as the virtual floppy drive backing.</div>
                         <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
@@ -634,9 +634,9 @@ Parameters
                         <div>- <code>upt_compatibility_enabled</code> (bool): Flag indicating whether Universal Pass-Through (UPT) compatibility is enabled on this virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
                         <div>- <code>mac_type</code> (str): The <code>mac_address_type</code> defines the valid MAC address origins for a virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
-                        <div>- MANUAL</div>
-                        <div>- GENERATED</div>
                         <div>- ASSIGNED</div>
+                        <div>- GENERATED</div>
+                        <div>- MANUAL</div>
                         <div>- <code>mac_address</code> (str): MAC address. ([&#x27;present&#x27;])</div>
                         <div>- <code>pci_slot_number</code> (int): Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added. ([&#x27;present&#x27;])</div>
                         <div>- <code>wake_on_lan_enabled</code> (bool): Flag indicating whether wake-on-LAN is enabled on this virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
@@ -644,10 +644,10 @@ Parameters
                         <div>- Accepted keys:</div>
                         <div>- type (string): The <code>backing_type</code> defines the valid backing types for a virtual Ethernet adapter.</div>
                         <div>Accepted value for this field:</div>
-                        <div>- <code>STANDARD_PORTGROUP</code></div>
-                        <div>- <code>HOST_DEVICE</code></div>
                         <div>- <code>DISTRIBUTED_PORTGROUP</code></div>
+                        <div>- <code>HOST_DEVICE</code></div>
                         <div>- <code>OPAQUE_NETWORK</code></div>
+                        <div>- <code>STANDARD_PORTGROUP</code></div>
                         <div>- network (string): Identifier of the network that backs the virtual Ethernet adapter.</div>
                         <div>- distributed_port (string): Key of the distributed virtual port that backs the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected.  This field cannot be specified as no free ports exist before use.</div>
                         <div>- <code>start_connected</code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on. ([&#x27;present&#x27;])</div>
@@ -814,8 +814,8 @@ Parameters
                         <div>- <code>sharing</code> (str): The <code>sharing</code> defines the valid bus sharing modes for a virtual SCSI adapter. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- NONE</div>
-                        <div>- VIRTUAL</div>
                         <div>- PHYSICAL</div>
+                        <div>- VIRTUAL</div>
                 </td>
             </tr>
             <tr>
@@ -840,10 +840,10 @@ Parameters
                         <div>Accepted value for this field:</div>
                         <div>- <code>FILE</code></div>
                         <div>- <code>HOST_DEVICE</code></div>
-                        <div>- <code>PIPE_SERVER</code></div>
-                        <div>- <code>PIPE_CLIENT</code></div>
-                        <div>- <code>NETWORK_SERVER</code></div>
                         <div>- <code>NETWORK_CLIENT</code></div>
+                        <div>- <code>NETWORK_SERVER</code></div>
+                        <div>- <code>PIPE_CLIENT</code></div>
+                        <div>- <code>PIPE_SERVER</code></div>
                         <div>- file (string): Path of the file backing the virtual serial port.</div>
                         <div>- host_device (string): Name of the device backing the virtual serial port. &lt;p&gt;</div>
                         <div>- pipe (string): Name of the pipe backing the virtual serial port.</div>
@@ -940,6 +940,7 @@ Parameters
                         <div>The <code>storage_policy_spec</code> {@term structure} contains information about the storage policy that is to be associated with the virtual machine home (which contains the configuration and log files). Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>policy</code> (str): Identifier of the storage policy which should be associated with the virtual machine. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                 </td>
             </tr>
             <tr>
@@ -1075,16 +1076,6 @@ Examples
         vm: '{{ item.vm }}'
       with_items: '{{ existing_vms.value }}'
 
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
-
-    - name: Set my_datastore
-      set_fact:
-        my_datastore: '{{ my_datastores.value|first }}'
-
     - name: Build a list of all the clusters
       vmware.vmware_rest.vcenter_cluster_info:
       register: all_the_clusters
@@ -1109,7 +1100,8 @@ Examples
       vmware.vmware_rest.vcenter_vm:
         placement:
           cluster: '{{ my_cluster_info.id }}'
-          datastore: '{{ my_datastore.datastore }}'
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
           folder: '{{ my_virtual_machine_folder.folder }}'
           resource_pool: '{{ my_cluster_info.value.resource_pool }}'
         name: test_vm1
@@ -1148,7 +1140,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">vm-1024</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">vm-1025</div>
                 </td>
             </tr>
             <tr>
@@ -1165,7 +1157,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[rw_datastore] test_vm1/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;422d4a3f-e02f-b8bd-9804-f44e29bf2498&#x27;, &#x27;instance_uuid&#x27;: &#x27;502df327-9305-2674-87fc-c7913abfa6bf&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[local] test_vm1/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;421274a8-f917-0bf6-8041-ca9094780cb4&#x27;, &#x27;instance_uuid&#x27;: &#x27;5012fa38-e721-3377-721d-aa76903024a0&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
                 </td>
             </tr>
     </table>

@@ -227,6 +227,11 @@ Examples
       vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
         vm: '{{ test_vm1_info.id }}'
 
+    - name: Collect a list of the NIC for a given VM
+      vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+        vm: '{{ test_vm1_info.id }}'
+      register: vm_nic
+
 
 
 Return Values

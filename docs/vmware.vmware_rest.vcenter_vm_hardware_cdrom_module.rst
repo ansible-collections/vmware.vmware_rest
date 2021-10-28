@@ -75,10 +75,11 @@ Parameters
                         <div>Physical resource backing for the virtual CD-ROM device. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
-                        <div>- ISO_FILE</div>
-                        <div>- HOST_DEVICE</div>
                         <div>- CLIENT_DEVICE</div>
+                        <div>- HOST_DEVICE</div>
+                        <div>- ISO_FILE</div>
                         <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing. ([&#x27;present&#x27;])</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing. ([&#x27;present&#x27;])</div>
                         <div>- <code>device_access_type</code> (str): The <code>device_access_type</code> defines the valid device access types for a physical device packing of a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
@@ -151,6 +152,7 @@ Parameters
                         <div>Address for attaching the device to a virtual SATA adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- <code>unit</code> (int): Unit number of the device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>

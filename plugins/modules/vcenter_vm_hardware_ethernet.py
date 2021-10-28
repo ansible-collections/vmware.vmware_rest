@@ -25,11 +25,12 @@ options:
     - 'Valid attributes are:'
     - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
       virtual Ethernet adapter. ([''present''])'
+    - '   This key is required with [''present''].'
     - '   - Accepted values:'
-    - '     - STANDARD_PORTGROUP'
-    - '     - HOST_DEVICE'
     - '     - DISTRIBUTED_PORTGROUP'
+    - '     - HOST_DEVICE'
     - '     - OPAQUE_NETWORK'
+    - '     - STANDARD_PORTGROUP'
     - ' - C(network) (str): Identifier of the network that backs the virtual Ethernet
       adapter. ([''present''])'
     - ' - C(distributed_port) (str): Key of the distributed virtual port that backs
@@ -204,6 +205,47 @@ EXAMPLES = r"""
     nic: '{{ vm_hardware_ethernet_1.id }}'
     start_connected: true
     vm: '{{ test_vm1_info.id }}'
+
+- name: Attach the VM to a standard portgroup
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+        \ }}"
+
+- name: Attach the VM to a standard portgroup (again)
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+        \ }}"
+
+- name: Collect a list of the NIC for a given VM
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: vm_nic
+
+- name: Attach the VM to a standard portgroup (again) using the nic ID
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    nic: '{{ vm_nic.value[0].nic }}'
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+        \ }}"
+
+- name: Attach to another standard portgroup
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    nic: '{{ vm_nic.value[0].nic }}'
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch')\
+        \ }}"
 """
 
 RETURN = r"""
@@ -219,13 +261,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1476039389
+      connection_cookie: 1516333575
       distributed_port: '2'
-      distributed_switch_uuid: 50 2d 72 f2 64 a8 8c 5e-70 42 1e 39 90 71 f9 8c
-      network: dvportgroup-1022
+      distributed_switch_uuid: 50 12 86 73 74 99 eb b8-28 41 a4 44 d3 87 f4 3c
+      network: dvportgroup-1024
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:ad:56:5b
+    mac_address: 00:50:56:92:e7:08
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -238,6 +280,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -252,7 +295,6 @@ PAYLOAD_FORMAT = {
         "path": {"nic": "nic", "vm": "vm"},
     },
     "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
@@ -544,14 +586,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

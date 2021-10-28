@@ -273,8 +273,6 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Adjust vpxd configuration</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;description_key&#x27;: &#x27;cis.vpxd.ServiceDescription&#x27;, &#x27;health&#x27;: &#x27;HEALTHY&#x27;, &#x27;health_messages&#x27;: [{&#x27;args&#x27;: [&#x27;vCenter Server&#x27;, &#x27;GREEN&#x27;], &#x27;default_message&#x27;: &#x27;{0} health is {1}&#x27;, &#x27;id&#x27;: &#x27;vc.health.statuscode&#x27;}, {&#x27;args&#x27;: [&#x27;VirtualCenter Database&#x27;, &#x27;GREEN&#x27;], &#x27;default_message&#x27;: &#x27;{0} health is {1}&#x27;, &#x27;id&#x27;: &#x27;vc.health.statuscode&#x27;}], &#x27;name_key&#x27;: &#x27;cis.vpxd.ServiceName&#x27;, &#x27;startup_type&#x27;: &#x27;AUTOMATIC&#x27;, &#x27;state&#x27;: &#x27;STARTED&#x27;}</div>
                 </td>
             </tr>
     </table>

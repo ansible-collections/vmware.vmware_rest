@@ -92,9 +92,9 @@ options:
     - '     - type (string): The C(backing_type) defines the valid backing types for
       a virtual CD-ROM device.'
     - 'Accepted value for this field:'
-    - '       - C(ISO_FILE)'
-    - '       - C(HOST_DEVICE)'
     - '       - C(CLIENT_DEVICE)'
+    - '       - C(HOST_DEVICE)'
+    - '       - C(ISO_FILE)'
     - '     - iso_file (string): Path of the image file that should be used as the
       virtual CD-ROM device backing.'
     - '     - host_device (string): Name of the device that should be used as the
@@ -156,8 +156,8 @@ options:
       machine. ([''present''])'
     - '   - Accepted values:'
     - '     - IDE'
-    - '     - SCSI'
     - '     - SATA'
+    - '     - SCSI'
     - ' - C(ide) (dict): Address for attaching the device to a virtual IDE adapter.
       ([''present''])'
     - '   - Accepted keys:'
@@ -216,9 +216,9 @@ options:
     - '     - type (string): The C(backing_type) defines the valid backing types for
       a virtual floppy drive.'
     - 'Accepted value for this field:'
-    - '       - C(IMAGE_FILE)'
-    - '       - C(HOST_DEVICE)'
     - '       - C(CLIENT_DEVICE)'
+    - '       - C(HOST_DEVICE)'
+    - '       - C(IMAGE_FILE)'
     - '     - image_file (string): Path of the image file that should be used as the
       virtual floppy drive backing.'
     - '     - host_device (string): Name of the device that should be used as the
@@ -484,9 +484,9 @@ options:
     - ' - C(mac_type) (str): The C(mac_address_type) defines the valid MAC address
       origins for a virtual Ethernet adapter. ([''present''])'
     - '   - Accepted values:'
-    - '     - MANUAL'
-    - '     - GENERATED'
     - '     - ASSIGNED'
+    - '     - GENERATED'
+    - '     - MANUAL'
     - ' - C(mac_address) (str): MAC address. ([''present''])'
     - ' - C(pci_slot_number) (int): Address of the virtual Ethernet adapter on the
       PCI bus.  If the PCI address is invalid, the server will change when it the
@@ -499,10 +499,10 @@ options:
     - '     - type (string): The C(backing_type) defines the valid backing types for
       a virtual Ethernet adapter.'
     - 'Accepted value for this field:'
-    - '       - C(STANDARD_PORTGROUP)'
-    - '       - C(HOST_DEVICE)'
     - '       - C(DISTRIBUTED_PORTGROUP)'
+    - '       - C(HOST_DEVICE)'
     - '       - C(OPAQUE_NETWORK)'
+    - '       - C(STANDARD_PORTGROUP)'
     - '     - network (string): Identifier of the network that backs the virtual Ethernet
       adapter.'
     - '     - distributed_port (string): Key of the distributed virtual port that
@@ -611,8 +611,8 @@ options:
       a virtual SCSI adapter. ([''present''])'
     - '   - Accepted values:'
     - '     - NONE'
-    - '     - VIRTUAL'
     - '     - PHYSICAL'
+    - '     - VIRTUAL'
     elements: dict
     type: list
   serial_ports:
@@ -631,10 +631,10 @@ options:
     - 'Accepted value for this field:'
     - '       - C(FILE)'
     - '       - C(HOST_DEVICE)'
-    - '       - C(PIPE_SERVER)'
-    - '       - C(PIPE_CLIENT)'
-    - '       - C(NETWORK_SERVER)'
     - '       - C(NETWORK_CLIENT)'
+    - '       - C(NETWORK_SERVER)'
+    - '       - C(PIPE_CLIENT)'
+    - '       - C(PIPE_SERVER)'
     - '     - file (string): Path of the file backing the virtual serial port.'
     - '     - host_device (string): Name of the device backing the virtual serial
       port. <p>'
@@ -695,6 +695,7 @@ options:
     - 'Valid attributes are:'
     - ' - C(policy) (str): Identifier of the storage policy which should be associated
       with the virtual machine. ([''present''])'
+    - '   This key is required with [''present''].'
     type: dict
   vcenter_hostname:
     description:
@@ -761,16 +762,6 @@ EXAMPLES = r"""
     vm: '{{ item.vm }}'
   with_items: '{{ existing_vms.value }}'
 
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
   register: all_the_clusters
@@ -795,7 +786,8 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: '{{ my_cluster_info.id }}'
-      datastore: '{{ my_datastore.datastore }}'
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
       folder: '{{ my_virtual_machine_folder.folder }}'
       resource_pool: '{{ my_cluster_info.value.resource_pool }}'
     name: test_vm1
@@ -812,7 +804,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1024
+  sample: vm-1025
   type: str
 value:
   description: Create a VM
@@ -835,7 +827,7 @@ value:
       '2000':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[rw_datastore] test_vm1/test_vm1.vmdk'
+          vmdk_file: '[local] test_vm1/test_vm1.vmdk'
         capacity: 17179869184
         label: Hard disk 1
         scsi:
@@ -849,8 +841,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 422d4a3f-e02f-b8bd-9804-f44e29bf2498
-      instance_uuid: 502df327-9305-2674-87fc-c7913abfa6bf
+      bios_uuid: 421274a8-f917-0bf6-8041-ca9094780cb4
+      instance_uuid: 5012fa38-e721-3377-721d-aa76903024a0
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -882,6 +874,7 @@ PAYLOAD_FORMAT = {
         "body": {"disks": "disks", "placement": "placement"},
         "path": {"vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "register": {
         "query": {},
         "body": {
@@ -920,7 +913,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
