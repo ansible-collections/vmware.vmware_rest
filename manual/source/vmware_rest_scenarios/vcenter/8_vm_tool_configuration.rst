@@ -1,4 +1,4 @@
-.. _vmware_rest_vm_tool_configuration:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_vm_tool_configuration:
 
 **************************************************************
 How to configure the VMware tools of a running virtual machine 

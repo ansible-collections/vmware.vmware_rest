@@ -1,4 +1,4 @@
-.. _vmware_rest_collect_info:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_collect_info:
 
 *************************************************
 How to collect information about your environment

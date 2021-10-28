@@ -1,4 +1,4 @@
-.. _vmware_rest_create_vm:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_create_vm:
 
 *******************************
 How to create a Virtual Machine

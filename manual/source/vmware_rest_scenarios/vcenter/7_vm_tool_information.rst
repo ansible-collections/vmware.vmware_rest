@@ -1,4 +1,4 @@
-.. _vmware_rest_vm_tool_information:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_vm_tool_information:
 
 *****************************************************
 How to get information from a running virtual machine 
