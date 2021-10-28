@@ -1,4 +1,4 @@
-.. _vmware_rest_appliance_access:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_appliance_access:
 
 ************************************
 Configure the console and SSH access

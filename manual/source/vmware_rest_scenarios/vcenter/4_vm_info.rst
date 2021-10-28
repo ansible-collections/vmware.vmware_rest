@@ -1,4 +1,4 @@
-.. _vmware_rest_vm_info:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_vm_info:
 
 ***************************************
 Retrieve information from a specific VM

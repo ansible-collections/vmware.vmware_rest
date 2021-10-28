@@ -1,4 +1,4 @@
-.. _vmware_rest_appliance_health:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_appliance_health:
 
 *******************************************
 Get the health state of the VCSA components

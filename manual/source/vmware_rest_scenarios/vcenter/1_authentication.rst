@@ -1,4 +1,4 @@
-.. _vmware_rest_authentication:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_authentication:
 
 *******************************************
 How to configure the vmware_rest collection

@@ -1,4 +1,4 @@
-.. _vmware_rest_ansible:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_ansible:
 
 *******************
 VMware Guide (REST)

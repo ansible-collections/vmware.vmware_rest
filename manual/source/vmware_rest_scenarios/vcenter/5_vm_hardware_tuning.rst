@@ -1,4 +1,4 @@
-.. _vmware_rest_vm_hardware_tuning:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_vm_hardware_tuning:
 
 *******************************
 How to modify a virtual machine
@@ -57,7 +57,7 @@ Now we can create the CDROM drive:
     register: _result
 
 
-.. _vmware_rest_attach_a_network:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_attach_a_network:
 
 How to attach a VM to a network
 ===============================

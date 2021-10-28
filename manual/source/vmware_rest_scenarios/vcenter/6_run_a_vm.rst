@@ -1,4 +1,4 @@
-.. _vmware_rest_run_a_vm:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware_rest_run_a_vm:
 
 ****************************
 How to run a virtual machine
