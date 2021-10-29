@@ -9,21 +9,6 @@
 
 - debug: var=my_cluster_info
 
-- name: Retrieve a list of all the datastores
-  vmware.vmware_rest.vcenter_datastore_info:
-  register: my_datastores
-- debug: var=my_datastores
-
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-      - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
 - name: Build a list of all the folders
   vmware.vmware_rest.vcenter_folder_info:
   register: my_folders

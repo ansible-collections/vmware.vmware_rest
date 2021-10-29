@@ -1,9 +1,8 @@
-- debug: var=my_datastore.datastore
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
-      datastore: "{{ my_datastore.datastore }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
       folder: "{{ my_virtual_machine_folder.folder }}"
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
@@ -21,7 +20,7 @@
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
-      datastore: "{{ my_datastore.datastore }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
       folder: "{{ my_virtual_machine_folder.folder }}"
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
@@ -107,7 +106,7 @@
       published: true
       authentication_method: 'NONE'
     storage_backings:
-      - datastore_id: "{{ my_datastore.datastore }}"
+      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
         type: 'DATASTORE'
     state: present
   register: ds_lib
@@ -179,7 +178,7 @@
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-      - datastore_id: "{{ my_datastore.datastore }}"
+      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
         type: 'DATASTORE'
   register: sub_lib
 
@@ -192,7 +191,7 @@
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-      - datastore_id: "{{ my_datastore.datastore }}"
+      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
         type: 'DATASTORE'
   register: result
 - name: Assert the resource has not been changed
