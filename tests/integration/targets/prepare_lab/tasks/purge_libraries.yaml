@@ -2,6 +2,9 @@
 - name: Build a list of local libraries
   vmware.vmware_rest.content_locallibrary_info:
   register: result
+  retries: 100
+  delay: 3
+  until: result is not failed
 
 - name: Delete all the local libraries
   vmware.vmware_rest.content_locallibrary:
