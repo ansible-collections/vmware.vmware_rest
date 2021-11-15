@@ -55,3 +55,61 @@
 - assert:
     that:
       - _result.value|length == 1
+
+- name: Attach the VM to a standard portgroup
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
+- debug: var=_result
+
+- name: Attach the VM to a standard portgroup (again)
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
+- debug: var=_result
+
+- assert:
+    that:
+      - not(_result is changed)
+
+- name: Collect a list of the NIC for a given VM
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: vm_nic
+- debug: var=vm_nic
+
+- name: Attach the VM to a standard portgroup (again) using the nic ID
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    nic: '{{ vm_nic.value[0].nic }}'
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
+- debug: var=_result
+
+- assert:
+    that:
+      - not(_result is changed)
+
+- name: Attach to another standard portgroup
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    nic: '{{ vm_nic.value[0].nic }}'
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch') }}"
+  register: _result
+- debug: var=_result
+
+- assert:
+    that:
+      - _result is changed
