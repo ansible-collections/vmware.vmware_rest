@@ -34,10 +34,12 @@ options:
       interact with the logged-in desktop session in the guest. This requires that
       the logged-on user matches the user specified by the {@link Credentials}. This
       is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''absent''])'
+    - '   This key is required with [''absent''].'
     - ' - C(type) (str): Types of guest credentials ([''absent''])'
+    - '   This key is required with [''absent''].'
     - '   - Accepted values:'
-    - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
+    - '     - USERNAME_PASSWORD'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
       this is the guest username. ([''absent''])'
@@ -155,11 +157,6 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {
-        "query": {},
-        "body": {"credentials": "credentials"},
-        "path": {"pid": "pid", "vm": "vm"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -170,6 +167,11 @@ PAYLOAD_FORMAT = {
             "working_directory": "spec/working_directory",
         },
         "path": {"vm": "vm"},
+    },
+    "delete": {
+        "query": {},
+        "body": {"credentials": "credentials"},
+        "path": {"pid": "pid", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 

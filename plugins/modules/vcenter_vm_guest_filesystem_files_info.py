@@ -23,10 +23,12 @@ options:
       interact with the logged-in desktop session in the guest. This requires that
       the logged-on user matches the user specified by the {@link Credentials}. This
       is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''get'', ''list''])'
+    - '   This key is required with [''get'', ''list''].'
     - ' - C(type) (str): Types of guest credentials ([''get'', ''list''])'
+    - '   This key is required with [''get'', ''list''].'
     - '   - Accepted values:'
-    - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
+    - '     - USERNAME_PASSWORD'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
       this is the guest username. ([''get'', ''list''])'

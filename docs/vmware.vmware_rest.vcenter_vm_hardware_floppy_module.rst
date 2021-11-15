@@ -75,10 +75,11 @@ Parameters
                         <div>Physical resource backing for the virtual floppy drive. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual floppy drive. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
-                        <div>- IMAGE_FILE</div>
-                        <div>- HOST_DEVICE</div>
                         <div>- CLIENT_DEVICE</div>
+                        <div>- HOST_DEVICE</div>
+                        <div>- IMAGE_FILE</div>
                         <div>- <code>image_file</code> (str): Path of the image file that should be used as the virtual floppy drive backing. ([&#x27;present&#x27;])</div>
                         <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual floppy drive backing. ([&#x27;present&#x27;])</div>
                 </td>

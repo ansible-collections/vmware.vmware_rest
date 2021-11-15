@@ -28,11 +28,13 @@ options:
       the logged-on user matches the user specified by the {@link Credentials}. This
       is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''absent'',
       ''create_temporary'', ''move'', ''present''])'
+    - '   This key is required with [''absent'', ''create_temporary'', ''move'', ''present''].'
     - ' - C(type) (str): Types of guest credentials ([''absent'', ''create_temporary'',
       ''move'', ''present''])'
+    - '   This key is required with [''absent'', ''create_temporary'', ''move'', ''present''].'
     - '   - Accepted values:'
-    - '     - USERNAME_PASSWORD'
     - '     - SAML_BEARER_TOKEN'
+    - '     - USERNAME_PASSWORD'
     - ' - C(user_name) (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest
       user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD}
       this is the guest username. ([''absent'', ''create_temporary'', ''move'', ''present''])'
@@ -165,16 +167,12 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {
-        "query": {},
-        "body": {"credentials": "credentials"},
-        "path": {"path": "path", "vm": "vm"},
-    },
-    "update": {
+    "move": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "file_attributes": "file_attributes",
+            "new_path": "new_path",
+            "overwrite": "overwrite",
             "path": "path",
         },
         "path": {"vm": "vm"},
@@ -189,12 +187,16 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "move": {
+    "delete": {
+        "query": {},
+        "body": {"credentials": "credentials"},
+        "path": {"path": "path", "vm": "vm"},
+    },
+    "update": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "new_path": "new_path",
-            "overwrite": "overwrite",
+            "file_attributes": "file_attributes",
             "path": "path",
         },
         "path": {"vm": "vm"},
@@ -424,14 +426,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

@@ -1,4 +1,4 @@
-.. _vmware-rest-appliance-health:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-appliance-health:
 
 
 Get the health state of the VCSA components
@@ -583,6 +583,14 @@ response
                "units": "com.vmware.applmgmt.mon.unit.errors_per_sample"
            },
            {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats",
+               "id": "storage.totalsize.directory.vcdb_hourly_stats",
+               "instance": "",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats",
+               "units": "com.vmware.applmgmt.mon.unit.kb"
+           },
+           {
                "category": "com.vmware.applmgmt.mon.cat.network",
                "description": "com.vmware.applmgmt.mon.descr.net.rx.error.lo",
                "id": "net.rx.error.lo",
@@ -605,14 +613,6 @@ response
                "instance": "lo",
                "name": "com.vmware.applmgmt.mon.name.net.tx.error.lo",
                "units": "com.vmware.applmgmt.mon.unit.errors_per_sample"
-           },
-           {
-               "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats",
-               "id": "storage.totalsize.directory.vcdb_hourly_stats",
-               "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats",
-               "units": "com.vmware.applmgmt.mon.unit.kb"
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.storage",

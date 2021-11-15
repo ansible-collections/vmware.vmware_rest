@@ -1,4 +1,4 @@
-.. _vmware-rest-installation:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-installation:
 
 
 How to install the vmware_rest collection

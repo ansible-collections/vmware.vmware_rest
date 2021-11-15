@@ -1,4 +1,4 @@
-.. _vmware-rest-vm-hardware-tuning:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-vm-hardware-tuning:
 
 
 How to modify a virtual machine
@@ -43,8 +43,7 @@ virtual machine.
 Scenario requirements
 =====================
 
-You"ve already followed `How to create a Virtual Machine
-<3_create_vm.rst#vmware-rest-create-vm>`_ and created a VM.
+You"ve already followed vmware_rest_create_vm and created a VM.
 
 
 How to add a CDROM drive to a virtual machine
@@ -129,7 +128,7 @@ response
        }
    }
 
-.. _vmware-rest-attach-a-network:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-attach-a-network:
 
 
 How to attach a VM to a network
@@ -166,14 +165,14 @@ response
        "value": {
            "allow_guest_control": false,
            "backing": {
-               "connection_cookie": 1854339799,
+               "connection_cookie": 1965852165,
                "distributed_port": "2",
-               "distributed_switch_uuid": "50 2d f9 38 9d c4 d7 ce-28 00 d5 88 2f a0 07 d7",
-               "network": "dvportgroup-1050",
+               "distributed_switch_uuid": "50 12 72 6e e4 2a 31 e6-e2 f3 2e 2e 63 51 ab 7e",
+               "network": "dvportgroup-1054",
                "type": "DISTRIBUTED_PORTGROUP"
            },
            "label": "Network adapter 1",
-           "mac_address": "00:50:56:ad:67:f4",
+           "mac_address": "00:50:56:92:42:5e",
            "mac_type": "ASSIGNED",
            "pci_slot_number": 4,
            "start_connected": false,
@@ -374,7 +373,7 @@ response
        "value": {
            "backing": {
                "type": "VMDK_FILE",
-               "vmdk_file": "[rw_datastore] test_vm1_1/test_vm1_1.vmdk"
+               "vmdk_file": "[rw_datastore] test_vm1/test_vm1_1.vmdk"
            },
            "capacity": 320000,
            "label": "Hard disk 2",

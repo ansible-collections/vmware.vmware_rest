@@ -56,6 +56,7 @@ Parameters
                         <div>Details about the file to be transferred into the guest.</div>
                         <div>Valid attributes are:</div>
                         <div>- <code>size</code> (int): The size in bytes of the file to be transferred into the guest. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- <code>overwrite</code> (bool): Whether an existing file should be overwritten. ([&#x27;present&#x27;])</div>
                         <div>- <code>last_modified</code> (str): The date and time the file was last modified. ([&#x27;present&#x27;])</div>
                         <div>- <code>last_accessed</code> (str): The date and time the file was last accessed. ([&#x27;present&#x27;])</div>

@@ -39,8 +39,8 @@ options:
     - ' - C(policy) (str): C(policy) Defines firewall rule policies. ([''set''])'
     - '   This key is required with [''set''].'
     - '   - Accepted values:'
-    - '     - IGNORE'
     - '     - ACCEPT'
+    - '     - IGNORE'
     - '     - REJECT'
     - '     - RETURN'
     - ' - C(interface_name) (str): The interface to which this rule applies. An empty

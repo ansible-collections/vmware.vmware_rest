@@ -1,4 +1,4 @@
-.. _vmware-rest-appliance-network:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-appliance-network:
 
 
 Network managment
@@ -46,7 +46,7 @@ response
                        "mode": "DHCP",
                        "prefix": 24
                    },
-                   "mac": "52:54:00:fe:a3:00",
+                   "mac": "52:54:00:9a:b4:4a",
                    "name": "nic0",
                    "status": "up"
                }
@@ -101,7 +101,7 @@ response
                    "mode": "DHCP",
                    "prefix": 24
                },
-               "mac": "52:54:00:fe:a3:00",
+               "mac": "52:54:00:9a:b4:4a",
                "name": "nic0",
                "status": "up"
            }
@@ -132,7 +132,7 @@ response
                "mode": "DHCP",
                "prefix": 24
            },
-           "mac": "52:54:00:fe:a3:00",
+           "mac": "52:54:00:9a:b4:4a",
            "name": "nic0",
            "status": "up"
        }

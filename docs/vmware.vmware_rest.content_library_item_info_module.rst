@@ -214,16 +214,6 @@ Examples
         library_id: '{{ nfs_lib.id }}'
       register: result
 
-    - name: We can also use filter to limit the number of result
-      vmware.vmware_rest.vcenter_datastore_info:
-        filter_names:
-        - rw_datastore
-      register: my_datastores
-
-    - name: Set my_datastore
-      set_fact:
-        my_datastore: '{{ my_datastores.value|first }}'
-
     - name: Create a new local content library
       vmware.vmware_rest.content_locallibrary:
         name: local_library_001
@@ -232,7 +222,8 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: '{{ my_datastore.datastore }}'
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
           type: DATASTORE
         state: present
       register: ds_lib
@@ -243,7 +234,7 @@ Examples
       register: result
 
     - name: Create subscribed library
-      content_subscribedlibrary:
+      vmware.vmware_rest.content_subscribedlibrary:
         name: sub_lib
         subscription_info:
           subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
@@ -251,7 +242,8 @@ Examples
           automatic_sync_enabled: false
           on_demand: true
         storage_backings:
-        - datastore_id: '{{ my_datastore.datastore }}'
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
           type: DATASTORE
       register: sub_lib
 
@@ -288,7 +280,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Ensure the OVF is here</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-09-15T16:39:07.161Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;f5f60ebe-12c7-4476-b917-57df06c30bfc&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-15T16:39:07.673Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-09-15T16:39:07.672Z&#x27;, &#x27;library_id&#x27;: &#x27;b218d850-2261-457f-86e9-31dec9196a07&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;580e3cde-2c5a-46c9-93eb-36bff1054b67&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;1&#x27;, &#x27;creation_time&#x27;: &#x27;2021-10-29T14:43:12.221Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;39f9e3da-11cb-4b10-9439-07fe7f8765dd&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-10-29T14:43:12.221Z&#x27;, &#x27;library_id&#x27;: &#x27;77d1d28a-af4a-4075-9cc6-52780789bb4c&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;cf194ed9-c3af-4255-8f7d-a21d6a6e00e5&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
                 </td>
             </tr>
     </table>

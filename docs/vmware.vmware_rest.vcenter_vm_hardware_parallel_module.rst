@@ -75,6 +75,7 @@ Parameters
                         <div>Physical resource backing for the virtual parallel port. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual parallel port. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- FILE</div>
                         <div>- HOST_DEVICE</div>

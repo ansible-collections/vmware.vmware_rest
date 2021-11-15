@@ -1,4 +1,4 @@
-.. _vmware-rest-vm-tool-configuration:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-vm-tool-configuration:
 
 
 How to configure the VMware tools of a running virtual machine
@@ -25,9 +25,8 @@ virtual machine.
 Scenario requirements
 =====================
 
-You"ve already followed `How to run a virtual machine
-<6_run_a_vm.rst#vmware-rest-run-a-vm>`_ and your virtual machine runs
-VMware Tools.
+You"ve already followed vmware_rest_run_a_vm and your virtual machine
+runs VMware Tools.
 
 
 How to change the upgrade policy

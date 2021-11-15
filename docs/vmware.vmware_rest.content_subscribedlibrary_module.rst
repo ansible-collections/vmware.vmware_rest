@@ -462,6 +462,59 @@ Examples
         state: absent
       with_items: '{{ result.value }}'
 
+    - name: Create a content library pointing on a NFS share
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_nfs
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - storage_uri: nfs://datastore.test/srv/share/content-library
+          type: OTHER
+        state: present
+      register: nfs_lib
+
+    - name: Create subscribed library
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        subscription_info:
+          subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+          authentication_method: NONE
+          automatic_sync_enabled: false
+          on_demand: true
+        storage_backings:
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          type: DATASTORE
+      register: sub_lib
+
+    - name: Create subscribed library (again)
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        subscription_info:
+          subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+          authentication_method: NONE
+          automatic_sync_enabled: false
+          on_demand: true
+        storage_backings:
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          type: DATASTORE
+      register: result
+
+    - name: Clean up the cache
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        library_id: '{{ sub_lib.id }}'
+        state: evict
+
+    - name: Trigger a library sync
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        library_id: '{{ sub_lib.id }}'
+        state: sync
+
 
 
 Return Values
@@ -490,7 +543,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">b218d850-2261-457f-86e9-31dec9196a07</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">77d1d28a-af4a-4075-9cc6-52780789bb4c</div>
                 </td>
             </tr>
             <tr>
@@ -507,7 +560,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create subscribed library (again)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-09-15T16:39:06.484Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;b218d850-2261-457f-86e9-31dec9196a07&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-09-15T16:39:06.484Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;a775463f-9e84-4133-9528-d154d0271bc9&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1018&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/d3db521d-ab73-4c11-a245-0de86b3a7f81/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-10-29T14:43:11.266Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;77d1d28a-af4a-4075-9cc6-52780789bb4c&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-10-29T14:43:11.266Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;51f0bcdc-b94e-4c97-9222-b25861f63230&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1015&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/a8585def-d83d-4ed1-99c2-4bbec58bfacc/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
                 </td>
             </tr>
     </table>

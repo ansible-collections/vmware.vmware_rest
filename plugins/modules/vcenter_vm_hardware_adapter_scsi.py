@@ -164,12 +164,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {"sharing": "sharing"},
-        "path": {"adapter": "adapter", "vm": "vm"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -179,6 +173,12 @@ PAYLOAD_FORMAT = {
             "type": "type",
         },
         "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"sharing": "sharing"},
+        "path": {"adapter": "adapter", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 
@@ -400,14 +400,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

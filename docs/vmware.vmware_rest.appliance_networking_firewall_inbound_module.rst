@@ -64,8 +64,8 @@ Parameters
                         <div>- <code>policy</code> (str): <code>policy</code> Defines firewall rule policies. ([&#x27;set&#x27;])</div>
                         <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- Accepted values:</div>
-                        <div>- IGNORE</div>
                         <div>- ACCEPT</div>
+                        <div>- IGNORE</div>
                         <div>- REJECT</div>
                         <div>- RETURN</div>
                         <div>- <code>interface_name</code> (str): The interface to which this rule applies. An empty string indicates that the rule applies to all interfaces. ([&#x27;set&#x27;])</div>

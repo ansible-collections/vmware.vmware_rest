@@ -5,6 +5,19 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.1
+======
+
+Minor Changes
+-------------
+
+- ``content_subscribedlibrary`` - use FQCN in the example.
+
+Bugfixes
+--------
+
+- vcenter_vm_hardware_ethernet - Ensure we can attach a NIC to another network (https://github.com/ansible-collections/vmware.vmware_rest/issues/267).
+
 v2.1.0
 ======
 

@@ -1,4 +1,4 @@
-.. _vmware-rest-collect-info:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-collect-info:
 
 
 How to collect information about your environment
@@ -33,8 +33,7 @@ Our environment is pre-initialized with the following elements:
 *  A dvswitch based guest network
 
 Finally, we use the environment variables to authenticate ourselves as
-explained in `How to configure the vmware_rest collection
-<1_authentication.rst#vmware-rest-authentication>`_.
+explained in vmware_rest_authentication.
 
 
 How to collect information
@@ -67,7 +66,7 @@ response
        "changed": false,
        "value": [
            {
-               "datacenter": "datacenter-1027",
+               "datacenter": "datacenter-1030",
                "name": "my_dc"
            }
        ]
@@ -93,7 +92,7 @@ response
        "changed": false,
        "value": [
            {
-               "cluster": "domain-c1033",
+               "cluster": "domain-c1036",
                "drs_enabled": true,
                "ha_enabled": false,
                "name": "my_cluster"
@@ -117,10 +116,10 @@ response
 
    {
        "changed": false,
-       "id": "domain-c1033",
+       "id": "domain-c1036",
        "value": {
            "name": "my_cluster",
-           "resource_pool": "resgroup-1034"
+           "resource_pool": "resgroup-1037"
        }
    }
 
@@ -149,9 +148,9 @@ response
        "changed": false,
        "value": [
            {
-               "capacity": 26831990784,
-               "datastore": "datastore-1043",
-               "free_space": 23943524352,
+               "capacity": 26354073600,
+               "datastore": "datastore-1045",
+               "free_space": 23947505664,
                "name": "rw_datastore",
                "type": "NFS"
            }
@@ -173,9 +172,9 @@ response
    {
        "ansible_facts": {
            "my_datastore": {
-               "capacity": 26831990784,
-               "datastore": "datastore-1043",
-               "free_space": 23943524352,
+               "capacity": 26354073600,
+               "datastore": "datastore-1045",
+               "free_space": 23947505664,
                "name": "rw_datastore",
                "type": "NFS"
            }
@@ -209,33 +208,33 @@ response
                "type": "DATACENTER"
            },
            {
-               "folder": "group-h1029",
+               "folder": "group-h1032",
                "name": "host",
                "type": "HOST"
            },
            {
-               "folder": "group-n1031",
+               "folder": "group-n1034",
                "name": "network",
                "type": "NETWORK"
            },
            {
-               "folder": "group-s1030",
+               "folder": "group-s1033",
                "name": "datastore",
                "type": "DATASTORE"
            },
            {
-               "folder": "group-v1028",
+               "folder": "group-v1031",
                "name": "vm",
                "type": "VIRTUAL_MACHINE"
            },
            {
-               "folder": "group-v1037",
-               "name": "vCLS",
+               "folder": "group-v1040",
+               "name": "Discovered virtual machine",
                "type": "VIRTUAL_MACHINE"
            },
            {
-               "folder": "group-v1038",
-               "name": "Discovered virtual machine",
+               "folder": "group-v1050",
+               "name": "vCLS",
                "type": "VIRTUAL_MACHINE"
            }
        ]
@@ -262,7 +261,7 @@ response
        "changed": false,
        "value": [
            {
-               "folder": "group-v1028",
+               "folder": "group-v1031",
                "name": "vm",
                "type": "VIRTUAL_MACHINE"
            }
@@ -284,7 +283,7 @@ response
    {
        "ansible_facts": {
            "my_virtual_machine_folder": {
-               "folder": "group-v1028",
+               "folder": "group-v1031",
                "name": "vm",
                "type": "VIRTUAL_MACHINE"
            }

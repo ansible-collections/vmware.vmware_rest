@@ -24,6 +24,7 @@ options:
     - 'Valid attributes are:'
     - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
       virtual disk. ([''present''])'
+    - '   This key is required with [''present''].'
     - '   - Accepted values:'
     - '     - VMDK_FILE'
     - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk. ([''present''])'
@@ -66,6 +67,7 @@ options:
     - 'Valid attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
       ([''present''])'
+    - '   This key is required with [''present''].'
     - ' - C(unit) (int): Unit number of the device. ([''present''])'
     type: dict
   scsi:
@@ -74,6 +76,7 @@ options:
     - 'Valid attributes are:'
     - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
       ([''present''])'
+    - '   This key is required with [''present''].'
     - ' - C(unit) (int): Unit number of the device. ([''present''])'
     type: dict
   session_timeout:
@@ -193,7 +196,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[rw_datastore] test_vm1/test_vm1_1.vmdk'
+      vmdk_file: '[local] test_vm1/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -205,12 +208,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {"backing": "backing"},
-        "path": {"disk": "disk", "vm": "vm"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -222,6 +219,12 @@ PAYLOAD_FORMAT = {
             "type": "type",
         },
         "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"backing": "backing"},
+        "path": {"disk": "disk", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 
@@ -435,14 +438,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

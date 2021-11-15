@@ -75,13 +75,14 @@ Parameters
                         <div>Physical resource backing for the virtual serial port. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual serial port. ([&#x27;present&#x27;])</div>
+                        <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- FILE</div>
                         <div>- HOST_DEVICE</div>
-                        <div>- PIPE_SERVER</div>
-                        <div>- PIPE_CLIENT</div>
-                        <div>- NETWORK_SERVER</div>
                         <div>- NETWORK_CLIENT</div>
+                        <div>- NETWORK_SERVER</div>
+                        <div>- PIPE_CLIENT</div>
+                        <div>- PIPE_SERVER</div>
                         <div>- <code>file</code> (str): Path of the file backing the virtual serial port. ([&#x27;present&#x27;])</div>
                         <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port. ([&#x27;present&#x27;])</div>
                         <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port. ([&#x27;present&#x27;])</div>

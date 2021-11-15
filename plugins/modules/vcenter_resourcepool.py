@@ -38,10 +38,10 @@ options:
     - '     - level (string): The C(level) defines the possible values for the allocation
       level.'
     - 'Accepted value for this field:'
+    - '       - C(CUSTOM)'
+    - '       - C(HIGH)'
     - '       - C(LOW)'
     - '       - C(NORMAL)'
-    - '       - C(HIGH)'
-    - '       - C(CUSTOM)'
     - '     - shares (integer): When {@link #level} is set to CUSTOM, it is the number
       of shares allocated. Otherwise, this value is ignored. There is no unit for
       this value. It is a relative measure based on the settings for other resource
@@ -70,10 +70,10 @@ options:
     - '     - level (string): The C(level) defines the possible values for the allocation
       level.'
     - 'Accepted value for this field:'
+    - '       - C(CUSTOM)'
+    - '       - C(HIGH)'
     - '       - C(LOW)'
     - '       - C(NORMAL)'
-    - '       - C(HIGH)'
-    - '       - C(CUSTOM)'
     - '     - shares (integer): When {@link #level} is set to CUSTOM, it is the number
       of shares allocated. Otherwise, this value is ignored. There is no unit for
       this value. It is a relative measure based on the settings for other resource
@@ -236,16 +236,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
-    "update": {
-        "query": {},
-        "body": {
-            "cpu_allocation": "cpu_allocation",
-            "memory_allocation": "memory_allocation",
-            "name": "name",
-        },
-        "path": {"resource_pool": "resource_pool"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -255,6 +245,16 @@ PAYLOAD_FORMAT = {
             "parent": "parent",
         },
         "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "update": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "cpu_allocation",
+            "memory_allocation": "memory_allocation",
+            "name": "name",
+        },
+        "path": {"resource_pool": "resource_pool"},
     },
 }  # pylint: disable=line-too-long
 
@@ -462,14 +462,16 @@ async def _update(params, session):
         for k, v in value.items():
             if k in payload:
                 if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
                     for _k in list(payload[k].keys()):
-                        if payload[k][_k] == v.get(_k):
-                            del payload[k][_k]
-                if payload[k] == v or payload[k] == {}:
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
                     del payload[k]
-            elif "spec" in payload:  # 7.0.2 <
-                if k in payload["spec"] and payload["spec"][k] == v:
-                    del payload["spec"][k]
+                elif payload[k] == {}:
+                    del payload[k]
 
         if payload == {} or payload == {"spec": {}}:
             # Nothing has changed

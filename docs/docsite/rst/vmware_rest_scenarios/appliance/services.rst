@@ -1,4 +1,4 @@
-.. _vmware-rest-appliance-services:
+.. _ansible_collections.vmware.vmware_rest.docsite.vmware-rest-appliance-services:
 
 
 Services managment

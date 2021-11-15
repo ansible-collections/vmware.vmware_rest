@@ -52,6 +52,7 @@ options:
       machine or virtual appliance. ([''deploy''])'
     - ' - C(accept_all_EULA) (bool): Whether to accept all End User License Agreements.
       ([''deploy''])'
+    - '   This key is required with [''deploy''].'
     - ' - C(network_mappings) (dict): Specification of the target network to use for
       sections of type ovf:NetworkSection in the OVF descriptor. The key in the {@term
       map} is the section identifier of the ovf:NetworkSection section in the OVF
@@ -65,9 +66,9 @@ options:
       virtual disk provisioning types that can be set for a disk on the target platform.
       ([''deploy''])'
     - '   - Accepted values:'
-    - '     - thin'
-    - '     - thick'
     - '     - eagerZeroedThick'
+    - '     - thick'
+    - '     - thin'
     - ' - C(storage_profile_id) (str): Default storage profile to use for all sections
       of type vmw:StorageSection in the OVF descriptor. ([''deploy''])'
     - ' - C(locale) (str): The locale to use for parsing the OVF descriptor. ([''deploy''])'
@@ -102,7 +103,9 @@ options:
       Required with I(state=['present'])
     - 'Valid attributes are:'
     - ' - C(type) (str): Type of the deployable resource. ([''present''])'
+    - '   This key is required with [''present''].'
     - ' - C(id) (str): Identifier of the deployable resource. ([''present''])'
+    - '   This key is required with [''present''].'
     type: dict
   state:
     choices:
@@ -124,6 +127,7 @@ options:
       should be updated. ([''present''])'
     - ' - C(resource_pool_id) (str): Identifier of the resource pool to which the
       virtual machine or virtual appliance should be attached. ([''deploy'', ''filter''])'
+    - '   This key is required with [''deploy'', ''filter''].'
     - ' - C(host_id) (str): Identifier of the target host on which the virtual machine
       or virtual appliance will run. The target host must be a member of the cluster
       that contains the resource pool identified by {@link #resourcePoolId}. ([''deploy'',
@@ -182,16 +186,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: We can also use filter to limit the number of result
-  vmware.vmware_rest.vcenter_datastore_info:
-    filter_names:
-    - rw_datastore
-  register: my_datastores
-
-- name: Set my_datastore
-  set_fact:
-    my_datastore: '{{ my_datastores.value|first }}'
-
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
   register: all_the_clusters
@@ -216,7 +210,8 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: '{{ my_cluster_info.id }}'
-      datastore: '{{ my_datastore.datastore }}'
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
       folder: '{{ my_virtual_machine_folder.folder }}'
       resource_pool: '{{ my_cluster_info.value.resource_pool }}'
     name: test_vm1

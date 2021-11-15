@@ -333,15 +333,15 @@ value:
       health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args:
-        - 042a6bda-c522-48f9-8df1-5d48265dea2d\com.vmware.cis.ds
-        default_message: Failed to connect to 042a6bda-c522-48f9-8df1-5d48265dea2d\com.vmware.cis.ds
+        - d51c4a13-ebfa-44ca-a3a6-8fe7b8dd947f\com.vmware.cis.ds
+        default_message: Failed to connect to d51c4a13-ebfa-44ca-a3a6-8fe7b8dd947f\com.vmware.cis.ds
           vAPI provider.
         id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
       - args:
-        - 2021-09-15T16:41:10UTC
-        - 2021-09-15T16:41:11UTC
-        default_message: Configuration health status is created between 2021-09-15T16:41:10UTC
-          and 2021-09-15T16:41:11UTC.
+        - 2021-10-29T14:47:49UTC
+        - 2021-10-29T14:47:50UTC
+        default_message: Configuration health status is created between 2021-10-29T14:47:49UTC
+          and 2021-10-29T14:47:50UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
