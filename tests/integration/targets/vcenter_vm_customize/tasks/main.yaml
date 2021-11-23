@@ -1,0 +1,144 @@
+- set_fact:
+    disk_name: rhel-8.5
+
+- name: Fetch the root disk
+  get_url:
+    url: "https://s3.us-east-2.amazonaws.com/ansible-team-cloud-images/{{ disk_name }}.vmdk-4"
+    dest: .
+
+- name: Copy the disk on the ESXi local datastore
+  copy:
+    src: "{{ disk_name }}.vmdk-4"
+    dest: "/vmfs/volumes/local/{{ disk_name }}.vmdk-4"
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+    ansible_remote_tmp: /vmfs/volumes/local
+
+- name: Create the test_vm1 directory
+  file:
+    path: /vmfs/volumes/local/test_vm1
+    state: directory
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+    ansible_remote_tmp: /vmfs/volumes/local
+
+- name: Stat disk file
+  stat:
+    path: "/vmfs/volumes/local/test_vm1/{{ disk_name }}.vmdk-4"
+  register: vmdk_stat
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+    ansible_remote_tmp: /vmfs/volumes/local
+- debug: var=vmdk_stat
+- name: Prepare the VMDK file
+  command: "vmkfstools -i /vmfs/volumes/local/{{ disk_name }}.vmdk-4 /vmfs/volumes/local/test_vm1/{{ disk_name }}.vmdk -d thin"
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+  when: not vmdk_stat.stat.exists|bool
+
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    disks:
+      - type: SATA
+        backing:
+          type: VMDK_FILE
+          vmdk_file: "[local] test_vm1/{{ disk_name }}.vmdk"
+    nics:
+      - backing:
+          type: STANDARD_PORTGROUP
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+
+  register: my_vm
+- assert:
+    that:
+      - my_vm is changed
+
+- name: Turn on the power of the VM
+  vmware.vmware_rest.vcenter_vm_power:
+    state: start
+    vm: '{{ my_vm.id }}'
+
+- name: Wait until my VM is ready
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state == "RUNNING"
+  retries: 60
+  delay: 5
+
+- name: Shut down the VM
+  vmware.vmware_rest.vcenter_vm_guest_power:
+    state: shutdown
+    vm: '{{ my_vm.id }}'
+
+- name: Wait until my VM is off
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_info
+  until:
+  - vm_info is not failed
+  - vm_info.value.power_state == "POWERED_OFF"
+  retries: 60
+  delay: 5
+
+
+- name: Customize the VM
+  vmware.vmware_rest.vcenter_vm_guest_customization:
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
+    configuration_spec:
+      linux_config:
+        domain: mydomain
+        hostname:
+          fixed_name: foobar
+          type: FIXED
+    interfaces:
+      - adapter:
+          ipv4:
+            type: STATIC
+            gateways:
+              - 192.168.123.1
+            ip_address: 192.168.123.50
+            prefix: 24
+    global_DNS_settings:
+      dns_suffix_list: []
+      dns_servers:
+        - 1.1.1.1
+
+- name: Turn on the power of the VM
+  vmware.vmware_rest.vcenter_vm_power:
+    state: start
+    vm: '{{ my_vm.id }}'
+
+- name: Wait until my VM is ready
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state == "RUNNING"
+  retries: 60
+  delay: 5
+
+- name: Ensure we can ping the new VM
+  command: ping -c 5 192.168.123.50
