@@ -82,7 +82,7 @@ RETURN = r"""
 value:
   description: Get the health of the storage system
   returned: On success
-  sample: gray
+  sample: green
   type: str
 """
 

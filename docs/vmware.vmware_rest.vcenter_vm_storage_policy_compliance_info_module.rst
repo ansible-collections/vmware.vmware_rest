@@ -224,7 +224,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get VM storage policy compliance information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;check_time&#x27;: &#x27;2021-10-29T14:43:37.321Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}, &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;check_time&#x27;: &#x27;2021-11-23T01:10:43.513Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}, &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
                 </td>
             </tr>
     </table>

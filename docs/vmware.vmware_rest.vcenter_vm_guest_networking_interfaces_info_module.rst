@@ -205,7 +205,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get guest network interfaces information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;ip&#x27;: {&#x27;ip_addresses&#x27;: []}, &#x27;mac_address&#x27;: &#x27;00:50:56:92:e7:08&#x27;, &#x27;nic&#x27;: &#x27;4000&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;ip&#x27;: {&#x27;ip_addresses&#x27;: []}, &#x27;mac_address&#x27;: &#x27;00:50:56:b4:fb:0a&#x27;, &#x27;nic&#x27;: &#x27;4000&#x27;}]</div>
                 </td>
             </tr>
     </table>

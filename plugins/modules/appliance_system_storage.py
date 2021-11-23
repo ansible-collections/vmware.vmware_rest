@@ -100,7 +100,7 @@ value:
   sample:
     lv_root_0:
       new_size: 104312832
-      old_size: 93048832
+      old_size: 53985280
   type: dict
 """
 

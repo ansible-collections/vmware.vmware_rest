@@ -11,60 +11,103 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-module: appliance_networking_proxy
-short_description: Configures which proxy server to use for the specified protocol
-description: Configures which proxy server to use for the specified protocol. This
-  operation sets environment variables for using proxy. In order for this configuration
-  to take effect a logout / service restart is required.
+module: vcenter_vm_guest_customization
+short_description: Applies a customization specification on the virtual machine
+description: Applies a customization specification on the virtual machine in {@param.name
+  vm}. The actual customization happens inside the guest when the virtual machine
+  is powered on. If there is a pending customization for the virtual machine and a
+  new one is set, then the existing customization setting will be overwritten with
+  the new settings.
 options:
-  config:
+  configuration_spec:
     description:
-    - Proxy configuration for the specific protocol. Required with I(state=['test'])
+    - Settings to be applied to the guest during the customization. This parameter
+      is mandatory.
     - 'Valid attributes are:'
-    - ' - C(server) (str): URL of the proxy server ([''test''])'
-    - '   This key is required with [''test''].'
-    - ' - C(port) (int): Port to connect to the proxy server. In a ''get'' call, indicates
-      the port connected to the proxy server. In a ''set'' call, specifies the port
-      to connect to the proxy server. A value of -1 indicates the default port. ([''test''])'
-    - '   This key is required with [''test''].'
-    - ' - C(username) (str): Username for proxy server. ([''test''])'
-    - ' - C(password) (str): Password for proxy server. ([''test''])'
-    - ' - C(enabled) (bool): In the result of the C(#get) and C(#list) {@term operations}
-      this field indicates whether proxying is enabled for a particular protocol.
-      In the input to the C(test) and C(set) {@term operations} this field specifies
-      whether proxying should be enabled for a particular protocol. ([''test''])'
-    - '   This key is required with [''test''].'
-    type: dict
-  enabled:
-    description:
-    - In the result of the C(#get) and C(#list) {@term operations} this field indicates
-      whether proxying is enabled for a particular protocol. In the input to the C(test)
-      and C(set) {@term operations} this field specifies whether proxying should be
-      enabled for a particular protocol. Required with I(state=['set'])
-    type: bool
-  host:
-    description:
-    - A hostname, IPv4 or Ipv6 address. Required with I(state=['test'])
-    type: str
-  password:
-    description:
-    - Password for proxy server.
-    type: str
-  port:
-    description:
-    - Port to connect to the proxy server. In a 'get' call, indicates the port connected
-      to the proxy server. In a 'set' call, specifies the port to connect to the proxy
-      server. A value of -1 indicates the default port. Required with I(state=['set'])
-    type: int
-  protocol:
-    description:
-    - The protocol for which proxy should be set. This parameter is mandatory.
+    - ' - C(windows_config) (dict): Guest customization specification for a Windows
+      guest operating system ([''set''])'
+    - '   - Accepted keys:'
+    - '     - reboot (string): The C(reboot_option) specifies what should be done
+      to the guest after the customization.'
+    - 'Accepted value for this field:'
+    - '       - C(NO_REBOOT)'
+    - '       - C(REBOOT)'
+    - '       - C(SHUTDOWN)'
+    - '     - sysprep (object): Customization settings like user details, administrator
+      details, etc for the windows guest operating system. Exactly one of C(#sysprep)
+      or C(#sysprep_xml) must be specified.'
+    - '     - sysprep_xml (string): All settings specified in a XML format. This is
+      the content of a typical answer.xml file that is used by System administrators
+      during the Windows image customization. Check https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs
+      Exactly one of C(#sysprep) or C(#sysprep_xml) must be specified.'
+    - ' - C(linux_config) (dict): Guest customization specification for a linux guest
+      operating system ([''set''])'
+    - '   - Accepted keys:'
+    - '     - hostname (object): The computer name of the (Windows) virtual machine.
+      A computer name may contain letters (A-Z), numbers(0-9) and hyphens (-) but
+      no spaces or periods (.). The name may not consist entirely of digits. A computer
+      name is restricted to 15 characters in length. If the computer name is longer
+      than 15 characters, it will be truncated to 15 characters. Check {@link HostnameGenerator}
+      for various options.'
+    - '     - domain (string): The fully qualified domain name.'
+    - '     - time_zone (string): The case-sensitive time zone, such as Europe/Sofia.
+      Valid time zone values are based on the tz (time zone) database used by Linux.
+      The values are strings  in the form "Area/Location," in which Area is a continent
+      or ocean name, and Location is the city, island, or other regional designation.
+      See the https://kb.vmware.com/kb/2145518 for a list of supported time zones
+      for different versions in Linux.'
+    - '     - script_text (string): The script to run before and after Linux guest
+      customization.<br> The max size of the script is 1500 bytes. As long as the
+      script (shell, perl, python...) has the right "#!" in the header, it is supported.
+      The caller should not assume any environment variables when the script is run.
+      The script is invoked by the customization engine using the command line: 1)
+      with argument "precustomization" before customization, 2) with argument "postcustomization"
+      after customization. The script should parse this argument and implement pre-customization
+      or post-customization task code details in the corresponding block. A Linux
+      shell script example: <code> #!/bin/sh<br> if [ x$1 == x"precustomization" ];
+      then<br> echo "Do Precustomization tasks"<br> #code for pre-customization actions...<br>
+      elif [ x$1 == x"postcustomization" ]; then<br> echo "Do Postcustomization tasks"<br>
+      #code for post-customization actions...<br> fi<br> </code>'
     required: true
-    type: str
-  server:
+    type: dict
+  global_DNS_settings:
     description:
-    - URL of the proxy server Required with I(state=['set'])
-    type: str
+    - Global DNS settings constitute the DNS settings that are not specific to a particular
+      virtual network adapter. This parameter is mandatory.
+    - 'Valid attributes are:'
+    - ' - C(dns_suffix_list) (list): List of name resolution suffixes for the virtual
+      network adapter. This list applies to both Windows and Linux guest customization.
+      For Linux, this setting is global, whereas in Windows, this setting is listed
+      on a per-adapter basis. ([''set''])'
+    - ' - C(dns_servers) (list): List of DNS servers, for a virtual network adapter
+      with a static IP address. If this list is empty, then the guest operating system
+      is expected to use a DHCP server to get its DNS server settings. These settings
+      configure the virtual machine to use the specified DNS servers. These DNS server
+      settings are listed in the order of preference. ([''set''])'
+    required: true
+    type: dict
+  interfaces:
+    description:
+    - IP settings that are specific to a particular virtual network adapter. The {@link
+      AdapterMapping} {@term structure} maps a network adapter's MAC address to its
+      {@link IPSettings}. May be empty if there are no network adapters, else should
+      match number of network adapters configured for the VM. This parameter is mandatory.
+    - 'Valid attributes are:'
+    - ' - C(mac_address) (str): The MAC address of a network adapter being customized.
+      ([''set''])'
+    - ' - C(adapter) (dict): The IP settings for the associated virtual network adapter.
+      ([''set''])'
+    - '   This key is required with [''set''].'
+    - '   - Accepted keys:'
+    - '     - ipv4 (object): Specification to configure IPv4 address, subnet mask
+      and gateway info for this virtual network adapter.'
+    - '     - ipv6 (object): Specification to configure IPv6 address, subnet mask
+      and gateway info for this virtual network adapter.'
+    - '     - windows (object): Windows settings to be configured for this specific
+      virtual Network adapter. This is valid only for Windows guest operating systems.'
+    elements: dict
+    required: true
+    type: list
   session_timeout:
     description:
     - 'Timeout settings for client session. '
@@ -73,18 +116,6 @@ options:
     - The default value is 300s.
     type: float
     version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - set
-    - test
-    default: set
-    description: []
-    type: str
-  username:
-    description:
-    - Username for proxy server.
-    type: str
   vcenter_hostname:
     description:
     - The hostname or IP address of the vSphere vCenter
@@ -122,9 +153,15 @@ options:
     - If the value is not specified in the task, the value of environment variable
       C(VMWARE_VALIDATE_CERTS) will be used instead.
     type: bool
+  vm:
+    description:
+    - The unique identifier of the virtual machine that needs to be customized. This
+      parameter is mandatory.
+    required: true
+    type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 0.1.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -134,25 +171,12 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Set the HTTP proxy configuration
-  vmware.vmware_rest.appliance_networking_proxy:
-    enabled: true
-    server: http://datastore.test
-    port: 3128
-    protocol: http
-  register: result
-
-- name: Delete the HTTP proxy configuration
-  vmware.vmware_rest.appliance_networking_proxy:
-    protocol: http
-    state: absent
-  register: result
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Delete the HTTP proxy configuration
+# content generated by the update_return_section callback# task: Customize the VM
 value:
-  description: Delete the HTTP proxy configuration
+  description: Customize the VM
   returned: On success
   sample: {}
   type: dict
@@ -160,23 +184,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "test": {
-        "query": {},
-        "body": {"config": "config", "host": "host"},
-        "path": {"protocol": "protocol"},
-    },
     "set": {
         "query": {},
         "body": {
-            "enabled": "enabled",
-            "password": "password",
-            "port": "port",
-            "server": "server",
-            "username": "username",
+            "configuration_spec": "spec/configuration_spec",
+            "global_DNS_settings": "spec/global_DNS_settings",
+            "interfaces": "spec/interfaces",
         },
-        "path": {"protocol": "protocol"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
+        "path": {"vm": "vm"},
+    }
 }  # pylint: disable=line-too-long
 
 import json
@@ -240,19 +256,10 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["config"] = {"type": "dict"}
-    argument_spec["enabled"] = {"type": "bool"}
-    argument_spec["host"] = {"type": "str"}
-    argument_spec["password"] = {"no_log": True, "type": "str"}
-    argument_spec["port"] = {"type": "int"}
-    argument_spec["protocol"] = {"required": True, "type": "str"}
-    argument_spec["server"] = {"type": "str"}
-    argument_spec["state"] = {
-        "type": "str",
-        "choices": ["absent", "set", "test"],
-        "default": "set",
-    }
-    argument_spec["username"] = {"no_log": True, "type": "str"}
+    argument_spec["configuration_spec"] = {"required": True, "type": "dict"}
+    argument_spec["global_DNS_settings"] = {"required": True, "type": "dict"}
+    argument_spec["interfaces"] = {"required": True, "type": "list", "elements": "dict"}
+    argument_spec["vm"] = {"required": True, "type": "str"}
 
     return argument_spec
 
@@ -286,58 +293,28 @@ async def main():
 
 # template: default_module.j2
 def build_url(params):
-    return ("https://{vcenter_hostname}" "/api/appliance/networking/proxy").format(
-        **params
-    )
+    return (
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/guest/customization"
+    ).format(**params)
 
 
 async def entry_point(module, session):
 
-    if module.params["state"] == "present":
-        if "_create" in globals():
-            operation = "create"
-        else:
-            operation = "update"
-    elif module.params["state"] == "absent":
-        operation = "delete"
-    else:
-        operation = module.params["state"]
-
-    func = globals()["_" + operation]
+    func = globals()["_set"]
 
     return await func(module.params, session)
-
-
-async def _delete(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
-    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
-    subdevice_type = get_subdevice_type("/api/appliance/networking/proxy/{protocol}")
-    if subdevice_type and not params[subdevice_type]:
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = (
-        "https://{vcenter_hostname}" "/api/appliance/networking/proxy/{protocol}"
-    ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.delete(_url, json=payload, **session_timeout(params)) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        return await update_changed_flag(_json, resp.status, "delete")
 
 
 async def _set(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["set"]["query"].keys()
     payload = prepare_payload(params, PAYLOAD_FORMAT["set"])
-    subdevice_type = get_subdevice_type("/api/appliance/networking/proxy/{protocol}")
+    subdevice_type = get_subdevice_type("/api/vcenter/vm/{vm}/guest/customization")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
             params[subdevice_type] = _json["id"]
     _url = (
-        "https://{vcenter_hostname}" "/api/appliance/networking/proxy/{protocol}"
+        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/guest/customization"
     ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.get(_url, json=payload, **session_timeout(params)) as resp:
         before = await resp.json()
@@ -361,33 +338,6 @@ async def _set(params, session):
                 if before == after:
                     return await update_changed_flag(after, resp_get.status, "get")
         return await update_changed_flag(_json, resp.status, "set")
-
-
-async def _test(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["test"]["query"].keys()
-    payload = prepare_payload(params, PAYLOAD_FORMAT["test"])
-    subdevice_type = get_subdevice_type(
-        "/api/appliance/networking/proxy/{protocol}?action=test"
-    )
-    if subdevice_type and not params[subdevice_type]:
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = (
-        "https://{vcenter_hostname}"
-        # aa
-        "/api/appliance/networking/proxy/{protocol}?action=test"
-    ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        if "value" not in _json:  # 7.0.2
-            _json = {"value": _json}
-
-        return await update_changed_flag(_json, resp.status, "test")
 
 
 if __name__ == "__main__":

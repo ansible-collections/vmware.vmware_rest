@@ -186,14 +186,18 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Build a list of all the clusters
-  vmware.vmware_rest.vcenter_cluster_info:
-  register: all_the_clusters
-
-- name: Retrieve details about the first cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    cluster: '{{ all_the_clusters.value[0].cluster }}'
-  register: my_cluster_info
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
 
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
@@ -205,6 +209,15 @@ EXAMPLES = r"""
 - name: Set my_virtual_machine_folder
   set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+- name: Build a list of all the clusters
+  vmware.vmware_rest.vcenter_cluster_info:
+  register: all_the_clusters
+
+- name: Retrieve details about the first cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    cluster: '{{ all_the_clusters.value[0].cluster }}'
+  register: my_cluster_info
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -221,19 +234,6 @@ EXAMPLES = r"""
       hot_add_enabled: true
       size_MiB: 1024
   register: my_vm
-
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
 
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -269,37 +269,27 @@ value:
   returned: On success
   sample:
     error:
-      errors:
-      - category: SERVER
-        error:
-          error_type: UNABLE_TO_ALLOCATE_RESOURCE
-          messages:
-          - args:
-            - Insufficient disk space on datastore 'local'.
-            default_message: The operation failed due to Insufficient disk space on
-              datastore 'local'.
-            id: com.vmware.vdcs.util.unable_to_allocate_resource
-          - args: []
-            default_message: File system specific implementation of SetFileAttributes[file]
-              failed
-            id: vob.fssvec.SetFileAttributes.file.failed
+      errors: []
       information: []
       warnings: []
-    succeeded: 0
+    resource_id:
+      id: vm-1098
+      type: VirtualMachine
+    succeeded: 1
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
     "filter": {
         "query": {},

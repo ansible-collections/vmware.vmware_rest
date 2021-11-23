@@ -39,13 +39,13 @@ response
                {
                    "message": {
                        "args": [],
-                       "default_message": "DB state is Degraded",
+                       "default_message": "Unable to get DB health state",
                        "id": "desc"
                    },
-                   "severity": "WARNING"
+                   "severity": "ERROR"
                }
            ],
-           "status": "DEGRADED"
+           "status": " "
        }
    }
 
@@ -62,7 +62,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 The system load:
@@ -78,7 +78,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 The memory usage:
@@ -94,7 +94,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 The system status:
@@ -110,7 +110,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 The package manager:
@@ -126,7 +126,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 The storage system:
@@ -142,7 +142,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 The swap usage:
@@ -158,7 +158,7 @@ response
 
    {
        "changed": false,
-       "value": "gray"
+       "value": "green"
    }
 
 
@@ -182,6 +182,14 @@ response
    {
        "changed": false,
        "value": [
+           {
+               "category": "com.vmware.applmgmt.mon.cat.disk",
+               "description": "com.vmware.applmgmt.mon.descr.disk.read.rate.dm-1",
+               "id": "disk.read.rate.dm-1",
+               "instance": "dm-1",
+               "name": "com.vmware.applmgmt.mon.name.disk.read.rate.dm-1",
+               "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
+           },
            {
                "category": "com.vmware.applmgmt.mon.cat.disk",
                "description": "com.vmware.applmgmt.mon.descr.disk.read.rate.dm-10",
@@ -220,6 +228,14 @@ response
                "id": "disk.read.rate.dm-14",
                "instance": "dm-14",
                "name": "com.vmware.applmgmt.mon.name.disk.read.rate.dm-14",
+               "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.disk",
+               "description": "com.vmware.applmgmt.mon.descr.disk.read.rate.dm-15",
+               "id": "disk.read.rate.dm-15",
+               "instance": "dm-15",
+               "name": "com.vmware.applmgmt.mon.name.disk.read.rate.dm-15",
                "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
            },
            {
@@ -288,6 +304,14 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.disk",
+               "description": "com.vmware.applmgmt.mon.descr.disk.write.rate.dm-1",
+               "id": "disk.write.rate.dm-1",
+               "instance": "dm-1",
+               "name": "com.vmware.applmgmt.mon.name.disk.write.rate.dm-1",
+               "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.disk",
                "description": "com.vmware.applmgmt.mon.descr.disk.write.rate.dm-10",
                "id": "disk.write.rate.dm-10",
                "instance": "dm-10",
@@ -324,6 +348,14 @@ response
                "id": "disk.write.rate.dm-14",
                "instance": "dm-14",
                "name": "com.vmware.applmgmt.mon.name.disk.write.rate.dm-14",
+               "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.disk",
+               "description": "com.vmware.applmgmt.mon.descr.disk.write.rate.dm-15",
+               "id": "disk.write.rate.dm-15",
+               "instance": "dm-15",
+               "name": "com.vmware.applmgmt.mon.name.disk.write.rate.dm-15",
                "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
            },
            {
@@ -392,6 +424,14 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.disk",
+               "description": "com.vmware.applmgmt.mon.descr.disk.latency.rate.dm-1",
+               "id": "disk.latency.rate.dm-1",
+               "instance": "dm-1",
+               "name": "com.vmware.applmgmt.mon.name.disk.latency.rate.dm-1",
+               "units": "com.vmware.applmgmt.mon.unit.msec_per_io"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.disk",
                "description": "com.vmware.applmgmt.mon.descr.disk.latency.rate.dm-10",
                "id": "disk.latency.rate.dm-10",
                "instance": "dm-10",
@@ -428,6 +468,14 @@ response
                "id": "disk.latency.rate.dm-14",
                "instance": "dm-14",
                "name": "com.vmware.applmgmt.mon.name.disk.latency.rate.dm-14",
+               "units": "com.vmware.applmgmt.mon.unit.msec_per_io"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.disk",
+               "description": "com.vmware.applmgmt.mon.descr.disk.latency.rate.dm-15",
+               "id": "disk.latency.rate.dm-15",
+               "instance": "dm-15",
+               "name": "com.vmware.applmgmt.mon.name.disk.latency.rate.dm-15",
                "units": "com.vmware.applmgmt.mon.unit.msec_per_io"
            },
            {
@@ -527,14 +575,6 @@ response
                "units": "com.vmware.applmgmt.mon.unit.percent"
            },
            {
-               "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.util.filesystem.swap",
-               "id": "storage.util.filesystem.swap",
-               "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.util.filesystem.swap",
-               "units": "com.vmware.applmgmt.mon.unit.percent"
-           },
-           {
                "category": "com.vmware.applmgmt.mon.cat.cpu",
                "description": "com.vmware.applmgmt.mon.descr.cpu.totalfrequency",
                "id": "cpu.totalfrequency",
@@ -583,14 +623,6 @@ response
                "units": "com.vmware.applmgmt.mon.unit.errors_per_sample"
            },
            {
-               "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats",
-               "id": "storage.totalsize.directory.vcdb_hourly_stats",
-               "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats",
-               "units": "com.vmware.applmgmt.mon.unit.kb"
-           },
-           {
                "category": "com.vmware.applmgmt.mon.cat.network",
                "description": "com.vmware.applmgmt.mon.descr.net.rx.error.lo",
                "id": "net.rx.error.lo",
@@ -605,6 +637,14 @@ response
                "instance": "eth0",
                "name": "com.vmware.applmgmt.mon.name.net.tx.error.eth0",
                "units": "com.vmware.applmgmt.mon.unit.errors_per_sample"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats",
+               "id": "storage.totalsize.directory.vcdb_hourly_stats",
+               "instance": "",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats",
+               "units": "com.vmware.applmgmt.mon.unit.kb"
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.network",
@@ -904,6 +944,22 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.filesystem.lvm_snapshot",
+               "id": "storage.totalsize.filesystem.lvm_snapshot",
+               "instance": "/storage/lvm_snapshot",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.filesystem.lvm_snapshot",
+               "units": "com.vmware.applmgmt.mon.unit.kb"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.util.filesystem.lvm_snapshot",
+               "id": "storage.util.filesystem.lvm_snapshot",
+               "instance": "/storage/lvm_snapshot",
+               "name": "com.vmware.applmgmt.mon.name.storage.util.filesystem.lvm_snapshot",
+               "units": "com.vmware.applmgmt.mon.unit.percent"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
                "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.filesystem.netdump",
                "id": "storage.totalsize.filesystem.netdump",
                "instance": "/storage/netdump",
@@ -1032,6 +1088,14 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.used.filesystem.lvm_snapshot",
+               "id": "storage.used.filesystem.lvm_snapshot",
+               "instance": "/storage/lvm_snapshot",
+               "name": "com.vmware.applmgmt.mon.name.storage.used.filesystem.lvm_snapshot",
+               "units": "com.vmware.applmgmt.mon.unit.kb"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
                "description": "com.vmware.applmgmt.mon.descr.storage.used.filesystem.netdump",
                "id": "storage.used.filesystem.netdump",
                "instance": "/storage/netdump",
@@ -1096,14 +1160,6 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.disk",
-               "description": "com.vmware.applmgmt.mon.descr.disk.read.rate.dm-1",
-               "id": "disk.read.rate.dm-1",
-               "instance": "dm-1",
-               "name": "com.vmware.applmgmt.mon.name.disk.read.rate.dm-1",
-               "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
-           },
-           {
-               "category": "com.vmware.applmgmt.mon.cat.disk",
                "description": "com.vmware.applmgmt.mon.descr.disk.write.rate.dm-0",
                "id": "disk.write.rate.dm-0",
                "instance": "dm-0",
@@ -1112,26 +1168,10 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.disk",
-               "description": "com.vmware.applmgmt.mon.descr.disk.write.rate.dm-1",
-               "id": "disk.write.rate.dm-1",
-               "instance": "dm-1",
-               "name": "com.vmware.applmgmt.mon.name.disk.write.rate.dm-1",
-               "units": "com.vmware.applmgmt.mon.unit.num_of_io_per_msec"
-           },
-           {
-               "category": "com.vmware.applmgmt.mon.cat.disk",
                "description": "com.vmware.applmgmt.mon.descr.disk.latency.rate.dm-0",
                "id": "disk.latency.rate.dm-0",
                "instance": "dm-0",
                "name": "com.vmware.applmgmt.mon.name.disk.latency.rate.dm-0",
-               "units": "com.vmware.applmgmt.mon.unit.msec_per_io"
-           },
-           {
-               "category": "com.vmware.applmgmt.mon.cat.disk",
-               "description": "com.vmware.applmgmt.mon.descr.disk.latency.rate.dm-1",
-               "id": "disk.latency.rate.dm-1",
-               "instance": "dm-1",
-               "name": "com.vmware.applmgmt.mon.name.disk.latency.rate.dm-1",
                "units": "com.vmware.applmgmt.mon.unit.msec_per_io"
            },
            {
@@ -1229,6 +1269,14 @@ response
                "instance": "lo",
                "name": "com.vmware.applmgmt.mon.name.net.tx.drop.lo",
                "units": "com.vmware.applmgmt.mon.unit.drops_per_sample"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.util.filesystem.swap",
+               "id": "storage.util.filesystem.swap",
+               "instance": "",
+               "name": "com.vmware.applmgmt.mon.name.storage.util.filesystem.swap",
+               "units": "com.vmware.applmgmt.mon.unit.percent"
            }
        ]
    }

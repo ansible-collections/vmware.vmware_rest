@@ -164,6 +164,11 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {"sharing": "sharing"},
+        "path": {"adapter": "adapter", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -175,11 +180,6 @@ PAYLOAD_FORMAT = {
         "path": {"vm": "vm"},
     },
     "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {"sharing": "sharing"},
-        "path": {"adapter": "adapter", "vm": "vm"},
-    },
 }  # pylint: disable=line-too-long
 
 import json

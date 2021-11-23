@@ -150,9 +150,13 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "move": {
+    "create": {
         "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
+        "body": {
+            "create_parents": "create_parents",
+            "credentials": "credentials",
+            "path": "path",
+        },
         "path": {"vm": "vm"},
     },
     "create_temporary": {
@@ -165,13 +169,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "create": {
+    "move": {
         "query": {},
-        "body": {
-            "create_parents": "create_parents",
-            "credentials": "credentials",
-            "path": "path",
-        },
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
     "delete": {

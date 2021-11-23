@@ -165,14 +165,14 @@ response
        "value": {
            "allow_guest_control": false,
            "backing": {
-               "connection_cookie": 1965852165,
+               "connection_cookie": 300389405,
                "distributed_port": "2",
-               "distributed_switch_uuid": "50 12 72 6e e4 2a 31 e6-e2 f3 2e 2e 63 51 ab 7e",
-               "network": "dvportgroup-1054",
+               "distributed_switch_uuid": "50 34 7f b2 42 c0 b0 4d-f2 78 86 3c 81 eb 6f e3",
+               "network": "dvportgroup-1148",
                "type": "DISTRIBUTED_PORTGROUP"
            },
            "label": "Network adapter 1",
-           "mac_address": "00:50:56:92:42:5e",
+           "mac_address": "00:50:56:b4:3b:db",
            "mac_type": "ASSIGNED",
            "pci_slot_number": 4,
            "start_connected": false,

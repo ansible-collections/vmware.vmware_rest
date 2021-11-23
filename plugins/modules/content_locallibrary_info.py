@@ -79,6 +79,9 @@ EXAMPLES = r"""
 - name: Build a list of local libraries
   vmware.vmware_rest.content_locallibrary_info:
   register: result
+  retries: 100
+  delay: 3
+  until: result is not failed
 
 - name: Create a new local content library
   vmware.vmware_rest.content_locallibrary:
@@ -106,27 +109,27 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: 85921c7c-323c-4558-9b31-63c064cf4b4c
+  sample: 08d33076-3576-4b3d-8b72-f30401e7b8e1
   type: str
 value:
   description: Retrieve the local content library information based upon id check
     mode
   returned: On success
   sample:
-    creation_time: '2021-10-29T14:43:09.131Z'
+    creation_time: '2021-11-23T01:10:14.758Z'
     description: automated
-    id: 85921c7c-323c-4558-9b31-63c064cf4b4c
-    last_modified_time: '2021-10-29T14:43:09.131Z'
+    id: 08d33076-3576-4b3d-8b72-f30401e7b8e1
+    last_modified_time: '2021-11-23T01:10:14.758Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/85921c7c-323c-4558-9b31-63c064cf4b4c/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/08d33076-3576-4b3d-8b72-f30401e7b8e1/lib.json
       published: 1
       user_name: vcsp
-    server_guid: 51f0bcdc-b94e-4c97-9222-b25861f63230
+    server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
     storage_backings:
-    - datastore_id: datastore-1015
+    - datastore_id: datastore-1088
       type: DATASTORE
     type: LOCAL
     version: '2'

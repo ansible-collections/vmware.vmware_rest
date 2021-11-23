@@ -309,14 +309,18 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of all the clusters
-      vmware.vmware_rest.vcenter_cluster_info:
-      register: all_the_clusters
-
-    - name: Retrieve details about the first cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        cluster: '{{ all_the_clusters.value[0].cluster }}'
-      register: my_cluster_info
+    - name: Create a content library pointing on a NFS share
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_nfs
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - storage_uri: nfs://datastore.test/srv/share/content-library
+          type: OTHER
+        state: present
+      register: nfs_lib
 
     - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
       vmware.vmware_rest.vcenter_folder_info:
@@ -328,6 +332,15 @@ Examples
     - name: Set my_virtual_machine_folder
       set_fact:
         my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: all_the_clusters
+
+    - name: Retrieve details about the first cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: '{{ all_the_clusters.value[0].cluster }}'
+      register: my_cluster_info
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
@@ -344,19 +357,6 @@ Examples
           hot_add_enabled: true
           size_MiB: 1024
       register: my_vm
-
-    - name: Create a content library pointing on a NFS share
-      vmware.vmware_rest.content_locallibrary:
-        name: my_library_on_nfs
-        description: automated
-        publish_info:
-          published: true
-          authentication_method: NONE
-        storage_backings:
-        - storage_uri: nfs://datastore.test/srv/share/content-library
-          type: OTHER
-        state: present
-      register: nfs_lib
 
     - name: Export the VM as an OVF on the library
       vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -412,7 +412,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [{&#x27;category&#x27;: &#x27;SERVER&#x27;, &#x27;error&#x27;: {&#x27;error_type&#x27;: &#x27;UNABLE_TO_ALLOCATE_RESOURCE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [&quot;Insufficient disk space on datastore &#x27;local&#x27;.&quot;], &#x27;default_message&#x27;: &quot;The operation failed due to Insufficient disk space on datastore &#x27;local&#x27;.&quot;, &#x27;id&#x27;: &#x27;com.vmware.vdcs.util.unable_to_allocate_resource&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;File system specific implementation of SetFileAttributes[file] failed&#x27;, &#x27;id&#x27;: &#x27;vob.fssvec.SetFileAttributes.file.failed&#x27;}]}}], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;succeeded&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1098&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

@@ -119,7 +119,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[local] test_vm1/test_vm1.vmdk'
+      vmdk_file: '[local] test_vm1_1/test_vm1.vmdk'
     capacity: 17179869184
     label: Hard disk 1
     scsi:

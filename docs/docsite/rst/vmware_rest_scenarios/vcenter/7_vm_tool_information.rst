@@ -66,7 +66,7 @@ response
 ::
 
    {
-       "attempts": 7,
+       "attempts": 4,
        "changed": false,
        "value": {
            "/": {
@@ -105,7 +105,7 @@ response
                "id": "vmsg.guestos.fedora64Guest.label"
            },
            "host_name": "localhost.localdomain",
-           "ip_address": "192.168.122.92",
+           "ip_address": "192.168.122.163",
            "name": "FEDORA_64"
        }
    }
@@ -173,18 +173,18 @@ response
                "ip": {
                    "ip_addresses": [
                        {
-                           "ip_address": "192.168.122.92",
+                           "ip_address": "192.168.122.163",
                            "prefix_length": 24,
                            "state": "PREFERRED"
                        },
                        {
-                           "ip_address": "fe80::e928:5306:8633:bdb9",
+                           "ip_address": "fe80::4aff:446d:b9b3:b6c8",
                            "prefix_length": 64,
                            "state": "UNKNOWN"
                        }
                    ]
                },
-               "mac_address": "00:50:56:92:42:5e",
+               "mac_address": "00:50:56:b4:3b:db",
                "nic": "4000"
            }
        ]
@@ -229,7 +229,7 @@ response
            },
            {
                "interface_index": 0,
-               "network": "fe80::e928:5306:8633:bdb9",
+               "network": "fe80::4aff:446d:b9b3:b6c8",
                "prefix_length": 128
            },
            {

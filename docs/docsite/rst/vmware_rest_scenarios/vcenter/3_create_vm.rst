@@ -61,7 +61,7 @@ response
 
    {
        "changed": true,
-       "id": "vm-1055",
+       "id": "vm-1149",
        "value": {
            "boot": {
                "delay": 0,
@@ -101,8 +101,8 @@ response
                "version": "VMX_11"
            },
            "identity": {
-               "bios_uuid": "42124616-96de-8f95-993b-efb0e94636da",
-               "instance_uuid": "50124ffe-894a-4486-72eb-7161b668582d",
+               "bios_uuid": "4234c75d-5718-bd6c-561e-e88a98506420",
+               "instance_uuid": "503459f9-a88b-80af-f3e5-1fb82369116c",
                "name": "test_vm1"
            },
            "instant_clone_frozen": false,
