@@ -9,13 +9,6 @@
     force: true
   with_items: "{{ existing_datacenters.value }}"
   register: _result
-- debug: var=_result
-- assert:
-    that:
-      - _result is changed
-  when: existing_datacenters.value|length > 0
-- assert:
-    that:
-      - _result is skipped
-      - not(_result is changed)
-  when: existing_datacenters.value|length == 0
+  until:
+  - _result is not failed
+  retries: 7
