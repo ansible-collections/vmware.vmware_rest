@@ -23,3 +23,5 @@
     state: absent
     vm: '{{ item.vm }}'
   with_items: "{{ existing_vms.value }}"
+  when:
+    - not item.name.startswith("vCLS")
