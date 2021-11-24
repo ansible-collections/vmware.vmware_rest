@@ -82,7 +82,7 @@ RETURN = r"""
 value:
   description: Get the database storage heath status
   returned: On success
-  sample: gray
+  sample: green
   type: str
 """
 

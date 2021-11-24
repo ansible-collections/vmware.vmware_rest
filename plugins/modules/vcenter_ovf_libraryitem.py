@@ -269,37 +269,27 @@ value:
   returned: On success
   sample:
     error:
-      errors:
-      - category: SERVER
-        error:
-          error_type: UNABLE_TO_ALLOCATE_RESOURCE
-          messages:
-          - args:
-            - Insufficient disk space on datastore 'local'.
-            default_message: The operation failed due to Insufficient disk space on
-              datastore 'local'.
-            id: com.vmware.vdcs.util.unable_to_allocate_resource
-          - args: []
-            default_message: File system specific implementation of SetFileAttributes[file]
-              failed
-            id: vob.fssvec.SetFileAttributes.file.failed
+      errors: []
       information: []
       warnings: []
-    succeeded: 0
+    resource_id:
+      id: vm-1082
+      type: VirtualMachine
+    succeeded: 1
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
     "filter": {
         "query": {},

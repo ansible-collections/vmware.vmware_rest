@@ -139,22 +139,11 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-
 - name: Upgrade the VM hardware version
   vmware.vmware_rest.vcenter_vm_hardware:
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13
-    vm: '{{ test_vm1_info.id }}'
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/my_vm_from_ovf') }}"
 """
 
 RETURN = r"""
@@ -173,7 +162,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -182,6 +170,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

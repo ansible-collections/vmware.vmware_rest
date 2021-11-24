@@ -229,8 +229,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"port": "port", "vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -241,6 +239,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

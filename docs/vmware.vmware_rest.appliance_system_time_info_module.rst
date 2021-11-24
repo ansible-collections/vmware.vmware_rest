@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the current time</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Fri 10-29-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;02:48:07 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;date&#x27;: &#x27;Wed 11-24-2021&#x27;, &#x27;seconds_since_epoch&#x27;: None, &#x27;time&#x27;: &#x27;04:40:35 PM&#x27;, &#x27;timezone&#x27;: &#x27;UTC&#x27;}</div>
                 </td>
             </tr>
     </table>
