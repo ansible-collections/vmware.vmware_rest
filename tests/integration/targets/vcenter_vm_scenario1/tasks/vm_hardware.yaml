@@ -3,7 +3,7 @@
   vmware.vmware_rest.vcenter_vm_hardware:
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13
-    vm: '{{ test_vm1_info.id }}'
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/my_vm_from_ovf') }}"
   register: _result
 
 - debug: var=_result
@@ -15,7 +15,7 @@
   vmware.vmware_rest.vcenter_vm_hardware:
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_13
-    vm: '{{ test_vm1_info.id }}'
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/my_vm_from_ovf') }}"
   register: _result
 
 - debug: var=_result
