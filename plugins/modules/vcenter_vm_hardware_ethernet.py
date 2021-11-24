@@ -173,6 +173,12 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Retrieve details about the portgroup
+  community.vmware.vmware_dvs_portgroup_info:
+    validate_certs: no
+    datacenter: my_dc
+  register: my_portgroup_info
+
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -183,12 +189,6 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
-
-- name: Retrieve details about the portgroup
-  community.vmware.vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: my_portgroup_info
 
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -261,13 +261,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1516333575
+      connection_cookie: 1734330076
       distributed_port: '2'
-      distributed_switch_uuid: 50 12 86 73 74 99 eb b8-28 41 a4 44 d3 87 f4 3c
-      network: dvportgroup-1024
+      distributed_switch_uuid: 50 34 f2 59 c7 d6 36 de-28 b8 f8 84 d2 aa 15 a6
+      network: dvportgroup-1079
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:92:e7:08
+    mac_address: 00:50:56:b4:da:18
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -294,8 +294,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"nic": "nic", "vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -311,6 +309,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

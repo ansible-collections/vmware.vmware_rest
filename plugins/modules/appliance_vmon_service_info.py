@@ -230,7 +230,7 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: DEGRADED
       health_messages:
       - args: []
         default_message: health.statsReoptInitalizer.illegalStateEx
@@ -330,18 +330,13 @@ value:
   - key: vapi-endpoint
     value:
       description_key: cis.vapi-endpoint.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: HEALTHY
       health_messages:
       - args:
-        - d51c4a13-ebfa-44ca-a3a6-8fe7b8dd947f\com.vmware.cis.ds
-        default_message: Failed to connect to d51c4a13-ebfa-44ca-a3a6-8fe7b8dd947f\com.vmware.cis.ds
-          vAPI provider.
-        id: com.vmware.vapi.endpoint.failedToConnectToVApiProvider
-      - args:
-        - 2021-10-29T14:47:49UTC
-        - 2021-10-29T14:47:50UTC
-        default_message: Configuration health status is created between 2021-10-29T14:47:49UTC
-          and 2021-10-29T14:47:50UTC.
+        - 2021-11-24T16:36:23UTC
+        - 2021-11-24T16:36:24UTC
+        default_message: Configuration health status is created between 2021-11-24T16:36:23UTC
+          and 2021-11-24T16:36:24UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC

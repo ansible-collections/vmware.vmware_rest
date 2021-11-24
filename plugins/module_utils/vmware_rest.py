@@ -207,6 +207,12 @@ async def update_changed_flag(data, status, operation):
     elif data.get("type") == "com.vmware.vapi.std.errors.already_exists":
         data["failed"] = False
         data["changed"] = False
+    elif (
+        data.get("value", {}).get("error_type") in ["NOT_FOUND"]
+        and operation == "delete"
+    ):
+        data["failed"] = False
+        data["changed"] = False
     elif data.get("value", {}).get("error_type") in [
         "ALREADY_EXISTS",
         "ALREADY_IN_DESIRED_STATE",
@@ -344,7 +350,7 @@ def get_subdevice_type(url):
             candidates.append(i[1:-1])
     if len(candidates) != 2:
         return
-    return candidates[-1]
+    return candidates[-1].split("}")[0]
 
 
 def get_device_type(url):

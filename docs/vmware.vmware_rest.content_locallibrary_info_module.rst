@@ -184,6 +184,9 @@ Examples
     - name: Build a list of local libraries
       vmware.vmware_rest.content_locallibrary_info:
       register: result
+      retries: 100
+      delay: 3
+      until: result is not failed
 
     - name: Create a new local content library
       vmware.vmware_rest.content_locallibrary:
@@ -222,35 +225,18 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">85921c7c-323c-4558-9b31-63c064cf4b4c</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
+                      <span style="color: purple">list</span>
                     </div>
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Retrieve the local content library information based upon id check mode</div>
+                            <div>Build a list of local libraries</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-10-29T14:43:09.131Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;85921c7c-323c-4558-9b31-63c064cf4b4c&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-10-29T14:43:09.131Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/85921c7c-323c-4558-9b31-63c064cf4b4c/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;51f0bcdc-b94e-4c97-9222-b25861f63230&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1015&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;creation_time&#x27;: &#x27;2021-11-24T15:32:55.368Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;bec4a103-c1fb-4b37-ae06-508aa926f8e5&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-11-24T15:32:55.368Z&#x27;, &#x27;name&#x27;: &#x27;my_library_on_nfs&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/bec4a103-c1fb-4b37-ae06-508aa926f8e5/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;9c3796d0-2679-4dc6-981c-88a39df81474&#x27;, &#x27;storage_backings&#x27;: [{&#x27;storage_uri&#x27;: &#x27;nfs://datastore.test/srv/share/content-library&#x27;, &#x27;type&#x27;: &#x27;OTHER&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}, {&#x27;creation_time&#x27;: &#x27;2021-11-24T15:33:32.774Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;367a2af5-e1ff-4ee2-94d3-93fa0d9d038a&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-11-24T15:33:32.774Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/367a2af5-e1ff-4ee2-94d3-93fa0d9d038a/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;9c3796d0-2679-4dc6-981c-88a39df81474&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1044&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}]</div>
                 </td>
             </tr>
     </table>

@@ -528,11 +528,16 @@ releases:
   2.1.1:
     changes:
       bugfixes:
+      - Address a condition where the subkey item was not properly identified (https://github.com/ansible-collections/vmware_rest_code_generator/pull/181).
+      - vcenter_datacenter - Ensure pass stat=absent on a non-existing item won't
+        raise an error (https://github.com/ansible-collections/vmware_rest_code_generator/pull/182).
+      - vcenter_vm_guest_customize - Add examples.
       - vcenter_vm_hardware_ethernet - Ensure we can attach a NIC to another network
         (https://github.com/ansible-collections/vmware.vmware_rest/issues/267).
       minor_changes:
       - '``content_subscribedlibrary`` - use FQCN in the example.'
     fragments:
+    - 2.1.1.yaml
     - use-FQCN-in-create_vm.yaml.yaml
     - vcenter_vm_hardware_ethernet_idempotency.yaml
     release_date: '2021-10-29'

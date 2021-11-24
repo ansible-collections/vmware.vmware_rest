@@ -157,6 +157,11 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {
+        "query": {},
+        "body": {"credentials": "credentials"},
+        "path": {"pid": "pid", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -167,11 +172,6 @@ PAYLOAD_FORMAT = {
             "working_directory": "spec/working_directory",
         },
         "path": {"vm": "vm"},
-    },
-    "delete": {
-        "query": {},
-        "body": {"credentials": "credentials"},
-        "path": {"pid": "pid", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 

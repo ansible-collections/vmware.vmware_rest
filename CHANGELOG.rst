@@ -16,6 +16,9 @@ Minor Changes
 Bugfixes
 --------
 
+- Address a condition where the subkey item was not properly identified (https://github.com/ansible-collections/vmware_rest_code_generator/pull/181).
+- vcenter_datacenter - Ensure pass stat=absent on a non-existing item won't raise an error (https://github.com/ansible-collections/vmware_rest_code_generator/pull/182).
+- vcenter_vm_guest_customize - Add examples.
 - vcenter_vm_hardware_ethernet - Ensure we can attach a NIC to another network (https://github.com/ansible-collections/vmware.vmware_rest/issues/267).
 
 v2.1.0

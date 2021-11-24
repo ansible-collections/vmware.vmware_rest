@@ -299,7 +299,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Build a list of all the folders with the type VIRTUAL_MACHINE and called vm</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1002&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;folder&#x27;: &#x27;group-v1057&#x27;, &#x27;name&#x27;: &#x27;vm&#x27;, &#x27;type&#x27;: &#x27;VIRTUAL_MACHINE&#x27;}]</div>
                 </td>
             </tr>
     </table>

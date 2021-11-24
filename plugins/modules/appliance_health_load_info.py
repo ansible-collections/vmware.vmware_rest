@@ -82,7 +82,7 @@ RETURN = r"""
 value:
   description: Get the system load status
   returned: On success
-  sample: gray
+  sample: green
   type: str
 """
 

@@ -100,14 +100,14 @@ value:
   sample:
     lv_root_0:
       new_size: 104312832
-      old_size: 93048832
+      old_size: 53985280
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "resize_ex": {"query": {}, "body": {}, "path": {}},
     "resize": {"query": {}, "body": {}, "path": {}},
+    "resize_ex": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

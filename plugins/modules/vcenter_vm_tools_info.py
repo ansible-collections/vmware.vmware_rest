@@ -76,6 +76,44 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+        \ }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+        \ }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    disks:
+    - type: SATA
+      backing:
+        type: VMDK_FILE
+        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+    nics:
+    - backing:
+        type: STANDARD_PORTGROUP
+        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+          \ Network') }}"
+
+  register: my_vm
+
+- name: Wait until my VM is ready
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state == "RUNNING"
+  retries: 60
+  delay: 5
 """
 
 RETURN = r"""
@@ -86,12 +124,12 @@ value:
   sample:
     auto_update_supported: 0
     install_attempt_count: 0
-    install_type: OPEN_VM_TOOLS
+    install_type: UNKNOWN
     run_state: RUNNING
     upgrade_policy: MANUAL
-    version: '10346'
-    version_number: 10346
-    version_status: UNMANAGED
+    version: '0'
+    version_number: 0
+    version_status: NOT_INSTALLED
   type: dict
 """
 

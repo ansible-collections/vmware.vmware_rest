@@ -144,16 +144,18 @@ value:
   returned: On success
   sample:
   - cached: 0
-    content_version: '1'
-    creation_time: '2021-10-29T14:43:12.221Z'
+    content_version: '2'
+    creation_time: '2021-11-24T16:31:55.546Z'
     description: an OVF example
-    id: 39f9e3da-11cb-4b10-9439-07fe7f8765dd
-    last_modified_time: '2021-10-29T14:43:12.221Z'
-    library_id: 77d1d28a-af4a-4075-9cc6-52780789bb4c
+    id: 112d74d5-3ca8-414c-9544-da44c030059e
+    last_modified_time: '2021-11-24T16:31:55.964Z'
+    last_sync_time: '2021-11-24T16:31:55.962Z'
+    library_id: 9bc7ccd9-a04a-4600-a89e-faa22434e1ce
     metadata_version: '1'
     name: my_vm
+    security_compliance: 1
     size: 0
-    source_id: cf194ed9-c3af-4255-8f7d-a21d6a6e00e5
+    source_id: 7db2b7fa-6c7c-420e-9458-63f9c11f93d3
     type: ovf
     version: '1'
   type: list

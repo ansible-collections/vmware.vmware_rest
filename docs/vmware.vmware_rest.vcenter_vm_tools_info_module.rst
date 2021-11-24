@@ -176,6 +176,49 @@ Notes
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        name: test_vm1
+        guest_OS: RHEL_7_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+        disks:
+        - type: SATA
+          backing:
+            type: VMDK_FILE
+            vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+        nics:
+        - backing:
+            type: STANDARD_PORTGROUP
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+              \ Network') }}"
+
+      register: my_vm
+
+    - name: Wait until my VM is ready
+      vmware.vmware_rest.vcenter_vm_tools_info:
+        vm: '{{ my_vm.id }}'
+      register: vm_tools_info
+      until:
+      - vm_tools_info is not failed
+      - vm_tools_info.value.run_state == "RUNNING"
+      retries: 60
+      delay: 5
 
 
 
@@ -205,7 +248,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Wait until my VM is ready</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;auto_update_supported&#x27;: 0, &#x27;install_attempt_count&#x27;: 0, &#x27;install_type&#x27;: &#x27;OPEN_VM_TOOLS&#x27;, &#x27;run_state&#x27;: &#x27;RUNNING&#x27;, &#x27;upgrade_policy&#x27;: &#x27;MANUAL&#x27;, &#x27;version&#x27;: &#x27;10346&#x27;, &#x27;version_number&#x27;: 10346, &#x27;version_status&#x27;: &#x27;UNMANAGED&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;auto_update_supported&#x27;: 0, &#x27;install_attempt_count&#x27;: 0, &#x27;install_type&#x27;: &#x27;UNKNOWN&#x27;, &#x27;run_state&#x27;: &#x27;RUNNING&#x27;, &#x27;upgrade_policy&#x27;: &#x27;MANUAL&#x27;, &#x27;version&#x27;: &#x27;0&#x27;, &#x27;version_number&#x27;: 0, &#x27;version_status&#x27;: &#x27;NOT_INSTALLED&#x27;}</div>
                 </td>
             </tr>
     </table>

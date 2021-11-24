@@ -332,6 +332,45 @@ Examples
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
 
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        name: test_vm1
+        guest_OS: RHEL_7_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+        disks:
+        - type: SATA
+          backing:
+            type: VMDK_FILE
+            vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+        nics:
+        - backing:
+            type: STANDARD_PORTGROUP
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+              \ Network') }}"
+
+      register: my_vm
+
+    - name: Wait until my VM is off
+      vmware.vmware_rest.vcenter_vm_info:
+        vm: '{{ my_vm.id }}'
+      register: vm_info
+      until:
+      - vm_info is not failed
+      - vm_info.value.power_state == "POWERED_OFF"
+      retries: 60
+      delay: 5
+
 
 
 Return Values
@@ -360,7 +399,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">vm-1025</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">vm-1108</div>
                 </td>
             </tr>
             <tr>
@@ -374,10 +413,10 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Collect information about a specific VM</div>
+                            <div>Wait until my VM is off</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;2000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[local] test_vm1/test_vm1.vmdk&#x27;}, &#x27;capacity&#x27;: 17179869184, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SCSI&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;DEBIAN_8_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;421274a8-f917-0bf6-8041-ca9094780cb4&#x27;, &#x27;instance_uuid&#x27;: &#x27;5012fa38-e721-3377-721d-aa76903024a0&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {}, &#x27;scsi_adapters&#x27;: {&#x27;1000&#x27;: {&#x27;label&#x27;: &#x27;SCSI controller 0&#x27;, &#x27;scsi&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 7}, &#x27;sharing&#x27;: &#x27;NONE&#x27;, &#x27;type&#x27;: &#x27;PVSCSI&#x27;}}, &#x27;serial_ports&#x27;: {}}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;boot&#x27;: {&#x27;delay&#x27;: 0, &#x27;enter_setup_mode&#x27;: 0, &#x27;retry&#x27;: 0, &#x27;retry_delay&#x27;: 10000, &#x27;type&#x27;: &#x27;BIOS&#x27;}, &#x27;boot_devices&#x27;: [], &#x27;cdroms&#x27;: {}, &#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}, &#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;backing&#x27;: {&#x27;type&#x27;: &#x27;VMDK_FILE&#x27;, &#x27;vmdk_file&#x27;: &#x27;[local] test_vm1/rhel-8.5.vmdk&#x27;}, &#x27;capacity&#x27;: 16106127360, &#x27;label&#x27;: &#x27;Hard disk 1&#x27;, &#x27;sata&#x27;: {&#x27;bus&#x27;: 0, &#x27;unit&#x27;: 0}, &#x27;type&#x27;: &#x27;SATA&#x27;}}, &#x27;floppies&#x27;: {}, &#x27;guest_OS&#x27;: &#x27;RHEL_7_64&#x27;, &#x27;hardware&#x27;: {&#x27;upgrade_policy&#x27;: &#x27;NEVER&#x27;, &#x27;upgrade_status&#x27;: &#x27;NONE&#x27;, &#x27;version&#x27;: &#x27;VMX_11&#x27;}, &#x27;identity&#x27;: {&#x27;bios_uuid&#x27;: &#x27;4234f2d5-861f-878b-0534-db76835bf6ff&#x27;, &#x27;instance_uuid&#x27;: &#x27;5034a33e-7119-9b01-6010-34220726fb52&#x27;, &#x27;name&#x27;: &#x27;test_vm1&#x27;}, &#x27;instant_clone_frozen&#x27;: 0, &#x27;memory&#x27;: {&#x27;hot_add_enabled&#x27;: 1, &#x27;size_MiB&#x27;: 1024}, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;nics&#x27;: {&#x27;4000&#x27;: {&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;network&#x27;: &#x27;network-1101&#x27;, &#x27;network_name&#x27;: &#x27;VM Network&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:b4:30:eb&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 160, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}}, &#x27;nvme_adapters&#x27;: {}, &#x27;parallel_ports&#x27;: {}, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;sata_adapters&#x27;: {&#x27;15000&#x27;: {&#x27;bus&#x27;: 0, &#x27;label&#x27;: &#x27;SATA controller 0&#x27;, &#x27;pci_slot_number&#x27;: 32, &#x27;type&#x27;: &#x27;AHCI&#x27;}}, &#x27;scsi_adapters&#x27;: {}, &#x27;serial_ports&#x27;: {}}</div>
                 </td>
             </tr>
     </table>
