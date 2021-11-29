@@ -1,7 +1,7 @@
 - name: Get a list of all the datacenters
   register: existing_datacenters
   vmware.vmware_rest.vcenter_datacenter_info:
-- debug: var=existing_datacenters
+- ansible.builtin.debug: var=existing_datacenters
 - name: Force delete the existing DC
   vmware.vmware_rest.vcenter_datacenter:
     state: absent

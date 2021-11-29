@@ -2,7 +2,7 @@
   vmware.vmware_rest.appliance_networking_dns_domains_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Update the domain configuration
   vmware.vmware_rest.appliance_networking_dns_domains:
@@ -10,7 +10,7 @@
       - foobar
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: _Update the domain configuration (again)
   vmware.vmware_rest.appliance_networking_dns_domains:
@@ -18,9 +18,9 @@
       - foobar
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 - name: Validate the idempotency
-  assert:
+  ansible.builtin.assert:
     that:
       - not (result.changed)
 

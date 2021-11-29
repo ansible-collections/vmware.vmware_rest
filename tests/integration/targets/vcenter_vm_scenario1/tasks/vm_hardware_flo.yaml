@@ -4,7 +4,7 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: Add a floppy disk drive
   vmware.vmware_rest.vcenter_vm_hardware_floppy:
@@ -12,9 +12,9 @@
     allow_guest_control: true
   register: my_floppy_drive
 
-- debug: var=my_floppy_drive
+- ansible.builtin.debug: var=my_floppy_drive
 
-- assert:
+- ansible.builtin.assert:
     that: my_floppy_drive is changed
 
 - name: Remove a floppy drive
@@ -24,7 +24,7 @@
     state: absent
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that: _result is changed

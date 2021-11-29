@@ -4,7 +4,7 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: Retrieve disk information using the label
   vmware.vmware_rest.vcenter_vm_hardware_disk_info:
@@ -12,7 +12,7 @@
     label: "Hard disk 1"
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
     vm: '{{ test_vm1_info.id }}'
@@ -26,9 +26,9 @@
       capacity: 320000
   register: my_new_disk
 
-- debug: var=my_new_disk
+- ansible.builtin.debug: var=my_new_disk
 
-- assert:
+- ansible.builtin.assert:
     that: my_new_disk is changed
 
 - name: Get VM storage policy
@@ -36,23 +36,23 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: List existing storage policies
   vmware.vmware_rest.vcenter_storage_policies_info:
   register: storage_policies
 
-- debug: var=storage_policies
+- ansible.builtin.debug: var=storage_policies
 
 - name: Look up the VM Encryption Policy
-  set_fact:
+  ansible.builtin.set_fact:
     my_storage_policy: "{{ (storage_policies.value |  selectattr('name', 'equalto', 'VVol No Requirements Policy') | list | first) }}"
-- debug: var=my_storage_policy
+- ansible.builtin.debug: var=my_storage_policy
 
 - name: Prepare the disk policy dict
-  set_fact:
+  ansible.builtin.set_fact:
     vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
-- debug: var=vm_disk_policy
+- ansible.builtin.debug: var=vm_disk_policy
 
 - name: Adjust VM storage policy
   vmware.vmware_rest.vcenter_vm_storage_policy:
@@ -62,9 +62,9 @@
     disks: '{{ vm_disk_policy }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result is changed
 
@@ -77,9 +77,9 @@
 
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)
   ignore_errors: true
@@ -90,7 +90,7 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: Delete the disk
   vmware.vmware_rest.vcenter_vm_hardware_disk:
@@ -99,9 +99,9 @@
     state: absent
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that: _result is changed
 
 - name: Remove SATA adapter at PCI slot 34

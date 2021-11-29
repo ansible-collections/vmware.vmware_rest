@@ -6,8 +6,8 @@
     vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/my_vm_from_ovf') }}"
   register: _result
 
-- debug: var=_result
-- assert:
+- ansible.builtin.debug: var=_result
+- ansible.builtin.assert:
     that:
       - _result is changed
 
@@ -18,8 +18,8 @@
     vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/my_vm_from_ovf') }}"
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)

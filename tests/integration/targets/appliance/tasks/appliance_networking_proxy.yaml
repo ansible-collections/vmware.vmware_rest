@@ -1,7 +1,7 @@
 - name: Get the HTTP proxy configuration
   vmware.vmware_rest.appliance_networking_proxy_info:
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Set the HTTP proxy configuration
   vmware.vmware_rest.appliance_networking_proxy:
@@ -10,7 +10,7 @@
     port: 3128
     protocol: http
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 
 - name: _Set the HTTP proxy configuration (again)
@@ -21,19 +21,19 @@
     protocol: http
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Delete the HTTP proxy configuration
   vmware.vmware_rest.appliance_networking_proxy:
     protocol: http
     state: absent
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get HTTP noproxy configuration
   vmware.vmware_rest.appliance_networking_noproxy_info:
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Set HTTP noproxy configuration
   vmware.vmware_rest.appliance_networking_noproxy:
@@ -41,7 +41,7 @@
       - redhat.com
       - ansible.com
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: _Set HTTP noproxy configuration (again)
   vmware.vmware_rest.appliance_networking_noproxy:
@@ -49,15 +49,15 @@
       - redhat.com
       - ansible.com
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Remove the noproxy entries
   vmware.vmware_rest.appliance_networking_noproxy:
     servers: []
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get HTTP noproxy configuration
   vmware.vmware_rest.appliance_networking_noproxy_info:
   register: result
-- debug: var=resul
+- ansible.builtin.debug: var=resul

@@ -2,11 +2,11 @@
   vmware.vmware_rest.appliance_system_globalfips_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: "Turn off the FIPS mode and reboot"
   vmware.vmware_rest.appliance_system_globalfips:
     enabled: false
   register: result
 
-- debug: var=result 
+- ansible.builtin.debug: var=result

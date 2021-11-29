@@ -96,8 +96,8 @@
     resource_pool: "{{ my_resource_pool.id }}"
   register: my_resource_pool
 
-- debug: var=my_resource_pool
-- assert:
+- ansible.builtin.debug: var=my_resource_pool
+- ansible.builtin.assert:
     that:
       - my_resource_pool.value.memory_allocation.limit == 1000
 

@@ -7,12 +7,12 @@
     cluster: "{{ all_the_clusters.value[0].cluster }}"
   register: my_cluster_info
 
-- debug: var=my_cluster_info
+- ansible.builtin.debug: var=my_cluster_info
 
 - name: Build a list of all the folders
   vmware.vmware_rest.vcenter_folder_info:
   register: my_folders
-- debug: var=my_folders
+- ansible.builtin.debug: var=my_folders
 
 - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
   vmware.vmware_rest.vcenter_folder_info:
@@ -22,5 +22,5 @@
   register: my_folders
 
 - name: Set my_virtual_machine_folder
-  set_fact:
+  ansible.builtin.set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'

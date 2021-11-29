@@ -4,7 +4,7 @@
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
   register: _sata_adapter_result_1
-- debug: var=_sata_adapter_result_1
+- ansible.builtin.debug: var=_sata_adapter_result_1
 
 - name: _Create a SATA adapter at PCI slot 34 (again)
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
@@ -12,10 +12,10 @@
     pci_slot_number: 34
   register: _sata_adapter_result_2
 
-- debug: var=_sata_adapter_result_2
+- ansible.builtin.debug: var=_sata_adapter_result_2
 
 - name: Ensure the second call was idempotent
-  assert:
+  ansible.builtin.assert:
     that:
       - _sata_adapter_result_1.value.pci_slot_number == _sata_adapter_result_2.value.pci_slot_number
       - _sata_adapter_result_1.id == _sata_adapter_result_2.id
@@ -25,16 +25,16 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: Create a SCSI adapter at PCI slot 35
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 35
   register: _scsi_adapter_result_1
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- debug: var=_scsi_adapter_result_1
+- ansible.builtin.debug: var=_scsi_adapter_result_1
 
 - name: _Create a SCSI adapter at PCI slot 35 (again)
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
@@ -42,10 +42,10 @@
     pci_slot_number: 35
   register: _scsi_adapter_result_2
 
-- debug: var=_scsi_adapter_result_2
+- ansible.builtin.debug: var=_scsi_adapter_result_2
 
 - name: Ensure the second call was idempotent
-  assert:
+  ansible.builtin.assert:
     that:
       - _scsi_adapter_result_1.value.pci_slot_number == _scsi_adapter_result_2.value.pci_slot_number
       - _scsi_adapter_result_1.id == _scsi_adapter_result_2.id
@@ -57,4 +57,4 @@
     state: absent
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result

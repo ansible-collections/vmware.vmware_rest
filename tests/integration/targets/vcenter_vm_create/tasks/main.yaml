@@ -4,7 +4,8 @@
 - name: Fetch the root disk
   ansible.builtin.get_url:
     url: "https://s3.us-east-2.amazonaws.com/ansible-team-cloud-images/{{ disk_name }}.vmdk-4"
-    dest: .
+    dest: "./{{ disk_name }}.vmdk-4"
+    checksum: sha256:e28616764ae9eb7e302f4642cace10f1596d8c7c254e2b9c4038c4cd726262ff
 
 - name: Copy the disk on the ESXi local datastore
   ansible.builtin.copy:

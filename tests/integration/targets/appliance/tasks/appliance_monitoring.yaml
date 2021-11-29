@@ -3,7 +3,7 @@
   vmware.vmware_rest.appliance_monitoring_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Query the monitoring backend
   vmware.vmware_rest.appliance_monitoring_query:
@@ -15,4 +15,4 @@
     function: AVG
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
