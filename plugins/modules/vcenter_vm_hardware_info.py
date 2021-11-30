@@ -96,7 +96,7 @@ value:
   sample:
     upgrade_policy: NEVER
     upgrade_status: NONE
-    version: VMX_11
+    version: VMX_10
   type: dict
 """
 

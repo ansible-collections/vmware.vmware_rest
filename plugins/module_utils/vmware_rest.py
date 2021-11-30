@@ -237,6 +237,9 @@ async def update_changed_flag(data, status, operation):
         data["changed"] = False
     elif data.get("type", "").startswith("com.vmware.vapi.std.errors"):
         data["failed"] = True
+    # 7.0.3, vcenter_ovf_libraryitem returns status 200 on failure
+    elif data.get("value", {}).get("error", {}).get("errors", []):
+        data["failed"] = True
 
     return data
 

@@ -231,6 +231,10 @@ Examples
           backing:
             type: VMDK_FILE
             vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+        - type: SATA
+          new_vmdk:
+            name: second_disk
+            capacity: 32000000000
         nics:
         - backing:
             type: STANDARD_PORTGROUP

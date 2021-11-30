@@ -114,7 +114,7 @@ value:
   description: collect a list of the datacenters
   returned: On success
   sample:
-  - datacenter: datacenter-1056
+  - datacenter: datacenter-1264
     name: my_dc
   type: list
 """

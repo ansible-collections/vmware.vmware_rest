@@ -80,61 +80,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
-
-- name: Get the list of items of the NFS library
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ nfs_lib.id }}'
-  register: result
-
-- name: Create a new local content library
-  vmware.vmware_rest.content_locallibrary:
-    name: local_library_001
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      type: DATASTORE
-    state: present
-  register: ds_lib
-
-- name: Get the (empty) list of items of the library
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ ds_lib.id }}'
-  register: result
-
-- name: Create subscribed library
-  vmware.vmware_rest.content_subscribedlibrary:
-    name: sub_lib
-    subscription_info:
-      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
-      authentication_method: NONE
-      automatic_sync_enabled: false
-      on_demand: true
-    storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      type: DATASTORE
-  register: sub_lib
-
-- name: Ensure the OVF is here
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ sub_lib.id }}'
-  register: result
 """
 
 RETURN = r"""
@@ -145,17 +90,17 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2021-11-24T16:31:55.546Z'
+    creation_time: '2021-11-30T18:47:27.736Z'
     description: an OVF example
-    id: 112d74d5-3ca8-414c-9544-da44c030059e
-    last_modified_time: '2021-11-24T16:31:55.964Z'
-    last_sync_time: '2021-11-24T16:31:55.962Z'
-    library_id: 9bc7ccd9-a04a-4600-a89e-faa22434e1ce
+    id: 2c8b5acc-641b-4e7a-ab7d-fd2929b21985
+    last_modified_time: '2021-11-30T18:47:27.909Z'
+    last_sync_time: '2021-11-30T18:47:27.908Z'
+    library_id: e13f41b4-6674-4df5-9360-0f2509728107
     metadata_version: '1'
     name: my_vm
     security_compliance: 1
     size: 0
-    source_id: 7db2b7fa-6c7c-420e-9458-63f9c11f93d3
+    source_id: aea99213-ec88-4b79-8778-091683ac2a7b
     type: ovf
     version: '1'
   type: list

@@ -541,3 +541,13 @@ releases:
     - use-FQCN-in-create_vm.yaml.yaml
     - vcenter_vm_hardware_ethernet_idempotency.yaml
     release_date: '2021-10-29'
+  2.1.2:
+    changes:
+      bugfixes:
+      - vcenter_ovf_libraryitem - properly catch errors.
+      minor_changes:
+      - The examples uses the FQCN of the built-in modules
+    fragments:
+    - 2.1.2-vcenter_ovf_libraryitem.yaml
+    - 2.1.2.yaml
+    release_date: '2021-11-30'

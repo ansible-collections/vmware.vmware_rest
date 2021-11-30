@@ -172,17 +172,17 @@ Examples
 
     # lookup sample
     - name: set connection info
-      set_fact:
+      ansible.builtin.set_fact:
         connection_args:
             vcenter_hostname: "vcenter.test"
             vcenter_username: "administrator@vsphere.local"
             vcenter_password: "1234"
 
     - name: lookup MoID of the object
-      debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc', **connection_args) }}"
+      ansible.builtin.debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc', **connection_args) }}"
 
     - name: lookup MoID of the object inside the path
-      debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_folder/') }}"
+      ansible.builtin.debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_folder/') }}"
 
 
 

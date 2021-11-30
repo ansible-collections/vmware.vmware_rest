@@ -142,6 +142,10 @@ EXAMPLES = r"""
       backing:
         type: VMDK_FILE
         vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+    - type: SATA
+      new_vmdk:
+        name: second_disk
+        capacity: 32000000000
     nics:
     - backing:
         type: STANDARD_PORTGROUP
@@ -169,10 +173,10 @@ results:
   sample:
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 128
-      name: vCLS-ba88058d-f561-4391-b07b-8dccadfd94bd
+      memory_size_MiB: 1024
+      name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1051
+      vm: vm-1262
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -186,13 +190,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1051
+        vm: vm-1262
     item:
       cpu_count: 1
-      memory_size_MiB: 128
-      name: vCLS-ba88058d-f561-4391-b07b-8dccadfd94bd
+      memory_size_MiB: 1024
+      name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1051
+      vm: vm-1262
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -205,10 +209,10 @@ results:
         id: vmsg.InvalidPowerState.summary
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1052
+      memory_size_MiB: 128
+      name: vCLS-82e00af7-c281-4586-8e0c-71e696439f49
+      power_state: POWERED_OFF
+      vm: vm-1263
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -222,40 +226,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1052
+        vm: vm-1263
     item:
       cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1052
-    value: {}
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
+      memory_size_MiB: 128
+      name: vCLS-82e00af7-c281-4586-8e0c-71e696439f49
       power_state: POWERED_OFF
-      vm: vm-1053
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 0
-    failed: 0
-    invocation:
-      module_args:
-        session_timeout: null
-        state: stop
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1053
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1053
+      vm: vm-1263
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -272,9 +249,9 @@ results:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

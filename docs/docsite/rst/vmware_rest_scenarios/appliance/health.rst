@@ -39,13 +39,13 @@ response
                {
                    "message": {
                        "args": [],
-                       "default_message": "Unable to get DB health state",
+                       "default_message": "DB state is Unhealthy",
                        "id": "desc"
                    },
                    "severity": "ERROR"
                }
            ],
-           "status": " "
+           "status": "UNHEALTHY"
        }
    }
 
@@ -615,14 +615,6 @@ response
                "units": "com.vmware.applmgmt.mon.unit.percent"
            },
            {
-               "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats",
-               "id": "storage.totalsize.directory.vcdb_hourly_stats",
-               "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats",
-               "units": "com.vmware.applmgmt.mon.unit.kb"
-           },
-           {
                "category": "com.vmware.applmgmt.mon.cat.network",
                "description": "com.vmware.applmgmt.mon.descr.net.rx.error.eth0",
                "id": "net.rx.error.eth0",
@@ -632,10 +624,10 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats",
-               "id": "storage.totalsize.directory.vcdb_daily_stats",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats",
+               "id": "storage.totalsize.directory.vcdb_hourly_stats",
                "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats",
                "units": "com.vmware.applmgmt.mon.unit.kb"
            },
            {
@@ -648,10 +640,10 @@ response
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats",
-               "id": "storage.totalsize.directory.vcdb_monthly_stats",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats",
+               "id": "storage.totalsize.directory.vcdb_daily_stats",
                "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats",
                "units": "com.vmware.applmgmt.mon.unit.kb"
            },
            {
@@ -663,20 +655,28 @@ response
                "units": "com.vmware.applmgmt.mon.unit.errors_per_sample"
            },
            {
-               "category": "com.vmware.applmgmt.mon.cat.storage",
-               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_yearly_stats",
-               "id": "storage.totalsize.directory.vcdb_yearly_stats",
-               "instance": "",
-               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_yearly_stats",
-               "units": "com.vmware.applmgmt.mon.unit.kb"
-           },
-           {
                "category": "com.vmware.applmgmt.mon.cat.network",
                "description": "com.vmware.applmgmt.mon.descr.net.tx.error.lo",
                "id": "net.tx.error.lo",
                "instance": "lo",
                "name": "com.vmware.applmgmt.mon.name.net.tx.error.lo",
                "units": "com.vmware.applmgmt.mon.unit.errors_per_sample"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats",
+               "id": "storage.totalsize.directory.vcdb_monthly_stats",
+               "instance": "",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats",
+               "units": "com.vmware.applmgmt.mon.unit.kb"
+           },
+           {
+               "category": "com.vmware.applmgmt.mon.cat.storage",
+               "description": "com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_yearly_stats",
+               "id": "storage.totalsize.directory.vcdb_yearly_stats",
+               "instance": "",
+               "name": "com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_yearly_stats",
+               "units": "com.vmware.applmgmt.mon.unit.kb"
            },
            {
                "category": "com.vmware.applmgmt.mon.cat.storage",

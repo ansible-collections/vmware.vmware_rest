@@ -169,6 +169,10 @@ EXAMPLES = r"""
       backing:
         type: VMDK_FILE
         vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+    - type: SATA
+      new_vmdk:
+        name: second_disk
+        capacity: 32000000000
     nics:
     - backing:
         type: STANDARD_PORTGROUP
@@ -193,7 +197,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1108
+  sample: vm-1315
   type: str
 value:
   description: Wait until my VM is off
@@ -223,6 +227,16 @@ value:
           bus: 0
           unit: 0
         type: SATA
+      '16001':
+        backing:
+          type: VMDK_FILE
+          vmdk_file: '[local] test_vm1_6/second_disk.vmdk'
+        capacity: 32000000000
+        label: Hard disk 2
+        sata:
+          bus: 0
+          unit: 1
+        type: SATA
     floppies: {}
     guest_OS: RHEL_7_64
     hardware:
@@ -230,8 +244,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 4234f2d5-861f-878b-0534-db76835bf6ff
-      instance_uuid: 5034a33e-7119-9b01-6010-34220726fb52
+      bios_uuid: 4234e1a1-e1a8-2ca1-99b5-55e7b6a08ea4
+      instance_uuid: 5034b463-0a2e-528d-7f54-27a3e9bf4375
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -242,11 +256,11 @@ value:
       '4000':
         allow_guest_control: 0
         backing:
-          network: network-1101
+          network: network-1307
           network_name: VM Network
           type: STANDARD_PORTGROUP
         label: Network adapter 1
-        mac_address: 00:50:56:b4:30:eb
+        mac_address: 00:50:56:b4:e2:42
         mac_type: ASSIGNED
         pci_slot_number: 160
         start_connected: 0

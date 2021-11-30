@@ -150,6 +150,11 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "move": {
+        "query": {},
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
+        "path": {"vm": "vm"},
+    },
     "create_temporary": {
         "query": {},
         "body": {
@@ -176,11 +181,6 @@ PAYLOAD_FORMAT = {
             "path": "path",
             "recursive": "recursive",
         },
-        "path": {"vm": "vm"},
-    },
-    "move": {
-        "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long

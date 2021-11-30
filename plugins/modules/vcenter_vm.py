@@ -773,17 +773,6 @@ EXAMPLES = r"""
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
 
-- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
-  vmware.vmware_rest.vcenter_folder_info:
-    filter_type: VIRTUAL_MACHINE
-    filter_names:
-    - vm
-  register: my_folders
-
-- name: Set my_virtual_machine_folder
-  set_fact:
-    my_virtual_machine_folder: '{{ my_folders.value|first }}'
-
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
@@ -793,8 +782,8 @@ EXAMPLES = r"""
       folder: '{{ my_virtual_machine_folder.folder }}'
       resource_pool: '{{ my_cluster_info.value.resource_pool }}'
     name: test_vm1
-    guest_OS: DEBIAN_8_64
-    hardware_version: VMX_11
+    guest_OS: DEBIAN_7_64
+    hardware_version: VMX_10
     memory:
       hot_add_enabled: true
       size_MiB: 1024
@@ -821,6 +810,10 @@ EXAMPLES = r"""
       backing:
         type: VMDK_FILE
         vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+    - type: SATA
+      new_vmdk:
+        name: second_disk
+        capacity: 32000000000
     nics:
     - backing:
         type: STANDARD_PORTGROUP
@@ -843,141 +836,95 @@ results:
   sample:
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 128
-      name: vCLS-ba88058d-f561-4391-b07b-8dccadfd94bd
+      memory_size_MiB: 1024
+      name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1051
+      vm: vm-1262
+    _ansible_no_log: 0
+    ansible_loop_var: item
+    changed: 1
+    failed: 0
+    invocation:
+      module_args:
+        bios_uuid: null
+        boot: null
+        boot_devices: null
+        cdroms: null
+        cpu: null
+        datastore: null
+        datastore_path: null
+        disconnect_all_nics: null
+        disks: null
+        disks_to_remove: null
+        disks_to_update: null
+        floppies: null
+        guest_OS: null
+        guest_customization_spec: null
+        hardware_version: null
+        memory: null
+        name: null
+        nics: null
+        nics_to_update: null
+        parallel_ports: null
+        parallel_ports_to_update: null
+        path: null
+        placement: null
+        power_on: null
+        sata_adapters: null
+        scsi_adapters: null
+        serial_ports: null
+        serial_ports_to_update: null
+        session_timeout: null
+        source: null
+        state: absent
+        storage_policy: null
+        vcenter_hostname: vcenter.test
+        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+        vcenter_rest_log_file: null
+        vcenter_username: administrator@vsphere.local
+        vcenter_validate_certs: 0
+        vm: vm-1262
+    item:
+      cpu_count: 1
+      memory_size_MiB: 1024
+      name: test_vm1
+      power_state: POWERED_OFF
+      vm: vm-1262
+    value: {}
+  - _ansible_item_label:
+      cpu_count: 1
+      memory_size_MiB: 128
+      name: vCLS-82e00af7-c281-4586-8e0c-71e696439f49
+      power_state: POWERED_OFF
+      vm: vm-1263
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-ba88058d-f561-4391-b07b-8dccadfd94bd
+      name: vCLS-82e00af7-c281-4586-8e0c-71e696439f49
       power_state: POWERED_OFF
-      vm: vm-1051
+      vm: vm-1263
     skip_reason: Conditional result was False
     skipped: 1
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1052
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        bios_uuid: null
-        boot: null
-        boot_devices: null
-        cdroms: null
-        cpu: null
-        datastore: null
-        datastore_path: null
-        disconnect_all_nics: null
-        disks: null
-        disks_to_remove: null
-        disks_to_update: null
-        floppies: null
-        guest_OS: null
-        guest_customization_spec: null
-        hardware_version: null
-        memory: null
-        name: null
-        nics: null
-        nics_to_update: null
-        parallel_ports: null
-        parallel_ports_to_update: null
-        path: null
-        placement: null
-        power_on: null
-        sata_adapters: null
-        scsi_adapters: null
-        serial_ports: null
-        serial_ports_to_update: null
-        session_timeout: null
-        source: null
-        state: absent
-        storage_policy: null
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1052
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1052
-    value: {}
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1053
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        bios_uuid: null
-        boot: null
-        boot_devices: null
-        cdroms: null
-        cpu: null
-        datastore: null
-        datastore_path: null
-        disconnect_all_nics: null
-        disks: null
-        disks_to_remove: null
-        disks_to_update: null
-        floppies: null
-        guest_OS: null
-        guest_customization_spec: null
-        hardware_version: null
-        memory: null
-        name: null
-        nics: null
-        nics_to_update: null
-        parallel_ports: null
-        parallel_ports_to_update: null
-        path: null
-        placement: null
-        power_on: null
-        sata_adapters: null
-        scsi_adapters: null
-        serial_ports: null
-        serial_ports_to_update: null
-        session_timeout: null
-        source: null
-        state: absent
-        storage_policy: null
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1053
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1024
-      name: my_vm_from_ovf
-      power_state: POWERED_OFF
-      vm: vm-1053
-    value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "clone": {
         "query": {},
         "body": {
@@ -1005,6 +952,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -1025,23 +978,6 @@ PAYLOAD_FORMAT = {
             "scsi_adapters": "scsi_adapters",
             "serial_ports": "serial_ports",
             "storage_policy": "storage_policy",
-        },
-        "path": {},
-    },
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "register": {
-        "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
         },
         "path": {},
     },
