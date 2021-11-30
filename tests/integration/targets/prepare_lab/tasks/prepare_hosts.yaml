@@ -6,8 +6,8 @@
     thumbprint_verification: 'NONE'
     folder: '{{ my_host_folder.folder }}'
   register: _result
-- debug: var=_result
-- assert:
+- ansible.builtin.debug: var=_result
+- ansible.builtin.assert:
     that:
       - _result is changed
 
@@ -15,9 +15,9 @@
   vmware.vmware_rest.vcenter_host_info:
   register: my_hosts
 
-- debug: var=my_hosts
+- ansible.builtin.debug: var=my_hosts
 - name: Ensure we've got something
-  assert:
+  ansible.builtin.assert:
     that:
       - my_hosts.value|length > 0
 

@@ -9,7 +9,7 @@
     type: EFI
   register: _result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result is changed
 
@@ -20,7 +20,7 @@
     type: EFI
   register: _result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)
 
@@ -29,4 +29,4 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result

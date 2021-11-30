@@ -2,7 +2,7 @@
   vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Update the global policy of the local accounts
   vmware.vmware_rest.appliance_localaccounts_globalpolicy:
@@ -12,10 +12,10 @@
   vmware.vmware_rest.appliance_localaccounts_globalpolicy:
     warn_days: 5
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Ensure idempotency works
-  assert:
+  ansible.builtin.assert:
     that:
       - not(result.changed)
 
@@ -23,7 +23,7 @@
   vmware.vmware_rest.appliance_localaccounts_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 # commented out since with 7.0.2, the accounts don't work
 # broken shell/sudo configuration.
@@ -46,7 +46,7 @@
 #      - superAdmin
 #    state: present
 #  register: result
-#- debug: var=result
+#- ansible.builtin.debug: var=result
 #
 #- name: _Add a local accounts (idempotency)
 #  vmware.vmware_rest.appliance_localaccounts:
@@ -61,11 +61,11 @@
 #      - superAdmin
 #    state: present
 #  register: result
-#- debug: var=result
+#- ansible.builtin.debug: var=result
 #
-#- debug: var=result
+#- ansible.builtin.debug: var=result
 #- name: Validate the idempotency
-#  assert:
+#  ansible.builtin.assert:
 #    that:
 #      - not (result.changed)
 #
@@ -81,17 +81,17 @@
 #      - superAdmin
 #    state: present
 #  register: result
-#- debug: var=result
+#- ansible.builtin.debug: var=result
 #
 #- name: Get the information about the new account
 #  vmware.vmware_rest.appliance_localaccounts_info:
 #    username: foobar
 #  register: result
-#- debug: var=result
+#- ansible.builtin.debug: var=result
 #
 #- name: Delete a local accounts
 #  vmware.vmware_rest.appliance_localaccounts:
 #    username: foobar
 #    state: absent
 #  register: result
-#- debug: var=result
+#- ansible.builtin.debug: var=result

@@ -2,8 +2,8 @@
   vmware.vmware_rest.appliance_shutdown_info:
   register: result
 
-- debug: var=result
-- assert:
+- ansible.builtin.debug: var=result
+- ansible.builtin.assert:
     that:
       - result.value.action == ""
 
@@ -13,13 +13,13 @@
     reason: this is an example
     delay: 600
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Abort the shutdown of the appliance
   vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Reboot the appliance
   vmware.vmware_rest.appliance_shutdown:
@@ -27,7 +27,7 @@
     reason: this is an example
     delay: 600
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - pause:
     seconds: 10
@@ -36,10 +36,10 @@
   vmware.vmware_rest.appliance_shutdown_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
     
 - name: Abort the reboot
   vmware.vmware_rest.appliance_shutdown:
     state: cancel
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result

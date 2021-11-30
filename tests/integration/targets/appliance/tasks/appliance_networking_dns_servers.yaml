@@ -1,7 +1,7 @@
 - name: Get the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers_info:
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Set static DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
@@ -10,9 +10,9 @@
     mode: is_static
     state: set
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.value.servers == ["1.1.1.1"]
 
@@ -27,7 +27,7 @@
     mode: is_static
     state: set
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - pause:
     seconds: 10
@@ -38,9 +38,9 @@
     server: 8.8.4.4
     state: add
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - result.value.servers == ["1.1.1.1", "8.8.4.4"]
 
@@ -53,7 +53,7 @@
     servers: []
     state: set
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Test the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
@@ -61,4 +61,4 @@
     servers:
       - google.com
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result

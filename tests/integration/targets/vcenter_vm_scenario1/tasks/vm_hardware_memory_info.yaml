@@ -3,4 +3,4 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result

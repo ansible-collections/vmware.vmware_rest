@@ -2,7 +2,7 @@
   vmware.vmware_rest.appliance_access_shell_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Disable the Shell
   vmware.vmware_rest.appliance_access_shell:
@@ -15,9 +15,9 @@
     timeout: 600
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 - name: Validate the idemptency
-  assert:
+  ansible.builtin.assert:
     that:
       - not (result.changed)
 
@@ -27,4 +27,4 @@
     timeout: 600
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result

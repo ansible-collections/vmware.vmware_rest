@@ -8,5 +8,5 @@
   retries: 60
   delay: 5
 
-- debug:
+- ansible.builtin.debug:
     var: vm_tools_info

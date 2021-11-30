@@ -8,7 +8,7 @@
     start_connected: false
   register: vm_hardware_ethernet_1
 
-- debug: var=vm_hardware_ethernet_1
+- ansible.builtin.debug: var=vm_hardware_ethernet_1
 
 - name: Turn the NIC's start_connected flag on
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -23,9 +23,9 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)
 
@@ -39,10 +39,10 @@
     start_connected: false
   register: _vm_hardware_ethernet_2
 
-- debug: var=_vm_hardware_ethernet_2
+- ansible.builtin.debug: var=_vm_hardware_ethernet_2
 
 - name: Validate idempotency
-  assert:
+  ansible.builtin.assert:
     that: vm_hardware_ethernet_1.id == _vm_hardware_ethernet_2.id
 
 - name: Collect a list of the NIC for a given VM
@@ -50,9 +50,9 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result.value|length == 1
 
@@ -64,7 +64,7 @@
       type: STANDARD_PORTGROUP
       network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
   register: _result
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: Attach the VM to a standard portgroup (again)
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -74,9 +74,9 @@
       type: STANDARD_PORTGROUP
       network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
   register: _result
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)
 
@@ -84,7 +84,7 @@
   vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
     vm: '{{ test_vm1_info.id }}'
   register: vm_nic
-- debug: var=vm_nic
+- ansible.builtin.debug: var=vm_nic
 
 - name: Attach the VM to a standard portgroup (again) using the nic ID
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -94,9 +94,9 @@
       type: STANDARD_PORTGROUP
       network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
   register: _result
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)
 
@@ -108,8 +108,8 @@
       type: STANDARD_PORTGROUP
       network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch') }}"
   register: _result
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result is changed

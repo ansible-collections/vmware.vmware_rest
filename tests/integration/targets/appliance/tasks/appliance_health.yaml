@@ -3,58 +3,58 @@
   vmware.vmware_rest.appliance_health_database_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the database storage heath status
   vmware.vmware_rest.appliance_health_databasestorage_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the system load status
   vmware.vmware_rest.appliance_health_load_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the system mem status
   vmware.vmware_rest.appliance_health_mem_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the system health status
   vmware.vmware_rest.appliance_health_system_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
  
 - name: Get the health of the software package manager
   vmware.vmware_rest.appliance_health_softwarepackages_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the health of the storage system
   vmware.vmware_rest.appliance_health_storage_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the health of the swap
   vmware.vmware_rest.appliance_health_swap_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Get the health state of applmgmt
   vmware.vmware_rest.appliance_health_applmgmt_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
-- debug: var=result
-- assert:
+- ansible.builtin.debug: var=result
+- ansible.builtin.assert:
     that:
       result.value == "green"
   # returns an err500
@@ -63,4 +63,4 @@
 #  register: result
 #  ignore_errors: True
 #
-#- debug: var=result
+#- ansible.builtin.debug: var=result

@@ -10,8 +10,8 @@
     enabled: False
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 - name: Idempotency is broken
-  assert:
+  ansible.builtin.assert:
     that:
       - not (result.changed)

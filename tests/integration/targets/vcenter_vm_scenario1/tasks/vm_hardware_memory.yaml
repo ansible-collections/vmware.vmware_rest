@@ -5,8 +5,8 @@
     size_MiB: 1080
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result is changed

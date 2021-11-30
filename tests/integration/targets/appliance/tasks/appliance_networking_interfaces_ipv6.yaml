@@ -3,7 +3,7 @@
     interface_name: nic0
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Set the IPv6 network information of nic99 (which does not exist)
   vmware.vmware_rest.appliance_networking_interfaces_ipv6:

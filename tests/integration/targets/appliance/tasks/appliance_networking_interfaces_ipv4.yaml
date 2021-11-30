@@ -3,9 +3,9 @@
     interface_name: nic0
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 - name: Ensure we've got a correct result
-  assert:
+  ansible.builtin.assert:
     that:
       - result.value.address
       - result.value.configurable

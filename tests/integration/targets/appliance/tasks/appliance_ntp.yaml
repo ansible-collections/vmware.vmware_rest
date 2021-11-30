@@ -12,9 +12,9 @@
       - time.google.com
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 - name: Validate idempotency
-  assert:
+  ansible.builtin.assert:
     that:
       - not (result.changed)
 
@@ -22,9 +22,9 @@
   vmware.vmware_rest.appliance_ntp_info:
   register: result
 
-- debug: var=result
+- ansible.builtin.debug: var=result
 - name: Assert the NTP configuration is right
-  assert:
+  ansible.builtin.assert:
     that:
       - result.value == ["time.google.com"]
 
@@ -34,9 +34,9 @@
     servers:
       - time.google.com
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 - name: Ensure the result is successful
-  assert:
+  ansible.builtin.assert:
     that:
       - result.value[0].status == "SERVER_REACHABLE"

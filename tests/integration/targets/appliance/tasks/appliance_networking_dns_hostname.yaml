@@ -1,7 +1,7 @@
 - name: Get the hostname configuration
   vmware.vmware_rest.appliance_networking_dns_hostname_info:
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result
 
 # - name: Set the hostname configuration
 #   appliance_networking_dns_hostname:
@@ -15,4 +15,4 @@
     state: test
     name: vcenter.test
   register: result
-- debug: var=result
+- ansible.builtin.debug: var=result

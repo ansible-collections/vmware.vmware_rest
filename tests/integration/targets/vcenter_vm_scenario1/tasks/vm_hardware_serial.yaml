@@ -4,7 +4,7 @@
     vm: '{{ test_vm1_info.id }}'
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
 - name: Create a new serial port
   vmware.vmware_rest.vcenter_vm_hardware_serial:
@@ -13,9 +13,9 @@
     allow_guest_control: true
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result is changed
 
@@ -26,9 +26,9 @@
     allow_guest_control: true
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result is changed
 
@@ -40,9 +40,9 @@
     allow_guest_control: true
   register: _result
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - not(_result is changed)
 
@@ -52,9 +52,9 @@
     label: "Serial port 1"
   register: serial_port_1
 
-- debug: var=_result
+- ansible.builtin.debug: var=_result
 
-- assert:
+- ansible.builtin.assert:
     that:
       - _result.value.label == "Serial port 1"
 
