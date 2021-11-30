@@ -1,0 +1,3 @@
+---
+bugfixes:
+- "vcenter_ovf_libraryitem - properly catch errors."
