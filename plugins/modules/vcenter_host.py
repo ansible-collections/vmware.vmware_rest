@@ -132,15 +132,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Build a list of all the folders
-  vmware.vmware_rest.vcenter_folder_info:
-  register: my_folders
-
-- name: Look up the different folders
-  set_fact:
-    my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
-      }}'
-
 - name: Connect the host(s)
   vmware.vmware_rest.vcenter_host:
     hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
@@ -155,15 +146,14 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1069
+  sample: host-1277
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -178,6 +168,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json

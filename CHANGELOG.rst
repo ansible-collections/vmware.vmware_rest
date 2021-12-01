@@ -5,6 +5,19 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.2
+======
+
+Minor Changes
+-------------
+
+- The examples uses the FQCN of the built-in modules
+
+Bugfixes
+--------
+
+- vcenter_ovf_libraryitem - properly catch errors.
+
 v2.1.1
 ======
 

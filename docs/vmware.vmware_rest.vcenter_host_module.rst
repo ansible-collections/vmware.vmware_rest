@@ -329,15 +329,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of all the folders
-      vmware.vmware_rest.vcenter_folder_info:
-      register: my_folders
-
-    - name: Look up the different folders
-      set_fact:
-        my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first
-          }}'
-
     - name: Connect the host(s)
       vmware.vmware_rest.vcenter_host:
         hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
@@ -374,7 +365,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Connect the host(s)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1069</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1277</div>
                 </td>
             </tr>
     </table>

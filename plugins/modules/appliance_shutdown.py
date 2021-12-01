@@ -126,12 +126,12 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "cancel": {"query": {}, "body": {}, "path": {}},
-    "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
     "poweroff": {
         "query": {},
         "body": {"delay": "delay", "reason": "reason"},
         "path": {},
     },
+    "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

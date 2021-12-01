@@ -142,8 +142,8 @@ EXAMPLES = r"""
 - name: Upgrade the VM hardware version
   vmware.vmware_rest.vcenter_vm_hardware:
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
-    upgrade_version: VMX_13
-    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/my_vm_from_ovf') }}"
+    upgrade_version: VMX_11
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
 """
 
 RETURN = r"""
@@ -162,6 +162,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -170,7 +171,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

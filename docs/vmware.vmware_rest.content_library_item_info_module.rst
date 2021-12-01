@@ -191,66 +191,6 @@ Notes
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Create a content library pointing on a NFS share
-      vmware.vmware_rest.content_locallibrary:
-        name: my_library_on_nfs
-        description: automated
-        publish_info:
-          published: true
-          authentication_method: NONE
-        storage_backings:
-        - storage_uri: nfs://datastore.test/srv/share/content-library
-          type: OTHER
-        state: present
-      register: nfs_lib
-
-    - name: Get the list of items of the NFS library
-      vmware.vmware_rest.content_library_item_info:
-        library_id: '{{ nfs_lib.id }}'
-      register: result
-
-    - name: Create a new local content library
-      vmware.vmware_rest.content_locallibrary:
-        name: local_library_001
-        description: automated
-        publish_info:
-          published: true
-          authentication_method: NONE
-        storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
-          type: DATASTORE
-        state: present
-      register: ds_lib
-
-    - name: Get the (empty) list of items of the library
-      vmware.vmware_rest.content_library_item_info:
-        library_id: '{{ ds_lib.id }}'
-      register: result
-
-    - name: Create subscribed library
-      vmware.vmware_rest.content_subscribedlibrary:
-        name: sub_lib
-        subscription_info:
-          subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
-          authentication_method: NONE
-          automatic_sync_enabled: false
-          on_demand: true
-        storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
-          type: DATASTORE
-      register: sub_lib
-
-    - name: Ensure the OVF is here
-      vmware.vmware_rest.content_library_item_info:
-        library_id: '{{ sub_lib.id }}'
-      register: result
 
 
 
@@ -280,7 +220,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Ensure the OVF is here</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-11-24T16:31:55.546Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;112d74d5-3ca8-414c-9544-da44c030059e&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-11-24T16:31:55.964Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-11-24T16:31:55.962Z&#x27;, &#x27;library_id&#x27;: &#x27;9bc7ccd9-a04a-4600-a89e-faa22434e1ce&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;7db2b7fa-6c7c-420e-9458-63f9c11f93d3&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-11-30T18:47:27.736Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;2c8b5acc-641b-4e7a-ab7d-fd2929b21985&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-11-30T18:47:27.909Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2021-11-30T18:47:27.908Z&#x27;, &#x27;library_id&#x27;: &#x27;e13f41b4-6674-4df5-9360-0f2509728107&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;aea99213-ec88-4b79-8778-091683ac2a7b&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
                 </td>
             </tr>
     </table>

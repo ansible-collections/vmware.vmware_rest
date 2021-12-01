@@ -106,8 +106,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "resize": {"query": {}, "body": {}, "path": {}},
     "resize_ex": {"query": {}, "body": {}, "path": {}},
+    "resize": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

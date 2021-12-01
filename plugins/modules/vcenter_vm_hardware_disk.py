@@ -196,7 +196,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[local] test_vm1_2/test_vm1_1.vmdk'
+      vmdk_file: '[local] test_vm1_5/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -208,7 +208,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {"backing": "backing"},
@@ -226,6 +225,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

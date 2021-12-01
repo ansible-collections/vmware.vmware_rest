@@ -314,33 +314,6 @@ EXAMPLES = r"""
     library_id: '{{ item.id }}'
     state: absent
   with_items: '{{ result.value }}'
-
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
-
-- name: Create a new local content library
-  vmware.vmware_rest.content_locallibrary:
-    name: local_library_001
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      type: DATASTORE
-    state: present
-  register: ds_lib
 """
 
 RETURN = r"""
@@ -355,15 +328,15 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      creation_time: '2021-11-24T15:32:55.368Z'
+      creation_time: '2021-11-30T18:34:45.734Z'
       description: automated
-      id: bec4a103-c1fb-4b37-ae06-508aa926f8e5
-      last_modified_time: '2021-11-24T15:32:55.368Z'
+      id: e6479e2e-323a-4048-98da-c58fd5239e3e
+      last_modified_time: '2021-11-30T18:34:45.734Z'
       name: my_library_on_nfs
       publish_info:
         authentication_method: NONE
         persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/bec4a103-c1fb-4b37-ae06-508aa926f8e5/lib.json
+        publish_url: https://vcenter.test:443/cls/vcsp/lib/e6479e2e-323a-4048-98da-c58fd5239e3e/lib.json
         published: 1
         user_name: vcsp
       server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
@@ -384,7 +357,7 @@ results:
         id: null
         last_modified_time: null
         last_sync_time: null
-        library_id: bec4a103-c1fb-4b37-ae06-508aa926f8e5
+        library_id: e6479e2e-323a-4048-98da-c58fd5239e3e
         name: null
         optimization_info: null
         publish_info: null
@@ -402,87 +375,21 @@ results:
         vcenter_validate_certs: 0
         version: null
     item:
-      creation_time: '2021-11-24T15:32:55.368Z'
+      creation_time: '2021-11-30T18:34:45.734Z'
       description: automated
-      id: bec4a103-c1fb-4b37-ae06-508aa926f8e5
-      last_modified_time: '2021-11-24T15:32:55.368Z'
+      id: e6479e2e-323a-4048-98da-c58fd5239e3e
+      last_modified_time: '2021-11-30T18:34:45.734Z'
       name: my_library_on_nfs
       publish_info:
         authentication_method: NONE
         persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/bec4a103-c1fb-4b37-ae06-508aa926f8e5/lib.json
+        publish_url: https://vcenter.test:443/cls/vcsp/lib/e6479e2e-323a-4048-98da-c58fd5239e3e/lib.json
         published: 1
         user_name: vcsp
       server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
       storage_backings:
       - storage_uri: nfs://datastore.test/srv/share/content-library
         type: OTHER
-      type: LOCAL
-      version: '2'
-    value: {}
-  - _ansible_item_label:
-      creation_time: '2021-11-24T15:33:32.774Z'
-      description: automated
-      id: 367a2af5-e1ff-4ee2-94d3-93fa0d9d038a
-      last_modified_time: '2021-11-24T15:33:32.774Z'
-      name: local_library_001
-      publish_info:
-        authentication_method: NONE
-        persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/367a2af5-e1ff-4ee2-94d3-93fa0d9d038a/lib.json
-        published: 1
-        user_name: vcsp
-      server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
-      storage_backings:
-      - datastore_id: datastore-1044
-        type: DATASTORE
-      type: LOCAL
-      version: '2'
-    _ansible_no_log: 0
-    ansible_loop_var: item
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        client_token: null
-        creation_time: null
-        description: null
-        id: null
-        last_modified_time: null
-        last_sync_time: null
-        library_id: 367a2af5-e1ff-4ee2-94d3-93fa0d9d038a
-        name: null
-        optimization_info: null
-        publish_info: null
-        server_guid: null
-        session_timeout: null
-        state: absent
-        storage_backings: null
-        subscription_info: null
-        subscriptions: null
-        type: null
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        version: null
-    item:
-      creation_time: '2021-11-24T15:33:32.774Z'
-      description: automated
-      id: 367a2af5-e1ff-4ee2-94d3-93fa0d9d038a
-      last_modified_time: '2021-11-24T15:33:32.774Z'
-      name: local_library_001
-      publish_info:
-        authentication_method: NONE
-        persist_json_enabled: 0
-        publish_url: https://vcenter.test:443/cls/vcsp/lib/367a2af5-e1ff-4ee2-94d3-93fa0d9d038a/lib.json
-        published: 1
-        user_name: vcsp
-      server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
-      storage_backings:
-      - datastore_id: datastore-1044
-        type: DATASTORE
       type: LOCAL
       version: '2'
     value: {}
@@ -491,26 +398,6 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {},
-    },
     "update": {
         "query": {},
         "body": {
@@ -535,6 +422,26 @@ PAYLOAD_FORMAT = {
         "body": {"subscriptions": "subscriptions"},
         "path": {"library_id": "library_id"},
     },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 import json
