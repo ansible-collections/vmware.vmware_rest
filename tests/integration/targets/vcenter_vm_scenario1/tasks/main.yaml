@@ -1,7 +1,7 @@
-- import_tasks: read_env_information.yaml
-- import_tasks: create_vm.yaml
-- import_tasks: vm_info.yaml
-- import_tasks: vm_hardware_adapter_info.yaml
+- include_tasks: read_env_information.yaml
+- include_tasks: create_vm.yaml
+- include_tasks: vm_info.yaml
+- include_tasks: vm_hardware_adapter_info.yaml
 - include_tasks: vm_hardware_cdrom_info.yaml
 - include_tasks: vm_hardware_ethernet_info.yaml
 - include_tasks: vm_hardware_memory_info.yaml
@@ -17,13 +17,13 @@
 - include_tasks: vm_hardware_parallel.yaml
 - include_tasks: vm_hardware_serial.yaml
 - include_tasks: vm_hardware.yaml
-- import_tasks: vm_libraryitem.yaml
-- import_tasks: vm_power.yaml
+- include_tasks: vm_libraryitem.yaml
+- include_tasks: vm_power.yaml
 
 - vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
 
 - when: wait_for_vm is defined
   block:
-  - import_tasks: wait_for_test_vm1.yaml
-  - import_tasks: vm_guest_info.yaml
+  - include_tasks: wait_for_test_vm1.yaml
+  - include_tasks: vm_guest_info.yaml

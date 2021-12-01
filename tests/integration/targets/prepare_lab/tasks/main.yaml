@@ -1,10 +1,10 @@
-- import_tasks: purge_vms.yaml
-- import_tasks: purge_libraries.yaml
-- import_tasks: cleanup.yaml
+- include_tasks: purge_vms.yaml
+- include_tasks: purge_libraries.yaml
+- include_tasks: cleanup.yaml
 
-- import_tasks: prepare_datacenter.yaml
-- import_tasks: prepare_cluster.yaml
-- import_tasks: prepare_folders.yaml
-- import_tasks: prepare_hosts.yaml
-- import_tasks: prepare_datastores.yaml
-- import_tasks: prepare_guest_network.yaml
+- include_tasks: prepare_datacenter.yaml
+- include_tasks: prepare_cluster.yaml
+- include_tasks: prepare_folders.yaml
+- include_tasks: prepare_hosts.yaml
+- include_tasks: prepare_datastores.yaml
+- include_tasks: prepare_guest_network.yaml
