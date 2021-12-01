@@ -1,0 +1,10 @@
+- hosts: localhost
+  gather_facts: no
+  collections:
+      - vmware.vmware_rest
+      - community.vmware
+  tasks:
+      - import_role:
+          name: prepare_lab
+      - import_role:
+          name: vcenter_library_and_ovf_clone
