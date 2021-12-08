@@ -12,6 +12,15 @@
     pci_slot_number: 34
   register: _sata_adapter_result_2
 
+- name: Get information about a specific controller
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info:
+    vm: '{{ test_vm1_info.id }}'
+    adapter: '{{ _sata_adapter_result_1.id }}'
+
+- name: List the controller
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info:
+    vm: '{{ test_vm1_info.id }}'
+
 - ansible.builtin.debug: var=_sata_adapter_result_2
 
 - name: Ensure the second call was idempotent

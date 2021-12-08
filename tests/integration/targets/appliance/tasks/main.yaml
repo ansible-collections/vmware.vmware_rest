@@ -6,6 +6,7 @@
 - import_tasks: appliance_infraprofile_configs.yaml
 - import_tasks: appliance_localaccounts.yaml
 - import_tasks: appliance_monitoring.yaml
+- import_tasks: appliance_networking.yaml
 - import_tasks: appliance_networking_dns_domains.yaml
 - import_tasks: appliance_networking_dns_hostname.yaml
 - import_tasks: appliance_networking_dns_servers.yaml

@@ -24,3 +24,7 @@
 - name: Set my_virtual_machine_folder
   ansible.builtin.set_fact:
     my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+- name: Build a list of all the datastores
+  vmware.vmware_rest.vcenter_datastore_info:
+  register: all_the_datastores

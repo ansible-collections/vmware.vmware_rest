@@ -6,7 +6,8 @@
 
 - ansible.builtin.debug: var=_result
 
-- vcenter_vm_hardware_parallel:
+- name: Turn on guest control on the parallel port
+  vmware.vmware_rest.vcenter_vm_hardware_parallel:
     vm: '{{ test_vm1_info.id }}'
     allow_guest_control: true
   register: _result

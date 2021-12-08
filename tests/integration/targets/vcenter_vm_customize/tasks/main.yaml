@@ -66,6 +66,11 @@
         new_vmdk:
           name: second_disk
           capacity: 32000000000
+    cdroms:
+      - type: SATA
+        sata:
+          bus: 0
+          unit: 2
     nics:
       - backing:
           type: STANDARD_PORTGROUP
@@ -105,6 +110,10 @@
   - vm_info.value.power_state == "POWERED_OFF"
   retries: 60
   delay: 5
+
+- name: Read the power status of the VM
+  vmware.vmware_rest.vcenter_vm_guest_power_info:
+    vm: '{{ my_vm.id }}'
 
 
 - name: Customize the VM
@@ -146,3 +155,26 @@
 
 - name: Ensure we can ping the new VM
   ansible.builtin.command: ping -c 5 192.168.123.50
+
+- shell: |
+    echo root:root|ssh root@192.168.123.50 chpasswd
+
+- name: Create a directory in /tmp
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: '{{ my_vm.id }}'
+    path: /tmp/my/path
+    create_parents: true
+    credentials:
+      interactive_session: false
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: root
+
+- name: Get information about the vm-tools
+  vmware.vmware_rest.vcenter_vm_tools_installer_info:
+    vm: '{{ my_vm.id }}'
+
+- name: Update the vm-tools
+  vmware.vmware_rest.vcenter_vm_tools_installer:
+    vm: '{{ my_vm.id }}'
+    state: connect
