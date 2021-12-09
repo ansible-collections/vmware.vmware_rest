@@ -23,7 +23,7 @@
 - vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ test_vm1_info.id }}'
 
-- when: wait_for_vm is defined
-  block:
-  - include_tasks: wait_for_test_vm1.yaml
-  - include_tasks: vm_guest_info.yaml
+- include_tasks: wait_for_test_vm1.yaml
+  when: wait_for_vm is defined
+- include_tasks: vm_guest_info.yaml
+  when: wait_for_vm is defined

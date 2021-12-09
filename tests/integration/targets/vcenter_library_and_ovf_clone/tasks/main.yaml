@@ -225,3 +225,11 @@
     name: sub_lib
     library_id: "{{ sub_lib.id }}"
     state: sync
+
+- name: Get the vSphere content syncrhronization configuration
+  vmware.vmware_rest.content_configuration_info:
+  register: current_content_configuration
+
+- name: Turn on the autmatic syncrhronization
+  vmware.vmware_rest.content_configuration:
+    automatic_sync_enabled: true
