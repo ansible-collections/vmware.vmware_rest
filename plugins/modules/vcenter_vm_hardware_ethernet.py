@@ -173,12 +173,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Retrieve details about the portgroup
-  community.vmware.vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: my_portgroup_info
-
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -261,13 +255,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1763042706
+      connection_cookie: 1133862897
       distributed_port: '2'
-      distributed_switch_uuid: 50 34 54 8e 77 c5 b8 fb-48 cf 82 f4 14 3e 68 b1
-      network: dvportgroup-1287
+      distributed_switch_uuid: 50 31 95 59 80 f7 13 ef-47 ab 77 12 9f 12 bd 19
+      network: dvportgroup-1571
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:b4:e4:26
+    mac_address: 00:50:56:b1:d3:23
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -280,8 +274,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -295,6 +287,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"nic": "nic", "vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -310,7 +304,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

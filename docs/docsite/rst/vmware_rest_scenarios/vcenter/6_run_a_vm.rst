@@ -89,16 +89,16 @@ response
 ::
 
    {
-       "attempts": 6,
+       "attempts": 8,
        "changed": false,
        "value": {
            "auto_update_supported": false,
            "install_attempt_count": 0,
-           "install_type": "UNKNOWN",
+           "install_type": "OPEN_VM_TOOLS",
            "run_state": "RUNNING",
            "upgrade_policy": "MANUAL",
-           "version": "0",
-           "version_number": 0,
-           "version_status": "NOT_INSTALLED"
+           "version": "10346",
+           "version_number": 10346,
+           "version_status": "UNMANAGED"
        }
    }

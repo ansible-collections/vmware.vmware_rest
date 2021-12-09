@@ -211,18 +211,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Collect the list of the existing VM
-      vmware.vmware_rest.vcenter_vm_info:
-      register: existing_vms
-      until: existing_vms is not failed
-
-    - name: Turn off the VM
-      vmware.vmware_rest.vcenter_vm_power:
-        state: stop
-        vm: '{{ item.vm }}'
-      with_items: '{{ existing_vms.value }}'
-      ignore_errors: yes
-
     - name: Look up the VM called test_vm1 in the inventory
       register: search_result
       vmware.vmware_rest.vcenter_vm_info:
@@ -238,6 +226,61 @@ Examples
       vmware.vmware_rest.vcenter_vm_power:
         state: start
         vm: '{{ test_vm1_info.id }}'
+
+    - name: Collect the list of the existing VM
+      vmware.vmware_rest.vcenter_vm_info:
+      register: existing_vms
+      until: existing_vms is not failed
+
+    - name: Turn off the VM
+      vmware.vmware_rest.vcenter_vm_power:
+        state: stop
+        vm: '{{ item.vm }}'
+      with_items: '{{ existing_vms.value }}'
+      ignore_errors: yes
+
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        name: test_vm1
+        guest_OS: RHEL_7_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+        disks:
+        - type: SATA
+          backing:
+            type: VMDK_FILE
+            vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+        - type: SATA
+          new_vmdk:
+            name: second_disk
+            capacity: 32000000000
+        cdroms:
+        - type: SATA
+          sata:
+            bus: 0
+            unit: 2
+        nics:
+        - backing:
+            type: STANDARD_PORTGROUP
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+              \ Network') }}"
+
+      register: my_vm
+
+    - name: Turn on the power of the VM
+      vmware.vmware_rest.vcenter_vm_power:
+        state: start
+        vm: '{{ my_vm.id }}'
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
@@ -271,11 +314,6 @@ Examples
               \ Network') }}"
 
       register: my_vm
-
-    - name: Turn on the power of the VM
-      vmware.vmware_rest.vcenter_vm_power:
-        state: start
-        vm: '{{ my_vm.id }}'
 
 
 
@@ -322,7 +360,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Turn off the VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1262&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1262&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1262&#x27;}, &#x27;value&#x27;: {&#x27;error_type&#x27;: &#x27;ALREADY_IN_DESIRED_STATE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Virtual machine is already powered off.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.power.already_powered_off&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;The attempted operation cannot be performed in the current state (Powered off).&#x27;, &#x27;id&#x27;: &#x27;vmsg.InvalidPowerState.summary&#x27;}]}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-82e00af7-c281-4586-8e0c-71e696439f49&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1263&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1263&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-82e00af7-c281-4586-8e0c-71e696439f49&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1263&#x27;}, &#x27;value&#x27;: {&#x27;error_type&#x27;: &#x27;ALREADY_IN_DESIRED_STATE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Virtual machine is already powered off.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.power.already_powered_off&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;The attempted operation cannot be performed in the current state (Powered off).&#x27;, &#x27;id&#x27;: &#x27;vmsg.InvalidPowerState.summary&#x27;}]}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-63053a06-45db-44c4-bdcd-af2edbd0645a&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1546&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1546&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-63053a06-45db-44c4-bdcd-af2edbd0645a&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1546&#x27;}, &#x27;value&#x27;: {&#x27;error_type&#x27;: &#x27;ALREADY_IN_DESIRED_STATE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Virtual machine is already powered off.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.power.already_powered_off&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;The attempted operation cannot be performed in the current state (Powered off).&#x27;, &#x27;id&#x27;: &#x27;vmsg.InvalidPowerState.summary&#x27;}]}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1547&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1547&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1547&#x27;}, &#x27;value&#x27;: {}}]</div>
                 </td>
             </tr>
     </table>

@@ -168,8 +168,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -179,6 +177,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"floppy": "floppy", "vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -188,7 +188,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

@@ -116,6 +116,11 @@ EXAMPLES = r"""
       new_vmdk:
         name: second_disk
         capacity: 32000000000
+    cdroms:
+    - type: SATA
+      sata:
+        bus: 0
+        unit: 2
     nics:
     - backing:
         type: STANDARD_PORTGROUP
@@ -128,6 +133,39 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_guest_power:
     state: shutdown
     vm: '{{ my_vm.id }}'
+
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+        \ }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+        \ }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    disks:
+    - type: SATA
+      backing:
+        type: VMDK_FILE
+        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+    - type: SATA
+      new_vmdk:
+        name: second_disk
+        capacity: 32000000000
+    nics:
+    - backing:
+        type: STANDARD_PORTGROUP
+        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+          \ Network') }}"
+
+  register: my_vm
 """
 
 RETURN = r"""
@@ -141,9 +179,9 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "shutdown": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reboot": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "standby": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "shutdown": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

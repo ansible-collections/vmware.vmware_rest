@@ -46,7 +46,7 @@ response
                        "mode": "DHCP",
                        "prefix": 24
                    },
-                   "mac": "52:54:00:93:9b:6a",
+                   "mac": "52:54:00:c3:d3:8d",
                    "name": "nic0",
                    "status": "up"
                }
@@ -101,7 +101,7 @@ response
                    "mode": "DHCP",
                    "prefix": 24
                },
-               "mac": "52:54:00:93:9b:6a",
+               "mac": "52:54:00:c3:d3:8d",
                "name": "nic0",
                "status": "up"
            }
@@ -132,7 +132,7 @@ response
                "mode": "DHCP",
                "prefix": 24
            },
-           "mac": "52:54:00:93:9b:6a",
+           "mac": "52:54:00:c3:d3:8d",
            "name": "nic0",
            "status": "up"
        }

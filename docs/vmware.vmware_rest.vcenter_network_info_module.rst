@@ -287,7 +287,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get a list of the networks</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1284&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1285&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;second_vswitch&#x27;, &#x27;network&#x27;: &#x27;network-1282&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1287&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1281&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1568&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1569&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1571&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1565&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;second_vswitch&#x27;, &#x27;network&#x27;: &#x27;network-1566&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}]</div>
                 </td>
             </tr>
     </table>

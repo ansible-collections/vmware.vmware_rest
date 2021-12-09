@@ -128,11 +128,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Collect the list of the existing VM
-  vmware.vmware_rest.vcenter_vm_info:
-  register: existing_vms
-  until: existing_vms is not failed
-
 - name: Search with an invalid filter
   vmware.vmware_rest.vcenter_vm_info:
     filter_names: test_vm1_does_not_exists
@@ -147,6 +142,59 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
+- name: Collect the list of the existing VM
+  vmware.vmware_rest.vcenter_vm_info:
+  register: existing_vms
+  until: existing_vms is not failed
+
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+        \ }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+        \ }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    disks:
+    - type: SATA
+      backing:
+        type: VMDK_FILE
+        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+    - type: SATA
+      new_vmdk:
+        name: second_disk
+        capacity: 32000000000
+    cdroms:
+    - type: SATA
+      sata:
+        bus: 0
+        unit: 2
+    nics:
+    - backing:
+        type: STANDARD_PORTGROUP
+        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+          \ Network') }}"
+
+  register: my_vm
+
+- name: Wait until my VM is off
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_info
+  until:
+  - vm_info is not failed
+  - vm_info.value.power_state == "POWERED_OFF"
+  retries: 60
+  delay: 5
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
@@ -180,16 +228,6 @@ EXAMPLES = r"""
           \ Network') }}"
 
   register: my_vm
-
-- name: Wait until my VM is off
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ my_vm.id }}'
-  register: vm_info
-  until:
-  - vm_info is not failed
-  - vm_info.value.power_state == "POWERED_OFF"
-  retries: 60
-  delay: 5
 """
 
 RETURN = r"""
@@ -197,7 +235,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1315
+  sample: vm-1599
   type: str
 value:
   description: Wait until my VM is off
@@ -210,7 +248,20 @@ value:
       retry_delay: 10000
       type: BIOS
     boot_devices: []
-    cdroms: {}
+    cdroms:
+      '16002':
+        allow_guest_control: 0
+        backing:
+          auto_detect: 1
+          device_access_type: EMULATION
+          type: HOST_DEVICE
+        label: CD/DVD drive 1
+        sata:
+          bus: 0
+          unit: 2
+        start_connected: 0
+        state: NOT_CONNECTED
+        type: SATA
     cpu:
       cores_per_socket: 1
       count: 1
@@ -230,7 +281,7 @@ value:
       '16001':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[local] test_vm1_6/second_disk.vmdk'
+          vmdk_file: '[local] test_vm1_8/second_disk.vmdk'
         capacity: 32000000000
         label: Hard disk 2
         sata:
@@ -244,8 +295,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 4234e1a1-e1a8-2ca1-99b5-55e7b6a08ea4
-      instance_uuid: 5034b463-0a2e-528d-7f54-27a3e9bf4375
+      bios_uuid: 4231b864-1f21-0441-01a3-5e2a63fba0b4
+      instance_uuid: 503157d7-5018-0c3c-5aba-d177fb47a1e2
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -256,11 +307,11 @@ value:
       '4000':
         allow_guest_control: 0
         backing:
-          network: network-1307
+          network: network-1591
           network_name: VM Network
           type: STANDARD_PORTGROUP
         label: Network adapter 1
-        mac_address: 00:50:56:b4:e2:42
+        mac_address: 00:50:56:b1:74:7a
         mac_type: ASSIGNED
         pci_slot_number: 160
         start_connected: 0

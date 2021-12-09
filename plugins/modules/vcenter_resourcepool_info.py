@@ -143,7 +143,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1273
+  sample: resgroup-1557
   type: str
 value:
   description: Read details from a specific resource pool

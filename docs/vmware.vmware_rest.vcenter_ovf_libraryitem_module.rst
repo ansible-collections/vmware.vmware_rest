@@ -304,6 +304,84 @@ Notes
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Create a content library pointing on a NFS share
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_nfs
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - storage_uri: nfs://datastore.test/srv/share/content-library
+          type: OTHER
+        state: present
+      register: nfs_lib
+
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        name: test_vm1
+        guest_OS: DEBIAN_8_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+      register: my_vm
+
+    - name: Export the VM as an OVF on the library
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 2900
+        source:
+          type: VirtualMachine
+          id: '{{ my_vm.id }}'
+        target:
+          library_id: '{{ nfs_lib.id }}'
+        create_spec:
+          name: my_vm
+          description: an OVF example
+          flags: []
+        state: present
+
+    - name: Create a new VM from the OVF
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 2900
+        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id
+          }}'
+        state: deploy
+        target:
+          resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        deployment_spec:
+          name: my_vm_from_ovf
+          accept_all_EULA: true
+
+    - name: Create a new VM from the OVF and specify the host and folder
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 2900
+        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id
+          }}'
+        state: deploy
+        target:
+          resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+          folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          host_id: "{{ lookup('vmware.vmware_rest.host_moid', '/my_dc/host/my_cluster/esxi1.test/test_vm1')\
+            \ }}"
+        deployment_spec:
+          name: my_vm_from_ovf_on_a_host
+          accept_all_EULA: true
 
 
 
@@ -333,7 +411,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF and specify the host and folder</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1343&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1627&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

@@ -104,12 +104,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: get all the clusters called my_cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    filter_names:
-    - my_cluster
-  register: my_cluster
-
 - name: Build a list of all the clusters
   vmware.vmware_rest.vcenter_cluster_info:
   register: all_the_clusters
@@ -118,6 +112,12 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_cluster_info:
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
+
+- name: get all the clusters called my_cluster
+  vmware.vmware_rest.vcenter_cluster_info:
+    filter_names:
+    - my_cluster
+  register: my_cluster
 """
 
 RETURN = r"""
@@ -125,14 +125,14 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1270
+  sample: domain-c1554
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1271
+    resource_pool: resgroup-1555
   type: dict
 """
 
