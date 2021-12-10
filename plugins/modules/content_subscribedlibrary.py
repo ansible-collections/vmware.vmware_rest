@@ -308,6 +308,59 @@ EXAMPLES = r"""
     library_id: '{{ item.id }}'
     state: absent
   with_items: '{{ result.value }}'
+
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Create subscribed library
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+  register: sub_lib
+
+- name: Create subscribed library (again)
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+  register: result
+
+- name: Clean up the cache
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    library_id: '{{ sub_lib.id }}'
+    state: evict
+
+- name: Trigger a library sync
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    library_id: '{{ sub_lib.id }}'
+    state: sync
 """
 
 RETURN = r"""
@@ -315,26 +368,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: e13f41b4-6674-4df5-9360-0f2509728107
+  sample: cae51753-9404-4b7e-bdc4-91dd35b43b59
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2021-11-30T18:47:27.253Z'
+    creation_time: '2021-12-09T01:51:26.068Z'
     description: ''
-    id: e13f41b4-6674-4df5-9360-0f2509728107
-    last_modified_time: '2021-11-30T18:47:27.253Z'
+    id: cae51753-9404-4b7e-bdc4-91dd35b43b59
+    last_modified_time: '2021-12-09T01:51:26.068Z'
     name: sub_lib
-    server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
+    server_guid: 43ef8d9f-ed01-42b3-b59b-d157382ea52d
     storage_backings:
-    - datastore_id: datastore-1332
+    - datastore_id: datastore-1616
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/dcc90f0e-803e-4f64-a063-6c0efe43e05c/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/c4eaf6b7-4c12-4c9a-b7c8-2e33632667a4/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -342,13 +395,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "probe": {
-        "query": {},
-        "body": {"subscription_info": "subscription_info"},
-        "path": {},
-    },
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
         "body": {
@@ -368,6 +414,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -387,7 +435,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "probe": {
+        "query": {},
+        "body": {"subscription_info": "subscription_info"},
+        "path": {},
+    },
 }  # pylint: disable=line-too-long
 
 import json

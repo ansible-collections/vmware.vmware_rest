@@ -165,6 +165,7 @@ PAYLOAD_FORMAT = {
         "body": {"config": "config", "host": "host"},
         "path": {"protocol": "protocol"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
     "set": {
         "query": {},
         "body": {
@@ -176,7 +177,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"protocol": "protocol"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
 }  # pylint: disable=line-too-long
 
 import json

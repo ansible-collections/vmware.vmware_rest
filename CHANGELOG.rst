@@ -5,6 +5,19 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.3
+======
+
+Minor Changes
+-------------
+
+- add some missing example blocks.
+
+Bugfixes
+--------
+
+- "remove the following modules vcenter_vm_guest_environment_info vcenter_vm_guest_environment_info " "vcenter_vm_guest_filesystemy vcenter_vm_guest_filesystem_files vcenter_vm_guest_filesystem_files_info " "vcenter_vm_guest_processes vcenter_vm_guest_processes_info because they don't work as expected."
+
 v2.1.2
 ======
 

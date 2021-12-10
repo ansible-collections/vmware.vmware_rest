@@ -127,7 +127,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1238
+      datacenter: datacenter-1522
       name: my_dc
     _ansible_no_log: 0
     ansible_loop_var: item
@@ -136,7 +136,7 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1238
+        datacenter: datacenter-1522
         folder: null
         force: 1
         name: null
@@ -148,7 +148,7 @@ results:
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1238
+      datacenter: datacenter-1522
       name: my_dc
     value: {}
   type: list

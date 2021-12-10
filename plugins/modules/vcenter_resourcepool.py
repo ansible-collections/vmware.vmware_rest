@@ -211,7 +211,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1273
+  sample: resgroup-1557
   type: str
 value:
   description: Create a generic resource pool

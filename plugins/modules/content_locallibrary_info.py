@@ -82,6 +82,26 @@ EXAMPLES = r"""
   retries: 100
   delay: 3
   until: result is not failed
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Retrieve the local content library information based upon id check mode
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+  check_mode: true
 """
 
 RETURN = r"""
@@ -89,27 +109,27 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: 6b9156cf-ec68-4166-a2ee-a194651a9e3f
+  sample: b0625c6c-4ba1-40f7-9c9d-dbe8180e9262
   type: str
 value:
   description: Retrieve the local content library information based upon id check
     mode
   returned: On success
   sample:
-    creation_time: '2021-11-30T18:47:25.135Z'
+    creation_time: '2021-12-09T01:51:23.560Z'
     description: automated
-    id: 6b9156cf-ec68-4166-a2ee-a194651a9e3f
-    last_modified_time: '2021-11-30T18:47:25.135Z'
+    id: b0625c6c-4ba1-40f7-9c9d-dbe8180e9262
+    last_modified_time: '2021-12-09T01:51:23.560Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/6b9156cf-ec68-4166-a2ee-a194651a9e3f/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/b0625c6c-4ba1-40f7-9c9d-dbe8180e9262/lib.json
       published: 1
       user_name: vcsp
-    server_guid: 9c3796d0-2679-4dc6-981c-88a39df81474
+    server_guid: 43ef8d9f-ed01-42b3-b59b-d157382ea52d
     storage_backings:
-    - datastore_id: datastore-1332
+    - datastore_id: datastore-1616
       type: DATASTORE
     type: LOCAL
     version: '2'

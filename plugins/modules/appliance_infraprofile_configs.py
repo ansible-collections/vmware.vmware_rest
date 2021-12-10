@@ -130,7 +130,7 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2021-11-30T18:48:16+0000","version":"7.0.3.00100","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"description":"Appliance
+  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","version":"7.0.3.00100","creationTime":"2021-12-09T01:52:05+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"description":"Appliance
     Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
     shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
@@ -146,13 +146,9 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "export": {
+    "import_profile": {
         "query": {},
-        "body": {
-            "description": "description",
-            "encryption_key": "encryption_key",
-            "profiles": "profiles",
-        },
+        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
     },
     "validate": {
@@ -160,9 +156,13 @@ PAYLOAD_FORMAT = {
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
     },
-    "import_profile": {
+    "export": {
         "query": {},
-        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
+        "body": {
+            "description": "description",
+            "encryption_key": "encryption_key",
+            "profiles": "profiles",
+        },
         "path": {},
     },
 }  # pylint: disable=line-too-long

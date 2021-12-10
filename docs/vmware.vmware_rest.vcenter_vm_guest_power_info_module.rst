@@ -176,8 +176,86 @@ Notes
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        name: test_vm1
+        guest_OS: RHEL_7_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+        disks:
+        - type: SATA
+          backing:
+            type: VMDK_FILE
+            vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+        - type: SATA
+          new_vmdk:
+            name: second_disk
+            capacity: 32000000000
+        cdroms:
+        - type: SATA
+          sata:
+            bus: 0
+            unit: 2
+        nics:
+        - backing:
+            type: STANDARD_PORTGROUP
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+              \ Network') }}"
+
+      register: my_vm
+
+    - name: Read the power status of the VM
+      vmware.vmware_rest.vcenter_vm_guest_power_info:
+        vm: '{{ my_vm.id }}'
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Read the power status of the VM</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;operations_ready&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_RUNNING&#x27;}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

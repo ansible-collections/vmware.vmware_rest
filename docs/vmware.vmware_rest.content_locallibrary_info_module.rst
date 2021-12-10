@@ -188,6 +188,26 @@ Examples
       delay: 3
       until: result is not failed
 
+    - name: Create a new local content library
+      vmware.vmware_rest.content_locallibrary:
+        name: local_library_001
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          type: DATASTORE
+        state: present
+      register: ds_lib
+
+    - name: Retrieve the local content library information based upon id check mode
+      vmware.vmware_rest.content_locallibrary_info:
+        library_id: '{{ ds_lib.id }}'
+      register: result
+      check_mode: true
+
 
 
 Return Values
@@ -216,7 +236,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">6b9156cf-ec68-4166-a2ee-a194651a9e3f</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">b0625c6c-4ba1-40f7-9c9d-dbe8180e9262</div>
                 </td>
             </tr>
             <tr>
@@ -233,7 +253,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve the local content library information based upon id check mode</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-11-30T18:47:25.135Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;6b9156cf-ec68-4166-a2ee-a194651a9e3f&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-11-30T18:47:25.135Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/6b9156cf-ec68-4166-a2ee-a194651a9e3f/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;9c3796d0-2679-4dc6-981c-88a39df81474&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1332&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;creation_time&#x27;: &#x27;2021-12-09T01:51:23.560Z&#x27;, &#x27;description&#x27;: &#x27;automated&#x27;, &#x27;id&#x27;: &#x27;b0625c6c-4ba1-40f7-9c9d-dbe8180e9262&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-12-09T01:51:23.560Z&#x27;, &#x27;name&#x27;: &#x27;local_library_001&#x27;, &#x27;publish_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;persist_json_enabled&#x27;: 0, &#x27;publish_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/b0625c6c-4ba1-40f7-9c9d-dbe8180e9262/lib.json&#x27;, &#x27;published&#x27;: 1, &#x27;user_name&#x27;: &#x27;vcsp&#x27;}, &#x27;server_guid&#x27;: &#x27;43ef8d9f-ed01-42b3-b59b-d157382ea52d&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1616&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;type&#x27;: &#x27;LOCAL&#x27;, &#x27;version&#x27;: &#x27;2&#x27;}</div>
                 </td>
             </tr>
     </table>

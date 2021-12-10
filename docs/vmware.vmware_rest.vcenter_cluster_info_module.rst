@@ -248,12 +248,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: get all the clusters called my_cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        filter_names:
-        - my_cluster
-      register: my_cluster
-
     - name: Build a list of all the clusters
       vmware.vmware_rest.vcenter_cluster_info:
       register: all_the_clusters
@@ -262,6 +256,12 @@ Examples
       vmware.vmware_rest.vcenter_cluster_info:
         cluster: '{{ all_the_clusters.value[0].cluster }}'
       register: my_cluster_info
+
+    - name: get all the clusters called my_cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        filter_names:
+        - my_cluster
+      register: my_cluster
 
 
 
@@ -291,7 +291,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1270</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1554</div>
                 </td>
             </tr>
             <tr>
@@ -308,7 +308,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve details about the first cluster</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1271&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1555&#x27;}</div>
                 </td>
             </tr>
     </table>

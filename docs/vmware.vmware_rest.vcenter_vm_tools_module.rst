@@ -229,6 +229,35 @@ Notes
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Look up the VM called test_vm1 in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - test_vm1
+
+    - name: Collect information about a specific VM
+      vmware.vmware_rest.vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+
+    - name: Retrive vm-tools information
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: '{{ test_vm1_info.id }}'
+
+    - name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: '{{ test_vm1_info.id }}'
+        upgrade_policy: UPGRADE_AT_POWER_CYCLE
+
+    - name: Change vm-tools upgrade policy to MANUAL
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: '{{ test_vm1_info.id }}'
+        upgrade_policy: MANUAL
 
 
 

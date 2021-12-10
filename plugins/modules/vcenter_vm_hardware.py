@@ -162,7 +162,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -171,6 +170,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "upgrade": {"query": {}, "body": {"version": "version"}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
