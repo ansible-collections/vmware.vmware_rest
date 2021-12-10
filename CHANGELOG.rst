@@ -11,6 +11,7 @@ v2.1.3
 Minor Changes
 -------------
 
+- The module_utils/vmware.py is licensed under BSD.
 - add some missing example blocks.
 
 Bugfixes

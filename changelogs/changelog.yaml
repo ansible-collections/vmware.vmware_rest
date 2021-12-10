@@ -561,7 +561,9 @@ releases:
 
         '
       minor_changes:
+      - The module_utils/vmware.py is licensed under BSD.
       - add some missing example blocks.
     fragments:
     - 2.1.3-changelog.yaml
+    - 2.1.3-module_utils.yaml
     release_date: '2021-12-08'
