@@ -1,1 +1,0 @@
-- all the operation are done using the vmware ID, not the name.
