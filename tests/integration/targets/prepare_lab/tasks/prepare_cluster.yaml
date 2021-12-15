@@ -6,13 +6,6 @@
     ha_host_monitoring: disabled
     validate_certs: no
 
-- name: Enable DRS
-  community.vmware.vmware_cluster_drs:
-    datacenter_name: my_dc
-    cluster_name: my_cluster
-    enable_drs: yes
-  delegate_to: localhost
-
 - name: get all the clusters called my_cluster
   vmware.vmware_rest.vcenter_cluster_info:
     filter_names:
