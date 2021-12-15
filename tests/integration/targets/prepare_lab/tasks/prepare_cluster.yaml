@@ -10,7 +10,7 @@
   community.vmware.vmware_cluster_drs:
     datacenter_name: my_dc
     cluster_name: my_cluster
-    enable_drs: yes
+    enable: yes
   delegate_to: localhost
 
 - name: get all the clusters called my_cluster
