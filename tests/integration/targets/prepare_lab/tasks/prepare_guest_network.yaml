@@ -17,7 +17,6 @@
     vmnics:
       - vmnic1
     state: present
-  no_log: true
 
 - name: Create the portgroup
   community.vmware.vmware_dvs_portgroup:
