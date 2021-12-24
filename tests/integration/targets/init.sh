@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2155,SC2086
-
+set -eux
 BASE_DIR=$(dirname "${BASH_SOURCE[0]}")
 if [ -z "${INVENTORY_PATH}" ]; then
     if [ -f /tmp/inventory-vmware_rest ]; then
@@ -19,6 +19,9 @@ fi
 # username=administrator@vsphere.local
 # password=TRQhZ:WdXrhA*w;nqaU0
 echo "Reading credentials from ${INVENTORY_PATH}"
+echo '----'
+cat ${INVENTORY_PATH}
+echo '----'
 export VMWARE_HOST=$(sed 's,^vcenter_hostname=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_USER=$(sed 's,^vcenter_username=\(.*\),\1,;t;d' ${INVENTORY_PATH})
 export VMWARE_PASSWORD=$(sed 's,^vcenter_password=\(.*\),\1,;t;d' ${INVENTORY_PATH})
