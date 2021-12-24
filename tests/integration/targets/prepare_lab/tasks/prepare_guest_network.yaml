@@ -3,7 +3,7 @@
   community.vmware.vmware_dvswitch:
     datacenter_name: my_dc
     switch_name: dvswitch1
-    switch_version: 6.5.0
+    switch_version: 7.0.0
     uplink_quantity: 2
     discovery_proto: lldp
     discovery_operation: both
@@ -14,8 +14,6 @@
     validate_certs: no
     esxi_hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
     switch_name: dvswitch1
-    vmnics:
-      - vmnic1
     state: present
   no_log: true
 
@@ -24,9 +22,9 @@
     validate_certs: no
     portgroup_name: my-portrgoup
     switch_name: dvswitch1
-    portgroup_type: earlyBinding
     vlan_id: 0
     num_ports: 120
+    port_binding: static
     state: present
 
 - name: Retrieve details about the portgroup
