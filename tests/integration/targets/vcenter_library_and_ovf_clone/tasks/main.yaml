@@ -2,7 +2,7 @@
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
       resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
     name: test_vm1
@@ -112,7 +112,7 @@
       published: true
       authentication_method: 'NONE'
     storage_backings:
-      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
         type: 'DATASTORE'
     state: present
   register: ds_lib
@@ -184,7 +184,7 @@
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
         type: 'DATASTORE'
   register: sub_lib
 
@@ -197,7 +197,7 @@
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
         type: 'DATASTORE'
   register: result
 - name: Assert the resource has not been changed
