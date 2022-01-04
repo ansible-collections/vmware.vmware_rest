@@ -411,6 +411,12 @@ value:
     instance: ''
     name: com.vmware.applmgmt.mon.name.mem.usage
     units: com.vmware.applmgmt.mon.unit.percent
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
+    id: storage.totalsize.directory.vcdb_hourly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.rx.error.eth0
     id: net.rx.error.eth0
@@ -429,12 +435,6 @@ value:
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.tx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
-    id: storage.totalsize.directory.vcdb_hourly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.lo
     id: net.tx.error.lo
@@ -1053,5 +1053,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

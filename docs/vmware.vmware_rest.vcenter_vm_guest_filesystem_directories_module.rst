@@ -75,7 +75,7 @@ Parameters
                 <td>
                         <div>The guest authentication data. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>interactive_session</code> (bool): If {@term set}, the {@term operation} will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>interactive_session</code> (bool): If {@term set}, theoperation will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;].</div>
                         <div>- <code>type</code> (str): Types of guest credentials ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;].</div>

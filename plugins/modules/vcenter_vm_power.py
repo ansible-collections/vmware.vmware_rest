@@ -212,9 +212,9 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-63053a06-45db-44c4-bdcd-af2edbd0645a
+      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
       power_state: POWERED_OFF
-      vm: vm-1546
+      vm: vm-1041
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -228,13 +228,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1546
+        vm: vm-1041
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-63053a06-45db-44c4-bdcd-af2edbd0645a
+      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
       power_state: POWERED_OFF
-      vm: vm-1546
+      vm: vm-1041
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -247,10 +247,10 @@ results:
         id: vmsg.InvalidPowerState.summary
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 1024
+      memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1547
+      vm: vm-1042
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -264,23 +264,23 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1547
+        vm: vm-1042
     item:
       cpu_count: 1
-      memory_size_MiB: 1024
+      memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1547
+      vm: vm-1042
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -506,5 +506,5 @@ async def _suspend(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

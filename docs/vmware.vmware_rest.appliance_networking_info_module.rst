@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get network information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;dns&#x27;: {&#x27;hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;mode&#x27;: &#x27;DHCP&#x27;, &#x27;servers&#x27;: [&#x27;192.168.123.1&#x27;]}, &#x27;interfaces&#x27;: {&#x27;nic0&#x27;: {&#x27;ipv4&#x27;: {&#x27;address&#x27;: &#x27;192.168.123.8&#x27;, &#x27;configurable&#x27;: 1, &#x27;default_gateway&#x27;: &#x27;192.168.123.1&#x27;, &#x27;mode&#x27;: &#x27;DHCP&#x27;, &#x27;prefix&#x27;: 24}, &#x27;mac&#x27;: &#x27;52:54:00:c3:d3:8d&#x27;, &#x27;name&#x27;: &#x27;nic0&#x27;, &#x27;status&#x27;: &#x27;up&#x27;}}, &#x27;vcenter_base_url&#x27;: &#x27;https://vcenter.test:443&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;dns&#x27;: {&#x27;hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;mode&#x27;: &#x27;DHCP&#x27;, &#x27;servers&#x27;: [&#x27;192.168.123.1&#x27;]}, &#x27;interfaces&#x27;: {&#x27;nic0&#x27;: {&#x27;ipv4&#x27;: {&#x27;address&#x27;: &#x27;192.168.123.8&#x27;, &#x27;configurable&#x27;: 1, &#x27;default_gateway&#x27;: &#x27;192.168.123.1&#x27;, &#x27;mode&#x27;: &#x27;DHCP&#x27;, &#x27;prefix&#x27;: 24}, &#x27;mac&#x27;: &#x27;52:54:00:b1:6f:6b&#x27;, &#x27;name&#x27;: &#x27;nic0&#x27;, &#x27;status&#x27;: &#x27;up&#x27;}}, &#x27;vcenter_base_url&#x27;: &#x27;https://vcenter.test:443&#x27;}</div>
                 </td>
             </tr>
     </table>

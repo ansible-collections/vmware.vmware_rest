@@ -96,7 +96,7 @@ value:
           default_gateway: 192.168.123.1
           mode: DHCP
           prefix: 24
-        mac: 52:54:00:c3:d3:8d
+        mac: 52:54:00:b1:6f:6b
         name: nic0
         status: up
     vcenter_base_url: https://vcenter.test:443
@@ -226,5 +226,5 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

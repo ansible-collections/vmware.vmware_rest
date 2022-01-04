@@ -255,13 +255,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1133862897
+      connection_cookie: 822541061
       distributed_port: '2'
-      distributed_switch_uuid: 50 31 95 59 80 f7 13 ef-47 ab 77 12 9f 12 bd 19
-      network: dvportgroup-1571
+      distributed_switch_uuid: 50 0b 05 fd 46 44 6c 12-9f 99 7d 6c 0b 70 31 61
+      network: dvportgroup-1040
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:b1:d3:23
+    mac_address: 00:50:56:8b:d7:16
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -274,21 +274,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -304,7 +291,20 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -620,5 +620,5 @@ async def _update(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

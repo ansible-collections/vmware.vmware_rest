@@ -54,7 +54,7 @@ Parameters
                 </td>
                 <td>
                         <div>identifier of the service whose properties are being updated.</div>
-                        <div>The parameter must be the id of a resource returned by <span class='module'>appliance_vmon_service</span>. Required with <em>state=[&#x27;restart&#x27;, &#x27;start&#x27;, &#x27;stop&#x27;]</em></div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.appliance_vmon_service</span>. Required with <em>state=[&#x27;restart&#x27;, &#x27;start&#x27;, &#x27;stop&#x27;]</em></div>
                 </td>
             </tr>
             <tr>

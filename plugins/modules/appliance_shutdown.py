@@ -125,13 +125,13 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "cancel": {"query": {}, "body": {}, "path": {}},
     "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
     "poweroff": {
         "query": {},
         "body": {"delay": "delay", "reason": "reason"},
         "path": {},
     },
-    "cancel": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -333,5 +333,5 @@ async def _reboot(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

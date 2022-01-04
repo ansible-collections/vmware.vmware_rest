@@ -91,7 +91,7 @@ EXAMPLES = r"""
       published: true
       authentication_method: NONE
     storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
         \ }}"
       type: DATASTORE
     state: present
@@ -109,27 +109,27 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: b0625c6c-4ba1-40f7-9c9d-dbe8180e9262
+  sample: 712b11c1-972a-4c22-99d5-e3046a92c9ec
   type: str
 value:
   description: Retrieve the local content library information based upon id check
     mode
   returned: On success
   sample:
-    creation_time: '2021-12-09T01:51:23.560Z'
+    creation_time: '2022-01-04T21:29:00.266Z'
     description: automated
-    id: b0625c6c-4ba1-40f7-9c9d-dbe8180e9262
-    last_modified_time: '2021-12-09T01:51:23.560Z'
+    id: 712b11c1-972a-4c22-99d5-e3046a92c9ec
+    last_modified_time: '2022-01-04T21:29:00.266Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/b0625c6c-4ba1-40f7-9c9d-dbe8180e9262/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/712b11c1-972a-4c22-99d5-e3046a92c9ec/lib.json
       published: 1
       user_name: vcsp
-    server_guid: 43ef8d9f-ed01-42b3-b59b-d157382ea52d
+    server_guid: c6a81a4c-3386-4a6a-a909-a52bd5c9bafa
     storage_backings:
-    - datastore_id: datastore-1616
+    - datastore_id: datastore-1087
       type: DATASTORE
     type: LOCAL
     version: '2'
@@ -279,5 +279,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

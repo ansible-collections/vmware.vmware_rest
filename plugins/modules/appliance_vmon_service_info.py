@@ -18,7 +18,7 @@ options:
   service:
     description:
     - identifier of the service whose state is being queried.
-    - The parameter must be the id of a resource returned by M(appliance_vmon_service).
+    - The parameter must be the id of a resource returned by M(vmware.vmware_rest.appliance_vmon_service).
       Required with I(state=['get'])
     type: str
   session_timeout:
@@ -230,7 +230,7 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: DEGRADED
+      health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args: []
         default_message: health.statsReoptInitalizer.illegalStateEx
@@ -333,10 +333,10 @@ value:
       health: HEALTHY
       health_messages:
       - args:
-        - 2021-12-09T01:46:09UTC
-        - 2021-12-09T01:46:09UTC
-        default_message: Configuration health status is created between 2021-12-09T01:46:09UTC
-          and 2021-12-09T01:46:09UTC.
+        - 2022-01-04T21:27:25UTC
+        - 2022-01-04T21:27:26UTC
+        default_message: Configuration health status is created between 2022-01-04T21:27:25UTC
+          and 2022-01-04T21:27:26UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -599,5 +599,5 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

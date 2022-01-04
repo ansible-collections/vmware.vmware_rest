@@ -146,12 +146,13 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1561
+  sample: host-1031
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -168,7 +169,6 @@ PAYLOAD_FORMAT = {
     },
     "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -419,5 +419,5 @@ async def _disconnect(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

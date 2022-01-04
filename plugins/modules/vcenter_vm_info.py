@@ -235,7 +235,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1599
+  sample: vm-1068
   type: str
 value:
   description: Wait until my VM is off
@@ -281,7 +281,7 @@ value:
       '16001':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[local] test_vm1_8/second_disk.vmdk'
+          vmdk_file: '[local] test_vm1_1/second_disk.vmdk'
         capacity: 32000000000
         label: Hard disk 2
         sata:
@@ -295,8 +295,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 4231b864-1f21-0441-01a3-5e2a63fba0b4
-      instance_uuid: 503157d7-5018-0c3c-5aba-d177fb47a1e2
+      bios_uuid: 420b7da1-5203-fc47-79d1-0c0859dbab46
+      instance_uuid: 500b0c74-1334-2c83-29ac-cb077f4af2fa
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -307,11 +307,11 @@ value:
       '4000':
         allow_guest_control: 0
         backing:
-          network: network-1591
+          network: network-1061
           network_name: VM Network
           type: STANDARD_PORTGROUP
         label: Network adapter 1
-        mac_address: 00:50:56:b1:74:7a
+        mac_address: 00:50:56:8b:df:7a
         mac_type: ASSIGNED
         pci_slot_number: 160
         start_connected: 0
@@ -507,5 +507,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

@@ -84,7 +84,7 @@ value:
   returned: On success
   sample:
     build: '18778458'
-    install_time: '2021-12-02T15:34:05.695Z'
+    install_time: '2021-12-22T21:27:56.326Z'
     product: VMware vCenter Server
     releasedate: October 21, 2021
     summary: Patch for VMware vCenter Server 7.0
@@ -218,5 +218,5 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())
