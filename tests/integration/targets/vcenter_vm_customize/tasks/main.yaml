@@ -153,6 +153,10 @@
   retries: 60
   delay: 5
 
+- name: Wait to be sure the VM is actually operational
+  pause:
+    minutes: 1
+
 - name: Ensure we can ping the new VM
   ansible.builtin.command: ping -c 5 192.168.123.50
 
