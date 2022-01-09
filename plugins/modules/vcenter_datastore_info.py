@@ -122,21 +122,21 @@ value:
   description: Build a list of all the datastores
   returned: On success
   sample:
+  - capacity: 43754979328
+    datastore: datastore-1032
+    free_space: 42246078464
+    name: local
+    type: VMFS
   - capacity: 26208088064
-    datastore: datastore-1562
-    free_space: 24160378880
+    datastore: datastore-1034
+    free_space: 24304742400
     name: ro_datastore
     type: NFS
   - capacity: 26208088064
-    datastore: datastore-1563
-    free_space: 24160378880
+    datastore: datastore-1036
+    free_space: 24304742400
     name: rw_datastore
     type: NFS
-  - capacity: 43754979328
-    datastore: datastore-1564
-    free_space: 41281388544
-    name: local
-    type: VMFS
   type: list
 """
 
@@ -312,5 +312,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

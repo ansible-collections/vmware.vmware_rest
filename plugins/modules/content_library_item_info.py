@@ -111,7 +111,7 @@ EXAMPLES = r"""
       published: true
       authentication_method: NONE
     storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
         \ }}"
       type: DATASTORE
     state: present
@@ -131,7 +131,7 @@ EXAMPLES = r"""
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
         \ }}"
       type: DATASTORE
   register: sub_lib
@@ -152,15 +152,15 @@ value:
     certificate_verification_info:
       status: INTERNAL
     content_version: '2'
-    creation_time: '2021-12-09T01:50:24.552Z'
+    creation_time: '2022-01-04T21:25:47.771Z'
     description: an OVF example
-    id: 4fff8c7a-b131-4ff4-b040-3f9700879c56
-    last_modified_time: '2021-12-09T01:50:32.939Z'
-    library_id: c4eaf6b7-4c12-4c9a-b7c8-2e33632667a4
+    id: efd719ac-e7b3-42a6-837d-e97d66770dda
+    last_modified_time: '2022-01-04T21:28:01.028Z'
+    library_id: a5447003-868f-44c4-b40c-9d9ecb3988da
     metadata_version: '1'
     name: my_vm
     security_compliance: 1
-    size: 74610
+    size: 80754
     type: ovf
     version: '1'
   type: list
@@ -308,5 +308,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

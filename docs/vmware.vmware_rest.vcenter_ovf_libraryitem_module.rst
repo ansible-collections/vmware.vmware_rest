@@ -309,6 +309,24 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        name: test_vm1
+        guest_OS: DEBIAN_8_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+      register: my_vm
+
     - name: Create a content library pointing on a NFS share
       vmware.vmware_rest.content_locallibrary:
         name: my_library_on_nfs
@@ -321,24 +339,6 @@ Examples
           type: OTHER
         state: present
       register: nfs_lib
-
-    - name: Create a VM
-      vmware.vmware_rest.vcenter_vm:
-        placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
-        name: test_vm1
-        guest_OS: DEBIAN_8_64
-        hardware_version: VMX_11
-        memory:
-          hot_add_enabled: true
-          size_MiB: 1024
-      register: my_vm
 
     - name: Export the VM as an OVF on the library
       vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -411,7 +411,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF and specify the host and folder</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1627&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1098&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

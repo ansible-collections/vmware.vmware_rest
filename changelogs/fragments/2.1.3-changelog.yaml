@@ -1,0 +1,8 @@
+---
+minor_changes:
+- add some missing example blocks.
+bugfixes:
+- >
+  "remove the following modules vcenter_vm_guest_environment_info vcenter_vm_guest_environment_info "
+  "vcenter_vm_guest_filesystemy vcenter_vm_guest_filesystem_files vcenter_vm_guest_filesystem_files_info "
+  "vcenter_vm_guest_processes vcenter_vm_guest_processes_info because they don't work as expected."

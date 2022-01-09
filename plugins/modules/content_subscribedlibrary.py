@@ -184,19 +184,20 @@ options:
       to happen, the global C(configuration_model.automatic_sync_enabled) option must
       also be true. The subscription is still active even when automatic synchronization
       is turned off, but synchronization is only activated with an explicit call to
-      M(content_subscribedlibrary) with C(state=sync) or M(content_library_item) with
-      C(state=sync). In other words, manual synchronization is still available even
-      when automatic synchronization is disabled. ([''present'', ''probe''])'
+      M(vmware.vmware_rest.content_subscribedlibrary) with C(state=sync) or M(vmware.vmware_rest.content_library_item)
+      with C(state=sync). In other words, manual synchronization is still available
+      even when automatic synchronization is disabled. ([''present'', ''probe''])'
     - ' - C(on_demand) (bool): Indicates whether a library item''s content will be
       synchronized only on demand. If this is set to C(True), then the library item''s
       metadata will be synchronized but the item''s content (its files) will not be
       synchronized. The Content Library Service will synchronize the content upon
       request only. This can cause the first use of the content to have a noticeable
       delay. Items without synchronized content can be forcefully synchronized in
-      advance using the M(content_library_item) with C(state=sync) call with C(force_sync_content)
-      set to true. Once content has been synchronized, the content can removed with
-      the M(content_library_item) with C(state=sync) call. If this value is set to
-      C(False), all content will be synchronized in advance. ([''present'', ''probe''])'
+      advance using the M(vmware.vmware_rest.content_library_item) with C(state=sync)
+      call with C(force_sync_content) set to true. Once content has been synchronized,
+      the content can removed with the M(vmware.vmware_rest.content_library_item)
+      with C(state=sync) call. If this value is set to C(False), all content will
+      be synchronized in advance. ([''present'', ''probe''])'
     - ' - C(password) (str): The password to use when authenticating. The password
       must be set when using a password-based authentication method; empty strings
       are not allowed. ([''present'', ''probe''])'
@@ -331,7 +332,7 @@ EXAMPLES = r"""
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
         \ }}"
       type: DATASTORE
   register: sub_lib
@@ -345,7 +346,7 @@ EXAMPLES = r"""
       automatic_sync_enabled: false
       on_demand: true
     storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
         \ }}"
       type: DATASTORE
   register: result
@@ -368,26 +369,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: cae51753-9404-4b7e-bdc4-91dd35b43b59
+  sample: c19a58af-5b25-4620-b1e3-be2215ef0d4b
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2021-12-09T01:51:26.068Z'
+    creation_time: '2022-01-04T21:29:02.588Z'
     description: ''
-    id: cae51753-9404-4b7e-bdc4-91dd35b43b59
-    last_modified_time: '2021-12-09T01:51:26.068Z'
+    id: c19a58af-5b25-4620-b1e3-be2215ef0d4b
+    last_modified_time: '2022-01-04T21:29:02.588Z'
     name: sub_lib
-    server_guid: 43ef8d9f-ed01-42b3-b59b-d157382ea52d
+    server_guid: c6a81a4c-3386-4a6a-a909-a52bd5c9bafa
     storage_backings:
-    - datastore_id: datastore-1616
+    - datastore_id: datastore-1087
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/c4eaf6b7-4c12-4c9a-b7c8-2e33632667a4/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/a5447003-868f-44c4-b40c-9d9ecb3988da/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -395,27 +396,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {"library_id": "library_id"},
-    },
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -435,12 +416,32 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "update": {
+        "query": {},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {"library_id": "library_id"},
+    },
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -780,5 +781,5 @@ async def _update(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

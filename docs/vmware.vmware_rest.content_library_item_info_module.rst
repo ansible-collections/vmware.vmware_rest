@@ -227,7 +227,7 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
             \ }}"
           type: DATASTORE
         state: present
@@ -247,7 +247,7 @@ Examples
           automatic_sync_enabled: false
           on_demand: true
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
             \ }}"
           type: DATASTORE
       register: sub_lib
@@ -285,7 +285,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the list of items of the NFS library</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 1, &#x27;certificate_verification_info&#x27;: {&#x27;status&#x27;: &#x27;INTERNAL&#x27;}, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2021-12-09T01:50:24.552Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;4fff8c7a-b131-4ff4-b040-3f9700879c56&#x27;, &#x27;last_modified_time&#x27;: &#x27;2021-12-09T01:50:32.939Z&#x27;, &#x27;library_id&#x27;: &#x27;c4eaf6b7-4c12-4c9a-b7c8-2e33632667a4&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 74610, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 1, &#x27;certificate_verification_info&#x27;: {&#x27;status&#x27;: &#x27;INTERNAL&#x27;}, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2022-01-04T21:25:47.771Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;efd719ac-e7b3-42a6-837d-e97d66770dda&#x27;, &#x27;last_modified_time&#x27;: &#x27;2022-01-04T21:28:01.028Z&#x27;, &#x27;library_id&#x27;: &#x27;a5447003-868f-44c4-b40c-9d9ecb3988da&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 80754, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
                 </td>
             </tr>
     </table>

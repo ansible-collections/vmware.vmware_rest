@@ -125,14 +125,14 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: domain-c1554
+  sample: domain-c1024
   type: str
 value:
   description: Retrieve details about the first cluster
   returned: On success
   sample:
     name: my_cluster
-    resource_pool: resgroup-1555
+    resource_pool: resgroup-1025
   type: dict
 """
 
@@ -302,5 +302,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

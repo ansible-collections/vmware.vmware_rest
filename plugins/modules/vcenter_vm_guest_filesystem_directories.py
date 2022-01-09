@@ -24,11 +24,11 @@ options:
     description:
     - The guest authentication data. This parameter is mandatory.
     - 'Valid attributes are:'
-    - ' - C(interactive_session) (bool): If {@term set}, the {@term operation} will
-      interact with the logged-in desktop session in the guest. This requires that
-      the logged-on user matches the user specified by the {@link Credentials}. This
-      is currently only supported for {@link Type#USERNAME_PASSWORD}. ([''absent'',
-      ''create_temporary'', ''move'', ''present''])'
+    - ' - C(interactive_session) (bool): If {@term set}, theoperation will interact
+      with the logged-in desktop session in the guest. This requires that the logged-on
+      user matches the user specified by the {@link Credentials}. This is currently
+      only supported for {@link Type#USERNAME_PASSWORD}. ([''absent'', ''create_temporary'',
+      ''move'', ''present''])'
     - '   This key is required with [''absent'', ''create_temporary'', ''move'', ''present''].'
     - ' - C(type) (str): Types of guest credentials ([''absent'', ''create_temporary'',
       ''move'', ''present''])'
@@ -198,18 +198,12 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "move": {
-        "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
-        "path": {"vm": "vm"},
-    },
-    "create_temporary": {
+    "delete": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "parent_path": "parent_path",
-            "prefix": "prefix",
-            "suffix": "suffix",
+            "path": "path",
+            "recursive": "recursive",
         },
         "path": {"vm": "vm"},
     },
@@ -222,13 +216,19 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {
+    "create_temporary": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
+            "parent_path": "parent_path",
+            "prefix": "prefix",
+            "suffix": "suffix",
         },
+        "path": {"vm": "vm"},
+    },
+    "move": {
+        "query": {},
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long
@@ -477,5 +477,5 @@ async def _move(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

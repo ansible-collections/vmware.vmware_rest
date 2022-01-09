@@ -119,7 +119,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[local] test_vm1_7/test_vm1.vmdk'
+      vmdk_file: '[local] test_vm1/test_vm1.vmdk'
     capacity: 17179869184
     label: Hard disk 1
     scsi:
@@ -274,5 +274,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

@@ -127,16 +127,16 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1522
+      datacenter: datacenter-1001
       name: my_dc
     _ansible_no_log: 0
     ansible_loop_var: item
-    attempts: 1
-    changed: 1
+    attempts: 2
+    changed: 0
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1522
+        datacenter: datacenter-1001
         folder: null
         force: 1
         name: null
@@ -148,20 +148,27 @@ results:
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1522
+      datacenter: datacenter-1001
       name: my_dc
-    value: {}
+    value:
+      error_type: NOT_FOUND
+      messages:
+      - args:
+        - datacenter-1001:c6a81a4c-3386-4a6a-a909-a52bd5c9bafa
+        default_message: Datacenter with identifier 'datacenter-1001:c6a81a4c-3386-4a6a-a909-a52bd5c9bafa'
+          does not exist.
+        id: com.vmware.api.vcenter.datacenter.not_found
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
     "delete": {
         "query": {"force": "force"},
         "body": {},
         "path": {"datacenter": "datacenter"},
     },
+    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -354,5 +361,5 @@ async def _delete(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

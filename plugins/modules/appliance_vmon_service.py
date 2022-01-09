@@ -18,7 +18,7 @@ options:
   service:
     description:
     - identifier of the service whose properties are being updated.
-    - The parameter must be the id of a resource returned by M(appliance_vmon_service).
+    - The parameter must be the id of a resource returned by M(vmware.vmware_rest.appliance_vmon_service).
       Required with I(state=['restart', 'start', 'stop'])
     type: str
   session_timeout:
@@ -120,15 +120,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "list_details": {"query": {}, "body": {}, "path": {}},
     "update": {
         "query": {},
         "body": {"startup_type": "spec/startup_type"},
         "path": {"service": "service"},
     },
-    "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "list_details": {"query": {}, "body": {}, "path": {}},
     "start": {"query": {}, "body": {}, "path": {"service": "service"}},
     "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -413,5 +413,5 @@ async def _update(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

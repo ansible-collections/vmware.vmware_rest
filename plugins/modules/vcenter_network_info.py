@@ -123,18 +123,18 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: dvswitch1-DVUplinks-1568
-    network: dvportgroup-1569
+  - name: dvswitch1-DVUplinks-1038
+    network: dvportgroup-1039
     type: DISTRIBUTED_PORTGROUP
-  - name: my-portrgoup
-    network: dvportgroup-1571
-    type: DISTRIBUTED_PORTGROUP
-  - name: VM Network
-    network: network-1565
-    type: STANDARD_PORTGROUP
   - name: second_vswitch
-    network: network-1566
+    network: network-1035
     type: STANDARD_PORTGROUP
+  - name: VM Network
+    network: network-1033
+    type: STANDARD_PORTGROUP
+  - name: my-portrgoup
+    network: dvportgroup-1040
+    type: DISTRIBUTED_PORTGROUP
   type: list
 """
 
@@ -288,5 +288,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

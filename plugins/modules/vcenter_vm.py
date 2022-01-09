@@ -832,7 +832,7 @@ EXAMPLES = r"""
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
         \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
         \ }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
       resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
@@ -893,26 +893,26 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-63053a06-45db-44c4-bdcd-af2edbd0645a
+      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
       power_state: POWERED_OFF
-      vm: vm-1546
+      vm: vm-1041
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-63053a06-45db-44c4-bdcd-af2edbd0645a
+      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
       power_state: POWERED_OFF
-      vm: vm-1546
+      vm: vm-1041
     skip_reason: Conditional result was False
     skipped: 1
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 1024
+      memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1547
+      vm: vm-1042
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -956,49 +956,34 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1547
+        vm: vm-1042
     item:
       cpu_count: 1
-      memory_size_MiB: 1024
+      memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1547
+      vm: vm-1042
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "register": {
+    "instant_clone": {
         "query": {},
         "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
             "name": "name",
-            "path": "path",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
             "placement": "placement",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "clone": {
-        "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
+            "serial_ports_to_update": "serial_ports_to_update",
             "source": "source",
         },
         "path": {},
     },
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -1022,21 +1007,36 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "instant_clone": {
+    "clone": {
         "query": {},
         "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
             "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
             "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
+            "power_on": "power_on",
             "source": "source",
         },
         "path": {},
     },
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -1596,5 +1596,5 @@ async def _unregister(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

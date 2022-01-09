@@ -211,7 +211,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1557
+  sample: resgroup-1027
   type: str
 value:
   description: Create a generic resource pool
@@ -236,15 +236,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "cpu_allocation": "cpu_allocation",
-            "memory_allocation": "memory_allocation",
-            "name": "name",
-        },
-        "path": {"resource_pool": "resource_pool"},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
     "create": {
         "query": {},
         "body": {
@@ -255,7 +247,15 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "update": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "cpu_allocation",
+            "memory_allocation": "memory_allocation",
+            "name": "name",
+        },
+        "path": {"resource_pool": "resource_pool"},
+    },
 }  # pylint: disable=line-too-long
 
 import json
@@ -502,5 +502,5 @@ async def _update(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

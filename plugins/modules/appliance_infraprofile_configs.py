@@ -41,15 +41,15 @@ options:
     - ' - C(profiles) (list): Profiles to be exported/imported.'
     - If unset or empty, all profiles will be returned.
     - When clients pass a value of this structure as a parameter, the field must contain
-      the id of resources returned by M(appliance_infraprofile_configs). (['import_profile',
-      'validate'])
+      the id of resources returned by M(vmware.vmware_rest.appliance_infraprofile_configs).
+      (['import_profile', 'validate'])
     type: dict
   profiles:
     description:
     - Profiles to be exported/imported.
     - If unset or empty, all profiles will be returned.
     - When clients pass a value of this structure as a parameter, the field must contain
-      the id of resources returned by M(appliance_infraprofile_configs).
+      the id of resources returned by M(vmware.vmware_rest.appliance_infraprofile_configs).
     elements: str
     type: list
   session_timeout:
@@ -130,7 +130,7 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","version":"7.0.3.00100","creationTime":"2021-12-09T01:52:05+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"SYSTEMD":["sendmail","rsyslog"],"VC_SERVICES":["applmgmt"]},"description":"Appliance
+  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2022-01-04T21:30:00+0000","version":"7.0.3.00100","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"description":"Appliance
     Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
     shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
@@ -146,6 +146,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "export": {
+        "query": {},
+        "body": {
+            "description": "description",
+            "encryption_key": "encryption_key",
+            "profiles": "profiles",
+        },
+        "path": {},
+    },
     "import_profile": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
@@ -154,15 +163,6 @@ PAYLOAD_FORMAT = {
     "validate": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
-        "path": {},
-    },
-    "export": {
-        "query": {},
-        "body": {
-            "description": "description",
-            "encryption_key": "encryption_key",
-            "profiles": "profiles",
-        },
         "path": {},
     },
 }  # pylint: disable=line-too-long
@@ -377,5 +377,5 @@ async def _validate(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

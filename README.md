@@ -9,6 +9,8 @@ The collection includes the VMware modules and plugins supported by Ansible VMwa
 
 This collection has been tested against following Ansible versions: **>=2.9.10**.
 
+For collections that support Ansible 2.9, please ensure you update your `network_os` to use the 
+fully qualified collection name (for example, `cisco.ios.ios`). 
 Plugins and modules within a collection may be tested with only specific Ansible versions.
 A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.
@@ -145,11 +147,7 @@ Name | Description
 [vmware.vmware_rest.vcenter_storage_policies_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_storage_policies_info_module.rst)|Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter
 [vmware.vmware_rest.vcenter_vm](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_module.rst)|Creates a virtual machine.
 [vmware.vmware_rest.vcenter_vm_guest_customization](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_customization_module.rst)|Applies a customization specification on the virtual machine
-[vmware.vmware_rest.vcenter_vm_guest_environment_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_environment_info_module.rst)|Reads a single environment variable from the guest operating system
-[vmware.vmware_rest.vcenter_vm_guest_filesystem](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_module.rst)|Initiates an operation to transfer a file to or from the guest
 [vmware.vmware_rest.vcenter_vm_guest_filesystem_directories](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_directories_module.rst)|Creates a directory in the guest operating system
-[vmware.vmware_rest.vcenter_vm_guest_filesystem_files](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_files_module.rst)|Creates a temporary file
-[vmware.vmware_rest.vcenter_vm_guest_filesystem_files_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_filesystem_files_info_module.rst)|Returns information about a file or directory in the guest
 [vmware.vmware_rest.vcenter_vm_guest_identity_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_identity_info_module.rst)|Return information about the guest.
 [vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info_module.rst)|Returns details of the local file systems in the guest operating system.
 [vmware.vmware_rest.vcenter_vm_guest_networking_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_networking_info_module.rst)|Returns information about the network configuration in the guest operating system.
@@ -158,8 +156,6 @@ Name | Description
 [vmware.vmware_rest.vcenter_vm_guest_operations_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_operations_info_module.rst)|Get information about the guest operation status.
 [vmware.vmware_rest.vcenter_vm_guest_power](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_power_module.rst)|Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot
 [vmware.vmware_rest.vcenter_vm_guest_power_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_power_info_module.rst)|Returns information about the guest operating system power state.
-[vmware.vmware_rest.vcenter_vm_guest_processes](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_processes_module.rst)|Starts a program in the guest operating system
-[vmware.vmware_rest.vcenter_vm_guest_processes_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_guest_processes_info_module.rst)|Returns the status of a process running in the guest operating system, including those started by {@link Processes#create} that may have recently completed
 [vmware.vmware_rest.vcenter_vm_hardware](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_module.rst)|Updates the virtual hardware settings of a virtual machine.
 [vmware.vmware_rest.vcenter_vm_hardware_adapter_sata](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_module.rst)|Adds a virtual SATA adapter to the virtual machine.
 [vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info_module.rst)|Returns information about a virtual SATA adapter.

@@ -89,7 +89,7 @@ value:
   sample:
     action: reboot
     reason: this is an example
-    shutdown_time: '2021-12-09T11:53:19.000Z'
+    shutdown_time: '2022-01-05T07:31:15.000Z'
   type: dict
 """
 
@@ -216,5 +216,5 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

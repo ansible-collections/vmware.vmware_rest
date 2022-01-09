@@ -90,26 +90,26 @@ value:
   - enabled: 1
     fullname: root
     has_password: 1
-    last_password_change: '2021-12-08T00:00:00.000Z'
+    last_password_change: '2022-01-04T00:00:00.000Z'
     max_days_between_password_change: 90
     min_days_between_password_change: 0
-    password_expires_at: '2022-03-08T00:00:00.000Z'
+    password_expires_at: '2022-04-04T00:00:00.000Z'
     roles:
     - superAdmin
     warn_days_before_password_expiration: 7
   - enabled: 0
     has_password: 0
-    inactive_at: '2022-03-02T00:00:00.000Z'
-    last_password_change: '2021-12-02T00:00:00.000Z'
+    inactive_at: '2022-03-22T00:00:00.000Z'
+    last_password_change: '2021-12-22T00:00:00.000Z'
     max_days_between_password_change: 90
     min_days_between_password_change: 1
-    password_expires_at: '2022-03-02T00:00:00.000Z'
+    password_expires_at: '2022-03-22T00:00:00.000Z'
     roles:
     - ''
     warn_days_before_password_expiration: 7
   - enabled: 0
     has_password: 0
-    last_password_change: '2021-12-02T00:00:00.000Z'
+    last_password_change: '2021-12-22T00:00:00.000Z'
     max_days_between_password_change: -1
     min_days_between_password_change: -1
     roles:
@@ -261,5 +261,5 @@ async def entry_point(module, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

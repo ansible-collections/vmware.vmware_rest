@@ -83,9 +83,9 @@ value:
   description: Get the current time
   returned: On success
   sample:
-    date: Thu 12-09-2021
+    date: Tue 01-04-2022
     seconds_since_epoch: null
-    time: 01:53:31 AM
+    time: 09:31:26 PM
     timezone: UTC
   type: dict
 """
@@ -213,5 +213,5 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

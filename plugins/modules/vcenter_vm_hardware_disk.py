@@ -196,7 +196,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[local] test_vm1_7/test_vm1_1.vmdk'
+      vmdk_file: '[local] test_vm1/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:
@@ -208,11 +208,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {"backing": "backing"},
-        "path": {"disk": "disk", "vm": "vm"},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -225,7 +221,11 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"backing": "backing"},
+        "path": {"disk": "disk", "vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json
@@ -478,5 +478,5 @@ async def _update(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())
