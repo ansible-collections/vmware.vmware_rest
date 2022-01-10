@@ -8,6 +8,11 @@ vmware.vmware_rest Release Notes
 v2.1.4
 ======
 
+Bugfixes
+--------
+
+- Add support for Python 3.10.
+
 v2.1.3
 ======
 
