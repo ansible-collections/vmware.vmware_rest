@@ -8,6 +8,11 @@ vmware.vmware_rest Release Notes
 v2.1.4
 ======
 
+Minor Changes
+-------------
+
+- Add more EXAMPLE blocks in the documenation of the modules.
+
 Bugfixes
 --------
 

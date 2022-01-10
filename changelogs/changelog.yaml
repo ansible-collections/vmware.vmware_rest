@@ -571,6 +571,9 @@ releases:
     changes:
       bugfixes:
       - Add support for Python 3.10.
+      minor_changes:
+      - Add more EXAMPLE blocks in the documenation of the modules.
     fragments:
+    - add_some_missing_EXAMPLE_blocks.yaml
     - python3.10-support.yaml
     release_date: '2022-01-04'
