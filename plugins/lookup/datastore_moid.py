@@ -14,7 +14,7 @@ description:
     - Returns Managed Object Reference (MoID) of the vSphere datastore object object contained in the specified path.
 author:
     - Alina Buzachis <@alinabuzachis>
-version_added: 2.0.1
+version_added: 2.1.0
 requirements:
     - vSphere 7.0.2 or greater
     - python >= 3.6
