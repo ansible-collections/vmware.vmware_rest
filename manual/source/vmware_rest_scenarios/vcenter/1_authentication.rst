@@ -21,7 +21,7 @@ You need to export some environment variables in your shell before you call the 
 
     $ export VMWARE_HOST=vcenter.test
     $ export VMWARE_USER=myvcenter-user
-    $ export VMWARE_password=mypassword
+    $ export VMWARE_PASSWORD=mypassword
     $ ansible-playbook my-playbook.yaml
 
 Module parameters
