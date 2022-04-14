@@ -26,17 +26,6 @@
     port_binding: static
     state: present
 
-- name: Retrieve details about the portgroup
-  community.vmware.vmware_dvs_portgroup_info:
-    validate_certs: no
-    datacenter: my_dc
-  register: my_portgroup_info
-
-
-- ansible.builtin.assert:
-    that:
-      - my_portgroup_info.dvs_portgroup_info.dvswitch1|length > 0
-
 - name: Get a list of the networks
   vmware.vmware_rest.vcenter_network_info:
   register: my_network_value
