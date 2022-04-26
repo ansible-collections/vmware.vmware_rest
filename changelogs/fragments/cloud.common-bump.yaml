@@ -1,0 +1,3 @@
+---
+bugfixes:
+- Adjust the cloud.common dependency to require 2.0.4 or greater (https://github.com/ansible-collections/vmware.vmware_rest/pull/315).
