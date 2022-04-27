@@ -96,7 +96,7 @@ value:
           default_gateway: 192.168.123.1
           mode: DHCP
           prefix: 24
-        mac: 52:54:00:b1:6f:6b
+        mac: 52:54:00:db:81:6b
         name: nic0
         status: up
     vcenter_base_url: https://vcenter.test:443

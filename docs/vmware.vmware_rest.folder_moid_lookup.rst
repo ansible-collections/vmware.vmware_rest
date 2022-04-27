@@ -8,7 +8,7 @@ vmware.vmware_rest.folder_moid
 **Look up MoID for vSphere folder objects using vCenter REST API**
 
 
-Version added: 2.0.1
+Version added: 2.1.0
 
 .. contents::
    :local:

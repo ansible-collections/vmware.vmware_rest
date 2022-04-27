@@ -107,6 +107,12 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the dvswitch called my-portgroup
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: my-portrgoup
+  register: my_portgroup
+
 - name: Get a list of the networks
   vmware.vmware_rest.vcenter_network_info:
   register: my_network_value
@@ -123,18 +129,18 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: dvswitch1-DVUplinks-1038
-    network: dvportgroup-1039
-    type: DISTRIBUTED_PORTGROUP
-  - name: second_vswitch
-    network: network-1035
-    type: STANDARD_PORTGROUP
-  - name: VM Network
-    network: network-1033
-    type: STANDARD_PORTGROUP
   - name: my-portrgoup
-    network: dvportgroup-1040
+    network: dvportgroup-1023
     type: DISTRIBUTED_PORTGROUP
+  - name: dvswitch1-DVUplinks-1021
+    network: dvportgroup-1022
+    type: DISTRIBUTED_PORTGROUP
+  - name: VM Network
+    network: network-1017
+    type: STANDARD_PORTGROUP
+  - name: second_vswitch
+    network: network-1019
+    type: STANDARD_PORTGROUP
   type: list
 """
 

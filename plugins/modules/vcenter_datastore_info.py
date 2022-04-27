@@ -122,19 +122,19 @@ value:
   description: Build a list of all the datastores
   returned: On success
   sample:
-  - capacity: 43754979328
-    datastore: datastore-1032
-    free_space: 42246078464
+  - capacity: 11542724608
+    datastore: datastore-1016
+    free_space: 10033823744
     name: local
     type: VMFS
   - capacity: 26208088064
-    datastore: datastore-1034
-    free_space: 24304742400
+    datastore: datastore-1018
+    free_space: 24281169920
     name: ro_datastore
     type: NFS
   - capacity: 26208088064
-    datastore: datastore-1036
-    free_space: 24304742400
+    datastore: datastore-1020
+    free_space: 24281169920
     name: rw_datastore
     type: NFS
   type: list

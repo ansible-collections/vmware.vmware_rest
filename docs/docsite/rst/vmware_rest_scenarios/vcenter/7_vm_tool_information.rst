@@ -71,7 +71,7 @@ response
        "value": {
            "/": {
                "capacity": 2515173376,
-               "free_space": 766377984,
+               "free_space": 774774784,
                "mappings": []
            }
        }
@@ -105,7 +105,7 @@ response
                "id": "vmsg.guestos.fedora64Guest.label"
            },
            "host_name": "localhost.localdomain",
-           "ip_address": "192.168.122.44",
+           "ip_address": "fe80::b014:e0ad:b17f:1859",
            "name": "FEDORA_64"
        }
    }
@@ -133,7 +133,7 @@ response
        "value": {
            "dns": {
                "ip_addresses": [
-                   "192.168.122.1"
+                   "10.0.2.3"
                ],
                "search_domains": [
                    "localdomain"
@@ -173,18 +173,13 @@ response
                "ip": {
                    "ip_addresses": [
                        {
-                           "ip_address": "192.168.122.44",
-                           "prefix_length": 24,
-                           "state": "PREFERRED"
-                       },
-                       {
-                           "ip_address": "fe80::5614:c95d:b044:ae15",
+                           "ip_address": "fe80::b014:e0ad:b17f:1859",
                            "prefix_length": 64,
                            "state": "UNKNOWN"
                        }
                    ]
                },
-               "mac_address": "00:50:56:b1:6c:f3",
+               "mac_address": "00:50:56:b8:5e:10",
                "nic": "4000"
            }
        ]
@@ -212,24 +207,13 @@ response
        "changed": false,
        "value": [
            {
-               "gateway_address": "192.168.122.1",
-               "interface_index": 0,
-               "network": "0.0.0.0",
-               "prefix_length": 0
-           },
-           {
-               "interface_index": 0,
-               "network": "192.168.122.0",
-               "prefix_length": 24
-           },
-           {
                "interface_index": 0,
                "network": "fe80::",
                "prefix_length": 64
            },
            {
                "interface_index": 0,
-               "network": "fe80::5614:c95d:b044:ae15",
+               "network": "fe80::b014:e0ad:b17f:1859",
                "prefix_length": 128
            },
            {

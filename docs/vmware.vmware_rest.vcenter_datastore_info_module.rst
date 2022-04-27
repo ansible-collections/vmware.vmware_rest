@@ -297,7 +297,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Build a list of all the datastores</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 43754979328, &#x27;datastore&#x27;: &#x27;datastore-1032&#x27;, &#x27;free_space&#x27;: 42246078464, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26208088064, &#x27;datastore&#x27;: &#x27;datastore-1034&#x27;, &#x27;free_space&#x27;: 24304742400, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26208088064, &#x27;datastore&#x27;: &#x27;datastore-1036&#x27;, &#x27;free_space&#x27;: 24304742400, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 11542724608, &#x27;datastore&#x27;: &#x27;datastore-1016&#x27;, &#x27;free_space&#x27;: 10033823744, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 26208088064, &#x27;datastore&#x27;: &#x27;datastore-1018&#x27;, &#x27;free_space&#x27;: 24281169920, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 26208088064, &#x27;datastore&#x27;: &#x27;datastore-1020&#x27;, &#x27;free_space&#x27;: 24281169920, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
                 </td>
             </tr>
     </table>

@@ -5,6 +5,20 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.5
+======
+
+Minor Changes
+-------------
+
+- Adjust the release version of the lookup plugins fro, 2.0.1 to 2.1.0.
+- ``vcenter_network_info`` - add an example with a Distributed Virtual Switch, a.k.a dvswitch (https://github.com/ansible-collections/vmware.vmware_rest/pull/316).
+
+Bugfixes
+--------
+
+- Adjust the cloud.common dependency to require 2.0.4 or greater (https://github.com/ansible-collections/vmware.vmware_rest/pull/315).
+
 v2.1.4
 ======
 

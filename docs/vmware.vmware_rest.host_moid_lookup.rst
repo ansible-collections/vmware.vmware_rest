@@ -8,7 +8,7 @@ vmware.vmware_rest.host_moid
 **Look up MoID for vSphere host objects using vCenter REST API**
 
 
-Version added: 2.0.1
+Version added: 2.1.0
 
 .. contents::
    :local:

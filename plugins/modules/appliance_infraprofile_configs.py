@@ -130,7 +130,7 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","creationTime":"2022-01-04T21:30:00+0000","version":"7.0.3.00100","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"description":"Appliance
+  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","version":"7.0.3.00100","creationTime":"2022-04-26T23:09:59+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"description":"Appliance
     Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
     shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
@@ -155,12 +155,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "import_profile": {
+    "validate": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},
     },
-    "validate": {
+    "import_profile": {
         "query": {},
         "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
         "path": {},

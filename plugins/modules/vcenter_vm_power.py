@@ -212,9 +212,9 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
+      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
       power_state: POWERED_OFF
-      vm: vm-1041
+      vm: vm-1024
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -228,13 +228,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1041
+        vm: vm-1024
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
+      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
       power_state: POWERED_OFF
-      vm: vm-1041
+      vm: vm-1024
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -250,7 +250,7 @@ results:
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1042
+      vm: vm-1025
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -264,13 +264,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1042
+        vm: vm-1025
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1042
+      vm: vm-1025
     value: {}
   type: list
 """
@@ -278,9 +278,9 @@ results:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

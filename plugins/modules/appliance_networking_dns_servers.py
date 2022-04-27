@@ -141,8 +141,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "add": {"query": {}, "body": {"server": "server"}, "path": {}},
     "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
+    "add": {"query": {}, "body": {"server": "server"}, "path": {}},
     "set": {"query": {}, "body": {"mode": "mode", "servers": "servers"}, "path": {}},
 }  # pylint: disable=line-too-long
 

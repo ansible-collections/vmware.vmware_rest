@@ -160,17 +160,7 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "create": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"vm": "vm"},
-    },
     "update": {
         "query": {},
         "body": {
@@ -181,6 +171,16 @@ PAYLOAD_FORMAT = {
         "path": {"port": "port", "vm": "vm"},
     },
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "create": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json

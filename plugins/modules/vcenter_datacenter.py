@@ -131,8 +131,8 @@ results:
       name: my_dc
     _ansible_no_log: 0
     ansible_loop_var: item
-    attempts: 2
-    changed: 0
+    attempts: 1
+    changed: 1
     failed: 0
     invocation:
       module_args:
@@ -150,14 +150,7 @@ results:
     item:
       datacenter: datacenter-1001
       name: my_dc
-    value:
-      error_type: NOT_FOUND
-      messages:
-      - args:
-        - datacenter-1001:c6a81a4c-3386-4a6a-a909-a52bd5c9bafa
-        default_message: Datacenter with identifier 'datacenter-1001:c6a81a4c-3386-4a6a-a909-a52bd5c9bafa'
-          does not exist.
-        id: com.vmware.api.vcenter.datacenter.not_found
+    value: {}
   type: list
 """
 
