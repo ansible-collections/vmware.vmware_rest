@@ -25,7 +25,7 @@ call the modules.
 
    $ export VMWARE_HOST=vcenter.test
    $ export VMWARE_USER=myvcenter-user
-   $ export VMWARE_password=mypassword
+   $ export VMWARE_PASSWORD=mypassword
    $ ansible-playbook my-playbook.yaml
 
 

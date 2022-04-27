@@ -893,18 +893,18 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
+      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
       power_state: POWERED_OFF
-      vm: vm-1041
+      vm: vm-1024
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-c43de84f-106b-4258-af30-51a7d0db374c
+      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
       power_state: POWERED_OFF
-      vm: vm-1041
+      vm: vm-1024
     skip_reason: Conditional result was False
     skipped: 1
   - _ansible_item_label:
@@ -912,7 +912,7 @@ results:
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1042
+      vm: vm-1025
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -956,34 +956,45 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1042
+        vm: vm-1025
     item:
       cpu_count: 1
       memory_size_MiB: 1080
       name: test_vm1
       power_state: POWERED_ON
-      vm: vm-1042
+      vm: vm-1025
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "instant_clone": {
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "register": {
         "query": {},
         "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
             "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
+            "path": "path",
             "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
+        },
+        "path": {},
+    },
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
+            "name": "name",
+            "placement": "placement",
+            "power_on": "power_on",
             "source": "source",
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -1007,15 +1018,16 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "clone": {
+    "instant_clone": {
         "query": {},
         "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
             "name": "name",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
             "placement": "placement",
-            "power_on": "power_on",
+            "serial_ports_to_update": "serial_ports_to_update",
             "source": "source",
         },
         "path": {},
@@ -1025,18 +1037,6 @@ PAYLOAD_FORMAT = {
         "body": {"disks": "disks", "placement": "placement"},
         "path": {"vm": "vm"},
     },
-    "register": {
-        "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
-        },
-        "path": {},
-    },
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

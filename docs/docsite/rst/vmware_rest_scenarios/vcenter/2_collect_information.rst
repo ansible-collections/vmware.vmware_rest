@@ -66,7 +66,7 @@ response
        "changed": false,
        "value": [
            {
-               "datacenter": "datacenter-1630",
+               "datacenter": "datacenter-1080",
                "name": "my_dc"
            }
        ]
@@ -92,7 +92,7 @@ response
        "changed": false,
        "value": [
            {
-               "cluster": "domain-c1636",
+               "cluster": "domain-c1086",
                "drs_enabled": true,
                "ha_enabled": false,
                "name": "my_cluster"
@@ -116,10 +116,10 @@ response
 
    {
        "changed": false,
-       "id": "domain-c1636",
+       "id": "domain-c1086",
        "value": {
            "name": "my_cluster",
-           "resource_pool": "resgroup-1637"
+           "resource_pool": "resgroup-1087"
        }
    }
 
@@ -149,8 +149,8 @@ response
        "value": [
            {
                "capacity": 26208088064,
-               "datastore": "datastore-1645",
-               "free_space": 24239316992,
+               "datastore": "datastore-1095",
+               "free_space": 24201760768,
                "name": "rw_datastore",
                "type": "NFS"
            }
@@ -173,8 +173,8 @@ response
        "ansible_facts": {
            "my_datastore": {
                "capacity": 26208088064,
-               "datastore": "datastore-1645",
-               "free_space": 24239316992,
+               "datastore": "datastore-1095",
+               "free_space": 24201760768,
                "name": "rw_datastore",
                "type": "NFS"
            }
@@ -208,32 +208,32 @@ response
                "type": "DATACENTER"
            },
            {
-               "folder": "group-h1632",
+               "folder": "group-h1082",
                "name": "host",
                "type": "HOST"
            },
            {
-               "folder": "group-n1634",
+               "folder": "group-n1084",
                "name": "network",
                "type": "NETWORK"
            },
            {
-               "folder": "group-s1633",
+               "folder": "group-s1083",
                "name": "datastore",
                "type": "DATASTORE"
            },
            {
-               "folder": "group-v1631",
+               "folder": "group-v1081",
                "name": "vm",
                "type": "VIRTUAL_MACHINE"
            },
            {
-               "folder": "group-v1640",
+               "folder": "group-v1090",
                "name": "Discovered virtual machine",
                "type": "VIRTUAL_MACHINE"
            },
            {
-               "folder": "group-v1653",
+               "folder": "group-v1102",
                "name": "vCLS",
                "type": "VIRTUAL_MACHINE"
            }
@@ -261,7 +261,7 @@ response
        "changed": false,
        "value": [
            {
-               "folder": "group-v1631",
+               "folder": "group-v1081",
                "name": "vm",
                "type": "VIRTUAL_MACHINE"
            }
@@ -283,7 +283,7 @@ response
    {
        "ansible_facts": {
            "my_virtual_machine_folder": {
-               "folder": "group-v1631",
+               "folder": "group-v1081",
                "name": "vm",
                "type": "VIRTUAL_MACHINE"
            }

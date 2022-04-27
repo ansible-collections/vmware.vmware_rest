@@ -84,7 +84,7 @@ value:
   returned: On success
   sample:
     build: '18778458'
-    install_time: '2021-12-22T21:27:56.326Z'
+    install_time: '2022-04-05T15:21:20.245Z'
     product: VMware vCenter Server
     releasedate: October 21, 2021
     summary: Patch for VMware vCenter Server 7.0

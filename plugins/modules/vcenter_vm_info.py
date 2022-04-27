@@ -235,7 +235,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1068
+  sample: vm-1051
   type: str
 value:
   description: Wait until my VM is off
@@ -295,8 +295,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 420b7da1-5203-fc47-79d1-0c0859dbab46
-      instance_uuid: 500b0c74-1334-2c83-29ac-cb077f4af2fa
+      bios_uuid: 42389f48-fae4-385c-5637-cf388bf6111e
+      instance_uuid: 5038c689-00c1-975f-3837-37bbcff7e4c4
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -307,11 +307,11 @@ value:
       '4000':
         allow_guest_control: 0
         backing:
-          network: network-1061
+          network: network-1043
           network_name: VM Network
           type: STANDARD_PORTGROUP
         label: Network adapter 1
-        mac_address: 00:50:56:8b:df:7a
+        mac_address: 00:50:56:b8:3e:ab
         mac_type: ASSIGNED
         pci_slot_number: 160
         start_connected: 0

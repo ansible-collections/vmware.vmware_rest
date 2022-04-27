@@ -145,17 +145,36 @@ The second task adjusts the NIC configuration.
 
 ::
 
+   - name: Identify the portgroup called my-portgroup
+     vmware.vmware_rest.vcenter_network_info:
+       filter_types: DISTRIBUTED_PORTGROUP
+       filter_names: my-portrgoup
+     register: my_portgroup
+
    - name: Attach a VM to a dvswitch
      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
        vm: '{{ test_vm1_info.id }}'
        pci_slot_number: 4
        backing:
          type: DISTRIBUTED_PORTGROUP
-         network: "{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
+         network: "{{ my_portgroup.value[0].network }}"
        start_connected: false
      register: vm_hardware_ethernet_1
 
 response
+
+::
+
+   {
+       "changed": false,
+       "value": [
+           {
+               "name": "my-portrgoup",
+               "network": "dvportgroup-1103",
+               "type": "DISTRIBUTED_PORTGROUP"
+           }
+       ]
+   }
 
 ::
 
@@ -165,14 +184,14 @@ response
        "value": {
            "allow_guest_control": false,
            "backing": {
-               "connection_cookie": 1710475356,
+               "connection_cookie": 1482261702,
                "distributed_port": "2",
-               "distributed_switch_uuid": "50 31 a3 1d c1 fa 4d 28-ed a7 27 8d 24 98 4f 21",
-               "network": "dvportgroup-1652",
+               "distributed_switch_uuid": "50 38 29 df 21 64 85 1f-14 96 1b 2a 7d fe 39 3d",
+               "network": "dvportgroup-1103",
                "type": "DISTRIBUTED_PORTGROUP"
            },
            "label": "Network adapter 1",
-           "mac_address": "00:50:56:b1:6c:f3",
+           "mac_address": "00:50:56:b8:5e:10",
            "mac_type": "ASSIGNED",
            "pci_slot_number": 4,
            "start_connected": false,

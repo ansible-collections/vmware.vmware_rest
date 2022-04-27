@@ -282,10 +282,10 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Get the list of items of the NFS library</div>
+                            <div>Ensure the OVF is here</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 1, &#x27;certificate_verification_info&#x27;: {&#x27;status&#x27;: &#x27;INTERNAL&#x27;}, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2022-01-04T21:25:47.771Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;efd719ac-e7b3-42a6-837d-e97d66770dda&#x27;, &#x27;last_modified_time&#x27;: &#x27;2022-01-04T21:28:01.028Z&#x27;, &#x27;library_id&#x27;: &#x27;a5447003-868f-44c4-b40c-9d9ecb3988da&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 80754, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2022-04-26T23:09:29.414Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;547336bf-fb4a-43dc-bceb-17a1261f088a&#x27;, &#x27;last_modified_time&#x27;: &#x27;2022-04-26T23:09:29.771Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2022-04-26T23:09:29.770Z&#x27;, &#x27;library_id&#x27;: &#x27;c577f307-19d6-420c-8019-fa7e6942e6b8&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;my_vm&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;a8f60af7-48df-4b47-8274-73ebbdd83ee9&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
                 </td>
             </tr>
     </table>

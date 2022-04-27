@@ -369,26 +369,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: c19a58af-5b25-4620-b1e3-be2215ef0d4b
+  sample: c577f307-19d6-420c-8019-fa7e6942e6b8
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2022-01-04T21:29:02.588Z'
+    creation_time: '2022-04-26T23:09:28.774Z'
     description: ''
-    id: c19a58af-5b25-4620-b1e3-be2215ef0d4b
-    last_modified_time: '2022-01-04T21:29:02.588Z'
+    id: c577f307-19d6-420c-8019-fa7e6942e6b8
+    last_modified_time: '2022-04-26T23:09:28.774Z'
     name: sub_lib
-    server_guid: c6a81a4c-3386-4a6a-a909-a52bd5c9bafa
+    server_guid: 41fde68d-8194-48ef-92ea-6625aea1659a
     storage_backings:
-    - datastore_id: datastore-1087
+    - datastore_id: datastore-1068
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/a5447003-868f-44c4-b40c-9d9ecb3988da/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/bd9dbc3f-e62c-4a21-bbe0-d5f186013db1/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -397,25 +397,8 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {},
-    },
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
         "body": {
@@ -435,13 +418,30 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {},
+    },
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 import json

@@ -577,3 +577,16 @@ releases:
     - add_some_missing_EXAMPLE_blocks.yaml
     - python3.10-support.yaml
     release_date: '2022-01-04'
+  2.1.5:
+    changes:
+      bugfixes:
+      - Adjust the cloud.common dependency to require 2.0.4 or greater (https://github.com/ansible-collections/vmware.vmware_rest/pull/315).
+      minor_changes:
+      - Adjust the release version of the lookup plugins fro, 2.0.1 to 2.1.0.
+      - '``vcenter_network_info`` - add an example with a Distributed Virtual Switch,
+        a.k.a dvswitch (https://github.com/ansible-collections/vmware.vmware_rest/pull/316).'
+    fragments:
+    - cloud.common-bump.yaml
+    - vcenter_network_info-dvs-example.yaml
+    - version_added.yaml
+    release_date: '2022-04-26'

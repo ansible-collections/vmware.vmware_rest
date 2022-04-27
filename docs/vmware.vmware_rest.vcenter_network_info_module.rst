@@ -250,6 +250,12 @@ Examples
 
 .. code-block:: yaml
 
+    - name: Get the dvswitch called my-portgroup
+      vmware.vmware_rest.vcenter_network_info:
+        filter_types: DISTRIBUTED_PORTGROUP
+        filter_names: my-portrgoup
+      register: my_portgroup
+
     - name: Get a list of the networks
       vmware.vmware_rest.vcenter_network_info:
       register: my_network_value
@@ -287,7 +293,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get a list of the networks</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1038&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1039&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;second_vswitch&#x27;, &#x27;network&#x27;: &#x27;network-1035&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1033&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1040&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;my-portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1023&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1021&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1022&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1017&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;second_vswitch&#x27;, &#x27;network&#x27;: &#x27;network-1019&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}]</div>
                 </td>
             </tr>
     </table>

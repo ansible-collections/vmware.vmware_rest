@@ -272,7 +272,7 @@ value:
       information: []
       warnings: []
     resource_id:
-      id: vm-1098
+      id: vm-1079
       type: VirtualMachine
     succeeded: 1
   type: dict
@@ -280,11 +280,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
-        "path": {},
-    },
     "deploy": {
         "query": {"client_token": "client_token"},
         "body": {"deployment_spec": "deployment_spec", "target": "target"},
@@ -294,6 +289,11 @@ PAYLOAD_FORMAT = {
         "query": {},
         "body": {"target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
+    },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
+        "path": {},
     },
 }  # pylint: disable=line-too-long
 
