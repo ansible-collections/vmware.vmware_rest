@@ -69,7 +69,15 @@ Here we attach the VM to the network (through the portgroup). We specify a ``pci
 
 The second task adjusts the NIC configuration.
 
-.. ansible-task::
+
+
+.. ansible-tasks::
+
+  - name: Identify the portgroup called my-portgroup
+    vmware.vmware_rest.vcenter_network_info:
+      filter_types: DISTRIBUTED_PORTGROUP
+      filter_names: my-portrgoup
+    register: my_portgroup
 
   - name: Attach a VM to a dvswitch
     vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -77,7 +85,7 @@ The second task adjusts the NIC configuration.
       pci_slot_number: 4
       backing:
         type: DISTRIBUTED_PORTGROUP
-        network: "{{ my_portgroup_info.dvs_portgroup_info.dvswitch1[0].key }}"
+        network: "{{ my_portgroup.value[0].network }}"
       start_connected: false
     register: vm_hardware_ethernet_1
 
