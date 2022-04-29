@@ -590,3 +590,5 @@ releases:
     - vcenter_network_info-dvs-example.yaml
     - version_added.yaml
     release_date: '2022-04-26'
+  2.1.6:
+    release_date: '2022-04-29'

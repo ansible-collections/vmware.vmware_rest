@@ -5,6 +5,9 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.1.6
+======
+
 v2.1.5
 ======
 

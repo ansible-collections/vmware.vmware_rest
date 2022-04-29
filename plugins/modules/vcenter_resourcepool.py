@@ -211,7 +211,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1011
+  sample: resgroup-1010
   type: str
 value:
   description: Create a generic resource pool
@@ -237,15 +237,6 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
-    "update": {
-        "query": {},
-        "body": {
-            "cpu_allocation": "cpu_allocation",
-            "memory_allocation": "memory_allocation",
-            "name": "name",
-        },
-        "path": {"resource_pool": "resource_pool"},
-    },
     "create": {
         "query": {},
         "body": {
@@ -255,6 +246,15 @@ PAYLOAD_FORMAT = {
             "parent": "parent",
         },
         "path": {},
+    },
+    "update": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "cpu_allocation",
+            "memory_allocation": "memory_allocation",
+            "name": "name",
+        },
+        "path": {"resource_pool": "resource_pool"},
     },
 }  # pylint: disable=line-too-long
 

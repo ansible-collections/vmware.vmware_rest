@@ -261,13 +261,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 598728890
+      connection_cookie: 1812971491
       distributed_port: '2'
-      distributed_switch_uuid: 50 38 75 a3 30 f7 a3 8d-1e 0e e5 39 09 0d 3a 85
+      distributed_switch_uuid: 50 38 7f b3 f5 7b 8f 34-43 51 ad 5c 07 cb 4a 52
       network: dvportgroup-1023
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:b8:3b:93
+    mac_address: 00:50:56:b8:17:61
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -280,7 +280,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {
@@ -295,7 +294,6 @@ PAYLOAD_FORMAT = {
         "path": {"nic": "nic", "vm": "vm"},
     },
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -311,6 +309,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

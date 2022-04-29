@@ -89,7 +89,7 @@ response
 ::
 
    {
-       "attempts": 8,
+       "attempts": 10,
        "changed": false,
        "value": {
            "auto_update_supported": false,
