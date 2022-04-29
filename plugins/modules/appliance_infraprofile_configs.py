@@ -130,9 +130,9 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","version":"7.0.3.00100","creationTime":"2022-04-26T23:09:59+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"description":"Appliance
-    Mangment Service","version":"7.0","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
-    shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
+  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","version":"7.0.3.00100","creationTime":"2022-04-29T14:45:07+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"version":"7.0","description":"Appliance
+    Mangment Service","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is shell
+    Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
     zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
     servers":["time.nist.gov"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail server":null},"/etc/vmware-syslog/syslog.conf":{"Port
     [2]":null,"Port [1]":null,"Port [0]":null,"Protocol [2]":null,"Remote Syslog Host

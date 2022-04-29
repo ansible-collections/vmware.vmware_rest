@@ -316,7 +316,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get a list of the hosts</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;connection_state&#x27;: &#x27;CONNECTED&#x27;, &#x27;host&#x27;: &#x27;host-1015&#x27;, &#x27;name&#x27;: &#x27;esxi1.test&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;connection_state&#x27;: &#x27;CONNECTED&#x27;, &#x27;host&#x27;: &#x27;host-1014&#x27;, &#x27;name&#x27;: &#x27;esxi1.test&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;}]</div>
                 </td>
             </tr>
     </table>

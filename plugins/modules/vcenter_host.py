@@ -146,15 +146,12 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1015
+  sample: host-1014
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -169,6 +166,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json

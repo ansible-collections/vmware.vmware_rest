@@ -212,7 +212,7 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
+      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
       power_state: POWERED_OFF
       vm: vm-1024
     _ansible_no_log: 0
@@ -232,7 +232,7 @@ results:
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
+      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
       power_state: POWERED_OFF
       vm: vm-1024
     value:
@@ -277,9 +277,9 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 

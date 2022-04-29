@@ -893,7 +893,7 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
+      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
       power_state: POWERED_OFF
       vm: vm-1024
     _ansible_no_log: 0
@@ -902,7 +902,7 @@ results:
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-64491da9-1543-4a2f-9555-af08b9aac1f9
+      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
       power_state: POWERED_OFF
       vm: vm-1024
     skip_reason: Conditional result was False
@@ -969,8 +969,6 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "register": {
         "query": {},
         "body": {
@@ -982,6 +980,21 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
+            "name": "name",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
+            "placement": "placement",
+            "serial_ports_to_update": "serial_ports_to_update",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "clone": {
         "query": {},
         "body": {
@@ -1018,20 +1031,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "instant_clone": {
-        "query": {},
-        "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
-            "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
-            "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
-            "source": "source",
-        },
-        "path": {},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "relocate": {
         "query": {},
         "body": {"disks": "disks", "placement": "placement"},

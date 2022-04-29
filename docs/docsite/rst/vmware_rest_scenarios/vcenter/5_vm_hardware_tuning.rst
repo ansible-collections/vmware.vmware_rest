@@ -170,7 +170,7 @@ response
        "value": [
            {
                "name": "my-portrgoup",
-               "network": "dvportgroup-1103",
+               "network": "dvportgroup-1105",
                "type": "DISTRIBUTED_PORTGROUP"
            }
        ]
@@ -184,14 +184,14 @@ response
        "value": {
            "allow_guest_control": false,
            "backing": {
-               "connection_cookie": 1482261702,
-               "distributed_port": "2",
-               "distributed_switch_uuid": "50 38 29 df 21 64 85 1f-14 96 1b 2a 7d fe 39 3d",
-               "network": "dvportgroup-1103",
+               "connection_cookie": 612448433,
+               "distributed_port": "5",
+               "distributed_switch_uuid": "50 38 1b c8 10 df 63 ee-f5 13 be 7b 56 23 cf 2a",
+               "network": "dvportgroup-1105",
                "type": "DISTRIBUTED_PORTGROUP"
            },
            "label": "Network adapter 1",
-           "mac_address": "00:50:56:b8:5e:10",
+           "mac_address": "00:50:56:b8:af:76",
            "mac_type": "ASSIGNED",
            "pci_slot_number": 4,
            "start_connected": false,

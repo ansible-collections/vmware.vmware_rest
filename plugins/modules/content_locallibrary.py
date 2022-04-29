@@ -349,26 +349,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: f2fe2f1d-5167-4538-b72e-71e9e2a52325
+  sample: cf484d61-d9c2-4402-9f1a-e57fb8558d80
   type: str
 value:
   description: Create a new local content library
   returned: On success
   sample:
-    creation_time: '2022-04-26T23:09:26.725Z'
+    creation_time: '2022-04-29T14:43:56.981Z'
     description: automated
-    id: f2fe2f1d-5167-4538-b72e-71e9e2a52325
-    last_modified_time: '2022-04-26T23:09:26.725Z'
+    id: cf484d61-d9c2-4402-9f1a-e57fb8558d80
+    last_modified_time: '2022-04-29T14:43:56.981Z'
     name: local_library_001
     publish_info:
       authentication_method: NONE
       persist_json_enabled: 0
-      publish_url: https://vcenter.test:443/cls/vcsp/lib/f2fe2f1d-5167-4538-b72e-71e9e2a52325/lib.json
+      publish_url: https://vcenter.test:443/cls/vcsp/lib/cf484d61-d9c2-4402-9f1a-e57fb8558d80/lib.json
       published: 1
       user_name: vcsp
     server_guid: 41fde68d-8194-48ef-92ea-6625aea1659a
     storage_backings:
-    - datastore_id: datastore-1068
+    - datastore_id: datastore-1070
       type: DATASTORE
     type: LOCAL
     version: '2'
@@ -377,7 +377,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "publish": {
         "query": {},
         "body": {"subscriptions": "subscriptions"},
@@ -421,6 +420,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 import json

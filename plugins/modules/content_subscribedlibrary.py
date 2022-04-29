@@ -369,26 +369,26 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: c577f307-19d6-420c-8019-fa7e6942e6b8
+  sample: ab6e9790-3d44-459b-a0fc-4cc0d3b4c1ff
   type: str
 value:
   description: Create subscribed library (again)
   returned: On success
   sample:
-    creation_time: '2022-04-26T23:09:28.774Z'
+    creation_time: '2022-04-29T14:43:59.395Z'
     description: ''
-    id: c577f307-19d6-420c-8019-fa7e6942e6b8
-    last_modified_time: '2022-04-26T23:09:28.774Z'
+    id: ab6e9790-3d44-459b-a0fc-4cc0d3b4c1ff
+    last_modified_time: '2022-04-29T14:43:59.395Z'
     name: sub_lib
     server_guid: 41fde68d-8194-48ef-92ea-6625aea1659a
     storage_backings:
-    - datastore_id: datastore-1068
+    - datastore_id: datastore-1070
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/bd9dbc3f-e62c-4a21-bbe0-d5f186013db1/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/f4e0b011-96d8-4d9b-a2ed-45ba7c5ad338/lib.json
     type: SUBSCRIBED
     version: '2'
   type: dict
@@ -396,9 +396,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
         "body": {
@@ -418,6 +415,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -437,6 +435,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "probe": {
         "query": {},
         "body": {"subscription_info": "subscription_info"},

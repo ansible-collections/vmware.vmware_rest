@@ -174,6 +174,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {"query": {}, "body": {"ipv6_enabled": "ipv6_enabled"}, "path": {}},
+    "reset": {"query": {}, "body": {}, "path": {}},
     "change": {
         "query": {},
         "body": {
@@ -186,8 +188,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "update": {"query": {}, "body": {"ipv6_enabled": "ipv6_enabled"}, "path": {}},
-    "reset": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
