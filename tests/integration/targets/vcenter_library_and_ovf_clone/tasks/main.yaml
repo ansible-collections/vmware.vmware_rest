@@ -39,6 +39,14 @@
     state: present
   register: nfs_lib
 
+- name: List Local Content Library
+  vmware.vmware_rest.content_locallibrary_info:
+  register: my_content_library
+
+- assert:
+    that:
+      - my_content_library.value|length == 1
+
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
     session_timeout: 2900
@@ -233,3 +241,11 @@
 - name: Turn on the autmatic syncrhronization
   vmware.vmware_rest.content_configuration:
     automatic_sync_enabled: true
+
+- name: List Subscribed Content Library
+  vmware.vmware_rest.content_subscribedlibrary_info:
+  register: my_content_library
+
+- assert:
+    that:
+      - my_content_library.value|length == 1
