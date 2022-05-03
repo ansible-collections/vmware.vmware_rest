@@ -24,6 +24,13 @@ The collection depends on ``aiohttp`` has [requirement](https://docs.aiohttp.org
 
 The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
 
+## Known limitations
+
+### VM Template and folder structure
+
+These modules are based on the [vSphere REST API](https://developer.vmware.com/apis/vsphere-automation/latest/). This API doesn't provide any mechanism to list or clone VM templates when they are stored in a VM folder.
+To circumvent this limitation, you should store your VM templates in a [Content Library](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-254B2CE8-20A8-43F0-90E8-3F6776C2C896.html).
+
 ## Installation and Usage
 
 ### Install the dependencies
