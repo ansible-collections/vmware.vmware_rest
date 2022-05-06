@@ -13,7 +13,7 @@ short_description: Look up MoID for vSphere vm objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere vm object contained in the specified path.
 author:
-    - Alina Buzachis <@alinabuzachis>
+    - Alina Buzachis (@alinabuzachis)
 version_added: 2.1.0
 requirements:
     - vSphere 7.0.2 or greater
