@@ -8,12 +8,12 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-lookup: resource_pool_moid
+name: resource_pool_moid
 short_description: Look up MoID for vSphere resource pool objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere resource pool object contained in the specified path.
 author:
-    - Alina Buzachis <@alinabuzachis>
+    - Alina Buzachis (@alinabuzachis)
 version_added: 2.1.0
 requirements:
     - vSphere 7.0.2 or greater
