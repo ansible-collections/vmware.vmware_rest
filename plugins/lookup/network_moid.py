@@ -8,7 +8,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-lookup: network_moid
+name: network_moid
 short_description: Look up MoID for vSphere network objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere network object contained in the specified path.

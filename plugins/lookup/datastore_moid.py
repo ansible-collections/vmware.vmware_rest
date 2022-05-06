@@ -8,7 +8,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-lookup: datastore_moid
+name: datastore_moid
 short_description: Look up MoID for vSphere datastore objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere datastore object object contained in the specified path.

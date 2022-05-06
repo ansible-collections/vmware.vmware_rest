@@ -8,7 +8,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-lookup: vm_moid
+name: vm_moid
 short_description: Look up MoID for vSphere vm objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere vm object contained in the specified path.

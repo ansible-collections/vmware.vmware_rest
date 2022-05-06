@@ -8,7 +8,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-lookup: cluster_moid
+name: cluster_moid
 short_description: Look up MoID for vSphere cluster objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere cluster object contained in the specified path.
