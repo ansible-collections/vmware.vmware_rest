@@ -53,7 +53,7 @@ If you also want to update the EXAMPLE section of the modules, run:
 Testing with ansible-test
 =========================
 
-All the modules are covered by a functional test. The tests are located in the :file:`tests/integration/targets/`.
+All the modules are covered by a functional test. The tests are located in the `tests/integration/targets/`.
 
 To run the tests, you will need a vcenter instance and an ESXi.
 
@@ -86,7 +86,7 @@ These tests should be run against your test environment.
 
 ..warning:: The test suite will delete all the existing DC from your test environment. 
 
-First, prepare a configuration file, we call it :file:`/tmp/inventory-vmware_rest` in
+First, prepare a configuration file, we call it `/tmp/inventory-vmware_rest` in
 this example:
 
 .. code-block:: ini
