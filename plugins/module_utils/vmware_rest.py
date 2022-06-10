@@ -28,12 +28,21 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import aiohttp
 import hashlib
 import importlib
 import json
 
 from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.parsing.convert_bool import boolean
+
+import asyncio
+
+lock = asyncio.Lock()
+
+
+class VMwareAuthFailure(Exception):
+    pass
 
 
 async def open_session(
@@ -53,74 +62,65 @@ async def open_session(
     m.update(b"yes" if validate_certs else b"no")
     digest = m.hexdigest()
     # TODO: Handle session timeout
-    if digest in open_session._pool:
-        return open_session._pool[digest]
+    async with lock:
 
-    exceptions = importlib.import_module(
-        "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
-    )
-    try:
-        aiohttp = importlib.import_module("aiohttp")
-    except ImportError:
-        raise exceptions.EmbeddedModuleFailure(msg=missing_required_lib("aiohttp"))
+        if digest in open_session._pool:
+            return open_session._pool[digest]
 
-    if not aiohttp:
-        raise exceptions.EmbeddedModuleFailure(msg="Failed to import aiohttp")
+        if log_file:
+            trace_config = aiohttp.TraceConfig()
 
-    if log_file:
-        trace_config = aiohttp.TraceConfig()
-
-        async def on_request_end(session, trace_config_ctx, params):
-            with open(log_file, "a+", encoding="utf-8") as fd:
-                answer = await params.response.text()
-                fd.write(
-                    f"{params.method}: {params.url}\n"
-                    f"headers: {params.headers}\n"
-                    f"  status: {params.response.status}\n"
-                    f"  answer: {answer}\n\n"
-                )
-
-        trace_config.on_request_end.append(on_request_end)
-        trace_configs = [trace_config]
-    else:
-        trace_configs = []
-
-    auth = aiohttp.BasicAuth(vcenter_username, vcenter_password)
-    if validate_certs:
-        connector = aiohttp.TCPConnector(limit=20)
-    else:
-        connector = aiohttp.TCPConnector(limit=20, ssl=False)
-    async with aiohttp.ClientSession(
-        connector=connector, connector_owner=False, trace_configs=trace_configs
-    ) as session:
-        try:
-            async with session.post(
-                "https://{hostname}/rest/com/vmware/cis/session".format(
-                    hostname=vcenter_hostname
-                ),
-                auth=auth,
-            ) as resp:
-                if resp.status != 200:
-                    raise exceptions.EmbeddedModuleFailure(
-                        "Authentication failure. code: {0}, json: {1}".format(
-                            resp.status, await resp.text()
-                        )
+            async def on_request_end(session, trace_config_ctx, params):
+                with open(log_file, "a+", encoding="utf-8") as fd:
+                    answer = await params.response.text()
+                    fd.write(
+                        f"{params.method}: {params.url}\n"
+                        f"headers: {params.headers}\n"
+                        f"  status: {params.response.status}\n"
+                        f"  answer: {answer}\n\n"
                     )
-                json = await resp.json()
-        except aiohttp.client_exceptions.ClientConnectorError as e:
-            raise exceptions.EmbeddedModuleFailure(f"Authentication failure: {e}")
 
-    session_id = json["value"]
-    session = aiohttp.ClientSession(
-        connector=connector,
-        headers={
-            "vmware-api-session-id": session_id,
-            "content-type": "application/json",
-        },
-        connector_owner=False,
-        trace_configs=trace_configs,
-    )
-    open_session._pool[digest] = session
+            trace_config.on_request_end.append(on_request_end)
+            trace_configs = [trace_config]
+        else:
+            trace_configs = []
+
+        auth = aiohttp.BasicAuth(vcenter_username, vcenter_password)
+        if validate_certs:
+            connector = aiohttp.TCPConnector(limit=20)
+        else:
+            connector = aiohttp.TCPConnector(limit=20, ssl=False)
+        async with aiohttp.ClientSession(
+            connector=connector, connector_owner=False, trace_configs=trace_configs
+        ) as session:
+            try:
+                async with session.post(
+                    "https://{hostname}/rest/com/vmware/cis/session".format(
+                        hostname=vcenter_hostname
+                    ),
+                    auth=auth,
+                ) as resp:
+                    if resp.status != 200:
+                        raise VMwareAuthFailure(
+                            "Authentication failure. code: {0}, json: {1}".format(
+                                resp.status, await resp.text()
+                            )
+                        )
+                    json = await resp.json()
+            except aiohttp.client_exceptions.ClientConnectorError as e:
+                raise VMwareAuthFailure(f"Authentication failure: {e}")
+
+        session_id = json["value"]
+        session = aiohttp.ClientSession(
+            connector=connector,
+            headers={
+                "vmware-api-session-id": session_id,
+                "content-type": "application/json",
+            },
+            connector_owner=False,
+            trace_configs=trace_configs,
+        )
+        open_session._pool[digest] = session
     return session
 
 
@@ -154,16 +154,11 @@ def gen_args(params, in_query_parameter):
 
 
 def session_timeout(params):
-    exceptions = importlib.import_module(
-        "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
-    )
-    try:
-        aiohttp = importlib.import_module("aiohttp")
-    except ImportError:
-        raise exceptions.EmbeddedModuleFailure(msg=missing_required_lib("aiohttp"))
+    # TODO: handle exception
+    aiohttp = importlib.import_module("aiohttp")
 
     if not aiohttp:
-        raise exceptions.EmbeddedModuleFailure(msg="Failed to import aiohttp")
+        raise Exception(msg="Failed to import aiohttp")
     out = {}
     if params.get("session_timeout"):
         out["timeout"] = aiohttp.ClientTimeout(total=params.get("session_timeout"))
@@ -342,7 +337,7 @@ async def exists(params, session, url, unicity_keys=None):
                 exceptions = importlib.import_module(
                     "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
                 )
-                raise exceptions.EmbeddedModuleFailure(msg="Unexpect type")
+                raise Exception(msg="Unexpect type")
 
             if isinstance(k, int) or isinstance(v, str):
                 k = str(k)
