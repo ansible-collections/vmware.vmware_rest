@@ -143,54 +143,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
-    name: test_vm1
-    guest_OS: RHEL_7_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
-    disks:
-    - type: SATA
-      backing:
-        type: VMDK_FILE
-        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-    - type: SATA
-      new_vmdk:
-        name: second_disk
-        capacity: 32000000000
-    cdroms:
-    - type: SATA
-      sata:
-        bus: 0
-        unit: 2
-    nics:
-    - backing:
-        type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
-
-  register: my_vm
-
-- name: Create a directory in /tmp
-  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-    vm: '{{ my_vm.id }}'
-    path: /tmp/my/path
-    create_parents: true
-    credentials:
-      interactive_session: false
-      type: USERNAME_PASSWORD
-      user_name: root
-      password: root
 """
 
 RETURN = r"""
@@ -198,6 +150,15 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {
+        "query": {},
+        "body": {
+            "credentials": "credentials",
+            "path": "path",
+            "recursive": "recursive",
+        },
+        "path": {"vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -222,32 +183,12 @@ PAYLOAD_FORMAT = {
         "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
-    "delete": {
-        "query": {},
-        "body": {
-            "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
-        },
-        "path": {"vm": "vm"},
-    },
 }  # pylint: disable=line-too-long
 
 import json
 import socket
 from ansible.module_utils.basic import env_fallback
-
-try:
-    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-        EmbeddedModuleFailure,
-    )
-    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
-        AnsibleTurboModule as AnsibleModule,
-    )
-
-    AnsibleModule.collection_name = "vmware.vmware_rest"
-except ImportError:
-    from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
@@ -259,16 +200,21 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     prepare_payload,
     update_changed_flag,
     session_timeout,
+    VMwareAuthFailure,
 )
 
 
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -312,12 +258,15 @@ def prepare_argument_spec():
     return argument_spec
 
 
-async def main():
+async def main(params=None):
     required_if = list([])
 
     module_args = prepare_argument_spec()
     module = AnsibleModule(
-        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+        argument_spec=module_args,
+        required_if=required_if,
+        supports_check_mode=True,
+        params=params,
     )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
@@ -333,9 +282,10 @@ async def main():
             validate_certs=module.params["vcenter_validate_certs"],
             log_file=module.params["vcenter_rest_log_file"],
         )
-    except EmbeddedModuleFailure as err:
+    except VMwareAuthFailure as err:
         module.fail_json(err.get_message())
     result = await entry_point(module, session)
+    return result
     module.exit_json(**result)
 
 
