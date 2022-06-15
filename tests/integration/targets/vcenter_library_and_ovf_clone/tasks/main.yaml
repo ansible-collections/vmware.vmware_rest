@@ -60,6 +60,30 @@
       description: an OVF example
       flags: []
     state: present
+  register: ovf_item
+- assert:
+    that:
+      - ovf_item is changed
+
+
+- name: _Export againt the VM as an OVF on the library
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 2900
+    source:
+      type: VirtualMachine
+      id: "{{ my_vm.id }}"
+    target:
+      library_id: "{{ nfs_lib.id }}"
+    create_spec:
+      name: my_vm
+      description: an OVF example
+      flags: []
+    state: present
+  register: _result
+- assert:
+    that:
+      - not(_result is changed)
+      - _result.id
 
 - name: Get the list of items of the NFS library
   vmware.vmware_rest.content_library_item_info:
