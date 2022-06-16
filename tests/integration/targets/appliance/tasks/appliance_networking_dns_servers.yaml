@@ -1,7 +1,14 @@
 - name: Get the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers_info:
-  register: result
-- ansible.builtin.debug: var=result
+  register: original_DNS_config
+- ansible.builtin.debug: var=original_DNS_config
+
+- name: _Wipe the DNS configuration
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    servers: []
+    mode: is_static
+    state: set
+  register: default_DNS_config
 
 - name: Set static DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers:
@@ -14,7 +21,7 @@
 
 - ansible.builtin.assert:
     that:
-      - result.value.servers == ["1.1.1.1"]
+      - result.value.servers|sort == (["1.1.1.1"] + default_DNS_config.value.servers)| sort
 
 - pause:
     seconds: 10
@@ -42,7 +49,7 @@
 
 - ansible.builtin.assert:
     that:
-      - result.value.servers == ["1.1.1.1", "8.8.4.4"]
+      - result.value.servers|sort == (default_DNS_config.value.servers + ["1.1.1.1", "8.8.4.4"])|sort
 
 - pause:
     seconds: 10
@@ -62,3 +69,9 @@
       - google.com
   register: result
 - ansible.builtin.debug: var=result
+
+- name: _Set back the original DNS configuration
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    servers: "{{ original_DNS_config.value.servers }}"
+    mode: is_static
+    state: set
