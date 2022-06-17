@@ -230,6 +230,7 @@ EXAMPLES = r"""
       description: an OVF example
       flags: []
     state: present
+  register: ovf_item
 
 - name: Create a new VM from the OVF
   vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -272,7 +273,7 @@ value:
       information: []
       warnings: []
     resource_id:
-      id: vm-1081
+      id: vm-1569
       type: VirtualMachine
     succeeded: 1
   type: dict
@@ -425,6 +426,37 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
+    library_id = (
+        params["target"]["library_id"] if "library_id" in params["target"] else None
+    )
+    lookup_url = f"https://{params['vcenter_hostname']}/api/content/library/item?library_id={library_id}"
+    per_id_url = "https://{vcenter_hostname}/api/content/library/item".format(**params)
+    uniquity_keys = None
+
+    def comp_func(device):
+        return device["value"]["name"] == params["create_spec"].get("name")
+
+    _json = None
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if _json:
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
+        if "_update" in globals():
+            params["None"] = _json["id"]
+            return await globals()["_update"](params, session)
+
+        return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = ("https://{vcenter_hostname}" "/api/vcenter/ovf/library-item").format(

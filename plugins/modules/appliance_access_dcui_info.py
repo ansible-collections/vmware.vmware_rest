@@ -81,7 +81,7 @@ RETURN = r"""
 value:
   description: Check if the Direct Console User Interface is enabled
   returned: On success
-  sample: 1
+  sample: 0
   type: int
 """
 

@@ -160,15 +160,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"port": "port", "vm": "vm"},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
     "create": {
         "query": {},
@@ -179,8 +172,15 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
-    "delete": {"query": {}, "body": {}, "path": {"port": "port", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"port": "port", "vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json
@@ -339,18 +339,48 @@ async def _connect(params, session):
 
 async def _create(params, session):
 
-    unicity_keys = ["port"]
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["port"]
+    comp_func = None
+
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(
+            f"{url}?names={params['name']}&folders={params['folder']}"
+        ) as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["port"])
+
+    _json = None
 
     if params["port"]:
         _json = await get_device_info(session, build_url(params), params["port"])
-    else:
-        _json = await exists(params, session, build_url(params), unicity_keys)
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}
         if "_update" in globals():
             params["port"] = _json["id"]
             return await globals()["_update"](params, session)
+
         return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])

@@ -1159,38 +1159,77 @@ Examples
           size_MiB: 1024
       register: my_vm
 
-    - name: Create a VM
-      vmware.vmware_rest.vcenter_vm:
+    - name: Create a content library based on a DataStore
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_datastore
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          type: DATASTORE
+        state: present
+      register: ds_lib
+
+    - name: Create a VM template on the library
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        name: foobar2001
+        library: '{{ ds_lib.id }}'
+        source_vm: '{{ my_vm.id }}'
         placement:
           cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
             \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+      register: mylib_item
+
+    - name: Deploy a new VM based on the template
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        name: foobar2002
+        library: '{{ ds_lib.id }}'
+        template_library_item: '{{ mylib_item.id }}'
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        state: deploy
+      register: my_new_vm
+
+    - name: Retrieve all the details about the new VM
+      vmware.vmware_rest.vcenter_vm:
+        vm: '{{ my_new_vm.value }}'
+      register: my_new_vm_info
+
+    - name: Create an instant clone of a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
           datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
             \ }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
           resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
             \ }}"
-        name: test_vm1
-        guest_OS: RHEL_7_64
-        hardware_version: VMX_11
-        memory:
-          hot_add_enabled: true
-          size_MiB: 1024
-        disks:
-        - type: SATA
-          backing:
-            type: VMDK_FILE
-            vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-        - type: SATA
-          new_vmdk:
-            name: second_disk
-            capacity: 32000000000
-        nics:
-        - backing:
-            type: STANDARD_PORTGROUP
-            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-              \ Network') }}"
+        source: '{{ my_vm.id }}'
+        name: test_vm2
+        state: instant_clone
+      register: my_instant_clone
 
-      register: my_vm
+    - name: Create a clone of a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        source: '{{ my_vm.id }}'
+        name: test_vm3
+        state: clone
+      register: my_clone_vm
 
 
 
@@ -1237,7 +1276,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Delete some VM</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}, &#x27;skip_reason&#x27;: &#x27;Conditional result was False&#x27;, &#x27;skipped&#x27;: 1}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1025&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;session_timeout&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1025&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1025&#x27;}, &#x27;value&#x27;: {}}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-db778659-9743-4665-88e1-97f7806830e4&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1488&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-db778659-9743-4665-88e1-97f7806830e4&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1488&#x27;}, &#x27;skip_reason&#x27;: &#x27;Conditional result was False&#x27;, &#x27;skipped&#x27;: 1}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1489&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;session_timeout&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1489&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1489&#x27;}, &#x27;value&#x27;: {}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;foobar2002&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1492&#x27;}, &#x27;_ansible_no_log&#x27;: 0, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;bios_uuid&#x27;: None, &#x27;boot&#x27;: None, &#x27;boot_devices&#x27;: None, &#x27;cdroms&#x27;: None, &#x27;cpu&#x27;: None, &#x27;datastore&#x27;: None, &#x27;datastore_path&#x27;: None, &#x27;disconnect_all_nics&#x27;: None, &#x27;disks&#x27;: None, &#x27;disks_to_remove&#x27;: None, &#x27;disks_to_update&#x27;: None, &#x27;floppies&#x27;: None, &#x27;guest_OS&#x27;: None, &#x27;guest_customization_spec&#x27;: None, &#x27;hardware_version&#x27;: None, &#x27;memory&#x27;: None, &#x27;name&#x27;: None, &#x27;nics&#x27;: None, &#x27;nics_to_update&#x27;: None, &#x27;parallel_ports&#x27;: None, &#x27;parallel_ports_to_update&#x27;: None, &#x27;path&#x27;: None, &#x27;placement&#x27;: None, &#x27;power_on&#x27;: None, &#x27;sata_adapters&#x27;: None, &#x27;scsi_adapters&#x27;: None, &#x27;serial_ports&#x27;: None, &#x27;serial_ports_to_update&#x27;: None, &#x27;session_timeout&#x27;: None, &#x27;source&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;storage_policy&#x27;: None, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: None, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1492&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1024, &#x27;name&#x27;: &#x27;foobar2002&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1492&#x27;}, &#x27;value&#x27;: {}}]</div>
                 </td>
             </tr>
     </table>

@@ -88,8 +88,12 @@ value:
   description: Collect the IPv6 network information
   returned: On success
   sample:
-    addresses: []
-    autoconf: 0
+    addresses:
+    - address: fe80::5054:ff:fec9:c3cf
+      origin: OTHER
+      prefix: 64
+      status: PREFERRED
+    autoconf: 1
     configurable: 1
     default_gateway: ''
     dhcp: 0

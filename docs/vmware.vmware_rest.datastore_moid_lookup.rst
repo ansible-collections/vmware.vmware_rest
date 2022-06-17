@@ -226,7 +226,7 @@ Status
 Authors
 ~~~~~~~
 
-- Alina Buzachis <@alinabuzachis>
+- Alina Buzachis (@alinabuzachis)
 
 
 .. hint::

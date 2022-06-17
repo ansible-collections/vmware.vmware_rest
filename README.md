@@ -201,6 +201,8 @@ Name | Description
 [vmware.vmware_rest.vcenter_vm_tools_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_tools_info_module.rst)|Get the properties of VMware Tools.
 [vmware.vmware_rest.vcenter_vm_tools_installer](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_tools_installer_module.rst)|Connects the VMware Tools CD installer as a CD-ROM for the guest operating system
 [vmware.vmware_rest.vcenter_vm_tools_installer_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vm_tools_installer_info_module.rst)|Get information about the VMware Tools installer.
+[vmware.vmware_rest.vcenter_vmtemplate_libraryitems](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vmtemplate_libraryitems_module.rst)|Creates a library item in content library from a virtual machine
+[vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/docs/vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info_module.rst)|Returns information about a virtual machine template contained in the library item specified by {@param.name templateLibraryItem}
 
 <!--end collection content-->
 

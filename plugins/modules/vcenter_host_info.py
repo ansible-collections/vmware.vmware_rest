@@ -127,7 +127,7 @@ value:
   returned: On success
   sample:
   - connection_state: CONNECTED
-    host: host-1014
+    host: host-1506
     name: esxi1.test
     power_state: POWERED_ON
   type: list

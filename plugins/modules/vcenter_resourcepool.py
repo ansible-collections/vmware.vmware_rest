@@ -211,7 +211,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: resgroup-1010
+  sample: resgroup-1502
   type: str
 value:
   description: Create a generic resource pool
@@ -384,20 +384,50 @@ async def entry_point(module, session):
 
 async def _create(params, session):
 
-    unicity_keys = ["resource_pool"]
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["resource_pool"]
+    comp_func = None
+
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(
+            f"{url}?names={params['name']}&folders={params['folder']}"
+        ) as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["resource_pool"])
+
+    _json = None
 
     if params["resource_pool"]:
         _json = await get_device_info(
             session, build_url(params), params["resource_pool"]
         )
-    else:
-        _json = await exists(params, session, build_url(params), unicity_keys)
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}
         if "_update" in globals():
             params["resource_pool"] = _json["id"]
             return await globals()["_update"](params, session)
+
         return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])

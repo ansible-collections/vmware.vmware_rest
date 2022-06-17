@@ -85,7 +85,7 @@ value:
   sample:
     dns:
       hostname: vcenter.test
-      mode: DHCP
+      mode: STATIC
       servers:
       - 192.168.123.1
     interfaces:
@@ -94,9 +94,19 @@ value:
           address: 192.168.123.8
           configurable: 1
           default_gateway: 192.168.123.1
-          mode: DHCP
+          mode: STATIC
           prefix: 24
-        mac: 52:54:00:80:b3:86
+        ipv6:
+          addresses:
+          - address: fe80::5054:ff:fec9:c3cf
+            origin: OTHER
+            prefix: 64
+            status: PREFERRED
+          autoconf: 1
+          configurable: 1
+          default_gateway: ''
+          dhcp: 0
+        mac: 52:54:00:c9:c3:cf
         name: nic0
         status: up
     vcenter_base_url: https://vcenter.test:443

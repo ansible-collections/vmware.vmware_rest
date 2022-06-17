@@ -592,3 +592,19 @@ releases:
     release_date: '2022-04-26'
   2.1.6:
     release_date: '2022-04-29'
+  2.2.0:
+    changes:
+      minor_changes:
+      - documentation - clarify that the VMware vCenter API doesn't allow the cloning
+        of template if there are not if Library.
+    fragments:
+    - vm_template_library.yaml
+    modules:
+    - description: Creates a library item in content library from a virtual machine
+      name: vcenter_vmtemplate_libraryitems
+      namespace: ''
+    - description: Returns information about a virtual machine template contained
+        in the library item specified by {@param.name templateLibraryItem}
+      name: vcenter_vmtemplate_libraryitems_info
+      namespace: ''
+    release_date: '2022-06-16'

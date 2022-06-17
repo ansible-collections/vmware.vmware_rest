@@ -223,8 +223,6 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Resize the first partition and return the state of the partition before and after the operation</div>
                     <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;lv_root_0&#x27;: {&#x27;new_size&#x27;: 104312832, &#x27;old_size&#x27;: 53985280}}</div>
                 </td>
             </tr>
     </table>

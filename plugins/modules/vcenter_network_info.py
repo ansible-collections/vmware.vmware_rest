@@ -129,18 +129,18 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: VM Network
-    network: network-1016
-    type: STANDARD_PORTGROUP
+  - name: dvswitch1-DVUplinks-1513
+    network: dvportgroup-1514
+    type: DISTRIBUTED_PORTGROUP
   - name: second_vswitch
-    network: network-1018
+    network: network-1511
     type: STANDARD_PORTGROUP
   - name: my-portrgoup
-    network: dvportgroup-1023
+    network: dvportgroup-1515
     type: DISTRIBUTED_PORTGROUP
-  - name: dvswitch1-DVUplinks-1021
-    network: dvportgroup-1022
-    type: DISTRIBUTED_PORTGROUP
+  - name: VM Network
+    network: network-1510
+    type: STANDARD_PORTGROUP
   type: list
 """
 

@@ -202,7 +202,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the ongoing shutdown</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2022-04-30T00:46:23.000Z&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2022-06-17T09:48:00.000Z&#x27;}</div>
                 </td>
             </tr>
     </table>

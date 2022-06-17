@@ -845,38 +845,77 @@ EXAMPLES = r"""
       size_MiB: 1024
   register: my_vm
 
-- name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
+- name: Create a content library based on a DataStore
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_datastore
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Create a VM template on the library
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    name: foobar2001
+    library: '{{ ds_lib.id }}'
+    source_vm: '{{ my_vm.id }}'
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
         \ }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+        \ }}"
+  register: mylib_item
+
+- name: Deploy a new VM based on the template
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    name: foobar2002
+    library: '{{ ds_lib.id }}'
+    template_library_item: '{{ mylib_item.id }}'
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+        \ }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+        \ }}"
+    state: deploy
+  register: my_new_vm
+
+- name: Retrieve all the details about the new VM
+  vmware.vmware_rest.vcenter_vm:
+    vm: '{{ my_new_vm.value }}'
+  register: my_new_vm_info
+
+- name: Create an instant clone of a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
       datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
         \ }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
       resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
         \ }}"
-    name: test_vm1
-    guest_OS: RHEL_7_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
-    disks:
-    - type: SATA
-      backing:
-        type: VMDK_FILE
-        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-    - type: SATA
-      new_vmdk:
-        name: second_disk
-        capacity: 32000000000
-    nics:
-    - backing:
-        type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
+    source: '{{ my_vm.id }}'
+    name: test_vm2
+    state: instant_clone
+  register: my_instant_clone
 
-  register: my_vm
+- name: Create a clone of a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+        \ }}"
+    source: '{{ my_vm.id }}'
+    name: test_vm3
+    state: clone
+  register: my_clone_vm
 """
 
 RETURN = r"""
@@ -893,26 +932,26 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
+      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
       power_state: POWERED_OFF
-      vm: vm-1024
+      vm: vm-1488
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
+      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
       power_state: POWERED_OFF
-      vm: vm-1024
+      vm: vm-1488
     skip_reason: Conditional result was False
     skipped: 1
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 1080
+      memory_size_MiB: 1024
       name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1025
+      power_state: POWERED_OFF
+      vm: vm-1489
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 1
@@ -956,27 +995,92 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1025
+        vm: vm-1489
     item:
       cpu_count: 1
-      memory_size_MiB: 1080
+      memory_size_MiB: 1024
       name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1025
+      power_state: POWERED_OFF
+      vm: vm-1489
+    value: {}
+  - _ansible_item_label:
+      cpu_count: 1
+      memory_size_MiB: 1024
+      name: foobar2002
+      power_state: POWERED_OFF
+      vm: vm-1492
+    _ansible_no_log: 0
+    ansible_loop_var: item
+    changed: 1
+    failed: 0
+    invocation:
+      module_args:
+        bios_uuid: null
+        boot: null
+        boot_devices: null
+        cdroms: null
+        cpu: null
+        datastore: null
+        datastore_path: null
+        disconnect_all_nics: null
+        disks: null
+        disks_to_remove: null
+        disks_to_update: null
+        floppies: null
+        guest_OS: null
+        guest_customization_spec: null
+        hardware_version: null
+        memory: null
+        name: null
+        nics: null
+        nics_to_update: null
+        parallel_ports: null
+        parallel_ports_to_update: null
+        path: null
+        placement: null
+        power_on: null
+        sata_adapters: null
+        scsi_adapters: null
+        serial_ports: null
+        serial_ports_to_update: null
+        session_timeout: null
+        source: null
+        state: absent
+        storage_policy: null
+        vcenter_hostname: vcenter.test
+        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+        vcenter_rest_log_file: null
+        vcenter_username: administrator@vsphere.local
+        vcenter_validate_certs: 0
+        vm: vm-1492
+    item:
+      cpu_count: 1
+      memory_size_MiB: 1024
+      name: foobar2002
+      power_state: POWERED_OFF
+      vm: vm-1492
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "register": {
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "clone": {
         "query": {},
         "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
             "name": "name",
-            "path": "path",
             "placement": "placement",
+            "power_on": "power_on",
+            "source": "source",
         },
         "path": {},
     },
@@ -995,19 +1099,6 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "clone": {
-        "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
-            "source": "source",
-        },
-        "path": {},
-    },
     "create": {
         "query": {},
         "body": {
@@ -1031,11 +1122,16 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "relocate": {
+    "register": {
         "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
     },
 }  # pylint: disable=line-too-long
 
@@ -1403,44 +1499,125 @@ async def entry_point(module, session):
 
 
 async def _clone(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["clone"]["query"].keys()
-    payload = prepare_payload(params, PAYLOAD_FORMAT["clone"])
-    subdevice_type = get_subdevice_type("/api/vcenter/vm?action=clone&vmw-task=true")
-    if subdevice_type and not params[subdevice_type]:
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = (
-        "https://{vcenter_hostname}"
-        # aa
-        "/api/vcenter/vm?action=clone&vmw-task=true"
-    ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        if "value" not in _json:  # 7.0.2
-            _json = {"value": _json}
 
-        return await update_changed_flag(_json, resp.status, "clone")
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["vm"]
+    comp_func = None
 
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(
+            f"{url}?names={params['name']}&folders={params['folder']}"
+        ) as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["vm"])
 
-async def _create(params, session):
-
-    unicity_keys = ["vm"]
+    _json = None
 
     if params["vm"]:
         _json = await get_device_info(session, build_url(params), params["vm"])
-    else:
-        _json = await exists(params, session, build_url(params), unicity_keys)
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}
         if "_update" in globals():
             params["vm"] = _json["id"]
             return await globals()["_update"](params, session)
+
+        return await update_changed_flag(_json, 200, "get")
+
+    payload = prepare_payload(params, PAYLOAD_FORMAT["clone"])
+    _url = ("https://{vcenter_hostname}" "/api/vcenter/vm?action=clone").format(
+        **params
+    )
+    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
+        if resp.status == 500:
+            text = await resp.text()
+            raise EmbeddedModuleFailure(
+                f"Request has failed: status={resp.status}, {text}"
+            )
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+
+        if (resp.status in [200, 201]) and "error" not in _json:
+            if isinstance(_json, str):  # 7.0.2 and greater
+                _id = _json  # TODO: fetch the object
+            elif isinstance(_json, dict) and "value" not in _json:
+                _id = list(_json["value"].values())[0]
+            elif isinstance(_json, dict) and "value" in _json:
+                _id = _json["value"]
+            _json_device_info = await get_device_info(session, _url, _id)
+            if _json_device_info:
+                _json = _json_device_info
+
+        return await update_changed_flag(_json, resp.status, "clone")
+
+
+async def _create(params, session):
+
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["vm"]
+    comp_func = None
+
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(
+            f"{url}?names={params['name']}&folders={params['folder']}"
+        ) as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["vm"])
+
+    _json = None
+
+    if params["vm"]:
+        _json = await get_device_info(session, build_url(params), params["vm"])
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+
+    if _json:
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
+        if "_update" in globals():
+            params["vm"] = _json["id"]
+            return await globals()["_update"](params, session)
+
         return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
@@ -1492,26 +1669,77 @@ async def _delete(params, session):
 
 
 async def _instant_clone(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["instant_clone"]["query"].keys()
+
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["vm"]
+    comp_func = None
+
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(
+            f"{url}?names={params['name']}&folders={params['folder']}"
+        ) as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["vm"])
+
+    _json = None
+
+    if params["vm"]:
+        _json = await get_device_info(session, build_url(params), params["vm"])
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+
+    if _json:
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
+        if "_update" in globals():
+            params["vm"] = _json["id"]
+            return await globals()["_update"](params, session)
+
+        return await update_changed_flag(_json, 200, "get")
+
     payload = prepare_payload(params, PAYLOAD_FORMAT["instant_clone"])
-    subdevice_type = get_subdevice_type("/api/vcenter/vm?action=instant-clone")
-    if subdevice_type and not params[subdevice_type]:
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = (
-        "https://{vcenter_hostname}"
-        # aa
-        "/api/vcenter/vm?action=instant-clone"
-    ).format(**params) + gen_args(params, _in_query_parameters)
+    _url = ("https://{vcenter_hostname}" "/api/vcenter/vm?action=instant-clone").format(
+        **params
+    )
     async with session.post(_url, json=payload, **session_timeout(params)) as resp:
+        if resp.status == 500:
+            text = await resp.text()
+            raise EmbeddedModuleFailure(
+                f"Request has failed: status={resp.status}, {text}"
+            )
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
         except KeyError:
             _json = {}
-        if "value" not in _json:  # 7.0.2
-            _json = {"value": _json}
+
+        if (resp.status in [200, 201]) and "error" not in _json:
+            if isinstance(_json, str):  # 7.0.2 and greater
+                _id = _json  # TODO: fetch the object
+            elif isinstance(_json, dict) and "value" not in _json:
+                _id = list(_json["value"].values())[0]
+            elif isinstance(_json, dict) and "value" in _json:
+                _id = _json["value"]
+            _json_device_info = await get_device_info(session, _url, _id)
+            if _json_device_info:
+                _json = _json_device_info
 
         return await update_changed_flag(_json, resp.status, "instant_clone")
 
@@ -1544,9 +1772,7 @@ async def _register(params, session):
 async def _relocate(params, session):
     _in_query_parameters = PAYLOAD_FORMAT["relocate"]["query"].keys()
     payload = prepare_payload(params, PAYLOAD_FORMAT["relocate"])
-    subdevice_type = get_subdevice_type(
-        "/api/vcenter/vm/{vm}?action=relocate&vmw-task=true"
-    )
+    subdevice_type = get_subdevice_type("/api/vcenter/vm/{vm}?action=relocate")
     if subdevice_type and not params[subdevice_type]:
         _json = await exists(params, session, build_url(params))
         if _json:
@@ -1554,7 +1780,7 @@ async def _relocate(params, session):
     _url = (
         "https://{vcenter_hostname}"
         # aa
-        "/api/vcenter/vm/{vm}?action=relocate&vmw-task=true"
+        "/api/vcenter/vm/{vm}?action=relocate"
     ).format(**params) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:

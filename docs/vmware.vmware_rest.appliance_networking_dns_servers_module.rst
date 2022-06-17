@@ -288,10 +288,10 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Test the DNS servers</div>
+                            <div>Add another DNS server</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: &quot;&#x27;google.com&#x27; is reachable.&quot;, &#x27;result&#x27;: &#x27;success&#x27;}], &#x27;status&#x27;: &#x27;green&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;mode&#x27;: &#x27;is_static&#x27;, &#x27;servers&#x27;: [&#x27;1.1.1.1&#x27;, &#x27;192.168.123.1&#x27;, &#x27;8.8.4.4&#x27;]}</div>
                 </td>
             </tr>
     </table>
