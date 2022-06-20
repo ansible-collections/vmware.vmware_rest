@@ -31,6 +31,7 @@
 import hashlib
 import importlib
 import json
+import re
 
 from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.parsing.convert_bool import boolean
@@ -191,7 +192,7 @@ async def update_changed_flag(data, status, operation):
     if status == 500:
         data["failed"] = True
         data["changed"] = False
-    elif operation == "create" and status in [200, 201]:
+    elif operation in ["create", "clone", "instant_clone"] and status in [200, 201]:
         data["failed"] = False
         data["changed"] = True
     elif operation == "update" and status in [200, 204]:
@@ -215,6 +216,7 @@ async def update_changed_flag(data, status, operation):
     elif operation in ["get", "list"] and status in [404]:
         data["failed"] = True
         data["changed"] = False
+
     elif status >= 400:
         data["failed"] = True
         data["changed"] = False
@@ -291,8 +293,8 @@ async def build_full_device_list(session, url, device_list):
     for i in value:
         # Content library returns string {"value": "library_id"}
         if isinstance(i, str):
-            device_ids = value
-            break
+            device_ids.append(i)
+            continue
         fields = list(i.values())
         if len(fields) != 1:
             # The list already comes with all the details
@@ -307,11 +309,18 @@ async def build_full_device_list(session, url, device_list):
 
 
 async def get_device_info(session, url, _id):
+    # remove the action=foo from the URL
+    m = re.search("(.+)(action=[-a-z]+)(.*)", url)
+    if m:
+        url = f"{m.group(1)}{m.group(3)}"
+        url = url.rstrip("?")
+
     # workaround for content_library_item_info
     if "item?library_id=" in url:
         item_url = url.split("?")[0] + "/" + _id
     else:
         item_url = url + "/" + _id
+
     async with session.get(item_url) as resp:
         if resp.status == 200:
             _json = await resp.json()
@@ -321,17 +330,16 @@ async def get_device_info(session, url, _id):
             return _json
 
 
-async def exists(params, session, url, unicity_keys=None):
-    if not unicity_keys:
-        unicity_keys = []
+async def exists(
+    params, session, url, uniquity_keys=None, per_id_url=None, comp_func=None
+):
+    if not uniquity_keys:
+        uniquity_keys = []
+    if not per_id_url:
+        per_id_url = url
 
-    unicity_keys += ["label", "pci_slot_number", "sata"]
-
-    devices = await list_devices(session, url)
-    full_devices = await build_full_device_list(session, url, devices)
-
-    for device in full_devices:
-        for k in unicity_keys:
+    def default_comp_func(device):
+        for k in uniquity_keys:
             if not params.get(k):
                 continue
             if isinstance(device, dict):  # 7.0.2 <
@@ -349,6 +357,18 @@ async def exists(params, session, url, unicity_keys=None):
                 v = str(v)
             if v == params.get(k):
                 return device
+
+    if not comp_func:
+        comp_func = default_comp_func
+
+    uniquity_keys += ["label", "pci_slot_number", "sata"]
+
+    devices = await list_devices(session, url)
+    full_devices = await build_full_device_list(session, per_id_url, devices)
+
+    for device in full_devices:
+        if comp_func(device):
+            return device
 
 
 def set_subkey(root, path, value):

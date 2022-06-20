@@ -150,17 +150,17 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2022-04-29T14:44:00.032Z'
+    creation_time: '2022-06-16T23:41:02.031Z'
     description: an OVF example
-    id: b8076b05-4ba2-42b2-b449-2335bee4d42c
-    last_modified_time: '2022-04-29T14:44:00.506Z'
-    last_sync_time: '2022-04-29T14:44:00.505Z'
-    library_id: ab6e9790-3d44-459b-a0fc-4cc0d3b4c1ff
+    id: aed1f4f8-ed67-4874-b970-e128c00a1c18
+    last_modified_time: '2022-06-16T23:41:02.267Z'
+    last_sync_time: '2022-06-16T23:41:02.266Z'
+    library_id: 3b4c83d2-0293-4acb-9630-5fc516954e3e
     metadata_version: '1'
     name: my_vm
     security_compliance: 1
     size: 0
-    source_id: 8944e712-4baf-40c1-ae9a-4799139e8e87
+    source_id: d92aceec-4e7d-4e11-9270-6c4c70a970bb
     type: ovf
     version: '1'
   type: list

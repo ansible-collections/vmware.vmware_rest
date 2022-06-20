@@ -230,11 +230,11 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: HEALTHY_WITH_WARNINGS
+      health: HEALTHY
       health_messages:
       - args: []
-        default_message: health.statsReoptInitalizer.illegalStateEx
-        id: health.statsReoptInitalizer.illegalStateEx
+        default_message: health.statsReoptInitalizer.green
+        id: health.statsReoptInitalizer.green
       name_key: cis.perfcharts.ServiceName
       startup_type: AUTOMATIC
       state: STARTED
@@ -333,10 +333,10 @@ value:
       health: HEALTHY
       health_messages:
       - args:
-        - 2022-04-29T14:45:21UTC
-        - 2022-04-29T14:45:25UTC
-        default_message: Configuration health status is created between 2022-04-29T14:45:21UTC
-          and 2022-04-29T14:45:25UTC.
+        - 2022-06-16T23:45:23UTC
+        - 2022-06-16T23:45:24UTC
+        default_message: Configuration health status is created between 2022-06-16T23:45:23UTC
+          and 2022-06-16T23:45:24UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -439,9 +439,11 @@ value:
   - key: vsphere-ui
     value:
       description_key: cis.vsphere-ui.ServiceDescription
+      health: HEALTHY
+      health_messages: []
       name_key: cis.vsphere-ui.ServiceName
       startup_type: AUTOMATIC
-      state: STOPPED
+      state: STARTED
   - key: vstats
     value:
       description_key: cis.vstats.ServiceDescription

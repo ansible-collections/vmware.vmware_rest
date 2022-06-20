@@ -83,13 +83,13 @@ value:
   description: Get the VCSA version
   returned: On success
   sample:
-    build: '18778458'
-    install_time: '2022-04-05T15:21:20.245Z'
+    build: '19717403'
+    install_time: '2022-06-16T18:25:58.876Z'
     product: VMware vCenter Server
-    releasedate: October 21, 2021
+    releasedate: May 12, 2022
     summary: Patch for VMware vCenter Server 7.0
     type: vCenter Server with an embedded Platform Services Controller
-    version: 7.0.3.00100
+    version: 7.0.3.00600
   type: dict
 """
 

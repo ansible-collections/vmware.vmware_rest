@@ -195,39 +195,6 @@ EXAMPLES = r"""
   - vm_info.value.power_state == "POWERED_OFF"
   retries: 60
   delay: 5
-
-- name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
-    name: test_vm1
-    guest_OS: RHEL_7_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
-    disks:
-    - type: SATA
-      backing:
-        type: VMDK_FILE
-        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-    - type: SATA
-      new_vmdk:
-        name: second_disk
-        capacity: 32000000000
-    nics:
-    - backing:
-        type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
-
-  register: my_vm
 """
 
 RETURN = r"""
@@ -235,7 +202,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1053
+  sample: vm-1542
   type: str
 value:
   description: Wait until my VM is off
@@ -281,7 +248,7 @@ value:
       '16001':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[local] test_vm1_1/second_disk.vmdk'
+          vmdk_file: '[local] test_vm1_4/second_disk.vmdk'
         capacity: 32000000000
         label: Hard disk 2
         sata:
@@ -295,8 +262,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 423805ed-a707-d75a-7365-9d6ffd7beb86
-      instance_uuid: 5038f503-19be-abdc-843a-81586097b501
+      bios_uuid: 42073281-aa01-6b47-b8ff-5e0ececbdfae
+      instance_uuid: 5007ff8d-af28-5c49-db05-5460224d40f5
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -307,11 +274,11 @@ value:
       '4000':
         allow_guest_control: 0
         backing:
-          network: network-1045
+          network: network-1535
           network_name: VM Network
           type: STANDARD_PORTGROUP
         label: Network adapter 1
-        mac_address: 00:50:56:b8:8a:85
+        mac_address: 00:50:56:87:5d:ca
         mac_type: ASSIGNED
         pci_slot_number: 160
         start_connected: 0

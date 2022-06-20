@@ -84,7 +84,7 @@ value:
   returned: On success
   sample:
     state: UP_TO_DATE
-    version: 7.0.3.00100
+    version: 7.0.3.00600
   type: dict
 """
 

@@ -91,7 +91,7 @@ value:
     address: 192.168.123.8
     configurable: 1
     default_gateway: 192.168.123.1
-    mode: DHCP
+    mode: STATIC
     prefix: 24
   type: dict
 """

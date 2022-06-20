@@ -214,7 +214,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Collect the IPv4 network information</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;address&#x27;: &#x27;192.168.123.8&#x27;, &#x27;configurable&#x27;: 1, &#x27;default_gateway&#x27;: &#x27;192.168.123.1&#x27;, &#x27;mode&#x27;: &#x27;DHCP&#x27;, &#x27;prefix&#x27;: 24}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;address&#x27;: &#x27;192.168.123.8&#x27;, &#x27;configurable&#x27;: 1, &#x27;default_gateway&#x27;: &#x27;192.168.123.1&#x27;, &#x27;mode&#x27;: &#x27;STATIC&#x27;, &#x27;prefix&#x27;: 24}</div>
                 </td>
             </tr>
     </table>

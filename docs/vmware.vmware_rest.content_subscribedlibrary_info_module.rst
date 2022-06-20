@@ -185,6 +185,10 @@ Examples
       vmware.vmware_rest.content_subscribedlibrary_info:
       register: result
 
+    - name: List Subscribed Content Library
+      vmware.vmware_rest.content_subscribedlibrary_info:
+      register: my_content_library
+
 
 
 Return Values
@@ -210,8 +214,10 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Build a list of subscribed libraries</div>
+                            <div>List Subscribed Content Library</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;creation_time&#x27;: &#x27;2022-06-16T23:41:01.640Z&#x27;, &#x27;description&#x27;: &#x27;&#x27;, &#x27;id&#x27;: &#x27;3b4c83d2-0293-4acb-9630-5fc516954e3e&#x27;, &#x27;last_modified_time&#x27;: &#x27;2022-06-16T23:41:01.640Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2022-06-16T23:41:03.916Z&#x27;, &#x27;name&#x27;: &#x27;sub_lib&#x27;, &#x27;server_guid&#x27;: &#x27;b138c531-cd80-43f5-842d-657d9ddc98f8&#x27;, &#x27;storage_backings&#x27;: [{&#x27;datastore_id&#x27;: &#x27;datastore-1557&#x27;, &#x27;type&#x27;: &#x27;DATASTORE&#x27;}], &#x27;subscription_info&#x27;: {&#x27;authentication_method&#x27;: &#x27;NONE&#x27;, &#x27;automatic_sync_enabled&#x27;: 0, &#x27;on_demand&#x27;: 1, &#x27;subscription_url&#x27;: &#x27;https://vcenter.test:443/cls/vcsp/lib/1db0b79b-c7ac-40a9-9b0d-93234bc2e180/lib.json&#x27;}, &#x27;type&#x27;: &#x27;SUBSCRIBED&#x27;, &#x27;version&#x27;: &#x27;4&#x27;}]</div>
                 </td>
             </tr>
     </table>

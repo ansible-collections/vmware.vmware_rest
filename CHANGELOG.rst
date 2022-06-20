@@ -5,6 +5,20 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.2.0
+======
+
+Minor Changes
+-------------
+
+- documentation - clarify that the VMware vCenter API doesn't allow the cloning of template if there are not if Library.
+
+New Modules
+-----------
+
+- vcenter_vmtemplate_libraryitems - Creates a library item in content library from a virtual machine
+- vcenter_vmtemplate_libraryitems_info - Returns information about a virtual machine template contained in the library item specified by {@param.name templateLibraryItem}
+
 v2.1.6
 ======
 

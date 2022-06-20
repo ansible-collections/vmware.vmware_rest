@@ -1,14 +1,14 @@
-.. _vmware.vmware_rest.vcenter_vm_hardware_ethernet_module:
+.. _vmware.vmware_rest.vcenter_vmtemplate_libraryitems_module:
 
 
-***********************************************
-vmware.vmware_rest.vcenter_vm_hardware_ethernet
-***********************************************
+**************************************************
+vmware.vmware_rest.vcenter_vmtemplate_libraryitems
+**************************************************
 
-**Adds a virtual Ethernet adapter to the virtual machine.**
+**Creates a library item in content library from a virtual machine**
 
 
-Version added: 0.1.0
+Version added: 2.2.0
 
 .. contents::
    :local:
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Adds a virtual Ethernet adapter to the virtual machine.
+- Creates a library item in content library from a virtual machine. This {@term operation} creates a library item in content library whose content is a virtual machine template created from the source virtual machine, using the supplied create specification. The virtual machine template is stored in a newly created library item.
 
 
 
@@ -44,7 +44,154 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>allow_guest_control</b>
+                    <b>description</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Description of the deployed virtual machine.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>disk_storage</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Storage specification for the virtual machine template&#x27;s disks.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>datastore</code> (str): Identifier for the datastore associated the deployed virtual machine&#x27;s disk. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>storage_policy</code> (dict): Storage policy for the deployed virtual machine&#x27;s disk. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- Accepted keys:</div>
+                        <div>- type (string): Policy type for a virtual machine template&#x27;s disk.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>USE_SPECIFIED_POLICY</code></div>
+                        <div>- policy (string): Identifier for the storage policy to use.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>disk_storage_overrides</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Storage specification for individual disks in the deployed virtual machine. This is specified as a mapping between disk identifiers in the source virtual machine template contained in the library item and their storage specifications.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>guest_customization</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Guest customization spec to apply to the deployed virtual machine.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>name</code> (str): Name of the customization specification. ([&#x27;deploy&#x27;])</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>hardware_customization</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Hardware customization spec which specifies updates to the deployed virtual machine.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>nics</code> (dict): Map of Ethernet network adapters to update. ([&#x27;deploy&#x27;])</div>
+                        <div>- <code>disks_to_remove</code> (list): Idenfiers of disks to remove from the deployed virtual machine. ([&#x27;deploy&#x27;])</div>
+                        <div>- <code>disks_to_update</code> (dict): Disk update specification for individual disks in the deployed virtual machine. ([&#x27;deploy&#x27;])</div>
+                        <div>- <code>cpu_update</code> (dict): CPU update specification for the deployed virtual machine. ([&#x27;deploy&#x27;])</div>
+                        <div>- Accepted keys:</div>
+                        <div>- num_cpus (integer): Number of virtual processors in the deployed virtual machine.</div>
+                        <div>- num_cores_per_socket (integer): Number of cores among which to distribute CPUs in the deployed virtual machine.</div>
+                        <div>- <code>memory_update</code> (dict): Memory update specification for the deployed virtual machine. ([&#x27;deploy&#x27;])</div>
+                        <div>- Accepted keys:</div>
+                        <div>- memory (integer): Size of a virtual machine&#x27;s memory in MB.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>library</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Identifier of the library in which the new library item should be created. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Name of the deployed virtual machine. This parameter is mandatory.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>placement</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Information used to place the virtual machine template.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>folder</code> (str): Virtual machine folder into which the deployed virtual machine should be placed. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>resource_pool</code> (str): Resource pool into which the deployed virtual machine should be placed. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>host</code> (str): Host onto which the virtual machine should be placed. If <code>#host</code> and <code>#resource_pool</code> are both specified, <code>#resource_pool</code> must belong to <code>#host</code>. If <code>#host</code> and <code>#cluster</code> are both specified, <code>#host</code> must be a member of <code>#cluster</code>. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>cluster</code> (str): Cluster onto which the deployed virtual machine should be placed. If <code>#cluster</code> and <code>#resource_pool</code> are both specified, <code>#resource_pool</code> must belong to <code>#cluster</code>. If <code>#cluster</code> and <code>#host</code> are both specified, <code>#host</code> must be a member of <code>#cluster</code>. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>powered_on</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
@@ -57,112 +204,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether the guest can connect and disconnect the device.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>backing</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Physical resource backing for the virtual Ethernet adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
-                        <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
-                        <div>This key is required with [&#x27;present&#x27;].</div>
-                        <div>- Accepted values:</div>
-                        <div>- DISTRIBUTED_PORTGROUP</div>
-                        <div>- HOST_DEVICE</div>
-                        <div>- OPAQUE_NETWORK</div>
-                        <div>- STANDARD_PORTGROUP</div>
-                        <div>- <code>network</code> (str): Identifier of the network that backs the virtual Ethernet adapter. ([&#x27;present&#x27;])</div>
-                        <div>- <code>distributed_port</code> (str): Key of the distributed virtual port that backs the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected.  This field cannot be specified as no free ports exist before use. ([&#x27;present&#x27;])</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>label</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>The name of the item</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>mac_address</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>MAC address. This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>mac_type</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>ASSIGNED</li>
-                                    <li>GENERATED</li>
-                                    <li>MANUAL</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>The <code>mac_address_type</code> defines the valid MAC address origins for a virtual Ethernet adapter.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>nic</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Virtual Ethernet adapter identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>pci_slot_number</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</div>
+                        <div>Specifies whether the deployed virtual machine should be powered on after deployment.</div>
                 </td>
             </tr>
             <tr>
@@ -186,20 +228,16 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>start_connected</b>
+                    <b>source_vm</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
+                        <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>Identifier of the source virtual machine to create the library item from. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -213,9 +251,7 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>absent</li>
-                                    <li>connect</li>
-                                    <li>disconnect</li>
+                                    <li>deploy</li>
                                     <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                         </ul>
                 </td>
@@ -225,43 +261,16 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>type</b>
+                    <b>template_library_item</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>E1000</li>
-                                    <li>E1000E</li>
-                                    <li>PCNET32</li>
-                                    <li>VMXNET</li>
-                                    <li>VMXNET2</li>
-                                    <li>VMXNET3</li>
-                        </ul>
                 </td>
                 <td>
-                        <div>The <code>emulation_type</code> defines the valid emulation types for a virtual Ethernet adapter.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>upt_compatibility_enabled</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Flag indicating whether Universal Pass-Through (UPT) compatibility should be enabled on this virtual Ethernet adapter. This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div>identifier of the content library item containing the source virtual machine template to be deployed. Required with <em>state=[&#x27;deploy&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -357,36 +366,24 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vm</b>
+                    <b>vm_home_storage</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
+                        <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>wake_on_lan_enabled</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li>yes</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet adapter. This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</div>
+                        <div>Storage location for the virtual machine template&#x27;s configuration and log files.</div>
+                        <div>Valid attributes are:</div>
+                        <div>- <code>datastore</code> (str): Identifier of the datastore for the deployed virtual machine&#x27;s configuration and log files. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>storage_policy</code> (dict): Storage policy for the deployed virtual machine&#x27;s configuration and log files. ([&#x27;deploy&#x27;, &#x27;present&#x27;])</div>
+                        <div>- Accepted keys:</div>
+                        <div>- type (string): Policy type for the virtual machine template&#x27;s configuration and log files.</div>
+                        <div>Accepted value for this field:</div>
+                        <div>- <code>USE_SPECIFIED_POLICY</code></div>
+                        <div>- policy (string): Identifier for the storage policy to use.</div>
                 </td>
             </tr>
     </table>
@@ -406,79 +403,83 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Get the dvswitch called my-portgroup
-      vmware.vmware_rest.vcenter_network_info:
-        filter_types: DISTRIBUTED_PORTGROUP
-        filter_names: my-portrgoup
-      register: my_portgroup
-
-    - name: Look up the VM called test_vm1 in the inventory
-      register: search_result
-      vmware.vmware_rest.vcenter_vm_info:
-        filter_names:
-        - test_vm1
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-
-    - name: Attach a VM to a dvswitch
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 4
-        backing:
-          type: DISTRIBUTED_PORTGROUP
-          network: '{{ my_portgroup.value[0].network }}'
-        start_connected: false
-      register: vm_hardware_ethernet_1
-
-    - name: Turn the NIC's start_connected flag on
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        nic: '{{ vm_hardware_ethernet_1.id }}'
-        start_connected: true
-        vm: '{{ test_vm1_info.id }}'
-
-    - name: Attach the VM to a standard portgroup
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 4
-        backing:
-          type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
             \ }}"
-
-    - name: Attach the VM to a standard portgroup (again)
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        vm: '{{ test_vm1_info.id }}'
-        pci_slot_number: 4
-        backing:
-          type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
             \ }}"
-
-    - name: Collect a list of the NIC for a given VM
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
-        vm: '{{ test_vm1_info.id }}'
-      register: vm_nic
-
-    - name: Attach the VM to a standard portgroup (again) using the nic ID
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        vm: '{{ test_vm1_info.id }}'
-        nic: '{{ vm_nic.value[0].nic }}'
-        backing:
-          type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
             \ }}"
+        name: test_vm1
+        guest_OS: RHEL_7_64
+        hardware_version: VMX_11
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+        disks:
+        - type: SATA
+          backing:
+            type: VMDK_FILE
+            vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
+        - type: SATA
+          new_vmdk:
+            name: second_disk
+            capacity: 32000000000
+        cdroms:
+        - type: SATA
+          sata:
+            bus: 0
+            unit: 2
+        nics:
+        - backing:
+            type: STANDARD_PORTGROUP
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
+              \ Network') }}"
+      register: my_vm
 
-    - name: Attach to another standard portgroup
-      vmware.vmware_rest.vcenter_vm_hardware_ethernet:
-        vm: '{{ test_vm1_info.id }}'
-        nic: '{{ vm_nic.value[0].nic }}'
-        backing:
-          type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch')\
+    - name: Create a content library based on a DataStore
+      vmware.vmware_rest.content_locallibrary:
+        name: my_library_on_datastore
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: NONE
+        storage_backings:
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
             \ }}"
+          type: DATASTORE
+        state: present
+      register: ds_lib
+
+    - name: Create a VM template on the library
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        name: foobar2001
+        library: '{{ ds_lib.id }}'
+        source_vm: '{{ my_vm.id }}'
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+      register: mylib_item
+
+    - name: Deploy a new VM based on the template
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        name: foobar2002
+        library: '{{ ds_lib.id }}'
+        template_library_item: '{{ mylib_item.id }}'
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
+            \ }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
+            \ }}"
+        state: deploy
+      register: my_new_vm
 
 
 
@@ -508,7 +509,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">4000</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">c6d7e2fd-808c-480f-8ca0-aaf67bfdd422</div>
                 </td>
             </tr>
             <tr>
@@ -522,10 +523,10 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 </td>
                 <td>On success</td>
                 <td>
-                            <div>Attach a VM to a dvswitch</div>
+                            <div>Create a VM template on the library</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 0, &#x27;backing&#x27;: {&#x27;connection_cookie&#x27;: 143272019, &#x27;distributed_port&#x27;: &#x27;2&#x27;, &#x27;distributed_switch_uuid&#x27;: &#x27;50 07 44 c0 cf 04 0e ed-1f 84 29 86 03 e1 5c 1f&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1515&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, &#x27;label&#x27;: &#x27;Network adapter 1&#x27;, &#x27;mac_address&#x27;: &#x27;00:50:56:87:db:75&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;pci_slot_number&#x27;: 4, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;, &#x27;type&#x27;: &#x27;VMXNET3&#x27;, &#x27;upt_compatibility_enabled&#x27;: 0, &#x27;wake_on_lan_enabled&#x27;: 0}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1}, &#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;capacity&#x27;: 16106127360, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1613&#x27;}}, &#x27;16001&#x27;: {&#x27;capacity&#x27;: 32000000000, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1613&#x27;}}}, &#x27;guest_OS&#x27;: &#x27;RHEL_7_64&#x27;, &#x27;memory&#x27;: {&#x27;size_MiB&#x27;: 1024}, &#x27;nics&#x27;: {&#x27;4000&#x27;: {&#x27;backing_type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;network&#x27;: &#x27;network-1614&#x27;}}, &#x27;vm_home_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1613&#x27;}, &#x27;vm_template&#x27;: &#x27;vm-1623&#x27;}</div>
                 </td>
             </tr>
     </table>

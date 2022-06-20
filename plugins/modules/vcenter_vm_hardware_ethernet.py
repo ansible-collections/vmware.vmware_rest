@@ -173,6 +173,12 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the dvswitch called my-portgroup
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: my-portrgoup
+  register: my_portgroup
+
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -183,12 +189,6 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
-
-- name: Get the dvswitch called my-portgroup
-  vmware.vmware_rest.vcenter_network_info:
-    filter_types: DISTRIBUTED_PORTGROUP
-    filter_names: my-portrgoup
-  register: my_portgroup
 
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -261,13 +261,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 1812971491
+      connection_cookie: 143272019
       distributed_port: '2'
-      distributed_switch_uuid: 50 38 7f b3 f5 7b 8f 34-43 51 ad 5c 07 cb 4a 52
-      network: dvportgroup-1023
+      distributed_switch_uuid: 50 07 44 c0 cf 04 0e ed-1f 84 29 86 03 e1 5c 1f
+      network: dvportgroup-1515
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:b8:17:61
+    mac_address: 00:50:56:87:db:75
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -280,19 +280,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
@@ -309,8 +298,19 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
 }  # pylint: disable=line-too-long
 
 import json
@@ -481,18 +481,48 @@ async def _connect(params, session):
 
 async def _create(params, session):
 
-    unicity_keys = ["nic"]
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["nic"]
+    comp_func = None
+
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(
+            f"{url}?names={params['name']}&folders={params['folder']}"
+        ) as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["nic"])
+
+    _json = None
 
     if params["nic"]:
         _json = await get_device_info(session, build_url(params), params["nic"])
-    else:
-        _json = await exists(params, session, build_url(params), unicity_keys)
+
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(
+            params,
+            session,
+            url=lookup_url,
+            uniquity_keys=uniquity_keys,
+            per_id_url=per_id_url,
+            comp_func=comp_func,
+        )
+
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+
     if _json:
         if "value" not in _json:  # 7.0.2+
             _json = {"value": _json}
         if "_update" in globals():
             params["nic"] = _json["id"]
             return await globals()["_update"](params, session)
+
         return await update_changed_flag(_json, 200, "get")
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])

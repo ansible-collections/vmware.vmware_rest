@@ -74,7 +74,7 @@ notes:
 EXAMPLES = r"""
 - name: Get the DNS servers
   vmware.vmware_rest.appliance_networking_dns_servers_info:
-  register: result
+  register: original_DNS_config
 """
 
 RETURN = r"""
@@ -83,7 +83,7 @@ value:
   description: Get the DNS servers
   returned: On success
   sample:
-    mode: dhcp
+    mode: is_static
     servers:
     - 192.168.123.1
   type: dict

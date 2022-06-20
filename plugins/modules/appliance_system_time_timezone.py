@@ -94,8 +94,8 @@ RETURN = r"""
 value:
   description: Use the UTC timezone
   returned: On success
-  sample: {}
-  type: dict
+  sample: UTC
+  type: str
 """
 
 # This structure describes the format of the data expected by the end-points

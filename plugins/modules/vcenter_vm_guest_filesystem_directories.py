@@ -198,6 +198,15 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {
+        "query": {},
+        "body": {
+            "credentials": "credentials",
+            "path": "path",
+            "recursive": "recursive",
+        },
+        "path": {"vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -207,6 +216,11 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "move": {
+        "query": {},
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
+        "path": {"vm": "vm"},
+    },
     "create_temporary": {
         "query": {},
         "body": {
@@ -214,20 +228,6 @@ PAYLOAD_FORMAT = {
             "parent_path": "parent_path",
             "prefix": "prefix",
             "suffix": "suffix",
-        },
-        "path": {"vm": "vm"},
-    },
-    "move": {
-        "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
-        "path": {"vm": "vm"},
-    },
-    "delete": {
-        "query": {},
-        "body": {
-            "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
         },
         "path": {"vm": "vm"},
     },
@@ -365,6 +365,8 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
+    uniquity_keys = []
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
     _url = (

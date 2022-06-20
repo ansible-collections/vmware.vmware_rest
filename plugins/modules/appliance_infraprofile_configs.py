@@ -15,11 +15,6 @@ module: appliance_infraprofile_configs
 short_description: Exports the desired profile specification.
 description: Exports the desired profile specification.
 options:
-  config_spec:
-    description:
-    - The JSON string representing the desired config specification. Required with
-      I(state=['import_profile', 'validate'])
-    type: str
   description:
     description:
     - Custom description provided by the user.
@@ -30,20 +25,6 @@ options:
     - Encryption Key to encrypt/decrypt profiles.
     - If unset encryption will not be used for the profile.
     type: str
-  profile_spec:
-    description:
-    - information to export the profile.
-    - 'Valid attributes are:'
-    - ' - C(encryption_key) (str): Encryption Key to encrypt/decrypt profiles.'
-    - If unset encryption will not be used for the profile. (['import_profile', 'validate'])
-    - ' - C(description) (str): Custom description provided by the user.'
-    - If unset description will be empty. (['import_profile', 'validate'])
-    - ' - C(profiles) (list): Profiles to be exported/imported.'
-    - If unset or empty, all profiles will be returned.
-    - When clients pass a value of this structure as a parameter, the field must contain
-      the id of resources returned by M(vmware.vmware_rest.appliance_infraprofile_configs).
-      (['import_profile', 'validate'])
-    type: dict
   profiles:
     description:
     - Profiles to be exported/imported.
@@ -63,8 +44,6 @@ options:
   state:
     choices:
     - export
-    - import_profile
-    - validate
     description: []
     required: true
     type: str
@@ -130,17 +109,18 @@ RETURN = r"""
 value:
   description: Export the ApplianceManagement profile
   returned: On success
-  sample: '{"action":"RESTART_SERVICE","productName":"VMware vCenter Server","version":"7.0.3.00100","creationTime":"2022-04-29T14:45:07+0000","profiles":{"ApplianceManagement":{"action":"RESTART_SERVICE","actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"version":"7.0","description":"Appliance
-    Mangment Service","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is shell
-    Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
-    zone":"\"Etc/UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
-    servers":["time.nist.gov"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail server":null},"/etc/vmware-syslog/syslog.conf":{"Port
-    [2]":null,"Port [1]":null,"Port [0]":null,"Protocol [2]":null,"Remote Syslog Host
-    [1]":null,"Protocol [1]":null,"Remote Syslog Host [0]":null,"Protocol [0]":null,"Remote
-    Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny Login after these many
-    Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On Error Login
-    will be.":null,"Include Root user for SSH lockout.":null,"Unlock user after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
-    Waring before this No of Days.":null,"Password validity (days)":null}},"name":"ApplianceManagement"}}}'
+  sample: '{"productName":"VMware vCenter Server","action":"RESTART_SERVICE","creationTime":"2022-06-16T23:46:43+0000","version":"7.0.3.00600","profiles":{"ApplianceManagement":{"actionOn":{"VC_SERVICES":["applmgmt"],"SYSTEMD":["sendmail","rsyslog"]},"action":"RESTART_SERVICE","description":"Appliance
+    Mangment Service","version":"7.0","name":"ApplianceManagement","config":{"/etc/applmgmt/appliance/appliance.conf":{"Is
+    shell Enabled":true,"Shell Expiration Time":9,"TimeSync Mode (Host/NTP)":"NTP"},"/etc/sysconfig/clock":{"Time
+    zone":"\"UTC\"","UTC":"1"},"/usr/bin/systemctl/sshd.service":{"Enable SSH":"true"},"/etc/ntp.conf":{"Time
+    servers":["time.google.com"]},"/etc/mail/sendmail.cf":{"SMTP Port":null,"Mail
+    server":null},"/etc/vmware-syslog/syslog.conf":{"Port [2]":null,"Port [1]":null,"Port
+    [0]":null,"Protocol [2]":null,"Remote Syslog Host [1]":null,"Protocol [1]":null,"Remote
+    Syslog Host [0]":null,"Protocol [0]":null,"Remote Syslog Host [2]":null},"/etc/pam.d/system-auth":{"Deny
+    Login after these many Unsuccessful Attempts.":null,"Unlock root after (seconds)":null,"On
+    Error Login will be.":null,"Include Root user for SSH lockout.":null,"Unlock user
+    after (seconds)":null},"/etc/shadow":{"root":{"maximumDays":"90","warningDays":"7"},"bin":{"maximumDays":"90","warningDays":"7"},"daemon":{"maximumDays":"90","warningDays":"7"},"messagebus":{"maximumDays":"90","warningDays":"7"},"systemd-bus-proxy":{"maximumDays":"90","warningDays":"7"},"systemd-journal-gateway":{"maximumDays":"90","warningDays":"7"},"systemd-journal-remote":{"maximumDays":"90","warningDays":"7"},"systemd-journal-upload":{"maximumDays":"90","warningDays":"7"},"systemd-network":{"maximumDays":"90","warningDays":"7"},"systemd-resolve":{"maximumDays":"90","warningDays":"7"},"systemd-timesync":{"maximumDays":"90","warningDays":"7"},"nobody":{"maximumDays":"90","warningDays":"7"},"rpc":{"maximumDays":"90","warningDays":"7"},"ntp":{"maximumDays":"90","warningDays":"7"},"sshd":{"maximumDays":"90","warningDays":"7"},"smmsp":{"maximumDays":"90","warningDays":"7"},"apache":{"maximumDays":"90","warningDays":"7"},"sso-user":{"maximumDays":"90","warningDays":"7"},"vpostgres":{"maximumDays":"","warningDays":"7"},"vapiEndpoint":{"maximumDays":"90","warningDays":"7"},"eam":{"maximumDays":"90","warningDays":"7"},"vlcm":{"maximumDays":"90","warningDays":"7"},"vsan-health":{"maximumDays":"90","warningDays":"7"},"vsm":{"maximumDays":"90","warningDays":"7"},"vsphere-ui":{"maximumDays":"90","warningDays":"7"},"wcp":{"maximumDays":"","warningDays":"7"},"content-library":{"maximumDays":"90","warningDays":"7"},"imagebuilder":{"maximumDays":"90","warningDays":"7"},"perfcharts":{"maximumDays":"90","warningDays":"7"},"vpgmonusr":{"maximumDays":"","warningDays":"7"},"vtsdbmonusr":{"maximumDays":"","warningDays":"7"},"zuul":{"maximumDays":"90","warningDays":"7"},"Send
+    Waring before this No of Days.":null,"Password validity (days)":null}}}}}'
   type: str
 """
 
@@ -154,17 +134,7 @@ PAYLOAD_FORMAT = {
             "profiles": "profiles",
         },
         "path": {},
-    },
-    "validate": {
-        "query": {},
-        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
-        "path": {},
-    },
-    "import_profile": {
-        "query": {},
-        "body": {"config_spec": "config_spec", "profile_spec": "profile_spec"},
-        "path": {},
-    },
+    }
 }  # pylint: disable=line-too-long
 
 import json
@@ -228,16 +198,10 @@ def prepare_argument_spec():
         ),
     }
 
-    argument_spec["config_spec"] = {"type": "str"}
     argument_spec["description"] = {"type": "str"}
     argument_spec["encryption_key"] = {"no_log": True, "type": "str"}
-    argument_spec["profile_spec"] = {"type": "dict"}
     argument_spec["profiles"] = {"type": "list", "elements": "str"}
-    argument_spec["state"] = {
-        "required": True,
-        "type": "str",
-        "choices": ["export", "import_profile", "validate"],
-    }
+    argument_spec["state"] = {"required": True, "type": "str", "choices": ["export"]}
 
     return argument_spec
 
@@ -318,60 +282,6 @@ async def _export(params, session):
             _json = {"value": _json}
 
         return await update_changed_flag(_json, resp.status, "export")
-
-
-async def _import_profile(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["import_profile"]["query"].keys()
-    payload = prepare_payload(params, PAYLOAD_FORMAT["import_profile"])
-    subdevice_type = get_subdevice_type(
-        "/api/appliance/infraprofile/configs?action=import&vmw-task=true"
-    )
-    if subdevice_type and not params[subdevice_type]:
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = (
-        "https://{vcenter_hostname}"
-        # aa
-        "/api/appliance/infraprofile/configs?action=import&vmw-task=true"
-    ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        if "value" not in _json:  # 7.0.2
-            _json = {"value": _json}
-
-        return await update_changed_flag(_json, resp.status, "import_profile")
-
-
-async def _validate(params, session):
-    _in_query_parameters = PAYLOAD_FORMAT["validate"]["query"].keys()
-    payload = prepare_payload(params, PAYLOAD_FORMAT["validate"])
-    subdevice_type = get_subdevice_type(
-        "/api/appliance/infraprofile/configs?action=validate&vmw-task=true"
-    )
-    if subdevice_type and not params[subdevice_type]:
-        _json = await exists(params, session, build_url(params))
-        if _json:
-            params[subdevice_type] = _json["id"]
-    _url = (
-        "https://{vcenter_hostname}"
-        # aa
-        "/api/appliance/infraprofile/configs?action=validate&vmw-task=true"
-    ).format(**params) + gen_args(params, _in_query_parameters)
-    async with session.post(_url, json=payload, **session_timeout(params)) as resp:
-        try:
-            if resp.headers["Content-Type"] == "application/json":
-                _json = await resp.json()
-        except KeyError:
-            _json = {}
-        if "value" not in _json:  # 7.0.2
-            _json = {"value": _json}
-
-        return await update_changed_flag(_json, resp.status, "validate")
 
 
 if __name__ == "__main__":

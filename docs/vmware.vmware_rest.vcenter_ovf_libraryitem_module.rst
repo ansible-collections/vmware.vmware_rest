@@ -353,6 +353,7 @@ Examples
           description: an OVF example
           flags: []
         state: present
+      register: ovf_item
 
     - name: Create a new VM from the OVF
       vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -411,7 +412,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF and specify the host and folder</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1081&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1569&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

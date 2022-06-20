@@ -164,38 +164,10 @@ EXAMPLES = r"""
     state: start
     vm: '{{ my_vm.id }}'
 
-- name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
-    name: test_vm1
-    guest_OS: RHEL_7_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
-    disks:
-    - type: SATA
-      backing:
-        type: VMDK_FILE
-        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-    - type: SATA
-      new_vmdk:
-        name: second_disk
-        capacity: 32000000000
-    nics:
-    - backing:
-        type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
-
-  register: my_vm
+- name: Turn the power of the VM on
+  vmware.vmware_rest.vcenter_vm_power:
+    state: start
+    vm: '{{ my_vm.id }}'
 """
 
 RETURN = r"""
@@ -212,9 +184,9 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
+      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
       power_state: POWERED_OFF
-      vm: vm-1024
+      vm: vm-1488
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -228,13 +200,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1024
+        vm: vm-1488
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-4af8ab74-2a77-47f2-ae55-a10e3b4c84ed
+      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
       power_state: POWERED_OFF
-      vm: vm-1024
+      vm: vm-1488
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -247,10 +219,10 @@ results:
         id: vmsg.InvalidPowerState.summary
   - _ansible_item_label:
       cpu_count: 1
-      memory_size_MiB: 1080
+      memory_size_MiB: 1024
       name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1025
+      power_state: POWERED_OFF
+      vm: vm-1489
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
@@ -264,23 +236,68 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1025
+        vm: vm-1489
     item:
       cpu_count: 1
-      memory_size_MiB: 1080
+      memory_size_MiB: 1024
       name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1025
-    value: {}
+      power_state: POWERED_OFF
+      vm: vm-1489
+    value:
+      error_type: ALREADY_IN_DESIRED_STATE
+      messages:
+      - args: []
+        default_message: Virtual machine is already powered off.
+        id: com.vmware.api.vcenter.vm.power.already_powered_off
+      - args: []
+        default_message: The attempted operation cannot be performed in the current
+          state (Powered off).
+        id: vmsg.InvalidPowerState.summary
+  - _ansible_item_label:
+      cpu_count: 1
+      memory_size_MiB: 1024
+      name: foobar2002
+      power_state: POWERED_OFF
+      vm: vm-1492
+    _ansible_no_log: 0
+    ansible_loop_var: item
+    changed: 0
+    failed: 0
+    invocation:
+      module_args:
+        session_timeout: null
+        state: stop
+        vcenter_hostname: vcenter.test
+        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
+        vcenter_rest_log_file: null
+        vcenter_username: administrator@vsphere.local
+        vcenter_validate_certs: 0
+        vm: vm-1492
+    item:
+      cpu_count: 1
+      memory_size_MiB: 1024
+      name: foobar2002
+      power_state: POWERED_OFF
+      vm: vm-1492
+    value:
+      error_type: ALREADY_IN_DESIRED_STATE
+      messages:
+      - args: []
+        default_message: Virtual machine is already powered off.
+        id: com.vmware.api.vcenter.vm.power.already_powered_off
+      - args: []
+        default_message: The attempted operation cannot be performed in the current
+          state (Powered off).
+        id: vmsg.InvalidPowerState.summary
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
