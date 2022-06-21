@@ -47,6 +47,33 @@
     that:
       - my_content_library.value|length == 1
 
+- name: Create some more content libraries
+  vmware.vmware_rest.content_locallibrary:
+    name: "my_library_on_nfs_{{ item }}"
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: 'NONE'
+    storage_backings:
+      - storage_uri: 'nfs://datastore.test/srv/share/content-library'
+        type: 'OTHER'
+    state: present
+  with_sequence: 0-10
+
+- name: List all Local Content Library
+  vmware.vmware_rest.content_locallibrary_info:
+  register: all_content_libraries
+
+- name: Use the name to identify a content library
+  set_fact:
+    my_first_library: "{{ all_content_libraries.value | selectattr('name', 'equalto', 'my_library_on_nfs')|first }}"
+
+- debug: var=my_first_library
+
+- assert:
+    that:
+      - my_first_library.name == "my_library_on_nfs"
+
 - name: Export the VM as an OVF on the library
   vmware.vmware_rest.vcenter_ovf_libraryitem:
     session_timeout: 2900
