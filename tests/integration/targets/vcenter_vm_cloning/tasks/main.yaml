@@ -1,0 +1,120 @@
+- ansible.builtin.set_fact:
+    disk_name: rhel-8.5
+
+- name: Fetch the root disk
+  ansible.builtin.get_url:
+    url: "https://s3.us-east-2.amazonaws.com/ansible-team-cloud-images/{{ disk_name }}.vmdk-4"
+    dest: "../{{ disk_name }}.vmdk-4"
+    checksum: sha256:e28616764ae9eb7e302f4642cace10f1596d8c7c254e2b9c4038c4cd726262ff
+
+- name: Copy the disk on the ESXi local datastore
+  ansible.builtin.copy:
+    src: "../{{ disk_name }}.vmdk-4"
+    dest: "/vmfs/volumes/local/{{ disk_name }}.vmdk-4"
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+    ansible_remote_tmp: /vmfs/volumes/local
+
+- name: Create the test_vm1 directory
+  ansible.builtin.file:
+    path: /vmfs/volumes/local/test_vm1
+    state: directory
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+    ansible_remote_tmp: /vmfs/volumes/local
+
+- name: Stat disk file
+  ansible.builtin.stat:
+    path: "/vmfs/volumes/local/test_vm1/{{ disk_name }}.vmdk-4"
+  register: vmdk_stat
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+    ansible_remote_tmp: /vmfs/volumes/local
+- ansible.builtin.debug: var=vmdk_stat
+- name: Prepare the VMDK file
+  ansible.builtin.command: "vmkfstools -i /vmfs/volumes/local/{{ disk_name }}.vmdk-4 /vmfs/volumes/local/test_vm1/{{ disk_name }}.vmdk -d thin"
+  delegate_to: esxi1.test
+  vars:
+    ansible_user: root
+    ansible_python_interpreter: /bin/python3
+  when: not vmdk_stat.stat.exists|bool
+
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+    disks:
+      - type: SATA
+        backing:
+          type: VMDK_FILE
+          vmdk_file: "[local] test_vm1/{{ disk_name }}.vmdk"
+      - type: SATA
+        new_vmdk:
+          name: second_disk
+          capacity: 32000000000
+    cdroms:
+      - type: SATA
+        sata:
+          bus: 0
+          unit: 2
+    nics:
+      - backing:
+          type: STANDARD_PORTGROUP
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: my_vm
+
+- name: Turn the power of the VM on
+  vmware.vmware_rest.vcenter_vm_power:
+    state: start
+    vm: '{{ my_vm.id }}'
+
+- pause:
+    seconds: 30
+
+- name: Create an instant clone of a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    source: "{{ my_vm.id }}"
+    name: test_vm2
+    state: instant_clone
+  register: my_instant_clone
+
+- debug: var=my_instant_clone
+- ansible.builtin.assert:
+    that:
+      - my_instant_clone is changed
+      - my_instant_clone.value.name == 'test_vm2'
+
+- name: Create a clone of a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    source: "{{ my_vm.id }}"
+    name: test_vm3
+    state: clone
+  register: my_clone_vm
+- debug: var=my_clone_vm
+- ansible.builtin.assert:
+    that:
+      - my_clone_vm is changed
+      - my_clone_vm.value.name == 'test_vm3'
