@@ -1,0 +1,6 @@
+---
+minor_changes:
+- "vcenter_vm - Add new examples (clone and instant clone)."
+- "Add news example for clone, instant clone and template on Content Library."
+bugfixes:
+- "vcenter_datacenter - Ensure the idempotency works as expected."
