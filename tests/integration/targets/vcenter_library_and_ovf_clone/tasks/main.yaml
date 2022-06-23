@@ -128,6 +128,7 @@
     deployment_spec:
       name: my_vm_from_ovf
       accept_all_EULA: true
+      storage_provisioning: thin
   register: result
   failed_when: not(result.failed)
 
@@ -141,6 +142,7 @@
     deployment_spec:
       name: my_vm_from_ovf
       accept_all_EULA: true
+      storage_provisioning: thin
 
 - assert:
     that:
@@ -158,6 +160,7 @@
     deployment_spec:
       name: my_vm_from_ovf_on_a_host
       accept_all_EULA: true
+      storage_provisioning: thin
 
 - assert:
     that:
