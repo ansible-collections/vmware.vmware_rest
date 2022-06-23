@@ -204,9 +204,16 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"cdrom": "cdrom", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -219,15 +226,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"cdrom": "cdrom", "vm": "vm"},
-    },
+    "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

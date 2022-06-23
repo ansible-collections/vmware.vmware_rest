@@ -932,18 +932,18 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
+      name: vCLS-a3e9f505-69fc-43d0-beed-c1a43d06184e
       power_state: POWERED_OFF
-      vm: vm-1488
+      vm: vm-1130
     _ansible_no_log: 0
     ansible_loop_var: item
     changed: 0
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
+      name: vCLS-a3e9f505-69fc-43d0-beed-c1a43d06184e
       power_state: POWERED_OFF
-      vm: vm-1488
+      vm: vm-1130
     skip_reason: Conditional result was False
     skipped: 1
   - _ansible_item_label:
@@ -951,8 +951,8 @@ results:
       memory_size_MiB: 1024
       name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1489
-    _ansible_no_log: 0
+      vm: vm-1131
+    _ansible_no_log: null
     ansible_loop_var: item
     changed: 1
     failed: 0
@@ -995,21 +995,21 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1489
+        vm: vm-1131
     item:
       cpu_count: 1
       memory_size_MiB: 1024
       name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1489
+      vm: vm-1131
     value: {}
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 1024
       name: foobar2002
       power_state: POWERED_OFF
-      vm: vm-1492
-    _ansible_no_log: 0
+      vm: vm-1134
+    _ansible_no_log: null
     ansible_loop_var: item
     changed: 1
     failed: 0
@@ -1052,53 +1052,19 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1492
+        vm: vm-1134
     item:
       cpu_count: 1
       memory_size_MiB: 1024
       name: foobar2002
       power_state: POWERED_OFF
-      vm: vm-1492
+      vm: vm-1134
     value: {}
   type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "clone": {
-        "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
-            "source": "source",
-        },
-        "path": {},
-    },
-    "instant_clone": {
-        "query": {},
-        "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
-            "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
-            "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
-            "source": "source",
-        },
-        "path": {},
-    },
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -1122,6 +1088,34 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
+            "name": "name",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
+            "placement": "placement",
+            "serial_ports_to_update": "serial_ports_to_update",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "clone": {
+        "query": {},
+        "body": {
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
+            "name": "name",
+            "placement": "placement",
+            "power_on": "power_on",
+            "source": "source",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "register": {
         "query": {},
         "body": {
@@ -1133,6 +1127,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

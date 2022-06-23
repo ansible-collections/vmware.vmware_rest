@@ -82,6 +82,17 @@ EXAMPLES = r"""
 - name: Get the NTP configuration
   vmware.vmware_rest.appliance_ntp_info:
   register: result
+
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+    vcenter_hostname: '{{ vcsa_host }}'
+  delegate_to: localhost
+
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+    vcenter_hostname: '{{ vcsa_host }}'
+  delegate_to: localhost
+  register: result
 """
 
 RETURN = r"""

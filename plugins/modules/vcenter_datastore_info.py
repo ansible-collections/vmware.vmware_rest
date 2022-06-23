@@ -123,17 +123,17 @@ value:
   returned: On success
   sample:
   - capacity: 42314215424
-    datastore: datastore-1507
-    free_space: 40296185856
+    datastore: datastore-1148
+    free_space: 40296542208
     name: ro_datastore
     type: NFS
   - capacity: 42314215424
-    datastore: datastore-1508
-    free_space: 40375779328
+    datastore: datastore-1149
+    free_space: 40296542208
     name: rw_datastore
     type: NFS
   - capacity: 11542724608
-    datastore: datastore-1509
+    datastore: datastore-1150
     free_space: 9069133824
     name: local
     type: VMFS

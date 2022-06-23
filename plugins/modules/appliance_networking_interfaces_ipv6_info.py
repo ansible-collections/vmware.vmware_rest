@@ -89,7 +89,7 @@ value:
   returned: On success
   sample:
     addresses:
-    - address: fe80::5054:ff:fec9:c3cf
+    - address: fe80::5054:ff:fea4:6e89
       origin: OTHER
       prefix: 64
       status: PREFERRED

@@ -11,7 +11,14 @@ v2.2.0
 Minor Changes
 -------------
 
+- Add news example for clone, instant clone and template on Content Library.
 - documentation - clarify that the VMware vCenter API doesn't allow the cloning of template if there are not if Library.
+- vcenter_vm - Add new examples (clone and instant clone).
+
+Bugfixes
+--------
+
+- vcenter_datacenter - Ensure the idempotency works as expected.
 
 New Modules
 -----------

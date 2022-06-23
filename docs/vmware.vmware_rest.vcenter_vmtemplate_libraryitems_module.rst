@@ -509,7 +509,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">c6d7e2fd-808c-480f-8ca0-aaf67bfdd422</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">551beca2-0592-433a-86f2-b2581bfb3b60</div>
                 </td>
             </tr>
             <tr>
@@ -526,7 +526,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a VM template on the library</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1}, &#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;capacity&#x27;: 16106127360, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1613&#x27;}}, &#x27;16001&#x27;: {&#x27;capacity&#x27;: 32000000000, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1613&#x27;}}}, &#x27;guest_OS&#x27;: &#x27;RHEL_7_64&#x27;, &#x27;memory&#x27;: {&#x27;size_MiB&#x27;: 1024}, &#x27;nics&#x27;: {&#x27;4000&#x27;: {&#x27;backing_type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;network&#x27;: &#x27;network-1614&#x27;}}, &#x27;vm_home_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1613&#x27;}, &#x27;vm_template&#x27;: &#x27;vm-1623&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1}, &#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;capacity&#x27;: 16106127360, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1256&#x27;}}, &#x27;16001&#x27;: {&#x27;capacity&#x27;: 32000000000, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1256&#x27;}}}, &#x27;guest_OS&#x27;: &#x27;RHEL_7_64&#x27;, &#x27;memory&#x27;: {&#x27;size_MiB&#x27;: 1024}, &#x27;nics&#x27;: {&#x27;4000&#x27;: {&#x27;backing_type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;network&#x27;: &#x27;network-1257&#x27;}}, &#x27;vm_home_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1256&#x27;}, &#x27;vm_template&#x27;: &#x27;vm-1265&#x27;}</div>
                 </td>
             </tr>
     </table>

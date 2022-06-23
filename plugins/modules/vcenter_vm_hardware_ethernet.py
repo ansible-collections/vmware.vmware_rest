@@ -173,12 +173,6 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Get the dvswitch called my-portgroup
-  vmware.vmware_rest.vcenter_network_info:
-    filter_types: DISTRIBUTED_PORTGROUP
-    filter_names: my-portrgoup
-  register: my_portgroup
-
 - name: Look up the VM called test_vm1 in the inventory
   register: search_result
   vmware.vmware_rest.vcenter_vm_info:
@@ -189,6 +183,12 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_info:
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
+
+- name: Get the dvswitch called my-portgroup
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: my-portrgoup
+  register: my_portgroup
 
 - name: Attach a VM to a dvswitch
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -261,13 +261,13 @@ value:
   sample:
     allow_guest_control: 0
     backing:
-      connection_cookie: 143272019
+      connection_cookie: 2094406230
       distributed_port: '2'
-      distributed_switch_uuid: 50 07 44 c0 cf 04 0e ed-1f 84 29 86 03 e1 5c 1f
-      network: dvportgroup-1515
+      distributed_switch_uuid: 50 07 57 eb bf a2 0d 64-4f c5 98 66 47 29 93 35
+      network: dvportgroup-1157
       type: DISTRIBUTED_PORTGROUP
     label: Network adapter 1
-    mac_address: 00:50:56:87:db:75
+    mac_address: 00:50:56:87:8f:08
     mac_type: ASSIGNED
     pci_slot_number: 4
     start_connected: 0
@@ -280,9 +280,20 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -298,19 +309,8 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

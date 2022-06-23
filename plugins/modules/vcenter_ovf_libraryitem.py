@@ -244,6 +244,7 @@ EXAMPLES = r"""
     deployment_spec:
       name: my_vm_from_ovf
       accept_all_EULA: true
+      storage_provisioning: thin
 
 - name: Create a new VM from the OVF and specify the host and folder
   vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -260,6 +261,7 @@ EXAMPLES = r"""
     deployment_spec:
       name: my_vm_from_ovf_on_a_host
       accept_all_EULA: true
+      storage_provisioning: thin
 """
 
 RETURN = r"""
@@ -273,7 +275,7 @@ value:
       information: []
       warnings: []
     resource_id:
-      id: vm-1569
+      id: vm-1211
       type: VirtualMachine
     succeeded: 1
   type: dict
@@ -281,15 +283,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
-        "path": {},
-    },
     "deploy": {
         "query": {"client_token": "client_token"},
         "body": {"deployment_spec": "deployment_spec", "target": "target"},
         "path": {"ovf_library_item_id": "ovf_library_item_id"},
+    },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
+        "path": {},
     },
     "filter": {
         "query": {},
