@@ -333,10 +333,10 @@ value:
       health: HEALTHY
       health_messages:
       - args:
-        - 2022-06-16T23:45:23UTC
-        - 2022-06-16T23:45:24UTC
-        default_message: Configuration health status is created between 2022-06-16T23:45:23UTC
-          and 2022-06-16T23:45:24UTC.
+        - 2022-06-23T22:40:32UTC
+        - 2022-06-23T22:40:32UTC
+        default_message: Configuration health status is created between 2022-06-23T22:40:32UTC
+          and 2022-06-23T22:40:32UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC

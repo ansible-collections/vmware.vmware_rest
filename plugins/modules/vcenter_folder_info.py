@@ -136,7 +136,7 @@ value:
     vm
   returned: On success
   sample:
-  - folder: group-v1494
+  - folder: group-v1136
     name: vm
     type: VIRTUAL_MACHINE
   type: list

@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the database heath status</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;DB state is Degraded&#x27;, &#x27;id&#x27;: &#x27;desc&#x27;}, &#x27;severity&#x27;: &#x27;WARNING&#x27;}], &#x27;status&#x27;: &#x27;DEGRADED&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;messages&#x27;: [{&#x27;message&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;DB state is Healthy&#x27;, &#x27;id&#x27;: &#x27;desc&#x27;}, &#x27;severity&#x27;: &#x27; &#x27;}], &#x27;status&#x27;: &#x27;HEALTHY&#x27;}</div>
                 </td>
             </tr>
     </table>

@@ -275,7 +275,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: c6d7e2fd-808c-480f-8ca0-aaf67bfdd422
+  sample: 551beca2-0592-433a-86f2-b2581bfb3b60
   type: str
 value:
   description: Create a VM template on the library
@@ -288,11 +288,11 @@ value:
       '16000':
         capacity: 16106127360
         disk_storage:
-          datastore: datastore-1613
+          datastore: datastore-1256
       '16001':
         capacity: 32000000000
         disk_storage:
-          datastore: datastore-1613
+          datastore: datastore-1256
     guest_OS: RHEL_7_64
     memory:
       size_MiB: 1024
@@ -300,29 +300,15 @@ value:
       '4000':
         backing_type: STANDARD_PORTGROUP
         mac_type: ASSIGNED
-        network: network-1614
+        network: network-1257
     vm_home_storage:
-      datastore: datastore-1613
-    vm_template: vm-1623
+      datastore: datastore-1256
+    vm_template: vm-1265
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {
-        "query": {},
-        "body": {
-            "description": "description",
-            "disk_storage": "disk_storage",
-            "disk_storage_overrides": "disk_storage_overrides",
-            "library": "library",
-            "name": "name",
-            "placement": "placement",
-            "source_vm": "source_vm",
-            "vm_home_storage": "vm_home_storage",
-        },
-        "path": {},
-    },
     "deploy": {
         "query": {},
         "body": {
@@ -337,6 +323,20 @@ PAYLOAD_FORMAT = {
             "vm_home_storage": "vm_home_storage",
         },
         "path": {"template_library_item": "template_library_item"},
+    },
+    "create": {
+        "query": {},
+        "body": {
+            "description": "description",
+            "disk_storage": "disk_storage",
+            "disk_storage_overrides": "disk_storage_overrides",
+            "library": "library",
+            "name": "name",
+            "placement": "placement",
+            "source_vm": "source_vm",
+            "vm_home_storage": "vm_home_storage",
+        },
+        "path": {},
     },
 }  # pylint: disable=line-too-long
 

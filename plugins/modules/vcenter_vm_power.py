@@ -184,10 +184,10 @@ results:
   - _ansible_item_label:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
+      name: vCLS-a3e9f505-69fc-43d0-beed-c1a43d06184e
       power_state: POWERED_OFF
-      vm: vm-1488
-    _ansible_no_log: 0
+      vm: vm-1130
+    _ansible_no_log: null
     ansible_loop_var: item
     changed: 0
     failed: 0
@@ -200,13 +200,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1488
+        vm: vm-1130
     item:
       cpu_count: 1
       memory_size_MiB: 128
-      name: vCLS-db778659-9743-4665-88e1-97f7806830e4
+      name: vCLS-a3e9f505-69fc-43d0-beed-c1a43d06184e
       power_state: POWERED_OFF
-      vm: vm-1488
+      vm: vm-1130
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -222,8 +222,8 @@ results:
       memory_size_MiB: 1024
       name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1489
-    _ansible_no_log: 0
+      vm: vm-1131
+    _ansible_no_log: null
     ansible_loop_var: item
     changed: 0
     failed: 0
@@ -236,13 +236,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1489
+        vm: vm-1131
     item:
       cpu_count: 1
       memory_size_MiB: 1024
       name: test_vm1
       power_state: POWERED_OFF
-      vm: vm-1489
+      vm: vm-1131
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:
@@ -258,8 +258,8 @@ results:
       memory_size_MiB: 1024
       name: foobar2002
       power_state: POWERED_OFF
-      vm: vm-1492
-    _ansible_no_log: 0
+      vm: vm-1134
+    _ansible_no_log: null
     ansible_loop_var: item
     changed: 0
     failed: 0
@@ -272,13 +272,13 @@ results:
         vcenter_rest_log_file: null
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
-        vm: vm-1492
+        vm: vm-1134
     item:
       cpu_count: 1
       memory_size_MiB: 1024
       name: foobar2002
       power_state: POWERED_OFF
-      vm: vm-1492
+      vm: vm-1134
     value:
       error_type: ALREADY_IN_DESIRED_STATE
       messages:

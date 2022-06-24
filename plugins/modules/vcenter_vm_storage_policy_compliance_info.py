@@ -102,7 +102,7 @@ value:
   sample:
     disks:
       '16000':
-        check_time: '2022-06-16T23:31:09.162Z'
+        check_time: '2022-06-23T22:29:27.032Z'
         failure_cause: []
         policy: f4e5bade-15a2-4805-bf8e-52318c4ce443
         status: NOT_APPLICABLE

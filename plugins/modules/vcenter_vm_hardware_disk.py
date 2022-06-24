@@ -196,7 +196,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[local] test_vm1_3/test_vm1_1.vmdk'
+      vmdk_file: '[local] test_vm1_1/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:

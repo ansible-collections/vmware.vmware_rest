@@ -91,21 +91,21 @@ value:
   description: List Subscribed Content Library
   returned: On success
   sample:
-  - creation_time: '2022-06-16T23:41:01.640Z'
+  - creation_time: '2022-06-23T22:38:29.995Z'
     description: ''
-    id: 3b4c83d2-0293-4acb-9630-5fc516954e3e
-    last_modified_time: '2022-06-16T23:41:01.640Z'
-    last_sync_time: '2022-06-16T23:41:03.916Z'
+    id: 41bd5c47-e658-4876-bab2-03758f25a3e9
+    last_modified_time: '2022-06-23T22:38:29.995Z'
+    last_sync_time: '2022-06-23T22:38:32.305Z'
     name: sub_lib
     server_guid: b138c531-cd80-43f5-842d-657d9ddc98f8
     storage_backings:
-    - datastore_id: datastore-1557
+    - datastore_id: datastore-1200
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/1db0b79b-c7ac-40a9-9b0d-93234bc2e180/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/c9b8f7da-d5ac-4076-86b9-39ee107d7da3/lib.json
     type: SUBSCRIBED
     version: '4'
   type: list

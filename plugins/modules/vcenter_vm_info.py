@@ -202,7 +202,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: vm-1542
+  sample: vm-1184
   type: str
 value:
   description: Wait until my VM is off
@@ -248,7 +248,7 @@ value:
       '16001':
         backing:
           type: VMDK_FILE
-          vmdk_file: '[local] test_vm1_4/second_disk.vmdk'
+          vmdk_file: '[local] test_vm1_2/second_disk.vmdk'
         capacity: 32000000000
         label: Hard disk 2
         sata:
@@ -262,8 +262,8 @@ value:
       upgrade_status: NONE
       version: VMX_11
     identity:
-      bios_uuid: 42073281-aa01-6b47-b8ff-5e0ececbdfae
-      instance_uuid: 5007ff8d-af28-5c49-db05-5460224d40f5
+      bios_uuid: 420719b2-c821-f9e6-9e19-02727fe7828b
+      instance_uuid: 50072b43-be81-0b7b-5d2b-e03126c76cb5
       name: test_vm1
     instant_clone_frozen: 0
     memory:
@@ -274,11 +274,11 @@ value:
       '4000':
         allow_guest_control: 0
         backing:
-          network: network-1535
+          network: network-1177
           network_name: VM Network
           type: STANDARD_PORTGROUP
         label: Network adapter 1
-        mac_address: 00:50:56:87:5d:ca
+        mac_address: 00:50:56:87:97:87
         mac_type: ASSIGNED
         pci_slot_number: 160
         start_connected: 0

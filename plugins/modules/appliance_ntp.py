@@ -100,6 +100,22 @@ EXAMPLES = r"""
     servers:
     - time.google.com
   register: result
+
+- name: Adjust the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    vcenter_hostname: '{{ vcsa_host }}'
+    servers:
+    - time.google.com
+  delegate_to: localhost
+
+- name: Test the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    vcenter_hostname: '{{ vcsa_host }}'
+    state: test
+    servers:
+    - time.google.com
+  delegate_to: localhost
+  register: result
 """
 
 RETURN = r"""
@@ -119,8 +135,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
     "set": {"query": {}, "body": {"servers": "servers"}, "path": {}},
+    "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

@@ -83,9 +83,9 @@ value:
   description: Get the current time
   returned: On success
   sample:
-    date: Thu 06-16-2022
+    date: Thu 06-23-2022
     seconds_since_epoch: null
-    time: 11:48:09 PM
+    time: 10:45:11 PM
     timezone: UTC
   type: dict
 """

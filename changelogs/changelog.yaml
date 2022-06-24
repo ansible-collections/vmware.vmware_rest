@@ -594,10 +594,15 @@ releases:
     release_date: '2022-04-29'
   2.2.0:
     changes:
+      bugfixes:
+      - vcenter_datacenter - Ensure the idempotency works as expected.
       minor_changes:
+      - Add news example for clone, instant clone and template on Content Library.
       - documentation - clarify that the VMware vCenter API doesn't allow the cloning
         of template if there are not if Library.
+      - vcenter_vm - Add new examples (clone and instant clone).
     fragments:
+    - 2.2.0.yaml
     - vm_template_library.yaml
     modules:
     - description: Creates a library item in content library from a virtual machine

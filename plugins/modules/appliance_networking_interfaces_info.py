@@ -105,7 +105,7 @@ value:
       prefix: 24
     ipv6:
       addresses:
-      - address: fe80::5054:ff:fec9:c3cf
+      - address: fe80::5054:ff:fea4:6e89
         origin: OTHER
         prefix: 64
         status: PREFERRED
@@ -113,7 +113,7 @@ value:
       configurable: 1
       default_gateway: ''
       dhcp: 0
-    mac: 52:54:00:c9:c3:cf
+    mac: 52:54:00:a4:6e:89
     name: nic0
     status: up
   type: dict
