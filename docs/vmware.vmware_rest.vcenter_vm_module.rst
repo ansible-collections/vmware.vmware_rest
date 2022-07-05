@@ -220,7 +220,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Indicates whether all NICs on the destination virtual machine should be disconnected from the newtwork</div>
+                        <div>Indicates whether all NICs on the destination virtual machine should be disconnected from the network</div>
                 </td>
             </tr>
             <tr>
