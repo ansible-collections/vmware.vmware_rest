@@ -1,6 +1,6 @@
 # This file is maintained in the vmware_rest_code_generator project
 # https://github.com/ansible-collections/vmware_rest_code_generator
-# Copyright (c) 2021 Ansible Project
+# Copyright (c) 2021-2022 Ansible Project
 #
 # This code is part of Ansible, but is an independent component.
 # This particular file snippet, and this file snippet only, is BSD licensed.
