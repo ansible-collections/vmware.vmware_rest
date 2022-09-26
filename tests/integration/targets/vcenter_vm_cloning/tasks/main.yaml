@@ -83,8 +83,16 @@
     state: start
     vm: '{{ my_vm.id }}'
 
-- pause:
-    seconds: 30
+
+- name: Wait until my VM is ready
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state == "RUNNING"
+  retries: 10
+  delay: 5
 
 - name: Create an instant clone of a VM
   vmware.vmware_rest.vcenter_vm:

@@ -9,7 +9,7 @@
       - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
         type: 'DATASTORE'
     state: present
-  register: ds_lib
+  register: nfs_lib
 
 - ansible.builtin.set_fact:
     disk_name: rhel-8.5
@@ -93,8 +93,8 @@
 
 - name: Create a VM template on the library
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-    name: foobar2001
-    library: "{{ ds_lib.id }}"
+    name: golden-template
+    library: "{{ nfs_lib.id }}"
     source_vm: "{{ my_vm.id }}"
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
@@ -109,8 +109,8 @@
 
 - name: _Create the same template again
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-    name: foobar2001
-    library: "{{ ds_lib.id }}"
+    name: golden-template
+    library: "{{ nfs_lib.id }}"
     source_vm: "{{ my_vm.id }}"
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
@@ -122,12 +122,28 @@
     that:
       - not (_result is changed)
 
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: lib_items
+
+- debug:
+    var: all_content_libraries
+
+- name: Use the name to identify the item
+  set_fact:
+    my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first }}"
+
+- assert:
+    that:
+      - mylib_item.id == my_template_item.id
+
 
 - name: Deploy a new VM based on the template
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-    name: foobar2002
-    library: "{{ ds_lib.id }}"
-    template_library_item: "{{ mylib_item.id }}"
+    name: vm-from-template
+    library: "{{ nfs_lib.id }}"
+    template_library_item: "{{ my_template_item.id }}"
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
