@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_localaccounts_info
 **Get the local user account information.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -213,7 +213,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>List the local accounts</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;root&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2022-06-23T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 0, &#x27;password_expires_at&#x27;: &#x27;2022-09-21T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;superAdmin&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;inactive_at&#x27;: &#x27;2022-09-14T00:00:00.000Z&#x27;, &#x27;last_password_change&#x27;: &#x27;2022-06-16T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 1, &#x27;password_expires_at&#x27;: &#x27;2022-09-14T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;last_password_change&#x27;: &#x27;2022-06-16T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: -1}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;root&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2022-11-23T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 0, &#x27;password_expires_at&#x27;: &#x27;2023-02-21T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;superAdmin&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;inactive_at&#x27;: &#x27;2022-12-25T00:00:00.000Z&#x27;, &#x27;last_password_change&#x27;: &#x27;2022-09-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 1, &#x27;password_expires_at&#x27;: &#x27;2022-12-25T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;last_password_change&#x27;: &#x27;2022-09-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: -1}]</div>
                 </td>
             </tr>
     </table>

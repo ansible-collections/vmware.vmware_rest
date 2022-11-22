@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_tools_installer_info
 **Get information about the VMware Tools installer.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

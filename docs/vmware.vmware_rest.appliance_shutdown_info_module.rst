@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_shutdown_info
 **Get details about the pending shutdown action.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -202,7 +202,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the ongoing shutdown</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2022-06-24T08:45:02.000Z&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;action&#x27;: &#x27;reboot&#x27;, &#x27;reason&#x27;: &#x27;this is an example&#x27;, &#x27;shutdown_time&#x27;: &#x27;2022-11-24T06:12:16.000Z&#x27;}</div>
                 </td>
             </tr>
     </table>

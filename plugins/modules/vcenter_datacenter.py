@@ -85,7 +85,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -127,7 +127,7 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      datacenter: datacenter-1107
+      datacenter: datacenter-1001
       name: my_dc
     _ansible_no_log: null
     ansible_loop_var: item
@@ -136,7 +136,7 @@ results:
     failed: 0
     invocation:
       module_args:
-        datacenter: datacenter-1107
+        datacenter: datacenter-1001
         folder: null
         force: 1
         name: null
@@ -144,11 +144,11 @@ results:
         state: absent
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
+        vcenter_rest_log_file: /tmp/vmware_rest.log
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
     item:
-      datacenter: datacenter-1107
+      datacenter: datacenter-1001
       name: my_dc
     value: {}
   type: list
@@ -156,12 +156,12 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
     "delete": {
         "query": {"force": "force"},
         "body": {},
         "path": {"datacenter": "datacenter"},
     },
+    "create": {"query": {}, "body": {"folder": "folder", "name": "name"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json

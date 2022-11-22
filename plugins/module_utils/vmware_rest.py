@@ -33,6 +33,8 @@ import importlib
 import json
 import re
 
+import urllib.parse
+
 from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.parsing.convert_bool import boolean
 
@@ -129,7 +131,7 @@ open_session._pool = {}
 
 
 def gen_args(params, in_query_parameter):
-    args = ""
+    elements = []
     for i in in_query_parameter:
         if i.startswith("filter."):  # < 7.0.2
             v = params.get("filter_" + i[7:])
@@ -137,21 +139,16 @@ def gen_args(params, in_query_parameter):
             v = params.get(i)
         if not v:
             continue
-        if not args:
-            args = "?"
-        else:
-            args += "&"
         if isinstance(v, list):
             for j in v:
-                if j == v[-1]:
-                    args += (i + "=") + j
-                else:
-                    args += (i + "=") + j + "&"
+                elements += [(i, j)]
         elif isinstance(v, bool) and v:
-            args += i + "=true"
+            elements += [(i, str(v).lower())]
         else:
-            args += (i + "=") + v
-    return args
+            elements += [(i, str(v))]
+    if not elements:
+        return ""
+    return "?" + urllib.parse.urlencode(elements, quote_via=urllib.parse.quote)
 
 
 def session_timeout(params):

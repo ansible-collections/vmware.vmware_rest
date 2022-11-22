@@ -32,7 +32,7 @@ response
        "value": {
            "dns": {
                "hostname": "vcenter.test",
-               "mode": "DHCP",
+               "mode": "STATIC",
                "servers": [
                    "192.168.123.1"
                ]
@@ -43,10 +43,24 @@ response
                        "address": "192.168.123.8",
                        "configurable": true,
                        "default_gateway": "192.168.123.1",
-                       "mode": "DHCP",
+                       "mode": "STATIC",
                        "prefix": 24
                    },
-                   "mac": "52:54:00:80:b3:86",
+                   "ipv6": {
+                       "addresses": [
+                           {
+                               "address": "fe80::5054:ff:fe70:4823",
+                               "origin": "OTHER",
+                               "prefix": 64,
+                               "status": "PREFERRED"
+                           }
+                       ],
+                       "autoconf": true,
+                       "configurable": true,
+                       "default_gateway": "",
+                       "dhcp": false
+                   },
+                   "mac": "52:54:00:70:48:23",
                    "name": "nic0",
                    "status": "up"
                }
@@ -98,10 +112,24 @@ response
                    "address": "192.168.123.8",
                    "configurable": true,
                    "default_gateway": "192.168.123.1",
-                   "mode": "DHCP",
+                   "mode": "STATIC",
                    "prefix": 24
                },
-               "mac": "52:54:00:80:b3:86",
+               "ipv6": {
+                   "addresses": [
+                       {
+                           "address": "fe80::5054:ff:fe70:4823",
+                           "origin": "OTHER",
+                           "prefix": 64,
+                           "status": "PREFERRED"
+                       }
+                   ],
+                   "autoconf": true,
+                   "configurable": true,
+                   "default_gateway": "",
+                   "dhcp": false
+               },
+               "mac": "52:54:00:70:48:23",
                "name": "nic0",
                "status": "up"
            }
@@ -129,10 +157,24 @@ response
                "address": "192.168.123.8",
                "configurable": true,
                "default_gateway": "192.168.123.1",
-               "mode": "DHCP",
+               "mode": "STATIC",
                "prefix": 24
            },
-           "mac": "52:54:00:80:b3:86",
+           "ipv6": {
+               "addresses": [
+                   {
+                       "address": "fe80::5054:ff:fe70:4823",
+                       "origin": "OTHER",
+                       "prefix": 64,
+                       "status": "PREFERRED"
+                   }
+               ],
+               "autoconf": true,
+               "configurable": true,
+               "default_gateway": "",
+               "dhcp": false
+           },
+           "mac": "52:54:00:70:48:23",
            "name": "nic0",
            "status": "up"
        }
@@ -183,7 +225,7 @@ response
    {
        "changed": false,
        "value": {
-           "mode": "dhcp",
+           "mode": "is_static",
            "servers": [
                "192.168.123.1"
            ]
@@ -206,7 +248,7 @@ response
 ::
 
    {
-       "changed": true,
+       "changed": false,
        "value": {
            "mode": "is_static",
            "servers": [
@@ -262,10 +304,7 @@ response
 
    {
        "changed": false,
-       "value": [
-           "foobar",
-           "barfoo"
-       ]
+       "value": []
    }
 
 There is two way to set the search domain. By default the value you
@@ -283,8 +322,8 @@ response
 ::
 
    {
-       "changed": true,
-       "value": {}
+       "changed": false,
+       "value": []
    }
 
 If you instead use the ``state=add`` parameter, the ``domain`` value
@@ -328,8 +367,15 @@ response
 ::
 
    {
-       "changed": true,
-       "value": {}
+       "changed": false,
+       "value": [
+           {
+               "address": "1.2.3.0",
+               "interface_name": "*",
+               "policy": "REJECT",
+               "prefix": 24
+           }
+       ]
    }
 
 The appliance_networking_firewall_inbound_info module returns a list
@@ -386,8 +432,12 @@ response
 ::
 
    {
-       "changed": true,
-       "value": {}
+       "changed": false,
+       "value": {
+           "enabled": true,
+           "port": 3128,
+           "server": "https://datastore.test"
+       }
    }
 
 ::

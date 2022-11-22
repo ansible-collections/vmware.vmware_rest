@@ -66,7 +66,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -417,42 +417,42 @@ value:
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.rx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
-    id: storage.totalsize.directory.vcdb_hourly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.rx.error.lo
     id: net.rx.error.lo
     instance: lo
     name: com.vmware.applmgmt.mon.name.net.rx.error.lo
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats
-    id: storage.totalsize.directory.vcdb_daily_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.eth0
     id: net.tx.error.eth0
     instance: eth0
     name: com.vmware.applmgmt.mon.name.net.tx.error.eth0
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
-  - category: com.vmware.applmgmt.mon.cat.storage
-    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats
-    id: storage.totalsize.directory.vcdb_monthly_stats
-    instance: ''
-    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats
-    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.network
     description: com.vmware.applmgmt.mon.descr.net.tx.error.lo
     id: net.tx.error.lo
     instance: lo
     name: com.vmware.applmgmt.mon.name.net.tx.error.lo
     units: com.vmware.applmgmt.mon.unit.errors_per_sample
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_hourly_stats
+    id: storage.totalsize.directory.vcdb_hourly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_hourly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_daily_stats
+    id: storage.totalsize.directory.vcdb_daily_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_daily_stats
+    units: com.vmware.applmgmt.mon.unit.kb
+  - category: com.vmware.applmgmt.mon.cat.storage
+    description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_monthly_stats
+    id: storage.totalsize.directory.vcdb_monthly_stats
+    instance: ''
+    name: com.vmware.applmgmt.mon.name.storage.totalsize.directory.vcdb_monthly_stats
+    units: com.vmware.applmgmt.mon.unit.kb
   - category: com.vmware.applmgmt.mon.cat.storage
     description: com.vmware.applmgmt.mon.descr.storage.totalsize.directory.vcdb_yearly_stats
     id: storage.totalsize.directory.vcdb_yearly_stats
@@ -1013,17 +1013,22 @@ async def main():
 
 # template: info_list_and_get_module.j2
 def build_url(params):
+    import yarl
+
     if params.get("stat_id"):
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
-        return (
+        return yarl.URL(
             ("https://{vcenter_hostname}" "/api/appliance/monitoring/").format(**params)
             + params["stat_id"]
-            + gen_args(params, _in_query_parameters)
+            + gen_args(params, _in_query_parameters),
+            encoded=True,
         )
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/api/appliance/monitoring").format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
+    return yarl.URL(
+        ("https://{vcenter_hostname}" "/api/appliance/monitoring").format(**params)
+        + gen_args(params, _in_query_parameters),
+        encoded=True,
+    )
 
 
 async def entry_point(module, session):
@@ -1037,14 +1042,14 @@ async def entry_point(module, session):
         if module.params.get("stat_id"):
             _json["id"] = module.params.get("stat_id")
         elif module.params.get("label"):  # TODO extend the list of filter
-            _json = await exists(module.params, session, url)
+            _json = await exists(module.params, session, str(url))
         elif (
             isinstance(_json["value"], list)
             and len(_json["value"]) > 0
             and isinstance(_json["value"][0], str)
         ):
             # this is a list of id, we fetch the details
-            full_device_list = await build_full_device_list(session, url, _json)
+            full_device_list = await build_full_device_list(session, str(url), _json)
             _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")

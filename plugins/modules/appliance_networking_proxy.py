@@ -124,7 +124,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -160,6 +160,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
+    "test": {
+        "query": {},
+        "body": {"config": "config", "host": "host"},
+        "path": {"protocol": "protocol"},
+    },
     "set": {
         "query": {},
         "body": {
@@ -171,12 +177,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"protocol": "protocol"},
     },
-    "test": {
-        "query": {},
-        "body": {"config": "config", "host": "host"},
-        "path": {"protocol": "protocol"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
 }  # pylint: disable=line-too-long
 
 import json

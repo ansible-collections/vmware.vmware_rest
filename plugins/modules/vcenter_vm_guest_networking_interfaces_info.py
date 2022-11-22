@@ -68,7 +68,7 @@ options:
     type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -102,7 +102,7 @@ value:
   sample:
   - ip:
       ip_addresses: []
-    mac_address: 00:50:56:87:8f:08
+    mac_address: 00:50:56:b1:33:76
     nic: '4000'
   type: list
 """
@@ -207,10 +207,17 @@ async def main():
 
 # template: info_list_and_get_module.j2
 def build_url(params):
+    import yarl
+
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return (
-        "https://{vcenter_hostname}" "/api/vcenter/vm/{vm}/guest/networking/interfaces"
-    ).format(**params) + gen_args(params, _in_query_parameters)
+    return yarl.URL(
+        (
+            "https://{vcenter_hostname}"
+            "/api/vcenter/vm/{vm}/guest/networking/interfaces"
+        ).format(**params)
+        + gen_args(params, _in_query_parameters),
+        encoded=True,
+    )
 
 
 async def entry_point(module, session):

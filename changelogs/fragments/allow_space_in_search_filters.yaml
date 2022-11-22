@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "Allow filters with the space (See: https://github.com/ansible-collections/vmware.vmware_rest/issues/362)."

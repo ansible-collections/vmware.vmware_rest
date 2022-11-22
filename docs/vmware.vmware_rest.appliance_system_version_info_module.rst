@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_version_info
 **Get the version.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the VCSA version</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;build&#x27;: &#x27;19717403&#x27;, &#x27;install_time&#x27;: &#x27;2022-06-16T18:25:58.876Z&#x27;, &#x27;product&#x27;: &#x27;VMware vCenter Server&#x27;, &#x27;releasedate&#x27;: &#x27;May 12, 2022&#x27;, &#x27;summary&#x27;: &#x27;Patch for VMware vCenter Server 7.0&#x27;, &#x27;type&#x27;: &#x27;vCenter Server with an embedded Platform Services Controller&#x27;, &#x27;version&#x27;: &#x27;7.0.3.00600&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;build&#x27;: &#x27;20150588&#x27;, &#x27;install_time&#x27;: &#x27;2022-09-26T19:22:25.765Z&#x27;, &#x27;product&#x27;: &#x27;VMware vCenter Server&#x27;, &#x27;releasedate&#x27;: &#x27;July 23, 2022&#x27;, &#x27;summary&#x27;: &#x27;Patch for VMware vCenter Server 7.0&#x27;, &#x27;type&#x27;: &#x27;vCenter Server with an embedded Platform Services Controller&#x27;, &#x27;version&#x27;: &#x27;7.0.3.00800&#x27;}</div>
                 </td>
             </tr>
     </table>

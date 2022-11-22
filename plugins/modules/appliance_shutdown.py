@@ -79,7 +79,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -125,12 +125,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "cancel": {"query": {}, "body": {}, "path": {}},
     "poweroff": {
         "query": {},
         "body": {"delay": "delay", "reason": "reason"},
         "path": {},
     },
-    "cancel": {"query": {}, "body": {}, "path": {}},
     "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
 }  # pylint: disable=line-too-long
 

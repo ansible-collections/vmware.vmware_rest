@@ -18,13 +18,6 @@ You've got an up and running vCenter Server Appliance.
 Health state per component
 --------------------------
 
-The database:
-
-.. ansible-task::
-
-  - name: Get the database heath status
-    vmware.vmware_rest.appliance_health_database_info:
-
 The database storage:
 
 .. ansible-task::

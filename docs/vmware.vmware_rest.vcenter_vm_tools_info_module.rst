@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_tools_info
 **Get the properties of VMware Tools.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -248,6 +248,16 @@ Examples
       - vm_tools_info is not failed
       - vm_tools_info.value.run_state == "RUNNING"
       retries: 60
+      delay: 5
+
+    - name: Wait until my VM is ready
+      vmware.vmware_rest.vcenter_vm_tools_info:
+        vm: '{{ my_vm.id }}'
+      register: vm_tools_info
+      until:
+      - vm_tools_info is not failed
+      - vm_tools_info.value.run_state == "RUNNING"
+      retries: 10
       delay: 5
 
 

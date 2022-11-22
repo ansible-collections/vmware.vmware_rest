@@ -97,7 +97,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -107,10 +107,15 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Get the dvswitch called my-portgroup
+- name: Get the dvswitch called my portgroup
   vmware.vmware_rest.vcenter_network_info:
     filter_types: DISTRIBUTED_PORTGROUP
-    filter_names: my-portrgoup
+  register: my_portgroup
+
+- name: Get the dvswitch called my portgroup
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: my portrgoup
   register: my_portgroup
 
 - name: Get a list of the networks
@@ -129,18 +134,18 @@ value:
   description: Get a list of the networks
   returned: On success
   sample:
-  - name: dvswitch1-DVUplinks-1154
-    network: dvportgroup-1155
-    type: DISTRIBUTED_PORTGROUP
-  - name: my-portrgoup
-    network: dvportgroup-1157
-    type: DISTRIBUTED_PORTGROUP
   - name: VM Network
-    network: network-1151
+    network: network-1016
     type: STANDARD_PORTGROUP
   - name: second_vswitch
-    network: network-1152
+    network: network-1018
     type: STANDARD_PORTGROUP
+  - name: dvswitch1-DVUplinks-1020
+    network: dvportgroup-1021
+    type: DISTRIBUTED_PORTGROUP
+  - name: my portrgoup
+    network: dvportgroup-1022
+    type: DISTRIBUTED_PORTGROUP
   type: list
 """
 
@@ -274,10 +279,14 @@ async def main():
 
 # template: info_list_and_get_module.j2
 def build_url(params):
+    import yarl
+
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/api/vcenter/network").format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
+    return yarl.URL(
+        ("https://{vcenter_hostname}" "/api/vcenter/network").format(**params)
+        + gen_args(params, _in_query_parameters),
+        encoded=True,
+    )
 
 
 async def entry_point(module, session):

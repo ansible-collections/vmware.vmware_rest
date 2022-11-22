@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_proxy
 **Configures which proxy server to use for the specified protocol**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

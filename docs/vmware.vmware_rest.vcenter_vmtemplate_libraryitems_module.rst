@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vmtemplate_libraryitems
 **Creates a library item in content library from a virtual machine**
 
 
-Version added: 2.2.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -452,12 +452,12 @@ Examples
             \ }}"
           type: DATASTORE
         state: present
-      register: ds_lib
+      register: nfs_lib
 
     - name: Create a VM template on the library
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-        name: foobar2001
-        library: '{{ ds_lib.id }}'
+        name: golden-template
+        library: '{{ nfs_lib.id }}'
         source_vm: '{{ my_vm.id }}'
         placement:
           cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
@@ -467,11 +467,21 @@ Examples
             \ }}"
       register: mylib_item
 
+    - name: Get the list of items of the NFS library
+      vmware.vmware_rest.content_library_item_info:
+        library_id: '{{ nfs_lib.id }}'
+      register: lib_items
+
+    - name: Use the name to identify the item
+      set_fact:
+        my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first\
+          \ }}"
+
     - name: Deploy a new VM based on the template
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-        name: foobar2002
-        library: '{{ ds_lib.id }}'
-        template_library_item: '{{ mylib_item.id }}'
+        name: vm-from-template
+        library: '{{ nfs_lib.id }}'
+        template_library_item: '{{ my_template_item.id }}'
         placement:
           cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
             \ }}"
@@ -509,7 +519,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">551beca2-0592-433a-86f2-b2581bfb3b60</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">9c6df1f5-faba-490c-a8e6-edb72f787ab8</div>
                 </td>
             </tr>
             <tr>
@@ -526,7 +536,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a VM template on the library</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1}, &#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;capacity&#x27;: 16106127360, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1256&#x27;}}, &#x27;16001&#x27;: {&#x27;capacity&#x27;: 32000000000, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1256&#x27;}}}, &#x27;guest_OS&#x27;: &#x27;RHEL_7_64&#x27;, &#x27;memory&#x27;: {&#x27;size_MiB&#x27;: 1024}, &#x27;nics&#x27;: {&#x27;4000&#x27;: {&#x27;backing_type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;network&#x27;: &#x27;network-1257&#x27;}}, &#x27;vm_home_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1256&#x27;}, &#x27;vm_template&#x27;: &#x27;vm-1265&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu&#x27;: {&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1}, &#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;capacity&#x27;: 16106127360, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1122&#x27;}}, &#x27;16001&#x27;: {&#x27;capacity&#x27;: 32000000000, &#x27;disk_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1122&#x27;}}}, &#x27;guest_OS&#x27;: &#x27;RHEL_7_64&#x27;, &#x27;memory&#x27;: {&#x27;size_MiB&#x27;: 1024}, &#x27;nics&#x27;: {&#x27;4000&#x27;: {&#x27;backing_type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;, &#x27;mac_type&#x27;: &#x27;ASSIGNED&#x27;, &#x27;network&#x27;: &#x27;network-1123&#x27;}}, &#x27;vm_home_storage&#x27;: {&#x27;datastore&#x27;: &#x27;datastore-1122&#x27;}, &#x27;vm_template&#x27;: &#x27;vm-1132&#x27;}</div>
                 </td>
             </tr>
     </table>

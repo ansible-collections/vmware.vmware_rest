@@ -19,7 +19,7 @@
 - name: Create the portgroup
   community.vmware.vmware_dvs_portgroup:
     validate_certs: no
-    portgroup_name: my-portrgoup
+    portgroup_name: "my portrgoup"
     switch_name: dvswitch1
     vlan_id: 0
     num_ports: 120

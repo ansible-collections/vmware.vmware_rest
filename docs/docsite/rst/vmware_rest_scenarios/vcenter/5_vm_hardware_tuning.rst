@@ -148,7 +148,7 @@ The second task adjusts the NIC configuration.
    - name: Identify the portgroup called my-portgroup
      vmware.vmware_rest.vcenter_network_info:
        filter_types: DISTRIBUTED_PORTGROUP
-       filter_names: my-portrgoup
+       filter_names: "my portrgoup"
      register: my_portgroup
 
    - name: Attach a VM to a dvswitch
@@ -169,8 +169,8 @@ response
        "changed": false,
        "value": [
            {
-               "name": "my-portrgoup",
-               "network": "dvportgroup-1105",
+               "name": "my portrgoup",
+               "network": "dvportgroup-1182",
                "type": "DISTRIBUTED_PORTGROUP"
            }
        ]
@@ -184,14 +184,14 @@ response
        "value": {
            "allow_guest_control": false,
            "backing": {
-               "connection_cookie": 612448433,
-               "distributed_port": "5",
-               "distributed_switch_uuid": "50 38 1b c8 10 df 63 ee-f5 13 be 7b 56 23 cf 2a",
-               "network": "dvportgroup-1105",
+               "connection_cookie": 730402685,
+               "distributed_port": "2",
+               "distributed_switch_uuid": "50 31 50 36 b4 93 ca 22-33 9b 18 30 3d b1 e7 03",
+               "network": "dvportgroup-1182",
                "type": "DISTRIBUTED_PORTGROUP"
            },
            "label": "Network adapter 1",
-           "mac_address": "00:50:56:b8:af:76",
+           "mac_address": "00:50:56:b1:9c:a5",
            "mac_type": "ASSIGNED",
            "pci_slot_number": 4,
            "start_connected": false,

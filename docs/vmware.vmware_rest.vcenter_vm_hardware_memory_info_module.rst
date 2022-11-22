@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_memory_info
 **Returns the memory-related settings of a virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

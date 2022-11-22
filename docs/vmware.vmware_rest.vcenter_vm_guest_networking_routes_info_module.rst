@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_networking_routes_info
 **Returns information about network routing in the guest operating system.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

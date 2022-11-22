@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_boot_device
 **Sets the virtual devices that will be used to boot the virtual machine**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

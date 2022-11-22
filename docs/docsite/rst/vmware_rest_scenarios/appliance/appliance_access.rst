@@ -35,8 +35,8 @@ response
    {
        "changed": false,
        "value": {
-           "enabled": true,
-           "timeout": 438
+           "enabled": false,
+           "timeout": 0
        }
    }
 
@@ -54,8 +54,11 @@ response
 ::
 
    {
-       "changed": true,
-       "value": {}
+       "changed": false,
+       "value": {
+           "enabled": false,
+           "timeout": 0
+       }
    }
 
 

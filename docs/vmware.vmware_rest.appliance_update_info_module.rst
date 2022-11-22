@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_update_info
 **Gets the current status of the appliance update.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Check if the system is up to date</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;state&#x27;: &#x27;UP_TO_DATE&#x27;, &#x27;version&#x27;: &#x27;7.0.3.00600&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;state&#x27;: &#x27;UP_TO_DATE&#x27;, &#x27;version&#x27;: &#x27;7.0.3.00800&#x27;}</div>
                 </td>
             </tr>
     </table>

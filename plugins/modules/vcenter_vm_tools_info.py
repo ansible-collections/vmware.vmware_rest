@@ -66,7 +66,7 @@ options:
     type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -143,6 +143,16 @@ EXAMPLES = r"""
   - vm_tools_info is not failed
   - vm_tools_info.value.run_state == "RUNNING"
   retries: 60
+  delay: 5
+
+- name: Wait until my VM is ready
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: '{{ my_vm.id }}'
+  register: vm_tools_info
+  until:
+  - vm_tools_info is not failed
+  - vm_tools_info.value.run_state == "RUNNING"
+  retries: 10
   delay: 5
 """
 

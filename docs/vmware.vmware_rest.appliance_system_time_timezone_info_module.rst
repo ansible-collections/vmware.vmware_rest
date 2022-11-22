@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_time_timezone_info
 **Get time zone.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the timezone configuration</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">UTC</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">Etc/UTC</div>
                 </td>
             </tr>
     </table>

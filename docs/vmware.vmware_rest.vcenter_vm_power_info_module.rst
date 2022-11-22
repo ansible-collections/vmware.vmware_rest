@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_power_info
 **Returns the power state information of a virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

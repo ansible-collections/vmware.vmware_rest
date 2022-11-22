@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy_info
 **Returns Information about Storage Policy associated with a virtual machine's home directory and/or its virtual hard disks.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

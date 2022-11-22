@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
 **Adds a virtual SATA adapter to the virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

@@ -122,7 +122,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -146,12 +146,13 @@ RETURN = r"""
 value:
   description: Connect the host(s)
   returned: On success
-  sample: host-1147
+  sample: host-1013
   type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -167,7 +168,6 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
     "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 

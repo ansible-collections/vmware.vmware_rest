@@ -21,34 +21,6 @@ You"ve got an up and running vCenter Server Appliance.
 Health state per component
 --------------------------
 
-The database:
-
-::
-
-   - name: Get the database heath status
-     vmware.vmware_rest.appliance_health_database_info:
-
-response
-
-::
-
-   {
-       "changed": false,
-       "value": {
-           "messages": [
-               {
-                   "message": {
-                       "args": [],
-                       "default_message": "DB state is Degraded",
-                       "id": "desc"
-                   },
-                   "severity": "WARNING"
-               }
-           ],
-           "status": "DEGRADED"
-       }
-   }
-
 The database storage:
 
 ::

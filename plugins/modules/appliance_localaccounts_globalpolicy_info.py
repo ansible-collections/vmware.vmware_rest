@@ -62,7 +62,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -83,9 +83,9 @@ value:
   description: Get the global policy of the local accounts
   returned: On success
   sample:
-    max_days: -1
-    min_days: -1
-    warn_days: 5
+    max_days: 90
+    min_days: 1
+    warn_days: 7
   type: dict
 """
 

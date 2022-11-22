@@ -70,7 +70,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -140,6 +140,20 @@ EXAMPLES = r"""
   vmware.vmware_rest.content_library_item_info:
     library_id: '{{ sub_lib.id }}'
   register: result
+
+- name: Create a content library based on a DataStore
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_datastore
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
+        \ }}"
+      type: DATASTORE
+    state: present
+  register: nfs_lib
 """
 
 RETURN = r"""
@@ -150,17 +164,17 @@ value:
   sample:
   - cached: 0
     content_version: '2'
-    creation_time: '2022-06-23T22:38:30.512Z'
+    creation_time: '2022-11-23T20:06:05.707Z'
     description: an OVF example
-    id: 75e373ac-69d2-48dc-9d26-9caa8a87d5f8
-    last_modified_time: '2022-06-23T22:38:30.833Z'
-    last_sync_time: '2022-06-23T22:38:30.832Z'
-    library_id: 41bd5c47-e658-4876-bab2-03758f25a3e9
+    id: f6618d6b-301b-4202-aa9c-12eb0c7536b1
+    last_modified_time: '2022-11-23T20:06:06.062Z'
+    last_sync_time: '2022-11-23T20:06:06.061Z'
+    library_id: 8b4e355e-a463-44f1-9b04-d0786a49cc7d
     metadata_version: '1'
-    name: my_vm
+    name: golden_image
     security_compliance: 1
     size: 0
-    source_id: e6042f94-40ae-47b8-89cc-a2f668db4a45
+    source_id: 636ef270-b556-4972-924f-0d21b0f3bfce
     type: ovf
     version: '1'
   type: list
@@ -268,17 +282,22 @@ async def main():
 
 # template: info_list_and_get_module.j2
 def build_url(params):
+    import yarl
+
     if params.get("library_item_id"):
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
-        return (
+        return yarl.URL(
             ("https://{vcenter_hostname}" "/api/content/library/item/").format(**params)
             + params["library_item_id"]
-            + gen_args(params, _in_query_parameters)
+            + gen_args(params, _in_query_parameters),
+            encoded=True,
         )
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/api/content/library/item").format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
+    return yarl.URL(
+        ("https://{vcenter_hostname}" "/api/content/library/item").format(**params)
+        + gen_args(params, _in_query_parameters),
+        encoded=True,
+    )
 
 
 async def entry_point(module, session):
@@ -292,14 +311,14 @@ async def entry_point(module, session):
         if module.params.get("library_item_id"):
             _json["id"] = module.params.get("library_item_id")
         elif module.params.get("label"):  # TODO extend the list of filter
-            _json = await exists(module.params, session, url)
+            _json = await exists(module.params, session, str(url))
         elif (
             isinstance(_json["value"], list)
             and len(_json["value"]) > 0
             and isinstance(_json["value"][0], str)
         ):
             # this is a list of id, we fetch the details
-            full_device_list = await build_full_device_list(session, url, _json)
+            full_device_list = await build_full_device_list(session, str(url), _json)
             _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")

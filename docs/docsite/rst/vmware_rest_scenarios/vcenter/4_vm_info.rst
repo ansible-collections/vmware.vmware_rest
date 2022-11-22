@@ -75,7 +75,7 @@ response
                "memory_size_MiB": 1024,
                "name": "test_vm1",
                "power_state": "POWERED_OFF",
-               "vm": "vm-1106"
+               "vm": "vm-1184"
            }
        ]
    }
@@ -104,7 +104,7 @@ response
 
    {
        "changed": false,
-       "id": "vm-1106",
+       "id": "vm-1184",
        "value": {
            "boot": {
                "delay": 0,
@@ -144,8 +144,8 @@ response
                "version": "VMX_11"
            },
            "identity": {
-               "bios_uuid": "42388b7c-e8dd-5a0c-551c-b6d15b13477c",
-               "instance_uuid": "50386c40-3d3f-769d-b65d-bcd8a33f40bb",
+               "bios_uuid": "423123c1-253c-9785-5925-16de430abbe5",
+               "instance_uuid": "50310cfd-c581-0f13-d0ed-9811073d02d7",
                "name": "test_vm1"
            },
            "instant_clone_frozen": false,

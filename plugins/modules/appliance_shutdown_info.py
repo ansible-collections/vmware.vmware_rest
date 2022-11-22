@@ -62,7 +62,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -89,7 +89,7 @@ value:
   sample:
     action: reboot
     reason: this is an example
-    shutdown_time: '2022-06-24T08:45:02.000Z'
+    shutdown_time: '2022-11-24T06:12:16.000Z'
   type: dict
 """
 

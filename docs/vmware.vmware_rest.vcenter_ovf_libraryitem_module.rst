@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_ovf_libraryitem
 **Creates a library item in content library from a virtual machine or virtual appliance**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -320,7 +320,7 @@ Examples
           resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
             \ }}"
         name: test_vm1
-        guest_OS: DEBIAN_8_64
+        guest_OS: RHEL_7_64
         hardware_version: VMX_11
         memory:
           hot_add_enabled: true
@@ -349,7 +349,7 @@ Examples
         target:
           library_id: '{{ nfs_lib.id }}'
         create_spec:
-          name: my_vm
+          name: golden_image
           description: an OVF example
           flags: []
         state: present
@@ -357,8 +357,7 @@ Examples
 
     - name: Create a new VM from the OVF
       vmware.vmware_rest.vcenter_ovf_libraryitem:
-        session_timeout: 2900
-        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id
+        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id
           }}'
         state: deploy
         target:
@@ -371,8 +370,7 @@ Examples
 
     - name: Create a new VM from the OVF and specify the host and folder
       vmware.vmware_rest.vcenter_ovf_libraryitem:
-        session_timeout: 2900
-        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id
+        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id
           }}'
         state: deploy
         target:
@@ -414,7 +412,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Create a new VM from the OVF and specify the host and folder</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1211&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;error&#x27;: {&#x27;errors&#x27;: [], &#x27;information&#x27;: [], &#x27;warnings&#x27;: []}, &#x27;resource_id&#x27;: {&#x27;id&#x27;: &#x27;vm-1078&#x27;, &#x27;type&#x27;: &#x27;VirtualMachine&#x27;}, &#x27;succeeded&#x27;: 1}</div>
                 </td>
             </tr>
     </table>

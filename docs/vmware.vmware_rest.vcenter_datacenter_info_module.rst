@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_datacenter_info
 **Retrieves information about the datacenter corresponding to {@param.name datacenter}.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -268,7 +268,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>collect a list of the datacenters</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1135&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;datacenter&#x27;: &#x27;datacenter-1001&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}]</div>
                 </td>
             </tr>
     </table>
