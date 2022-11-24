@@ -6,7 +6,7 @@
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
       resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
     name: test_vm1
-    guest_OS: DEBIAN_8_64
+    guest_OS: RHEL_7_64
     hardware_version: VMX_11
     memory:
       hot_add_enabled: true
@@ -64,7 +64,7 @@
   vmware.vmware_rest.content_locallibrary_info:
   register: all_content_libraries
 
-- name: Use the name to identify a content library
+- name: Use the name to identify the right item
   set_fact:
     my_first_library: "{{ all_content_libraries.value | selectattr('name', 'equalto', 'my_library_on_nfs')|first }}"
 
@@ -83,7 +83,7 @@
     target:
       library_id: "{{ nfs_lib.id }}"
     create_spec:
-      name: my_vm
+      name: golden_image
       description: an OVF example
       flags: []
     state: present
@@ -102,7 +102,7 @@
     target:
       library_id: "{{ nfs_lib.id }}"
     create_spec:
-      name: my_vm
+      name: golden_image
       description: an OVF example
       flags: []
     state: present
@@ -120,7 +120,7 @@
 - name: _Create a new VM from the OVF with a wrong folder
   vmware.vmware_rest.vcenter_ovf_libraryitem:
     session_timeout: 2900
-    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id }}'
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
     state: deploy
     target:
       resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
@@ -134,8 +134,7 @@
 
 - name: Create a new VM from the OVF
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    session_timeout: 2900
-    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id }}'
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
     state: deploy
     target:
       resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
@@ -150,8 +149,7 @@
 
 - name: Create a new VM from the OVF and specify the host and folder
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    session_timeout: 2900
-    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id }}'
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
     state: deploy
     target:
       resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
