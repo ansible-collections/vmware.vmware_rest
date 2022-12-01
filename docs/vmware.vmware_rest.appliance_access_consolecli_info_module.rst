@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_consolecli_info
 **Get enabled state of the console-based controlled CLI (TTY1).**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -196,6 +196,8 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>Check if the Console CLI is enabled</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">1</div>
                 </td>
             </tr>
     </table>

@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_dns_servers_info
 **Get DNS server configuration.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -198,7 +198,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Get the DNS servers</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;mode&#x27;: &#x27;is_static&#x27;, &#x27;servers&#x27;: [&#x27;192.168.123.1&#x27;]}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;mode&#x27;: &#x27;dhcp&#x27;, &#x27;servers&#x27;: [&#x27;192.168.123.1&#x27;]}</div>
                 </td>
             </tr>
     </table>

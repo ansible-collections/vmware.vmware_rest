@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_libraryitem_info
 **Returns the information about the library item associated with the virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

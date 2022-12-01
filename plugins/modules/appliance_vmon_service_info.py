@@ -68,7 +68,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -230,11 +230,11 @@ value:
   - key: perfcharts
     value:
       description_key: cis.perfcharts.ServiceDescription
-      health: HEALTHY
+      health: HEALTHY_WITH_WARNINGS
       health_messages:
       - args: []
-        default_message: health.statsReoptInitalizer.green
-        id: health.statsReoptInitalizer.green
+        default_message: health.statsReoptInitalizer.illegalStateEx
+        id: health.statsReoptInitalizer.illegalStateEx
       name_key: cis.perfcharts.ServiceName
       startup_type: AUTOMATIC
       state: STARTED
@@ -333,10 +333,10 @@ value:
       health: HEALTHY
       health_messages:
       - args:
-        - 2022-06-23T22:40:32UTC
-        - 2022-06-23T22:40:32UTC
-        default_message: Configuration health status is created between 2022-06-23T22:40:32UTC
-          and 2022-06-23T22:40:32UTC.
+        - 2022-11-23T20:10:44UTC
+        - 2022-11-23T20:10:46UTC
+        default_message: Configuration health status is created between 2022-11-23T20:10:44UTC
+          and 2022-11-23T20:10:46UTC.
         id: com.vmware.vapi.endpoint.healthStatusProducedTimes
       name_key: cis.vapi-endpoint.ServiceName
       startup_type: AUTOMATIC
@@ -439,11 +439,9 @@ value:
   - key: vsphere-ui
     value:
       description_key: cis.vsphere-ui.ServiceDescription
-      health: HEALTHY
-      health_messages: []
       name_key: cis.vsphere-ui.ServiceName
       startup_type: AUTOMATIC
-      state: STARTED
+      state: STOPPED
   - key: vstats
     value:
       description_key: cis.vstats.ServiceDescription

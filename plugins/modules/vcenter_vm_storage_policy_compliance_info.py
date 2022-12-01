@@ -68,7 +68,7 @@ options:
     type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -102,7 +102,7 @@ value:
   sample:
     disks:
       '16000':
-        check_time: '2022-06-23T22:29:27.032Z'
+        check_time: '2022-11-23T19:53:45.594Z'
         failure_cause: []
         policy: f4e5bade-15a2-4805-bf8e-52318c4ce443
         status: NOT_APPLICABLE

@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_shell_info
 **Get enabled state of BASH, that is, access to BASH from within the controlled CLI.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

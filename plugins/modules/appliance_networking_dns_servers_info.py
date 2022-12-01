@@ -62,7 +62,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -83,7 +83,7 @@ value:
   description: Get the DNS servers
   returned: On success
   sample:
-    mode: is_static
+    mode: dhcp
     servers:
     - 192.168.123.1
   type: dict

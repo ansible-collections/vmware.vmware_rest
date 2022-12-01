@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_resourcepool_info
 **Retrieves information about the resource pool indicated by {@param.name resourcePool}.**
 
 
-Version added: 0.3.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -327,7 +327,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1143</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1009</div>
                 </td>
             </tr>
             <tr>

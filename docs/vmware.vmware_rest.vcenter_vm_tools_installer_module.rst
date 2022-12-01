@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_tools_installer
 **Connects the VMware Tools CD installer as a CD-ROM for the guest operating system**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

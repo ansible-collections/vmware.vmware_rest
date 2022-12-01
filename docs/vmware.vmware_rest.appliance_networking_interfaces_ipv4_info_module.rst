@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_interfaces_ipv4_info
 **Get IPv4 network configuration for specific NIC.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

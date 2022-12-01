@@ -76,7 +76,7 @@ The second task adjusts the NIC configuration.
   - name: Identify the portgroup called my-portgroup
     vmware.vmware_rest.vcenter_network_info:
       filter_types: DISTRIBUTED_PORTGROUP
-      filter_names: my-portrgoup
+      filter_names: "my portrgoup"
     register: my_portgroup
 
   - name: Attach a VM to a dvswitch

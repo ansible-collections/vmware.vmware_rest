@@ -73,7 +73,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -93,8 +93,8 @@ RETURN = r"""
 value:
   description: Disable the Console CLI
   returned: On success
-  sample: 0
-  type: int
+  sample: {}
+  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points

@@ -290,7 +290,7 @@ options:
     type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -376,21 +376,21 @@ results:
   returned: On success
   sample:
   - _ansible_item_label:
-      creation_time: '2022-06-23T22:38:29.995Z'
+      creation_time: '2022-11-23T20:06:05.189Z'
       description: ''
-      id: 41bd5c47-e658-4876-bab2-03758f25a3e9
-      last_modified_time: '2022-06-23T22:38:29.995Z'
-      last_sync_time: '2022-06-23T22:38:32.305Z'
+      id: 8b4e355e-a463-44f1-9b04-d0786a49cc7d
+      last_modified_time: '2022-11-23T20:06:05.189Z'
+      last_sync_time: '2022-11-23T20:06:07.717Z'
       name: sub_lib
-      server_guid: b138c531-cd80-43f5-842d-657d9ddc98f8
+      server_guid: 52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5
       storage_backings:
-      - datastore_id: datastore-1200
+      - datastore_id: datastore-1065
         type: DATASTORE
       subscription_info:
         authentication_method: NONE
         automatic_sync_enabled: 0
         on_demand: 1
-        subscription_url: https://vcenter.test:443/cls/vcsp/lib/c9b8f7da-d5ac-4076-86b9-39ee107d7da3/lib.json
+        subscription_url: https://vcenter.test:443/cls/vcsp/lib/a66d5c73-57f8-4a3a-9361-292a55f68516/lib.json
       type: SUBSCRIBED
       version: '4'
     _ansible_no_log: null
@@ -405,7 +405,7 @@ results:
         id: null
         last_modified_time: null
         last_sync_time: null
-        library_id: 41bd5c47-e658-4876-bab2-03758f25a3e9
+        library_id: 8b4e355e-a463-44f1-9b04-d0786a49cc7d
         name: null
         optimization_info: null
         publish_info: null
@@ -417,26 +417,26 @@ results:
         type: null
         vcenter_hostname: vcenter.test
         vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: null
+        vcenter_rest_log_file: /tmp/vmware_rest.log
         vcenter_username: administrator@vsphere.local
         vcenter_validate_certs: 0
         version: null
     item:
-      creation_time: '2022-06-23T22:38:29.995Z'
+      creation_time: '2022-11-23T20:06:05.189Z'
       description: ''
-      id: 41bd5c47-e658-4876-bab2-03758f25a3e9
-      last_modified_time: '2022-06-23T22:38:29.995Z'
-      last_sync_time: '2022-06-23T22:38:32.305Z'
+      id: 8b4e355e-a463-44f1-9b04-d0786a49cc7d
+      last_modified_time: '2022-11-23T20:06:05.189Z'
+      last_sync_time: '2022-11-23T20:06:07.717Z'
       name: sub_lib
-      server_guid: b138c531-cd80-43f5-842d-657d9ddc98f8
+      server_guid: 52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5
       storage_backings:
-      - datastore_id: datastore-1200
+      - datastore_id: datastore-1065
         type: DATASTORE
       subscription_info:
         authentication_method: NONE
         automatic_sync_enabled: 0
         on_demand: 1
-        subscription_url: https://vcenter.test:443/cls/vcsp/lib/c9b8f7da-d5ac-4076-86b9-39ee107d7da3/lib.json
+        subscription_url: https://vcenter.test:443/cls/vcsp/lib/a66d5c73-57f8-4a3a-9361-292a55f68516/lib.json
       type: SUBSCRIBED
       version: '4'
     value: {}
@@ -445,32 +445,6 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "probe": {
-        "query": {},
-        "body": {"subscription_info": "subscription_info"},
-        "path": {},
-    },
-    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "update": {
-        "query": {},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "version": "version",
-        },
-        "path": {"library_id": "library_id"},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -491,6 +465,32 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "probe": {
+        "query": {},
+        "body": {"subscription_info": "subscription_info"},
+        "path": {},
+    },
+    "update": {
+        "query": {},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "version": "version",
+        },
+        "path": {"library_id": "library_id"},
+    },
 }  # pylint: disable=line-too-long
 
 import json

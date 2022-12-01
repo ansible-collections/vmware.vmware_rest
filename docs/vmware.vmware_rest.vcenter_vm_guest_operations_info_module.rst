@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_operations_info
 **Get information about the guest operation status.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

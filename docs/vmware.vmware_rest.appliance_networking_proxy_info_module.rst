@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_proxy_info
 **Gets the proxy configuration for a specific protocol.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

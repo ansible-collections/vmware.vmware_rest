@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_filesystem_directories
 **Creates a directory in the guest operating system**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

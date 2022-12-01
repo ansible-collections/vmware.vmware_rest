@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_host
 **Add a new standalone host in the vCenter inventory**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -365,7 +365,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Connect the host(s)</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1147</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1013</div>
                 </td>
             </tr>
     </table>

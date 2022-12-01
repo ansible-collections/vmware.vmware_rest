@@ -62,7 +62,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -83,13 +83,13 @@ value:
   description: Get the VCSA version
   returned: On success
   sample:
-    build: '19717403'
-    install_time: '2022-06-16T18:25:58.876Z'
+    build: '20150588'
+    install_time: '2022-09-26T19:22:25.765Z'
     product: VMware vCenter Server
-    releasedate: May 12, 2022
+    releasedate: July 23, 2022
     summary: Patch for VMware vCenter Server 7.0
     type: vCenter Server with an embedded Platform Services Controller
-    version: 7.0.3.00600
+    version: 7.0.3.00800
   type: dict
 """
 

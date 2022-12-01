@@ -66,7 +66,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -91,21 +91,21 @@ value:
   description: List Subscribed Content Library
   returned: On success
   sample:
-  - creation_time: '2022-06-23T22:38:29.995Z'
+  - creation_time: '2022-11-23T20:06:05.189Z'
     description: ''
-    id: 41bd5c47-e658-4876-bab2-03758f25a3e9
-    last_modified_time: '2022-06-23T22:38:29.995Z'
-    last_sync_time: '2022-06-23T22:38:32.305Z'
+    id: 8b4e355e-a463-44f1-9b04-d0786a49cc7d
+    last_modified_time: '2022-11-23T20:06:05.189Z'
+    last_sync_time: '2022-11-23T20:06:07.717Z'
     name: sub_lib
-    server_guid: b138c531-cd80-43f5-842d-657d9ddc98f8
+    server_guid: 52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5
     storage_backings:
-    - datastore_id: datastore-1200
+    - datastore_id: datastore-1065
       type: DATASTORE
     subscription_info:
       authentication_method: NONE
       automatic_sync_enabled: 0
       on_demand: 1
-      subscription_url: https://vcenter.test:443/cls/vcsp/lib/c9b8f7da-d5ac-4076-86b9-39ee107d7da3/lib.json
+      subscription_url: https://vcenter.test:443/cls/vcsp/lib/a66d5c73-57f8-4a3a-9361-292a55f68516/lib.json
     type: SUBSCRIBED
     version: '4'
   type: list
@@ -212,19 +212,26 @@ async def main():
 
 # template: info_list_and_get_module.j2
 def build_url(params):
+    import yarl
+
     if params.get("library_id"):
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
-        return (
+        return yarl.URL(
             ("https://{vcenter_hostname}" "/api/content/subscribed-library/").format(
                 **params
             )
             + params["library_id"]
-            + gen_args(params, _in_query_parameters)
+            + gen_args(params, _in_query_parameters),
+            encoded=True,
         )
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/api/content/subscribed-library").format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
+    return yarl.URL(
+        ("https://{vcenter_hostname}" "/api/content/subscribed-library").format(
+            **params
+        )
+        + gen_args(params, _in_query_parameters),
+        encoded=True,
+    )
 
 
 async def entry_point(module, session):
@@ -238,14 +245,14 @@ async def entry_point(module, session):
         if module.params.get("library_id"):
             _json["id"] = module.params.get("library_id")
         elif module.params.get("label"):  # TODO extend the list of filter
-            _json = await exists(module.params, session, url)
+            _json = await exists(module.params, session, str(url))
         elif (
             isinstance(_json["value"], list)
             and len(_json["value"]) > 0
             and isinstance(_json["value"][0], str)
         ):
             # this is a list of id, we fetch the details
-            full_device_list = await build_full_device_list(session, url, _json)
+            full_device_list = await build_full_device_list(session, str(url), _json)
             _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")

@@ -447,7 +447,7 @@ class Lookup:
 
     @staticmethod
     def replace_space(string):
-        return string.replace(" ", "%20") if " " in string else string
+        return string
 
     async def get_all_objects_path_moid(self, object_path, object_type, filters):
         # GET MoID of all the objects specified in the path

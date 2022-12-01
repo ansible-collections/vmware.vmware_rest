@@ -66,7 +66,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -89,7 +89,7 @@ value:
   returned: On success
   sample:
     addresses:
-    - address: fe80::5054:ff:fea4:6e89
+    - address: fe80::5054:ff:fe70:4823
       origin: OTHER
       prefix: 64
       status: PREFERRED

@@ -147,7 +147,7 @@ options:
     type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -196,7 +196,7 @@ value:
   sample:
     backing:
       type: VMDK_FILE
-      vmdk_file: '[local] test_vm1_1/test_vm1_1.vmdk'
+      vmdk_file: '[local] test_vm1/test_vm1_1.vmdk'
     capacity: 320000
     label: Hard disk 2
     sata:

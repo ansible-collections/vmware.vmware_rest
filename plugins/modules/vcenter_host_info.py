@@ -105,7 +105,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 0.1.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -127,7 +127,7 @@ value:
   returned: On success
   sample:
   - connection_state: CONNECTED
-    host: host-1147
+    host: host-1013
     name: esxi1.test
     power_state: POWERED_ON
   type: list
@@ -263,17 +263,22 @@ async def main():
 
 # template: info_list_and_get_module.j2
 def build_url(params):
+    import yarl
+
     if params.get("host"):
         _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
-        return (
+        return yarl.URL(
             ("https://{vcenter_hostname}" "/api/vcenter/host/").format(**params)
             + params["host"]
-            + gen_args(params, _in_query_parameters)
+            + gen_args(params, _in_query_parameters),
+            encoded=True,
         )
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
-    return ("https://{vcenter_hostname}" "/api/vcenter/host").format(
-        **params
-    ) + gen_args(params, _in_query_parameters)
+    return yarl.URL(
+        ("https://{vcenter_hostname}" "/api/vcenter/host").format(**params)
+        + gen_args(params, _in_query_parameters),
+        encoded=True,
+    )
 
 
 async def entry_point(module, session):
@@ -287,14 +292,14 @@ async def entry_point(module, session):
         if module.params.get("host"):
             _json["id"] = module.params.get("host")
         elif module.params.get("label"):  # TODO extend the list of filter
-            _json = await exists(module.params, session, url)
+            _json = await exists(module.params, session, str(url))
         elif (
             isinstance(_json["value"], list)
             and len(_json["value"]) > 0
             and isinstance(_json["value"][0], str)
         ):
             # this is a list of id, we fetch the details
-            full_device_list = await build_full_device_list(session, url, _json)
+            full_device_list = await build_full_device_list(session, str(url), _json)
             _json = {"value": [i["value"] for i in full_device_list]}
 
         return await update_changed_flag(_json, resp.status, "get")

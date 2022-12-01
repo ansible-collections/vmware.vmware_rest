@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_globalfips_info
 **Get current appliance FIPS settings.**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

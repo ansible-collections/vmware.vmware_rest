@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_firewall_inbound
 **Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:

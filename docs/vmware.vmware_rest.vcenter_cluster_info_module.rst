@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_cluster_info
 **Retrieves information about the cluster corresponding to {@param.name cluster}.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -291,7 +291,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>moid of the resource</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1140</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">domain-c1006</div>
                 </td>
             </tr>
             <tr>
@@ -308,7 +308,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                             <div>Retrieve details about the first cluster</div>
                     <br/>
                         <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1141&#x27;}</div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;name&#x27;: &#x27;my_cluster&#x27;, &#x27;resource_pool&#x27;: &#x27;resgroup-1007&#x27;}</div>
                 </td>
             </tr>
     </table>

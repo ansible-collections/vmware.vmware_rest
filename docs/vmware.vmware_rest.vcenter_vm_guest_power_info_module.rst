@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_power_info
 **Returns information about the guest operating system power state.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

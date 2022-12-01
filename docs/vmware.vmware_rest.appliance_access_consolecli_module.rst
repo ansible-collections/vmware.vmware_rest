@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_consolecli
 **Set enabled state of the console-based controlled CLI (TTY1).**
 
 
-Version added: 2.0.0
+Version added: 2.3.0
 
 .. contents::
    :local:
@@ -227,7 +227,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>value</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">integer</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>On success</td>

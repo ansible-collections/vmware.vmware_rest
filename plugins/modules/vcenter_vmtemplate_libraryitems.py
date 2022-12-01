@@ -181,7 +181,7 @@ options:
     type: dict
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.2.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -240,12 +240,12 @@ EXAMPLES = r"""
         \ }}"
       type: DATASTORE
     state: present
-  register: ds_lib
+  register: nfs_lib
 
 - name: Create a VM template on the library
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-    name: foobar2001
-    library: '{{ ds_lib.id }}'
+    name: golden-template
+    library: '{{ nfs_lib.id }}'
     source_vm: '{{ my_vm.id }}'
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
@@ -255,11 +255,21 @@ EXAMPLES = r"""
         \ }}"
   register: mylib_item
 
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: lib_items
+
+- name: Use the name to identify the item
+  set_fact:
+    my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first\
+      \ }}"
+
 - name: Deploy a new VM based on the template
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
-    name: foobar2002
-    library: '{{ ds_lib.id }}'
-    template_library_item: '{{ mylib_item.id }}'
+    name: vm-from-template
+    library: '{{ nfs_lib.id }}'
+    template_library_item: '{{ my_template_item.id }}'
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
         \ }}"
@@ -275,7 +285,7 @@ RETURN = r"""
 id:
   description: moid of the resource
   returned: On success
-  sample: 551beca2-0592-433a-86f2-b2581bfb3b60
+  sample: 9c6df1f5-faba-490c-a8e6-edb72f787ab8
   type: str
 value:
   description: Create a VM template on the library
@@ -288,11 +298,11 @@ value:
       '16000':
         capacity: 16106127360
         disk_storage:
-          datastore: datastore-1256
+          datastore: datastore-1122
       '16001':
         capacity: 32000000000
         disk_storage:
-          datastore: datastore-1256
+          datastore: datastore-1122
     guest_OS: RHEL_7_64
     memory:
       size_MiB: 1024
@@ -300,15 +310,29 @@ value:
       '4000':
         backing_type: STANDARD_PORTGROUP
         mac_type: ASSIGNED
-        network: network-1257
+        network: network-1123
     vm_home_storage:
-      datastore: datastore-1256
-    vm_template: vm-1265
+      datastore: datastore-1122
+    vm_template: vm-1132
   type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {
+        "query": {},
+        "body": {
+            "description": "description",
+            "disk_storage": "disk_storage",
+            "disk_storage_overrides": "disk_storage_overrides",
+            "library": "library",
+            "name": "name",
+            "placement": "placement",
+            "source_vm": "source_vm",
+            "vm_home_storage": "vm_home_storage",
+        },
+        "path": {},
+    },
     "deploy": {
         "query": {},
         "body": {
@@ -323,20 +347,6 @@ PAYLOAD_FORMAT = {
             "vm_home_storage": "vm_home_storage",
         },
         "path": {"template_library_item": "template_library_item"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "description": "description",
-            "disk_storage": "disk_storage",
-            "disk_storage_overrides": "disk_storage_overrides",
-            "library": "library",
-            "name": "name",
-            "placement": "placement",
-            "source_vm": "source_vm",
-            "vm_home_storage": "vm_home_storage",
-        },
-        "path": {},
     },
 }  # pylint: disable=line-too-long
 

@@ -5,6 +5,19 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.3.0
+======
+
+New Modules
+-----------
+
+- vcenter_vm_guest_customization - Applies a customization specification on the virtual machine
+- vcenter_vm_guest_power - Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot
+- vcenter_vm_guest_power_info - Returns information about the guest operating system power state.
+- vcenter_vm_storage_policy_compliance - Returns the storage policy Compliance {@link Info} of a virtual machine after explicitly re-computing compliance check.
+- vcenter_vm_tools_installer - Connects the VMware Tools CD installer as a CD-ROM for the guest operating system
+- vcenter_vm_tools_installer_info - Get information about the VMware Tools installer.
+
 v2.2.0
 ======
 

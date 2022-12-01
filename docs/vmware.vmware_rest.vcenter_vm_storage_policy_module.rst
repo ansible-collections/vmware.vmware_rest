@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy
 **Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.**
 
 
-Version added: 0.1.0
+Version added: 2.3.0
 
 .. contents::
    :local:

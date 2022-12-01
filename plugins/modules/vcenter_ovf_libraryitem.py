@@ -176,7 +176,7 @@ options:
     type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 2.3.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -197,7 +197,7 @@ EXAMPLES = r"""
       resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
         \ }}"
     name: test_vm1
-    guest_OS: DEBIAN_8_64
+    guest_OS: RHEL_7_64
     hardware_version: VMX_11
     memory:
       hot_add_enabled: true
@@ -226,7 +226,7 @@ EXAMPLES = r"""
     target:
       library_id: '{{ nfs_lib.id }}'
     create_spec:
-      name: my_vm
+      name: golden_image
       description: an OVF example
       flags: []
     state: present
@@ -234,8 +234,7 @@ EXAMPLES = r"""
 
 - name: Create a new VM from the OVF
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    session_timeout: 2900
-    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id
       }}'
     state: deploy
     target:
@@ -248,8 +247,7 @@ EXAMPLES = r"""
 
 - name: Create a new VM from the OVF and specify the host and folder
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    session_timeout: 2900
-    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "my_vm")|first).id
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id
       }}'
     state: deploy
     target:
@@ -275,7 +273,7 @@ value:
       information: []
       warnings: []
     resource_id:
-      id: vm-1211
+      id: vm-1078
       type: VirtualMachine
     succeeded: 1
   type: dict
@@ -283,15 +281,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
     "filter": {
         "query": {},

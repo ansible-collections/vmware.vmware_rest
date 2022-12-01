@@ -613,3 +613,27 @@ releases:
       name: vcenter_vmtemplate_libraryitems_info
       namespace: ''
     release_date: '2022-06-16'
+  2.3.0:
+    modules:
+    - description: Applies a customization specification on the virtual machine
+      name: vcenter_vm_guest_customization
+      namespace: ''
+    - description: Issues a request to the guest operating system asking it to perform
+        a soft shutdown, standby (suspend) or soft reboot
+      name: vcenter_vm_guest_power
+      namespace: ''
+    - description: Returns information about the guest operating system power state.
+      name: vcenter_vm_guest_power_info
+      namespace: ''
+    - description: Returns the storage policy Compliance {@link Info} of a virtual
+        machine after explicitly re-computing compliance check.
+      name: vcenter_vm_storage_policy_compliance
+      namespace: ''
+    - description: Connects the VMware Tools CD installer as a CD-ROM for the guest
+        operating system
+      name: vcenter_vm_tools_installer
+      namespace: ''
+    - description: Get information about the VMware Tools installer.
+      name: vcenter_vm_tools_installer_info
+      namespace: ''
+    release_date: '2022-11-23'
