@@ -1,0 +1,10 @@
+- include_tasks: purge_vms.yml
+- include_tasks: purge_libraries.yml
+- include_tasks: cleanup.yml
+
+- include_tasks: prepare_datacenter.yml
+- include_tasks: prepare_cluster.yml
+- include_tasks: prepare_folders.yml
+- include_tasks: prepare_hosts.yml
+- include_tasks: prepare_datastores.yml
+- include_tasks: prepare_guest_network.yml
