@@ -6,5 +6,5 @@ source ../init.sh
 # which is not part of Downstream-EE.
 # This allow use to run the first stage with a regular ansible, and
 # the second part from within a Downstream-EE container.
-ansible-playbook prepare.yaml
-exec ansible-playbook run.yaml
+ansible-playbook prepare.yml
+exec ansible-playbook run.yml

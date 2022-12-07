@@ -1,0 +1,29 @@
+- include_tasks: read_env_information.yml
+- include_tasks: create_vm.yml
+- include_tasks: vm_info.yml
+- include_tasks: vm_hardware_adapter_info.yml
+- include_tasks: vm_hardware_cdrom_info.yml
+- include_tasks: vm_hardware_ethernet_info.yml
+- include_tasks: vm_hardware_memory_info.yml
+- include_tasks: vm_hardware_adapter.yml
+- include_tasks: vm_hardware_cdrom.yml
+- include_tasks: vm_hardware_boot_device.yml
+- include_tasks: vm_hardware_boot.yml
+- include_tasks: vm_hardware_cpu.yml
+- include_tasks: vm_hardware_disk.yml
+- include_tasks: vm_hardware_ethernet.yml
+- include_tasks: vm_hardware_flo.yml
+- include_tasks: vm_hardware_memory.yml
+- include_tasks: vm_hardware_parallel.yml
+- include_tasks: vm_hardware_serial.yml
+- include_tasks: vm_hardware.yml
+- include_tasks: vm_libraryitem.yml
+- include_tasks: vm_power.yml
+
+- vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ test_vm1_info.id }}'
+
+- include_tasks: wait_for_test_vm1.yml
+  when: wait_for_vm is defined
+- include_tasks: vm_guest_info.yml
+  when: wait_for_vm is defined

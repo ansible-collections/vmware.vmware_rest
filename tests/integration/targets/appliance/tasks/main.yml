@@ -1,0 +1,26 @@
+- import_tasks: appliance_access_consolecli.yml
+- import_tasks: appliance_access_dcui.yml
+- import_tasks: appliance_access_shell.yml
+- import_tasks: appliance_access_ssh.yml
+- import_tasks: appliance_health.yml
+- import_tasks: appliance_infraprofile_configs.yml
+- import_tasks: appliance_localaccounts.yml
+- import_tasks: appliance_monitoring.yml
+- import_tasks: appliance_networking.yml
+- import_tasks: appliance_networking_dns_domains.yml
+- import_tasks: appliance_networking_dns_hostname.yml
+- import_tasks: appliance_networking_dns_servers.yml
+- import_tasks: appliance_networking_firewall_inbound.yml
+- import_tasks: appliance_networking_interfaces_ipv4.yml
+- import_tasks: appliance_networking_interfaces_ipv6.yml
+- import_tasks: appliance_networking_proxy.yml
+- import_tasks: appliance_ntp.yml
+- import_tasks: appliance_services.yml
+- import_tasks: appliance_shutdown.yml
+- import_tasks: appliance_system.yml
+#- import_tasks: appliance_system_globalfips.yml -- off because it reboots the vcenter
+- import_tasks: appliance_system_storage.yml
+- import_tasks: appliance_system_time_timezone.yml
+- import_tasks: appliance_time.yml
+- import_tasks: appliance_timesync.yml
+- import_tasks: appliance_vmon_service.yml
