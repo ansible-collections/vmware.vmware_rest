@@ -1,0 +1,8 @@
+---
+load_examples_from:
+- tests/integration/targets/appliance
+- tests/integration/targets/vcenter_library_and_ovf_clone
+- tests/integration/targets/vcenter_vm_clone_on_library
+- tests/integration/targets/vcenter_vm_cloning
+- tests/integration/targets/vcenter_vm_customize
+- tests/integration/targets/vcenter_vm_scenario1
