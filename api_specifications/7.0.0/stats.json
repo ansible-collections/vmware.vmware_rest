@@ -1,0 +1,2089 @@
+{
+    "basePath": "",
+    "consumes": [
+        "application/json"
+    ],
+    "definitions": {
+        "vapi.std.errors.error": {
+            "properties": {
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "$ref": "#/definitions/vapi.std.errors.error.type",
+                    "description": "Discriminator field to help API consumers identify the structure type."
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "messages"
+            ],
+            "type": "object"
+        },
+        "vapi.std.errors.error.type": {
+            "description": "Enumeration of all standard errors. Used as discriminator in protocols that have no standard means for transporting the error type, e.g. REST.",
+            "enum": [
+                "ERROR",
+                "ALREADY_EXISTS",
+                "ALREADY_IN_DESIRED_STATE",
+                "CANCELED",
+                "CONCURRENT_CHANGE",
+                "FEATURE_IN_USE",
+                "INTERNAL_SERVER_ERROR",
+                "INVALID_ARGUMENT",
+                "INVALID_ELEMENT_CONFIGURATION",
+                "INVALID_ELEMENT_TYPE",
+                "INVALID_REQUEST",
+                "NOT_ALLOWED_IN_CURRENT_STATE",
+                "NOT_FOUND",
+                "OPERATION_NOT_FOUND",
+                "RESOURCE_BUSY",
+                "RESOURCE_IN_USE",
+                "RESOURCE_INACCESSIBLE",
+                "SERVICE_UNAVAILABLE",
+                "TIMED_OUT",
+                "UNABLE_TO_ALLOCATE_RESOURCE",
+                "UNAUTHENTICATED",
+                "UNAUTHORIZED",
+                "UNEXPECTED_INPUT",
+                "UNSUPPORTED",
+                "UNVERIFIED_PEER"
+            ],
+            "type": "string"
+        },
+        "vapi.std.errors.invalid_argument": {
+            "properties": {
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "$ref": "#/definitions/vapi.std.errors.error.type",
+                    "description": "Discriminator field to help API consumers identify the structure type."
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "messages"
+            ],
+            "type": "object"
+        },
+        "vapi.std.errors.not_found": {
+            "properties": {
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "$ref": "#/definitions/vapi.std.errors.error.type",
+                    "description": "Discriminator field to help API consumers identify the structure type."
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "messages"
+            ],
+            "type": "object"
+        },
+        "vapi.std.errors.unauthenticated": {
+            "properties": {
+                "challenge": {
+                    "description": "Indicates the authentication challenges applicable to the target API provider. It can be used by a client to discover the correct authentication scheme to use. The exact syntax of the value is defined by the specific provider, the protocol and authentication schemes used. <p> For example, a provider using REST may adhere to the WWW-Authenticate HTTP header specification, RFC7235, section 4.1. In this case an example challenge value may be: SIGN realm=\"27da1358-2ba4-11e9-b210-d663bd873d93\",sts=\"http://vcenter/sso?vsphere.local\", Basic realm=\"vCenter\"",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "$ref": "#/definitions/vapi.std.errors.error.type",
+                    "description": "Discriminator field to help API consumers identify the structure type."
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "messages"
+            ],
+            "type": "object"
+        },
+        "vapi.std.errors.unauthorized": {
+            "properties": {
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "$ref": "#/definitions/vapi.std.errors.error.type",
+                    "description": "Discriminator field to help API consumers identify the structure type."
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "messages"
+            ],
+            "type": "object"
+        },
+        "vapi.std.localizable_message": {
+            "properties": {
+                "args": {
+                    "description": "Positional arguments to be substituted into the message template. This list will be empty if the message uses named arguments or has no arguments.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "default_message": {
+                    "description": "The value of this localizable string or message template in the {@code en_US} (English) locale.  If {@link #id} refers to a message template, the default message will contain the substituted arguments. This value can be used by clients that do not need to display strings and messages in the native language of the user.  It could also be used as a fallback if a client is unable to access the appropriate message catalog.",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "localized": {
+                    "description": "Localized string value as per request requirements.",
+                    "type": "string"
+                },
+                "params": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/vapi.std.localization_param"
+                    },
+                    "description": "Named arguments to be substituted into the message template.",
+                    "type": "object"
+                }
+            },
+            "required": [
+                "id",
+                "default_message",
+                "args"
+            ],
+            "type": "object"
+        },
+        "vapi.std.localization_param": {
+            "properties": {
+                "d": {
+                    "description": "The {@term double} value associated with the parameter. The number of displayed fractional digits is changed via {@name #precision} {@term field}.",
+                    "format": "double",
+                    "type": "number"
+                },
+                "dt": {
+                    "description": "Date and time value associated with the parameter. Use the {@name #format} {@term field} to specify date and time display style.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "format": {
+                    "$ref": "#/definitions/vapi.std.localization_param.date_time_format",
+                    "description": "Format associated with the date and time value in {@name #dt} {@term field}. The {@term enumeration value} {@code SHORT_DATETIME} will be used as default."
+                },
+                "i": {
+                    "description": "{@term long} value associated with the parameter.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "l": {
+                    "$ref": "#/definitions/vapi.std.nested_localizable_message",
+                    "description": "Nested localizable value associated with the parameter. This is useful construct to convert to human readable localized form {@term enumerated type} and {@term boolean} values. It can also be used for proper handling of pluralization and gender forms in localization. Recursive {@name NestedLocalizableMessage} instances can be used for localizing short lists of items."
+                },
+                "precision": {
+                    "description": "Number of fractional digits to include in formatted {@term double} value.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "s": {
+                    "description": "{@term String} value associated with the parameter.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "vapi.std.localization_param.date_time_format": {
+            "description": "The {@name DateTimeFormat} {@term enumerated type} lists possible date and time formatting options. It combines the Unicode CLDR format types - full, long, medium and short with 3 different presentations - date only, time only and combined date and time presentation.",
+            "enum": [
+                "SHORT_DATE",
+                "MED_DATE",
+                "LONG_DATE",
+                "FULL_DATE",
+                "SHORT_TIME",
+                "MED_TIME",
+                "LONG_TIME",
+                "FULL_TIME",
+                "SHORT_DATE_TIME",
+                "MED_DATE_TIME",
+                "LONG_DATE_TIME",
+                "FULL_DATE_TIME"
+            ],
+            "type": "string"
+        },
+        "vapi.std.nested_localizable_message": {
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "params": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/vapi.std.localization_param"
+                    },
+                    "description": "Named Arguments to be substituted into the message template.",
+                    "type": "object"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "type": "object"
+        },
+        "vstats.acq_specs.counter_spec": {
+            "properties": {
+                "cid_mid": {
+                    "$ref": "#/definitions/vstats.cid_mid",
+                    "description": "Counter and optional meatadata identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the AcqSpecs.CounterSpec.set-id field will be used."
+                },
+                "set_id": {
+                    "description": "Counter set identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the AcqSpecs.CounterSpec.cid-mid field will be used.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.CounterSet. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.CounterSet.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "vstats.acq_specs.create_spec": {
+            "properties": {
+                "counters": {
+                    "$ref": "#/definitions/vstats.acq_specs.counter_spec",
+                    "description": "Designates the counter(s) to be sampled. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "expiration": {
+                    "description": "Expiration time for this acquisition specification in Unix UTC number of seconds (since epoch). Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset or 0, default expiration duration is 100 minutes.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "interval": {
+                    "description": "Desired sampling rate in seconds. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset default of 10s will be used.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "memo_": {
+                    "description": "Consumer provided text about this acquisition specification. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset default empty string will be used.",
+                    "type": "string"
+                },
+                "resources": {
+                    "description": "A set of resource identifiers representing a single resource to be monitored. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.rsrc_id"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "counters",
+                "resources"
+            ],
+            "type": "object"
+        },
+        "vstats.acq_specs.filter_spec": {
+            "properties": {
+                "page": {
+                    "description": "Used to retrieve paged data for larger result sets. The value of this token is generated by server and returned as next field in the result of AcqSpecs.list operations. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nunset the first page of results will be returned.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "vstats.acq_specs.info": {
+            "properties": {
+                "counters": {
+                    "$ref": "#/definitions/vstats.acq_specs.counter_spec",
+                    "description": "Designates the counter(s) to be sampled. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "expiration": {
+                    "description": "Expiration time for this acquisition specification represented as Unix UTC number of seconds (since epoch). Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset or 0, default expiration duration is 100 minutes.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "Acquisition specification identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.AcqSpec. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.AcqSpec.",
+                    "type": "string"
+                },
+                "interval": {
+                    "description": "Desired sampling rate in seconds. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset, default interval is 10 seconds.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "memo_": {
+                    "description": "Consumer provided text about this Acquisition Specification. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "resources": {
+                    "description": "A set of resource identifiers representing a single resource to be monitored. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.rsrc_id"
+                    },
+                    "type": "array"
+                },
+                "status": {
+                    "$ref": "#/definitions/vstats.acq_specs.status",
+                    "description": "Acquisition Specification status. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                }
+            },
+            "required": [
+                "id",
+                "counters",
+                "resources",
+                "memo_",
+                "status"
+            ],
+            "type": "object"
+        },
+        "vstats.acq_specs.list_result": {
+            "properties": {
+                "acq_specs": {
+                    "description": "List of acquisition specifications received. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.acq_specs.info"
+                    },
+                    "type": "array"
+                },
+                "next": {
+                    "description": "The AcqSpecs.ListResult.next field is a token used to retrieve paged data for larger result sets. This is opaque token generated by the server. It is to be sent in the AcqSpecs.FilterSpec.page field to issue a subsequent call to the list operation for retrieving results that did not fit the current page. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nset when there are more results to retrieve.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "acq_specs"
+            ],
+            "type": "object"
+        },
+        "vstats.acq_specs.status": {
+            "description": "Describes the status of an Acquisition Specification. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "ENABLED",
+                "DISABLED",
+                "EXPIRED"
+            ],
+            "type": "string"
+        },
+        "vstats.acq_specs.update_spec": {
+            "properties": {
+                "counters": {
+                    "$ref": "#/definitions/vstats.acq_specs.counter_spec",
+                    "description": "Designates the counter(s) to be sampled. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset, the value is unchanged."
+                },
+                "expiration": {
+                    "description": "Expiration time for this acquisition specification in Unix UTC number of seconds (since epoch). When this field is 0, the default expiration duration is 100 minutes. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset, the value is unchanged.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "interval": {
+                    "description": "Desired sampling rate in seconds. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset, the value is unchanged.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "memo_": {
+                    "description": "Consumer provided text about this Acquisition Specification. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset, the value is unchanged.",
+                    "type": "string"
+                },
+                "resources": {
+                    "description": "A set of resource identifiers representing a single resource to be monitored. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset, the value is unchanged.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.rsrc_id"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "vstats.acq_specs_create": {
+            "$ref": "#/definitions/vstats.acq_specs.create_spec",
+            "description": "Specification for the acquisition of stats data."
+        },
+        "vstats.acq_specs_update": {
+            "$ref": "#/definitions/vstats.acq_specs.update_spec",
+            "description": "Updated acquisition specification."
+        },
+        "vstats.cid_mid": {
+            "properties": {
+                "cid": {
+                    "description": "Counter Id. CID is a string with rather strong semantic consistency across deployments and versions. If two CIDs are identical it implies the corresponding counters are the same. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                    "type": "string"
+                },
+                "mid": {
+                    "description": "MID is a 64-bit integer with strong consistency. Given a particular CID=cid, if two MIDs are the same, then the corresponding counter-metadata objects are same. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset vStats will use default for the counter metadata as obtained from the provider.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.CounterMetadata. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.CounterMetadata.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cid"
+            ],
+            "type": "object"
+        },
+        "vstats.counter_metadata.counter_edition_status": {
+            "description": "Counter metadata status. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "DEFAULT",
+                "CURRENT",
+                "DEPRECATED",
+                "EXPERIMENTAL",
+                "REMOVED"
+            ],
+            "type": "string"
+        },
+        "vstats.counter_metadata.filter_spec": {
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/vstats.counter_metadata.counter_edition_status",
+                    "description": "Counter edition status. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset no filtering on counter metadata status will be made."
+                }
+            },
+            "type": "object"
+        },
+        "vstats.counter_metadata.info": {
+            "properties": {
+                "cid": {
+                    "description": "Counter Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                    "type": "string"
+                },
+                "mid": {
+                    "description": "Metadata Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.CounterMetadata. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.CounterMetadata.",
+                    "type": "string"
+                },
+                "pid": {
+                    "description": "ID of the respective provider. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nThis field is unset in the current version.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Provider. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Provider.",
+                    "type": "string"
+                },
+                "scale": {
+                    "$ref": "#/definitions/vstats.counter_metadata.units_factor",
+                    "description": "Additional multiplier factors to be used with units. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset default of ONE is used."
+                },
+                "status": {
+                    "$ref": "#/definitions/vstats.counter_metadata.counter_edition_status",
+                    "description": "Counter Edition status. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "type": {
+                    "$ref": "#/definitions/vstats.counter_metadata.sample_type",
+                    "description": "Numeric properties of the sampled data. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "units": {
+                    "$ref": "#/definitions/vstats.counter_metadata.metric_units",
+                    "description": "The units of the measurement. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "user_info": {
+                    "$ref": "#/definitions/vstats.user_info",
+                    "description": "Human legible localizable text about the counter. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nThis field is unset in the current version."
+                }
+            },
+            "required": [
+                "cid",
+                "mid",
+                "status",
+                "type",
+                "units"
+            ],
+            "type": "object"
+        },
+        "vstats.counter_metadata.metric_units": {
+            "description": "Unit used by a metric. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "PERCENT",
+                "NUMBER",
+                "SECOND",
+                "HERTZ",
+                "METER",
+                "METERSPERSECOND",
+                "METERSPERSECONDSQUARED",
+                "BYTE",
+                "BIT",
+                "BYTESPERSECOND",
+                "BITSPERSECOND",
+                "KILOGRAM",
+                "GRAM",
+                "CELSIUS",
+                "KELVIN",
+                "JOULE",
+                "WATT",
+                "VOLT",
+                "AMPERE",
+                "VOLTAMPERE",
+                "CANDELA",
+                "MOLE"
+            ],
+            "type": "string"
+        },
+        "vstats.counter_metadata.sample_type": {
+            "description": "Type of the sampled data. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "RAW",
+                "ABSOLUTE",
+                "FRACTION",
+                "RATE",
+                "DELTA",
+                "LOGN"
+            ],
+            "type": "string"
+        },
+        "vstats.counter_metadata.units_factor": {
+            "description": "Unit factor of measurement. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "YOTTA",
+                "ZETTA",
+                "EXA",
+                "PETA",
+                "TERA",
+                "GIGA",
+                "MEGA",
+                "KILO",
+                "HECTO",
+                "DECA",
+                "ONE",
+                "DECI",
+                "CENTI",
+                "MILLI",
+                "MICRO",
+                "NANO",
+                "PIKO",
+                "FEMTO",
+                "ATTO",
+                "ZEPTO",
+                "YOCTO",
+                "YOBI",
+                "ZEBI",
+                "EXBI",
+                "PEBI",
+                "TEBI",
+                "GIBI",
+                "MEBI",
+                "KIBI"
+            ],
+            "type": "string"
+        },
+        "vstats.counter_sets.info": {
+            "properties": {
+                "counters": {
+                    "description": "List of Counter CidMids. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.cid_mid"
+                    },
+                    "type": "array"
+                },
+                "id": {
+                    "description": "Counter set identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "user_info": {
+                    "$ref": "#/definitions/vstats.user_info",
+                    "description": "Human legible localizable conter set description. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIn future versions it may be possible to have custom counter sets that lack localizable descriptions."
+                }
+            },
+            "required": [
+                "id",
+                "counters"
+            ],
+            "type": "object"
+        },
+        "vstats.counters.filter_spec": {
+            "properties": {
+                "cid": {
+                    "description": "Counter identifier that will be listed. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset counter filter will not be applied.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                    "type": "string"
+                },
+                "metric": {
+                    "description": "Metric for which counters will be listed. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset metric filter will not be applied.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Metric. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Metric.",
+                    "type": "string"
+                },
+                "types": {
+                    "description": "Resource type filter. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset resource type filter will not be applied.\nWhen clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vstats.model.RsrcType.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "vstats.counters.info": {
+            "properties": {
+                "cid": {
+                    "description": "Counter Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                    "type": "string"
+                },
+                "metric": {
+                    "description": "A metric is typically human-legible ASCII/English name of a measurable aspect, for example \"length\" and \"temperature\". It is not internationalizable. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Metric. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Metric.",
+                    "type": "string"
+                },
+                "resource_address_schema": {
+                    "description": "Describes formally how to address (or identify) the resources the counter could be bound to (or instantiated for). Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.RsrcAddrSchema. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.RsrcAddrSchema.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "cid",
+                "metric",
+                "resource_address_schema"
+            ],
+            "type": "object"
+        },
+        "vstats.data.data_point": {
+            "properties": {
+                "cid": {
+                    "description": "Counter Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                    "type": "string"
+                },
+                "mid": {
+                    "description": "CounterMetadata Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.CounterMetadata. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.CounterMetadata.",
+                    "type": "string"
+                },
+                "rid": {
+                    "description": "Resource Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "ts": {
+                    "description": "Timestamp for the data point. format: 64-bit integer. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "val": {
+                    "description": "Stat value. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "format": "double",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "cid",
+                "mid",
+                "rid",
+                "ts",
+                "val"
+            ],
+            "type": "object"
+        },
+        "vstats.data.data_points_result": {
+            "properties": {
+                "data_points": {
+                    "description": "List of DataPoints received. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.data.data_point"
+                    },
+                    "type": "array"
+                },
+                "next": {
+                    "description": "The Data.DataPointsResult.next field is a token used to retrieve paged data for larger result sets. This is opaque token generated by the server. It is to be sent in the Data.FilterSpec.page field to issue a subsequent call to the query operation for retrieving results that did not fit the current page. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nset when there are more results to retrieve.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "data_points"
+            ],
+            "type": "object"
+        },
+        "vstats.data.filter_spec": {
+            "properties": {
+                "cid": {
+                    "description": "Counter ID. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by counter.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                    "type": "string"
+                },
+                "end": {
+                    "description": "End of a time window (excluded), timestamp in seconds UTC. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be limited by end time.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "metric": {
+                    "description": "Metric name. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by metric name.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Metric. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Metric.",
+                    "type": "string"
+                },
+                "order": {
+                    "description": "Directs the server to order the returned data. Passing a value of DEFAULT will apply default ordering of the results that makes them easier for consumption. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this parameter is unset the server will not order the result, save computational time and therefore the API will operate faster.",
+                    "type": "string"
+                },
+                "page": {
+                    "description": "Used to retrieve paged data for larger result sets. The value of this token is generated by server and returned as next field in the result of Data.query-data-points operations. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the first page of results will be returned.",
+                    "type": "string"
+                },
+                "resources": {
+                    "description": "Resources to include in the query. Each resource is specified through a composite string that follows the following format. \n type.<resource type>[.<scheme>]=<resource id> \n\n resource type specifies the type of resource for example VM, VCPU etc. \n\n scheme is an optional element to disambiguate the resource as needed for example to differentiate managed object id from uuid. \n\n resource id is the unique resource identifier value for example: vm-41 \n\n Example values include: type.VM=vm-41, type.VCPU=1, type.VM.moid=vm-41\n. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen left unset the result will not be filtered for specific resources.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "start": {
+                    "description": "Start of a time window (included), timestamp in seconds UTC. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be limited by start time.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "types": {
+                    "description": "List of Resource types. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by resource types.\nWhen clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vstats.model.RsrcType.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "vstats.metrics.summary": {
+            "properties": {
+                "metric": {
+                    "description": "Metric name. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Metric. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Metric.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "metric"
+            ],
+            "type": "object"
+        },
+        "vstats.providers.summary": {
+            "properties": {
+                "id": {
+                    "description": "Provider identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Provider. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Provider.",
+                    "type": "string"
+                },
+                "id_value": {
+                    "description": "The ID given to the provider by its respective inventory. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "metadata": {
+                    "description": "Schema-less metadata with extra information for the provider. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nAs supplied by the provider.",
+                    "type": "string"
+                },
+                "scheme": {
+                    "description": "An optional designation of the scheme. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the provider is not designating a specific scheme.",
+                    "type": "string"
+                },
+                "tracking_sn": {
+                    "description": "Timestamp which is obtained when querying counters from a provider and is used as since parameter when new counter listing is needed. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\n{term unset} if no timestamp has been obtained yet.",
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "Provider type. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "id_value",
+                "type"
+            ],
+            "type": "object"
+        },
+        "vstats.query_predicate": {
+            "description": "The QueryPredicate enum describes how to query an id present in a RsrcId. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "EQUAL",
+                "ALL"
+            ],
+            "type": "string"
+        },
+        "vstats.resource_address_schemas.info": {
+            "properties": {
+                "id": {
+                    "description": "Identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.RsrcAddrSchema. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.RsrcAddrSchema.",
+                    "type": "string"
+                },
+                "schema": {
+                    "description": "List of ResourceAddressSchemas.ResourceIdDefinitions. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.resource_address_schemas.resource_id_definition"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "id",
+                "schema"
+            ],
+            "type": "object"
+        },
+        "vstats.resource_address_schemas.query_capabilities": {
+            "description": "Declares which predicates are supported by the ResourceAddressSchemas.ResourceIdDefinition. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "EQUAL",
+                "EQUAL_ALL"
+            ],
+            "type": "string"
+        },
+        "vstats.resource_address_schemas.resource_id_definition": {
+            "properties": {
+                "key": {
+                    "description": "Designates a semantic key for the resource identifier. This could be \"vm\" for virtual machine whose CPU usage is metered or \"source\" to identify the virtual machine that is origin of measured network traffic. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "query_options": {
+                    "$ref": "#/definitions/vstats.resource_address_schemas.query_capabilities",
+                    "description": "Designates the supported query-options. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "type": {
+                    "description": "Type of the resource. This represents various entities for which statistical data is gathered such as virtual machines, containers, servers, disks etc. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.RsrcType.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "key",
+                "type",
+                "query_options"
+            ],
+            "type": "object"
+        },
+        "vstats.resource_addresses.filter_spec": {
+            "properties": {
+                "page": {
+                    "description": "The ResourceAddresses.FilterSpec.page field is used to retrieve paged data for large result sets. It is an opaque paging token obtained from a prior call to the ResourceAddresses.list API. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nwhen set a follow up page in a paged result set will be delivered.",
+                    "type": "string"
+                },
+                "resources": {
+                    "description": "Resources to include in the query. Each resource is specified through a composite string that follows the following format. \n type.<resource type>[.<scheme>]=<resource id> \n\n resource type specifies the type of resource for example VM, VCPU etc. \n\n scheme is an optional element to disambiguate the resource as needed for example to differentiate managed object id from uuid. \n\n resource id is the unique resource identifier value for example: vm-41 \n\n Example values include: type.VM=vm-41, type.VCPU=1, type.VM.moid=vm-41\n. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen left unset the result will not be filtered for specific resources.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "types": {
+                    "description": "List of Resource types. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by resource types.\nWhen clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vstats.model.RsrcType.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "vstats.resource_addresses.info": {
+            "properties": {
+                "id": {
+                    "description": "Identifier. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.RsrcAddr. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.RsrcAddr.",
+                    "type": "string"
+                },
+                "resource_ids": {
+                    "description": "List of Resource Identifiers. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.rsrc_id"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "id",
+                "resource_ids"
+            ],
+            "type": "object"
+        },
+        "vstats.resource_addresses.list_result": {
+            "properties": {
+                "next": {
+                    "description": "Used to retrieve paged data for larger result sets. Token is generated by server. The value of this field should be supplied in a subsequent call to ResourceAddresses.list operation. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nunset when there are no more pages of data to be retrieved.",
+                    "type": "string"
+                },
+                "rsrc_addrs": {
+                    "description": "List of Resource Addresses received. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "items": {
+                        "$ref": "#/definitions/vstats.resource_addresses.info"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "rsrc_addrs"
+            ],
+            "type": "object"
+        },
+        "vstats.resource_types.summary": {
+            "properties": {
+                "type": {
+                    "description": "Resource type. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.RsrcType.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "type": "object"
+        },
+        "vstats.rsrc_id": {
+            "properties": {
+                "id_value": {
+                    "description": "The id value binding the related resource id definition. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "key": {
+                    "description": "Key relates to the corresponding ResourceIdDefinition of the related resource address schema. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset, type field will be used.",
+                    "type": "string"
+                },
+                "predicate": {
+                    "$ref": "#/definitions/vstats.query_predicate",
+                    "description": "Predicate to use to match resource Ids. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset, default predicate is EQUAL."
+                },
+                "scheme": {
+                    "description": "An optional designation of the scheme. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset, default scheme is moid (ManagedObject Identifier).",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of the resource identified by the Resource Id. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this field is unset, in current version the api will throw InvalidArgument error. To be made optional in future.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id_value"
+            ],
+            "type": "object"
+        },
+        "vstats.user_info": {
+            "properties": {
+                "description": {
+                    "$ref": "#/definitions/vapi.std.localizable_message",
+                    "description": "Detailed description of the object. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                },
+                "label": {
+                    "$ref": "#/definitions/vapi.std.localizable_message",
+                    "description": "Short label. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments."
+                }
+            },
+            "required": [
+                "label",
+                "description"
+            ],
+            "type": "object"
+        }
+    },
+    "host": "",
+    "info": {
+        "description": "",
+        "termsOfService": "http://swagger.io/terms/",
+        "title": "stats",
+        "version": "2.0.0"
+    },
+    "paths": {
+        "/api/stats/acq-specs": {
+            "get": {
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "description": "Used to retrieve paged data for larger result sets. The value of this token is generated by server and returned as next field in the result of AcqSpecs.list operations. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nunset the first page of results will be returned.",
+                        "in": "query",
+                        "name": "page",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of acquisition specification records.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.acq_specs.list_result"
+                        }
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about all acquisition specifications. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "acq_specs"
+                ]
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "operationId": "create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.acq_specs_create"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Identifier of the newly created acquisition specification.\nThe result will be an identifier for the resource type: vstats.model.AcqSpec.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "if acqSpec contain any errors.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Create a new acquisition specification record. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "acq_specs"
+                ]
+            }
+        },
+        "/api/stats/acq-specs/{id}": {
+            "delete": {
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "description": "Acquisition specification ID.\nThe parameter must be an identifier for the resource type: vstats.model.AcqSpec.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "if id is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if acquisition specification could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Delete an acquisition specification. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "acq_specs"
+                ]
+            },
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "description": "Acquisition specification ID.\nThe parameter must be an identifier for the resource type: vstats.model.AcqSpec.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the desired acquisition specification.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.acq_specs.info"
+                        }
+                    },
+                    "400": {
+                        "description": "if id is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "acquisition specification could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about a specific acquisition specification. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "acq_specs"
+                ]
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "description": "Acquisition specification ID.\nThe parameter must be an identifier for the resource type: vstats.model.AcqSpec.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.acq_specs_update"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "acquisition specification could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Update an existing acquisition specification. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "acq_specs"
+                ]
+            }
+        },
+        "/api/stats/counter-sets": {
+            "get": {
+                "operationId": "list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of counter sets.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.counter_sets.info"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about all the counter sets. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counter_sets"
+                ]
+            }
+        },
+        "/api/stats/counter-sets/{counter_set}": {
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "description": "identifier of the counter set to retrieve.\nThe parameter must be an identifier for the resource type: vstats.model.CounterSet.",
+                        "in": "path",
+                        "name": "counter_set",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the desired CounterSet.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.counter_sets.info"
+                        }
+                    },
+                    "400": {
+                        "description": "if counterSet is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if the requested counter set could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about a specific counter set. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counter_sets"
+                ]
+            }
+        },
+        "/api/stats/counters": {
+            "get": {
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "description": "Counter identifier that will be listed. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset counter filter will not be applied.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                        "in": "query",
+                        "name": "cid",
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Resource type filter. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset resource type filter will not be applied.\nWhen clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vstats.model.RsrcType.",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "types",
+                        "type": "array"
+                    },
+                    {
+                        "description": "Metric for which counters will be listed. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nIf unset metric filter will not be applied.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Metric. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Metric.",
+                        "in": "query",
+                        "name": "metric",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Counters.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.counters.info"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about all counters matching the filter parameters. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counters"
+                ]
+            }
+        },
+        "/api/stats/counters/{cid}": {
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "description": "Counter ID.\nThe parameter must be an identifier for the resource type: vstats.model.Counter.",
+                        "in": "path",
+                        "name": "cid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the requested counter.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.counters.info"
+                        }
+                    },
+                    "400": {
+                        "description": "if cid is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if Counter could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about a specific Counter. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counters"
+                ]
+            }
+        },
+        "/api/stats/counters/{cid}/metadata": {
+            "get": {
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "description": "Counter ID.\nThe parameter must be an identifier for the resource type: vstats.model.Counter.",
+                        "in": "path",
+                        "name": "cid",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Counter metadata status. Warning: This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                        "enum": [
+                            "DEFAULT",
+                            "CURRENT",
+                            "DEPRECATED",
+                            "EXPERIMENTAL",
+                            "REMOVED"
+                        ],
+                        "in": "query",
+                        "name": "status",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of counter metadata for the specified counter.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.counter_metadata.info"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if Counter could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about all counter metadata records for a specific Counter. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counter_metadata"
+                ]
+            }
+        },
+        "/api/stats/counters/{cid}/metadata/default": {
+            "get": {
+                "operationId": "get_default",
+                "parameters": [
+                    {
+                        "description": "Counter ID.\nThe parameter must be an identifier for the resource type: vstats.model.Counter.",
+                        "in": "path",
+                        "name": "cid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of counter metadata records.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.counter_metadata.info"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "if cid is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if Counter could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "This operation returns the \"default\" CounterMetadata. A Counter has at least one related metadata object. Usually, stats providers (for example hosts) are in agreement about the default metadata. In this case the returned list has a single metadata object. \n Sometimes, when providers are in \"disagreement\" about the default, then the returned list would include all the possible \"defaults\". This potential ambiguity isn't a real issue because consumers of the vStats API rarely need to specify the \"mid\" of metadata. Therefore, this API is used primarily for informational purposes.\n. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counter_metadata"
+                ]
+            }
+        },
+        "/api/stats/counters/{cid}/metadata/{mid}": {
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "description": "Counter ID.\nThe parameter must be an identifier for the resource type: vstats.model.Counter.",
+                        "in": "path",
+                        "name": "cid",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "CounterMetadata ID.\nThe parameter must be an identifier for the resource type: vstats.model.CounterMetadata.",
+                        "in": "path",
+                        "name": "mid",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the desired CounterMetadata.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.counter_metadata.info"
+                        }
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if Counter or CounterMetadata could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about a specific CounterMetadata. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "counter_metadata"
+                ]
+            }
+        },
+        "/api/stats/data/dp": {
+            "get": {
+                "operationId": "query_data_points",
+                "parameters": [
+                    {
+                        "description": "Start of a time window (included), timestamp in seconds UTC. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be limited by start time.",
+                        "in": "query",
+                        "name": "start",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "End of a time window (excluded), timestamp in seconds UTC. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be limited by end time.",
+                        "in": "query",
+                        "name": "end",
+                        "type": "integer"
+                    },
+                    {
+                        "description": "Counter ID. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by counter.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Counter. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Counter.",
+                        "in": "query",
+                        "name": "cid",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Metric name. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by metric name.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vstats.model.Metric. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vstats.model.Metric.",
+                        "in": "query",
+                        "name": "metric",
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "List of Resource types. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by resource types.\nWhen clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vstats.model.RsrcType.",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "types",
+                        "type": "array"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Resources to include in the query. Each resource is specified through a composite string that follows the following format. \n type.<resource type>[.<scheme>]=<resource id> \n\n resource type specifies the type of resource for example VM, VCPU etc. \n\n scheme is an optional element to disambiguate the resource as needed for example to differentiate managed object id from uuid. \n\n resource id is the unique resource identifier value for example: vm-41 \n\n Example values include: type.VM=vm-41, type.VCPU=1, type.VM.moid=vm-41\n. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen left unset the result will not be filtered for specific resources.",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "resources",
+                        "type": "array"
+                    },
+                    {
+                        "description": "Directs the server to order the returned data. Passing a value of DEFAULT will apply default ordering of the results that makes them easier for consumption. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen this parameter is unset the server will not order the result, save computational time and therefore the API will operate faster.",
+                        "in": "query",
+                        "name": "order",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Used to retrieve paged data for larger result sets. The value of this token is generated by server and returned as next field in the result of Data.query-data-points operations. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the first page of results will be returned.",
+                        "in": "query",
+                        "name": "page",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data points matching the filter.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.data.data_points_result"
+                        }
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns Data.DataPointsResult matching the filter parameters. \n /vstats/data/dp?types=VM&types=VCPU \n\n /vstats/data/dp?rsrcs=type.HOST=host-16&rsrcs=type.VM=vm-31\n. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "data"
+                ]
+            }
+        },
+        "/api/stats/metrics": {
+            "get": {
+                "operationId": "list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of Metrics.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.metrics.summary"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns list of available Metrics as supplied by the discovered providers. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "metrics"
+                ]
+            }
+        },
+        "/api/stats/providers": {
+            "get": {
+                "operationId": "list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of stats providers.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.providers.summary"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns a list of stats providers. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "providers"
+                ]
+            }
+        },
+        "/api/stats/rsrc-addr-schemas/{id}": {
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "description": "Resource address schema identifier.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the desired resource address schema.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.resource_address_schemas.info"
+                        }
+                    },
+                    "400": {
+                        "description": "if id is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if RsrcAddrSchema could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about a specific resource address schema. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "resource_address_schemas"
+                ]
+            }
+        },
+        "/api/stats/rsrc-addrs": {
+            "get": {
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "description": "List of Resource types. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen unset the result will not be filtered by resource types.\nWhen clients pass a value of this structure as a parameter, the field must contain identifiers for the resource type: vstats.model.RsrcType. When operations return a value of this structure as a result, the field will contain identifiers for the resource type: vstats.model.RsrcType.",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "types",
+                        "type": "array"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "description": "Resources to include in the query. Each resource is specified through a composite string that follows the following format. \n type.<resource type>[.<scheme>]=<resource id> \n\n resource type specifies the type of resource for example VM, VCPU etc. \n\n scheme is an optional element to disambiguate the resource as needed for example to differentiate managed object id from uuid. \n\n resource id is the unique resource identifier value for example: vm-41 \n\n Example values include: type.VM=vm-41, type.VCPU=1, type.VM.moid=vm-41\n. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nWhen left unset the result will not be filtered for specific resources.",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "resources",
+                        "type": "array"
+                    },
+                    {
+                        "description": "The ResourceAddresses.FilterSpec.page field is used to retrieve paged data for large result sets. It is an opaque paging token obtained from a prior call to the ResourceAddresses.list API. Warning: This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.\nwhen set a follow up page in a paged result set will be delivered.",
+                        "in": "query",
+                        "name": "page",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matching resource addresses.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.resource_addresses.list_result"
+                        }
+                    },
+                    "400": {
+                        "description": "if any of the specified parameters are invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns the list of Resource Addresses matching the filter parameters. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "resource_addresses"
+                ]
+            }
+        },
+        "/api/stats/rsrc-addrs/{id}": {
+            "get": {
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "description": "Resource Address ID.\nThe parameter must be an identifier for the resource type: vstats.model.RsrcAddr.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the desired Resource Address.",
+                        "schema": {
+                            "$ref": "#/definitions/vstats.resource_addresses.info"
+                        }
+                    },
+                    "400": {
+                        "description": "if id is invalid.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.invalid_argument"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "404": {
+                        "description": "if Resource Address could not be located.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns information about a specific Resource Address. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "resource_addresses"
+                ]
+            }
+        },
+        "/api/stats/rsrc-types": {
+            "get": {
+                "operationId": "list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of resource types.",
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/vstats.resource_types.summary"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user can not be authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user does not have sufficient privileges.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.error"
+                        }
+                    }
+                },
+                "summary": "Returns a list of available resource types. Warning: This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "tags": [
+                    "resource_types"
+                ]
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "security": [
+        {
+            "api_key": []
+        }
+    ],
+    "securityDefinitions": {
+        "api_key": {
+            "in": "header",
+            "name": "vmware-api-session-id",
+            "type": "apiKey"
+        },
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "swagger": "2.0",
+    "tags": []
+}

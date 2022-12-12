@@ -1,0 +1,1013 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "",
+        "title": "hvc",
+        "version": "2.0.0"
+    },
+    "host": "<vcenter>",
+    "securityDefinitions": {
+        "session_id": {
+            "in": "header",
+            "name": "vmware-api-session-id",
+            "type": "apiKey"
+        },
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "basePath": "",
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "paths": {
+        "/api/hvc/links": {
+            "post": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Creates a new hybrid link between the local and foreign PSC. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcLinksCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The identifier of the newly linked domain.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "If the SSL certificate of the foreign PSC cannot be validated by comparing with the thumbprint provided in {@link CreateSpec#sslThumbprint} or if {@link CreateSpec#sslThumbprint} is {@term unset}. The value of the {@link UnverifiedPeer#data) {@term field} will be a {@term structure} that contains all the {@term fields} defined in {@link vcenter.hvc.Links.CertificateInfo}.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnverifiedPeer"
+                        }
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "create"
+            },
+            "get": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Enumerates the list of registered hybrid links. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The {@term list} of hybrid link information.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/VcenterHvcLinksSummary"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/api/hvc/links/{link}": {
+            "delete": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Deletes an existing hybrid link. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Identifier of the hybrid link."
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "If the hybrid link associated with {@param.name link} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "delete"
+            }
+        },
+        "/api/hvc/links/{link}/sync/providers": {
+            "get": {
+                "tags": [
+                    "hvc/links/sync/providers"
+                ],
+                "summary": "Enumerates the sync providers. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Unique identifier of the link"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@term list} of sync provider information.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/VcenterHvcLinksSyncProvidersSummary"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "If list fails.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    },
+                    "403": {
+                        "description": "If the user is not authorized to perform this operation.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/api/hvc/links/{link}/sync/providers/{provider}": {
+            "get": {
+                "tags": [
+                    "hvc/links/sync/providers"
+                ],
+                "summary": "Gets Sync information for a sync provider. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Unique identifier of the link"
+                    },
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "provider",
+                        "description": "Unique identifier of the sync provider."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@term Info} of sync information for the provider.",
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcLinksSyncProvidersInfo"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    },
+                    "404": {
+                        "description": "if the sync provider associated with {@param.name provider} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user is not authorized to perform this operation.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/api/hvc/links/{link}/sync/providers/{provider}?action=start": {
+            "post": {
+                "tags": [
+                    "hvc/links/sync/providers"
+                ],
+                "summary": "Initiates synchronization between the local and remote replicas for the sync provider. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Unique identifier of the link"
+                    },
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "provider",
+                        "description": "Unique identifier representing the sync provider"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "500": {
+                        "description": "if a sync is already running.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsResourceBusy"
+                        }
+                    },
+                    "404": {
+                        "description": "if the link associated with {@param.name link} does not exist if the provider associated with {@param.name provider} is not registered for sync",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user is not authorized to perform this operation.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    }
+                },
+                "operationId": "start"
+            }
+        },
+        "/api/hvc/links/{link}/sync?action=reset": {
+            "post": {
+                "tags": [
+                    "hvc/links/sync"
+                ],
+                "summary": "Resets the sync state between the linked domains by initiating a fresh sync for all providers. If an existing sync is in progress this cancels the sync. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Unique identifier of the link."
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    },
+                    "404": {
+                        "description": "if the link Identifier associated with {@param.name link} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user is not authorized to perform this operation.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    }
+                },
+                "operationId": "reset"
+            }
+        },
+        "/api/hvc/management/administrators": {
+            "put": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Sets the groups in the local sso group. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcManagementAdministratorsSet"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "set",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Enumerates the set of all the groups in the local sso group. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The {@term set} of all the groups.",
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "get",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            }
+        },
+        "/api/hvc/management/administrators?action=add": {
+            "post": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Add the local sso group with the new group. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcManagementAdministratorsAdd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "add",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            }
+        },
+        "/api/hvc/management/administrators?action=remove": {
+            "post": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Remove the group from the local sso group. Usage beyond VMware Cloud on AWS is not supported. *Warning:* This operation is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcManagementAdministratorsRemove"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "remove",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "VapiStdErrorsAlreadyExists": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsError": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsErrorType": {
+            "type": "string",
+            "description": "Enumeration of all standard errors. Used as discriminator in protocols that have no standard means for transporting the error type, e.g. REST.",
+            "enum": [
+                "ERROR",
+                "ALREADY_EXISTS",
+                "ALREADY_IN_DESIRED_STATE",
+                "CANCELED",
+                "CONCURRENT_CHANGE",
+                "FEATURE_IN_USE",
+                "INTERNAL_SERVER_ERROR",
+                "INVALID_ARGUMENT",
+                "INVALID_ELEMENT_CONFIGURATION",
+                "INVALID_ELEMENT_TYPE",
+                "INVALID_REQUEST",
+                "NOT_ALLOWED_IN_CURRENT_STATE",
+                "NOT_FOUND",
+                "OPERATION_NOT_FOUND",
+                "RESOURCE_BUSY",
+                "RESOURCE_IN_USE",
+                "RESOURCE_INACCESSIBLE",
+                "SERVICE_UNAVAILABLE",
+                "TIMED_OUT",
+                "UNABLE_TO_ALLOCATE_RESOURCE",
+                "UNAUTHENTICATED",
+                "UNAUTHORIZED",
+                "UNEXPECTED_INPUT",
+                "UNSUPPORTED",
+                "UNVERIFIED_PEER"
+            ]
+        },
+        "VapiStdErrorsInvalidArgument": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsNotFound": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsResourceBusy": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnauthorized": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnsupported": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnverifiedPeer": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdLocalizableMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "default_message": {
+                    "description": "The value of this localizable string or message template in the {@code en_US} (English) locale.  If {@link #id} refers to a message template, the default message will contain the substituted arguments. This value can be used by clients that do not need to display strings and messages in the native language of the user.  It could also be used as a fallback if a client is unable to access the appropriate message catalog.",
+                    "type": "string"
+                },
+                "args": {
+                    "description": "Positional arguments to be substituted into the message template. This list will be empty if the message uses named arguments or has no arguments.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "params": {
+                    "description": "Named arguments to be substituted into the message template.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/VapiStdLocalizationParam"
+                    }
+                },
+                "localized": {
+                    "description": "Localized string value as per request requirements.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "default_message",
+                "args"
+            ]
+        },
+        "VapiStdLocalizationParam": {
+            "type": "object",
+            "properties": {
+                "s": {
+                    "description": "{@term String} value associated with the parameter.",
+                    "type": "string"
+                },
+                "dt": {
+                    "description": "Date and time value associated with the parameter. Use the {@name #format} {@term field} to specify date and time display style.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "i": {
+                    "description": "{@term long} value associated with the parameter.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "d": {
+                    "description": "The {@term double} value associated with the parameter. The number of displayed fractional digits is changed via {@name #precision} {@term field}.",
+                    "type": "number",
+                    "format": "double"
+                },
+                "l": {
+                    "description": "Nested localizable value associated with the parameter. This is useful construct to convert to human readable localized form {@term enumerated type} and {@term boolean} values. It can also be used for proper handling of pluralization and gender forms in localization. Recursive {@name NestedLocalizableMessage} instances can be used for localizing short lists of items.",
+                    "$ref": "#/definitions/VapiStdNestedLocalizableMessage"
+                },
+                "format": {
+                    "description": "Format associated with the date and time value in {@name #dt} {@term field}. The {@term enumeration value} {@code SHORT_DATETIME} will be used as default.",
+                    "$ref": "#/definitions/VapiStdLocalizationParamDateTimeFormat"
+                },
+                "precision": {
+                    "description": "Number of fractional digits to include in formatted {@term double} value.",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "VapiStdLocalizationParamDateTimeFormat": {
+            "type": "string",
+            "description": "The {@name DateTimeFormat} {@term enumerated type} lists possible date and time formatting options. It combines the Unicode CLDR format types - full, long, medium and short with 3 different presentations - date only, time only and combined date and time presentation.",
+            "enum": [
+                "SHORT_DATE",
+                "MED_DATE",
+                "LONG_DATE",
+                "FULL_DATE",
+                "SHORT_TIME",
+                "MED_TIME",
+                "LONG_TIME",
+                "FULL_TIME",
+                "SHORT_DATE_TIME",
+                "MED_DATE_TIME",
+                "LONG_DATE_TIME",
+                "FULL_DATE_TIME"
+            ]
+        },
+        "VapiStdNestedLocalizableMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "params": {
+                    "description": "Named Arguments to be substituted into the message template.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/VapiStdLocalizationParam"
+                    }
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "VcenterHvcLinksCreate": {
+            "$ref": "#/definitions/VcenterHvcLinksCreateSpec",
+            "description": "Specification for the new link to be created."
+        },
+        "VcenterHvcLinksCreateSpec": {
+            "type": "object",
+            "properties": {
+                "psc_hostname": {
+                    "description": "The PSC hostname for the domain to be linked. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "port": {
+                    "description": "The HTTPS port of the PSC to be linked. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "domain_name": {
+                    "description": "The domain to which the PSC belongs. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The administrator username of the PSC. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The administrator password of the PSC. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string",
+                    "format": "password"
+                },
+                "ssl_thumbprint": {
+                    "description": "The ssl thumbprint of the server. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "admin_groups": {
+                    "description": "List of groups to be added to enable administrator access to. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "psc_hostname",
+                "domain_name",
+                "username",
+                "password"
+            ]
+        },
+        "VcenterHvcLinksSummary": {
+            "type": "object",
+            "properties": {
+                "link": {
+                    "description": "Unique identifier for the link. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                },
+                "display_name": {
+                    "description": "The display name is set to the domain name which was set during create. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "link",
+                "display_name"
+            ]
+        },
+        "VcenterHvcLinksSyncProvidersInfo": {
+            "type": "object",
+            "properties": {
+                "last_sync_time": {
+                    "description": "Last sync time for the provider. This indicates the last time that either a background sync or a force sync was started for the provider *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "description": "Last Sync status for the provider. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "$ref": "#/definitions/VcenterHvcLinksSyncProvidersStatus"
+                },
+                "polling_interval_in_seconds": {
+                    "description": "Sync Polling interval between local and remote replicas for the provider *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "current_session_info": {
+                    "description": "Returns information on the forced sync for the provider. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "$ref": "#/definitions/VcenterHvcLinksSyncProvidersSessionInfo"
+                },
+                "status_message": {
+                    "description": "Localizable messages associated with sync status *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "$ref": "#/definitions/VapiStdLocalizableMessage"
+                }
+            },
+            "required": [
+                "status",
+                "polling_interval_in_seconds"
+            ]
+        },
+        "VcenterHvcLinksSyncProvidersSessionInfo": {
+            "type": "object",
+            "properties": {
+                "stage": {
+                    "description": "Sync stage for the session. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "$ref": "#/definitions/VcenterHvcLinksSyncProvidersSessionInfoStage"
+                },
+                "completed_work": {
+                    "description": "Completed work for the session. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "total_work": {
+                    "description": "Total work for the session. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "completion_time": {
+                    "description": "Time at which forced sync session was completed. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "start_time": {
+                    "description": "Time at which force sync was initiated. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "exception": {
+                    "description": "Exception  message if there is a sync failure on forced sync. *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "$ref": "#/definitions/VapiStdLocalizableMessage"
+                }
+            },
+            "required": [
+                "stage",
+                "completed_work",
+                "total_work",
+                "start_time"
+            ]
+        },
+        "VcenterHvcLinksSyncProvidersSessionInfoStage": {
+            "type": "string",
+            "description": "The {@name Stage} {@term structure} defines the different stages of Sync. *Warning:* This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "CHANGE_DETECTION",
+                "CHANGE_ENUMERATION",
+                "CHANGE_APPLICATION",
+                "COMPLETED",
+                "FAILED",
+                "WAITING"
+            ]
+        },
+        "VcenterHvcLinksSyncProvidersStatus": {
+            "type": "string",
+            "description": "The {@name Status} {@term enumerated type} defines valid sync status. *Warning:* This enumeration is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+            "enum": [
+                "SUCCEEDED",
+                "FAILED",
+                "NO_SYNC_FOUND"
+            ]
+        },
+        "VcenterHvcLinksSyncProvidersSummary": {
+            "type": "object",
+            "properties": {
+                "provider": {
+                    "description": "Sync provider id *Warning:* This attribute is available as Technology Preview. These are early access APIs provided to test, automate and provide feedback on the feature. Since this can change based on feedback, VMware does not guarantee backwards compatibility and recommends against using them in production environments. Some Technology Preview APIs might only be applicable to specific environments.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "provider"
+            ]
+        },
+        "VcenterHvcManagementAdministratorsAdd": {
+            "type": "object",
+            "properties": {
+                "group_name": {
+                    "type": "string",
+                    "description": "Name of the new group to be added. Ex - xyz@abc.com where xyz is the group name and abc.com is the domain name"
+                }
+            },
+            "required": [
+                "group_name"
+            ]
+        },
+        "VcenterHvcManagementAdministratorsRemove": {
+            "type": "object",
+            "properties": {
+                "group_name": {
+                    "type": "string",
+                    "description": "Name of the group to be removed. Ex - xyz@abc.com where xyz is the group name and abc.com is the domain name"
+                }
+            },
+            "required": [
+                "group_name"
+            ]
+        },
+        "VcenterHvcManagementAdministratorsSet": {
+            "type": "object",
+            "properties": {
+                "group_names": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Names the groups to be in the CloudAdminGroup Ex - xyz@abc.com where xyz is the group name and abc.com is the domain name"
+                }
+            },
+            "required": [
+                "group_names"
+            ]
+        }
+    }
+}
