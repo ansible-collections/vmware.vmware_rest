@@ -1,0 +1,46 @@
+{% include 'header.j2' %}
+
+# template: info_list_and_get_module.j2
+def build_url(params):
+    import yarl
+    {% if list_index -%}
+    if params.get('{{list_index}}'):
+        _in_query_parameters = PAYLOAD_FORMAT["get"]["query"].keys()
+        return yarl.URL((
+            "https://{vcenter_hostname}"
+            "{{path}}/").format(**params) +  params['{{list_index}}'] + gen_args(params, _in_query_parameters), encoded=True)
+    {% endif -%}
+    _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
+    return yarl.URL((
+        "https://{vcenter_hostname}"
+        "{{list_path}}").format(**params) + gen_args(params, _in_query_parameters), encoded=True)
+
+
+async def entry_point(module, session):
+    url = build_url(module.params)
+    async with session.get(url, **session_timeout(module.params)) as resp:
+        _json = await resp.json()
+
+        if "value" not in _json:  # 7.0.2+
+           _json = {"value": _json}
+
+        {% if list_index %}
+        if module.params.get('{{list_index}}'):
+            _json["id"] = module.params.get('{{list_index}}')
+        elif module.params.get("label"):  # TODO extend the list of filter
+            _json = await exists(module.params, session, str(url))
+        elif (isinstance(_json["value"], list) and len(_json["value"]) > 0 and
+            isinstance(_json["value"][0], str)):
+            # this is a list of id, we fetch the details
+            full_device_list = await build_full_device_list(session, str(url), _json)
+            _json = {"value": [i["value"] for i in full_device_list]}
+        {% endif %}
+
+        return await update_changed_flag(_json, resp.status, "get")
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

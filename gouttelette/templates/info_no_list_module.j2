@@ -1,0 +1,33 @@
+{% include 'header.j2' %}
+
+# template: info_no_list_module.j2
+def build_url(params):
+    return (
+        "https://{vcenter_hostname}"
+        "{{path}}").format(**params)
+
+
+async def entry_point(module, session):
+    return await _info(module.params, session)
+
+
+async def _info(params, session):
+    payload_format = list(PAYLOAD_FORMAT.values())[0]
+    _in_query_parameters = payload_format["query"].keys()
+    _url = (
+        "https://{vcenter_hostname}"
+        "{{path}}").format(**params) + gen_args(params, _in_query_parameters)
+    async with session.get(_url, **session_timeout(params)) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        return await update_changed_flag(_json, resp.status, "get")
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())

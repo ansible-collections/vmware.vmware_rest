@@ -10,3 +10,4 @@ examples:
   dont_look_up_vars:
     - disk_name
   task_selector: name
+generator: vmware_rest_code_generator

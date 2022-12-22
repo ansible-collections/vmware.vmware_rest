@@ -1,0 +1,328 @@
+{% include 'header.j2' %}
+
+# template: default_module.j2
+def build_url(params):
+    return (
+        "https://{vcenter_hostname}"
+        "{{path}}").format(**params)
+
+
+async def entry_point(module, session):
+    {% if operations|length > 1 %}
+    if module.params['state'] == "present":
+        if "_create" in globals():
+            operation = "create"
+        else:
+            operation = "update"
+    elif module.params['state'] == "absent":
+        operation = "delete"
+    else:
+        operation = module.params['state']
+
+    func = globals()["_" + operation]
+    {% else %}
+    func = globals()["_{{operations.keys()|list|first}}"]
+    {% endif %}
+    return await func(module.params, session)
+
+{% for operation in operations|sort -%}
+{% set verb = operations[operation][0] %}
+{% set _path = operations[operation][1] %}
+
+{% if operation == "delete" -%}
+async def _delete(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["delete"]["query"].keys()
+    payload = prepare_payload(params, PAYLOAD_FORMAT["delete"])
+    subdevice_type = get_subdevice_type("{{ _path }}")
+    if subdevice_type and not params[subdevice_type]:
+        _json = (await exists(params, session, build_url(params)))
+        if _json:
+            params[subdevice_type] = _json['id']
+    _url = (
+        "https://{vcenter_hostname}"
+        "{{_path}}").format(**params) + gen_args(params, _in_query_parameters)
+    async with session.{{ verb }}(_url, json=payload, **session_timeout(params)) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        return await update_changed_flag(_json, resp.status, "delete")
+
+
+
+{% elif operation in ["create", "clone", "instant_clone"] -%}
+async def _{{ operation }}(params, session):
+
+{% if name.startswith("content_") %}
+    {% set haz_lookup = 1 %}
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["name"]
+    comp_func = None
+{% elif name == "vcenter_vmtemplate_libraryitems" %}
+    {% set haz_lookup = 1 %}
+    lookup_url = "https://{vcenter_hostname}/api/content/library/item?library_id={library}".format(**params)
+    per_id_url = "https://{vcenter_hostname}/api/content/library/item".format(**params)
+    uniquity_keys = ["name"]
+    comp_func = None
+{% elif name == "vcenter_ovf_libraryitem" %}
+    {% set haz_lookup = 1 %}
+    library_id = params['target']['library_id'] if 'library_id' in params["target"] else None
+    lookup_url = f"https://{params['vcenter_hostname']}/api/content/library/item?library_id={library_id}"
+    per_id_url = "https://{vcenter_hostname}/api/content/library/item".format(**params)
+    uniquity_keys = None
+    def comp_func(device):
+        return device["value"]["name"] == params["create_spec"].get("name")
+{% elif list_index %}
+    {% set haz_lookup = 1 %}
+    {% set haz_lookup_with_filters = 1 %}
+    lookup_url = per_id_url = build_url(params)
+    uniquity_keys = ["{{list_index}}"]
+    comp_func = None
+
+    async def lookup_with_filters(params, session, url):
+        # e.g: for the datacenter resources
+        if "folder" not in params:
+            return
+        if "name" not in params:
+            return
+        async with session.get(f"{url}?names={params['name']}&folders={params['folder']}") as resp:
+            _json = await resp.json()
+            if isinstance(_json, list) and len(_json) == 1:
+                return await get_device_info(session, url, _json[0]["{{list_index}}"])
+{% else %}
+    uniquity_keys = []
+{% endif %}
+
+{% if haz_lookup is defined %}
+    _json = None
+    {% if list_index %}
+    if params["{{list_index}}"]:
+        _json = await get_device_info(session, build_url(params), params["{{list_index}}"])
+    {% endif %}
+    if not _json and (uniquity_keys or comp_func):
+        _json = await exists(params, session, url=lookup_url, uniquity_keys=uniquity_keys, per_id_url=per_id_url, comp_func=comp_func)
+    {% if haz_lookup_with_filters is defined %}
+    if not _json:
+        _json = await lookup_with_filters(params, session, build_url(params))
+    {% endif %}
+
+    if _json:
+        if "value" not in _json:  # 7.0.2+
+            _json = {"value": _json}
+        if "_update" in globals():
+            params["{{list_index}}"] = _json["id"]
+            return (await globals()["_update"](params, session))
+
+
+	{% if name == "vcenter_vmtemplate_libraryitems" %}
+        extra_info_url = "https://{vcenter_hostname}/api/vcenter/vm-template/library-items/{id}".format(
+            **params,
+            id=_json["id"]
+        )
+        async with session.get(extra_info_url) as resp:
+            if resp.status == 200:
+                extra_json = await resp.json()
+                for k, v in extra_json.items():
+                    _json["value"][k] = v
+	{% endif %}
+
+        return (await update_changed_flag(_json, 200, 'get'))
+{% endif %}
+
+    payload = prepare_payload(params, PAYLOAD_FORMAT["{{ operation }}"])
+    _url = (
+        "https://{vcenter_hostname}"
+        "{{ _path }}").format(**params)
+    async with session.{{ verb }}(_url, json=payload, **session_timeout(params)) as resp:
+        if resp.status == 500:
+            text = await resp.text()
+            raise EmbeddedModuleFailure(f"Request has failed: status={resp.status}, {text}")
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+
+        if (resp.status in [200, 201]) and "error" not in _json:
+            if isinstance(_json, str): # 7.0.2 and greater
+                _id = _json  # TODO: fetch the object
+            elif isinstance(_json, dict) and "value" not in _json:
+                _id = list(_json["value"].values())[0]
+            elif isinstance(_json, dict) and "value" in _json:
+                _id = _json["value"]
+            _json_device_info = await get_device_info(session, _url, _id)
+            if _json_device_info:
+               _json = _json_device_info
+
+        return await update_changed_flag(_json, resp.status, "{{ operation }}")
+
+
+{% elif operation == "update" -%}
+async def _update(params, session):
+    payload = prepare_payload(params, PAYLOAD_FORMAT["update"])
+    _url = (
+        "https://{vcenter_hostname}"
+        "{{ _path }}").format(**params)
+    async with session.get(_url, **session_timeout(params)) as resp:
+        _json = await resp.json()
+        if "value" in _json:
+            value = _json["value"]
+        else:  # 7.0.2 and greater
+            value = _json
+        for k, v in value.items():
+            if k in payload:
+                if isinstance(payload[k], dict) and isinstance(v, dict):
+                    to_delete = True
+                    for _k in list(payload[k].keys()):
+                        if payload[k][_k] != v.get(_k):
+                            to_delete = False
+                    if to_delete:
+                        del payload[k]
+                elif payload[k] == v:
+                    del payload[k]
+                elif payload[k] == {}:
+                    del payload[k]
+
+        if payload == {} or payload == {"spec": {}}:
+            # Nothing has changed
+            if "value" not in _json:  # 7.0.2
+               _json = {"value": _json}
+            _json["id"] = params.get("{{list_index}}")
+            return await update_changed_flag(_json, resp.status, "get")
+    async with session.{{ verb }}(_url, json=payload, **session_timeout(params)) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        if "value" not in _json:  # 7.0.2
+           _json = {"value": _json}
+
+        # e.g: content_configuration
+        if not _json and resp.status == 204:
+            async with session.get(_url, **session_timeout(params)) as resp_get:
+                _json_get = await resp_get.json()
+                if _json_get:
+                    _json = _json_get
+
+        _json["id"] = params.get("{{list_index}}")
+        return await update_changed_flag(_json, resp.status, "update")
+
+
+{% elif operation == "set" -%}
+async def _{{ operation  }}(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["{{ operation }}"]["query"].keys()
+    payload = prepare_payload(params, PAYLOAD_FORMAT["{{ operation }}"])
+    subdevice_type = get_subdevice_type("{{ _path }}")
+    if subdevice_type and not params[subdevice_type]:
+        _json = (await exists(params, session, build_url(params)))
+        if _json:
+            params[subdevice_type] = _json['id']
+    _url = (
+        "https://{vcenter_hostname}"
+        "{{ _path }}").format(**params) + gen_args(params, _in_query_parameters)
+    async with session.get(_url, json=payload, **session_timeout(params)) as resp:
+          before = await resp.json()
+
+    async with session.{{ verb  }}(_url, json=payload, **session_timeout(params)) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        if "value" not in _json:  # 7.0.2
+           _json = {"value": _json}
+
+
+        {% if _path == "/api/appliance/networking/dns/servers" %}
+        if (
+                resp.status == 500
+                and
+                "messages" in _json["value"]
+                and
+                _json["value"]["messages"]
+                and
+                "id" in _json["value"]["messages"][0]
+                and
+                _json["value"]["messages"][0]["id"] == "com.vmware.applmgmt.err_operation_failed"
+                and
+                "args" in _json["value"]["messages"][0]
+                and
+                "changing state RUNNING → CLOSED" in _json["value"]["messages"][0]["args"][0]
+        ):
+            # vSphere 7.0.2, a network configuration changes of the appliance raise a systemd error,
+            # but the change is applied. The problem can be resolved by a yum update.
+            async with session.get(_url, json=payload, **session_timeout(params)) as resp:
+                _json = {"value": await resp.json()}
+        {% endif %}
+
+
+        # The PUT answer does not let us know if the resource has actually been
+        # modified
+        if resp.status < 300:
+                async with session.get(_url, json=payload, **session_timeout(params)) as resp_get:
+                    after = await resp_get.json()
+                    if before == after:
+                        return await update_changed_flag(after, resp_get.status, "get")
+        return await update_changed_flag(_json, resp.status, "set")
+
+
+{% elif operation not in ["get", "list"] %}
+
+async def _{{ operation }}(params, session):
+    _in_query_parameters = PAYLOAD_FORMAT["{{ operation }}"]["query"].keys()
+    payload = prepare_payload(params, PAYLOAD_FORMAT["{{ operation }}"])
+    subdevice_type = get_subdevice_type("{{ _path }}")
+    if subdevice_type and not params[subdevice_type]:
+        _json = (await exists(params, session, build_url(params)))
+        if _json:
+            params[subdevice_type] = _json['id']
+    _url = (
+        "https://{vcenter_hostname}"
+        # aa
+        "{{ _path }}").format(**params) + gen_args(params, _in_query_parameters)
+    async with session.{{ verb }}(_url, json=payload, **session_timeout(params)) as resp:
+        try:
+            if resp.headers["Content-Type"] == "application/json":
+                _json = await resp.json()
+        except KeyError:
+            _json = {}
+        if "value" not in _json:  # 7.0.2
+           _json = {"value": _json}
+
+
+        {% if _path == "/api/appliance/networking/dns/servers" %}
+        if (
+                resp.status == 500
+                and
+                "messages" in _json["value"]
+                and
+                _json["value"]["messages"]
+                and
+                "id" in _json["value"]["messages"][0]
+                and
+                _json["value"]["messages"][0]["id"] == "com.vmware.applmgmt.err_operation_failed"
+                and
+                "args" in _json["value"]["messages"][0]
+                and
+                "changing state RUNNING → CLOSED" in _json["value"]["messages"][0]["args"][0]
+        ):
+            # vSphere 7.0.2, a network configuration changes of the appliance raise a systemd error,
+            # but the change is applied. The problem can be resolved by a yum update.
+            async with session.get(_url, json=payload, **session_timeout(params)) as resp:
+                _json = {"value": await resp.json()}
+        {% endif %}
+
+
+        return await update_changed_flag(_json, resp.status, "{{ operation }}")
+{% endif %}
+
+{% endfor %}
+
+
+if __name__ == '__main__':
+    import asyncio
+
+    current_loop = asyncio.get_event_loop_policy().get_event_loop()
+    current_loop.run_until_complete(main())
