@@ -1,6 +1,7 @@
 namespace: vmware
 name: vmware_rest
 readme: README.md
+version: null
 authors:
 - Ansible (https://github.com/ansible)
 description:
