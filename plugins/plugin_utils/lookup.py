@@ -9,6 +9,7 @@ __metaclass__ = type
 
 import asyncio
 import os
+import urllib
 
 from ansible.module_utils._text import to_native
 from ansible.errors import AnsibleLookupError
@@ -197,7 +198,12 @@ class Lookup:
 
     @staticmethod
     def ensure_result(result, object_type, object_name=None):
-        if not result or object_name and object_name not in result[0].values():
+        object_name_decoded = None
+
+        if object_name:
+            object_name_decoded = urllib.parse.unquote(object_name)
+
+        if not result or object_name_decoded and object_name_decoded not in result[0].values():
             return ""
 
         def _filter_result(result):
@@ -445,10 +451,6 @@ class Lookup:
 
         return cluster_moid, object_path[1:]
 
-    @staticmethod
-    def replace_space(string):
-        return string
-
     async def get_all_objects_path_moid(self, object_path, object_type, filters):
         # GET MoID of all the objects specified in the path
         filters["names"] = list(set(object_path))
@@ -554,7 +556,6 @@ class Lookup:
 
         # Split object_path for transversal
         self._options["_terms"] = object_path
-        object_path = self.replace_space(object_path)
         object_type = self._options["object_type"]
         path = tuple(filter(None, object_path.split("/")))
 
