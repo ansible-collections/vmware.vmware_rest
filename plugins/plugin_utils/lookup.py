@@ -203,7 +203,11 @@ class Lookup:
         if object_name:
             object_name_decoded = urllib.parse.unquote(object_name)
 
-        if not result or object_name_decoded and object_name_decoded not in result[0].values():
+        if (
+            not result
+            or object_name_decoded
+            and object_name_decoded not in result[0].values()
+        ):
             return ""
 
         def _filter_result(result):
