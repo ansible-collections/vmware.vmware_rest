@@ -114,6 +114,8 @@ INVENTORY = {
 }
 
 
+# Meaningless diff with no code changes to trigger CI
+
 def get_credentials(**options):
     credentials = {}
     credentials["vcenter_hostname"] = options.get("vcenter_hostname") or os.getenv(
