@@ -2,7 +2,7 @@
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
       folder: "{{ my_virtual_machine_folder.folder }}"
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
@@ -20,7 +20,7 @@
   vmware.vmware_rest.vcenter_vm:
     placement:
       cluster: "{{ my_cluster_info.id }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
       folder: "{{ my_virtual_machine_folder.folder }}"
       resource_pool: "{{ my_cluster_info.value.resource_pool }}"
     name: test_vm1
