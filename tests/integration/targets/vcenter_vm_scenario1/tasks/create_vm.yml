@@ -1,3 +1,6 @@
+- pause:
+    minutes: 900
+
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
