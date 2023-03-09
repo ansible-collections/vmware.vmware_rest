@@ -1,5 +1,6 @@
 - pause:
     minutes: 900
+  timeout: 10800
 
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
