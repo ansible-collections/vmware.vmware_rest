@@ -14,80 +14,81 @@ DOCUMENTATION = r"""
 module: appliance_networking_dns_servers
 short_description: Set the DNS server configuration
 description: Set the DNS server configuration. If you set the mode argument to "DHCP",
-  a DHCP refresh is forced.
+    a DHCP refresh is forced.
 options:
-  mode:
-    choices:
-    - dhcp
-    - is_static
-    description:
-    - C(dns_server_mode) Describes DNS Server source (DHCP,static) Required with I(state=['set'])
-    type: str
-  server:
-    description:
-    - DNS server. Required with I(state=['add'])
-    type: str
-  servers:
-    description:
-    - List of the currently used DNS servers. Required with I(state=['set', 'test'])
-    elements: str
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - add
-    - set
-    - test
-    default: set
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    mode:
+        choices:
+        - dhcp
+        - is_static
+        description:
+        - C(dns_server_mode) Describes DNS Server source (DHCP,static) Required with
+            I(state=['set'])
+        type: str
+    server:
+        description:
+        - DNS server. Required with I(state=['add'])
+        type: str
+    servers:
+        description:
+        - List of the currently used DNS servers. Required with I(state=['set', 'test'])
+        elements: str
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - add
+        - set
+        - test
+        default: set
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 2.2.1
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -97,54 +98,16 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Set static DNS servers
-  vmware.vmware_rest.appliance_networking_dns_servers:
-    servers:
-    - 1.1.1.1
-    mode: is_static
-    state: set
-  register: result
-
-- name: Add another DNS server
-  vmware.vmware_rest.appliance_networking_dns_servers:
-    server: 8.8.4.4
-    state: add
-  register: result
-
-- name: Use the DNS servers from the DHCP
-  vmware.vmware_rest.appliance_networking_dns_servers:
-    mode: dhcp
-    servers: []
-    state: set
-  register: result
-
-- name: Test the DNS servers
-  vmware.vmware_rest.appliance_networking_dns_servers:
-    state: test
-    servers:
-    - google.com
-  register: result
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Add another DNS server
-value:
-  description: Add another DNS server
-  returned: On success
-  sample:
-    mode: is_static
-    servers:
-    - 1.1.1.1
-    - 192.168.123.1
-    - 8.8.4.4
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
-    "set": {"query": {}, "body": {"mode": "mode", "servers": "servers"}, "path": {}},
     "add": {"query": {}, "body": {"server": "server"}, "path": {}},
+    "set": {"query": {}, "body": {"mode": "mode", "servers": "servers"}, "path": {}},
+    "test": {"query": {}, "body": {"servers": "servers"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -179,10 +142,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

@@ -15,79 +15,79 @@ module: appliance_vmon_service
 short_description: Lists details of services managed by vMon.
 description: Lists details of services managed by vMon.
 options:
-  service:
-    description:
-    - identifier of the service whose properties are being updated.
-    - The parameter must be the id of a resource returned by M(vmware.vmware_rest.appliance_vmon_service).
-      Required with I(state=['restart', 'start', 'stop'])
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  startup_type:
-    choices:
-    - AUTOMATIC
-    - DISABLED
-    - MANUAL
-    description:
-    - The I(startup_type) enumerated type defines valid Startup Type for services
-      managed by vMon.
-    type: str
-  state:
-    choices:
-    - list_details
-    - present
-    - restart
-    - start
-    - stop
-    default: present
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    service:
+        description:
+        - identifier of the service whose properties are being updated.
+        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.appliance_vmon_service).
+            Required with I(state=['restart', 'start', 'stop'])
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    startup_type:
+        choices:
+        - AUTOMATIC
+        - DISABLED
+        - MANUAL
+        description:
+        - The I(startup_type) enumerated type defines valid Startup Type for services
+            managed by vMon.
+        type: str
+    state:
+        choices:
+        - list_details
+        - present
+        - restart
+        - start
+        - stop
+        default: present
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 2.2.1
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -97,38 +97,22 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Adjust vpxd configuration
-  vmware.vmware_rest.appliance_vmon_service:
-    service: vpxd
-    startup_type: AUTOMATIC
-  register: result
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Adjust vpxd configuration
-id:
-  description: moid of the resource
-  returned: On success
-  sample: vpxd
-  type: str
-value:
-  description: Adjust vpxd configuration
-  returned: On success
-  sample: {}
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
-    "list_details": {"query": {}, "body": {}, "path": {}},
-    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
     "update": {
         "query": {},
         "body": {"startup_type": "spec/startup_type"},
         "path": {"service": "service"},
     },
+    "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "list_details": {"query": {}, "body": {}, "path": {}},
+    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -163,10 +147,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

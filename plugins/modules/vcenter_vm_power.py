@@ -13,246 +13,97 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_vm_power
 short_description: Operate a boot, hard shutdown, hard reset or hard suspend on a
-  guest.
+    guest.
 description: Ask the vCenter to boot, force shutdown or force reset a guest. If you
-  want to do a soft shutdown or a soft reset, you can use M(vmware.vmware_rest.vmware_vm_guest_power)
-  instead.
+    want to do a soft shutdown or a soft reset, you can use M(vmware.vmware_rest.vmware_vm_guest_power)
+    instead.
 options:
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - reset
-    - start
-    - stop
-    - suspend
-    description: []
-    required: true
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - reset
+        - start
+        - stop
+        - suspend
+        description: []
+        required: true
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 2.2.1
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
 - aiohttp
 seealso:
-- description: Issues a request to the guest operating system asking it to perform
-    a soft shutdown, standby (suspend) or soft reboot
-  module: vmware.vmware_rest.vcenter_vm_guest_power
+-   description: Issues a request to the guest operating system asking it to perform
+        a soft shutdown, standby (suspend) or soft reboot
+    module: vmware.vmware_rest.vcenter_vm_guest_power
 notes:
 - Tested on vSphere 7.0.2
 """
 
 EXAMPLES = r"""
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-
-- name: Turn the power of the VM on
-  vmware.vmware_rest.vcenter_vm_power:
-    state: start
-    vm: '{{ test_vm1_info.id }}'
-
-- name: Collect the list of the existing VM
-  vmware.vmware_rest.vcenter_vm_info:
-  register: existing_vms
-  until: existing_vms is not failed
-
-- name: Turn off the VM
-  vmware.vmware_rest.vcenter_vm_power:
-    state: stop
-    vm: '{{ item.vm }}'
-  with_items: '{{ existing_vms.value }}'
-  ignore_errors: yes
-
-- name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
-    name: test_vm1
-    guest_OS: RHEL_7_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
-    disks:
-    - type: SATA
-      backing:
-        type: VMDK_FILE
-        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-    - type: SATA
-      new_vmdk:
-        name: second_disk
-        capacity: 32000000000
-    cdroms:
-    - type: SATA
-      sata:
-        bus: 0
-        unit: 2
-    nics:
-    - backing:
-        type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
-
-  register: my_vm
-
-- name: Turn on the power of the VM
-  vmware.vmware_rest.vcenter_vm_power:
-    state: start
-    vm: '{{ my_vm.id }}'
-
-- name: Turn the power of the VM on
-  vmware.vmware_rest.vcenter_vm_power:
-    state: start
-    vm: '{{ my_vm.id }}'
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Turn off the VM
-msg:
-  description: Turn off the VM
-  returned: On success
-  sample: All items completed
-  type: str
-results:
-  description: Turn off the VM
-  returned: On success
-  sample:
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 128
-      name: vCLS-e89f3630-0f4d-4adb-bac5-1912e2b5d8ab
-      power_state: POWERED_OFF
-      vm: vm-1023
-    _ansible_no_log: null
-    ansible_loop_var: item
-    changed: 0
-    failed: 0
-    invocation:
-      module_args:
-        session_timeout: null
-        state: stop
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: /tmp/vmware_rest.log
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1023
-    item:
-      cpu_count: 1
-      memory_size_MiB: 128
-      name: vCLS-e89f3630-0f4d-4adb-bac5-1912e2b5d8ab
-      power_state: POWERED_OFF
-      vm: vm-1023
-    value:
-      error_type: ALREADY_IN_DESIRED_STATE
-      messages:
-      - args: []
-        default_message: Virtual machine is already powered off.
-        id: com.vmware.api.vcenter.vm.power.already_powered_off
-      - args: []
-        default_message: The attempted operation cannot be performed in the current
-          state (Powered off).
-        id: vmsg.InvalidPowerState.summary
-  - _ansible_item_label:
-      cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1024
-    _ansible_no_log: null
-    ansible_loop_var: item
-    changed: 0
-    failed: 0
-    invocation:
-      module_args:
-        session_timeout: null
-        state: stop
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: /tmp/vmware_rest.log
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-        vm: vm-1024
-    item:
-      cpu_count: 1
-      memory_size_MiB: 1080
-      name: test_vm1
-      power_state: POWERED_ON
-      vm: vm-1024
-    value: {}
-  type: list
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -287,10 +138,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

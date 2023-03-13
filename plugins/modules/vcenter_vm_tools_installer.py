@@ -13,76 +13,76 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_vm_tools_installer
 short_description: Connects the VMware Tools CD installer as a CD-ROM for the guest
-  operating system
+    operating system
 description: Connects the VMware Tools CD installer as a CD-ROM for the guest operating
-  system. On Windows guest operating systems with autorun, this should cause the installer
-  to initiate the Tools installation which will need user input to complete. On other
-  (non-Windows) guest operating systems this will make the Tools installation available,
-  and a a user will need to do guest-specific actions.  On Linux, this includes opening
-  an archive and running the installer. To monitor the status of the Tools install,
-  clients should check the {@name vcenter.vm.Tools.Info#versionStatus} and {@name
-  vcenter.vm.Tools.Info#runState} from {@link vcenter.vm.Tools#get}
+    system. On Windows guest operating systems with autorun, this should cause the
+    installer to initiate the Tools installation which will need user input to complete.
+    On other (non-Windows) guest operating systems this will make the Tools installation
+    available, and a a user will need to do guest-specific actions.  On Linux, this
+    includes opening an archive and running the installer. To monitor the status of
+    the Tools install, clients should check the {@name vcenter.vm.Tools.Info#versionStatus}
+    and {@name vcenter.vm.Tools.Info#runState} from {@link vcenter.vm.Tools#get}
 options:
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - connect
-    - disconnect
-    description: []
-    required: true
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine ID This parameter is mandatory.
-    required: true
-    type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - connect
+        - disconnect
+        description: []
+        required: true
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine ID This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 2.2.1
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -92,63 +92,15 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
-    name: test_vm1
-    guest_OS: RHEL_7_64
-    hardware_version: VMX_11
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1024
-    disks:
-    - type: SATA
-      backing:
-        type: VMDK_FILE
-        vmdk_file: '[local] test_vm1/{{ disk_name }}.vmdk'
-    - type: SATA
-      new_vmdk:
-        name: second_disk
-        capacity: 32000000000
-    cdroms:
-    - type: SATA
-      sata:
-        bus: 0
-        unit: 2
-    nics:
-    - backing:
-        type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
-
-  register: my_vm
-
-- name: Update the vm-tools
-  vmware.vmware_rest.vcenter_vm_tools_installer:
-    vm: '{{ my_vm.id }}'
-    state: connect
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Update the vm-tools
-value:
-  description: Update the vm-tools
-  returned: On success
-  sample: {}
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -183,10 +135,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

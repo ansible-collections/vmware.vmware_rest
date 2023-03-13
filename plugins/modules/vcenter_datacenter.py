@@ -15,77 +15,77 @@ module: vcenter_datacenter
 short_description: Create a new datacenter in the vCenter inventory
 description: Create a new datacenter in the vCenter inventory
 options:
-  datacenter:
-    description:
-    - Identifier of the datacenter to be deleted. Required with I(state=['absent'])
-    type: str
-  folder:
-    description:
-    - Datacenter folder in which the new datacenter should be created.
-    type: str
-  force:
-    description:
-    - If true, delete the datacenter even if it is not empty.
-    type: bool
-  name:
-    description:
-    - The name of the datacenter to be created. Required with I(state=['present'])
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - present
-    default: present
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    datacenter:
+        description:
+        - Identifier of the datacenter to be deleted. Required with I(state=['absent'])
+        type: str
+    folder:
+        description:
+        - Datacenter folder in which the new datacenter should be created.
+        type: str
+    force:
+        description:
+        - If true, delete the datacenter even if it is not empty.
+        type: bool
+    name:
+        description:
+        - The name of the datacenter to be created. Required with I(state=['present'])
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - absent
+        - present
+        default: present
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 2.2.1
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -95,63 +95,9 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Get a list of all the datacenters
-  register: existing_datacenters
-  vmware.vmware_rest.vcenter_datacenter_info:
-
-- name: Force delete the existing DC
-  vmware.vmware_rest.vcenter_datacenter:
-    state: absent
-    datacenter: '{{ item.datacenter }}'
-    force: true
-  with_items: '{{ existing_datacenters.value }}'
-  until:
-  - _result is not failed
-  retries: 7
-
-- name: Create datacenter my_dc
-  vmware.vmware_rest.vcenter_datacenter:
-    name: my_dc
-    folder: '{{ my_datacenter_folder.folder }}'
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Force delete the existing DC
-msg:
-  description: Force delete the existing DC
-  returned: On success
-  sample: All items completed
-  type: str
-results:
-  description: Force delete the existing DC
-  returned: On success
-  sample:
-  - _ansible_item_label:
-      datacenter: datacenter-1001
-      name: my_dc
-    _ansible_no_log: null
-    ansible_loop_var: item
-    attempts: 1
-    changed: 1
-    failed: 0
-    invocation:
-      module_args:
-        datacenter: datacenter-1001
-        folder: null
-        force: 1
-        name: null
-        session_timeout: null
-        state: absent
-        vcenter_hostname: vcenter.test
-        vcenter_password: VALUE_SPECIFIED_IN_NO_LOG_PARAMETER
-        vcenter_rest_log_file: /tmp/vmware_rest.log
-        vcenter_username: administrator@vsphere.local
-        vcenter_validate_certs: 0
-    item:
-      datacenter: datacenter-1001
-      name: my_dc
-    value: {}
-  type: list
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -196,10 +142,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

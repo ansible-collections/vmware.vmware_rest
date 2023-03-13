@@ -1,0 +1,3784 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "vAPI is an extensible API Platform for modelling and delivering APIs/SDKs/CLIs.",
+        "title": "vapi",
+        "version": "2.0.0"
+    },
+    "host": "<vcenter>",
+    "securityDefinitions": {
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "basePath": "",
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "paths": {
+        "/rest/com/vmware/vapi/metadata/authentication/component": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/component"
+                ],
+                "summary": "Returns the identifiers for the component elements that have authentication information.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the component elements that have authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.component.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/component/id:{component_id}": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/component"
+                ],
+                "summary": "Retrieves authentication information about the component element corresponding to {@param.name componentId}. <p> The {@link ComponentData} contains the authentication information about the component element and it's fingerprint. It contains information about all the package elements that belong to this component element.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "component_id",
+                        "description": "Identifier of the component element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link ComponentData} instance that corresponds to {@param.name componentId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.component_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the component element associated with {@param.name componentId} does not have any authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/component/id:{component_id}?~action=fingerprint": {
+            "post": {
+                "tags": [
+                    "metadata/authentication/component"
+                ],
+                "summary": "Retrieves the fingerprint computed from the authentication metadata of the component element corresponding to {@param.name componentId}. <p> The fingerprint provides clients an efficient way to check if the metadata for a particular component has been modified on the server. The client can do this by comparing the result of this operation with the fingerprint returned in the result of {@link vapi.metadata.authentication.Component#get}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "component_id",
+                        "description": "Identifier of the component element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The fingerprint computed from the authentication metadata of the component.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.component.fingerprint_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the component element associated with {@param.name componentId} does not have any authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "fingerprint"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/package": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/package"
+                ],
+                "summary": "Returns the identifiers for the package elements that have authentication information.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the package elements that have authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.package.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/package/id:{package_id}": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/package"
+                ],
+                "summary": "Retrieves authentication information about the package element corresponding to {@param.name packageId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "package_id",
+                        "description": "Identifier of the package element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link PackageInfo} instance that corresponds to {@param.name packageId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.package_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the package element associated with {@param.name packageId} does not have any authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/service": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/service"
+                ],
+                "summary": "Returns the identifiers for the service elements that have authentication information.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the service elements that have authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.service.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/service/id:{service_id}": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/service"
+                ],
+                "summary": "Retrieves authentication information about the service element corresponding to {@param.name serviceId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "service_id",
+                        "description": "Identifier of the service element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link ServiceInfo} instance that corresponds to {@param.name serviceId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.service_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not have any authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/service/operation": {
+            "get": {
+                "tags": [
+                    "metadata/authentication/service/operation"
+                ],
+                "summary": "Returns the identifiers for the operation elements contained in the service element corresponding to {@param.name serviceId} that have authentication information.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "name": "service_id",
+                        "description": "Identifier of the service element.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of identifiers for the operation elements contained in the service element that have authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.service.operation.list_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not have any operation elements that have authentication information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/authentication/service/operation/id:{service_id}?~action=get": {
+            "post": {
+                "tags": [
+                    "metadata/authentication/service/operation"
+                ],
+                "summary": "Retrieves the authentication information about an operation element corresponding to {@param.name operationId} contained in the service element corresponding to {@param.name serviceId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "service_id",
+                        "description": "Identifier of the service element."
+                    },
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.service.operation_get"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link vapi.metadata.authentication.OperationInfo} instance that corresponds to {@param.name operationId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.authentication.service.operation_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/cli/command": {
+            "get": {
+                "tags": [
+                    "metadata/cli/command"
+                ],
+                "summary": "Returns the identifiers of all commands, or commands in a specific namespace.",
+                "parameters": [
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "query",
+                        "name": "path",
+                        "description": "The dot-separated path of the namespace for which command identifiers should be returned."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Identifiers of the requested commands.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.command.list_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if a namespace corresponding to {@param.name path} doesn't exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/cli/command?~action=fingerprint": {
+            "post": {
+                "tags": [
+                    "metadata/cli/command"
+                ],
+                "summary": "Returns the aggregate fingerprint of all the command metadata from all the metadata sources. <p> The fingerprint provides clients an efficient way to check if the metadata for commands has been modified on the server.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Fingerprint of all the command metadata present on the server.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.command.fingerprint_resp"
+                        }
+                    }
+                },
+                "operationId": "fingerprint"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/cli/command?~action=get": {
+            "post": {
+                "tags": [
+                    "metadata/cli/command"
+                ],
+                "summary": "Retrieves information about a command including information about how to execute that command.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.command_get"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the command including information about how to execute that command.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.command_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if a command corresponding to {@param.name identity} doesn't exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/cli/namespace": {
+            "get": {
+                "tags": [
+                    "metadata/cli/namespace"
+                ],
+                "summary": "Returns the identifiers of all namespaces registered with the infrastructure.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Identifiers of all the namespaces.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.namespace.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/cli/namespace?~action=fingerprint": {
+            "post": {
+                "tags": [
+                    "metadata/cli/namespace"
+                ],
+                "summary": "Returns the aggregate fingerprint of all the namespace metadata from all the metadata sources. <p> The fingerprint provides clients an efficient way to check if the metadata for namespaces has been modified on the server.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Fingerprint of all the namespace metadata present on the server.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.namespace.fingerprint_resp"
+                        }
+                    }
+                },
+                "operationId": "fingerprint"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/cli/namespace?~action=get": {
+            "post": {
+                "tags": [
+                    "metadata/cli/namespace"
+                ],
+                "summary": "Retreives information about a namespace including information about children of that namespace.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.namespace_get"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the namespace including information about child of that namespace.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.cli.namespace_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if a namespace corresponding to {@param.name identity} doesn't exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/component": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/component"
+                ],
+                "summary": "Returns the identifiers for the component elements that are registered with the infrastructure.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the component elements that are registered with the infrastructure.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.component.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/component/id:{component_id}": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/component"
+                ],
+                "summary": "Retrieves metamodel information about the component element corresponding to {@param.name componentId}. <p> The {@link ComponentData} contains the metamodel information about the component and it's fingerprint. It contains information about all the package elements that are contained in this component element.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "component_id",
+                        "description": "Identifier of the component element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link ComponentData} instance that corresponds to {@param.name componentId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.component_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the component element associated with {@param.name componentId} is not registered with the infrastructure.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/component/id:{component_id}?~action=fingerprint": {
+            "post": {
+                "tags": [
+                    "metadata/metamodel/component"
+                ],
+                "summary": "Retrieves the fingerprint computed from the metamodel metadata of the component element corresponding to {@param.name componentId}. <p> The fingerprint provides clients an efficient way to check if the metadata for a particular component element has been modified on the server. The client can do this by comparing the result of this operation with the fingerprint returned in the result of {@link vapi.metadata.metamodel.Component#get}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "component_id",
+                        "description": "Identifier of the component element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The fingerprint computed from the metamodel metadata of the component element.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.component.fingerprint_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the component element associated with {@param.name componentId} is not registered with the infrastructure.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "fingerprint"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/enumeration": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/enumeration"
+                ],
+                "summary": "Returns the identifiers for the enumeration elements that are contained in all the package elements, service elements and structure elements.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the enumeration elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.enumeration.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/enumeration/id:{enumeration_id}": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/enumeration"
+                ],
+                "summary": "Retrieves information about the enumeration element corresponding to {@param.name enumerationId}. <p> The {@link EnumerationInfo} contains the metamodel information about the enumeration value element contained in the enumeration element.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "enumeration_id",
+                        "description": "Identifier of the enumeration element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link EnumerationInfo} instance that corresponds to {@param.name enumerationId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.enumeration_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the enumeration element associated with {@param.name enumerationId} is not contained in any of the package elements, service elements and structure elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/package": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/package"
+                ],
+                "summary": "Returns the identifiers for the packages elements that are contained in all the registered component elements.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the package elements that are contained in all the registered component elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.package.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/package/id:{package_id}": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/package"
+                ],
+                "summary": "Retrieves information about the package element corresponding to {@param.name packageId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "package_id",
+                        "description": "Identifier of the package element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link PackageInfo} instance that corresponds to {@param.name packageId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.package_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the package element associated with {@param.name packageId} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/resource": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/resource"
+                ],
+                "summary": "Returns the set of resource types present across all the service elements contained in all the package elements.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Set of resource types",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.resource.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/resource/model": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/resource/model"
+                ],
+                "summary": "Returns the set of identifiers for the structure elements that are models for the resource type corresponding to {@param.name resourceId}. <p> The {@link vapi.metadata.metamodel.Structure} {@term service} provides {@term operations} to retrieve more details about the structure elements corresponding to the identifiers returned by this {@term operation}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "name": "resource_id",
+                        "description": "Identifier of the resource type.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The set of identifiers for the models that are associated with the resource type in {@param.name resourceId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.resource.model.list_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the resource type associated with {@param.name resourceId} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/service": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/service"
+                ],
+                "summary": "Returns the identifiers for the service elements that are currently registered with the infrastructure. <p> The list of service elements is an aggregate list of all the service elements contained in all the package elements.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the service elements that are currently registered with the infrastructure.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.service.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/service/id:{service_id}": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/service"
+                ],
+                "summary": "Retrieves information about the service element corresponding to {@param.name serviceId}. <p> The {@link ServiceInfo} contains the metamodel information for the operation elements, structure elements and enumeration elements contained in the service element.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "service_id",
+                        "description": "Identifier of the service element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link ServiceInfo} instance that corresponds to {@param.name serviceId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.service_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} is not registered with the infrastructure.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/service/operation": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/service/operation"
+                ],
+                "summary": "Returns the identifiers for the operation elements that are defined in the scope of {@param.name serviceId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "name": "service_id",
+                        "description": "Identifier of the service element.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the operation elements that are defined in the scope of {@param.name serviceId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.service.operation.list_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not exist in any of the package elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/service/operation/id:{service_id}/id:{operation_id}": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/service/operation"
+                ],
+                "summary": "Retrieves the metamodel information about an operation element corresponding to {@param.name operationId} contained in the service element corresponding to {@param.name serviceId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "service_id",
+                        "description": "Identifier of the service element."
+                    },
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "operation_id",
+                        "description": "Identifier of the operation element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link vapi.metadata.metamodel.OperationInfo} instance that corresponds to {@param.name operationId} defined in scope {@param.name serviceId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.service.operation_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not exist in any of the package elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/structure": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/structure"
+                ],
+                "summary": "Returns the identifiers for the structure elements that are contained in all the package elements and service elements.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the structure elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.structure.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/metamodel/structure/id:{structure_id}": {
+            "get": {
+                "tags": [
+                    "metadata/metamodel/structure"
+                ],
+                "summary": "Retrieves information about the structure element corresponding to {@param.name structureId}. <p> The {@link StructureInfo} contains the metamodel information about the structure element. It contains information about all the field elements and enumeration elements contained in this structure element.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "structure_id",
+                        "description": "Identifier of the structure element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link StructureInfo} instance that corresponds to {@param.name structureId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.metamodel.structure_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the structure element associated with {@param.name structureId} is not contained in any of the package elements or service elements.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/component": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/component"
+                ],
+                "summary": "Returns the identifiers for the component elements that have privilege information.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the component elements that have privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.component.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/component/id:{component_id}": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/component"
+                ],
+                "summary": "Retrieves privilege information about the component element corresponding to {@param.name componentId}. <p> The {@link ComponentData} contains the privilege information about the component element and its fingerprint. It contains information about all the package elements that belong to this component element.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "component_id",
+                        "description": "Identifier of the component element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link ComponentData} instance that corresponds to {@param.name componentId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.component_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the component element associated with {@param.name componentId} does not have any privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/component/id:{component_id}?~action=fingerprint": {
+            "post": {
+                "tags": [
+                    "metadata/privilege/component"
+                ],
+                "summary": "Retrieves the fingerprint computed from the privilege metadata of the component element corresponding to {@param.name componentId}. <p> The fingerprint provides clients an efficient way to check if the metadata for a particular component has been modified on the server. The client can do this by comparing the result of this operation with the fingerprint returned in the result of {@link vapi.metadata.privilege.Component#get}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "component_id",
+                        "description": "Identifier of the component element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The fingerprint computed from the privilege metadata of the component.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.component.fingerprint_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the component element associated with {@param.name componentId} does not have any privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "fingerprint"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/package": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/package"
+                ],
+                "summary": "Returns the identifiers for the package elements that have privilege information.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the package elements that have privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.package.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/package/id:{package_id}": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/package"
+                ],
+                "summary": "Retrieves privilege information about the package element corresponding to {@param.name packageId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "package_id",
+                        "description": "Identifier of the package element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link PackageInfo} instance that corresponds to {@param.name packageId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.package_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the package element associated with {@param.name packageId} does not have any privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/service": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/service"
+                ],
+                "summary": "Returns the identifiers for the service elements that have privilege information.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of identifiers for the service elements that have privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.service.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/service/id:{service_id}": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/service"
+                ],
+                "summary": "Retrieves privilege information about the service element corresponding to {@param.name serviceId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "service_id",
+                        "description": "Identifier of the service element."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link ServiceInfo} instance that corresponds to {@param.name serviceId}",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.service_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not have any privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/service/operation": {
+            "get": {
+                "tags": [
+                    "metadata/privilege/service/operation"
+                ],
+                "summary": "Returns the identifiers for the operation elements contained in the service element corresponding to {@param.name serviceId} that have privilege information.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "name": "service_id",
+                        "description": "Identifier of the service element.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of identifiers for the operation elements contained in the service element that have privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.service.operation.list_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not have any operation elements that have privilege information.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/metadata/privilege/service/operation/id:{service_id}?~action=get": {
+            "post": {
+                "tags": [
+                    "metadata/privilege/service/operation"
+                ],
+                "summary": "Retrieves the privilege information about an operation element corresponding to {@param.name operationId} contained in the service element corresponding to {@param.name serviceId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "service_id",
+                        "description": "Identifier of the service element."
+                    },
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.service.operation_get"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The {@link vapi.metadata.privilege.OperationInfo} instance that corresponds to {@param.name operationId}.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.metadata.privilege.service.operation_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "if the service element associated with {@param.name serviceId} does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/rest/navigation/component": {
+            "get": {
+                "tags": [
+                    "rest/navigation/component"
+                ],
+                "summary": "Gets list of all vAPI REST Components.",
+                "parameters": [
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "query",
+                        "name": "base_url",
+                        "description": "Base URL.\nThe {param.name baseUrl} parameter is used by the service to produce absolute URLs. If unset then the service will produce relative URLs."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Component#Infos.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.component.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/rest/navigation/options?~action=get": {
+            "post": {
+                "tags": [
+                    "rest/navigation/options"
+                ],
+                "summary": "Retrieves operations for specific URL.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.options_get"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Operations.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.options_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "If no service is registered for this URL.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/rest/navigation/resource": {
+            "get": {
+                "tags": [
+                    "rest/navigation/resource"
+                ],
+                "summary": "Gets list of all vAPI REST Resources.",
+                "parameters": [
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "query",
+                        "name": "base_url",
+                        "description": "Base URL.\nThe {param.name baseUrl} parameter is used by the service to produce absolute URLs. If unset then the service will produce relative URLs."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Resource#Infos.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.resource.list_resp"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/rest/navigation/resource/id:{type_id}/id:{instance_id}": {
+            "get": {
+                "tags": [
+                    "rest/navigation/resource"
+                ],
+                "summary": "Gets List of all Operations about a vAPI REST Resource. Information is searched for by typeId and instanceId is used only in URLs.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "type_id",
+                        "description": "Resource type id.\nThe parameter must be an identifier for the resource type: vapi.resource."
+                    },
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "path",
+                        "name": "instance_id",
+                        "description": "Resource instance id.\nIf you provide instanceId parameter then returned URLs will be prepopulated with it. If instanceId parameter is unset then URLs will become URI templates with id place holders as per RFC 6570.\nThe parameter must be an identifier for the resource type: vapi.resource."
+                    },
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "query",
+                        "name": "base_url",
+                        "description": "Base URL.\nThe {param.name baseUrl} parameter is used by the service to produce absolute URLs. If unset then the service will produce relative URLs."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Operations.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.resource_resp"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/rest/navigation/root": {
+            "get": {
+                "tags": [
+                    "rest/navigation/root"
+                ],
+                "summary": "Retrieves information about a vAPI REST Root.",
+                "parameters": [
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "query",
+                        "name": "base_url",
+                        "description": "Base URL.\nThe {param.name baseUrl} parameter is used by the service to produce absolute URLs. If unset then the service will produce relative URLs."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "vAPI REST Root#Info.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.root_resp"
+                        }
+                    }
+                },
+                "operationId": "get"
+            }
+        },
+        "/rest/com/vmware/vapi/rest/navigation/service": {
+            "get": {
+                "tags": [
+                    "rest/navigation/service"
+                ],
+                "summary": "Gets list of all vAPI REST Services for a vAPI REST Component.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "name": "component_id",
+                        "description": "Component identifier.\nThe parameter must be an identifier for the resource type: vapi.component.",
+                        "required": true
+                    },
+                    {
+                        "required": false,
+                        "type": "string",
+                        "in": "query",
+                        "name": "base_url",
+                        "description": "Base URL.\nThis parameter is used to produce absolute URLs. If the {param.name baseUrl} parameter is unset then this service will produce relative URLs."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Service#Infos.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.rest.navigation.service.list_resp"
+                        }
+                    },
+                    "404": {
+                        "description": "If the component identifier does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/rest/com/vmware/vapi/vcenter/activation/id:{activation_id}?~action=cancel": {
+            "post": {
+                "tags": [
+                    "vcenter/activation"
+                ],
+                "summary": "Sends a request to cancel the task associated with the provided {@param.name activationId}.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "activation_id",
+                        "description": "the {@param.name activationId} associated with a vCenter Server task to be canceled."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "if a vCenter Server task with the given {@param.name activationId} was not found.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_found_error"
+                        }
+                    },
+                    "400": {
+                        "description": "if the vCenter Server task associated with the given {@param.name activationId} is not cancelable.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.not_allowed_in_current_state_error"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user is not authorized to cancel the task.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthorized_error"
+                        }
+                    },
+                    "401": {
+                        "description": "if the user is not authenticated.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.unauthenticated_error"
+                        }
+                    },
+                    "503": {
+                        "description": "if the task cancelation cannot be performed due to vCenter server is unreachable or it is not properly configured.",
+                        "schema": {
+                            "$ref": "#/definitions/vapi.std.errors.service_unavailable_error"
+                        }
+                    }
+                },
+                "operationId": "cancel"
+            }
+        }
+    },
+    "definitions": {
+        "vapi.metadata.authentication.authentication_info": {
+            "type": "object",
+            "properties": {
+                "scheme_type": {
+                    "description": "The type of the authentication scheme.",
+                    "$ref": "#/definitions/vapi.metadata.authentication.authentication_info.scheme_type"
+                },
+                "session_manager": {
+                    "description": "In a session aware authentication scheme, a session manager is required that supports {@code create}, {@code delete} and {@code keepAlive} {@term operations}. The fully qualified {@term service} name of the session manager is provided in {@link AuthenticationInfo#sessionManager} {@term field}. This {@term service} is responsible for handling sessions.",
+                    "type": "string"
+                },
+                "scheme": {
+                    "description": "String identifier of the authentication scheme. <p> Following are the supported authentication schemes by the infrastructure: <ul> <li>The identifier {@code vapi.std.security.saml_hok_token} for SAML holder of key token based authentication mechanism. </li> <li>The identifier {@code vapi.std.security.bearer_token} for SAML bearer token based authentication mechanism. </li> <li>The identifier {@code vapi.std.security.session_id} for session based authentication mechanism. </li> <li>The identifier {@code vapi.std.security.user_pass} for username and password based authentication mechanism. </li> </ul>",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "scheme_type",
+                "scheme"
+            ]
+        },
+        "vapi.metadata.authentication.authentication_info.scheme_type": {
+            "type": "string",
+            "description": "The {@name SchemeType} {@term enumerated type} provides {@term enumeration values} for the set of valid authentication scheme types.",
+            "enum": [
+                "SESSIONLESS",
+                "SESSION_AWARE"
+            ]
+        },
+        "vapi.metadata.authentication.component.fingerprint_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.component.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.component_data": {
+            "type": "object",
+            "properties": {
+                "info": {
+                    "description": "Authentication information of the component. This includes information about all the {@term packages} in the component.",
+                    "$ref": "#/definitions/vapi.metadata.authentication.component_info"
+                },
+                "fingerprint": {
+                    "description": "Fingerprint of the metadata of the component. <p> Authentication information could change when there is an infrastructure update. Since the data present in {@link ComponentData#info} could be quite large, {@name #fingerprint} provides a convenient way to check if the data for a particular component is updated. <p> You should store the fingerprint associated with a component. After an update, by invoking the {@link vapi.metadata.authentication.Component#fingerprint} {@term operation}, you can retrieve the new fingerprint for the component. If the new fingerprint and the previously stored fingerprint do not match, clients can then use the {@link vapi.metadata.authentication.Component#get} to retrieve the new authentication information for the component.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "info",
+                "fingerprint"
+            ]
+        },
+        "vapi.metadata.authentication.component_info": {
+            "type": "object",
+            "properties": {
+                "packages": {
+                    "description": "Authentication information of all the package elements. The key in the {@term map} is the identifier of the package element and the value in the {@term map} is the authentication information for the package element. <p> For an explanation of authentication information containment within package elements, see {@link vapi.metadata.authentication.Package}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.authentication.package_info"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "packages"
+            ]
+        },
+        "vapi.metadata.authentication.component_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.authentication.component_data"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.operation_info": {
+            "type": "object",
+            "properties": {
+                "schemes": {
+                    "description": "List of authentication schemes used by an operation element. The authentication scheme specified on the service element corresponding to this operation element is ignored.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.authentication.authentication_info"
+                    }
+                }
+            },
+            "required": [
+                "schemes"
+            ]
+        },
+        "vapi.metadata.authentication.package.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.package_info": {
+            "type": "object",
+            "properties": {
+                "schemes": {
+                    "description": "List of authentication schemes to be used for all the operation elements contained in this package element. If a particular service or operation element has no explicit authentications defined in the authentication defintion file, these authentication schemes are used for authenticating the user.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.authentication.authentication_info"
+                    }
+                },
+                "services": {
+                    "description": "Information about all service elements contained in this package element that contain authentication information. The key in the {@term map} is the identifier of the service element and the value in the {@term map} is the authentication information for the service element. <p> For an explanation of authentication information containment within service elements, see {@link vapi.metadata.authentication.Service}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.authentication.service_info"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "schemes",
+                "services"
+            ]
+        },
+        "vapi.metadata.authentication.package_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.authentication.package_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.service.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.service.operation.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.service.operation_get": {
+            "type": "object",
+            "properties": {
+                "operation_id": {
+                    "type": "string",
+                    "description": "Identifier of the operation element."
+                }
+            },
+            "required": [
+                "operation_id"
+            ]
+        },
+        "vapi.metadata.authentication.service.operation_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.authentication.operation_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.authentication.service_info": {
+            "type": "object",
+            "properties": {
+                "schemes": {
+                    "description": "List of authentication schemes to be used for all the operation elements contained in this service element. The authentication scheme specified on the package element corresponding to this service element is ignored.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.authentication.authentication_info"
+                    }
+                },
+                "operations": {
+                    "description": "Information about all operation elements contained in this service element that contain authentication information. The key in the {@term map} is the identifier of the operation element and the value in the {@term map} is the authentication information for the operation element. <p> For an explanation of containment of authentication information within operation elements, see {@link vapi.metadata.authentication.service.Operation}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.authentication.operation_info"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "schemes",
+                "operations"
+            ]
+        },
+        "vapi.metadata.authentication.service_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.authentication.service_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.cli.command.fingerprint_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.cli.command.formatter_type": {
+            "type": "string",
+            "description": "The {@name FormatterType} {@term enumerated type} defines supported CLI output formatter types. See {@link Info#formatter}.",
+            "enum": [
+                "SIMPLE",
+                "TABLE",
+                "JSON",
+                "XML",
+                "CSV",
+                "HTML"
+            ]
+        },
+        "vapi.metadata.cli.command.generic_type": {
+            "type": "string",
+            "description": "The {@name GenericType} {@term enumerated type} defines generic types supported by {@name Command} {@term service}. See {@link OptionInfo#generic}.",
+            "enum": [
+                "NONE",
+                "OPTIONAL",
+                "LIST",
+                "OPTIONAL_LIST",
+                "LIST_OPTIONAL"
+            ]
+        },
+        "vapi.metadata.cli.command.identity": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "The dot-separated path of the namespace containing the command in the CLI command tree.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the command.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "path",
+                "name"
+            ]
+        },
+        "vapi.metadata.cli.command.info": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "description": "Basic command identity.",
+                    "$ref": "#/definitions/vapi.metadata.cli.command.identity"
+                },
+                "description": {
+                    "description": "The text description displayed to the user in help output.",
+                    "type": "string"
+                },
+                "service_id": {
+                    "description": "The service identifier that contains the operations for this CLI command.",
+                    "type": "string"
+                },
+                "operation_id": {
+                    "description": "The operation identifier corresponding to this CLI command.",
+                    "type": "string"
+                },
+                "options": {
+                    "description": "The input for this command.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.cli.command.option_info"
+                    }
+                },
+                "formatter": {
+                    "description": "The formatter to use when displaying the output of this command.",
+                    "$ref": "#/definitions/vapi.metadata.cli.command.formatter_type"
+                },
+                "output_field_list": {
+                    "description": "List of output structure name and output field info.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.cli.command.output_info"
+                    }
+                }
+            },
+            "required": [
+                "identity",
+                "description",
+                "service_id",
+                "operation_id",
+                "options",
+                "output_field_list"
+            ]
+        },
+        "vapi.metadata.cli.command.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.cli.command.identity"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.cli.command.option_info": {
+            "type": "object",
+            "properties": {
+                "long_option": {
+                    "description": "The long option name of the parameter as used by the user.",
+                    "type": "string"
+                },
+                "short_option": {
+                    "description": "The single character value option name.",
+                    "type": "string"
+                },
+                "field_name": {
+                    "description": "The fully qualified name of the option referred to by the operation element in {@link Info#operationId}.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the option to be displayed to the user when they request usage information for a CLI command.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "The type of option. This is used to display information about what kind of data is expected (string, number, boolean, etc.) for the option when they request usage information for a CLI command. For {@term enumerated type} this stores the fully qualified {@term enumerated type} id.",
+                    "type": "string"
+                },
+                "generic": {
+                    "description": "This is used to tell the user whether the option is required or optional, or whether they can specify the option multiple times.",
+                    "$ref": "#/definitions/vapi.metadata.cli.command.generic_type"
+                }
+            },
+            "required": [
+                "long_option",
+                "field_name",
+                "description",
+                "type",
+                "generic"
+            ]
+        },
+        "vapi.metadata.cli.command.output_field_info": {
+            "type": "object",
+            "properties": {
+                "field_name": {
+                    "description": "Name of the {@term field}.",
+                    "type": "string"
+                },
+                "display_name": {
+                    "description": "Name used by the CLI to display the {@term field}.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "field_name",
+                "display_name"
+            ]
+        },
+        "vapi.metadata.cli.command.output_info": {
+            "type": "object",
+            "properties": {
+                "structure_id": {
+                    "description": "Name of the {@term structure}.",
+                    "type": "string"
+                },
+                "output_fields": {
+                    "description": "The order in which the {@term fields} of the {@term structure} will be displayed by the CLI as well as the names used to display the {@term fields}.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.cli.command.output_field_info"
+                    }
+                }
+            },
+            "required": [
+                "structure_id",
+                "output_fields"
+            ]
+        },
+        "vapi.metadata.cli.command_get": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "$ref": "#/definitions/vapi.metadata.cli.command.identity",
+                    "description": "Identifier of the command for which to retreive information."
+                }
+            },
+            "required": [
+                "identity"
+            ]
+        },
+        "vapi.metadata.cli.command_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.cli.command.info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.cli.namespace.fingerprint_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.cli.namespace.identity": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "description": "The dot-separated path of the namespace containing the namespace in the CLI node tree. For top-level namespace this will be empty.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The name displayed to the user for this namespace.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "path",
+                "name"
+            ]
+        },
+        "vapi.metadata.cli.namespace.info": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "description": "Basic namespace identity.",
+                    "$ref": "#/definitions/vapi.metadata.cli.namespace.identity"
+                },
+                "description": {
+                    "description": "The text description displayed to the user in help output.",
+                    "type": "string"
+                },
+                "children": {
+                    "description": "The children of this namespace in the tree of CLI namespaces.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.cli.namespace.identity"
+                    }
+                }
+            },
+            "required": [
+                "identity",
+                "description",
+                "children"
+            ]
+        },
+        "vapi.metadata.cli.namespace.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.cli.namespace.identity"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.cli.namespace_get": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "$ref": "#/definitions/vapi.metadata.cli.namespace.identity",
+                    "description": "Identifier of the namespace for which to retreive information."
+                }
+            },
+            "required": [
+                "identity"
+            ]
+        },
+        "vapi.metadata.cli.namespace_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.cli.namespace.info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.component.fingerprint_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.component.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.component_data": {
+            "type": "object",
+            "properties": {
+                "info": {
+                    "description": "Metamodel information of the component element. This includes information about all the package elements contained in this component element. <p> The metamodel information about a component could be quite large if there are a lot of package elements contained in this component.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.component_info"
+                },
+                "fingerprint": {
+                    "description": "Fingerprint of the metamodel metadata of the component component. <p> Metamodel information could change when there is an infrastructure update and new functionality is added to an existing component. <p> Since the data present in {@link ComponentData#info} could be quite large, {@name #fingerprint} provides a convenient way to check if the data for a particular component is updated. <p> You should store the fingerprint associated with a component. After an update, by invoking the {@link vapi.metadata.metamodel.Component#fingerprint} {@term operation}, you can retrieve the new fingerprint for the component. If the new fingerprint and the previously stored fingerprint do not match, clients can use the {@link vapi.metadata.metamodel.Component#get} to retrieve the new metamodel information for the component.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "info",
+                "fingerprint"
+            ]
+        },
+        "vapi.metadata.metamodel.component_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Dot separated name of the component element. The segments in the name reflect the organization of the APIs. The format of each segment is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "packages": {
+                    "description": "Metamodel metadata information of all the package elements contained in the component element. The key in the {@term map} is the identifier of the package element and the value in the {@term map} is the metamodel information of the package element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.package_info"
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "description": "Generic metadata for the component element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for a component. It can contain HTML markup and documentation tags (similar to Javadoc tags). The first sentence of the package documentation is a complete sentence that identifies the component by name and summarizes the purpose of the component.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "packages",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.component_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.metamodel.component_data"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.constant_info": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Type of the constant element.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type"
+                },
+                "value": {
+                    "description": "Value of the constant element.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.constant_value"
+                },
+                "documentation": {
+                    "description": "English language documentation for the constant element. It can contain HTML markup and documentation tags (similar to Javadoc tags).",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "value",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.constant_value": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Category of the type of constant value.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.constant_value.category"
+                },
+                "primitive_value": {
+                    "description": "Primitive value of the constant element.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.primitive_value"
+                },
+                "list_value": {
+                    "description": "List value of the constant element.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.metamodel.primitive_value"
+                    }
+                }
+            },
+            "required": [
+                "category"
+            ]
+        },
+        "vapi.metadata.metamodel.constant_value.category": {
+            "type": "string",
+            "description": "The {@name Category} {@term enumerated type} defines {@term enumeration values} for the valid kinds of values.",
+            "enum": [
+                "PRIMITIVE",
+                "LIST"
+            ]
+        },
+        "vapi.metadata.metamodel.element_map": {
+            "type": "object",
+            "properties": {
+                "elements": {
+                    "description": "Metamodel information of the metadata elements. The key parameter of the {@term map} is the identifier for the element and the value corresponds to the element value.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_value"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "elements"
+            ]
+        },
+        "vapi.metadata.metamodel.element_value": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Type of the value.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.element_value.type"
+                },
+                "long_value": {
+                    "description": "Long value of the metadata element.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "string_value": {
+                    "description": "String value of the metadata element.",
+                    "type": "string"
+                },
+                "list_value": {
+                    "description": "List of strings value of the metadata element.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "structure_id": {
+                    "description": "Identifier of the structure element.",
+                    "type": "string"
+                },
+                "structure_ids": {
+                    "description": "List of identifiers of the structure elements.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "vapi.metadata.metamodel.element_value.type": {
+            "type": "string",
+            "description": "The {@name Type} {@term enumerated type} defines the valid types for values in metadata elements.",
+            "enum": [
+                "LONG",
+                "STRING",
+                "STRING_LIST",
+                "STRUCTURE_REFERENCE",
+                "STRUCTURE_REFERENCE_LIST"
+            ]
+        },
+        "vapi.metadata.metamodel.enumeration.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.enumeration_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Dot separated name of the enumeration element. The segments in the name reflect the organization of the APIs. The format of each segment is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "values": {
+                    "description": "Metamodel information of all the enumeration value elements contained in this enumeration element. The order of the enumeration value elements in the list is same as the order in which they are defined in the interface definition file.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.metamodel.enumeration_value_info"
+                    }
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for an enumeration element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for an enumeration element. It can contain HTML markup and Javadoc tags. The first sentence of the enumeration documentation is a complete sentence that identifies the enumeration by name and summarizes the purpose of the enumeration. The documentation describes the context in which the enumeration is used. <p> The documentation also contains references to the context in which the enumeration is used. But if the enumeration is used in many contexts, the references may not be present.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "values",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.enumeration_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.metamodel.enumeration_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.enumeration_value_info": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "description": "Value in the enumerated type. All the characters in the string are capitalized.",
+                    "type": "string"
+                },
+                "metadata": {
+                    "description": "Additional metadata for enumeration value in the enumerated type. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for an enumeration value. It can contain HTML markup and documentation tags (similar to Javadoc tags). The first statement will be a noun or verb phrase that describes the purpose of the enumeration value.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.error_info": {
+            "type": "object",
+            "properties": {
+                "structure_id": {
+                    "description": "Identifier for the structure element corresponding to the error that is being reported by the operation.",
+                    "type": "string"
+                },
+                "documentation": {
+                    "description": "The English language documentation for the service element. It can contain HTML markup and Javadoc tags.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "structure_id",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.field_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the field element in a canonical format. The format is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type information.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type"
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for the field element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for the service element. It can contain HTML markup and Javadoc tags.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "type",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.generic_instantiation": {
+            "type": "object",
+            "properties": {
+                "generic_type": {
+                    "description": "The generic type that is being instantiated.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.generic_instantiation.generic_type"
+                },
+                "element_type": {
+                    "description": "Type of the element parameter if the generic type instantiation is a {@link GenericType#LIST}, {@link GenericType#OPTIONAL} or {@link GenericType#SET}.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type"
+                },
+                "map_key_type": {
+                    "description": "Type of the key parameter of the map generic type instantiation. The map generic type has a key parameter and value parameter. The type of the value parameter is described by {@link GenericInstantiation#mapValueType}..",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type"
+                },
+                "map_value_type": {
+                    "description": "Type of the value parameter of the map generic type instantiation. The map generic type has a key parameter and value parameter. The type of the key parameter is described by {@link GenericInstantiation#mapKeyType}..",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type"
+                }
+            },
+            "required": [
+                "generic_type"
+            ]
+        },
+        "vapi.metadata.metamodel.generic_instantiation.generic_type": {
+            "type": "string",
+            "description": "The {@name GenericType} {@term enumerated type} provides {@term enumeration values} for each of the generic types provided by the infrastructure.",
+            "enum": [
+                "LIST",
+                "MAP",
+                "OPTIONAL",
+                "SET"
+            ]
+        },
+        "vapi.metadata.metamodel.operation_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the operation element in a canonical format. The format is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "params": {
+                    "description": "Metamodel information for the parameter elements. The order of the parameters elements in the list is same as the order of the parameters declared in the interface definition file.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.metamodel.field_info"
+                    }
+                },
+                "output": {
+                    "description": "Metamodel type for the output element.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.operation_result_info"
+                },
+                "errors": {
+                    "description": "List of error elements that might be reported by the operation element. If the operation reports the same error for more than one reason, the list contains the error element associated with the error more than once with different documentation elements.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.metamodel.error_info"
+                    }
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for the operation element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for key in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for the service element. It can contain HTML markup and Javadoc tags.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "params",
+                "output",
+                "errors",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.operation_result_info": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Type information of the operation result element.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type"
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for the service element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for the operation result element. It can contain HTML markup and Javadoc tags.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.package.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.package_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Dot separated name of the package element. The segments in the name reflect the organization of the APIs. The format of each segment is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "structures": {
+                    "description": "Metamodel information of all the structure elements contained in the package element. The key in the {@term map} is the identifier of the structure element and the value in the {@term map} is the metamodel information for the structure element. <p> This does not include the structure elements contained in the service elements that are contained in this package element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.structure_info"
+                            }
+                        }
+                    }
+                },
+                "enumerations": {
+                    "description": "Metamodel information of all the enumeration elements contained in the package element. The key in the {@term map} is the identifier of the enumeration element and the value in the {@term map} is the metamodel information for the enumeration element. <p> This does not include the enumeration elements that are contained in the service elements of this package element or structure elements of this package element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.enumeration_info"
+                            }
+                        }
+                    }
+                },
+                "services": {
+                    "description": "Metamodel information of all the service elements contained in the package element. The key in the {@term map} is the identifier of the service element and the value in the {@term map} is the metamodel information for the service element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.service_info"
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for the package element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for a package. It can contain HTML markup and Javadoc tags. The first sentence of the package documentation is a complete sentence that identifies the package by name and summarizes the purpose of the package. <p> The primary purpose of a package documentation is to provide high-level context that will provide a framework in which the users can put the detail about the package contents.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "structures",
+                "enumerations",
+                "services",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.package_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.metamodel.package_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.primitive_value": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "Type of the constant value.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.primitive_value.type"
+                },
+                "boolean_value": {
+                    "description": "Boolean value of the constant.",
+                    "type": "boolean"
+                },
+                "double_value": {
+                    "description": "Double value of the constant.",
+                    "type": "number",
+                    "format": "double"
+                },
+                "long_value": {
+                    "description": "Long value of the constant.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "string_value": {
+                    "description": "String value of the constant.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "vapi.metadata.metamodel.primitive_value.type": {
+            "type": "string",
+            "description": "The {@name Type} {@term enumerated type} defines the valid types for values in constant elements.",
+            "enum": [
+                "BOOLEAN",
+                "DOUBLE",
+                "LONG",
+                "STRING"
+            ]
+        },
+        "vapi.metadata.metamodel.resource.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.resource.model.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.service.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.service.operation.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.service.operation_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.metamodel.operation_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.service_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Dot separated name of the service element. The segments in the name reflect the organization of the APIs. The format of each segment is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "operations": {
+                    "description": "Metamodel information of all the operation elements contained in the service element. The key in the {@term map} is the identifier of the operation element and the value in the {@term map} is the metamodel information for the operation element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.operation_info"
+                            }
+                        }
+                    }
+                },
+                "structures": {
+                    "description": "Metamodel information of all the structure elements contained in the service element. The key in the {@term map} is the identifier of the structure element and the value in the {@term map} is the metamodel information for the structure element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.structure_info"
+                            }
+                        }
+                    }
+                },
+                "enumerations": {
+                    "description": "Metamodel information of all the enumeration elements contained in the service element. The key in the {@term map} is the identifier of the enumeration element and the value in the {@term map} is the metamodel information for the enumeration element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.enumeration_info"
+                            }
+                        }
+                    }
+                },
+                "constants": {
+                    "description": "Metamodel information of all the constant elements contained in the service element. The key in the {@term map} is the name of the constant element and the value in the {@term map} is the metamodel information for the contant element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.constant_info"
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for the service element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for the service element. It can contain HTML markup and Javadoc tags. The first sentence of the service documentation is a complete sentence that identifies the service by name and summarizes the purpose of the service. The remaining part of the documentation provides a summary of how to use the operations defined in the service.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "operations",
+                "structures",
+                "enumerations",
+                "constants",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.service_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.metamodel.service_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.structure.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.structure_info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Dot separated name of the structure element. The segments in the name reflect the organization of the APIs. The format of each segment is lower case with underscores. Each underscore represents a word boundary. If there are acronyms in the word, the capitalization is preserved. This format makes it easy to translate the segment into a different naming convention.",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of the structure.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.structure_info.type"
+                },
+                "enumerations": {
+                    "description": "Metamodel information of all the enumeration elements contained in the structure element. The key in the {@term map} is the identifier of the enumeration element and the value is the metamodel information of the enumeration element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.enumeration_info"
+                            }
+                        }
+                    }
+                },
+                "constants": {
+                    "description": "Metamodel information of all the constant elements contained in the structure element. The key in the {@term map} is the name of the constant element and the value in the {@term map} is the metamodel information for the constant element.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.constant_info"
+                            }
+                        }
+                    }
+                },
+                "fields": {
+                    "description": "Metamodel information of all the field elements. The order of the field elements in the list matches the order in which the fields are defined in the service.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.metamodel.field_info"
+                    }
+                },
+                "metadata": {
+                    "description": "Generic metadata elements for the structure element. The key in the {@term map} is the name of the metadata element and the value is the data associated with that metadata element. <p> The {@link vapi.metadata.metamodel.MetadataIdentifier} contains possible string values for keys in the {@term map}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.metamodel.element_map"
+                            }
+                        }
+                    }
+                },
+                "documentation": {
+                    "description": "English language documentation for a structure element. It can contain HTML markup and Javadoc tags. The first sentence of the structure documentation is a complete sentence that identifies the structure by name and summarizes the purpose of the structure.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "type",
+                "enumerations",
+                "constants",
+                "fields",
+                "metadata",
+                "documentation"
+            ]
+        },
+        "vapi.metadata.metamodel.structure_info.type": {
+            "type": "string",
+            "description": "The {@name Type} {@term enumerated type} defines the kind of this structure element. In the interface definition language, structure element and error element have similar characteristics. The difference is that only error elements can be used to describe the {@term errors} of an operation element.",
+            "enum": [
+                "STRUCTURE",
+                "ERROR"
+            ]
+        },
+        "vapi.metadata.metamodel.structure_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.metamodel.structure_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.metamodel.type": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Category of this type.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type.category"
+                },
+                "builtin_type": {
+                    "description": "Category of the built-in type.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.type.builtin_type"
+                },
+                "user_defined_type": {
+                    "description": "Identifier and type of the user defined type.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.user_defined_type"
+                },
+                "generic_instantiation": {
+                    "description": "Instantiation of one of the generic types available in the interface definition language.",
+                    "$ref": "#/definitions/vapi.metadata.metamodel.generic_instantiation"
+                }
+            },
+            "required": [
+                "category"
+            ]
+        },
+        "vapi.metadata.metamodel.type.builtin_type": {
+            "type": "string",
+            "description": "The {@name BuiltinType} {@term enumerated type} provides {@term enumeration value} for each of the built-in types present in the interface definition language type system.",
+            "enum": [
+                "VOID",
+                "BOOLEAN",
+                "LONG",
+                "DOUBLE",
+                "STRING",
+                "BINARY",
+                "SECRET",
+                "DATE_TIME",
+                "ID",
+                "URI",
+                "ANY_ERROR",
+                "DYNAMIC_STRUCTURE",
+                "OPAQUE"
+            ]
+        },
+        "vapi.metadata.metamodel.type.category": {
+            "type": "string",
+            "description": "The {@name Category} {@term enumerated type} provides {@term enumeration value} for each category of the type.",
+            "enum": [
+                "BUILTIN",
+                "USER_DEFINED",
+                "GENERIC"
+            ]
+        },
+        "vapi.metadata.metamodel.user_defined_type": {
+            "type": "object",
+            "properties": {
+                "resource_type": {
+                    "description": "Category of the user defined named type. The named type could be a structure element or an enumeration element.",
+                    "type": "string"
+                },
+                "resource_id": {
+                    "description": "Identifier of the user defined named type.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "resource_type",
+                "resource_id"
+            ]
+        },
+        "vapi.metadata.privilege.component.fingerprint_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.component.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.component_data": {
+            "type": "object",
+            "properties": {
+                "info": {
+                    "description": "Privilege information of the component. This includes information about all the {@term packages} in the component.",
+                    "$ref": "#/definitions/vapi.metadata.privilege.component_info"
+                },
+                "fingerprint": {
+                    "description": "Fingerprint of the metadata of the component. <p> Privilege information could change when there is an infrastructure update. Since the data present in {@link ComponentData#info} could be quite large, {@name #fingerprint} provides a convenient way to check if the data for a particular component is updated. <p> You should store the fingerprint associated with a component. After an update, by invoking the {@link vapi.metadata.privilege.Component#fingerprint} {@term operation}, you can retrieve the new fingerprint for the component. If the new fingerprint and the previously stored fingerprint do not match, clients can then use the {@link vapi.metadata.privilege.Component#get} to retrieve the new privilege information for the component.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "info",
+                "fingerprint"
+            ]
+        },
+        "vapi.metadata.privilege.component_info": {
+            "type": "object",
+            "properties": {
+                "packages": {
+                    "description": "Privilege information of all the package elements. The key in the {@term map} is the identifier of the package element and the value in the {@term map} is the privilege information for the package element. <p> For an explanation of privilege information containment within package elements, see {@link vapi.metadata.privilege.Package}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.privilege.package_info"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "packages"
+            ]
+        },
+        "vapi.metadata.privilege.component_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.privilege.component_data"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.operation_info": {
+            "type": "object",
+            "properties": {
+                "privileges": {
+                    "description": "List of all privileges assigned to the operation element.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "privilege_info": {
+                    "description": "Privilege information of all the parameter elements of the operation element. For an explanation of containment of privilege information within parameter elements, see {@link vapi.metadata.privilege.PrivilegeInfo}.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.metadata.privilege.privilege_info"
+                    }
+                }
+            },
+            "required": [
+                "privileges",
+                "privilege_info"
+            ]
+        },
+        "vapi.metadata.privilege.package.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.package_info": {
+            "type": "object",
+            "properties": {
+                "privileges": {
+                    "description": "List of default privileges to be used for all the operations present in this package. If a particular operation element has no explicit privileges defined in the privilege definition file, these privileges are used for enforcing authorization.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "services": {
+                    "description": "Information about all service elements contained in this package element that contain privilege information. The key in the {@term map} is the identifier of the service element and the value in the {@term map} is the privilege information for the service element. For an explanation of privilege information containment within service elements, see {@link vapi.metadata.privilege.Service}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.privilege.service_info"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "privileges",
+                "services"
+            ]
+        },
+        "vapi.metadata.privilege.package_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.privilege.package_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.privilege_info": {
+            "type": "object",
+            "properties": {
+                "property_path": {
+                    "description": "The {@name #propertyPath} points to an entity that is used in the operation element. An entity can either be present in one of the parameter elements or if a parameter is a structure element, it could also be present in one of the field elements. <p> If the privilege is assigned to an entity used in the parameter, {@name #propertyPath} will just contain the name of the parameter field. If the privilege is assigned to an entity in one of the field elements of a parameter element that is a structure element, then {@name #propertyPath} will contain a path to the field element starting from the parameter name.",
+                    "type": "string"
+                },
+                "privileges": {
+                    "description": "List of privileges assigned to the entity that is being referred by {@link #propertyPath}.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "property_path",
+                "privileges"
+            ]
+        },
+        "vapi.metadata.privilege.service.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.service.operation.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.service.operation_get": {
+            "type": "object",
+            "properties": {
+                "operation_id": {
+                    "type": "string",
+                    "description": "Identifier of the operation element."
+                }
+            },
+            "required": [
+                "operation_id"
+            ]
+        },
+        "vapi.metadata.privilege.service.operation_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.privilege.operation_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.metadata.privilege.service_info": {
+            "type": "object",
+            "properties": {
+                "operations": {
+                    "description": "Information about all operation elements contained in this service element that contain privilege information. The key in the {@term map} is the identifier of the operation element and the value in the {@term map} is the privilege information for the operation element. <p> For an explanation of containment of privilege information within operation elements, see {@link vapi.metadata.privilege.service.Operation}.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.metadata.privilege.operation_info"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "operations"
+            ]
+        },
+        "vapi.metadata.privilege.service_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.metadata.privilege.service_info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.rest.navigation.component.info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the component.",
+                    "type": "string"
+                },
+                "services": {
+                    "description": "Link to component services list.",
+                    "$ref": "#/definitions/vapi.rest.navigation.link"
+                },
+                "documentation": {
+                    "description": "Component documentation.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "services",
+                "documentation"
+            ]
+        },
+        "vapi.rest.navigation.component.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.rest.navigation.component.info"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.rest.navigation.http_method": {
+            "type": "string",
+            "description": "The HttpMethod enumerated type defines the valid http methods that can be used with a URL to make a REST call.",
+            "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS",
+                "PATCH",
+                "TRACE",
+                "CONNECT",
+                "HEAD"
+            ]
+        },
+        "vapi.rest.navigation.link": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "description": "HttpMethod to be used.",
+                    "$ref": "#/definitions/vapi.rest.navigation.http_method"
+                },
+                "href": {
+                    "description": "URL that should be called.",
+                    "type": "string"
+                },
+                "metadata": {
+                    "description": "Reference to meta data describing the call.",
+                    "$ref": "#/definitions/vapi.rest.navigation.reference"
+                }
+            },
+            "required": [
+                "method",
+                "href",
+                "metadata"
+            ]
+        },
+        "vapi.rest.navigation.operation": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the operation.",
+                    "type": "string"
+                },
+                "service": {
+                    "description": "Name of the service where the operations belongs to.",
+                    "type": "string"
+                },
+                "documentation": {
+                    "description": "Documentation of the operation.",
+                    "type": "string"
+                },
+                "links": {
+                    "description": "List of References to execute the operation.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.rest.navigation.reference"
+                    }
+                },
+                "metadata": {
+                    "description": "Reference to meta data about the operation.",
+                    "$ref": "#/definitions/vapi.rest.navigation.reference"
+                }
+            },
+            "required": [
+                "name",
+                "service",
+                "documentation",
+                "links",
+                "metadata"
+            ]
+        },
+        "vapi.rest.navigation.options_get": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "URL for which operations are retrieved."
+                },
+                "base_url": {
+                    "type": "string",
+                    "description": "Base URL.\nThe {param.name baseUrl} parameter is used by the service to produce absolute URLs. If unset then the service will produce relative URLs."
+                }
+            },
+            "required": [
+                "url"
+            ]
+        },
+        "vapi.rest.navigation.options_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.rest.navigation.operation"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.rest.navigation.reference": {
+            "type": "object",
+            "properties": {
+                "method": {
+                    "description": "HttpMethod to be used.",
+                    "$ref": "#/definitions/vapi.rest.navigation.http_method"
+                },
+                "href": {
+                    "description": "URL to be called.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "method",
+                "href"
+            ]
+        },
+        "vapi.rest.navigation.resource.info": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the resource.",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "HttpMethod to get resource information.",
+                    "$ref": "#/definitions/vapi.rest.navigation.http_method"
+                },
+                "href": {
+                    "description": "URL to get resource information.",
+                    "type": "string"
+                },
+                "metadata": {
+                    "description": "Reference to the meta data for the resource.",
+                    "$ref": "#/definitions/vapi.rest.navigation.reference"
+                }
+            },
+            "required": [
+                "name",
+                "method",
+                "href",
+                "metadata"
+            ]
+        },
+        "vapi.rest.navigation.resource.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.rest.navigation.resource.info"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.rest.navigation.resource_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.rest.navigation.operation"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.rest.navigation.root.info": {
+            "type": "object",
+            "properties": {
+                "components": {
+                    "description": "Link to component list.",
+                    "$ref": "#/definitions/vapi.rest.navigation.link"
+                },
+                "resources": {
+                    "description": "Link to resource list.",
+                    "$ref": "#/definitions/vapi.rest.navigation.link"
+                }
+            },
+            "required": [
+                "components",
+                "resources"
+            ]
+        },
+        "vapi.rest.navigation.root_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/vapi.rest.navigation.root.info"
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.rest.navigation.service.info": {
+            "type": "object",
+            "properties": {
+                "documentation": {
+                    "description": "Documentation of the service.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the service.",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "HttpMethod to get service information.",
+                    "$ref": "#/definitions/vapi.rest.navigation.http_method"
+                },
+                "href": {
+                    "description": "URL to get service information.",
+                    "type": "string"
+                },
+                "metadata": {
+                    "description": "Reference to the meta data for the service.",
+                    "$ref": "#/definitions/vapi.rest.navigation.reference"
+                }
+            },
+            "required": [
+                "documentation",
+                "name",
+                "method",
+                "href",
+                "metadata"
+            ]
+        },
+        "vapi.rest.navigation.service.list_resp": {
+            "type": "object",
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.rest.navigation.service.info"
+                    }
+                }
+            },
+            "required": [
+                "value"
+            ]
+        },
+        "vapi.std.errors.error.type": {
+            "type": "string",
+            "description": "Enumeration of all standard errors. Used as discriminator in protocols that have no standard means for transporting the error type, e.g. REST.",
+            "enum": [
+                "ERROR",
+                "ALREADY_EXISTS",
+                "ALREADY_IN_DESIRED_STATE",
+                "CANCELED",
+                "CONCURRENT_CHANGE",
+                "FEATURE_IN_USE",
+                "INTERNAL_SERVER_ERROR",
+                "INVALID_ARGUMENT",
+                "INVALID_ELEMENT_CONFIGURATION",
+                "INVALID_ELEMENT_TYPE",
+                "INVALID_REQUEST",
+                "NOT_ALLOWED_IN_CURRENT_STATE",
+                "NOT_FOUND",
+                "OPERATION_NOT_FOUND",
+                "RESOURCE_BUSY",
+                "RESOURCE_IN_USE",
+                "RESOURCE_INACCESSIBLE",
+                "SERVICE_UNAVAILABLE",
+                "TIMED_OUT",
+                "UNABLE_TO_ALLOCATE_RESOURCE",
+                "UNAUTHENTICATED",
+                "UNAUTHORIZED",
+                "UNEXPECTED_INPUT",
+                "UNSUPPORTED",
+                "UNVERIFIED_PEER"
+            ]
+        },
+        "vapi.std.errors.not_allowed_in_current_state": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/vapi.std.errors.error.type"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "vapi.std.errors.not_allowed_in_current_state_error": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/vapi.std.errors.not_allowed_in_current_state"
+                }
+            }
+        },
+        "vapi.std.errors.not_found": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/vapi.std.errors.error.type"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "vapi.std.errors.not_found_error": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/vapi.std.errors.not_found"
+                }
+            }
+        },
+        "vapi.std.errors.service_unavailable": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/vapi.std.errors.error.type"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "vapi.std.errors.service_unavailable_error": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/vapi.std.errors.service_unavailable"
+                }
+            }
+        },
+        "vapi.std.errors.unauthenticated": {
+            "type": "object",
+            "properties": {
+                "challenge": {
+                    "description": "Indicates the authentication challenges applicable to the target API provider. It can be used by a client to discover the correct authentication scheme to use. The exact syntax of the value is defined by the specific provider, the protocol and authentication schemes used. <p> For example, a provider using REST may adhere to the WWW-Authenticate HTTP header specification, RFC7235, section 4.1. In this case an example challenge value may be: SIGN realm=\"27da1358-2ba4-11e9-b210-d663bd873d93\",sts=\"http://vcenter/sso?vsphere.local\", Basic realm=\"vCenter\"",
+                    "type": "string"
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/vapi.std.errors.error.type"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "vapi.std.errors.unauthenticated_error": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/vapi.std.errors.unauthenticated"
+                }
+            }
+        },
+        "vapi.std.errors.unauthorized": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vapi.std.localizable_message"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/vapi.std.errors.error.type"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "vapi.std.errors.unauthorized_error": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/vapi.std.errors.unauthorized"
+                }
+            }
+        },
+        "vapi.std.localizable_message": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "default_message": {
+                    "description": "The value of this localizable string or message template in the {@code en_US} (English) locale.  If {@link #id} refers to a message template, the default message will contain the substituted arguments. This value can be used by clients that do not need to display strings and messages in the native language of the user.  It could also be used as a fallback if a client is unable to access the appropriate message catalog.",
+                    "type": "string"
+                },
+                "args": {
+                    "description": "Positional arguments to be substituted into the message template. This list will be empty if the message uses named arguments or has no arguments.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "params": {
+                    "description": "Named arguments to be substituted into the message template.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.std.localization_param"
+                            }
+                        }
+                    }
+                },
+                "localized": {
+                    "description": "Localized string value as per request requirements.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "default_message",
+                "args"
+            ]
+        },
+        "vapi.std.localization_param": {
+            "type": "object",
+            "properties": {
+                "s": {
+                    "description": "{@term String} value associated with the parameter.",
+                    "type": "string"
+                },
+                "dt": {
+                    "description": "Date and time value associated with the parameter. Use the {@name #format} {@term field} to specify date and time display style.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "i": {
+                    "description": "{@term long} value associated with the parameter.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "d": {
+                    "description": "The {@term double} value associated with the parameter. The number of displayed fractional digits is changed via {@name #precision} {@term field}.",
+                    "type": "number",
+                    "format": "double"
+                },
+                "l": {
+                    "description": "Nested localizable value associated with the parameter. This is useful construct to convert to human readable localized form {@term enumerated type} and {@term boolean} values. It can also be used for proper handling of pluralization and gender forms in localization. Recursive {@name NestedLocalizableMessage} instances can be used for localizing short lists of items.",
+                    "$ref": "#/definitions/vapi.std.nested_localizable_message"
+                },
+                "format": {
+                    "description": "Format associated with the date and time value in {@name #dt} {@term field}. The {@term enumeration value} {@code SHORT_DATETIME} will be used as default.",
+                    "$ref": "#/definitions/vapi.std.localization_param.date_time_format"
+                },
+                "precision": {
+                    "description": "Number of fractional digits to include in formatted {@term double} value.",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "vapi.std.localization_param.date_time_format": {
+            "type": "string",
+            "description": "The {@name DateTimeFormat} {@term enumerated type} lists possible date and time formatting options. It combines the Unicode CLDR format types - full, long, medium and short with 3 different presentations - date only, time only and combined date and time presentation.",
+            "enum": [
+                "SHORT_DATE",
+                "MED_DATE",
+                "LONG_DATE",
+                "FULL_DATE",
+                "SHORT_TIME",
+                "MED_TIME",
+                "LONG_TIME",
+                "FULL_TIME",
+                "SHORT_DATE_TIME",
+                "MED_DATE_TIME",
+                "LONG_DATE_TIME",
+                "FULL_DATE_TIME"
+            ]
+        },
+        "vapi.std.nested_localizable_message": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "params": {
+                    "description": "Named Arguments to be substituted into the message template.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "$ref": "#/definitions/vapi.std.localization_param"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "id"
+            ]
+        }
+    }
+}

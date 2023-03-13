@@ -14,117 +14,121 @@ DOCUMENTATION = r"""
 module: appliance_networking_proxy
 short_description: Configures which proxy server to use for the specified protocol
 description: Configures which proxy server to use for the specified protocol. This
-  operation sets environment variables for using proxy. In order for this configuration
-  to take effect a logout / service restart is required.
+    operation sets environment variables for using proxy. In order for this configuration
+    to take effect a logout / service restart is required.
 options:
-  config:
-    description:
-    - Proxy configuration for the specific protocol. Required with I(state=['test'])
-    - 'Valid attributes are:'
-    - ' - C(server) (str): URL of the proxy server ([''test''])'
-    - '   This key is required with [''test''].'
-    - ' - C(port) (int): Port to connect to the proxy server. In a ''get'' call, indicates
-      the port connected to the proxy server. In a ''set'' call, specifies the port
-      to connect to the proxy server. A value of -1 indicates the default port. ([''test''])'
-    - '   This key is required with [''test''].'
-    - ' - C(username) (str): Username for proxy server. ([''test''])'
-    - ' - C(password) (str): Password for proxy server. ([''test''])'
-    - ' - C(enabled) (bool): In the result of the C(#get) and C(#list) {@term operations}
-      this field indicates whether proxying is enabled for a particular protocol.
-      In the input to the C(test) and C(set) {@term operations} this field specifies
-      whether proxying should be enabled for a particular protocol. ([''test''])'
-    - '   This key is required with [''test''].'
-    type: dict
-  enabled:
-    description:
-    - In the result of the C(#get) and C(#list) {@term operations} this field indicates
-      whether proxying is enabled for a particular protocol. In the input to the C(test)
-      and C(set) {@term operations} this field specifies whether proxying should be
-      enabled for a particular protocol. Required with I(state=['set'])
-    type: bool
-  host:
-    description:
-    - A hostname, IPv4 or Ipv6 address. Required with I(state=['test'])
-    type: str
-  password:
-    description:
-    - Password for proxy server.
-    type: str
-  port:
-    description:
-    - Port to connect to the proxy server. In a 'get' call, indicates the port connected
-      to the proxy server. In a 'set' call, specifies the port to connect to the proxy
-      server. A value of -1 indicates the default port. Required with I(state=['set'])
-    type: int
-  protocol:
-    description:
-    - The protocol for which proxy should be set. This parameter is mandatory.
-    required: true
-    type: str
-  server:
-    description:
-    - URL of the proxy server Required with I(state=['set'])
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - set
-    - test
-    default: set
-    description: []
-    type: str
-  username:
-    description:
-    - Username for proxy server.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    config:
+        description:
+        - Proxy configuration for the specific protocol. Required with I(state=['test'])
+        - 'Valid attributes are:'
+        - ' - C(server) (str): URL of the proxy server ([''test''])'
+        - '   This key is required with [''test''].'
+        - ' - C(port) (int): Port to connect to the proxy server. In a ''get'' call,
+            indicates the port connected to the proxy server. In a ''set'' call, specifies
+            the port to connect to the proxy server. A value of -1 indicates the default
+            port. ([''test''])'
+        - '   This key is required with [''test''].'
+        - ' - C(username) (str): Username for proxy server. ([''test''])'
+        - ' - C(password) (str): Password for proxy server. ([''test''])'
+        - ' - C(enabled) (bool): In the result of the C(#get) and C(#list) {@term
+            operations} this field indicates whether proxying is enabled for a particular
+            protocol. In the input to the C(test) and C(set) {@term operations} this
+            field specifies whether proxying should be enabled for a particular protocol.
+            ([''test''])'
+        - '   This key is required with [''test''].'
+        type: dict
+    enabled:
+        description:
+        - In the result of the C(#get) and C(#list) {@term operations} this field
+            indicates whether proxying is enabled for a particular protocol. In the
+            input to the C(test) and C(set) {@term operations} this field specifies
+            whether proxying should be enabled for a particular protocol. Required
+            with I(state=['set'])
+        type: bool
+    host:
+        description:
+        - A hostname, IPv4 or Ipv6 address. Required with I(state=['test'])
+        type: str
+    password:
+        description:
+        - Password for proxy server.
+        type: str
+    port:
+        description:
+        - Port to connect to the proxy server. In a 'get' call, indicates the port
+            connected to the proxy server. In a 'set' call, specifies the port to
+            connect to the proxy server. A value of -1 indicates the default port.
+            Required with I(state=['set'])
+        type: int
+    protocol:
+        description:
+        - The protocol for which proxy should be set. This parameter is mandatory.
+        required: true
+        type: str
+    server:
+        description:
+        - URL of the proxy server Required with I(state=['set'])
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - absent
+        - set
+        - test
+        default: set
+        description: []
+        type: str
+    username:
+        description:
+        - Username for proxy server.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 2.2.1
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -134,33 +138,13 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Set the HTTP proxy configuration
-  vmware.vmware_rest.appliance_networking_proxy:
-    enabled: true
-    server: http://datastore.test
-    port: 3128
-    protocol: http
-  register: result
-
-- name: Delete the HTTP proxy configuration
-  vmware.vmware_rest.appliance_networking_proxy:
-    protocol: http
-    state: absent
-  register: result
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Delete the HTTP proxy configuration
-value:
-  description: Delete the HTTP proxy configuration
-  returned: On success
-  sample: {}
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
     "test": {
         "query": {},
         "body": {"config": "config", "host": "host"},
@@ -177,6 +161,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"protocol": "protocol"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -211,10 +196,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
