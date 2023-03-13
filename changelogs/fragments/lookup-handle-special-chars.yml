@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "Handle spaces and special characters in resource names for lookup plugins (See: https://github.com/ansible-collections/vmware.vmware_rest/issues/356)."
