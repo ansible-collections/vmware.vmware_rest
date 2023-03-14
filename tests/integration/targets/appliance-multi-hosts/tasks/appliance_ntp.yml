@@ -1,0 +1,59 @@
+- name: _reset the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    vcenter_hostname: "{{ vcsa_host }}"
+    servers:
+      - ca.pool.ntp.org
+  delegate_to: localhost
+
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+    vcenter_hostname: "{{ vcsa_host }}"
+  delegate_to: localhost
+
+- name: Adjust the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    vcenter_hostname: "{{ vcsa_host }}"
+    servers:
+      - time.google.com
+  delegate_to: localhost
+
+- name: _Adjust the NTP configuration (again)
+  vmware.vmware_rest.appliance_ntp:
+    vcenter_hostname: "{{ vcsa_host }}"
+    servers:
+      - time.google.com
+  delegate_to: localhost
+  register: result
+
+- ansible.builtin.debug: var=result
+- name: Validate idempotency
+  ansible.builtin.assert:
+    that:
+      - not (result.changed)
+
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+    vcenter_hostname: "{{ vcsa_host }}"
+  delegate_to: localhost
+  register: result
+
+- ansible.builtin.debug: var=result
+- name: Assert the NTP configuration is right
+  ansible.builtin.assert:
+    that:
+      - result.value == ["time.google.com"]
+
+- name: Test the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    vcenter_hostname: "{{ vcsa_host }}"
+    state: test
+    servers:
+      - time.google.com
+  delegate_to: localhost
+  register: result
+- ansible.builtin.debug: var=result
+
+- name: Ensure the result is successful
+  ansible.builtin.assert:
+    that:
+      - result.value[0].status == "SERVER_REACHABLE"
