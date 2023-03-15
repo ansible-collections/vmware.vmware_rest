@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_boot
 **Updates the boot-related settings of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -340,6 +340,7 @@ Examples
         vm: '{{ test_vm1_info.id }}'
         efi_legacy_boot: true
         type: EFI
+      register: _result
 
 
 

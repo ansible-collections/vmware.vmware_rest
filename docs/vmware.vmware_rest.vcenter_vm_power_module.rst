@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_power
 **Operate a boot, hard shutdown, hard reset or hard suspend on a guest.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -211,44 +211,13 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Look up the VM called test_vm1 in the inventory
-      register: search_result
-      vmware.vmware_rest.vcenter_vm_info:
-        filter_names:
-        - test_vm1
-
-    - name: Collect information about a specific VM
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ search_result.value[0].vm }}'
-      register: test_vm1_info
-
-    - name: Turn the power of the VM on
-      vmware.vmware_rest.vcenter_vm_power:
-        state: start
-        vm: '{{ test_vm1_info.id }}'
-
-    - name: Collect the list of the existing VM
-      vmware.vmware_rest.vcenter_vm_info:
-      register: existing_vms
-      until: existing_vms is not failed
-
-    - name: Turn off the VM
-      vmware.vmware_rest.vcenter_vm_power:
-        state: stop
-        vm: '{{ item.vm }}'
-      with_items: '{{ existing_vms.value }}'
-      ignore_errors: yes
-
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         name: test_vm1
         guest_OS: RHEL_7_64
         hardware_version: VMX_11
@@ -272,20 +241,34 @@ Examples
         nics:
         - backing:
             type: STANDARD_PORTGROUP
-            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-              \ Network') }}"
-
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
       register: my_vm
+
+    - name: Turn the power of the VM on
+      vmware.vmware_rest.vcenter_vm_power:
+        state: start
+        vm: '{{ my_vm.id }}'
 
     - name: Turn on the power of the VM
       vmware.vmware_rest.vcenter_vm_power:
         state: start
         vm: '{{ my_vm.id }}'
 
+    - name: Look up the VM called test_vm1 in the inventory
+      register: search_result
+      vmware.vmware_rest.vcenter_vm_info:
+        filter_names:
+        - test_vm1
+
+    - name: Collect information about a specific VM
+      vmware.vmware_rest.vcenter_vm_info:
+        vm: '{{ search_result.value[0].vm }}'
+      register: test_vm1_info
+
     - name: Turn the power of the VM on
       vmware.vmware_rest.vcenter_vm_power:
         state: start
-        vm: '{{ my_vm.id }}'
+        vm: '{{ test_vm1_info.id }}'
 
 
 

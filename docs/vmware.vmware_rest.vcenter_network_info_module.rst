@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_network_info
 **Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the {@link FilterSpec}.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -250,25 +250,11 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Get the dvswitch called my portgroup
-      vmware.vmware_rest.vcenter_network_info:
-        filter_types: DISTRIBUTED_PORTGROUP
-      register: my_portgroup
-
-    - name: Get the dvswitch called my portgroup
+    - name: Get the dvswitch called my-portgroup
       vmware.vmware_rest.vcenter_network_info:
         filter_types: DISTRIBUTED_PORTGROUP
         filter_names: my portrgoup
       register: my_portgroup
-
-    - name: Get a list of the networks
-      vmware.vmware_rest.vcenter_network_info:
-      register: my_network_value
-
-    - name: Get a list of the networks with a filter
-      vmware.vmware_rest.vcenter_network_info:
-        filter_types: STANDARD_PORTGROUP
-      register: my_standard_portgroup_value
 
 
 

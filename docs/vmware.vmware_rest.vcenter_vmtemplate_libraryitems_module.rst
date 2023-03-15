@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vmtemplate_libraryitems
 **Creates a library item in content library from a virtual machine**
 
 
-Version added: 2.3.0
+Version added: 2.2.0
 
 .. contents::
    :local:
@@ -406,13 +406,10 @@ Examples
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         name: test_vm1
         guest_OS: RHEL_7_64
         hardware_version: VMX_11
@@ -436,8 +433,7 @@ Examples
         nics:
         - backing:
             type: STANDARD_PORTGROUP
-            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-              \ Network') }}"
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
       register: my_vm
 
     - name: Create a content library based on a DataStore
@@ -448,8 +444,7 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           type: DATASTORE
         state: present
       register: nfs_lib
@@ -460,11 +455,9 @@ Examples
         library: '{{ nfs_lib.id }}'
         source_vm: '{{ my_vm.id }}'
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
       register: mylib_item
 
     - name: Get the list of items of the NFS library
@@ -474,8 +467,7 @@ Examples
 
     - name: Use the name to identify the item
       set_fact:
-        my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first\
-          \ }}"
+        my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first }}"
 
     - name: Deploy a new VM based on the template
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
@@ -483,11 +475,9 @@ Examples
         library: '{{ nfs_lib.id }}'
         template_library_item: '{{ my_template_item.id }}'
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         state: deploy
       register: my_new_vm
 

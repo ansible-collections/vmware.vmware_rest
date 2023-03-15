@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_host_info
 **Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the {@link FilterSpec}.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:

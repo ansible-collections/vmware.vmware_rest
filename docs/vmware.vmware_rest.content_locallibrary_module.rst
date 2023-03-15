@@ -8,7 +8,7 @@ vmware.vmware_rest.content_locallibrary
 **Creates a new local library.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -469,19 +469,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of local libraries
-      vmware.vmware_rest.content_locallibrary_info:
-      register: result
-      retries: 100
-      delay: 3
-      until: result is not failed
-
-    - name: Delete all the local libraries
-      vmware.vmware_rest.content_locallibrary:
-        library_id: '{{ item.id }}'
-        state: absent
-      with_items: '{{ result.value }}'
-
     - name: Create a content library pointing on a NFS share
       vmware.vmware_rest.content_locallibrary:
         name: my_library_on_nfs
@@ -516,8 +503,7 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
           type: DATASTORE
         state: present
       register: ds_lib
@@ -530,8 +516,7 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           type: DATASTORE
         state: present
       register: nfs_lib

@@ -167,16 +167,16 @@ EXAMPLES = r"""
     name: my_resource_pool
     parent: '{{ resource_pools.value[0].resource_pool }}'
     cpu_allocation:
-    expandable_reservation: true
-    limit: 40
-    reservation: 0
-    shares:
+      expandable_reservation: true
+      limit: 40
+      reservation: 0
+      shares:
         level: NORMAL
     memory_allocation:
-    expandable_reservation: false
-    limit: 2000
-    reservation: 0
-    shares:
+      expandable_reservation: false
+      limit: 2000
+      reservation: 0
+      shares:
         level: NORMAL
   register: my_resource_pool
 
@@ -195,16 +195,16 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_resourcepool:
     resource_pool: '{{ my_resource_pool.id }}'
     cpu_allocation:
-    expandable_reservation: true
-    limit: -1
-    reservation: 0
-    shares:
+      expandable_reservation: true
+      limit: -1
+      reservation: 0
+      shares:
         level: NORMAL
     memory_allocation:
-    expandable_reservation: false
-    limit: 1000
-    reservation: 0
-    shares:
+      expandable_reservation: false
+      limit: 1000
+      reservation: 0
+      shares:
         level: NORMAL
 """
 
@@ -292,14 +292,10 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str",
-            required=True,
-            fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str",
-            required=True,
-            fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_health_softwarepackages_info
 **Get information on available software updates available in the remote vSphere Update Manager repository**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_parallel
 **Adds a virtual parallel port to the virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -308,6 +308,7 @@ Examples
       vmware.vmware_rest.vcenter_vm_hardware_parallel:
         vm: '{{ test_vm1_info.id }}'
         allow_guest_control: true
+      register: _result
 
 
 

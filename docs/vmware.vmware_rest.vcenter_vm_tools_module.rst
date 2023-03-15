@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_tools
 **Update the properties of VMware Tools.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -248,16 +248,19 @@ Examples
     - name: Retrive vm-tools information
       vmware.vmware_rest.vcenter_vm_tools:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
     - name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
       vmware.vmware_rest.vcenter_vm_tools:
         vm: '{{ test_vm1_info.id }}'
         upgrade_policy: UPGRADE_AT_POWER_CYCLE
+      register: _result
 
     - name: Change vm-tools upgrade policy to MANUAL
       vmware.vmware_rest.vcenter_vm_tools:
         vm: '{{ test_vm1_info.id }}'
         upgrade_policy: MANUAL
+      register: _result
 
 
 

@@ -8,7 +8,7 @@ vmware.vmware_rest.content_subscribedlibrary
 **Creates a new subscribed library**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -452,16 +452,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of subscribed libraries
-      vmware.vmware_rest.content_subscribedlibrary_info:
-      register: result
-
-    - name: Delete all the subscribed libraries
-      vmware.vmware_rest.content_subscribedlibrary:
-        library_id: '{{ item.id }}'
-        state: absent
-      with_items: '{{ result.value }}'
-
     - name: Create a content library pointing on a NFS share
       vmware.vmware_rest.content_locallibrary:
         name: my_library_on_nfs
@@ -484,8 +474,7 @@ Examples
           automatic_sync_enabled: false
           on_demand: true
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
           type: DATASTORE
       register: sub_lib
 
@@ -498,8 +487,7 @@ Examples
           automatic_sync_enabled: false
           on_demand: true
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
           type: DATASTORE
       register: result
 

@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_localaccounts_globalpolicy
 **Set the global password policy.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

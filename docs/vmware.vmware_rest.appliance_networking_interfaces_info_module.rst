@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_interfaces_info
 **Get information about a particular network interface.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

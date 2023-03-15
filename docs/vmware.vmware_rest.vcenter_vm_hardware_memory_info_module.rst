@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_memory_info
 **Returns the memory-related settings of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -195,6 +195,7 @@ Examples
     - name: Retrieve the memory information from the VM
       vmware.vmware_rest.vcenter_vm_hardware_memory_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

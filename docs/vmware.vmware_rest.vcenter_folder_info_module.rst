@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_folder_info
 **Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the {@link FilterSpec}.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -266,10 +266,6 @@ Examples
         filter_names:
         - vm
       register: my_folders
-
-    - name: Build a list of the folders, with a filter
-      vmware.vmware_rest.vcenter_folder_info:
-        filter_type: DATASTORE
 
 
 

@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_datacenter_info
 **Retrieves information about the datacenter corresponding to {@param.name datacenter}.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:

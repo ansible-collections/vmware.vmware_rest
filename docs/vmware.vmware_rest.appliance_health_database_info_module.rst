@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_health_database_info
 **Returns the health status of the database.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -169,7 +169,6 @@ Examples
     - name: Get the database heath status
       vmware.vmware_rest.appliance_health_database_info:
       register: result
-      ignore_errors: true
 
 
 

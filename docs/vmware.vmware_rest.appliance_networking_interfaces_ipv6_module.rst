@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_interfaces_ipv6
 **Set IPv6 network configuration for specific interface.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

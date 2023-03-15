@@ -8,7 +8,7 @@ vmware.vmware_rest.content_locallibrary_info
 **Returns a given local library.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -181,13 +181,6 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of local libraries
-      vmware.vmware_rest.content_locallibrary_info:
-      register: result
-      retries: 100
-      delay: 3
-      until: result is not failed
-
     - name: List Local Content Library
       vmware.vmware_rest.content_locallibrary_info:
       register: my_content_library
@@ -204,8 +197,7 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
           type: DATASTORE
         state: present
       register: ds_lib

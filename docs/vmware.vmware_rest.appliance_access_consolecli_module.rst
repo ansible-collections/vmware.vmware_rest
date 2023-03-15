@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_consolecli
 **Set enabled state of the console-based controlled CLI (TTY1).**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

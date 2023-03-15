@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info
 **Returns details of the local file systems in the guest operating system.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -195,6 +195,7 @@ Examples
     - name: Get guest filesystem information
       vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
       until:
       - _result is not failed
       retries: 60

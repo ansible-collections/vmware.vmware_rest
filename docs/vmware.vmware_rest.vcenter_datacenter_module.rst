@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_datacenter
 **Create a new datacenter in the vCenter inventory**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:

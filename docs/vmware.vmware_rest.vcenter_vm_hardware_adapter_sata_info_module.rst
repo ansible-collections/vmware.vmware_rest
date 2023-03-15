@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info
 **Returns information about a virtual SATA adapter.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:

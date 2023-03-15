@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_dns_hostname_info
 **Get the Fully Qualified Doman Name.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

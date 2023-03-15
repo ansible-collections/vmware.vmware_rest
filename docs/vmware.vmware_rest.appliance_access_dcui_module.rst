@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_dcui
 **Set enabled state of Direct Console User Interface (DCUI TTY2).**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

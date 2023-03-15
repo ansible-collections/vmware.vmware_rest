@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_ntp
 **Set NTP servers**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -211,22 +211,6 @@ Examples
         state: test
         servers:
         - time.google.com
-      register: result
-
-    - name: Adjust the NTP configuration
-      vmware.vmware_rest.appliance_ntp:
-        vcenter_hostname: '{{ vcsa_host }}'
-        servers:
-        - time.google.com
-      delegate_to: localhost
-
-    - name: Test the NTP configuration
-      vmware.vmware_rest.appliance_ntp:
-        vcenter_hostname: '{{ vcsa_host }}'
-        state: test
-        servers:
-        - time.google.com
-      delegate_to: localhost
       register: result
 
 

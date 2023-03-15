@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info
 **Returns the cached storage policy compliance information of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -195,6 +195,7 @@ Examples
     - name: Get VM storage policy compliance information
       vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

@@ -8,7 +8,7 @@ vmware.vmware_rest.content_configuration_info
 **Retrieves the current configuration values.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

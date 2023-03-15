@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_floppy
 **Adds a virtual floppy drive to the virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -316,6 +316,7 @@ Examples
         vm: '{{ test_vm1_info.id }}'
         floppy: '{{ my_floppy_drive.id }}'
         state: absent
+      register: _result
 
 
 

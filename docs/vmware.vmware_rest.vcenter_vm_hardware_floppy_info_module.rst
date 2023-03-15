@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_floppy_info
 **Returns information about a virtual floppy drive.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -226,6 +226,7 @@ Examples
     - name: List the floppy disk drives
       vmware.vmware_rest.vcenter_vm_hardware_floppy_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

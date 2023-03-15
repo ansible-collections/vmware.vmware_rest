@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_resourcepool
 **Creates a resource pool.**
 
 
-Version added: 2.3.0
+Version added: 0.3.0
 
 .. contents::
    :local:
@@ -294,16 +294,16 @@ Examples
         name: my_resource_pool
         parent: '{{ resource_pools.value[0].resource_pool }}'
         cpu_allocation:
-          expandable_reservation: true
-          limit: 40
-          reservation: 0
-          shares:
+        expandable_reservation: true
+        limit: 40
+        reservation: 0
+        shares:
             level: NORMAL
         memory_allocation:
-          expandable_reservation: false
-          limit: 2000
-          reservation: 0
-          shares:
+        expandable_reservation: false
+        limit: 2000
+        reservation: 0
+        shares:
             level: NORMAL
       register: my_resource_pool
 
@@ -322,16 +322,16 @@ Examples
       vmware.vmware_rest.vcenter_resourcepool:
         resource_pool: '{{ my_resource_pool.id }}'
         cpu_allocation:
-          expandable_reservation: true
-          limit: -1
-          reservation: 0
-          shares:
+        expandable_reservation: true
+        limit: -1
+        reservation: 0
+        shares:
             level: NORMAL
         memory_allocation:
-          expandable_reservation: false
-          limit: 1000
-          reservation: 0
-          shares:
+        expandable_reservation: false
+        limit: 1000
+        reservation: 0
+        shares:
             level: NORMAL
 
 

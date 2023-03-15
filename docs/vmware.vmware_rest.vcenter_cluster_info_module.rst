@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_cluster_info
 **Retrieves information about the cluster corresponding to {@param.name cluster}.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -256,12 +256,6 @@ Examples
       vmware.vmware_rest.vcenter_cluster_info:
         cluster: '{{ all_the_clusters.value[0].cluster }}'
       register: my_cluster_info
-
-    - name: get all the clusters called my_cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        filter_names:
-        - my_cluster
-      register: my_cluster
 
 
 

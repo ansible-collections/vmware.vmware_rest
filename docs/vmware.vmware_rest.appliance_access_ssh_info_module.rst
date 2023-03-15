@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_access_ssh_info
 **Get enabled state of the SSH-based controlled CLI.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

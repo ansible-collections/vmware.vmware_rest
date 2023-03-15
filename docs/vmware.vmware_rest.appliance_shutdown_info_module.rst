@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_shutdown_info
 **Get details about the pending shutdown action.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

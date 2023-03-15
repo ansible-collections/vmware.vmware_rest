@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_ethernet
 **Adds a virtual Ethernet adapter to the virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -406,7 +406,7 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Get the dvswitch called my portgroup
+    - name: Get the dvswitch called my-portgroup
       vmware.vmware_rest.vcenter_network_info:
         filter_types: DISTRIBUTED_PORTGROUP
         filter_names: my portrgoup
@@ -445,8 +445,8 @@ Examples
         pci_slot_number: 4
         backing:
           type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
-            \ }}"
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+      register: _result
 
     - name: Attach the VM to a standard portgroup (again)
       vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -454,8 +454,8 @@ Examples
         pci_slot_number: 4
         backing:
           type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
-            \ }}"
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+      register: _result
 
     - name: Collect a list of the NIC for a given VM
       vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
@@ -468,8 +468,8 @@ Examples
         nic: '{{ vm_nic.value[0].nic }}'
         backing:
           type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
-            \ }}"
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+      register: _result
 
     - name: Attach to another standard portgroup
       vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -477,8 +477,8 @@ Examples
         nic: '{{ vm_nic.value[0].nic }}'
         backing:
           type: STANDARD_PORTGROUP
-          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch')\
-            \ }}"
+          network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch') }}"
+      register: _result
 
 
 

@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_globalfips
 **Enable/Disable Global FIPS mode for the appliance**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
