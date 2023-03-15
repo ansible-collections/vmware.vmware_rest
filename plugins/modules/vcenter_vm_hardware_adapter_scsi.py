@@ -15,97 +15,98 @@ module: vcenter_vm_hardware_adapter_scsi
 short_description: Adds a virtual SCSI adapter to the virtual machine.
 description: Adds a virtual SCSI adapter to the virtual machine.
 options:
-  adapter:
-    description:
-    - Virtual SCSI adapter identifier. Required with I(state=['absent', 'present'])
-    type: str
-  bus:
-    description:
-    - SCSI bus number.
-    type: int
-  label:
-    description:
-    - The name of the item
-    type: str
-  pci_slot_number:
-    description:
-    - Address of the SCSI adapter on the PCI bus.  If the PCI address is invalid,
-      the server will change it when the VM is started or as the device is hot added.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  sharing:
-    choices:
-    - NONE
-    - PHYSICAL
-    - VIRTUAL
-    description:
-    - The C(sharing) defines the valid bus sharing modes for a virtual SCSI adapter.
-    type: str
-  state:
-    choices:
-    - absent
-    - present
-    default: present
-    description: []
-    type: str
-  type:
-    choices:
-    - BUSLOGIC
-    - LSILOGIC
-    - LSILOGICSAS
-    - PVSCSI
-    description:
-    - The C(type) defines the valid emulation types for a virtual SCSI adapter.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    adapter:
+        description:
+        - Virtual SCSI adapter identifier. Required with I(state=['absent', 'present'])
+        type: str
+    bus:
+        description:
+        - SCSI bus number.
+        type: int
+    label:
+        description:
+        - The name of the item
+        type: str
+    pci_slot_number:
+        description:
+        - Address of the SCSI adapter on the PCI bus.  If the PCI address is invalid,
+            the server will change it when the VM is started or as the device is hot
+            added.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    sharing:
+        choices:
+        - NONE
+        - PHYSICAL
+        - VIRTUAL
+        description:
+        - The C(sharing) defines the valid bus sharing modes for a virtual SCSI adapter.
+        type: str
+    state:
+        choices:
+        - absent
+        - present
+        default: present
+        description: []
+        type: str
+    type:
+        choices:
+        - BUSLOGIC
+        - LSILOGIC
+        - LSILOGICSAS
+        - PVSCSI
+        description:
+        - The C(type) defines the valid emulation types for a virtual SCSI adapter.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -118,53 +119,19 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-
-- name: Create a SCSI adapter at PCI slot 35
-  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-    vm: '{{ test_vm1_info.id }}'
-    pci_slot_number: 35
-
-- name: Drop the SCSI controller
-  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-    vm: '{{ test_vm1_info.id }}'
-    pci_slot_number: 35
-    state: absent
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Create a SCSI adapter at PCI slot 35
-id:
-  description: moid of the resource
-  returned: On success
-  sample: '1000'
-  type: str
-value:
-  description: Create a SCSI adapter at PCI slot 35
-  returned: On success
-  sample:
-    label: SCSI controller 0
-    pci_slot_number: 35
-    scsi:
-      bus: 0
-      unit: 7
-    sharing: NONE
-    type: PVSCSI
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"sharing": "sharing"},
+        "path": {"adapter": "adapter", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -174,11 +141,6 @@ PAYLOAD_FORMAT = {
             "type": "type",
         },
         "path": {"vm": "vm"},
-    },
-    "update": {
-        "query": {},
-        "body": {"sharing": "sharing"},
-        "path": {"adapter": "adapter", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 
@@ -214,10 +176,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

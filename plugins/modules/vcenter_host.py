@@ -14,112 +14,112 @@ DOCUMENTATION = r"""
 module: vcenter_host
 short_description: Add a new standalone host in the vCenter inventory
 description: Add a new standalone host in the vCenter inventory. The newly connected
-  host will be in connected state. The vCenter Server will verify the SSL certificate
-  before adding the host to its inventory. In the case where the SSL certificate cannot
-  be verified because the Certificate Authority is not recognized or the certificate
-  is self signed, the vCenter Server will fall back to thumbprint verification mode
-  as defined by {@link CreateSpec.ThumbprintVerification}.
+    host will be in connected state. The vCenter Server will verify the SSL certificate
+    before adding the host to its inventory. In the case where the SSL certificate
+    cannot be verified because the Certificate Authority is not recognized or the
+    certificate is self signed, the vCenter Server will fall back to thumbprint verification
+    mode as defined by {@link CreateSpec.ThumbprintVerification}.
 options:
-  folder:
-    description:
-    - Host and cluster folder in which the new standalone host should be created.
-    type: str
-  force_add:
-    description:
-    - Whether host should be added to the vCenter Server even if it is being managed
-      by another vCenter Server. The original vCenterServer loses connection to the
-      host.
-    type: bool
-  host:
-    description:
-    - Identifier of the host to be disconnected. Required with I(state=['absent',
-      'connect', 'disconnect'])
-    type: str
-  hostname:
-    description:
-    - The IP address or DNS resolvable name of the host. Required with I(state=['present'])
-    type: str
-  password:
-    description:
-    - The password for the administrator account on the host. Required with I(state=['present'])
-    type: str
-  port:
-    description:
-    - The port of the host.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - connect
-    - disconnect
-    - present
-    default: present
-    description: []
-    type: str
-  thumbprint:
-    description:
-    - 'The thumbprint of the SSL certificate, which the host is expected to have.
-      The thumbprint is always computed using the SHA1 hash and is the string representation
-      of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx
-      where, ''x'' represents a hexadecimal digit.'
-    type: str
-  thumbprint_verification:
-    choices:
-    - NONE
-    - THUMBPRINT
-    description:
-    - The C(thumbprint_verification) defines the thumbprint verification schemes for
-      a host's SSL certificate. Required with I(state=['present'])
-    type: str
-  user_name:
-    description:
-    - The administrator account on the host. Required with I(state=['present'])
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    folder:
+        description:
+        - Host and cluster folder in which the new standalone host should be created.
+        type: str
+    force_add:
+        description:
+        - Whether host should be added to the vCenter Server even if it is being managed
+            by another vCenter Server. The original vCenterServer loses connection
+            to the host.
+        type: bool
+    host:
+        description:
+        - Identifier of the host to be disconnected. Required with I(state=['absent',
+            'connect', 'disconnect'])
+        type: str
+    hostname:
+        description:
+        - The IP address or DNS resolvable name of the host. Required with I(state=['present'])
+        type: str
+    password:
+        description:
+        - The password for the administrator account on the host. Required with I(state=['present'])
+        type: str
+    port:
+        description:
+        - The port of the host.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - absent
+        - connect
+        - disconnect
+        - present
+        default: present
+        description: []
+        type: str
+    thumbprint:
+        description:
+        - 'The thumbprint of the SSL certificate, which the host is expected to have.
+            The thumbprint is always computed using the SHA1 hash and is the string
+            representation of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx
+            where, ''x'' represents a hexadecimal digit.'
+        type: str
+    thumbprint_verification:
+        choices:
+        - NONE
+        - THUMBPRINT
+        description:
+        - The C(thumbprint_verification) defines the thumbprint verification schemes
+            for a host's SSL certificate. Required with I(state=['present'])
+        type: str
+    user_name:
+        description:
+        - The administrator account on the host. Required with I(state=['present'])
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -132,27 +132,16 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Connect the host(s)
-  vmware.vmware_rest.vcenter_host:
-    hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
-    user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
-    password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-    thumbprint_verification: NONE
-    folder: '{{ my_host_folder.folder }}'
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Connect the host(s)
-value:
-  description: Connect the host(s)
-  returned: On success
-  sample: host-1013
-  type: str
 """
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "delete": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
+    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
     "create": {
         "query": {},
         "body": {
@@ -167,8 +156,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "disconnect": {"query": {}, "body": {}, "path": {"host": "host"}},
-    "connect": {"query": {}, "body": {}, "path": {"host": "host"}},
 }  # pylint: disable=line-too-long
 
 import json
@@ -203,10 +190,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

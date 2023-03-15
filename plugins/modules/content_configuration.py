@@ -14,89 +14,89 @@ DOCUMENTATION = r"""
 module: content_configuration
 short_description: Updates the configuration
 description: Updates the configuration. The update is incremental. Any {@term field}
-  in the {@link ConfigurationModel} {@term structure} that is {@term unset} will not
-  be modified. Note that this update {@term operation} doesn't guarantee an atomic
-  change of all the properties. In the case of a system crash or failure, some of
-  the properties could be left unchanged while others may be updated.
+    in the {@link ConfigurationModel} {@term structure} that is {@term unset} will
+    not be modified. Note that this update {@term operation} doesn't guarantee an
+    atomic change of all the properties. In the case of a system crash or failure,
+    some of the properties could be left unchanged while others may be updated.
 options:
-  automatic_sync_enabled:
-    description:
-    - 'Whether automatic synchronization is enabled. When automatic synchronization
-      is enabled, the Content Library Service will automatically synchronize all subscribed
-      libraries on a daily basis. Subscribed libraries with the C(subscription_info.automaticSyncEnabled)
-      flag turned on will be synchronized every hour between {@link #automaticSyncStartHour}
-      and {@link #automaticSyncStopHour}.'
-    type: bool
-  automatic_sync_start_hour:
-    description:
-    - The hour at which the automatic synchronization will start. This value is between
-      0 (midnight) and 23 inclusive.
-    type: int
-  automatic_sync_stop_hour:
-    description:
-    - The hour at which the automatic synchronization will stop. Any active synchronization
-      operation will continue to run, however no new synchronization operations will
-      be triggered after the stop hour. This value is between 0 (midnight) and 23
-      inclusive.
-    type: int
-  maximum_concurrent_item_syncs:
-    description:
-    - The maximum allowed number of library items to synchronize concurrently from
-      remote libraries. This must be a positive number. The service may not be able
-      to guarantee the requested concurrency if there is no available capacity. This
-      setting is global across all subscribed libraries.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - present
-    default: present
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    automatic_sync_enabled:
+        description:
+        - 'Whether automatic synchronization is enabled. When automatic synchronization
+            is enabled, the Content Library Service will automatically synchronize
+            all subscribed libraries on a daily basis. Subscribed libraries with the
+            C(subscription_info.automaticSyncEnabled) flag turned on will be synchronized
+            every hour between {@link #automaticSyncStartHour} and {@link #automaticSyncStopHour}.'
+        type: bool
+    automatic_sync_start_hour:
+        description:
+        - The hour at which the automatic synchronization will start. This value is
+            between 0 (midnight) and 23 inclusive.
+        type: int
+    automatic_sync_stop_hour:
+        description:
+        - The hour at which the automatic synchronization will stop. Any active synchronization
+            operation will continue to run, however no new synchronization operations
+            will be triggered after the stop hour. This value is between 0 (midnight)
+            and 23 inclusive.
+        type: int
+    maximum_concurrent_item_syncs:
+        description:
+        - The maximum allowed number of library items to synchronize concurrently
+            from remote libraries. This must be a positive number. The service may
+            not be able to guarantee the requested concurrency if there is no available
+            capacity. This setting is global across all subscribed libraries.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - present
+        default: present
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0
@@ -109,27 +109,9 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Turn on the autmatic syncrhronization
-  vmware.vmware_rest.content_configuration:
-    automatic_sync_enabled: true
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Turn on the autmatic syncrhronization
-id:
-  description: moid of the resource
-  returned: On success
-  sample: null
-  type: dict
-value:
-  description: Turn on the autmatic syncrhronization
-  returned: On success
-  sample:
-    automatic_sync_enabled: 1
-    automatic_sync_start_hour: 20
-    automatic_sync_stop_hour: 7
-    maximum_concurrent_item_syncs: 5
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -178,10 +160,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

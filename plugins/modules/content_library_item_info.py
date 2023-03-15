@@ -15,59 +15,60 @@ module: content_library_item_info
 short_description: Returns the {@link ItemModel} with the given identifier.
 description: Returns the {@link ItemModel} with the given identifier.
 options:
-  library_id:
-    description:
-    - Identifier of the library whose items should be returned. Required with I(state=['list'])
-    type: str
-  library_item_id:
-    description:
-    - Identifier of the library item to return. Required with I(state=['get'])
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    library_id:
+        description:
+        - Identifier of the library whose items should be returned. Required with
+            I(state=['list'])
+        type: str
+    library_item_id:
+        description:
+        - Identifier of the library item to return. Required with I(state=['get'])
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0
@@ -80,104 +81,9 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Create a content library pointing on a NFS share
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_nfs
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - storage_uri: nfs://datastore.test/srv/share/content-library
-      type: OTHER
-    state: present
-  register: nfs_lib
-
-- name: Get the list of items of the NFS library
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ nfs_lib.id }}'
-  register: lib_items
-
-- name: Get the list of items of the NFS library
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ nfs_lib.id }}'
-  register: result
-
-- name: Create a new local content library
-  vmware.vmware_rest.content_locallibrary:
-    name: local_library_001
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-        \ }}"
-      type: DATASTORE
-    state: present
-  register: ds_lib
-
-- name: Get the (empty) list of items of the library
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ ds_lib.id }}'
-  register: result
-
-- name: Create subscribed library
-  vmware.vmware_rest.content_subscribedlibrary:
-    name: sub_lib
-    subscription_info:
-      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
-      authentication_method: NONE
-      automatic_sync_enabled: false
-      on_demand: true
-    storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-        \ }}"
-      type: DATASTORE
-  register: sub_lib
-
-- name: Ensure the OVF is here
-  vmware.vmware_rest.content_library_item_info:
-    library_id: '{{ sub_lib.id }}'
-  register: result
-
-- name: Create a content library based on a DataStore
-  vmware.vmware_rest.content_locallibrary:
-    name: my_library_on_datastore
-    description: automated
-    publish_info:
-      published: true
-      authentication_method: NONE
-    storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
-      type: DATASTORE
-    state: present
-  register: nfs_lib
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Ensure the OVF is here
-value:
-  description: Ensure the OVF is here
-  returned: On success
-  sample:
-  - cached: 0
-    content_version: '2'
-    creation_time: '2022-11-23T20:06:05.707Z'
-    description: an OVF example
-    id: f6618d6b-301b-4202-aa9c-12eb0c7536b1
-    last_modified_time: '2022-11-23T20:06:06.062Z'
-    last_sync_time: '2022-11-23T20:06:06.061Z'
-    library_id: 8b4e355e-a463-44f1-9b04-d0786a49cc7d
-    metadata_version: '1'
-    name: golden_image
-    security_compliance: 1
-    size: 0
-    source_id: 636ef270-b556-4972-924f-0d21b0f3bfce
-    type: ovf
-    version: '1'
-  type: list
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -218,10 +124,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

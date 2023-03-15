@@ -15,103 +15,106 @@ module: vcenter_vm_hardware_boot
 short_description: Updates the boot-related settings of a virtual machine.
 description: Updates the boot-related settings of a virtual machine.
 options:
-  delay:
-    description:
-    - Delay in milliseconds before beginning the firmware boot process when the virtual
-      machine is powered on.  This delay may be used to provide a time window for
-      users to connect to the virtual machine console and enter BIOS setup mode.
-    type: int
-  efi_legacy_boot:
-    description:
-    - Flag indicating whether to use EFI legacy boot mode.
-    type: bool
-  enter_setup_mode:
-    description:
-    - Flag indicating whether the firmware boot process should automatically enter
-      setup mode the next time the virtual machine boots.  Note that this flag will
-      automatically be reset to false once the virtual machine enters setup mode.
-    type: bool
-  network_protocol:
-    choices:
-    - IPV4
-    - IPV6
-    description:
-    - The C(network_protocol) defines the valid network boot protocols supported when
-      booting a virtual machine with {@link Type#EFI} firmware over the network.
-    type: str
-  retry:
-    description:
-    - Flag indicating whether the virtual machine should automatically retry the boot
-      process after a failure.
-    type: bool
-  retry_delay:
-    description:
-    - Delay in milliseconds before retrying the boot process after a failure; applicable
-      only when {@link Info#retry} is true.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - present
-    default: present
-    description: []
-    type: str
-  type:
-    choices:
-    - BIOS
-    - EFI
-    description:
-    - The C(type) defines the valid firmware types for a virtual machine.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    delay:
+        description:
+        - Delay in milliseconds before beginning the firmware boot process when the
+            virtual machine is powered on.  This delay may be used to provide a time
+            window for users to connect to the virtual machine console and enter BIOS
+            setup mode.
+        type: int
+    efi_legacy_boot:
+        description:
+        - Flag indicating whether to use EFI legacy boot mode.
+        type: bool
+    enter_setup_mode:
+        description:
+        - Flag indicating whether the firmware boot process should automatically enter
+            setup mode the next time the virtual machine boots.  Note that this flag
+            will automatically be reset to false once the virtual machine enters setup
+            mode.
+        type: bool
+    network_protocol:
+        choices:
+        - IPV4
+        - IPV6
+        description:
+        - The C(network_protocol) defines the valid network boot protocols supported
+            when booting a virtual machine with {@link Type#EFI} firmware over the
+            network.
+        type: str
+    retry:
+        description:
+        - Flag indicating whether the virtual machine should automatically retry the
+            boot process after a failure.
+        type: bool
+    retry_delay:
+        description:
+        - Delay in milliseconds before retrying the boot process after a failure;
+            applicable only when {@link Info#retry} is true.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - present
+        default: present
+        description: []
+        type: str
+    type:
+        choices:
+        - BIOS
+        - EFI
+        description:
+        - The C(type) defines the valid firmware types for a virtual machine.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -124,36 +127,9 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Look up the VM called test_vm1 in the inventory
-  register: search_result
-  vmware.vmware_rest.vcenter_vm_info:
-    filter_names:
-    - test_vm1
-
-- name: Collect information about a specific VM
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ search_result.value[0].vm }}'
-  register: test_vm1_info
-
-- name: Change a VM boot parameters
-  vmware.vmware_rest.vcenter_vm_hardware_boot:
-    vm: '{{ test_vm1_info.id }}'
-    efi_legacy_boot: true
-    type: EFI
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Change a VM boot parameters
-id:
-  description: moid of the resource
-  returned: On success
-  sample: null
-  type: dict
-value:
-  description: Change a VM boot parameters
-  returned: On success
-  sample: {}
-  type: dict
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -205,10 +181,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

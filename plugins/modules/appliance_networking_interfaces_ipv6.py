@@ -15,95 +15,96 @@ module: appliance_networking_interfaces_ipv6
 short_description: Set IPv6 network configuration for specific interface.
 description: Set IPv6 network configuration for specific interface.
 options:
-  addresses:
-    description:
-    - The list of addresses to be statically assigned. This parameter is mandatory.
-    - 'Valid attributes are:'
-    - ' - C(address) (str): The IPv6 address, for example, fc00:10:20:83:20c:29ff:fe94:bb5a.
-      ([''set''])'
-    - '   This key is required with [''set''].'
-    - ' - C(prefix) (int): The IPv6 CIDR prefix, for example, 64. ([''set''])'
-    - '   This key is required with [''set''].'
-    elements: dict
-    required: true
-    type: list
-  autoconf:
-    description:
-    - An address will be assigned by Stateless Address Autoconfiguration (SLAAC).
-      This parameter is mandatory.
-    required: true
-    type: bool
-  default_gateway:
-    description:
-    - The default gateway for static IP address assignment. This configures the global
-      IPv6 default gateway on the appliance with the specified gateway address and
-      interface. This gateway replaces the existing default gateway configured on
-      the appliance. However, if the gateway address is link-local, then it is added
-      for that interface. This does not support configuration of multiple global default
-      gateways through different interfaces. This parameter is mandatory.
-    required: true
-    type: str
-  dhcp:
-    description:
-    - An address will be assigned by a DHCP server. This parameter is mandatory.
-    required: true
-    type: bool
-  interface_name:
-    description:
-    - Network interface to update, for example, "nic0". This parameter is mandatory.
-    required: true
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - set
-    default: set
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    addresses:
+        description:
+        - The list of addresses to be statically assigned. This parameter is mandatory.
+        - 'Valid attributes are:'
+        - ' - C(address) (str): The IPv6 address, for example, fc00:10:20:83:20c:29ff:fe94:bb5a.
+            ([''set''])'
+        - '   This key is required with [''set''].'
+        - ' - C(prefix) (int): The IPv6 CIDR prefix, for example, 64. ([''set''])'
+        - '   This key is required with [''set''].'
+        elements: dict
+        required: true
+        type: list
+    autoconf:
+        description:
+        - An address will be assigned by Stateless Address Autoconfiguration (SLAAC).
+            This parameter is mandatory.
+        required: true
+        type: bool
+    default_gateway:
+        description:
+        - The default gateway for static IP address assignment. This configures the
+            global IPv6 default gateway on the appliance with the specified gateway
+            address and interface. This gateway replaces the existing default gateway
+            configured on the appliance. However, if the gateway address is link-local,
+            then it is added for that interface. This does not support configuration
+            of multiple global default gateways through different interfaces. This
+            parameter is mandatory.
+        required: true
+        type: str
+    dhcp:
+        description:
+        - An address will be assigned by a DHCP server. This parameter is mandatory.
+        required: true
+        type: bool
+    interface_name:
+        description:
+        - Network interface to update, for example, "nic0". This parameter is mandatory.
+        required: true
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - set
+        default: set
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0
@@ -116,28 +117,9 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Set the IPv6 network information of nic99 (which does not exist)
-  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
-    interface_name: nic99
-    mode: DHCP
-  failed_when:
-  - not(result.failed)
-  - result.value.messages[0].default_message msg == "The interface is unknown."
-  register: result
 """
 
 RETURN = r"""
-# content generated by the update_return_section callback# task: Set the IPv6 network information of nic99 (which does not exist)
-failed_when_result:
-  description: Set the IPv6 network information of nic99 (which does not exist)
-  returned: On success
-  sample: 0
-  type: int
-msg:
-  description: Set the IPv6 network information of nic99 (which does not exist)
-  returned: On success
-  sample: 'missing required arguments: addresses, autoconf, default_gateway, dhcp'
-  type: str
 """
 
 # This structure describes the format of the data expected by the end-points
@@ -186,10 +168,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",

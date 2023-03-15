@@ -5,6 +5,25 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
+v2.3.1
+======
+
+Release Summary
+---------------
+
+This release brings some minor changes and bugfixes.
+
+Minor Changes
+-------------
+
+- set version in galaxy.yml to allow install from git repo
+
+Bugfixes
+--------
+
+- Allow filters with the space (See: https://github.com/ansible-collections/vmware.vmware_rest/issues/362).
+- Handle spaces and special characters in resource names for lookup plugins (See: https://github.com/ansible-collections/vmware.vmware_rest/issues/356).
+
 v2.3.0
 ======
 
