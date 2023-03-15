@@ -11,7 +11,7 @@ __metaclass__ = type
 
 
 DOCUMENTATION = r"""
-module: c
+module: vcenter_vm_hardware_cpu_info
 short_description: Returns the CPU-related settings of a virtual machine.
 description: Returns the CPU-related settings of a virtual machine.
 options:

@@ -90,9 +90,9 @@ value:
   sample:
     addresses:
     - address: fe80::5054:ff:fe70:4823
-    origin: OTHER
-    prefix: 64
-    status: PREFERRED
+      origin: OTHER
+      prefix: 64
+      status: PREFERRED
     autoconf: 1
     configurable: 1
     default_gateway: ''

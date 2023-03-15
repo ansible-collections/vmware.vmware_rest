@@ -95,6 +95,24 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get a list of all the datacenters
+  register: existing_datacenters
+  vmware.vmware_rest.vcenter_datacenter_info:
+
+- name: Force delete the existing DC
+  vmware.vmware_rest.vcenter_datacenter:
+    state: absent
+    datacenter: '{{ item.datacenter }}'
+    force: true
+  with_items: '{{ existing_datacenters.value }}'
+  until:
+  - _result is not failed
+  retries: 7
+
+- name: Create datacenter my_dc
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_dc
+    folder: '{{ my_datacenter_folder.folder }}'
 """
 
 RETURN = r"""

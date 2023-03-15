@@ -100,6 +100,13 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get a list of all the datacenters
+  register: existing_datacenters
+  vmware.vmware_rest.vcenter_datacenter_info:
+
+- name: collect a list of the datacenters
+  vmware.vmware_rest.vcenter_datacenter_info:
+  register: my_datacenters
 """
 
 RETURN = r"""

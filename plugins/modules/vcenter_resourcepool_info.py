@@ -117,6 +117,25 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the existing resource pools
+  vmware.vmware_rest.vcenter_resourcepool_info:
+  register: resource_pools
+
+- name: Get the existing resource pool
+  vmware.vmware_rest.vcenter_resourcepool_info:
+    resource_pool: '{{ resource_pools.value[0].resource_pool }}'
+  register: my_resource_pool
+
+- name: Create a generic resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    parent: '{{ resource_pools.value[0].resource_pool }}'
+  register: my_resource_pool
+
+- name: Read details from a specific resource pool
+  vmware.vmware_rest.vcenter_resourcepool_info:
+    resource_pool: '{{ my_resource_pool.id }}'
+  register: my_resource_pool
 """
 
 RETURN = r"""

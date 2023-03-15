@@ -99,7 +99,7 @@ value:
   sample:
     messages:
     - message: Hostname vcenter.test resolved using DNS to 192.168.123.8.
-    result: success
+      result: success
     status: green
   type: dict
 """

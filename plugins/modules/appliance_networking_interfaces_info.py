@@ -105,7 +105,7 @@ value:
       prefix: 24
     ipv6:
       addresses:
-    - address: fe80::5054:ff:fe70:4823
+      - address: fe80::5054:ff:fe70:4823
         origin: OTHER
         prefix: 64
         status: PREFERRED
