@@ -97,6 +97,11 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Adjust vpxd configuration
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    startup_type: AUTOMATIC
+  register: result
 """
 
 RETURN = r"""

@@ -77,6 +77,26 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
+- name: Get boot device info
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- name: Get information about the boot device
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
 """
 
 RETURN = r"""

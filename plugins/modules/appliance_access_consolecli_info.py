@@ -72,6 +72,8 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Check if the Console CLI is enabled
+  vmware.vmware_rest.appliance_access_consolecli_info:
 """
 
 RETURN = r"""

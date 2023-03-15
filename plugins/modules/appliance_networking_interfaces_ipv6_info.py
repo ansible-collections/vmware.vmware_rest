@@ -76,6 +76,10 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Collect the IPv6 network information
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6_info:
+    interface_name: nic0
+  register: result
 """
 
 RETURN = r"""

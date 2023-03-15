@@ -85,6 +85,27 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
+- name: Retrieve the serial ports information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- name: Get an existing serial port (label)
+  vmware.vmware_rest.vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm1_info.id }}'
+    label: Serial port 1
+  register: serial_port_1
 """
 
 RETURN = r"""

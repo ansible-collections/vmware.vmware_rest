@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List infraprofile configs
+  vmware.vmware_rest.appliance_infraprofile_configs_info:
+  register: result
 """
 
 RETURN = r"""

@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Check if the system is up to date
+  vmware.vmware_rest.appliance_update_info:
+  register: result
 """
 
 RETURN = r"""

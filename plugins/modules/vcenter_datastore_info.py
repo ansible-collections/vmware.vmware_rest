@@ -112,6 +112,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Build a list of all the datastores
+  vmware.vmware_rest.vcenter_datastore_info:
+  register: all_the_datastores
 """
 
 RETURN = r"""

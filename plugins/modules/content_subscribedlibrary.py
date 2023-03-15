@@ -313,6 +313,56 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Create subscribed library
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      type: DATASTORE
+  register: sub_lib
+
+- name: Create subscribed library (again)
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      type: DATASTORE
+  register: result
+
+- name: Clean up the cache
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    library_id: '{{ sub_lib.id }}'
+    state: evict
+
+- name: Trigger a library sync
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    library_id: '{{ sub_lib.id }}'
+    state: sync
 """
 
 RETURN = r"""

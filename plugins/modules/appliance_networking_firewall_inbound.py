@@ -111,6 +111,20 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Ensure the rules parameter is mandatory
+  vmware.vmware_rest.appliance_networking_firewall_inbound:
+  register: result
+  failed_when:
+  - not(result.failed)
+  - result.msg == 'missing required arguments: rules'
+
+- name: Set a firewall rule
+  vmware.vmware_rest.appliance_networking_firewall_inbound:
+    rules:
+    - address: 1.2.3.4
+      prefix: 32
+      policy: ACCEPT
+  register: result
 """
 
 RETURN = r"""

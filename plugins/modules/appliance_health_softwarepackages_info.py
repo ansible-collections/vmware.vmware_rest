@@ -77,6 +77,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the health of the software package manager
+  vmware.vmware_rest.appliance_health_softwarepackages_info:
+  register: result
 """
 
 RETURN = r"""

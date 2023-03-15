@@ -85,6 +85,10 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Set network information
+  vmware.vmware_rest.appliance_networking:
+    ipv6_enabled: false
+  register: result
 """
 
 RETURN = r"""

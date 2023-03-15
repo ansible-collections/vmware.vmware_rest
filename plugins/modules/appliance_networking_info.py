@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get network information
+  vmware.vmware_rest.appliance_networking_info:
+  register: result
 """
 
 RETURN = r"""

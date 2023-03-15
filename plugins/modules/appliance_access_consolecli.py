@@ -83,6 +83,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Disable the Console CLI
+  vmware.vmware_rest.appliance_access_consolecli:
+    enabled: false
 """
 
 RETURN = r"""

@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the database heath status
+  vmware.vmware_rest.appliance_health_database_info:
+  register: result
 """
 
 RETURN = r"""

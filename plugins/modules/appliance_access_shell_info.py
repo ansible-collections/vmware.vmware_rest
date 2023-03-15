@@ -74,6 +74,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Check if the Shell is enabled
+  vmware.vmware_rest.appliance_access_shell_info:
+  register: result
 """
 
 RETURN = r"""

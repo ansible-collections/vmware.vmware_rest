@@ -78,6 +78,10 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get information about a VMON service
+  vmware.vmware_rest.appliance_vmon_service_info:
+    service: vpxd
+  register: result
 """
 
 RETURN = r"""

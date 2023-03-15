@@ -139,6 +139,12 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Upgrade the VM hardware version
+  vmware.vmware_rest.vcenter_vm_hardware:
+    upgrade_policy: AFTER_CLEAN_SHUTDOWN
+    upgrade_version: VMX_11
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
+  register: _result
 """
 
 RETURN = r"""

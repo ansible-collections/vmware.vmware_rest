@@ -119,6 +119,29 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
+- name: Create a SCSI adapter at PCI slot 35
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 35
+  register: _scsi_adapter_result_1
+
+- name: Drop the SCSI controller
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 35
+    state: absent
+  register: _result
 """
 
 RETURN = r"""

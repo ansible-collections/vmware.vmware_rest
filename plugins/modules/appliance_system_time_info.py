@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the current time
+  vmware.vmware_rest.appliance_system_time_info:
+  register: result
 """
 
 RETURN = r"""

@@ -110,6 +110,15 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Query the monitoring backend
+  vmware.vmware_rest.appliance_monitoring_query:
+    end_time: 2021-04-14 09:34:56+00:00
+    start_time: 2021-04-14 08:34:56+00:00
+    names:
+    - mem.total
+    interval: MINUTES5
+    function: AVG
+  register: result
 """
 
 RETURN = r"""

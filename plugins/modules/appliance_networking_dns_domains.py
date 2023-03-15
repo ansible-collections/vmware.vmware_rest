@@ -88,6 +88,17 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Update the domain configuration
+  vmware.vmware_rest.appliance_networking_dns_domains:
+    domains:
+    - foobar
+  register: result
+
+- name: Add another domain configuration
+  vmware.vmware_rest.appliance_networking_dns_domains:
+    domain: barfoo
+    state: add
+  register: result
 """
 
 RETURN = r"""

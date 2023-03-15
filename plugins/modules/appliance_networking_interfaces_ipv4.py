@@ -111,6 +111,17 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Set the IPv4 network information of nic99 (which does not exist)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4:
+    interface_name: nic99
+    config:
+      address: 10.20.80.191
+      prefix: '32'
+      mode: STATIC
+  failed_when:
+  - not(result.failed)
+  - result.value.messages[0].default_message msg == "The interface is unknown."
+  register: result
 """
 
 RETURN = r"""

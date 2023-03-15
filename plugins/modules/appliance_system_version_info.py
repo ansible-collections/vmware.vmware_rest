@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the VCSA version
+  vmware.vmware_rest.appliance_system_version_info:
+  register: result
 """
 
 RETURN = r"""

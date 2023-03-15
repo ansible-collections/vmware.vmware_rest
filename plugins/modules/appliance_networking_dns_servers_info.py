@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the DNS servers
+  vmware.vmware_rest.appliance_networking_dns_servers_info:
+  register: original_DNS_config
 """
 
 RETURN = r"""

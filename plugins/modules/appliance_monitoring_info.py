@@ -76,6 +76,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the list of the monitored items
+  vmware.vmware_rest.appliance_monitoring_info:
+  register: result
 """
 
 RETURN = r"""

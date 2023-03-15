@@ -114,6 +114,16 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Build a list of all the folders
+  vmware.vmware_rest.vcenter_folder_info:
+  register: my_folders
+
+- name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
+    filter_names:
+    - vm
+  register: my_folders
 """
 
 RETURN = r"""

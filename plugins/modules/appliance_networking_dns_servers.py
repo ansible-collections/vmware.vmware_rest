@@ -98,6 +98,33 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Set static DNS servers
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    servers:
+    - 1.1.1.1
+    mode: is_static
+    state: set
+  register: result
+
+- name: Add another DNS server
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    server: 8.8.4.4
+    state: add
+  register: result
+
+- name: Use the DNS servers from the DHCP
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    mode: dhcp
+    servers: []
+    state: set
+  register: result
+
+- name: Test the DNS servers
+  vmware.vmware_rest.appliance_networking_dns_servers:
+    state: test
+    servers:
+    - google.com
+  register: result
 """
 
 RETURN = r"""

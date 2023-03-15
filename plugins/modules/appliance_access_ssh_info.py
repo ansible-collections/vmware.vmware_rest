@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Check is the SSH access is enabled
+  vmware.vmware_rest.appliance_access_ssh_info:
+  register: result
 """
 
 RETURN = r"""

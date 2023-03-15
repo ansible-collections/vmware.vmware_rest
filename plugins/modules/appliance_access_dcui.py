@@ -83,6 +83,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Disable the Direct Console User Interface
+  vmware.vmware_rest.appliance_access_dcui:
+    enabled: false
 """
 
 RETURN = r"""

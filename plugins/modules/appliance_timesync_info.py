@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get information regarding the clock synchronization
+  vmware.vmware_rest.appliance_timesync_info:
+  register: result
 """
 
 RETURN = r"""

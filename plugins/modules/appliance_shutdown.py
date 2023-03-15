@@ -89,6 +89,29 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Shutdown the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: poweroff
+    reason: this is an example
+    delay: 600
+  register: result
+
+- name: Abort the shutdown of the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  register: result
+
+- name: Reboot the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: reboot
+    reason: this is an example
+    delay: 600
+  register: result
+
+- name: Abort the reboot
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  register: result
 """
 
 RETURN = r"""

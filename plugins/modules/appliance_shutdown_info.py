@@ -72,6 +72,13 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Ensure there is no ongoing shutdown
+  vmware.vmware_rest.appliance_shutdown_info:
+  register: result
+
+- name: Get the ongoing shutdown
+  vmware.vmware_rest.appliance_shutdown_info:
+  register: result
 """
 
 RETURN = r"""

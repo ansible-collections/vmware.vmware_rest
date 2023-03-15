@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the hostname configuration
+  vmware.vmware_rest.appliance_networking_dns_hostname_info:
+  register: result
 """
 
 RETURN = r"""

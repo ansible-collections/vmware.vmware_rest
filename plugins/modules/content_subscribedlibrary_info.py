@@ -76,6 +76,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List Subscribed Content Library
+  vmware.vmware_rest.content_subscribedlibrary_info:
+  register: my_content_library
 """
 
 RETURN = r"""

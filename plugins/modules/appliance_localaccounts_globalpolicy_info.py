@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the global policy of the local accounts
+  vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
+  register: result
 """
 
 RETURN = r"""

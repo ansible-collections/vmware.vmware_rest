@@ -89,6 +89,17 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Adjust the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    servers:
+    - time.google.com
+
+- name: Test the NTP configuration
+  vmware.vmware_rest.appliance_ntp:
+    state: test
+    servers:
+    - time.google.com
+  register: result
 """
 
 RETURN = r"""

@@ -315,6 +315,57 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Create some more content libraries
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs_{{ item }}
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  with_sequence: 0-10
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Create a content library based on a DataStore
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_datastore
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      type: DATASTORE
+    state: present
+  register: nfs_lib
 """
 
 RETURN = r"""

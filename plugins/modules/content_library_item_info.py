@@ -81,6 +81,77 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: lib_items
+
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: result
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Get the (empty) list of items of the library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+
+- name: Create subscribed library
+  vmware.vmware_rest.content_subscribedlibrary:
+    name: sub_lib
+    subscription_info:
+      subscription_url: '{{ nfs_lib.value.publish_info.publish_url }}'
+      authentication_method: NONE
+      automatic_sync_enabled: false
+      on_demand: true
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      type: DATASTORE
+  register: sub_lib
+
+- name: Ensure the OVF is here
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ sub_lib.id }}'
+  register: result
+
+- name: Create a content library based on a DataStore
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_datastore
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      type: DATASTORE
+    state: present
+  register: nfs_lib
 """
 
 RETURN = r"""

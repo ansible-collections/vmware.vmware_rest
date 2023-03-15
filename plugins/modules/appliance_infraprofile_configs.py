@@ -96,6 +96,12 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Export the ApplianceManagement profile
+  vmware.vmware_rest.appliance_infraprofile_configs:
+    state: export
+    profiles:
+    - ApplianceManagement
+  register: result
 """
 
 RETURN = r"""

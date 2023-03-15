@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the health state of applmgmt
+  vmware.vmware_rest.appliance_health_applmgmt_info:
+  register: result
 """
 
 RETURN = r"""

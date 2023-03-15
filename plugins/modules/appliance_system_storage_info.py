@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the appliance storage information
+  vmware.vmware_rest.appliance_system_storage_info:
+  register: result
 """
 
 RETURN = r"""

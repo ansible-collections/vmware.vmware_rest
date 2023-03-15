@@ -85,6 +85,23 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Stop the ntpd service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: stop
+  register: result
+
+- name: Start the ntpd service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: start
+  register: result
+
+- name: Restart the ntpd service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: restart
+  register: result
 """
 
 RETURN = r"""

@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the timezone configuration
+  vmware.vmware_rest.appliance_system_time_timezone_info:
+  register: result
 """
 
 RETURN = r"""

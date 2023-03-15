@@ -83,6 +83,10 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Use the UTC timezone
+  vmware.vmware_rest.appliance_system_time_timezone:
+    name: UTC
+  register: result
 """
 
 RETURN = r"""

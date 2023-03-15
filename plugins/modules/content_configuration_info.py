@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the vSphere content syncrhronization configuration
+  vmware.vmware_rest.content_configuration_info:
+  register: current_content_configuration
 """
 
 RETURN = r"""

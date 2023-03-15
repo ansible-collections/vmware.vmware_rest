@@ -109,6 +109,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Turn on the autmatic syncrhronization
+  vmware.vmware_rest.content_configuration:
+    automatic_sync_enabled: true
 """
 
 RETURN = r"""

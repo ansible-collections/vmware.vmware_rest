@@ -160,6 +160,31 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
+- name: Create a new disk
+  vmware.vmware_rest.vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    type: SATA
+    new_vmdk:
+      capacity: 320000
+  register: my_new_disk
+
+- name: Delete the disk
+  vmware.vmware_rest.vcenter_vm_hardware_disk:
+    vm: '{{ test_vm1_info.id }}'
+    disk: '{{ my_new_disk.id }}'
+    state: absent
+  register: _result
 """
 
 RETURN = r"""

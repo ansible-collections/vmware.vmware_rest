@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the health of the storage system
+  vmware.vmware_rest.appliance_health_storage_info:
+  register: result
 """
 
 RETURN = r"""

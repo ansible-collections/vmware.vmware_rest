@@ -189,6 +189,77 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+  register: my_vm
+
+- name: Create a content library pointing on a NFS share
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_nfs
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - storage_uri: nfs://datastore.test/srv/share/content-library
+      type: OTHER
+    state: present
+  register: nfs_lib
+
+- name: Export the VM as an OVF on the library
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    session_timeout: 2900
+    source:
+      type: VirtualMachine
+      id: '{{ my_vm.id }}'
+    target:
+      library_id: '{{ nfs_lib.id }}'
+    create_spec:
+      name: golden_image
+      description: an OVF example
+      flags: []
+    state: present
+  register: ovf_item
+
+- name: Get the list of items of the NFS library
+  vmware.vmware_rest.content_library_item_info:
+    library_id: '{{ nfs_lib.id }}'
+  register: lib_items
+
+- name: Create a new VM from the OVF
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
+    state: deploy
+    target:
+      resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    deployment_spec:
+      name: my_vm_from_ovf
+      accept_all_EULA: true
+      storage_provisioning: thin
+
+- name: Create a new VM from the OVF and specify the host and folder
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
+    state: deploy
+    target:
+      resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+      folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      host_id: "{{ lookup('vmware.vmware_rest.host_moid', '/my_dc/host/my_cluster/esxi1.test/test_vm1') }}"
+    deployment_spec:
+      name: my_vm_from_ovf_on_a_host
+      accept_all_EULA: true
+      storage_provisioning: thin
 """
 
 RETURN = r"""

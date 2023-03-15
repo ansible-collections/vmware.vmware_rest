@@ -80,6 +80,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List existing storage policies
+  vmware.vmware_rest.vcenter_storage_policies_info:
+  register: storage_policies
 """
 
 RETURN = r"""

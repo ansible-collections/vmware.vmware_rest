@@ -79,6 +79,15 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Resize the first partition and return the state of the partition before and after the operation
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize_ex
+  register: result
+
+- name: Resize the first partition
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize
+  register: result
 """
 
 RETURN = r"""

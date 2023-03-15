@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the system mem status
+  vmware.vmware_rest.appliance_health_mem_info:
+  register: result
 """
 
 RETURN = r"""

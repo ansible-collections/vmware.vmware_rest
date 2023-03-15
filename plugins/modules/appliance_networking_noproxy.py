@@ -90,6 +90,17 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Set HTTP noproxy configuration
+  vmware.vmware_rest.appliance_networking_noproxy:
+    servers:
+    - redhat.com
+    - ansible.com
+  register: result
+
+- name: Remove the noproxy entries
+  vmware.vmware_rest.appliance_networking_noproxy:
+    servers: []
+  register: result
 """
 
 RETURN = r"""

@@ -76,6 +76,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List the local accounts
+  vmware.vmware_rest.appliance_localaccounts_info:
+  register: result
 """
 
 RETURN = r"""

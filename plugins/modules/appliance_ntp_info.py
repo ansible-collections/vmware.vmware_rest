@@ -76,6 +76,12 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+
+- name: Get the NTP configuration
+  vmware.vmware_rest.appliance_ntp_info:
+  register: result
 """
 
 RETURN = r"""

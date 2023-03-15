@@ -174,6 +174,79 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the dvswitch called my-portgroup
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: my portrgoup
+  register: my_portgroup
+
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
+- name: Attach a VM to a dvswitch
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: DISTRIBUTED_PORTGROUP
+      network: '{{ my_portgroup.value[0].network }}'
+    start_connected: false
+  register: vm_hardware_ethernet_1
+
+- name: Turn the NIC's start_connected flag on
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    nic: '{{ vm_hardware_ethernet_1.id }}'
+    start_connected: true
+    vm: '{{ test_vm1_info.id }}'
+
+- name: Attach the VM to a standard portgroup
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
+
+- name: Attach the VM to a standard portgroup (again)
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    pci_slot_number: 4
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
+
+- name: Collect a list of the NIC for a given VM
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: vm_nic
+
+- name: Attach the VM to a standard portgroup (again) using the nic ID
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    nic: '{{ vm_nic.value[0].nic }}'
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
+
+- name: Attach to another standard portgroup
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet:
+    vm: '{{ test_vm1_info.id }}'
+    nic: '{{ vm_nic.value[0].nic }}'
+    backing:
+      type: STANDARD_PORTGROUP
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch') }}"
+  register: _result
 """
 
 RETURN = r"""

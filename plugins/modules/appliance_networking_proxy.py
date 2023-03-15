@@ -138,6 +138,19 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Set the HTTP proxy configuration
+  vmware.vmware_rest.appliance_networking_proxy:
+    enabled: true
+    server: http://datastore.test
+    port: 3128
+    protocol: http
+  register: result
+
+- name: Delete the HTTP proxy configuration
+  vmware.vmware_rest.appliance_networking_proxy:
+    protocol: http
+    state: absent
+  register: result
 """
 
 RETURN = r"""

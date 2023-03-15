@@ -107,6 +107,11 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the dvswitch called my-portgroup
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: my portrgoup
+  register: my_portgroup
 """
 
 RETURN = r"""

@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the health of the swap
+  vmware.vmware_rest.appliance_health_swap_info:
+  register: result
 """
 
 RETURN = r"""

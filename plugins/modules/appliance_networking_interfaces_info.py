@@ -76,6 +76,14 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get a list of the network interfaces
+  vmware.vmware_rest.appliance_networking_interfaces_info:
+  register: result
+
+- name: Get details about one network interfaces
+  vmware.vmware_rest.appliance_networking_interfaces_info:
+    interface_name: nic0
+  register: result
 """
 
 RETURN = r"""

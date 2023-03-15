@@ -75,6 +75,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the firewall inbound configuration
+  vmware.vmware_rest.appliance_networking_firewall_inbound_info:
+  register: result
 """
 
 RETURN = r"""

@@ -117,6 +117,14 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Set the IPv6 network information of nic99 (which does not exist)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
+    interface_name: nic99
+    mode: DHCP
+  failed_when:
+  - not(result.failed)
+  - result.value.messages[0].default_message msg == "The interface is unknown."
+  register: result
 """
 
 RETURN = r"""

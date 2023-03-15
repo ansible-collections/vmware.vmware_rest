@@ -76,6 +76,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the HTTP proxy configuration
+  vmware.vmware_rest.appliance_networking_proxy_info:
+  register: result
 """
 
 RETURN = r"""

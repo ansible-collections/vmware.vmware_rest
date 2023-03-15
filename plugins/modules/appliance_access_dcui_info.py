@@ -72,6 +72,8 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Check if the Direct Console User Interface is enabled
+  vmware.vmware_rest.appliance_access_dcui_info:
 """
 
 RETURN = r"""

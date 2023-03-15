@@ -105,6 +105,28 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+    - test_vm1
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: test_vm1_info
+
+- name: Prepare the disk policy dict
+  ansible.builtin.set_fact:
+    vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+
+- name: Adjust VM storage policy
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: '{{ test_vm1_info.id }}'
+    vm_home:
+      type: USE_DEFAULT_POLICY
+    disks: '{{ vm_disk_policy }}'
+  register: _result
 """
 
 RETURN = r"""

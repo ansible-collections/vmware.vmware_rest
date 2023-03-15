@@ -72,6 +72,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Get the system load status
+  vmware.vmware_rest.appliance_health_load_info:
+  register: result
 """
 
 RETURN = r"""

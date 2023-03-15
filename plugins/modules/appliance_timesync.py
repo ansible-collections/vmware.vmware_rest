@@ -88,6 +88,9 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Ensure we use NTP
+  vmware.vmware_rest.appliance_timesync:
+    mode: NTP
 """
 
 RETURN = r"""

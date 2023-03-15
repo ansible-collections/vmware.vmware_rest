@@ -76,6 +76,32 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List Local Content Library
+  vmware.vmware_rest.content_locallibrary_info:
+  register: my_content_library
+
+- name: List all Local Content Library
+  vmware.vmware_rest.content_locallibrary_info:
+  register: all_content_libraries
+
+- name: Create a new local content library
+  vmware.vmware_rest.content_locallibrary:
+    name: local_library_001
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+      type: DATASTORE
+    state: present
+  register: ds_lib
+
+- name: Retrieve the local content library information based upon id check mode
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: '{{ ds_lib.id }}'
+  register: result
+  check_mode: true
 """
 
 RETURN = r"""

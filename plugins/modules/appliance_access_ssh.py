@@ -83,6 +83,10 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Ensure the SSH access ie enabled
+  vmware.vmware_rest.appliance_access_ssh:
+    enabled: true
+  register: result
 """
 
 RETURN = r"""

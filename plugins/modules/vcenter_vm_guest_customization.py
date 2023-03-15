@@ -175,6 +175,27 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Customize the VM
+  vmware.vmware_rest.vcenter_vm_guest_customization:
+    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
+    configuration_spec:
+      linux_config:
+        domain: mydomain
+        hostname:
+          fixed_name: foobar
+          type: FIXED
+    interfaces:
+    - adapter:
+        ipv4:
+          type: STATIC
+          gateways:
+          - 192.168.123.1
+          ip_address: 192.168.123.50
+          prefix: 24
+    global_DNS_settings:
+      dns_suffix_list: []
+      dns_servers:
+      - 1.1.1.1
 """
 
 RETURN = r"""

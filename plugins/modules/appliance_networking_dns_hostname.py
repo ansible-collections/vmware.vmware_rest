@@ -84,6 +84,11 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Test the hostname configuration
+  vmware.vmware_rest.appliance_networking_dns_hostname:
+    state: test
+    name: vcenter.test
+  register: result
 """
 
 RETURN = r"""
