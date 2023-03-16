@@ -13,84 +13,86 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_vm_storage_policy
 short_description: Updates the storage policy configuration of a virtual machine and/or
-  its associated virtual hard disks.
+    its associated virtual hard disks.
 description: Updates the storage policy configuration of a virtual machine and/or
-  its associated virtual hard disks.
+    its associated virtual hard disks.
 options:
-  disks:
-    description:
-    - Storage policy or policies to be used when reconfiguring virtual machine diks.
-    type: dict
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - present
-    default: present
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
-  vm_home:
-    description:
-    - Storage policy to be used when reconfiguring the virtual machine home. This
-      parameter is mandatory.
-    - 'Valid attributes are:'
-    - ' - C(type) (str): The C(policy_type) defines the choices for how to specify
-      the policy to be associated with the virtual machine home''s directory. ([''present''])'
-    - '   This key is required with [''present''].'
-    - '   - Accepted values:'
-    - '     - USE_DEFAULT_POLICY'
-    - '     - USE_SPECIFIED_POLICY'
-    - ' - C(policy) (str): Storage Policy identification. ([''present''])'
-    required: true
-    type: dict
+    disks:
+        description:
+        - Storage policy or policies to be used when reconfiguring virtual machine
+            diks.
+        type: dict
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - present
+        default: present
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
+    vm_home:
+        description:
+        - Storage policy to be used when reconfiguring the virtual machine home. This
+            parameter is mandatory.
+        - 'Valid attributes are:'
+        - ' - C(type) (str): The C(policy_type) defines the choices for how to specify
+            the policy to be associated with the virtual machine home''s directory.
+            ([''present''])'
+        - '   This key is required with [''present''].'
+        - '   - Accepted values:'
+        - '     - USE_DEFAULT_POLICY'
+        - '     - USE_SPECIFIED_POLICY'
+        - ' - C(policy) (str): Storage Policy identification. ([''present''])'
+        required: true
+        type: dict
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -114,12 +116,17 @@ EXAMPLES = r"""
     vm: '{{ search_result.value[0].vm }}'
   register: test_vm1_info
 
+- name: Prepare the disk policy dict
+  ansible.builtin.set_fact:
+    vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+
 - name: Adjust VM storage policy
   vmware.vmware_rest.vcenter_vm_storage_policy:
     vm: '{{ test_vm1_info.id }}'
     vm_home:
       type: USE_DEFAULT_POLICY
     disks: '{{ vm_disk_policy }}'
+  register: _result
 """
 
 RETURN = r"""

@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_timesync_info
 **Get time synchronization mode.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

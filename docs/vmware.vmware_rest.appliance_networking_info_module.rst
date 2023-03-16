@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_info
 **Get Networking information for all configured interfaces.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

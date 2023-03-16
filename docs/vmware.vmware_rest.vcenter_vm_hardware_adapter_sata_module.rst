@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
 **Adds a virtual SATA adapter to the virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -293,6 +293,7 @@ Examples
       vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
         vm: '{{ test_vm1_info.id }}'
         pci_slot_number: 34
+      register: _sata_adapter_result_1
 
     - name: Remove SATA adapter at PCI slot 34
       vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:

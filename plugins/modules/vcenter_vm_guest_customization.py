@@ -14,151 +14,155 @@ DOCUMENTATION = r"""
 module: vcenter_vm_guest_customization
 short_description: Applies a customization specification on the virtual machine
 description: Applies a customization specification on the virtual machine in {@param.name
-  vm}. The actual customization happens inside the guest when the virtual machine
-  is powered on. If there is a pending customization for the virtual machine and a
-  new one is set, then the existing customization setting will be overwritten with
-  the new settings.
+    vm}. The actual customization happens inside the guest when the virtual machine
+    is powered on. If there is a pending customization for the virtual machine and
+    a new one is set, then the existing customization setting will be overwritten
+    with the new settings.
 options:
-  configuration_spec:
-    description:
-    - Settings to be applied to the guest during the customization. This parameter
-      is mandatory.
-    - 'Valid attributes are:'
-    - ' - C(windows_config) (dict): Guest customization specification for a Windows
-      guest operating system ([''set''])'
-    - '   - Accepted keys:'
-    - '     - reboot (string): The C(reboot_option) specifies what should be done
-      to the guest after the customization.'
-    - 'Accepted value for this field:'
-    - '       - C(NO_REBOOT)'
-    - '       - C(REBOOT)'
-    - '       - C(SHUTDOWN)'
-    - '     - sysprep (object): Customization settings like user details, administrator
-      details, etc for the windows guest operating system. Exactly one of C(#sysprep)
-      or C(#sysprep_xml) must be specified.'
-    - '     - sysprep_xml (string): All settings specified in a XML format. This is
-      the content of a typical answer.xml file that is used by System administrators
-      during the Windows image customization. Check https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs
-      Exactly one of C(#sysprep) or C(#sysprep_xml) must be specified.'
-    - ' - C(linux_config) (dict): Guest customization specification for a linux guest
-      operating system ([''set''])'
-    - '   - Accepted keys:'
-    - '     - hostname (object): The computer name of the (Windows) virtual machine.
-      A computer name may contain letters (A-Z), numbers(0-9) and hyphens (-) but
-      no spaces or periods (.). The name may not consist entirely of digits. A computer
-      name is restricted to 15 characters in length. If the computer name is longer
-      than 15 characters, it will be truncated to 15 characters. Check {@link HostnameGenerator}
-      for various options.'
-    - '     - domain (string): The fully qualified domain name.'
-    - '     - time_zone (string): The case-sensitive time zone, such as Europe/Sofia.
-      Valid time zone values are based on the tz (time zone) database used by Linux.
-      The values are strings  in the form "Area/Location," in which Area is a continent
-      or ocean name, and Location is the city, island, or other regional designation.
-      See the https://kb.vmware.com/kb/2145518 for a list of supported time zones
-      for different versions in Linux.'
-    - '     - script_text (string): The script to run before and after Linux guest
-      customization.<br> The max size of the script is 1500 bytes. As long as the
-      script (shell, perl, python...) has the right "#!" in the header, it is supported.
-      The caller should not assume any environment variables when the script is run.
-      The script is invoked by the customization engine using the command line: 1)
-      with argument "precustomization" before customization, 2) with argument "postcustomization"
-      after customization. The script should parse this argument and implement pre-customization
-      or post-customization task code details in the corresponding block. A Linux
-      shell script example: <code> #!/bin/sh<br> if [ x$1 == x"precustomization" ];
-      then<br> echo "Do Precustomization tasks"<br> #code for pre-customization actions...<br>
-      elif [ x$1 == x"postcustomization" ]; then<br> echo "Do Postcustomization tasks"<br>
-      #code for post-customization actions...<br> fi<br> </code>'
-    required: true
-    type: dict
-  global_DNS_settings:
-    description:
-    - Global DNS settings constitute the DNS settings that are not specific to a particular
-      virtual network adapter. This parameter is mandatory.
-    - 'Valid attributes are:'
-    - ' - C(dns_suffix_list) (list): List of name resolution suffixes for the virtual
-      network adapter. This list applies to both Windows and Linux guest customization.
-      For Linux, this setting is global, whereas in Windows, this setting is listed
-      on a per-adapter basis. ([''set''])'
-    - ' - C(dns_servers) (list): List of DNS servers, for a virtual network adapter
-      with a static IP address. If this list is empty, then the guest operating system
-      is expected to use a DHCP server to get its DNS server settings. These settings
-      configure the virtual machine to use the specified DNS servers. These DNS server
-      settings are listed in the order of preference. ([''set''])'
-    required: true
-    type: dict
-  interfaces:
-    description:
-    - IP settings that are specific to a particular virtual network adapter. The {@link
-      AdapterMapping} {@term structure} maps a network adapter's MAC address to its
-      {@link IPSettings}. May be empty if there are no network adapters, else should
-      match number of network adapters configured for the VM. This parameter is mandatory.
-    - 'Valid attributes are:'
-    - ' - C(mac_address) (str): The MAC address of a network adapter being customized.
-      ([''set''])'
-    - ' - C(adapter) (dict): The IP settings for the associated virtual network adapter.
-      ([''set''])'
-    - '   This key is required with [''set''].'
-    - '   - Accepted keys:'
-    - '     - ipv4 (object): Specification to configure IPv4 address, subnet mask
-      and gateway info for this virtual network adapter.'
-    - '     - ipv6 (object): Specification to configure IPv6 address, subnet mask
-      and gateway info for this virtual network adapter.'
-    - '     - windows (object): Windows settings to be configured for this specific
-      virtual Network adapter. This is valid only for Windows guest operating systems.'
-    elements: dict
-    required: true
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - The unique identifier of the virtual machine that needs to be customized. This
-      parameter is mandatory.
-    required: true
-    type: str
+    configuration_spec:
+        description:
+        - Settings to be applied to the guest during the customization. This parameter
+            is mandatory.
+        - 'Valid attributes are:'
+        - ' - C(windows_config) (dict): Guest customization specification for a Windows
+            guest operating system ([''set''])'
+        - '   - Accepted keys:'
+        - '     - reboot (string): The C(reboot_option) specifies what should be done
+            to the guest after the customization.'
+        - 'Accepted value for this field:'
+        - '       - C(NO_REBOOT)'
+        - '       - C(REBOOT)'
+        - '       - C(SHUTDOWN)'
+        - '     - sysprep (object): Customization settings like user details, administrator
+            details, etc for the windows guest operating system. Exactly one of C(#sysprep)
+            or C(#sysprep_xml) must be specified.'
+        - '     - sysprep_xml (string): All settings specified in a XML format. This
+            is the content of a typical answer.xml file that is used by System administrators
+            during the Windows image customization. Check https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs
+            Exactly one of C(#sysprep) or C(#sysprep_xml) must be specified.'
+        - ' - C(linux_config) (dict): Guest customization specification for a linux
+            guest operating system ([''set''])'
+        - '   - Accepted keys:'
+        - '     - hostname (object): The computer name of the (Windows) virtual machine.
+            A computer name may contain letters (A-Z), numbers(0-9) and hyphens (-)
+            but no spaces or periods (.). The name may not consist entirely of digits.
+            A computer name is restricted to 15 characters in length. If the computer
+            name is longer than 15 characters, it will be truncated to 15 characters.
+            Check {@link HostnameGenerator} for various options.'
+        - '     - domain (string): The fully qualified domain name.'
+        - '     - time_zone (string): The case-sensitive time zone, such as Europe/Sofia.
+            Valid time zone values are based on the tz (time zone) database used by
+            Linux. The values are strings  in the form "Area/Location," in which Area
+            is a continent or ocean name, and Location is the city, island, or other
+            regional designation. See the https://kb.vmware.com/kb/2145518 for a list
+            of supported time zones for different versions in Linux.'
+        - '     - script_text (string): The script to run before and after Linux guest
+            customization.<br> The max size of the script is 1500 bytes. As long as
+            the script (shell, perl, python...) has the right "#!" in the header,
+            it is supported. The caller should not assume any environment variables
+            when the script is run. The script is invoked by the customization engine
+            using the command line: 1) with argument "precustomization" before customization,
+            2) with argument "postcustomization" after customization. The script should
+            parse this argument and implement pre-customization or post-customization
+            task code details in the corresponding block. A Linux shell script example:
+            <code> #!/bin/sh<br> if [ x$1 == x"precustomization" ]; then<br> echo
+            "Do Precustomization tasks"<br> #code for pre-customization actions...<br>
+            elif [ x$1 == x"postcustomization" ]; then<br> echo "Do Postcustomization
+            tasks"<br> #code for post-customization actions...<br> fi<br> </code>'
+        required: true
+        type: dict
+    global_DNS_settings:
+        description:
+        - Global DNS settings constitute the DNS settings that are not specific to
+            a particular virtual network adapter. This parameter is mandatory.
+        - 'Valid attributes are:'
+        - ' - C(dns_suffix_list) (list): List of name resolution suffixes for the
+            virtual network adapter. This list applies to both Windows and Linux guest
+            customization. For Linux, this setting is global, whereas in Windows,
+            this setting is listed on a per-adapter basis. ([''set''])'
+        - ' - C(dns_servers) (list): List of DNS servers, for a virtual network adapter
+            with a static IP address. If this list is empty, then the guest operating
+            system is expected to use a DHCP server to get its DNS server settings.
+            These settings configure the virtual machine to use the specified DNS
+            servers. These DNS server settings are listed in the order of preference.
+            ([''set''])'
+        required: true
+        type: dict
+    interfaces:
+        description:
+        - IP settings that are specific to a particular virtual network adapter. The
+            {@link AdapterMapping} {@term structure} maps a network adapter's MAC
+            address to its {@link IPSettings}. May be empty if there are no network
+            adapters, else should match number of network adapters configured for
+            the VM. This parameter is mandatory.
+        - 'Valid attributes are:'
+        - ' - C(mac_address) (str): The MAC address of a network adapter being customized.
+            ([''set''])'
+        - ' - C(adapter) (dict): The IP settings for the associated virtual network
+            adapter. ([''set''])'
+        - '   This key is required with [''set''].'
+        - '   - Accepted keys:'
+        - '     - ipv4 (object): Specification to configure IPv4 address, subnet mask
+            and gateway info for this virtual network adapter.'
+        - '     - ipv6 (object): Specification to configure IPv6 address, subnet mask
+            and gateway info for this virtual network adapter.'
+        - '     - windows (object): Windows settings to be configured for this specific
+            virtual Network adapter. This is valid only for Windows guest operating
+            systems.'
+        elements: dict
+        required: true
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - The unique identifier of the virtual machine that needs to be customized.
+            This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0

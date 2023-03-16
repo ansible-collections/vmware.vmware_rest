@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi
 **Adds a virtual SCSI adapter to the virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -316,12 +316,14 @@ Examples
       vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
         vm: '{{ test_vm1_info.id }}'
         pci_slot_number: 35
+      register: _scsi_adapter_result_1
 
     - name: Drop the SCSI controller
       vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
         vm: '{{ test_vm1_info.id }}'
         pci_slot_number: 35
         state: absent
+      register: _result
 
 
 

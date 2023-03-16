@@ -15,152 +15,153 @@ module: vcenter_vm_hardware_ethernet
 short_description: Adds a virtual Ethernet adapter to the virtual machine.
 description: Adds a virtual Ethernet adapter to the virtual machine.
 options:
-  allow_guest_control:
-    description:
-    - Flag indicating whether the guest can connect and disconnect the device.
-    type: bool
-  backing:
-    description:
-    - Physical resource backing for the virtual Ethernet adapter. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
-      virtual Ethernet adapter. ([''present''])'
-    - '   This key is required with [''present''].'
-    - '   - Accepted values:'
-    - '     - DISTRIBUTED_PORTGROUP'
-    - '     - HOST_DEVICE'
-    - '     - OPAQUE_NETWORK'
-    - '     - STANDARD_PORTGROUP'
-    - ' - C(network) (str): Identifier of the network that backs the virtual Ethernet
-      adapter. ([''present''])'
-    - ' - C(distributed_port) (str): Key of the distributed virtual port that backs
-      the virtual Ethernet adapter.  Depending on the type of the Portgroup, the port
-      may be specified using this field. If the portgroup type is early-binding (also
-      known as static), a port is assigned when the Ethernet adapter is configured
-      to use the port. The port may be either automatically or specifically assigned
-      based on the value of this field. If the portgroup type is ephemeral, the port
-      is created and assigned to a virtual machine when it is powered on and the Ethernet
-      adapter is connected.  This field cannot be specified as no free ports exist
-      before use. ([''present''])'
-    type: dict
-  label:
-    description:
-    - The name of the item
-    type: str
-  mac_address:
-    description:
-    - MAC address. This field may be modified at any time, and changes will be applied
-      the next time the virtual machine is powered on.
-    type: str
-  mac_type:
-    choices:
-    - ASSIGNED
-    - GENERATED
-    - MANUAL
-    description:
-    - The C(mac_address_type) defines the valid MAC address origins for a virtual
-      Ethernet adapter.
-    type: str
-  nic:
-    description:
-    - Virtual Ethernet adapter identifier. Required with I(state=['absent', 'connect',
-      'disconnect', 'present'])
-    type: str
-  pci_slot_number:
-    description:
-    - Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address
-      is invalid, the server will change when it the VM is started or as the device
-      is hot added.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  start_connected:
-    description:
-    - Flag indicating whether the virtual device should be connected whenever the
-      virtual machine is powered on.
-    type: bool
-  state:
-    choices:
-    - absent
-    - connect
-    - disconnect
-    - present
-    default: present
-    description: []
-    type: str
-  type:
-    choices:
-    - E1000
-    - E1000E
-    - PCNET32
-    - VMXNET
-    - VMXNET2
-    - VMXNET3
-    description:
-    - The C(emulation_type) defines the valid emulation types for a virtual Ethernet
-      adapter.
-    type: str
-  upt_compatibility_enabled:
-    description:
-    - Flag indicating whether Universal Pass-Through (UPT) compatibility should be
-      enabled on this virtual Ethernet adapter. This field may be modified at any
-      time, and changes will be applied the next time the virtual machine is powered
-      on.
-    type: bool
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
-  wake_on_lan_enabled:
-    description:
-    - Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet
-      adapter. This field may be modified at any time, and changes will be applied
-      the next time the virtual machine is powered on.
-    type: bool
+    allow_guest_control:
+        description:
+        - Flag indicating whether the guest can connect and disconnect the device.
+        type: bool
+    backing:
+        description:
+        - Physical resource backing for the virtual Ethernet adapter. Required with
+            I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(type) (str): The C(backing_type) defines the valid backing types for
+            a virtual Ethernet adapter. ([''present''])'
+        - '   This key is required with [''present''].'
+        - '   - Accepted values:'
+        - '     - DISTRIBUTED_PORTGROUP'
+        - '     - HOST_DEVICE'
+        - '     - OPAQUE_NETWORK'
+        - '     - STANDARD_PORTGROUP'
+        - ' - C(network) (str): Identifier of the network that backs the virtual Ethernet
+            adapter. ([''present''])'
+        - ' - C(distributed_port) (str): Key of the distributed virtual port that
+            backs the virtual Ethernet adapter.  Depending on the type of the Portgroup,
+            the port may be specified using this field. If the portgroup type is early-binding
+            (also known as static), a port is assigned when the Ethernet adapter is
+            configured to use the port. The port may be either automatically or specifically
+            assigned based on the value of this field. If the portgroup type is ephemeral,
+            the port is created and assigned to a virtual machine when it is powered
+            on and the Ethernet adapter is connected.  This field cannot be specified
+            as no free ports exist before use. ([''present''])'
+        type: dict
+    label:
+        description:
+        - The name of the item
+        type: str
+    mac_address:
+        description:
+        - MAC address. This field may be modified at any time, and changes will be
+            applied the next time the virtual machine is powered on.
+        type: str
+    mac_type:
+        choices:
+        - ASSIGNED
+        - GENERATED
+        - MANUAL
+        description:
+        - The C(mac_address_type) defines the valid MAC address origins for a virtual
+            Ethernet adapter.
+        type: str
+    nic:
+        description:
+        - Virtual Ethernet adapter identifier. Required with I(state=['absent', 'connect',
+            'disconnect', 'present'])
+        type: str
+    pci_slot_number:
+        description:
+        - Address of the virtual Ethernet adapter on the PCI bus.  If the PCI address
+            is invalid, the server will change when it the VM is started or as the
+            device is hot added.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    start_connected:
+        description:
+        - Flag indicating whether the virtual device should be connected whenever
+            the virtual machine is powered on.
+        type: bool
+    state:
+        choices:
+        - absent
+        - connect
+        - disconnect
+        - present
+        default: present
+        description: []
+        type: str
+    type:
+        choices:
+        - E1000
+        - E1000E
+        - PCNET32
+        - VMXNET
+        - VMXNET2
+        - VMXNET3
+        description:
+        - The C(emulation_type) defines the valid emulation types for a virtual Ethernet
+            adapter.
+        type: str
+    upt_compatibility_enabled:
+        description:
+        - Flag indicating whether Universal Pass-Through (UPT) compatibility should
+            be enabled on this virtual Ethernet adapter. This field may be modified
+            at any time, and changes will be applied the next time the virtual machine
+            is powered on.
+        type: bool
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
+    wake_on_lan_enabled:
+        description:
+        - Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet
+            adapter. This field may be modified at any time, and changes will be applied
+            the next time the virtual machine is powered on.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -173,7 +174,7 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Get the dvswitch called my portgroup
+- name: Get the dvswitch called my-portgroup
   vmware.vmware_rest.vcenter_network_info:
     filter_types: DISTRIBUTED_PORTGROUP
     filter_names: my portrgoup
@@ -212,8 +213,8 @@ EXAMPLES = r"""
     pci_slot_number: 4
     backing:
       type: STANDARD_PORTGROUP
-      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
-        \ }}"
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
 
 - name: Attach the VM to a standard portgroup (again)
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -221,8 +222,8 @@ EXAMPLES = r"""
     pci_slot_number: 4
     backing:
       type: STANDARD_PORTGROUP
-      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
-        \ }}"
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
 
 - name: Collect a list of the NIC for a given VM
   vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
@@ -235,8 +236,8 @@ EXAMPLES = r"""
     nic: '{{ vm_nic.value[0].nic }}'
     backing:
       type: STANDARD_PORTGROUP
-      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network')\
-        \ }}"
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
+  register: _result
 
 - name: Attach to another standard portgroup
   vmware.vmware_rest.vcenter_vm_hardware_ethernet:
@@ -244,8 +245,8 @@ EXAMPLES = r"""
     nic: '{{ vm_nic.value[0].nic }}'
     backing:
       type: STANDARD_PORTGROUP
-      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch')\
-        \ }}"
+      network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/second_vswitch') }}"
+  register: _result
 """
 
 RETURN = r"""
@@ -280,6 +281,19 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -297,19 +311,6 @@ PAYLOAD_FORMAT = {
     },
     "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
     "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 

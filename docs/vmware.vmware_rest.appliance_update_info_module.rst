@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_update_info
 **Gets the current status of the appliance update.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

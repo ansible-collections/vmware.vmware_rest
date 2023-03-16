@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_identity_info
 **Return information about the guest.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -195,6 +195,7 @@ Examples
     - name: Get guest identity information
       vmware.vmware_rest.vcenter_vm_guest_identity_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

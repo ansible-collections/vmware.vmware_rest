@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_storage_policies_info
 **Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter**
 
 
-Version added: 2.3.0
+Version added: 0.3.0
 
 .. contents::
    :local:

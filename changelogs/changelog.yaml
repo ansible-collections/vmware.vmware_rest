@@ -637,3 +637,17 @@ releases:
       name: vcenter_vm_tools_installer_info
       namespace: ''
     release_date: '2022-11-23'
+  2.3.1:
+    changes:
+      bugfixes:
+      - 'Allow filters with the space (See: https://github.com/ansible-collections/vmware.vmware_rest/issues/362).'
+      - 'Handle spaces and special characters in resource names for lookup plugins
+        (See: https://github.com/ansible-collections/vmware.vmware_rest/issues/356).'
+      minor_changes:
+      - set version in galaxy.yml to allow install from git repo
+    fragments:
+    - allow_space_in_search_filters.yaml
+    - lookup-handle-special-chars.yml
+    - set_default_galaxy_version.yaml
+    - release_summary.yml
+    release_date: '2023-03-14'

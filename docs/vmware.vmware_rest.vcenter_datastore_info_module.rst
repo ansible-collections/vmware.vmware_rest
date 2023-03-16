@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_datastore_info
 **Retrieves information about the datastore indicated by {@param.name datastore}.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:

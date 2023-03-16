@@ -13,98 +13,98 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_resourcepool_info
 short_description: Retrieves information about the resource pool indicated by {@param.name
-  resourcePool}.
+    resourcePool}.
 description: Retrieves information about the resource pool indicated by {@param.name
-  resourcePool}.
+    resourcePool}.
 options:
-  clusters:
-    description:
-    - Clusters that must contain the resource pool for the resource pool to match
-      the filter.
-    elements: str
-    type: list
-  datacenters:
-    aliases:
-    - filter_datacenters
-    description:
-    - Datacenters that must contain the resource pool for the resource pool to match
-      the filter.
-    elements: str
-    type: list
-  hosts:
-    description:
-    - Hosts that must contain the resource pool for the resource pool to match the
-      filter.
-    elements: str
-    type: list
-  names:
-    aliases:
-    - filter_names
-    description:
-    - Names that resource pools must have to match the filter (see {@link Info#name}).
-    elements: str
-    type: list
-  parent_resource_pools:
-    description:
-    - Resource pools that must contain the resource pool for the resource pool to
-      match the filter.
-    elements: str
-    type: list
-  resource_pool:
-    description:
-    - Identifier of the resource pool for which information should be retrieved. Required
-      with I(state=['get'])
-    type: str
-  resource_pools:
-    description:
-    - Identifiers of resource pools that can match the filter.
-    elements: str
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    clusters:
+        description:
+        - Clusters that must contain the resource pool for the resource pool to match
+            the filter.
+        elements: str
+        type: list
+    datacenters:
+        aliases:
+        - filter_datacenters
+        description:
+        - Datacenters that must contain the resource pool for the resource pool to
+            match the filter.
+        elements: str
+        type: list
+    hosts:
+        description:
+        - Hosts that must contain the resource pool for the resource pool to match
+            the filter.
+        elements: str
+        type: list
+    names:
+        aliases:
+        - filter_names
+        description:
+        - Names that resource pools must have to match the filter (see {@link Info#name}).
+        elements: str
+        type: list
+    parent_resource_pools:
+        description:
+        - Resource pools that must contain the resource pool for the resource pool
+            to match the filter.
+        elements: str
+        type: list
+    resource_pool:
+        description:
+        - Identifier of the resource pool for which information should be retrieved.
+            Required with I(state=['get'])
+        type: str
+    resource_pools:
+        description:
+        - Identifiers of resource pools that can match the filter.
+        elements: str
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.3.0

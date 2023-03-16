@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_cpu
 **Updates the CPU-related settings of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -282,6 +282,7 @@ Examples
       vmware.vmware_rest.vcenter_vm_hardware_cpu:
         vm: '{{ test_vm1_info.id }}'
         count: 1
+      register: _result
 
 
 

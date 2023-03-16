@@ -15,135 +15,137 @@ module: vcenter_resourcepool
 short_description: Creates a resource pool.
 description: Creates a resource pool.
 options:
-  cpu_allocation:
-    description:
-    - Resource allocation for CPU.
-    - 'Valid attributes are:'
-    - ' - C(reservation) (int): Amount of resource that is guaranteed available to
-      a resource pool. Reserved resources are not wasted if they are not used. If
-      the utilization is less than the reservation, the resources can be utilized
-      by other running virtual machines. Units are MB fo memory, and MHz for CPU.
-      ([''present''])'
-    - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
-      reservation, the reservation can grow beyond the specified value, if the parent
-      resource pool has unreserved resources. A non-expandable reservation is called
-      a fixed reservation. ([''present''])'
-    - ' - C(limit) (int): The utilization of a resource pool will not exceed this
-      limit, even if there are available resources. This is typically used to ensure
-      a consistent performance of resource pools independent of available resources.
-      If set to -1, then there is no fixed limit on resource usage (only bounded by
-      available resources and shares). Units are MB for memory, and MHz for CPU. ([''present''])'
-    - ' - C(shares) (dict): Shares are used in case of resource contention. ([''present''])'
-    - '   - Accepted keys:'
-    - '     - level (string): The C(level) defines the possible values for the allocation
-      level.'
-    - 'Accepted value for this field:'
-    - '       - C(CUSTOM)'
-    - '       - C(HIGH)'
-    - '       - C(LOW)'
-    - '       - C(NORMAL)'
-    - '     - shares (integer): When {@link #level} is set to CUSTOM, it is the number
-      of shares allocated. Otherwise, this value is ignored. There is no unit for
-      this value. It is a relative measure based on the settings for other resource
-      pools.'
-    type: dict
-  memory_allocation:
-    description:
-    - Resource allocation for CPU.
-    - 'Valid attributes are:'
-    - ' - C(reservation) (int): Amount of resource that is guaranteed available to
-      a resource pool. Reserved resources are not wasted if they are not used. If
-      the utilization is less than the reservation, the resources can be utilized
-      by other running virtual machines. Units are MB fo memory, and MHz for CPU.
-      ([''present''])'
-    - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
-      reservation, the reservation can grow beyond the specified value, if the parent
-      resource pool has unreserved resources. A non-expandable reservation is called
-      a fixed reservation. ([''present''])'
-    - ' - C(limit) (int): The utilization of a resource pool will not exceed this
-      limit, even if there are available resources. This is typically used to ensure
-      a consistent performance of resource pools independent of available resources.
-      If set to -1, then there is no fixed limit on resource usage (only bounded by
-      available resources and shares). Units are MB for memory, and MHz for CPU. ([''present''])'
-    - ' - C(shares) (dict): Shares are used in case of resource contention. ([''present''])'
-    - '   - Accepted keys:'
-    - '     - level (string): The C(level) defines the possible values for the allocation
-      level.'
-    - 'Accepted value for this field:'
-    - '       - C(CUSTOM)'
-    - '       - C(HIGH)'
-    - '       - C(LOW)'
-    - '       - C(NORMAL)'
-    - '     - shares (integer): When {@link #level} is set to CUSTOM, it is the number
-      of shares allocated. Otherwise, this value is ignored. There is no unit for
-      this value. It is a relative measure based on the settings for other resource
-      pools.'
-    type: dict
-  name:
-    description:
-    - Name of the resource pool. Required with I(state=['present'])
-    type: str
-  parent:
-    description:
-    - Parent of the created resource pool. Required with I(state=['present'])
-    type: str
-  resource_pool:
-    description:
-    - Identifier of the resource pool to be deleted. Required with I(state=['absent',
-      'present'])
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - present
-    default: present
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    cpu_allocation:
+        description:
+        - Resource allocation for CPU.
+        - 'Valid attributes are:'
+        - ' - C(reservation) (int): Amount of resource that is guaranteed available
+            to a resource pool. Reserved resources are not wasted if they are not
+            used. If the utilization is less than the reservation, the resources can
+            be utilized by other running virtual machines. Units are MB fo memory,
+            and MHz for CPU. ([''present''])'
+        - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
+            reservation, the reservation can grow beyond the specified value, if the
+            parent resource pool has unreserved resources. A non-expandable reservation
+            is called a fixed reservation. ([''present''])'
+        - ' - C(limit) (int): The utilization of a resource pool will not exceed this
+            limit, even if there are available resources. This is typically used to
+            ensure a consistent performance of resource pools independent of available
+            resources. If set to -1, then there is no fixed limit on resource usage
+            (only bounded by available resources and shares). Units are MB for memory,
+            and MHz for CPU. ([''present''])'
+        - ' - C(shares) (dict): Shares are used in case of resource contention. ([''present''])'
+        - '   - Accepted keys:'
+        - '     - level (string): The C(level) defines the possible values for the
+            allocation level.'
+        - 'Accepted value for this field:'
+        - '       - C(CUSTOM)'
+        - '       - C(HIGH)'
+        - '       - C(LOW)'
+        - '       - C(NORMAL)'
+        - '     - shares (integer): When {@link #level} is set to CUSTOM, it is the
+            number of shares allocated. Otherwise, this value is ignored. There is
+            no unit for this value. It is a relative measure based on the settings
+            for other resource pools.'
+        type: dict
+    memory_allocation:
+        description:
+        - Resource allocation for CPU.
+        - 'Valid attributes are:'
+        - ' - C(reservation) (int): Amount of resource that is guaranteed available
+            to a resource pool. Reserved resources are not wasted if they are not
+            used. If the utilization is less than the reservation, the resources can
+            be utilized by other running virtual machines. Units are MB fo memory,
+            and MHz for CPU. ([''present''])'
+        - ' - C(expandable_reservation) (bool): In a resource pool with an expandable
+            reservation, the reservation can grow beyond the specified value, if the
+            parent resource pool has unreserved resources. A non-expandable reservation
+            is called a fixed reservation. ([''present''])'
+        - ' - C(limit) (int): The utilization of a resource pool will not exceed this
+            limit, even if there are available resources. This is typically used to
+            ensure a consistent performance of resource pools independent of available
+            resources. If set to -1, then there is no fixed limit on resource usage
+            (only bounded by available resources and shares). Units are MB for memory,
+            and MHz for CPU. ([''present''])'
+        - ' - C(shares) (dict): Shares are used in case of resource contention. ([''present''])'
+        - '   - Accepted keys:'
+        - '     - level (string): The C(level) defines the possible values for the
+            allocation level.'
+        - 'Accepted value for this field:'
+        - '       - C(CUSTOM)'
+        - '       - C(HIGH)'
+        - '       - C(LOW)'
+        - '       - C(NORMAL)'
+        - '     - shares (integer): When {@link #level} is set to CUSTOM, it is the
+            number of shares allocated. Otherwise, this value is ignored. There is
+            no unit for this value. It is a relative measure based on the settings
+            for other resource pools.'
+        type: dict
+    name:
+        description:
+        - Name of the resource pool. Required with I(state=['present'])
+        type: str
+    parent:
+        description:
+        - Parent of the created resource pool. Required with I(state=['present'])
+        type: str
+    resource_pool:
+        description:
+        - Identifier of the resource pool to be deleted. Required with I(state=['absent',
+            'present'])
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - absent
+        - present
+        default: present
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.3.0
@@ -237,6 +239,15 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
+    "update": {
+        "query": {},
+        "body": {
+            "cpu_allocation": "cpu_allocation",
+            "memory_allocation": "memory_allocation",
+            "name": "name",
+        },
+        "path": {"resource_pool": "resource_pool"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -246,15 +257,6 @@ PAYLOAD_FORMAT = {
             "parent": "parent",
         },
         "path": {},
-    },
-    "update": {
-        "query": {},
-        "body": {
-            "cpu_allocation": "cpu_allocation",
-            "memory_allocation": "memory_allocation",
-            "name": "name",
-        },
-        "path": {"resource_pool": "resource_pool"},
     },
 }  # pylint: disable=line-too-long
 

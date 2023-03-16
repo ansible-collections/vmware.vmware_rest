@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_memory
 **Updates the memory-related settings of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -248,6 +248,7 @@ Examples
       vmware.vmware_rest.vcenter_vm_hardware_memory:
         vm: '{{ test_vm1_info.id }}'
         size_MiB: 1080
+      register: _result
 
 
 

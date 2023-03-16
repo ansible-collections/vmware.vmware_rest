@@ -13,88 +13,88 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_network_info
 short_description: Returns information about at most 1000 visible (subject to permission
-  checks) networks in vCenter matching the {@link FilterSpec}.
+    checks) networks in vCenter matching the {@link FilterSpec}.
 description: Returns information about at most 1000 visible (subject to permission
-  checks) networks in vCenter matching the {@link FilterSpec}.
+    checks) networks in vCenter matching the {@link FilterSpec}.
 options:
-  datacenters:
-    aliases:
-    - filter_datacenters
-    description:
-    - Datacenters that must contain the network for the network to match the filter.
-    elements: str
-    type: list
-  folders:
-    aliases:
-    - filter_folders
-    description:
-    - Folders that must contain the network for the network to match the filter.
-    elements: str
-    type: list
-  names:
-    aliases:
-    - filter_names
-    description:
-    - Names that networks must have to match the filter (see {@link Summary#name}).
-    elements: str
-    type: list
-  networks:
-    description:
-    - Identifiers of networks that can match the filter.
-    elements: str
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  types:
-    aliases:
-    - filter_types
-    description:
-    - Types that networks must have to match the filter (see {@link Summary#type}).
-    elements: str
-    type: list
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    datacenters:
+        aliases:
+        - filter_datacenters
+        description:
+        - Datacenters that must contain the network for the network to match the filter.
+        elements: str
+        type: list
+    folders:
+        aliases:
+        - filter_folders
+        description:
+        - Folders that must contain the network for the network to match the filter.
+        elements: str
+        type: list
+    names:
+        aliases:
+        - filter_names
+        description:
+        - Names that networks must have to match the filter (see {@link Summary#name}).
+        elements: str
+        type: list
+    networks:
+        description:
+        - Identifiers of networks that can match the filter.
+        elements: str
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    types:
+        aliases:
+        - filter_types
+        description:
+        - Types that networks must have to match the filter (see {@link Summary#type}).
+        elements: str
+        type: list
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -107,25 +107,11 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Get the dvswitch called my portgroup
-  vmware.vmware_rest.vcenter_network_info:
-    filter_types: DISTRIBUTED_PORTGROUP
-  register: my_portgroup
-
-- name: Get the dvswitch called my portgroup
+- name: Get the dvswitch called my-portgroup
   vmware.vmware_rest.vcenter_network_info:
     filter_types: DISTRIBUTED_PORTGROUP
     filter_names: my portrgoup
   register: my_portgroup
-
-- name: Get a list of the networks
-  vmware.vmware_rest.vcenter_network_info:
-  register: my_network_value
-
-- name: Get a list of the networks with a filter
-  vmware.vmware_rest.vcenter_network_info:
-    filter_types: STANDARD_PORTGROUP
-  register: my_standard_portgroup_value
 """
 
 RETURN = r"""

@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info
 **Returns information about a virtual SCSI adapter.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -226,6 +226,7 @@ Examples
     - name: List the SCSI adapter of a given VM
       vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

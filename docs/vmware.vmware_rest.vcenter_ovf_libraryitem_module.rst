@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_ovf_libraryitem
 **Creates a library item in content library from a virtual machine or virtual appliance**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -312,13 +312,10 @@ Examples
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         name: test_vm1
         guest_OS: RHEL_7_64
         hardware_version: VMX_11
@@ -355,14 +352,17 @@ Examples
         state: present
       register: ovf_item
 
+    - name: Get the list of items of the NFS library
+      vmware.vmware_rest.content_library_item_info:
+        library_id: '{{ nfs_lib.id }}'
+      register: lib_items
+
     - name: Create a new VM from the OVF
       vmware.vmware_rest.vcenter_ovf_libraryitem:
-        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id
-          }}'
+        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
         state: deploy
         target:
-          resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         deployment_spec:
           name: my_vm_from_ovf
           accept_all_EULA: true
@@ -370,15 +370,12 @@ Examples
 
     - name: Create a new VM from the OVF and specify the host and folder
       vmware.vmware_rest.vcenter_ovf_libraryitem:
-        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id
-          }}'
+        ovf_library_item_id: '{{ (lib_items.value|selectattr("name", "equalto", "golden_image")|first).id }}'
         state: deploy
         target:
-          resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
           folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          host_id: "{{ lookup('vmware.vmware_rest.host_moid', '/my_dc/host/my_cluster/esxi1.test/test_vm1')\
-            \ }}"
+          host_id: "{{ lookup('vmware.vmware_rest.host_moid', '/my_dc/host/my_cluster/esxi1.test/test_vm1') }}"
         deployment_spec:
           name: my_vm_from_ovf_on_a_host
           accept_all_EULA: true

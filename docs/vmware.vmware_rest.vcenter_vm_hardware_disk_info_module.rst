@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_disk_info
 **Returns information about a virtual disk.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -226,11 +226,13 @@ Examples
     - name: Retrieve the disk information from the VM
       vmware.vmware_rest.vcenter_vm_hardware_disk_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
     - name: Retrieve disk information using the label
       vmware.vmware_rest.vcenter_vm_hardware_disk_info:
         vm: '{{ test_vm1_info.id }}'
         label: Hard disk 1
+      register: _result
 
 
 

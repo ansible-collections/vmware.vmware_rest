@@ -15,89 +15,89 @@ module: appliance_monitoring_query
 short_description: Get monitoring data.
 description: Get monitoring data.
 options:
-  end_time:
-    description:
-    - End time in UTC This parameter is mandatory.
-    required: true
-    type: str
-  function:
-    choices:
-    - AVG
-    - COUNT
-    - MAX
-    - MIN
-    description:
-    - C(function_type) Defines aggregation function This parameter is mandatory.
-    required: true
-    type: str
-  interval:
-    choices:
-    - DAY1
-    - HOURS2
-    - HOURS6
-    - MINUTES30
-    - MINUTES5
-    description:
-    - C(interval_type) Defines interval between the values in hours and mins,                    for
-      which aggregation will apply This parameter is mandatory.
-    required: true
-    type: str
-  names:
-    description:
-    - 'monitored item IDs Ex: CPU, MEMORY This parameter is mandatory.'
-    elements: str
-    required: true
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  start_time:
-    description:
-    - Start time in UTC This parameter is mandatory.
-    required: true
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    end_time:
+        description:
+        - End time in UTC This parameter is mandatory.
+        required: true
+        type: str
+    function:
+        choices:
+        - AVG
+        - COUNT
+        - MAX
+        - MIN
+        description:
+        - C(function_type) Defines aggregation function This parameter is mandatory.
+        required: true
+        type: str
+    interval:
+        choices:
+        - DAY1
+        - HOURS2
+        - HOURS6
+        - MINUTES30
+        - MINUTES5
+        description:
+        - C(interval_type) Defines interval between the values in hours and mins,                    for
+            which aggregation will apply This parameter is mandatory.
+        required: true
+        type: str
+    names:
+        description:
+        - 'monitored item IDs Ex: CPU, MEMORY This parameter is mandatory.'
+        elements: str
+        required: true
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    start_time:
+        description:
+        - Start time in UTC This parameter is mandatory.
+        required: true
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0
@@ -112,8 +112,8 @@ notes:
 EXAMPLES = r"""
 - name: Query the monitoring backend
   vmware.vmware_rest.appliance_monitoring_query:
-    end_time: 2021-04-14T09:34:56Z
-    start_time: 2021-04-14T08:34:56Z
+    end_time: 2021-04-14 09:34:56+00:00
+    start_time: 2021-04-14 08:34:56+00:00
     names:
     - mem.total
     interval: MINUTES5

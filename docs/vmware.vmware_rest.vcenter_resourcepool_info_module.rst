@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_resourcepool_info
 **Retrieves information about the resource pool indicated by {@param.name resourcePool}.**
 
 
-Version added: 2.3.0
+Version added: 0.3.0
 
 .. contents::
    :local:

@@ -15,99 +15,99 @@ module: vcenter_vm_hardware_floppy
 short_description: Adds a virtual floppy drive to the virtual machine.
 description: Adds a virtual floppy drive to the virtual machine.
 options:
-  allow_guest_control:
-    description:
-    - Flag indicating whether the guest can connect and disconnect the device.
-    type: bool
-  backing:
-    description:
-    - Physical resource backing for the virtual floppy drive. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
-      virtual floppy drive. ([''present''])'
-    - '   This key is required with [''present''].'
-    - '   - Accepted values:'
-    - '     - CLIENT_DEVICE'
-    - '     - HOST_DEVICE'
-    - '     - IMAGE_FILE'
-    - ' - C(image_file) (str): Path of the image file that should be used as the virtual
-      floppy drive backing. ([''present''])'
-    - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      floppy drive backing. ([''present''])'
-    type: dict
-  floppy:
-    description:
-    - Virtual floppy drive identifier. Required with I(state=['absent', 'connect',
-      'disconnect', 'present'])
-    type: str
-  label:
-    description:
-    - The name of the item
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  start_connected:
-    description:
-    - Flag indicating whether the virtual device should be connected whenever the
-      virtual machine is powered on.
-    type: bool
-  state:
-    choices:
-    - absent
-    - connect
-    - disconnect
-    - present
-    default: present
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    allow_guest_control:
+        description:
+        - Flag indicating whether the guest can connect and disconnect the device.
+        type: bool
+    backing:
+        description:
+        - Physical resource backing for the virtual floppy drive. Required with I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(type) (str): The C(backing_type) defines the valid backing types for
+            a virtual floppy drive. ([''present''])'
+        - '   This key is required with [''present''].'
+        - '   - Accepted values:'
+        - '     - CLIENT_DEVICE'
+        - '     - HOST_DEVICE'
+        - '     - IMAGE_FILE'
+        - ' - C(image_file) (str): Path of the image file that should be used as the
+            virtual floppy drive backing. ([''present''])'
+        - ' - C(host_device) (str): Name of the device that should be used as the
+            virtual floppy drive backing. ([''present''])'
+        type: dict
+    floppy:
+        description:
+        - Virtual floppy drive identifier. Required with I(state=['absent', 'connect',
+            'disconnect', 'present'])
+        type: str
+    label:
+        description:
+        - The name of the item
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    start_connected:
+        description:
+        - Flag indicating whether the virtual device should be connected whenever
+            the virtual machine is powered on.
+        type: bool
+    state:
+        choices:
+        - absent
+        - connect
+        - disconnect
+        - present
+        default: present
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -142,6 +142,7 @@ EXAMPLES = r"""
     vm: '{{ test_vm1_info.id }}'
     floppy: '{{ my_floppy_drive.id }}'
     state: absent
+  register: _result
 """
 
 RETURN = r"""
@@ -168,6 +169,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"floppy": "floppy", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -179,15 +189,6 @@ PAYLOAD_FORMAT = {
     },
     "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"floppy": "floppy", "vm": "vm"},
-    },
     "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 

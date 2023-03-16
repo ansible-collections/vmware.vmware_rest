@@ -14,137 +14,140 @@ DOCUMENTATION = r"""
 module: vcenter_vm_hardware_disk
 short_description: Adds a virtual disk to the virtual machine
 description: Adds a virtual disk to the virtual machine.  While adding the virtual
-  disk, a new VMDK file may be created or an existing VMDK file may be used to back
-  the virtual disk.
+    disk, a new VMDK file may be created or an existing VMDK file may be used to back
+    the virtual disk.
 options:
-  backing:
-    description:
-    - Existing physical resource backing for the virtual disk. Exactly one of C(#backing)
-      or C(#new_vmdk) must be specified. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
-      virtual disk. ([''present''])'
-    - '   This key is required with [''present''].'
-    - '   - Accepted values:'
-    - '     - VMDK_FILE'
-    - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk. ([''present''])'
-    type: dict
-  disk:
-    description:
-    - Virtual disk identifier. Required with I(state=['absent', 'present'])
-    type: str
-  ide:
-    description:
-    - Address for attaching the device to a virtual IDE adapter.
-    - 'Valid attributes are:'
-    - ' - C(primary) (bool): Flag specifying whether the device should be attached
-      to the primary or secondary IDE adapter of the virtual machine. ([''present''])'
-    - ' - C(master) (bool): Flag specifying whether the device should be the master
-      or slave device on the IDE adapter. ([''present''])'
-    type: dict
-  label:
-    description:
-    - The name of the item
-    type: str
-  new_vmdk:
-    description:
-    - Specification for creating a new VMDK backing for the virtual disk.  Exactly
-      one of C(#backing) or C(#new_vmdk) must be specified.
-    - 'Valid attributes are:'
-    - ' - C(name) (str): Base name of the VMDK file.  The name should not include
-      the ''.vmdk'' file extension. ([''present''])'
-    - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes. ([''present''])'
-    - ' - C(storage_policy) (dict): The C(storage_policy_spec) {@term structure} contains
-      information about the storage policy that is to be associated the with VMDK
-      file. ([''present''])'
-    - '   - Accepted keys:'
-    - '     - policy (string): Identifier of the storage policy which should be associated
-      with the VMDK file.'
-    type: dict
-  sata:
-    description:
-    - Address for attaching the device to a virtual SATA adapter. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
-      ([''present''])'
-    - '   This key is required with [''present''].'
-    - ' - C(unit) (int): Unit number of the device. ([''present''])'
-    type: dict
-  scsi:
-    description:
-    - Address for attaching the device to a virtual SCSI adapter. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
-      ([''present''])'
-    - '   This key is required with [''present''].'
-    - ' - C(unit) (int): Unit number of the device. ([''present''])'
-    type: dict
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - present
-    default: present
-    description: []
-    type: str
-  type:
-    choices:
-    - IDE
-    - SATA
-    - SCSI
-    description:
-    - The C(host_bus_adapter_type) defines the valid types of host bus adapters that
-      may be used for attaching a virtual storage device to a virtual machine.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    backing:
+        description:
+        - Existing physical resource backing for the virtual disk. Exactly one of
+            C(#backing) or C(#new_vmdk) must be specified. Required with I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(type) (str): The C(backing_type) defines the valid backing types for
+            a virtual disk. ([''present''])'
+        - '   This key is required with [''present''].'
+        - '   - Accepted values:'
+        - '     - VMDK_FILE'
+        - ' - C(vmdk_file) (str): Path of the VMDK file backing the virtual disk.
+            ([''present''])'
+        type: dict
+    disk:
+        description:
+        - Virtual disk identifier. Required with I(state=['absent', 'present'])
+        type: str
+    ide:
+        description:
+        - Address for attaching the device to a virtual IDE adapter.
+        - 'Valid attributes are:'
+        - ' - C(primary) (bool): Flag specifying whether the device should be attached
+            to the primary or secondary IDE adapter of the virtual machine. ([''present''])'
+        - ' - C(master) (bool): Flag specifying whether the device should be the master
+            or slave device on the IDE adapter. ([''present''])'
+        type: dict
+    label:
+        description:
+        - The name of the item
+        type: str
+    new_vmdk:
+        description:
+        - Specification for creating a new VMDK backing for the virtual disk.  Exactly
+            one of C(#backing) or C(#new_vmdk) must be specified.
+        - 'Valid attributes are:'
+        - ' - C(name) (str): Base name of the VMDK file.  The name should not include
+            the ''.vmdk'' file extension. ([''present''])'
+        - ' - C(capacity) (int): Capacity of the virtual disk backing in bytes. ([''present''])'
+        - ' - C(storage_policy) (dict): The C(storage_policy_spec) {@term structure}
+            contains information about the storage policy that is to be associated
+            the with VMDK file. ([''present''])'
+        - '   - Accepted keys:'
+        - '     - policy (string): Identifier of the storage policy which should be
+            associated with the VMDK file.'
+        type: dict
+    sata:
+        description:
+        - Address for attaching the device to a virtual SATA adapter. Required with
+            I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(bus) (int): Bus number of the adapter to which the device should be
+            attached. ([''present''])'
+        - '   This key is required with [''present''].'
+        - ' - C(unit) (int): Unit number of the device. ([''present''])'
+        type: dict
+    scsi:
+        description:
+        - Address for attaching the device to a virtual SCSI adapter. Required with
+            I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(bus) (int): Bus number of the adapter to which the device should be
+            attached. ([''present''])'
+        - '   This key is required with [''present''].'
+        - ' - C(unit) (int): Unit number of the device. ([''present''])'
+        type: dict
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - absent
+        - present
+        default: present
+        description: []
+        type: str
+    type:
+        choices:
+        - IDE
+        - SATA
+        - SCSI
+        description:
+        - The C(host_bus_adapter_type) defines the valid types of host bus adapters
+            that may be used for attaching a virtual storage device to a virtual machine.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -181,6 +184,7 @@ EXAMPLES = r"""
     vm: '{{ test_vm1_info.id }}'
     disk: '{{ my_new_disk.id }}'
     state: absent
+  register: _result
 """
 
 RETURN = r"""
@@ -209,6 +213,11 @@ value:
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {"backing": "backing"},
+        "path": {"disk": "disk", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -220,11 +229,6 @@ PAYLOAD_FORMAT = {
             "type": "type",
         },
         "path": {"vm": "vm"},
-    },
-    "update": {
-        "query": {},
-        "body": {"backing": "backing"},
-        "path": {"disk": "disk", "vm": "vm"},
     },
 }  # pylint: disable=line-too-long
 

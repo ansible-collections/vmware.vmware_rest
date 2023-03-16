@@ -13,85 +13,85 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 module: vcenter_cluster_info
 short_description: Retrieves information about the cluster corresponding to {@param.name
-  cluster}.
+    cluster}.
 description: Retrieves information about the cluster corresponding to {@param.name
-  cluster}.
+    cluster}.
 options:
-  cluster:
-    description:
-    - Identifier of the cluster. Required with I(state=['get'])
-    type: str
-  clusters:
-    description:
-    - Identifiers of clusters that can match the filter.
-    elements: str
-    type: list
-  datacenters:
-    aliases:
-    - filter_datacenters
-    description:
-    - Datacenters that must contain the cluster for the cluster to match the filter.
-    elements: str
-    type: list
-  folders:
-    aliases:
-    - filter_folders
-    description:
-    - Folders that must contain the cluster for the cluster to match the filter.
-    elements: str
-    type: list
-  names:
-    aliases:
-    - filter_names
-    description:
-    - Names that clusters must have to match the filter (see {@link Info#name}).
-    elements: str
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    cluster:
+        description:
+        - Identifier of the cluster. Required with I(state=['get'])
+        type: str
+    clusters:
+        description:
+        - Identifiers of clusters that can match the filter.
+        elements: str
+        type: list
+    datacenters:
+        aliases:
+        - filter_datacenters
+        description:
+        - Datacenters that must contain the cluster for the cluster to match the filter.
+        elements: str
+        type: list
+    folders:
+        aliases:
+        - filter_folders
+        description:
+        - Folders that must contain the cluster for the cluster to match the filter.
+        elements: str
+        type: list
+    names:
+        aliases:
+        - filter_names
+        description:
+        - Names that clusters must have to match the filter (see {@link Info#name}).
+        elements: str
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -112,12 +112,6 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_cluster_info:
     cluster: '{{ all_the_clusters.value[0].cluster }}'
   register: my_cluster_info
-
-- name: get all the clusters called my_cluster
-  vmware.vmware_rest.vcenter_cluster_info:
-    filter_names:
-    - my_cluster
-  register: my_cluster
 """
 
 RETURN = r"""

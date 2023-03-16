@@ -8,7 +8,7 @@ vmware.vmware_rest.content_subscribedlibrary_info
 **Returns a given subscribed library.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -180,10 +180,6 @@ Examples
 --------
 
 .. code-block:: yaml
-
-    - name: Build a list of subscribed libraries
-      vmware.vmware_rest.content_subscribedlibrary_info:
-      register: result
 
     - name: List Subscribed Content Library
       vmware.vmware_rest.content_subscribedlibrary_info:

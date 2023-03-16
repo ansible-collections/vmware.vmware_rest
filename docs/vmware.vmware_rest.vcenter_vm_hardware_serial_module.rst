@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_serial
 **Adds a virtual serial port to the virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -336,18 +336,21 @@ Examples
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 2
         allow_guest_control: true
+      register: _result
 
     - name: Create another serial port with a label
       vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 2
         allow_guest_control: true
+      register: _result
 
     - name: Create an existing serial port (label)
       vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 1
         allow_guest_control: true
+      register: _result
 
     - name: Get an existing serial port (label)
       vmware.vmware_rest.vcenter_vm_hardware_serial_info:
@@ -360,12 +363,14 @@ Examples
         vm: '{{ test_vm1_info.id }}'
         port: '{{ serial_port_1.id }}'
         state: absent
+      register: _result
 
     - name: Delete an existing serial port (label)
       vmware.vmware_rest.vcenter_vm_hardware_serial:
         vm: '{{ test_vm1_info.id }}'
         label: Serial port 2
         state: absent
+      register: _result
 
 
 

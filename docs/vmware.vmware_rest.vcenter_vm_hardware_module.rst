@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware
 **Updates the virtual hardware settings of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -291,6 +291,7 @@ Examples
         upgrade_policy: AFTER_CLEAN_SHUTDOWN
         upgrade_version: VMX_11
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
+      register: _result
 
 
 

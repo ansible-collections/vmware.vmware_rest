@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_system_time_timezone_info
 **Get time zone.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

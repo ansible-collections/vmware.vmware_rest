@@ -15,85 +15,85 @@ module: vcenter_vm_hardware_adapter_sata
 short_description: Adds a virtual SATA adapter to the virtual machine.
 description: Adds a virtual SATA adapter to the virtual machine.
 options:
-  adapter:
-    description:
-    - Virtual SATA adapter identifier. Required with I(state=['absent'])
-    type: str
-  bus:
-    description:
-    - SATA bus number.
-    type: int
-  label:
-    description:
-    - The name of the item
-    type: str
-  pci_slot_number:
-    description:
-    - Address of the SATA adapter on the PCI bus.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - absent
-    - present
-    default: present
-    description: []
-    type: str
-  type:
-    choices:
-    - AHCI
-    description:
-    - The C(type) defines the valid emulation types for a virtual SATA adapter.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    adapter:
+        description:
+        - Virtual SATA adapter identifier. Required with I(state=['absent'])
+        type: str
+    bus:
+        description:
+        - SATA bus number.
+        type: int
+    label:
+        description:
+        - The name of the item
+        type: str
+    pci_slot_number:
+        description:
+        - Address of the SATA adapter on the PCI bus.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - absent
+        - present
+        default: present
+        description: []
+        type: str
+    type:
+        choices:
+        - AHCI
+        description:
+        - The C(type) defines the valid emulation types for a virtual SATA adapter.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -121,6 +121,7 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
     vm: '{{ test_vm1_info.id }}'
     pci_slot_number: 34
+  register: _sata_adapter_result_1
 
 - name: Remove SATA adapter at PCI slot 34
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
@@ -149,12 +150,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {"bus": "bus", "pci_slot_number": "pci_slot_number", "type": "type"},
         "path": {"vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 import json

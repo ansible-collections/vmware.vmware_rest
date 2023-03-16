@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_power_info
 **Returns the power state information of a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -195,6 +195,7 @@ Examples
     - name: Get guest power information
       vmware.vmware_rest.vcenter_vm_power_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

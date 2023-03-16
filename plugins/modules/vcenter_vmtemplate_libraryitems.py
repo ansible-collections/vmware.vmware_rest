@@ -14,171 +14,174 @@ DOCUMENTATION = r"""
 module: vcenter_vmtemplate_libraryitems
 short_description: Creates a library item in content library from a virtual machine
 description: Creates a library item in content library from a virtual machine. This
-  {@term operation} creates a library item in content library whose content is a virtual
-  machine template created from the source virtual machine, using the supplied create
-  specification. The virtual machine template is stored in a newly created library
-  item.
+    {@term operation} creates a library item in content library whose content is a
+    virtual machine template created from the source virtual machine, using the supplied
+    create specification. The virtual machine template is stored in a newly created
+    library item.
 options:
-  description:
     description:
-    - Description of the deployed virtual machine.
-    type: str
-  disk_storage:
-    description:
-    - Storage specification for the virtual machine template's disks.
-    - 'Valid attributes are:'
-    - ' - C(datastore) (str): Identifier for the datastore associated the deployed
-      virtual machine''s disk. ([''deploy'', ''present''])'
-    - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
-      disk. ([''deploy'', ''present''])'
-    - '   - Accepted keys:'
-    - '     - type (string): Policy type for a virtual machine template''s disk.'
-    - 'Accepted value for this field:'
-    - '       - C(USE_SPECIFIED_POLICY)'
-    - '     - policy (string): Identifier for the storage policy to use.'
-    type: dict
-  disk_storage_overrides:
-    description:
-    - Storage specification for individual disks in the deployed virtual machine.
-      This is specified as a mapping between disk identifiers in the source virtual
-      machine template contained in the library item and their storage specifications.
-    type: dict
-  guest_customization:
-    description:
-    - Guest customization spec to apply to the deployed virtual machine.
-    - 'Valid attributes are:'
-    - ' - C(name) (str): Name of the customization specification. ([''deploy''])'
-    type: dict
-  hardware_customization:
-    description:
-    - Hardware customization spec which specifies updates to the deployed virtual
-      machine.
-    - 'Valid attributes are:'
-    - ' - C(nics) (dict): Map of Ethernet network adapters to update. ([''deploy''])'
-    - ' - C(disks_to_remove) (list): Idenfiers of disks to remove from the deployed
-      virtual machine. ([''deploy''])'
-    - ' - C(disks_to_update) (dict): Disk update specification for individual disks
-      in the deployed virtual machine. ([''deploy''])'
-    - ' - C(cpu_update) (dict): CPU update specification for the deployed virtual
-      machine. ([''deploy''])'
-    - '   - Accepted keys:'
-    - '     - num_cpus (integer): Number of virtual processors in the deployed virtual
-      machine.'
-    - '     - num_cores_per_socket (integer): Number of cores among which to distribute
-      CPUs in the deployed virtual machine.'
-    - ' - C(memory_update) (dict): Memory update specification for the deployed virtual
-      machine. ([''deploy''])'
-    - '   - Accepted keys:'
-    - '     - memory (integer): Size of a virtual machine''s memory in MB.'
-    type: dict
-  library:
-    description:
-    - Identifier of the library in which the new library item should be created. Required
-      with I(state=['present'])
-    type: str
-  name:
-    description:
-    - Name of the deployed virtual machine. This parameter is mandatory.
-    required: true
-    type: str
-  placement:
-    description:
-    - Information used to place the virtual machine template.
-    - 'Valid attributes are:'
-    - ' - C(folder) (str): Virtual machine folder into which the deployed virtual
-      machine should be placed. ([''deploy'', ''present''])'
-    - ' - C(resource_pool) (str): Resource pool into which the deployed virtual machine
-      should be placed. ([''deploy'', ''present''])'
-    - ' - C(host) (str): Host onto which the virtual machine should be placed. If
-      C(#host) and C(#resource_pool) are both specified, C(#resource_pool) must belong
-      to C(#host). If C(#host) and C(#cluster) are both specified, C(#host) must be
-      a member of C(#cluster). ([''deploy'', ''present''])'
-    - ' - C(cluster) (str): Cluster onto which the deployed virtual machine should
-      be placed. If C(#cluster) and C(#resource_pool) are both specified, C(#resource_pool)
-      must belong to C(#cluster). If C(#cluster) and C(#host) are both specified,
-      C(#host) must be a member of C(#cluster). ([''deploy'', ''present''])'
-    type: dict
-  powered_on:
-    description:
-    - Specifies whether the deployed virtual machine should be powered on after deployment.
-    type: bool
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  source_vm:
-    description:
-    - Identifier of the source virtual machine to create the library item from. Required
-      with I(state=['present'])
-    type: str
-  state:
-    choices:
-    - deploy
-    - present
-    default: present
-    description: []
-    type: str
-  template_library_item:
-    description:
-    - identifier of the content library item containing the source virtual machine
-      template to be deployed. Required with I(state=['deploy'])
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm_home_storage:
-    description:
-    - Storage location for the virtual machine template's configuration and log files.
-    - 'Valid attributes are:'
-    - ' - C(datastore) (str): Identifier of the datastore for the deployed virtual
-      machine''s configuration and log files. ([''deploy'', ''present''])'
-    - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
-      configuration and log files. ([''deploy'', ''present''])'
-    - '   - Accepted keys:'
-    - '     - type (string): Policy type for the virtual machine template''s configuration
-      and log files.'
-    - 'Accepted value for this field:'
-    - '       - C(USE_SPECIFIED_POLICY)'
-    - '     - policy (string): Identifier for the storage policy to use.'
-    type: dict
+        description:
+        - Description of the deployed virtual machine.
+        type: str
+    disk_storage:
+        description:
+        - Storage specification for the virtual machine template's disks.
+        - 'Valid attributes are:'
+        - ' - C(datastore) (str): Identifier for the datastore associated the deployed
+            virtual machine''s disk. ([''deploy'', ''present''])'
+        - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
+            disk. ([''deploy'', ''present''])'
+        - '   - Accepted keys:'
+        - '     - type (string): Policy type for a virtual machine template''s disk.'
+        - 'Accepted value for this field:'
+        - '       - C(USE_SPECIFIED_POLICY)'
+        - '     - policy (string): Identifier for the storage policy to use.'
+        type: dict
+    disk_storage_overrides:
+        description:
+        - Storage specification for individual disks in the deployed virtual machine.
+            This is specified as a mapping between disk identifiers in the source
+            virtual machine template contained in the library item and their storage
+            specifications.
+        type: dict
+    guest_customization:
+        description:
+        - Guest customization spec to apply to the deployed virtual machine.
+        - 'Valid attributes are:'
+        - ' - C(name) (str): Name of the customization specification. ([''deploy''])'
+        type: dict
+    hardware_customization:
+        description:
+        - Hardware customization spec which specifies updates to the deployed virtual
+            machine.
+        - 'Valid attributes are:'
+        - ' - C(nics) (dict): Map of Ethernet network adapters to update. ([''deploy''])'
+        - ' - C(disks_to_remove) (list): Idenfiers of disks to remove from the deployed
+            virtual machine. ([''deploy''])'
+        - ' - C(disks_to_update) (dict): Disk update specification for individual
+            disks in the deployed virtual machine. ([''deploy''])'
+        - ' - C(cpu_update) (dict): CPU update specification for the deployed virtual
+            machine. ([''deploy''])'
+        - '   - Accepted keys:'
+        - '     - num_cpus (integer): Number of virtual processors in the deployed
+            virtual machine.'
+        - '     - num_cores_per_socket (integer): Number of cores among which to distribute
+            CPUs in the deployed virtual machine.'
+        - ' - C(memory_update) (dict): Memory update specification for the deployed
+            virtual machine. ([''deploy''])'
+        - '   - Accepted keys:'
+        - '     - memory (integer): Size of a virtual machine''s memory in MB.'
+        type: dict
+    library:
+        description:
+        - Identifier of the library in which the new library item should be created.
+            Required with I(state=['present'])
+        type: str
+    name:
+        description:
+        - Name of the deployed virtual machine. This parameter is mandatory.
+        required: true
+        type: str
+    placement:
+        description:
+        - Information used to place the virtual machine template.
+        - 'Valid attributes are:'
+        - ' - C(folder) (str): Virtual machine folder into which the deployed virtual
+            machine should be placed. ([''deploy'', ''present''])'
+        - ' - C(resource_pool) (str): Resource pool into which the deployed virtual
+            machine should be placed. ([''deploy'', ''present''])'
+        - ' - C(host) (str): Host onto which the virtual machine should be placed.
+            If C(#host) and C(#resource_pool) are both specified, C(#resource_pool)
+            must belong to C(#host). If C(#host) and C(#cluster) are both specified,
+            C(#host) must be a member of C(#cluster). ([''deploy'', ''present''])'
+        - ' - C(cluster) (str): Cluster onto which the deployed virtual machine should
+            be placed. If C(#cluster) and C(#resource_pool) are both specified, C(#resource_pool)
+            must belong to C(#cluster). If C(#cluster) and C(#host) are both specified,
+            C(#host) must be a member of C(#cluster). ([''deploy'', ''present''])'
+        type: dict
+    powered_on:
+        description:
+        - Specifies whether the deployed virtual machine should be powered on after
+            deployment.
+        type: bool
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    source_vm:
+        description:
+        - Identifier of the source virtual machine to create the library item from.
+            Required with I(state=['present'])
+        type: str
+    state:
+        choices:
+        - deploy
+        - present
+        default: present
+        description: []
+        type: str
+    template_library_item:
+        description:
+        - identifier of the content library item containing the source virtual machine
+            template to be deployed. Required with I(state=['deploy'])
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm_home_storage:
+        description:
+        - Storage location for the virtual machine template's configuration and log
+            files.
+        - 'Valid attributes are:'
+        - ' - C(datastore) (str): Identifier of the datastore for the deployed virtual
+            machine''s configuration and log files. ([''deploy'', ''present''])'
+        - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
+            configuration and log files. ([''deploy'', ''present''])'
+        - '   - Accepted keys:'
+        - '     - type (string): Policy type for the virtual machine template''s configuration
+            and log files.'
+        - 'Accepted value for this field:'
+        - '       - C(USE_SPECIFIED_POLICY)'
+        - '     - policy (string): Identifier for the storage policy to use.'
+        type: dict
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.2.0
@@ -194,13 +197,10 @@ EXAMPLES = r"""
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
-      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
     name: test_vm1
     guest_OS: RHEL_7_64
     hardware_version: VMX_11
@@ -224,8 +224,7 @@ EXAMPLES = r"""
     nics:
     - backing:
         type: STANDARD_PORTGROUP
-        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-          \ Network') }}"
+        network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
   register: my_vm
 
 - name: Create a content library based on a DataStore
@@ -236,8 +235,7 @@ EXAMPLES = r"""
       published: true
       authentication_method: NONE
     storage_backings:
-    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-        \ }}"
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
       type: DATASTORE
     state: present
   register: nfs_lib
@@ -248,11 +246,9 @@ EXAMPLES = r"""
     library: '{{ nfs_lib.id }}'
     source_vm: '{{ my_vm.id }}'
     placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
   register: mylib_item
 
 - name: Get the list of items of the NFS library
@@ -262,8 +258,7 @@ EXAMPLES = r"""
 
 - name: Use the name to identify the item
   set_fact:
-    my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first\
-      \ }}"
+    my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first }}"
 
 - name: Deploy a new VM based on the template
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
@@ -271,11 +266,9 @@ EXAMPLES = r"""
     library: '{{ nfs_lib.id }}'
     template_library_item: '{{ my_template_item.id }}'
     placement:
-      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-        \ }}"
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-        \ }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
     state: deploy
   register: my_new_vm
 """

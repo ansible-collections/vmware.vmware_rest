@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_networking_firewall_inbound_info
 **Get the ordered list of firewall rules**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

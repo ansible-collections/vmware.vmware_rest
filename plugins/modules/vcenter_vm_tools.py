@@ -15,75 +15,76 @@ module: vcenter_vm_tools
 short_description: Update the properties of VMware Tools.
 description: Update the properties of VMware Tools.
 options:
-  command_line_options:
-    description:
-    - Command line options passed to the installer to modify the installation procedure
-      for Tools.
-    type: str
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - present
-    - upgrade
-    default: present
-    description: []
-    type: str
-  upgrade_policy:
-    choices:
-    - MANUAL
-    - UPGRADE_AT_POWER_CYCLE
-    description:
-    - The C(upgrade_policy) defines when Tools are auto-upgraded for a virtual machine.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Identifier of the virtual machine. This parameter is mandatory.
-    required: true
-    type: str
+    command_line_options:
+        description:
+        - Command line options passed to the installer to modify the installation
+            procedure for Tools.
+        type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - present
+        - upgrade
+        default: present
+        description: []
+        type: str
+    upgrade_policy:
+        choices:
+        - MANUAL
+        - UPGRADE_AT_POWER_CYCLE
+        description:
+        - The C(upgrade_policy) defines when Tools are auto-upgraded for a virtual
+            machine.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Identifier of the virtual machine. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -110,16 +111,19 @@ EXAMPLES = r"""
 - name: Retrive vm-tools information
   vmware.vmware_rest.vcenter_vm_tools:
     vm: '{{ test_vm1_info.id }}'
+  register: _result
 
 - name: Change vm-tools upgrade policy to UPGRADE_AT_POWER_CYCLE
   vmware.vmware_rest.vcenter_vm_tools:
     vm: '{{ test_vm1_info.id }}'
     upgrade_policy: UPGRADE_AT_POWER_CYCLE
+  register: _result
 
 - name: Change vm-tools upgrade policy to MANUAL
   vmware.vmware_rest.vcenter_vm_tools:
     vm: '{{ test_vm1_info.id }}'
     upgrade_policy: MANUAL
+  register: _result
 """
 
 RETURN = r"""

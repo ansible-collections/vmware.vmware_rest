@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_parallel_info
 **Returns information about a virtual parallel port.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -226,6 +226,7 @@ Examples
     - name: Retrieve the parallel port information from the VM
       vmware.vmware_rest.vcenter_vm_hardware_parallel_info:
         vm: '{{ test_vm1_info.id }}'
+      register: _result
 
 
 

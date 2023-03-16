@@ -14,69 +14,69 @@ DOCUMENTATION = r"""
 module: appliance_ntp
 short_description: Set NTP servers
 description: Set NTP servers. This method updates old NTP servers from configuration
-  and sets the input NTP servers in the configuration. If NTP based time synchronization
-  is used internally, the NTP daemon will be restarted to reload given NTP configuration.
-  In case NTP based time synchronization is not used, this method only replaces servers
-  in the NTP configuration.
+    and sets the input NTP servers in the configuration. If NTP based time synchronization
+    is used internally, the NTP daemon will be restarted to reload given NTP configuration.
+    In case NTP based time synchronization is not used, this method only replaces
+    servers in the NTP configuration.
 options:
-  servers:
-    description:
-    - List of host names or ip addresses of ntp servers. This parameter is mandatory.
-    elements: str
-    required: true
-    type: list
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - set
-    - test
-    default: set
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    servers:
+        description:
+        - List of host names or ip addresses of ntp servers. This parameter is mandatory.
+        elements: str
+        required: true
+        type: list
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - set
+        - test
+        default: set
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0
@@ -99,22 +99,6 @@ EXAMPLES = r"""
     state: test
     servers:
     - time.google.com
-  register: result
-
-- name: Adjust the NTP configuration
-  vmware.vmware_rest.appliance_ntp:
-    vcenter_hostname: '{{ vcsa_host }}'
-    servers:
-    - time.google.com
-  delegate_to: localhost
-
-- name: Test the NTP configuration
-  vmware.vmware_rest.appliance_ntp:
-    vcenter_hostname: '{{ vcsa_host }}'
-    state: test
-    servers:
-    - time.google.com
-  delegate_to: localhost
   register: result
 """
 

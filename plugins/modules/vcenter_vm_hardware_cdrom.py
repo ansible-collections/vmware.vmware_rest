@@ -15,132 +15,133 @@ module: vcenter_vm_hardware_cdrom
 short_description: Adds a virtual CD-ROM device to the virtual machine.
 description: Adds a virtual CD-ROM device to the virtual machine.
 options:
-  allow_guest_control:
-    description:
-    - Flag indicating whether the guest can connect and disconnect the device.
-    type: bool
-  backing:
-    description:
-    - Physical resource backing for the virtual CD-ROM device. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(type) (str): The C(backing_type) defines the valid backing types for a
-      virtual CD-ROM device. ([''present''])'
-    - '   This key is required with [''present''].'
-    - '   - Accepted values:'
-    - '     - CLIENT_DEVICE'
-    - '     - HOST_DEVICE'
-    - '     - ISO_FILE'
-    - ' - C(iso_file) (str): Path of the image file that should be used as the virtual
-      CD-ROM device backing. ([''present''])'
-    - ' - C(host_device) (str): Name of the device that should be used as the virtual
-      CD-ROM device backing. ([''present''])'
-    - ' - C(device_access_type) (str): The C(device_access_type) defines the valid
-      device access types for a physical device packing of a virtual CD-ROM device.
-      ([''present''])'
-    - '   - Accepted values:'
-    - '     - EMULATION'
-    - '     - PASSTHRU'
-    - '     - PASSTHRU_EXCLUSIVE'
-    type: dict
-  cdrom:
-    description:
-    - Virtual CD-ROM device identifier. Required with I(state=['absent', 'connect',
-      'disconnect', 'present'])
-    type: str
-  ide:
-    description:
-    - Address for attaching the device to a virtual IDE adapter.
-    - 'Valid attributes are:'
-    - ' - C(primary) (bool): Flag specifying whether the device should be attached
-      to the primary or secondary IDE adapter of the virtual machine. ([''present''])'
-    - ' - C(master) (bool): Flag specifying whether the device should be the master
-      or slave device on the IDE adapter. ([''present''])'
-    type: dict
-  label:
-    description:
-    - The name of the item
-    type: str
-  sata:
-    description:
-    - Address for attaching the device to a virtual SATA adapter. Required with I(state=['present'])
-    - 'Valid attributes are:'
-    - ' - C(bus) (int): Bus number of the adapter to which the device should be attached.
-      ([''present''])'
-    - '   This key is required with [''present''].'
-    - ' - C(unit) (int): Unit number of the device. ([''present''])'
-    type: dict
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  start_connected:
-    description:
-    - Flag indicating whether the virtual device should be connected whenever the
-      virtual machine is powered on.
-    type: bool
-  state:
-    choices:
-    - absent
-    - connect
-    - disconnect
-    - present
-    default: present
-    description: []
-    type: str
-  type:
-    choices:
-    - IDE
-    - SATA
-    description:
-    - The C(host_bus_adapter_type) defines the valid types of host bus adapters that
-      may be used for attaching a Cdrom to a virtual machine.
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    allow_guest_control:
+        description:
+        - Flag indicating whether the guest can connect and disconnect the device.
+        type: bool
+    backing:
+        description:
+        - Physical resource backing for the virtual CD-ROM device. Required with I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(type) (str): The C(backing_type) defines the valid backing types for
+            a virtual CD-ROM device. ([''present''])'
+        - '   This key is required with [''present''].'
+        - '   - Accepted values:'
+        - '     - CLIENT_DEVICE'
+        - '     - HOST_DEVICE'
+        - '     - ISO_FILE'
+        - ' - C(iso_file) (str): Path of the image file that should be used as the
+            virtual CD-ROM device backing. ([''present''])'
+        - ' - C(host_device) (str): Name of the device that should be used as the
+            virtual CD-ROM device backing. ([''present''])'
+        - ' - C(device_access_type) (str): The C(device_access_type) defines the valid
+            device access types for a physical device packing of a virtual CD-ROM
+            device. ([''present''])'
+        - '   - Accepted values:'
+        - '     - EMULATION'
+        - '     - PASSTHRU'
+        - '     - PASSTHRU_EXCLUSIVE'
+        type: dict
+    cdrom:
+        description:
+        - Virtual CD-ROM device identifier. Required with I(state=['absent', 'connect',
+            'disconnect', 'present'])
+        type: str
+    ide:
+        description:
+        - Address for attaching the device to a virtual IDE adapter.
+        - 'Valid attributes are:'
+        - ' - C(primary) (bool): Flag specifying whether the device should be attached
+            to the primary or secondary IDE adapter of the virtual machine. ([''present''])'
+        - ' - C(master) (bool): Flag specifying whether the device should be the master
+            or slave device on the IDE adapter. ([''present''])'
+        type: dict
+    label:
+        description:
+        - The name of the item
+        type: str
+    sata:
+        description:
+        - Address for attaching the device to a virtual SATA adapter. Required with
+            I(state=['present'])
+        - 'Valid attributes are:'
+        - ' - C(bus) (int): Bus number of the adapter to which the device should be
+            attached. ([''present''])'
+        - '   This key is required with [''present''].'
+        - ' - C(unit) (int): Unit number of the device. ([''present''])'
+        type: dict
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    start_connected:
+        description:
+        - Flag indicating whether the virtual device should be connected whenever
+            the virtual machine is powered on.
+        type: bool
+    state:
+        choices:
+        - absent
+        - connect
+        - disconnect
+        - present
+        default: present
+        description: []
+        type: str
+    type:
+        choices:
+        - IDE
+        - SATA
+        description:
+        - The C(host_bus_adapter_type) defines the valid types of host bus adapters
+            that may be used for attaching a Cdrom to a virtual machine.
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 0.1.0
@@ -175,6 +176,7 @@ EXAMPLES = r"""
     backing:
       iso_file: '[ro_datastore] fedora.iso'
       type: ISO_FILE
+  register: _result
 """
 
 RETURN = r"""
@@ -204,6 +206,15 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"cdrom": "cdrom", "vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -218,15 +229,6 @@ PAYLOAD_FORMAT = {
     },
     "delete": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
     "disconnect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"cdrom": "cdrom", "vm": "vm"},
-    },
     "connect": {"query": {}, "body": {}, "path": {"cdrom": "cdrom", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 

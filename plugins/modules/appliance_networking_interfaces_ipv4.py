@@ -15,90 +15,90 @@ module: appliance_networking_interfaces_ipv4
 short_description: Set IPv4 network configuration for specific network interface.
 description: Set IPv4 network configuration for specific network interface.
 options:
-  address:
-    description:
-    - The IPv4 address, for example, "10.20.80.191".
-    type: str
-  default_gateway:
-    description:
-    - The IPv4 address of the default gateway. This configures the global default
-      gateway on the appliance with the specified gateway address and interface. This
-      gateway replaces the existing default gateway configured on the appliance. However,
-      if the gateway address is link-local, then it is added for that interface. This
-      does not support configuration of multiple global default gateways through different
-      interfaces.
-    type: str
-  interface_name:
-    description:
-    - Network interface to update, for example, "nic0". This parameter is mandatory.
-    required: true
-    type: str
-  mode:
-    choices:
-    - DHCP
-    - STATIC
-    - UNCONFIGURED
-    description:
-    - The C(mode) defines different IPv4 address assignment modes. This parameter
-      is mandatory.
-    required: true
-    type: str
-  prefix:
-    description:
-    - The IPv4 CIDR prefix, for example, 24.  See http://www.oav.net/mirrors/cidr.html
-      for netmask-to-prefix conversion.
-    type: int
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - set
-    default: set
-    description: []
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
+    address:
+        description:
+        - The IPv4 address, for example, "10.20.80.191".
+        type: str
+    default_gateway:
+        description:
+        - The IPv4 address of the default gateway. This configures the global default
+            gateway on the appliance with the specified gateway address and interface.
+            This gateway replaces the existing default gateway configured on the appliance.
+            However, if the gateway address is link-local, then it is added for that
+            interface. This does not support configuration of multiple global default
+            gateways through different interfaces.
+        type: str
+    interface_name:
+        description:
+        - Network interface to update, for example, "nic0". This parameter is mandatory.
+        required: true
+        type: str
+    mode:
+        choices:
+        - DHCP
+        - STATIC
+        - UNCONFIGURED
+        description:
+        - The C(mode) defines different IPv4 address assignment modes. This parameter
+            is mandatory.
+        required: true
+        type: str
+    prefix:
+        description:
+        - The IPv4 CIDR prefix, for example, 24.  See http://www.oav.net/mirrors/cidr.html
+            for netmask-to-prefix conversion.
+        type: int
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - set
+        default: set
+        description: []
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
 version_added: 2.0.0

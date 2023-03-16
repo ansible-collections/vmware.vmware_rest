@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_disk
 **Adds a virtual disk to the virtual machine**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -372,6 +372,7 @@ Examples
         vm: '{{ test_vm1_info.id }}'
         disk: '{{ my_new_disk.id }}'
         state: absent
+      register: _result
 
 
 

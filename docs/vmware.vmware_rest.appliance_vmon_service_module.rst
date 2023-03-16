@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_vmon_service
 **Lists details of services managed by vMon.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

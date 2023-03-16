@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy
 **Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -248,12 +248,17 @@ Examples
         vm: '{{ search_result.value[0].vm }}'
       register: test_vm1_info
 
+    - name: Prepare the disk policy dict
+      ansible.builtin.set_fact:
+        vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+
     - name: Adjust VM storage policy
       vmware.vmware_rest.vcenter_vm_storage_policy:
         vm: '{{ test_vm1_info.id }}'
         vm_home:
           type: USE_DEFAULT_POLICY
         disks: '{{ vm_disk_policy }}'
+      register: _result
 
 
 

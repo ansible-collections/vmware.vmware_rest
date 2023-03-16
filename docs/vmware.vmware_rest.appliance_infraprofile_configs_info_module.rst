@@ -8,7 +8,7 @@ vmware.vmware_rest.appliance_infraprofile_configs_info
 **List all the profiles which are registered.**
 
 
-Version added: 2.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:

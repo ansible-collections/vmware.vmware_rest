@@ -15,121 +15,121 @@ module: vcenter_vm_hardware
 short_description: Updates the virtual hardware settings of a virtual machine.
 description: Updates the virtual hardware settings of a virtual machine.
 options:
-  session_timeout:
-    description:
-    - 'Timeout settings for client session. '
-    - 'The maximal number of seconds for the whole operation including connection
-      establishment, request sending and response. '
-    - The default value is 300s.
-    type: float
-    version_added: 2.1.0
-  state:
-    choices:
-    - present
-    - upgrade
-    default: present
-    description: []
-    type: str
-  upgrade_policy:
-    choices:
-    - AFTER_CLEAN_SHUTDOWN
-    - ALWAYS
-    - NEVER
-    description:
-    - The C(upgrade_policy) defines the valid virtual hardware upgrade policies for
-      a virtual machine.
-    type: str
-  upgrade_version:
-    choices:
-    - VMX_03
-    - VMX_04
-    - VMX_06
-    - VMX_07
-    - VMX_08
-    - VMX_09
-    - VMX_10
-    - VMX_11
-    - VMX_12
-    - VMX_13
-    - VMX_14
-    - VMX_15
-    - VMX_16
-    - VMX_17
-    - VMX_18
-    - VMX_19
-    description:
-    - The C(version) defines the valid virtual hardware versions for a virtual machine.
-      See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions
-      (1003746)).
-    type: str
-  vcenter_hostname:
-    description:
-    - The hostname or IP address of the vSphere vCenter
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_HOST) will be used instead.
-    required: true
-    type: str
-  vcenter_password:
-    description:
-    - The vSphere vCenter password
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_PASSWORD) will be used instead.
-    required: true
-    type: str
-  vcenter_rest_log_file:
-    description:
-    - 'You can use this optional parameter to set the location of a log file. '
-    - 'This file will be used to record the HTTP REST interaction. '
-    - 'The file will be stored on the host that run the module. '
-    - 'If the value is not specified in the task, the value of '
-    - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
-    type: str
-  vcenter_username:
-    description:
-    - The vSphere vCenter username
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_USER) will be used instead.
-    required: true
-    type: str
-  vcenter_validate_certs:
-    default: true
-    description:
-    - Allows connection when SSL certificates are not valid. Set to C(false) when
-      certificates are not trusted.
-    - If the value is not specified in the task, the value of environment variable
-      C(VMWARE_VALIDATE_CERTS) will be used instead.
-    type: bool
-  version:
-    choices:
-    - VMX_03
-    - VMX_04
-    - VMX_06
-    - VMX_07
-    - VMX_08
-    - VMX_09
-    - VMX_10
-    - VMX_11
-    - VMX_12
-    - VMX_13
-    - VMX_14
-    - VMX_15
-    - VMX_16
-    - VMX_17
-    - VMX_18
-    - VMX_19
-    description:
-    - The C(version) defines the valid virtual hardware versions for a virtual machine.
-      See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions
-      (1003746)).
-    type: str
-  vm:
-    description:
-    - Virtual machine identifier. This parameter is mandatory.
-    required: true
-    type: str
+    session_timeout:
+        description:
+        - 'Timeout settings for client session. '
+        - 'The maximal number of seconds for the whole operation including connection
+            establishment, request sending and response. '
+        - The default value is 300s.
+        type: float
+        version_added: 2.1.0
+    state:
+        choices:
+        - present
+        - upgrade
+        default: present
+        description: []
+        type: str
+    upgrade_policy:
+        choices:
+        - AFTER_CLEAN_SHUTDOWN
+        - ALWAYS
+        - NEVER
+        description:
+        - The C(upgrade_policy) defines the valid virtual hardware upgrade policies
+            for a virtual machine.
+        type: str
+    upgrade_version:
+        choices:
+        - VMX_03
+        - VMX_04
+        - VMX_06
+        - VMX_07
+        - VMX_08
+        - VMX_09
+        - VMX_10
+        - VMX_11
+        - VMX_12
+        - VMX_13
+        - VMX_14
+        - VMX_15
+        - VMX_16
+        - VMX_17
+        - VMX_18
+        - VMX_19
+        description:
+        - The C(version) defines the valid virtual hardware versions for a virtual
+            machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine
+            hardware versions (1003746)).
+        type: str
+    vcenter_hostname:
+        description:
+        - The hostname or IP address of the vSphere vCenter
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_HOST) will be used instead.
+        required: true
+        type: str
+    vcenter_password:
+        description:
+        - The vSphere vCenter password
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_PASSWORD) will be used instead.
+        required: true
+        type: str
+    vcenter_rest_log_file:
+        description:
+        - 'You can use this optional parameter to set the location of a log file. '
+        - 'This file will be used to record the HTTP REST interaction. '
+        - 'The file will be stored on the host that run the module. '
+        - 'If the value is not specified in the task, the value of '
+        - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
+        type: str
+    vcenter_username:
+        description:
+        - The vSphere vCenter username
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_USER) will be used instead.
+        required: true
+        type: str
+    vcenter_validate_certs:
+        default: true
+        description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when
+            certificates are not trusted.
+        - If the value is not specified in the task, the value of environment variable
+            C(VMWARE_VALIDATE_CERTS) will be used instead.
+        type: bool
+    version:
+        choices:
+        - VMX_03
+        - VMX_04
+        - VMX_06
+        - VMX_07
+        - VMX_08
+        - VMX_09
+        - VMX_10
+        - VMX_11
+        - VMX_12
+        - VMX_13
+        - VMX_14
+        - VMX_15
+        - VMX_16
+        - VMX_17
+        - VMX_18
+        - VMX_19
+        description:
+        - The C(version) defines the valid virtual hardware versions for a virtual
+            machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine
+            hardware versions (1003746)).
+        type: str
+    vm:
+        description:
+        - Virtual machine identifier. This parameter is mandatory.
+        required: true
+        type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.3.0
+version_added: 0.1.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -144,6 +144,7 @@ EXAMPLES = r"""
     upgrade_policy: AFTER_CLEAN_SHUTDOWN
     upgrade_version: VMX_11
     vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
+  register: _result
 """
 
 RETURN = r"""

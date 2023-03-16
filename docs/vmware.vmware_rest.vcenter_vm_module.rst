@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm
 **Creates a virtual machine.**
 
 
-Version added: 2.3.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -1065,54 +1065,28 @@ Examples
 
 .. code-block:: yaml
 
-    - name: Build a list of all the clusters
-      vmware.vmware_rest.vcenter_cluster_info:
-      register: all_the_clusters
-
-    - name: Retrieve details about the first cluster
-      vmware.vmware_rest.vcenter_cluster_info:
-        cluster: '{{ all_the_clusters.value[0].cluster }}'
-      register: my_cluster_info
-
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: '{{ my_cluster_info.id }}'
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
-          folder: '{{ my_virtual_machine_folder.folder }}'
-          resource_pool: '{{ my_cluster_info.value.resource_pool }}'
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore') }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         name: test_vm1
-        guest_OS: DEBIAN_7_64
-        hardware_version: VMX_10
+        guest_OS: RHEL_7_64
+        hardware_version: VMX_11
         memory:
           hot_add_enabled: true
           size_MiB: 1024
       register: my_vm
 
-    - name: Collect the list of the existing VM
-      vmware.vmware_rest.vcenter_vm_info:
-      register: existing_vms
-      until: existing_vms is not failed
-
-    - name: Delete some VM
-      vmware.vmware_rest.vcenter_vm:
-        state: absent
-        vm: '{{ item.vm }}'
-      with_items: '{{ existing_vms.value }}'
-      when:
-      - not item.name.startswith("vCLS")
-
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         name: test_vm1
         guest_OS: RHEL_7_64
         hardware_version: VMX_11
@@ -1136,27 +1110,7 @@ Examples
         nics:
         - backing:
             type: STANDARD_PORTGROUP
-            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM\
-              \ Network') }}"
-
-      register: my_vm
-
-    - name: Create a VM
-      vmware.vmware_rest.vcenter_vm:
-        placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/rw_datastore')\
-            \ }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
-        name: test_vm1
-        guest_OS: RHEL_7_64
-        hardware_version: VMX_11
-        memory:
-          hot_add_enabled: true
-          size_MiB: 1024
+            network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
       register: my_vm
 
     - name: Create a content library based on a DataStore
@@ -1167,8 +1121,7 @@ Examples
           published: true
           authentication_method: NONE
         storage_backings:
-        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+        - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           type: DATASTORE
         state: present
       register: nfs_lib
@@ -1180,8 +1133,7 @@ Examples
 
     - name: Use the name to identify the item
       set_fact:
-        my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first\
-          \ }}"
+        my_template_item: "{{ lib_items.value | selectattr('name', 'equalto', 'golden-template')|first }}"
 
     - name: Deploy a new VM based on the template
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
@@ -1189,11 +1141,9 @@ Examples
         library: '{{ nfs_lib.id }}'
         template_library_item: '{{ my_template_item.id }}'
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster')\
-            \ }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         state: deploy
       register: my_new_vm
 
@@ -1205,11 +1155,9 @@ Examples
     - name: Create an instant clone of a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         source: '{{ my_vm.id }}'
         name: test_vm2
         state: instant_clone
@@ -1218,15 +1166,48 @@ Examples
     - name: Create a clone of a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local')\
-            \ }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
           folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
-          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources')\
-            \ }}"
+          resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
         source: '{{ my_vm.id }}'
         name: test_vm3
         state: clone
       register: my_clone_vm
+
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: all_the_clusters
+
+    - name: Retrieve details about the first cluster
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: '{{ all_the_clusters.value[0].cluster }}'
+      register: my_cluster_info
+
+    - name: Build a list of all the folders with the type VIRTUAL_MACHINE and called vm
+      vmware.vmware_rest.vcenter_folder_info:
+        filter_type: VIRTUAL_MACHINE
+        filter_names:
+        - vm
+      register: my_folders
+
+    - name: Set my_virtual_machine_folder
+      ansible.builtin.set_fact:
+        my_virtual_machine_folder: '{{ my_folders.value|first }}'
+
+    - name: Create a VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: '{{ my_cluster_info.id }}'
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+          folder: '{{ my_virtual_machine_folder.folder }}'
+          resource_pool: '{{ my_cluster_info.value.resource_pool }}'
+        name: test_vm1
+        guest_OS: DEBIAN_7_64
+        hardware_version: VMX_10
+        memory:
+          hot_add_enabled: true
+          size_MiB: 1024
+      register: my_vm
 
 
 
