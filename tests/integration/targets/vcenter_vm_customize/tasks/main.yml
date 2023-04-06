@@ -1,3 +1,27 @@
+- name: Get VM storage policy
+  vmware.vmware_rest.vcenter_vm_storage_policy_info:
+    vm: '{{ test_vm1_info.id }}'
+  register: _result
+
+- ansible.builtin.debug: var=_result
+
+- name: List existing storage policies
+  vmware.vmware_rest.vcenter_storage_policies_info:
+  register: storage_policies
+
+- ansible.builtin.debug: var=storage_policies
+
+- name: Look up the VM Encryption Policy
+  ansible.builtin.set_fact:
+    my_storage_policy: "{{ (storage_policies.value |  selectattr('name', 'equalto', 'VVol No Requirements Policy') | list | first) }}"
+- ansible.builtin.debug: var=my_storage_policy
+
+- name: Prepare the disk policy dict
+  ansible.builtin.set_fact:
+    vm_disk_policy: "{{ {} | combine({ my_new_disk.id: {'policy': my_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+- ansible.builtin.debug: var=vm_disk_policy
+
+
 - ansible.builtin.set_fact:
     disk_name: rhel-8.5
 
@@ -67,6 +91,8 @@
         new_vmdk:
           name: second_disk
           capacity: 32000000000
+          storage_policy:
+            policy: vm_disk_policy
     cdroms:
       - type: SATA
         sata:
@@ -78,6 +104,11 @@
           network: "{{ lookup('vmware.vmware_rest.network_moid', '/my_dc/network/VM Network') }}"
 
   register: my_vm
+
+- name: DEBUG STORAGE POLICIES
+  debug:
+    msg: my_vm
+
 - ansible.builtin.assert:
     that:
       - my_vm is changed
