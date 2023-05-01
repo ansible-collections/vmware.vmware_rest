@@ -4,12 +4,3 @@ antsibull_changelog
 # functional tests
 requests
 pyvmomi
-
-coverage==4.5.4
-placebo
-mock
-pytest
-pytest-forked
-pytest-mock
-pytest-xdist
-pytest-ansible-units
