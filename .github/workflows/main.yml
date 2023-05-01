@@ -1,0 +1,15 @@
+---
+name: Test collection
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  linters:
+    uses: abikouo/github_actions/.github/workflows/tox-linters.yml@tox_linters
