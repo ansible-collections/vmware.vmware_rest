@@ -146,6 +146,6 @@ jobs:
           '${{ needs.linters.result }}',
           '${{ needs.unit-source.result }}'
           ]) == {'success'}"
-     - run: >-
+      - run: >-
           python -c "assert '${{ needs.sanity.result }}'
           in ['success', 'failure']"
