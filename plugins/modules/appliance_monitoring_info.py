@@ -89,7 +89,7 @@ value:
   sample:
   - category: com.vmware.applmgmt.mon.cat.disk
     description: com.vmware.applmgmt.mon.descr.disk.read.rate.dm-1
-id: disk.read.rate.dm-1
+    id: disk.read.rate.dm-1
     instance: dm-1
     name: com.vmware.applmgmt.mon.name.disk.read.rate.dm-1
     units: com.vmware.applmgmt.mon.unit.num_of_io_per_msec
