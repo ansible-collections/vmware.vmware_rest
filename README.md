@@ -212,18 +212,7 @@ The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/scenario_
 
 ## Development
 
-This collection can be generated using the [content_builder](https://github.com/ansible-community/ansible.content_builder) tool. Please refer to the [cloud_content generation section](https://github.com/ansible-community/ansible.content_builder#5-vmwarevmware_rest).
-
-The developer can use the [api specification](https://github.com/ansible-collections/vmware.vmware_rest/tree/main/api_specifications) files and the [modules.yaml](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/modules.yaml) file hosted in this repository. The path to these files should be provided as input to the content builder tool to generate the modules. To get more details on the command and input arguments please refer to the tool's [README](https://github.com/ansible-community/ansible.content_builder#resource-module-scaffolding-generated-using-openapi-based-json).
-
-## Testing with `ansible-test`
-
-```
-virtualenv -p python3.7 .virtualenv/py37  # Or any other version greater than 3.6
-source .virtualenv/py37/bin/activate
-pip install -r requirements.txt -r test-requirements.txt
-ansible-test network-integration --python 3.7 --inventory /tmp/inventory-vmware_rest vcenter_vm_scenario1
-```
+This collection can be generated using the [content_builder](https://github.com/ansible-community/ansible.content_builder) tool. Please refer to the [vmware module generation](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/development.md).
 
 ## Release notes
 
