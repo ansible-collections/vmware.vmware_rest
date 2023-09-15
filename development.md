@@ -60,6 +60,8 @@ plugins:
 Once the modules are generated in the location mentioned in `collection:path`, you can follow the below steps to refresh the RETURN block in the module documentaion.
 
 **_Refresh the `RETURN Block` of the vmware modules using the test-suite:_**
+
+Set the env variables mentioned in (tox.ini)[https://github.com/ansible-collections/vmware.vmware_rest/blob/main/tox.ini#L47].
 ```
     mkdir -p ~/.ansible/collections/ansible_collections/goneri/utils
     git clone https://github.com/goneri/ansible-collection-goneri.utils.git ~/.ansible/collections/ansible_collections/goneri/utils
@@ -67,4 +69,4 @@ Once the modules are generated in the location mentioned in `collection:path`, y
     ./refresh_RETURN_block.sh
     cd ~/.ansible/collections/ansible_collections/goneri/utils
     ./scripts/inject_RETURN.py ~/.ansible/collections/ansible_collections/vmware/vmware_rest/manual/source/vmware_rest_scenarios/task_outputs ~/.ansible/collections/ansible_collections/vmware/vmware_rest --config-file config/inject_RETURN.yaml
-
+```
