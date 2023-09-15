@@ -61,7 +61,7 @@ Once the modules are generated in the location mentioned in `collection:path`, y
 
 **_Refresh the `RETURN Block` of the vmware modules using the test-suite:_**
 
-Set the env variables mentioned in (tox.ini)[https://github.com/ansible-collections/vmware.vmware_rest/blob/main/tox.ini#L47].
+Set the env variables mentioned in [tox.ini](https://github.com/ansible-collections/vmware.vmware_rest/blob/main/tox.ini#L47).
 ```
     mkdir -p ~/.ansible/collections/ansible_collections/goneri/utils
     git clone https://github.com/goneri/ansible-collection-goneri.utils.git ~/.ansible/collections/ansible_collections/goneri/utils
