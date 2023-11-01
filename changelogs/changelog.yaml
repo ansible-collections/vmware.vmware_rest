@@ -1,0 +1,10 @@
+ancestor: 2.3.1
+releases:
+  3.0.0:
+    changes:
+      breaking_changes:
+      - Removed support for ansible-core version < 2.15.0.
+    fragments:
+    - 3.0.0-required_ansible_version.yml
+    - add_dev_doc.yaml
+    release_date: '2023-11-01'
