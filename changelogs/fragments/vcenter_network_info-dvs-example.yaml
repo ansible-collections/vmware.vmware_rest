@@ -1,3 +1,0 @@
----
-minor_changes:
-- "``vcenter_network_info`` - add an example with a Distributed Virtual Switch, a.k.a dvswitch (https://github.com/ansible-collections/vmware.vmware_rest/pull/316)."
