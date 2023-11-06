@@ -1,0 +1,22 @@
+name: Linters
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - labeled
+      - unlabeled
+      - synchronize
+    branches:
+      - main
+      - stable-*
+    tags:
+      - '*'
+
+jobs:
+  linters:
+    uses: ansible-network/github_actions/.github/workflows/tox-linters.yml@main
