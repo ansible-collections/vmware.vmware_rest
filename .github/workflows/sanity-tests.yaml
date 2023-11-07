@@ -30,7 +30,7 @@
 #    it has to adhere to Python compatibility and CI testing requirements described in
 #    https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html.
 
-name: CI
+name: Sanity tests
 on:
   # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
   push:
