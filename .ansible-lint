@@ -4,3 +4,7 @@ profile: production
 exclude_paths:
   - tests/integration
   - tests/sanity
+  - modules.yaml
+
+skip_list:
+ - yaml[indentation]
