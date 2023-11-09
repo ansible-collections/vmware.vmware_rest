@@ -1,0 +1,3 @@
+---
+trivial:
+- "Add 7.0.3 / vSphere 7.0 U3 API spec (https://github.com/ansible-collections/vmware.vmware_rest/pull/443)."
