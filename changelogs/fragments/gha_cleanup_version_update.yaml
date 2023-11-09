@@ -1,0 +1,6 @@
+---
+major_changes:
+- "Remove support for ansible-core 2.13"
+trivial:
+- "Organize GitHub workflows"
+- "ansible-lint and isort fixes"
