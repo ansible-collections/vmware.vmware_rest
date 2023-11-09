@@ -126,13 +126,14 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     build_full_device_list,
     exists,
     gen_args,
     open_session,
-    update_changed_flag,
     session_timeout,
+    update_changed_flag,
 )
 
 

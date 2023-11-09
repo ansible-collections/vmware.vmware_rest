@@ -49,12 +49,12 @@ _raw:
 """
 
 
+from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
+    TurboLookupBase as LookupBase,
+)
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
     Lookup,
     get_credentials,
-)
-from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
-    TurboLookupBase as LookupBase,
 )
 
 
