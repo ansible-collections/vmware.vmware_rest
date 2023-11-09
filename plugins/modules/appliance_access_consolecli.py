@@ -259,4 +259,4 @@ if __name__ == "__main__":
 
     # current_loop = asyncio.get_event_loop_policy().get_event_loop()
     # current_loop.run_until_complete(main())
-    asyncio.run(main())
+    asyncio.get_event_loop_policy().run(main())
