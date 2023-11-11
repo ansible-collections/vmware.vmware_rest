@@ -205,6 +205,7 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
@@ -212,18 +213,22 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     get_subdevice_type,
     open_session,
     prepare_payload,
-    update_changed_flag,
     session_timeout,
+    update_changed_flag,
 )
 
 
 def prepare_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_HOST"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_HOST"]),
         ),
         "vcenter_username": dict(
-            type="str", required=True, fallback=(env_fallback, ["VMWARE_USER"]),
+            type="str",
+            required=True,
+            fallback=(env_fallback, ["VMWARE_USER"]),
         ),
         "vcenter_password": dict(
             type="str",
@@ -299,7 +304,6 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -343,7 +347,6 @@ async def _connect(params, session):
 
 
 async def _create(params, session):
-
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["floppy"]
     comp_func = None

@@ -1,8 +1,8 @@
 ---
-name: CI
+name: Changelog
 
 concurrency:
-  group: '${{ github.workflow }} @ ${{ github.sha }}'
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 on:

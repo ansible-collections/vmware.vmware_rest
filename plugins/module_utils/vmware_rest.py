@@ -32,7 +32,6 @@ import hashlib
 import importlib
 import json
 import re
-
 import urllib.parse
 
 from ansible.module_utils.basic import missing_required_lib
@@ -271,7 +270,7 @@ async def update_changed_flag(data, status, operation):
 
 
 async def list_devices(session, url):
-    existing_entries = []
+    pass
 
     async with session.get(url) as resp:
         _json = await resp.json()

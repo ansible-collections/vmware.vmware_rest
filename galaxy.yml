@@ -1,20 +1,20 @@
+---
 namespace: vmware
 name: vmware_rest
 readme: README.md
-version: null
+version: 3.0.0
 authors:
-- Ansible (https://github.com/ansible)
-description:
-license:
+  - Ansible (https://github.com/ansible)
+description: VMware collection for Ansible
 license_file: LICENSE
 tags:
-- cloud
-- vmware
-- virtualization
+  - cloud
+  - vmware
+  - virtualization
 dependencies:
-  cloud.common: '>=2.0.4,<3.0.0'
+  cloud.common: ">=2.0.4,<3.0.0"
 repository: https://github.com/ansible-collections/vmware.vmware_rest.git
 homepage: https://github.com/ansible-collections/vmware.vmware_rest
 issues: https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
 build_ignore:
-  - 'config/*'
+  - config/*

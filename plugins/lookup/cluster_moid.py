@@ -29,9 +29,9 @@ EXAMPLES = r"""
 - name: set connection info
   ansible.builtin.set_fact:
     connection_args:
-        vcenter_hostname: "vcenter.test"
-        vcenter_username: "administrator@vsphere.local"
-        vcenter_password: "1234"
+      vcenter_hostname: "vcenter.test"
+      vcenter_username: "administrator@vsphere.local"
+      vcenter_password: "1234"
 
 - name: lookup MoID of the object
   ansible.builtin.debug: msg="{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster', **connection_args) }}"
@@ -49,12 +49,12 @@ _raw:
 """
 
 
+from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
+    TurboLookupBase as LookupBase,
+)
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import (
     Lookup,
     get_credentials,
-)
-from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
-    TurboLookupBase as LookupBase,
 )
 
 
