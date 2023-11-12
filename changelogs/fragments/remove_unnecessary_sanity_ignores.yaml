@@ -1,0 +1,3 @@
+---
+trivial:
+- Remove sanity test ignores for ansible-core < 2.14.
