@@ -7,7 +7,7 @@ The collection includes the VMware modules and plugins supported by Ansible VMwa
 <!--start requires_ansible-->
 ## Ansible version compatibility
 
-This collection has been tested against following Ansible versions: **>=2.9.10**.
+This collection has been tested against following Ansible versions: **>=2.14.0**.
 
 For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
 fully qualified collection name (for example, `cisco.ios.ios`).
@@ -19,6 +19,7 @@ PEP440 is the schema used to describe the versions of Ansible.
 ## Python version compatibility
 
 The collection depends on ``aiohttp`` has [requirement](https://docs.aiohttp.org/en/stable/) which requires Python 3.6 or greater.
+ Moreover, ansible version >=2.14 supports Python 3.9 or later.
 
 ## vSphere compatibility
 
