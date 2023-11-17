@@ -204,6 +204,8 @@ async def _info(params, session):
         return await update_changed_flag(_json, resp.status, "get")
 
 
+# Meaningless diff with no code changes to trigger CI
+
 if __name__ == "__main__":
     import asyncio
 
