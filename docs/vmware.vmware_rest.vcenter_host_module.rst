@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_host
 **Add a new standalone host in the vCenter inventory**
 
 
-Version added: 2.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -324,8 +324,52 @@ Notes
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    - name: Connect the host(s)
+      vmware.vmware_rest.vcenter_host:
+        hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+        user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+        password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
+        thumbprint_verification: NONE
+        folder: '{{ my_host_folder.folder }}'
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Connect the host(s)</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">host-1013</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info
 **Returns the cached storage policy compliance information of a virtual machine.**
 
 
-Version added: 2.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -198,6 +198,38 @@ Examples
       register: _result
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Get VM storage policy compliance information</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;disks&#x27;: {&#x27;16000&#x27;: {&#x27;check_time&#x27;: &#x27;2022-11-23T19:53:45.594Z&#x27;, &#x27;failure_cause&#x27;: [], &#x27;policy&#x27;: &#x27;f4e5bade-15a2-4805-bf8e-52318c4ce443&#x27;, &#x27;status&#x27;: &#x27;NOT_APPLICABLE&#x27;}}, &#x27;overall_compliance&#x27;: &#x27;NOT_APPLICABLE&#x27;}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_datastore_info
 **Retrieves information about the datastore indicated by {@param.name datastore}.**
 
 
-Version added: 2.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -270,6 +270,38 @@ Examples
       register: all_the_datastores
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Build a list of all the datastores</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;capacity&#x27;: 11542724608, &#x27;datastore&#x27;: &#x27;datastore-1015&#x27;, &#x27;free_space&#x27;: 10033823744, &#x27;name&#x27;: &#x27;local&#x27;, &#x27;type&#x27;: &#x27;VMFS&#x27;}, {&#x27;capacity&#x27;: 42314215424, &#x27;datastore&#x27;: &#x27;datastore-1017&#x27;, &#x27;free_space&#x27;: 40374927360, &#x27;name&#x27;: &#x27;ro_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}, {&#x27;capacity&#x27;: 42314215424, &#x27;datastore&#x27;: &#x27;datastore-1019&#x27;, &#x27;free_space&#x27;: 40374927360, &#x27;name&#x27;: &#x27;rw_datastore&#x27;, &#x27;type&#x27;: &#x27;NFS&#x27;}]</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

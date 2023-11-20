@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_power
 **Operate a boot, hard shutdown, hard reset or hard suspend on a guest.**
 
 
-Version added: 2.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -271,6 +271,55 @@ Examples
         vm: '{{ test_vm1_info.id }}'
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>msg</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Turn off the VM</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">All items completed</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>results</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Turn off the VM</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-e89f3630-0f4d-4adb-bac5-1912e2b5d8ab&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1023&#x27;}, &#x27;_ansible_no_log&#x27;: None, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: &#x27;/tmp/vmware_rest.log&#x27;, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1023&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 128, &#x27;name&#x27;: &#x27;vCLS-e89f3630-0f4d-4adb-bac5-1912e2b5d8ab&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_OFF&#x27;, &#x27;vm&#x27;: &#x27;vm-1023&#x27;}, &#x27;value&#x27;: {&#x27;error_type&#x27;: &#x27;ALREADY_IN_DESIRED_STATE&#x27;, &#x27;messages&#x27;: [{&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;Virtual machine is already powered off.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.api.vcenter.vm.power.already_powered_off&#x27;}, {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;The attempted operation cannot be performed in the current state (Powered off).&#x27;, &#x27;id&#x27;: &#x27;vmsg.InvalidPowerState.summary&#x27;}]}}, {&#x27;_ansible_item_label&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}, &#x27;_ansible_no_log&#x27;: None, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;changed&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;stop&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: &#x27;/tmp/vmware_rest.log&#x27;, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}}, &#x27;item&#x27;: {&#x27;cpu_count&#x27;: 1, &#x27;memory_size_MiB&#x27;: 1080, &#x27;name&#x27;: &#x27;test_vm1&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;, &#x27;vm&#x27;: &#x27;vm-1024&#x27;}, &#x27;value&#x27;: {}}]</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status

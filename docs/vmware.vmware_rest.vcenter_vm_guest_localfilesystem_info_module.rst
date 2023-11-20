@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info
 **Returns details of the local file systems in the guest operating system.**
 
 
-Version added: 2.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -202,6 +202,38 @@ Examples
       delay: 5
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Get guest filesystem information</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;/&#x27;: {&#x27;capacity&#x27;: 2515173376, &#x27;free_space&#x27;: 774787072, &#x27;mappings&#x27;: []}}</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status
