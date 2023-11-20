@@ -1,0 +1,14 @@
+{
+    "files": [
+        "contentinternal",
+        "vcenter",
+        "cis",
+        "esx",
+        "hvc",
+        "vapi",
+        "content",
+        "session",
+        "stats",
+        "appliance"
+    ]
+}
