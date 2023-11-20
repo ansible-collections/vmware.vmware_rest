@@ -270,38 +270,6 @@ Examples
 
 
 
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Ensure the OVF is here</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;cached&#x27;: 0, &#x27;content_version&#x27;: &#x27;2&#x27;, &#x27;creation_time&#x27;: &#x27;2022-11-23T20:06:05.707Z&#x27;, &#x27;description&#x27;: &#x27;an OVF example&#x27;, &#x27;id&#x27;: &#x27;f6618d6b-301b-4202-aa9c-12eb0c7536b1&#x27;, &#x27;last_modified_time&#x27;: &#x27;2022-11-23T20:06:06.062Z&#x27;, &#x27;last_sync_time&#x27;: &#x27;2022-11-23T20:06:06.061Z&#x27;, &#x27;library_id&#x27;: &#x27;8b4e355e-a463-44f1-9b04-d0786a49cc7d&#x27;, &#x27;metadata_version&#x27;: &#x27;1&#x27;, &#x27;name&#x27;: &#x27;golden_image&#x27;, &#x27;security_compliance&#x27;: 1, &#x27;size&#x27;: 0, &#x27;source_id&#x27;: &#x27;636ef270-b556-4972-924f-0d21b0f3bfce&#x27;, &#x27;type&#x27;: &#x27;ovf&#x27;, &#x27;version&#x27;: &#x27;1&#x27;}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
-
 
 Status
 ------

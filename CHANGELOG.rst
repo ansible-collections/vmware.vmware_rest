@@ -5,13 +5,21 @@ vmware.vmware_rest Release Notes
 .. contents:: Topics
 
 
-v2.3.1
+v3.0.0
 ======
 
 Release Summary
 ---------------
 
-This release brings some minor changes and bugfixes.
+This major release drops support for ansible-core versions lower than 2.14 and Python versions lower than 3.9.
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Remove support for ansible-core < 2.14
+
+v2.3.1
+======
 
 Minor Changes
 -------------

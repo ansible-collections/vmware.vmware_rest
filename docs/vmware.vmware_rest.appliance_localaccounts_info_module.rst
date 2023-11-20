@@ -187,38 +187,6 @@ Examples
 
 
 
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>List the local accounts</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;enabled&#x27;: 1, &#x27;fullname&#x27;: &#x27;root&#x27;, &#x27;has_password&#x27;: 1, &#x27;last_password_change&#x27;: &#x27;2022-11-23T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 0, &#x27;password_expires_at&#x27;: &#x27;2023-02-21T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;superAdmin&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;inactive_at&#x27;: &#x27;2022-12-25T00:00:00.000Z&#x27;, &#x27;last_password_change&#x27;: &#x27;2022-09-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: 90, &#x27;min_days_between_password_change&#x27;: 1, &#x27;password_expires_at&#x27;: &#x27;2022-12-25T00:00:00.000Z&#x27;, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: 7}, {&#x27;enabled&#x27;: 0, &#x27;has_password&#x27;: 0, &#x27;last_password_change&#x27;: &#x27;2022-09-26T00:00:00.000Z&#x27;, &#x27;max_days_between_password_change&#x27;: -1, &#x27;min_days_between_password_change&#x27;: -1, &#x27;roles&#x27;: [&#x27;&#x27;], &#x27;warn_days_before_password_expiration&#x27;: -1}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
-
 
 Status
 ------

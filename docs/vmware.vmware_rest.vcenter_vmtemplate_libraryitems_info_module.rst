@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info
 **Returns information about a virtual machine template contained in the library item specified by {@param.name templateLibraryItem}**
 
 
-Version added: 2.2.0
+Version added: 2.0.0
 
 .. contents::
    :local:

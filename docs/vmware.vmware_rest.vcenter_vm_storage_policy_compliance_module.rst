@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy_compliance
 **Returns the storage policy Compliance {@link Info} of a virtual machine after explicitly re-computing compliance check.**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
