@@ -84,7 +84,7 @@ options:
         type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 0.1.0
 requirements:
 - vSphere 7.0.2 or greater
 - python >= 3.6
@@ -108,8 +108,6 @@ PAYLOAD_FORMAT = {
     }
 }  # pylint: disable=line-too-long
 
-import json
-import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -124,12 +122,9 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    build_full_device_list,
     exists,
     gen_args,
-    get_device_info,
     get_subdevice_type,
-    list_devices,
     open_session,
     prepare_payload,
     update_changed_flag,

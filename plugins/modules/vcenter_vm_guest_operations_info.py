@@ -83,8 +83,6 @@ PAYLOAD_FORMAT = {
     "get": {"query": {}, "body": {}, "path": {"vm": "vm"}}
 }  # pylint: disable=line-too-long
 
-import json
-import socket
 from ansible.module_utils.basic import env_fallback
 
 try:
@@ -99,14 +97,8 @@ try:
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
-    build_full_device_list,
-    exists,
     gen_args,
-    get_device_info,
-    get_subdevice_type,
-    list_devices,
     open_session,
-    prepare_payload,
     update_changed_flag,
     session_timeout,
 )

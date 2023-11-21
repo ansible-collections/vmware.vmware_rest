@@ -654,9 +654,9 @@ releases:
   3.0.0:
     changes:
       breaking_changes:
-      - Remove support for ansible-core < 2.14
+      - Remove support for ansible-core < 2.14.
       release_summary: This major release drops support for ansible-core versions
-        lower than 2.14 and Python versions lower than 3.9.
+        lower than 2.14.
     fragments:
     - add_dev_doc.yaml
     - changelog-wf-only-on-pr.yaml
@@ -666,4 +666,4 @@ releases:
     - remove_old_changelog_fragments.yaml
     - remove_unnecessary_sanity_ignores.yaml
     - start_gha_4_sanity_tests.yaml
-    release_date: '2023-11-20'
+    release_date: '2023-11-21'

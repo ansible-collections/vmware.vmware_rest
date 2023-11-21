@@ -11,15 +11,20 @@ v3.0.0
 Release Summary
 ---------------
 
-This major release drops support for ansible-core versions lower than 2.14 and Python versions lower than 3.9.
+This major release drops support for ansible-core versions lower than 2.14.
 
 Breaking Changes / Porting Guide
 --------------------------------
 
-- Remove support for ansible-core < 2.14
+- Remove support for ansible-core < 2.14.
 
 v2.3.1
 ======
+
+Release Summary
+---------------
+
+This release brings some minor changes and bugfixes.
 
 Minor Changes
 -------------
