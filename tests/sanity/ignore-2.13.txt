@@ -1,0 +1,2 @@
+plugins/modules/vcenter_vm_guest_customization.py pep8!skip
+plugins/modules/appliance_infraprofile_configs.py pep8!skip
