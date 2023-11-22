@@ -1,6 +1,0 @@
----
-breaking_changes:
-- "Remove support for ansible-core < 2.14"
-trivial:
-- "Organize GitHub workflows"
-- "ansible-lint and isort fixes"

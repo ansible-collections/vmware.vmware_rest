@@ -648,6 +648,26 @@ releases:
     fragments:
     - allow_space_in_search_filters.yaml
     - lookup-handle-special-chars.yml
-    - set_default_galaxy_version.yaml
     - release_summary.yml
+    - set_default_galaxy_version.yaml
     release_date: '2023-03-14'
+  3.0.0:
+    changes:
+      breaking_changes:
+      - Remove support for ansible-core < 2.14
+      minor_changes:
+      - Use 7.0 U3 API spec to build the modules (https://github.com/ansible-collections/vmware.vmware_rest/pull/449).
+      release_summary: This major release drops support for ansible-core versions
+        lower than 2.14. The vmware.vmware_rest colllection 3.0.0 supports vSphere
+        versions greater than 7.0.3.
+    fragments:
+    - add_dev_doc.yaml
+    - changelog-wf-only-on-pr.yaml
+    - fix_gha_sanity_tests.yaml
+    - gha_cleanup_version_update.yaml
+    - release_summary.yml
+    - remove_old_changelog_fragments.yaml
+    - remove_unnecessary_sanity_ignores.yaml
+    - start_gha_4_sanity_tests.yaml
+    - use_7.0.3_spec.yaml
+    release_date: '2023-11-22'
