@@ -1,0 +1,334 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "",
+        "title": "session",
+        "version": "2.0.0"
+    },
+    "host": "<vcenter>",
+    "securityDefinitions": {
+        "session_id": {
+            "in": "header",
+            "name": "vmware-api-session-id",
+            "type": "apiKey"
+        },
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "basePath": "",
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "paths": {
+        "/api/session": {
+            "get": {
+                "tags": [
+                    "session"
+                ],
+                "summary": "Returns information about the current session. This {@term operation} expects a valid session token to be supplied. <p> A side effect of invoking this {@term operation} may be a change to the session's last accessed time to the current time if this is supported by the session implementation. Invoking any other {@term operation} in the API will also update the session's last accessed time. <p> This API is meant to serve the needs of various front end projects that may want to display the name of the user. Examples of this include various web based user interfaces and logging facilities.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Information about the session.",
+                        "schema": {
+                            "$ref": "#/definitions/CisSessionInfo"
+                        }
+                    },
+                    "401": {
+                        "description": "if the session id is missing from the request or the corresponding session object cannot be found.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthenticated"
+                        }
+                    },
+                    "503": {
+                        "description": "if session retrieval fails due to server specific issues e.g. connection to back end component is failing. Due to the security nature of this API further details will not be disclosed in the error. Please refer to component health information, administrative logs and product specific documentation for possible causes.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsServiceUnavailable"
+                        }
+                    }
+                },
+                "operationId": "get"
+            },
+            "post": {
+                "tags": [
+                    "session"
+                ],
+                "summary": "Creates a session with the API. This is the equivalent of login. This {@term operation} exchanges user credentials supplied in the security context for a session token that is to be used for authenticating subsequent calls. <p>To authenticate subsequent calls clients are expected to include the session token. For REST API calls the HTTP {@code vmware-api-session-id} header field should be used for this.",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "Newly created session token to be used for authenticating further requests.",
+                        "schema": {
+                            "type": "string",
+                            "format": "password"
+                        }
+                    },
+                    "401": {
+                        "description": "if the session creation fails due to request specific issues. Due to the security nature of the API the details of the error are not disclosed. <p> Please check the following preconditions if using a SAML token to authenticate: <ul> <li>the supplied token is delegate-able.</li> <li>the time of client and server system are synchronized.</li> <li>the token supplied is valid.</li> <li>if bearer tokens are used check that system configuration allows the API endpoint to accept such tokens.</li> </ul>",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthenticated"
+                        }
+                    },
+                    "503": {
+                        "description": "if session creation fails due to server specific issues, for example connection to a back end component is failing. Due to the security nature of this API further details will not be disclosed in the {@term error}. Please refer to component health information, administrative logs and product specific documentation for possible causes.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsServiceUnavailable"
+                        }
+                    }
+                },
+                "operationId": "create"
+            },
+            "delete": {
+                "tags": [
+                    "session"
+                ],
+                "summary": "Terminates the validity of a session token. This is the equivalent of log out. <p> A session token is expected as part of the request. <p>",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "401": {
+                        "description": "if the session id is missing from the request or the corresponding session object cannot be found.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthenticated"
+                        }
+                    },
+                    "503": {
+                        "description": "if session deletion fails due to server specific issues, for example connection to a back end component is failing. Due to the security nature of this API further details will not be disclosed in the {@term error}. Please refer to component health information, administrative logs and product specific documentation for possible causes.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsServiceUnavailable"
+                        }
+                    }
+                },
+                "operationId": "delete"
+            }
+        }
+    },
+    "definitions": {
+        "CisSessionInfo": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "description": "Fully qualified name of the end user that created the session, for example Administrator@vsphere.local. A typical use case for this information is in Graphical User Interfaces (GUI) or logging systems to visualize the identity of the current user.",
+                    "type": "string"
+                },
+                "created_time": {
+                    "description": "Time when the session was created.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "last_accessed_time": {
+                    "description": "Last time this session was used by passing the session token for invoking an API.",
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "required": [
+                "user",
+                "created_time",
+                "last_accessed_time"
+            ]
+        },
+        "VapiStdErrorsErrorType": {
+            "type": "string",
+            "description": "Enumeration of all standard errors. Used as discriminator in protocols that have no standard means for transporting the error type, e.g. REST.",
+            "enum": [
+                "ERROR",
+                "ALREADY_EXISTS",
+                "ALREADY_IN_DESIRED_STATE",
+                "CANCELED",
+                "CONCURRENT_CHANGE",
+                "FEATURE_IN_USE",
+                "INTERNAL_SERVER_ERROR",
+                "INVALID_ARGUMENT",
+                "INVALID_ELEMENT_CONFIGURATION",
+                "INVALID_ELEMENT_TYPE",
+                "INVALID_REQUEST",
+                "NOT_ALLOWED_IN_CURRENT_STATE",
+                "NOT_FOUND",
+                "OPERATION_NOT_FOUND",
+                "RESOURCE_BUSY",
+                "RESOURCE_IN_USE",
+                "RESOURCE_INACCESSIBLE",
+                "SERVICE_UNAVAILABLE",
+                "TIMED_OUT",
+                "UNABLE_TO_ALLOCATE_RESOURCE",
+                "UNAUTHENTICATED",
+                "UNAUTHORIZED",
+                "UNEXPECTED_INPUT",
+                "UNSUPPORTED",
+                "UNVERIFIED_PEER"
+            ]
+        },
+        "VapiStdErrorsServiceUnavailable": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnauthenticated": {
+            "type": "object",
+            "properties": {
+                "challenge": {
+                    "description": "Indicates the authentication challenges applicable to the target API provider. It can be used by a client to discover the correct authentication scheme to use. The exact syntax of the value is defined by the specific provider, the protocol and authentication schemes used. <p> For example, a provider using REST may adhere to the WWW-Authenticate HTTP header specification, RFC7235, section 4.1. In this case an example challenge value may be: SIGN realm=\"27da1358-2ba4-11e9-b210-d663bd873d93\",sts=\"http://vcenter/sso?vsphere.local\", Basic realm=\"vCenter\"",
+                    "type": "string"
+                },
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human {@term error} consumers. <p> The message at the top of the stack (first in the list) describes the {@term error} from the perspective of the {@term operation} the client invoked. Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the {@term operation} reporting a standard {@term error} to indicating that it was unable to complete successfully. <p> {@term Operations} may provide data that clients can use when responding to {@term errors}.  Since the data that clients need may be specific to the context of the {@term operation} reporting the {@term error}, different {@term operations} that report the same {@term error} may provide different data in the {@term error}.  The documentation for each each {@term operation} will describe what, if any, data it provides for each {@term error} it reports. The {@link ArgumentLocations}, {@link FileLocations}, and {@link TransientIndication} {@term structures} are intended as possible values for this {@term field}.  {@link vapi.std.DynamicID} may also be useful as a value for this {@term field} (although that is not its primary purpose).  Some {@term services} may provide their own specific {@term structures} for use as the value of this {@term field} when reporting {@term errors} from their {@term operations}.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdLocalizableMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "default_message": {
+                    "description": "The value of this localizable string or message template in the {@code en_US} (English) locale.  If {@link #id} refers to a message template, the default message will contain the substituted arguments. This value can be used by clients that do not need to display strings and messages in the native language of the user.  It could also be used as a fallback if a client is unable to access the appropriate message catalog.",
+                    "type": "string"
+                },
+                "args": {
+                    "description": "Positional arguments to be substituted into the message template. This list will be empty if the message uses named arguments or has no arguments.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "params": {
+                    "description": "Named arguments to be substituted into the message template.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/VapiStdLocalizationParam"
+                    }
+                },
+                "localized": {
+                    "description": "Localized string value as per request requirements.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "default_message",
+                "args"
+            ]
+        },
+        "VapiStdLocalizationParam": {
+            "type": "object",
+            "properties": {
+                "s": {
+                    "description": "{@term String} value associated with the parameter.",
+                    "type": "string"
+                },
+                "dt": {
+                    "description": "Date and time value associated with the parameter. Use the {@name #format} {@term field} to specify date and time display style.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "i": {
+                    "description": "{@term long} value associated with the parameter.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "d": {
+                    "description": "The {@term double} value associated with the parameter. The number of displayed fractional digits is changed via {@name #precision} {@term field}.",
+                    "type": "number",
+                    "format": "double"
+                },
+                "l": {
+                    "description": "Nested localizable value associated with the parameter. This is useful construct to convert to human readable localized form {@term enumerated type} and {@term boolean} values. It can also be used for proper handling of pluralization and gender forms in localization. Recursive {@name NestedLocalizableMessage} instances can be used for localizing short lists of items.",
+                    "$ref": "#/definitions/VapiStdNestedLocalizableMessage"
+                },
+                "format": {
+                    "description": "Format associated with the date and time value in {@name #dt} {@term field}. The {@term enumeration value} {@code SHORT_DATETIME} will be used as default.",
+                    "$ref": "#/definitions/VapiStdLocalizationParamDateTimeFormat"
+                },
+                "precision": {
+                    "description": "Number of fractional digits to include in formatted {@term double} value.",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "VapiStdLocalizationParamDateTimeFormat": {
+            "type": "string",
+            "description": "The {@name DateTimeFormat} {@term enumerated type} lists possible date and time formatting options. It combines the Unicode CLDR format types - full, long, medium and short with 3 different presentations - date only, time only and combined date and time presentation.",
+            "enum": [
+                "SHORT_DATE",
+                "MED_DATE",
+                "LONG_DATE",
+                "FULL_DATE",
+                "SHORT_TIME",
+                "MED_TIME",
+                "LONG_TIME",
+                "FULL_TIME",
+                "SHORT_DATE_TIME",
+                "MED_DATE_TIME",
+                "LONG_DATE_TIME",
+                "FULL_DATE_TIME"
+            ]
+        },
+        "VapiStdNestedLocalizableMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. <p> This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "params": {
+                    "description": "Named Arguments to be substituted into the message template.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/VapiStdLocalizationParam"
+                    }
+                }
+            },
+            "required": [
+                "id"
+            ]
+        }
+    }
+}
