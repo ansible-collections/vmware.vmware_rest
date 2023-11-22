@@ -134,6 +134,7 @@ def get_credentials(**options):
     ) or os.getenv("VMWARE_REST_LOG_FILE")
     return credentials
 
+
 class VcenterResource:
     def __init__(self, raw, api):
         self.raw = raw
@@ -142,11 +143,11 @@ class VcenterResource:
     @property
     def moid(self):
         return self.raw[self.object_type]
-#        return self.raw[self.get_type(self.raw)]
 
     @property
     def name(self):
         return self.raw["name"]
+
 
 class VcenterCluster(VcenterResource):
     object_type = "cluster"
@@ -178,7 +179,9 @@ class VcenterCluster(VcenterResource):
                 },
             )
         else:
-            child_resources = [i for i in self.child_resources if i != VcenterResourcePool]
+            child_resources = [
+                i for i in self.child_resources if i != VcenterResourcePool
+            ]
             for child_resource in child_resources:
                 child = await self._api.list_resource_one(
                     resource=child_resource,
@@ -192,6 +195,7 @@ class VcenterCluster(VcenterResource):
                     return child
 
                 return None
+
 
 class VcenterDatacenter(VcenterResource):
     object_type = "datacenter"
@@ -213,12 +217,14 @@ class VcenterDatacenter(VcenterResource):
             },
         )
 
+
 class VcenterDatastore(VcenterResource):
     object_type = "datastore"
     api_type = "datastore"
 
     async def get_child(self, resource, name):
         return None
+
 
 class VcenterFolder(VcenterResource):
     object_type = "folder"
@@ -279,6 +285,7 @@ class VcenterFolder(VcenterResource):
 
         return None
 
+
 class VcenterHost(VcenterResource):
     object_type = "host"
     api_type = "host"
@@ -323,12 +330,14 @@ class VcenterHost(VcenterResource):
 
         return result
 
+
 class VcenterNetwork(VcenterResource):
     object_type = "network"
     api_type = "network"
 
     async def get_child(self, resource, name):
         return None
+
 
 class VcenterResourcePool(VcenterResource):
     object_type = "resource_pool"
@@ -358,12 +367,14 @@ class VcenterResourcePool(VcenterResource):
 
             return None
 
+
 class VcenterVm(VcenterResource):
     object_type = "vm"
     api_type = "vm"
 
     async def get_child(self, resource, name):
         return None
+
 
 def get_vcenter_object_type(raw):
     for cls in VcenterResource.__subclasses__():
@@ -375,10 +386,12 @@ def get_vcenter_object_type(raw):
 
     return None
 
+
 def make_vcenter_resource(raw, api):
     object_type = get_vcenter_object_type(raw)
     resource = get_vcenter_resource(object_type)
     return resource(raw, api)
+
 
 def get_vcenter_resource(object_type):
     for cls in VcenterResource.__subclasses__():
@@ -387,6 +400,7 @@ def get_vcenter_resource(object_type):
 
     return None
 
+
 class VcenterApi:
     def __init__(self, hostname, session):
         self.hostname = hostname
@@ -394,15 +408,17 @@ class VcenterApi:
 
     def build_url(self, resource, params):
         try:
-            _in_query_parameters = INVENTORY[resource.object_type]["list"]["query"].keys()
+            _in_query_parameters = INVENTORY[resource.object_type]["list"][
+                "query"
+            ].keys()
         except KeyError:
             raise AnsibleLookupError(
                 "object_type must be one of [%s]." % ", ".join(list(INVENTORY.keys()))
             )
 
-        return (
-            f"https://{self.hostname}/api/vcenter/{resource.api_type}"
-        ) + gen_args(params, _in_query_parameters)
+        return (f"https://{self.hostname}/api/vcenter/{resource.api_type}") + gen_args(
+            params, _in_query_parameters
+        )
 
     async def fetch(self, url):
         async with self._session.get(url) as response:
@@ -426,6 +442,7 @@ class VcenterApi:
         if result:
             return result[0]
         return None
+
 
 class Lookup:
     def __init__(self, options, api):
