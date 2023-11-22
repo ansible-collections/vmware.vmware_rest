@@ -17,7 +17,7 @@ Version added: 2.0.0
 
 Synopsis
 --------
-- Creates a directory in the guest operating system. <p>
+- Creates a directory in the guest operating system. 
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -57,7 +57,8 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Whether any parent directories should be created.  If any failure occurs, some parent directories could be left behind.</div>
+                        <div>Whether any parent directories should be created. If any failure occurs, some parent directories could be left behind.</div>
+                        <div>If unset parent directories are not created.</div>
                 </td>
             </tr>
             <tr>
@@ -75,16 +76,19 @@ Parameters
                 <td>
                         <div>The guest authentication data. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>interactive_session</code> (bool): If {@term set}, theoperation will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the {@link Credentials}. This is currently only supported for {@link Type#USERNAME_PASSWORD}. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>interactive_session</code> (bool): If set, the operation will interact with the logged-in desktop session in the guest. This requires that the logged-on user matches the user specified by the Credentials. This is currently only supported for USERNAME_PASSWORD. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;].</div>
                         <div>- <code>type</code> (str): Types of guest credentials ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- SAML_BEARER_TOKEN</div>
                         <div>- USERNAME_PASSWORD</div>
-                        <div>- <code>user_name</code> (str): For {@link Type#SAML_BEARER_TOKEN}, this is the guest user to be associated with the credentials. For {@link Type#USERNAME_PASSWORD} this is the guest username. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
-                        <div>- <code>password</code> (str): password ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
-                        <div>- <code>saml_token</code> (str): SAML Bearer Token ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>user_name</code> (str): For SAML_BEARER_TOKEN, this is the guest user to be associated with the credentials. For USERNAME_PASSWORD this is the guest username.</div>
+                        <div>If no user is specified for SAML_BEARER_TOKEN, a guest dependent mapping will decide what guest user account is applied. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>password</code> (str): password</div>
+                        <div>This field is optional and it is only relevant when the value of Credentials.type is USERNAME_PASSWORD. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
+                        <div>- <code>saml_token</code> (str): SAML Bearer Token</div>
+                        <div>This field is optional and it is only relevant when the value of Credentials.type is SAML_BEARER_TOKEN. ([&#x27;absent&#x27;, &#x27;create_temporary&#x27;, &#x27;move&#x27;, &#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -115,6 +119,7 @@ Parameters
                 </td>
                 <td>
                         <div>The complete path to the directory in which to create the new directory.</div>
+                        <div>Directory If unset a guest-specific default will be used.</div>
                 </td>
             </tr>
             <tr>
@@ -164,6 +169,7 @@ Parameters
                 </td>
                 <td>
                         <div>If true, all files and subdirectories are also deleted. If false, the directory must be empty for the operation to succeed.</div>
+                        <div>If unset, any directory content is not deleted.</div>
                 </td>
             </tr>
             <tr>
@@ -322,7 +328,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual Machine to perform the operation on. This parameter is mandatory.</div>
+                        <div>Virtual Machine to perform the operation on.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -333,7 +340,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

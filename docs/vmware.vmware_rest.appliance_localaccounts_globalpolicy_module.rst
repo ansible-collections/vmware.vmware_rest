@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -54,6 +54,7 @@ Parameters
                 </td>
                 <td>
                         <div>Maximum number of days a password may be used. If the password is older than this, a password change will be forced.</div>
+                        <div>If unset then the restriction will be ignored.</div>
                 </td>
             </tr>
             <tr>
@@ -69,6 +70,7 @@ Parameters
                 </td>
                 <td>
                         <div>Minimum number of days allowed between password changes. Any password changes attempted sooner than this will be rejected.</div>
+                        <div>If unset then the restriction will be ignored.</div>
                 </td>
             </tr>
             <tr>
@@ -209,6 +211,7 @@ Parameters
                 </td>
                 <td>
                         <div>Number of days warning given before a password expires. A zero means warning is given only upon the day of expiration.</div>
+                        <div>If unset then no warning will be provided.</div>
                 </td>
             </tr>
     </table>
@@ -219,7 +222,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -233,36 +236,6 @@ Examples
         warn_days: 5
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Update the global policy of the local accounts</div>
-                    <br/>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

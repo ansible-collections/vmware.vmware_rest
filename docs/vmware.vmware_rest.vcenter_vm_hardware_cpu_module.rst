@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_cpu
 **Updates the CPU-related settings of a virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New number of CPU cores per socket.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
+                        <div>New number of CPU cores per socket. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -68,7 +69,12 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New number of CPU cores.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket. The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, the number of CPU cores may only be increased if {@link Info#hotAddEnabled} is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true.</div>
+                        <div>New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
+                        <div>The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</div>
+                        <div></div>
+                        <div>If the virtual machine is running, the number of CPU cores may only be increased if <em>hot_add_enabled</em> is true, and may only be decreased if <em>hot_remove_enabled</em> is true.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -87,7 +93,10 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
+                        <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled.</div>
+                        <div>This field may only be modified if the virtual machine is powered off.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -106,7 +115,10 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
+                        <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled.</div>
+                        <div>This field may only be modified if the virtual machine is powered off.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -247,7 +259,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -258,7 +271,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -285,53 +298,6 @@ Examples
       register: _result
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Dedicate one core to the VM</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cores_per_socket&#x27;: 1, &#x27;count&#x27;: 1, &#x27;hot_add_enabled&#x27;: 0, &#x27;hot_remove_enabled&#x27;: 0}</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

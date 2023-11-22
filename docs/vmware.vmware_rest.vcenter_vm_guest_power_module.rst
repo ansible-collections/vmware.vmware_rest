@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_guest_power
 **Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -182,7 +182,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the virtual machine. This parameter is mandatory.</div>
+                        <div>Identifier of the virtual machine.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -193,7 +194,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 See Also
@@ -249,36 +250,6 @@ Examples
         vm: '{{ my_vm.id }}'
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Shut down the VM</div>
-                    <br/>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

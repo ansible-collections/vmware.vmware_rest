@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_adapter_sata
 **Adds a virtual SATA adapter to the virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual SATA adapter identifier. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Virtual SATA adapter identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_adapter_sata</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -69,6 +70,7 @@ Parameters
                 </td>
                 <td>
                         <div>SATA bus number.</div>
+                        <div>If unset, the server will choose an available bus number; if none is available, the request will fail.</div>
                 </td>
             </tr>
             <tr>
@@ -99,6 +101,7 @@ Parameters
                 </td>
                 <td>
                         <div>Address of the SATA adapter on the PCI bus.</div>
+                        <div>If unset, the server will choose an available address when the virtual machine is powered on.</div>
                 </td>
             </tr>
             <tr>
@@ -152,7 +155,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>type</code> defines the valid emulation types for a virtual SATA adapter.</div>
+                        <div>The <em>type</em> enumerated type defines the valid emulation types for a virtual SATA adapter.</div>
                 </td>
             </tr>
             <tr>
@@ -258,7 +261,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -269,7 +273,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -302,55 +306,6 @@ Examples
         state: absent
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">15000</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Create a SATA adapter at PCI slot 34</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;bus&#x27;: 0, &#x27;label&#x27;: &#x27;SATA controller 0&#x27;, &#x27;pci_slot_number&#x27;: 34, &#x27;type&#x27;: &#x27;AHCI&#x27;}</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

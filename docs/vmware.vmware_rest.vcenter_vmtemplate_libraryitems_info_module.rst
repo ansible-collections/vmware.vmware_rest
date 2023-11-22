@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info
 **Returns information about a virtual machine template contained in the library item specified by {@param.name templateLibraryItem}**
 
 
-Version added: 2.2.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -172,7 +172,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

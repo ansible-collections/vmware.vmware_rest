@@ -5,10 +5,10 @@
 vmware.vmware_rest.vcenter_host_info
 ************************************
 
-**Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the {@link FilterSpec}.**
+**Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the Host.FilterSpec.**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the {@link FilterSpec}.
+- Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the Host.FilterSpec.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -55,6 +55,8 @@ Parameters
                 </td>
                 <td>
                         <div>Clusters that must contain the hosts for the hosts to match the filter.</div>
+                        <div>If unset or empty, hosts in any cluster and hosts that are not in a cluster match the filter. If this field is not empty and <em>standalone</em> is true, no hosts will match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -70,7 +72,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Connection states that a host must be in to match the filter (see {@link Summary#connectionState}.</div>
+                        <div>Connection states that a host must be in to match the filter (see I()</div>
+                        <div>If unset or empty, hosts in any connection state match the filter.</div>
                 </td>
             </tr>
             <tr>
@@ -87,6 +90,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the hosts for the hosts to match the filter.</div>
+                        <div>If unset or empty, hosts in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -104,6 +109,8 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the hosts for the hosts to match the filter.</div>
+                        <div>If unset or empty, hosts in any folder match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
@@ -121,6 +128,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of hosts that can match the filter.</div>
+                        <div>If unset or empty, hosts with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -136,7 +145,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that hosts must have to match the filter (see {@link Summary#name}).</div>
+                        <div>Names that hosts must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, hosts with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -175,6 +185,7 @@ Parameters
                 </td>
                 <td>
                         <div>If true, only hosts that are not part of a cluster can match the filter, and if false, only hosts that are are part of a cluster can match the filter.</div>
+                        <div>If unset Hosts can match filter independent of whether they are part of a cluster or not. If this field is true and <em>clusters</em> os not empty, no hosts will match the filter.</div>
                 </td>
             </tr>
             <tr>
@@ -275,52 +286,12 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get a list of the hosts
-      vmware.vmware_rest.vcenter_host_info:
-      register: my_hosts
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Get a list of the hosts</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;connection_state&#x27;: &#x27;CONNECTED&#x27;, &#x27;host&#x27;: &#x27;host-1013&#x27;, &#x27;name&#x27;: &#x27;esxi1.test&#x27;, &#x27;power_state&#x27;: &#x27;POWERED_ON&#x27;}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

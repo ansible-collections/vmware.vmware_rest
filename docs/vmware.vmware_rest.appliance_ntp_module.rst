@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -192,7 +192,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -214,38 +214,6 @@ Examples
       register: result
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Test the NTP configuration</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;message&#x27;: {&#x27;args&#x27;: [], &#x27;default_message&#x27;: &#x27;NTP Server is reachable.&#x27;, &#x27;id&#x27;: &#x27;com.vmware.appliance.ntp_sync.success&#x27;}, &#x27;server&#x27;: &#x27;time.google.com&#x27;, &#x27;status&#x27;: &#x27;SERVER_REACHABLE&#x27;}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

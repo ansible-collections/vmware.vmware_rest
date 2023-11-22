@@ -17,7 +17,7 @@ Version added: 2.0.0
 
 Synopsis
 --------
-- Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses. This overwrites the existing firewall rules and creates a new rule list. Within the list of traffic rules, rules are processed in order of appearance, from top to bottom. For example, the list of rules can be as follows: <table> <tr> <th>Address</th><th>Prefix</th><th>Interface Name</th><th>Policy</th> </tr> <tr> <td>10.112.0.1</td><td>0</td><td>*</td><td>REJECT</td> </tr> <tr> <td>10.112.0.1</td><td>0</td><td>nic0</td><td>ACCEPT</td> </tr> </table> In the above example, the first rule drops all packets originating from 10.112.0.1 and<br> the second rule accepts all packets originating from 10.112.0.1 only on nic0. In effect, the second rule is always ignored which is not desired, hence the order has to be swapped. When a connection matches a firewall rule, further processing for the connection stops, and the appliance ignores any additional firewall rules you have set.
+- Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses. This overwrites the existing firewall rules and creates a new rule list. Within the list of traffic rules, rules are processed in order of appearance, from top to bottom. For example, the list of rules can be as follows: [dropped table ]
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -61,7 +61,7 @@ Parameters
                         <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- <code>prefix</code> (int): CIDR prefix used to mask address. For example, an IPv4 prefix of 24 ignores the low-order 8 bits of address. ([&#x27;set&#x27;])</div>
                         <div>This key is required with [&#x27;set&#x27;].</div>
-                        <div>- <code>policy</code> (str): <code>policy</code> Defines firewall rule policies. ([&#x27;set&#x27;])</div>
+                        <div>- <code>policy</code> (str): <em>policy</em> enumerated type Defines firewall rule policies. ([&#x27;set&#x27;])</div>
                         <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- ACCEPT</div>
@@ -204,7 +204,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -229,53 +229,6 @@ Examples
       register: result
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>failed_when_result</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Ensure the rules parameter is mandatory</div>
-                    <br/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>msg</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Ensure the rules parameter is mandatory</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">missing required arguments: rules</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

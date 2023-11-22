@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_storage_policy
 **Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -54,6 +54,8 @@ Parameters
                 </td>
                 <td>
                         <div>Storage policy or policies to be used when reconfiguring virtual machine diks.</div>
+                        <div>if unset the current storage policy is retained.</div>
+                        <div>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_disk</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -194,7 +196,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -210,14 +213,17 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Storage policy to be used when reconfiguring the virtual machine home. This parameter is mandatory.</div>
+                        <div>Storage policy to be used when reconfiguring the virtual machine home.</div>
+                        <div>if unset the current storage policy is retained. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The <code>policy_type</code> defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory. ([&#x27;present&#x27;])</div>
+                        <div>- <code>type</code> (str): This option defines the choices for how to specify the policy to be associated with the virtual machine home&#x27;s directory. ([&#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- USE_DEFAULT_POLICY</div>
                         <div>- USE_SPECIFIED_POLICY</div>
-                        <div>- <code>policy</code> (str): Storage Policy identification. ([&#x27;present&#x27;])</div>
+                        <div>- <code>policy</code> (str): Storage Policy identification.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is USE_SPECIFIED_POLICY.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_storage_policies</span>. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
     </table>
@@ -228,7 +234,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -261,51 +267,6 @@ Examples
       register: _result
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Adjust VM storage policy</div>
-                    <br/>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

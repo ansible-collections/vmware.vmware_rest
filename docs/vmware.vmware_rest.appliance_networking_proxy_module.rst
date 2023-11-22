@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -59,9 +59,11 @@ Parameters
                         <div>This key is required with [&#x27;test&#x27;].</div>
                         <div>- <code>port</code> (int): Port to connect to the proxy server. In a &#x27;get&#x27; call, indicates the port connected to the proxy server. In a &#x27;set&#x27; call, specifies the port to connect to the proxy server. A value of -1 indicates the default port. ([&#x27;test&#x27;])</div>
                         <div>This key is required with [&#x27;test&#x27;].</div>
-                        <div>- <code>username</code> (str): Username for proxy server. ([&#x27;test&#x27;])</div>
-                        <div>- <code>password</code> (str): Password for proxy server. ([&#x27;test&#x27;])</div>
-                        <div>- <code>enabled</code> (bool): In the result of the <code>#get</code> and <code>#list</code> {@term operations} this field indicates whether proxying is enabled for a particular protocol. In the input to the <code>test</code> and <code>set</code> {@term operations} this field specifies whether proxying should be enabled for a particular protocol. ([&#x27;test&#x27;])</div>
+                        <div>- <code>username</code> (str): Username for proxy server.</div>
+                        <div>Only set if proxy requires username. ([&#x27;test&#x27;])</div>
+                        <div>- <code>password</code> (str): Password for proxy server.</div>
+                        <div>Only set if proxy requires password. ([&#x27;test&#x27;])</div>
+                        <div>- <code>enabled</code> (bool): In the result of the #get and #list operations this field indicates whether proxying is enabled for a particular protocol. In the input to the test and set operations this field specifies whether proxying should be enabled for a particular protocol. ([&#x27;test&#x27;])</div>
                         <div>This key is required with [&#x27;test&#x27;].</div>
                 </td>
             </tr>
@@ -81,7 +83,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>In the result of the <code>#get</code> and <code>#list</code> {@term operations} this field indicates whether proxying is enabled for a particular protocol. In the input to the <code>test</code> and <code>set</code> {@term operations} this field specifies whether proxying should be enabled for a particular protocol. Required with <em>state=[&#x27;set&#x27;]</em></div>
+                        <div>In the result of the #get and #list operations this field indicates whether proxying is enabled for a particular protocol. In the input to the test and set operations this field specifies whether proxying should be enabled for a particular protocol. Required with <em>state=[&#x27;set&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -112,6 +114,7 @@ Parameters
                 </td>
                 <td>
                         <div>Password for proxy server.</div>
+                        <div>Only set if proxy requires password.</div>
                 </td>
             </tr>
             <tr>
@@ -210,6 +213,7 @@ Parameters
                 </td>
                 <td>
                         <div>Username for proxy server.</div>
+                        <div>Only set if proxy requires username.</div>
                 </td>
             </tr>
             <tr>
@@ -310,7 +314,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -334,36 +338,6 @@ Examples
       register: result
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Delete the HTTP proxy configuration</div>
-                    <br/>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

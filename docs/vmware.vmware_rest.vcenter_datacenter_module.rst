@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_datacenter
 **Create a new datacenter in the vCenter inventory**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the datacenter to be deleted. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Identifier of the datacenter to be deleted.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -69,6 +70,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenter folder in which the new datacenter should be created.</div>
+                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the datacenter; if a folder cannot be chosen, the datacenter creation operation will fail.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -88,6 +91,7 @@ Parameters
                 </td>
                 <td>
                         <div>If true, delete the datacenter even if it is not empty.</div>
+                        <div>If unset a ResourceInUse error will be reported if the datacenter is not empty. This is the equivalent of passing the value false.</div>
                 </td>
             </tr>
             <tr>
@@ -239,84 +243,12 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get a list of all the datacenters
-      register: existing_datacenters
-      vmware.vmware_rest.vcenter_datacenter_info:
-
-    - name: Force delete the existing DC
-      vmware.vmware_rest.vcenter_datacenter:
-        state: absent
-        datacenter: '{{ item.datacenter }}'
-        force: true
-      with_items: '{{ existing_datacenters.value }}'
-      until:
-      - _result is not failed
-      retries: 7
-
-    - name: Create datacenter my_dc
-      vmware.vmware_rest.vcenter_datacenter:
-        name: my_dc
-        folder: '{{ my_datacenter_folder.folder }}'
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>msg</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Force delete the existing DC</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">All items completed</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>results</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">list</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Force delete the existing DC</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;_ansible_item_label&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1001&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;_ansible_no_log&#x27;: None, &#x27;ansible_loop_var&#x27;: &#x27;item&#x27;, &#x27;attempts&#x27;: 1, &#x27;changed&#x27;: 1, &#x27;failed&#x27;: 0, &#x27;invocation&#x27;: {&#x27;module_args&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1001&#x27;, &#x27;folder&#x27;: None, &#x27;force&#x27;: 1, &#x27;name&#x27;: None, &#x27;session_timeout&#x27;: None, &#x27;state&#x27;: &#x27;absent&#x27;, &#x27;vcenter_hostname&#x27;: &#x27;vcenter.test&#x27;, &#x27;vcenter_password&#x27;: &#x27;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&#x27;, &#x27;vcenter_rest_log_file&#x27;: &#x27;/tmp/vmware_rest.log&#x27;, &#x27;vcenter_username&#x27;: &#x27;administrator@vsphere.local&#x27;, &#x27;vcenter_validate_certs&#x27;: 0}}, &#x27;item&#x27;: {&#x27;datacenter&#x27;: &#x27;datacenter-1001&#x27;, &#x27;name&#x27;: &#x27;my_dc&#x27;}, &#x27;value&#x27;: {}}]</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

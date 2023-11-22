@@ -5,10 +5,10 @@
 vmware.vmware_rest.vcenter_resourcepool_info
 ********************************************
 
-**Retrieves information about the resource pool indicated by {@param.name resourcePool}.**
+**Retrieves information about the resource pool indicated by resourcePool.**
 
 
-Version added: 0.3.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -17,7 +17,7 @@ Version added: 0.3.0
 
 Synopsis
 --------
-- Retrieves information about the resource pool indicated by {@param.name resourcePool}.
+- Retrieves information about the resource pool indicated by resourcePool.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -55,6 +55,8 @@ Parameters
                 </td>
                 <td>
                         <div>Clusters that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any cluster match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -71,6 +73,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -88,6 +92,8 @@ Parameters
                 </td>
                 <td>
                         <div>Hosts that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any host match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -103,7 +109,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that resource pools must have to match the filter (see {@link Info#name}).</div>
+                        <div>Names that resource pools must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, resource pools with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -121,6 +128,8 @@ Parameters
                 </td>
                 <td>
                         <div>Resource pools that must contain the resource pool for the resource pool to match the filter.</div>
+                        <div>If unset or empty, resource pools in any resource pool match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_resourcepool_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -135,7 +144,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the resource pool for which information should be retrieved. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>Identifier of the resource pool for which information should be retrieved.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -152,6 +162,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of resource pools that can match the filter.</div>
+                        <div>If unset or empty, resource pools with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_resourcepool_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -270,85 +282,12 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    - name: Get the existing resource pools
-      vmware.vmware_rest.vcenter_resourcepool_info:
-      register: resource_pools
-
-    - name: Get the existing resource pool
-      vmware.vmware_rest.vcenter_resourcepool_info:
-        resource_pool: '{{ resource_pools.value[0].resource_pool }}'
-      register: my_resource_pool
-
-    - name: Create a generic resource pool
-      vmware.vmware_rest.vcenter_resourcepool:
-        name: my_resource_pool
-        parent: '{{ resource_pools.value[0].resource_pool }}'
-      register: my_resource_pool
-
-    - name: Read details from a specific resource pool
-      vmware.vmware_rest.vcenter_resourcepool_info:
-        resource_pool: '{{ my_resource_pool.id }}'
-      register: my_resource_pool
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">resgroup-1009</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Read details from a specific resource pool</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;cpu_allocation&#x27;: {&#x27;expandable_reservation&#x27;: 1, &#x27;limit&#x27;: -1, &#x27;reservation&#x27;: 0, &#x27;shares&#x27;: {&#x27;level&#x27;: &#x27;NORMAL&#x27;}}, &#x27;memory_allocation&#x27;: {&#x27;expandable_reservation&#x27;: 0, &#x27;limit&#x27;: 1000, &#x27;reservation&#x27;: 0, &#x27;shares&#x27;: {&#x27;level&#x27;: &#x27;NORMAL&#x27;}}, &#x27;name&#x27;: &#x27;my_resource_pool&#x27;, &#x27;resource_pools&#x27;: []}</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status

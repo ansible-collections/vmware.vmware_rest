@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_vm_hardware_floppy
 **Adds a virtual floppy drive to the virtual machine.**
 
 
-Version added: 0.1.0
+Version added: 2.0.0
 
 .. contents::
    :local:
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -58,6 +58,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -72,16 +73,19 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Physical resource backing for the virtual floppy drive. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Physical resource backing for the virtual floppy drive.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual floppy drive. ([&#x27;present&#x27;])</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual floppy drive. ([&#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- CLIENT_DEVICE</div>
                         <div>- HOST_DEVICE</div>
                         <div>- IMAGE_FILE</div>
-                        <div>- <code>image_file</code> (str): Path of the image file that should be used as the virtual floppy drive backing. ([&#x27;present&#x27;])</div>
-                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual floppy drive backing. ([&#x27;present&#x27;])</div>
+                        <div>- <code>image_file</code> (str): Path of the image file that should be used as the virtual floppy drive backing.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is IMAGE_FILE. ([&#x27;present&#x27;])</div>
+                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual floppy drive backing.</div>
+                        <div>If unset, the virtual floppy drive will be configured to automatically detect a suitable host device. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -96,7 +100,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual floppy drive identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
+                        <div>Virtual floppy drive identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_floppy</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -149,6 +154,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -274,7 +280,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -285,7 +292,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -319,55 +326,6 @@ Examples
       register: _result
 
 
-
-Return Values
--------------
-Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>id</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>moid of the resource</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">8000</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-"></div>
-                    <b>value</b>
-                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                    </div>
-                </td>
-                <td>On success</td>
-                <td>
-                            <div>Add a floppy disk drive</div>
-                    <br/>
-                        <div style="font-size: smaller"><b>Sample:</b></div>
-                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">{&#x27;allow_guest_control&#x27;: 1, &#x27;backing&#x27;: {&#x27;auto_detect&#x27;: 1, &#x27;host_device&#x27;: &#x27;&#x27;, &#x27;type&#x27;: &#x27;HOST_DEVICE&#x27;}, &#x27;label&#x27;: &#x27;Floppy drive 1&#x27;, &#x27;start_connected&#x27;: 0, &#x27;state&#x27;: &#x27;NOT_CONNECTED&#x27;}</div>
-                </td>
-            </tr>
-    </table>
-    <br/><br/>
 
 
 Status
