@@ -8,7 +8,7 @@ vmware.vmware_rest.vcenter_network_info
 **Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the Network.FilterSpec.**
 
 
-Version added: 2.0.0
+Version added: 0.1.0
 
 .. contents::
    :local:
@@ -265,6 +265,38 @@ Examples
       register: my_portgroup
 
 
+
+Return Values
+-------------
+Common return values are documented `here <https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values>`_, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-"></div>
+                    <b>value</b>
+                    <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                    </div>
+                </td>
+                <td>On success</td>
+                <td>
+                            <div>Get a list of the networks</div>
+                    <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">[{&#x27;name&#x27;: &#x27;VM Network&#x27;, &#x27;network&#x27;: &#x27;network-1016&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;second_vswitch&#x27;, &#x27;network&#x27;: &#x27;network-1018&#x27;, &#x27;type&#x27;: &#x27;STANDARD_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;dvswitch1-DVUplinks-1020&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1021&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}, {&#x27;name&#x27;: &#x27;my portrgoup&#x27;, &#x27;network&#x27;: &#x27;dvportgroup-1022&#x27;, &#x27;type&#x27;: &#x27;DISTRIBUTED_PORTGROUP&#x27;}]</div>
+                </td>
+            </tr>
+    </table>
+    <br/><br/>
 
 
 Status
