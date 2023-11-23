@@ -384,6 +384,11 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "publish": {
+        "query": {},
+        "body": {"subscriptions": "subscriptions"},
+        "path": {"library_id": "library_id"},
+    },
     "update": {
         "query": {},
         "body": {
@@ -405,6 +410,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -426,12 +432,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "publish": {
-        "query": {},
-        "body": {"subscriptions": "subscriptions"},
-        "path": {"library_id": "library_id"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

@@ -670,4 +670,4 @@ releases:
     - remove_unnecessary_sanity_ignores.yaml
     - start_gha_4_sanity_tests.yaml
     - use_7.0.3_spec.yaml
-    release_date: '2023-11-22'
+    release_date: '2023-11-23'

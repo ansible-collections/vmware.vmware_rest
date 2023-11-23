@@ -264,11 +264,6 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "filter": {
         "query": {},
         "body": {"target": "target"},
@@ -278,6 +273,11 @@ PAYLOAD_FORMAT = {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long
 

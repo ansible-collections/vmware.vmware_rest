@@ -191,6 +191,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {"resource_pool": "resource_pool"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
     "create": {
         "query": {},
         "body": {
@@ -201,7 +202,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

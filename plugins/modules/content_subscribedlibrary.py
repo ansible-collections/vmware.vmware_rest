@@ -381,6 +381,29 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "security_policy_id": "security_policy_id",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "unset_security_policy_id": "unset_security_policy_id",
+            "version": "version",
+        },
+        "path": {},
+    },
     "update": {
         "query": {},
         "body": {
@@ -407,30 +430,7 @@ PAYLOAD_FORMAT = {
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "security_policy_id": "security_policy_id",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "unset_security_policy_id": "unset_security_policy_id",
-            "version": "version",
-        },
-        "path": {},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

@@ -1148,24 +1148,7 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "clone": {
-        "query": {},
-        "body": {
-            "disks_to_remove": "disks_to_remove",
-            "disks_to_update": "disks_to_update",
-            "guest_customization_spec": "guest_customization_spec",
-            "name": "name",
-            "placement": "placement",
-            "power_on": "power_on",
-            "source": "source",
-        },
-        "path": {},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "register": {
         "query": {},
         "body": {
@@ -1177,17 +1160,15 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "instant_clone": {
+    "clone": {
         "query": {},
         "body": {
-            "bios_uuid": "bios_uuid",
-            "disconnect_all_nics": "disconnect_all_nics",
+            "disks_to_remove": "disks_to_remove",
+            "disks_to_update": "disks_to_update",
+            "guest_customization_spec": "guest_customization_spec",
             "name": "name",
-            "nics_to_update": "nics_to_update",
-            "parallel_ports_to_update": "parallel_ports_to_update",
             "placement": "placement",
-            "serial_ports_to_update": "serial_ports_to_update",
+            "power_on": "power_on",
             "source": "source",
         },
         "path": {},
@@ -1217,6 +1198,25 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "instant_clone": {
+        "query": {},
+        "body": {
+            "bios_uuid": "bios_uuid",
+            "disconnect_all_nics": "disconnect_all_nics",
+            "name": "name",
+            "nics_to_update": "nics_to_update",
+            "parallel_ports_to_update": "parallel_ports_to_update",
+            "placement": "placement",
+            "serial_ports_to_update": "serial_ports_to_update",
+            "source": "source",
+        },
+        "path": {},
+    },
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

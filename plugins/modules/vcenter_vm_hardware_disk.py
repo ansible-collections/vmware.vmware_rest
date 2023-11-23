@@ -241,6 +241,7 @@ PAYLOAD_FORMAT = {
         "body": {"backing": "backing"},
         "path": {"disk": "disk", "vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -254,7 +255,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"disk": "disk", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

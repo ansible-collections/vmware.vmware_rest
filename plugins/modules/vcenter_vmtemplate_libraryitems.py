@@ -275,6 +275,20 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {
+        "query": {},
+        "body": {
+            "description": "description",
+            "disk_storage": "disk_storage",
+            "disk_storage_overrides": "disk_storage_overrides",
+            "library": "library",
+            "name": "name",
+            "placement": "placement",
+            "source_vm": "source_vm",
+            "vm_home_storage": "vm_home_storage",
+        },
+        "path": {},
+    },
     "deploy": {
         "query": {},
         "body": {
@@ -289,20 +303,6 @@ PAYLOAD_FORMAT = {
             "vm_home_storage": "vm_home_storage",
         },
         "path": {"template_library_item": "template_library_item"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "description": "description",
-            "disk_storage": "disk_storage",
-            "disk_storage_overrides": "disk_storage_overrides",
-            "library": "library",
-            "name": "name",
-            "placement": "placement",
-            "source_vm": "source_vm",
-            "vm_home_storage": "vm_home_storage",
-        },
-        "path": {},
     },
 }  # pylint: disable=line-too-long
 

@@ -278,21 +278,7 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "mac_address": "mac_address",
-            "mac_type": "mac_type",
-            "start_connected": "start_connected",
-            "upt_compatibility_enabled": "upt_compatibility_enabled",
-            "wake_on_lan_enabled": "wake_on_lan_enabled",
-        },
-        "path": {"nic": "nic", "vm": "vm"},
-    },
-    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -308,7 +294,21 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "mac_address": "mac_address",
+            "mac_type": "mac_type",
+            "start_connected": "start_connected",
+            "upt_compatibility_enabled": "upt_compatibility_enabled",
+            "wake_on_lan_enabled": "wake_on_lan_enabled",
+        },
+        "path": {"nic": "nic", "vm": "vm"},
+    },
+    "disconnect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"nic": "nic", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

@@ -161,6 +161,7 @@ PAYLOAD_FORMAT = {
         "body": {"sharing": "sharing"},
         "path": {"adapter": "adapter", "vm": "vm"},
     },
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -171,7 +172,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

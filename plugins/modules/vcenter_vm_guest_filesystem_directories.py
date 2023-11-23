@@ -213,6 +213,15 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
+    "delete": {
+        "query": {},
+        "body": {
+            "credentials": "credentials",
+            "path": "path",
+            "recursive": "recursive",
+        },
+        "path": {"vm": "vm"},
+    },
     "create": {
         "query": {},
         "body": {
@@ -225,15 +234,6 @@ PAYLOAD_FORMAT = {
     "move": {
         "query": {},
         "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
-        "path": {"vm": "vm"},
-    },
-    "delete": {
-        "query": {},
-        "body": {
-            "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
-        },
         "path": {"vm": "vm"},
     },
 }  # pylint: disable=line-too-long

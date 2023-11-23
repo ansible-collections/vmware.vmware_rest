@@ -117,12 +117,12 @@ RETURN = r"""
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
     "reboot": {"query": {}, "body": {"delay": "delay", "reason": "reason"}, "path": {}},
-    "cancel": {"query": {}, "body": {}, "path": {}},
     "poweroff": {
         "query": {},
         "body": {"delay": "delay", "reason": "reason"},
         "path": {},
     },
+    "cancel": {"query": {}, "body": {}, "path": {}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

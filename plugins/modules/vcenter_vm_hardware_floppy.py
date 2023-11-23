@@ -158,17 +158,7 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "update": {
-        "query": {},
-        "body": {
-            "allow_guest_control": "allow_guest_control",
-            "backing": "backing",
-            "start_connected": "start_connected",
-        },
-        "path": {"floppy": "floppy", "vm": "vm"},
-    },
-    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
-    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -178,7 +168,17 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "update": {
+        "query": {},
+        "body": {
+            "allow_guest_control": "allow_guest_control",
+            "backing": "backing",
+            "start_connected": "start_connected",
+        },
+        "path": {"floppy": "floppy", "vm": "vm"},
+    },
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

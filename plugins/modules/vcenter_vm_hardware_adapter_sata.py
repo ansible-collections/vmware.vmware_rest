@@ -141,12 +141,12 @@ RETURN = r"""
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
     "create": {
         "query": {},
         "body": {"bus": "bus", "pci_slot_number": "pci_slot_number", "type": "type"},
         "path": {"vm": "vm"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"adapter": "adapter", "vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback
