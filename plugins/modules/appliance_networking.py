@@ -101,7 +101,6 @@ value:
   returned: On success
   sample: {}
   type: dict
-
 """
 
 # This structure describes the format of the data expected by the end-points
