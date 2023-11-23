@@ -24,6 +24,7 @@ options:
         - If unset, the server will choose an available bus number; if none is available,
             the request will fail.
         type: int
+        default: 0
     label:
         description:
         - The name of the item
