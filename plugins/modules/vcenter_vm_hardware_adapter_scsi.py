@@ -24,6 +24,7 @@ options:
         - If unset, the server will choose an available bus number; if none is available,
             the request will fail.
         type: int
+        default: 0
     label:
         description:
         - The name of the item
@@ -205,6 +206,7 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
@@ -212,8 +214,8 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     get_subdevice_type,
     open_session,
     prepare_payload,
-    update_changed_flag,
     session_timeout,
+    update_changed_flag,
 )
 
 
