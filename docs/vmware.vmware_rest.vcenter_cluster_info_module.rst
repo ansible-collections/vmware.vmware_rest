@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_cluster_info
 ***************************************
 
-**Retrieves information about the cluster corresponding to {@param.name cluster}.**
+**Retrieves information about the cluster corresponding to cluster.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Retrieves information about the cluster corresponding to {@param.name cluster}.
+- Retrieves information about the cluster corresponding to cluster.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the cluster. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>Identifier of the cluster.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_cluster_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -70,6 +71,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of clusters that can match the filter.</div>
+                        <div>If unset or empty, clusters with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -86,6 +89,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the cluster for the cluster to match the filter.</div>
+                        <div>If unset or empty, clusters in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -103,6 +108,8 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the cluster for the cluster to match the filter.</div>
+                        <div>If unset or empty, clusters in any folder match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
@@ -119,7 +126,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that clusters must have to match the filter (see {@link Info#name}).</div>
+                        <div>Names that clusters must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, clusters with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -239,7 +247,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

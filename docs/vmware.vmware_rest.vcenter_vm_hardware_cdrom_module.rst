@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -58,6 +58,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -72,17 +73,20 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Physical resource backing for the virtual CD-ROM device. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Physical resource backing for the virtual CD-ROM device.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- CLIENT_DEVICE</div>
                         <div>- HOST_DEVICE</div>
                         <div>- ISO_FILE</div>
-                        <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing. ([&#x27;present&#x27;])</div>
-                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing. ([&#x27;present&#x27;])</div>
-                        <div>- <code>device_access_type</code> (str): The <code>device_access_type</code> defines the valid device access types for a physical device packing of a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
+                        <div>- <code>iso_file</code> (str): Path of the image file that should be used as the virtual CD-ROM device backing.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is ISO_FILE. ([&#x27;present&#x27;])</div>
+                        <div>- <code>host_device</code> (str): Name of the device that should be used as the virtual CD-ROM device backing.</div>
+                        <div>If unset, the virtual CD-ROM device will be configured to automatically detect a suitable host device. ([&#x27;present&#x27;])</div>
+                        <div>- <code>device_access_type</code> (str): This option defines the valid device access types for a physical device packing of a virtual CD-ROM device. ([&#x27;present&#x27;])</div>
                         <div>- Accepted values:</div>
                         <div>- EMULATION</div>
                         <div>- PASSTHRU</div>
@@ -101,7 +105,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual CD-ROM device identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
+                        <div>Virtual CD-ROM device identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_cdrom</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -117,9 +122,12 @@ Parameters
                 </td>
                 <td>
                         <div>Address for attaching the device to a virtual IDE adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine. ([&#x27;present&#x27;])</div>
-                        <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter. ([&#x27;present&#x27;])</div>
+                        <div>- <code>primary</code> (bool): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</div>
+                        <div>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected. ([&#x27;present&#x27;])</div>
+                        <div>- <code>master</code> (bool): Flag specifying whether the device should be the master or slave device on the IDE adapter.</div>
+                        <div>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -149,11 +157,13 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Address for attaching the device to a virtual SATA adapter. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Address for attaching the device to a virtual SATA adapter.</div>
+                        <div>If unset, the server will choose an available address; if none is available, the request will fail. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
                         <div>- <code>bus</code> (int): Bus number of the adapter to which the device should be attached. ([&#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;present&#x27;].</div>
-                        <div>- <code>unit</code> (int): Unit number of the device. ([&#x27;present&#x27;])</div>
+                        <div>- <code>unit</code> (int): Unit number of the device.</div>
+                        <div>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -191,6 +201,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -229,7 +240,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>host_bus_adapter_type</code> defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
+                        <div>The <em>host_bus_adapter_type</em> enumerated type defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -335,7 +346,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -346,7 +358,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

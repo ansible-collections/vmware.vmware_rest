@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -57,7 +57,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div><code>dns_server_mode</code> Describes DNS Server source (DHCP,static) Required with <em>state=[&#x27;set&#x27;]</em></div>
+                        <div><em>dns_server_mode</em> enumerated type Describes DNS Server source (DHCP,static) Required with <em>state=[&#x27;set&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -226,7 +226,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -54,19 +54,26 @@ Parameters
                 </td>
                 <td>
                         <div>Resource allocation for CPU.</div>
+                        <div>if unset or empty, the CPU allocation of the resource pool will not be changed.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
-                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation. ([&#x27;present&#x27;])</div>
-                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
+                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>reservation</em> will be set to 0. ([&#x27;present&#x27;])</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
+                        <div>If unset or empty, <em>expandable_reservation</em> will be set to true. ([&#x27;present&#x27;])</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>limit</em> will be set to -1. ([&#x27;present&#x27;])</div>
                         <div>- <code>shares</code> (dict): Shares are used in case of resource contention. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- level (string): The <code>level</code> defines the possible values for the allocation level.</div>
+                        <div>- level (string): This option defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>CUSTOM</code></div>
                         <div>- <code>HIGH</code></div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
-                        <div>- shares (integer): When {@link #level} is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored. There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
+                        <div>- shares (integer): When <em>level</em> is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored.</div>
+                        <div>There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
+                        <div></div>
+                        <div>This field is optional and it is only relevant when the value of <em>level</em> is CUSTOM.</div>
                 </td>
             </tr>
             <tr>
@@ -82,19 +89,26 @@ Parameters
                 </td>
                 <td>
                         <div>Resource allocation for CPU.</div>
+                        <div>if unset or empty, the CPU allocation of the resource pool will not be changed.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
-                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation. ([&#x27;present&#x27;])</div>
-                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU. ([&#x27;present&#x27;])</div>
+                        <div>- <code>reservation</code> (int): Amount of resource that is guaranteed available to a resource pool. Reserved resources are not wasted if they are not used. If the utilization is less than the reservation, the resources can be utilized by other running virtual machines. Units are MB fo memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>reservation</em> will be set to 0. ([&#x27;present&#x27;])</div>
+                        <div>- <code>expandable_reservation</code> (bool): In a resource pool with an expandable reservation, the reservation can grow beyond the specified value, if the parent resource pool has unreserved resources. A non-expandable reservation is called a fixed reservation.</div>
+                        <div>If unset or empty, <em>expandable_reservation</em> will be set to true. ([&#x27;present&#x27;])</div>
+                        <div>- <code>limit</code> (int): The utilization of a resource pool will not exceed this limit, even if there are available resources. This is typically used to ensure a consistent performance of resource pools independent of available resources. If set to -1, then there is no fixed limit on resource usage (only bounded by available resources and shares). Units are MB for memory, and MHz for CPU.</div>
+                        <div>If unset or empty, <em>limit</em> will be set to -1. ([&#x27;present&#x27;])</div>
                         <div>- <code>shares</code> (dict): Shares are used in case of resource contention. ([&#x27;present&#x27;])</div>
                         <div>- Accepted keys:</div>
-                        <div>- level (string): The <code>level</code> defines the possible values for the allocation level.</div>
+                        <div>- level (string): This option defines the possible values for the allocation level.</div>
                         <div>Accepted value for this field:</div>
                         <div>- <code>CUSTOM</code></div>
                         <div>- <code>HIGH</code></div>
                         <div>- <code>LOW</code></div>
                         <div>- <code>NORMAL</code></div>
-                        <div>- shares (integer): When {@link #level} is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored. There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
+                        <div>- shares (integer): When <em>level</em> is set to CUSTOM, it is the number of shares allocated. Otherwise, this value is ignored.</div>
+                        <div>There is no unit for this value. It is a relative measure based on the settings for other resource pools.</div>
+                        <div></div>
+                        <div>This field is optional and it is only relevant when the value of <em>level</em> is CUSTOM.</div>
                 </td>
             </tr>
             <tr>
@@ -109,7 +123,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Name of the resource pool. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Name of the resource pool.</div>
+                        <div>if unset or empty, the name of the resource pool will not be changed. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -124,7 +139,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Parent of the created resource pool. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Parent of the created resource pool.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -139,7 +155,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the resource pool to be deleted. Required with <em>state=[&#x27;absent&#x27;, &#x27;present&#x27;]</em></div>
+                        <div>Identifier of the resource pool to be deleted.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_resourcepool_info</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -276,7 +293,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -288,50 +305,46 @@ Examples
     - name: Get the existing resource pools
       vmware.vmware_rest.vcenter_resourcepool_info:
       register: resource_pools
-
     - name: Create an Ad hoc resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: my_resource_pool
         parent: '{{ resource_pools.value[0].resource_pool }}'
         cpu_allocation:
-        expandable_reservation: true
-        limit: 40
-        reservation: 0
-        shares:
+          expandable_reservation: true
+          limit: 40
+          reservation: 0
+          shares:
             level: NORMAL
         memory_allocation:
-        expandable_reservation: false
-        limit: 2000
-        reservation: 0
-        shares:
+          expandable_reservation: false
+          limit: 2000
+          reservation: 0
+          shares:
             level: NORMAL
       register: my_resource_pool
-
     - name: Remove a resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         resource_pool: '{{ my_resource_pool.id }}'
         state: absent
-
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: my_resource_pool
         parent: '{{ resource_pools.value[0].resource_pool }}'
       register: my_resource_pool
-
     - name: Modify a resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         resource_pool: '{{ my_resource_pool.id }}'
         cpu_allocation:
-        expandable_reservation: true
-        limit: -1
-        reservation: 0
-        shares:
+          expandable_reservation: true
+          limit: -1
+          reservation: 0
+          shares:
             level: NORMAL
         memory_allocation:
-        expandable_reservation: false
-        limit: 1000
-        reservation: 0
-        shares:
+          expandable_reservation: false
+          limit: 1000
+          reservation: 0
+          shares:
             level: NORMAL
 
 

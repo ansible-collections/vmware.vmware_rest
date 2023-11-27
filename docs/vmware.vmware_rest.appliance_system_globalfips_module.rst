@@ -17,7 +17,7 @@ Version added: 2.0.0
 
 Synopsis
 --------
-- Enable/Disable Global FIPS mode for the appliance. <p><b>Caution:</b> Changing the value of this setting will reboot the Appliance.
+- Enable/Disable Global FIPS mode for the appliance. 
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -58,6 +58,7 @@ Parameters
                 </td>
                 <td>
                         <div>FIPS setting state.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -193,7 +194,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

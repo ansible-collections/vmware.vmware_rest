@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -54,6 +54,7 @@ Parameters
                 </td>
                 <td>
                         <div>Maximum number of days a password may be used. If the password is older than this, a password change will be forced.</div>
+                        <div>If unset then the restriction will be ignored.</div>
                 </td>
             </tr>
             <tr>
@@ -69,6 +70,7 @@ Parameters
                 </td>
                 <td>
                         <div>Minimum number of days allowed between password changes. Any password changes attempted sooner than this will be rejected.</div>
+                        <div>If unset then the restriction will be ignored.</div>
                 </td>
             </tr>
             <tr>
@@ -209,6 +211,7 @@ Parameters
                 </td>
                 <td>
                         <div>Number of days warning given before a password expires. A zero means warning is given only upon the day of expiration.</div>
+                        <div>If unset then no warning will be provided.</div>
                 </td>
             </tr>
     </table>
@@ -219,7 +222,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

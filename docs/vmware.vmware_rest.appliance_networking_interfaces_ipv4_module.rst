@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -54,6 +54,7 @@ Parameters
                 </td>
                 <td>
                         <div>The IPv4 address, for example, &quot;10.20.80.191&quot;.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>mode</em> is STATIC.</div>
                 </td>
             </tr>
             <tr>
@@ -69,6 +70,7 @@ Parameters
                 </td>
                 <td>
                         <div>The IPv4 address of the default gateway. This configures the global default gateway on the appliance with the specified gateway address and interface. This gateway replaces the existing default gateway configured on the appliance. However, if the gateway address is link-local, then it is added for that interface. This does not support configuration of multiple global default gateways through different interfaces.</div>
+                        <div>If unset, the defaultGateway was never set.</div>
                 </td>
             </tr>
             <tr>
@@ -84,7 +86,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Network interface to update, for example, &quot;nic0&quot;. This parameter is mandatory.</div>
+                        <div>Network interface to update, for example, &quot;nic0&quot;.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.appliance_networking_interfaces_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -105,7 +108,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>mode</code> defines different IPv4 address assignment modes. This parameter is mandatory.</div>
+                        <div>The <em>mode</em> enumerated type defines different IPv4 address assignment modes. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -120,7 +123,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The IPv4 CIDR prefix, for example, 24.  See http://www.oav.net/mirrors/cidr.html for netmask-to-prefix conversion.</div>
+                        <div>The IPv4 CIDR prefix, for example, 24. See http://www.oav.net/mirrors/cidr.html for netmask-to-prefix conversion.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>mode</em> is STATIC.</div>
                 </td>
             </tr>
             <tr>
@@ -256,7 +260,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_folder_info
 **************************************
 
-**Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the {@link FilterSpec}.**
+**Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the Folder.FilterSpec.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the {@link FilterSpec}.
+- Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the Folder.FilterSpec.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -55,6 +55,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the folder for the folder to match the filter.</div>
+                        <div>If unset or empty, folder in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -72,6 +74,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of folders that can match the filter.</div>
+                        <div>If unset or empty, folders with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
@@ -88,7 +92,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that folders must have to match the filter (see {@link Summary#name}).</div>
+                        <div>Names that folders must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, folders with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -106,6 +111,8 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the folder for the folder to match the filter.</div>
+                        <div>If unset or empty, folder in any folder match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -145,7 +152,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>type</code> defines the type of a vCenter Server folder.  The type of a folder determines what what kinds of children can be contained in the folder.</div>
+                        <div>The <em>type</em> enumerated type defines the type of a vCenter Server folder. The type of a folder determines what what kinds of children can be contained in the folder.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_type</div>
                 </td>
             </tr>
@@ -247,7 +254,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

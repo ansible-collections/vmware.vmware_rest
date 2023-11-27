@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datacenter_info
 ******************************************
 
-**Retrieves information about the datacenter corresponding to {@param.name datacenter}.**
+**Retrieves information about the datacenter corresponding to datacenter.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Retrieves information about the datacenter corresponding to {@param.name datacenter}.
+- Retrieves information about the datacenter corresponding to datacenter.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the datacenter. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>Identifier of the datacenter.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -70,6 +71,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of datacenters that can match the filter.</div>
+                        <div>If unset or empty, datacenters with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -87,6 +90,8 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the datacenters for the datacenter to match the filter.</div>
+                        <div>If unset or empty, datacenters in any folder match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
@@ -103,7 +108,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that datacenters must have to match the filter (see {@link Info#name}).</div>
+                        <div>Names that datacenters must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, datacenters with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -223,7 +229,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

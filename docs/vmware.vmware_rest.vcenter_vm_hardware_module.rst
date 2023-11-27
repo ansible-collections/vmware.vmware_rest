@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -94,7 +94,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>upgrade_policy</code> defines the valid virtual hardware upgrade policies for a virtual machine.</div>
+                        <div>The <em>upgrade_policy</em> enumerated type defines the valid virtual hardware upgrade policies for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -127,7 +127,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>version</code> defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                        <div>The <em>version</em> enumerated type defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
                 </td>
             </tr>
             <tr>
@@ -250,7 +250,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>version</code> defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
+                        <div>The <em>version</em> enumerated type defines the valid virtual hardware versions for a virtual machine. See https://kb.vmware.com/s/article/1003746 (Virtual machine hardware versions (1003746)).</div>
                 </td>
             </tr>
             <tr>
@@ -266,7 +266,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -277,7 +278,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

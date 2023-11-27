@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the datacenter to be deleted. Required with <em>state=[&#x27;absent&#x27;]</em></div>
+                        <div>Identifier of the datacenter to be deleted.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>. Required with <em>state=[&#x27;absent&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -69,6 +70,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenter folder in which the new datacenter should be created.</div>
+                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the datacenter; if a folder cannot be chosen, the datacenter creation operation will fail.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -88,6 +91,7 @@ Parameters
                 </td>
                 <td>
                         <div>If true, delete the datacenter even if it is not empty.</div>
+                        <div>If unset a ResourceInUse error will be reported if the datacenter is not empty. This is the equivalent of passing the value false.</div>
                 </td>
             </tr>
             <tr>
@@ -239,7 +243,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
@@ -251,7 +255,6 @@ Examples
     - name: Get a list of all the datacenters
       register: existing_datacenters
       vmware.vmware_rest.vcenter_datacenter_info:
-
     - name: Force delete the existing DC
       vmware.vmware_rest.vcenter_datacenter:
         state: absent
@@ -261,7 +264,6 @@ Examples
       until:
       - _result is not failed
       retries: 7
-
     - name: Create datacenter my_dc
       vmware.vmware_rest.vcenter_datacenter:
         name: my_dc

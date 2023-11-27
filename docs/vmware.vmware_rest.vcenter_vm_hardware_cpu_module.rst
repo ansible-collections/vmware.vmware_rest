@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New number of CPU cores per socket.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
+                        <div>New number of CPU cores per socket. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -68,7 +69,12 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>New number of CPU cores.  The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket. The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine. If the virtual machine is running, the number of CPU cores may only be increased if {@link Info#hotAddEnabled} is true, and may only be decreased if {@link Info#hotRemoveEnabled} is true.</div>
+                        <div>New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</div>
+                        <div>The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</div>
+                        <div></div>
+                        <div>If the virtual machine is running, the number of CPU cores may only be increased if <em>hot_add_enabled</em> is true, and may only be decreased if <em>hot_remove_enabled</em> is true.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -87,7 +93,10 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
+                        <div>Flag indicating whether adding CPUs while the virtual machine is running is enabled.</div>
+                        <div>This field may only be modified if the virtual machine is powered off.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -106,7 +115,10 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled. This field may only be modified if the virtual machine is powered off.</div>
+                        <div>Flag indicating whether removing CPUs while the virtual machine is running is enabled.</div>
+                        <div>This field may only be modified if the virtual machine is powered off.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -247,7 +259,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -258,7 +271,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

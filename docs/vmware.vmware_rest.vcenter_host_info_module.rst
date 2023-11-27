@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_host_info
 ************************************
 
-**Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the {@link FilterSpec}.**
+**Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the Host.FilterSpec.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the {@link FilterSpec}.
+- Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the Host.FilterSpec.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -55,6 +55,8 @@ Parameters
                 </td>
                 <td>
                         <div>Clusters that must contain the hosts for the hosts to match the filter.</div>
+                        <div>If unset or empty, hosts in any cluster and hosts that are not in a cluster match the filter. If this field is not empty and <em>standalone</em> is true, no hosts will match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_cluster_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -70,7 +72,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Connection states that a host must be in to match the filter (see {@link Summary#connectionState}.</div>
+                        <div>Connection states that a host must be in to match the filter (see I()</div>
+                        <div>If unset or empty, hosts in any connection state match the filter.</div>
                 </td>
             </tr>
             <tr>
@@ -87,6 +90,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the hosts for the hosts to match the filter.</div>
+                        <div>If unset or empty, hosts in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -104,6 +109,8 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the hosts for the hosts to match the filter.</div>
+                        <div>If unset or empty, hosts in any folder match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
@@ -121,6 +128,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of hosts that can match the filter.</div>
+                        <div>If unset or empty, hosts with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_host_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -136,7 +145,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that hosts must have to match the filter (see {@link Summary#name}).</div>
+                        <div>Names that hosts must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, hosts with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -175,6 +185,7 @@ Parameters
                 </td>
                 <td>
                         <div>If true, only hosts that are not part of a cluster can match the filter, and if false, only hosts that are are part of a cluster can match the filter.</div>
+                        <div>If unset Hosts can match filter independent of whether they are part of a cluster or not. If this field is true and <em>clusters</em> os not empty, no hosts will match the filter.</div>
                 </td>
             </tr>
             <tr>
@@ -275,7 +286,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

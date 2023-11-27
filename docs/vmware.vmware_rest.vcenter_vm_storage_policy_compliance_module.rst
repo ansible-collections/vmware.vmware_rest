@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_vm_storage_policy_compliance
 *******************************************************
 
-**Returns the storage policy Compliance {@link Info} of a virtual machine after explicitly re-computing compliance check.**
+**Returns the storage policy Compliance Compliance.Info of a virtual machine after explicitly re-computing compliance check.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Returns the storage policy Compliance {@link Info} of a virtual machine after explicitly re-computing compliance check.
+- Returns the storage policy Compliance Compliance.Info of a virtual machine after explicitly re-computing compliance check.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -55,6 +55,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of the virtual machine&#x27;s virtual disks for which compliance should be checked.</div>
+                        <div>If unset or empty, compliance check is invoked on all the associated disks.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_disk</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -196,7 +198,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -227,7 +230,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

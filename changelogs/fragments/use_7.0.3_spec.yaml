@@ -1,3 +1,0 @@
----
-minor_changes:
-- "Use 7.0 U3 API spec to build the modules (https://github.com/ansible-collections/vmware.vmware_rest/pull/449)."

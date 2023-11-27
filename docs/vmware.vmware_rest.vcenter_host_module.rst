@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Add a new standalone host in the vCenter inventory. The newly connected host will be in connected state. The vCenter Server will verify the SSL certificate before adding the host to its inventory. In the case where the SSL certificate cannot be verified because the Certificate Authority is not recognized or the certificate is self signed, the vCenter Server will fall back to thumbprint verification mode as defined by {@link CreateSpec.ThumbprintVerification}.
+- Add a new standalone host in the vCenter inventory. The newly connected host will be in connected state. The vCenter Server will verify the SSL certificate before adding the host to its inventory. In the case where the SSL certificate cannot be verified because the Certificate Authority is not recognized or the certificate is self signed, the vCenter Server will fall back to thumbprint verification mode as defined by Host.CreateSpec.ThumbprintVerification.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -54,6 +54,8 @@ Parameters
                 </td>
                 <td>
                         <div>Host and cluster folder in which the new standalone host should be created.</div>
+                        <div>This field is currently required. In the future, if this field is unset, the system will attempt to choose a suitable folder for the host; if a folder cannot be chosen, the host creation operation will fail.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -73,6 +75,7 @@ Parameters
                 </td>
                 <td>
                         <div>Whether host should be added to the vCenter Server even if it is being managed by another vCenter Server. The original vCenterServer loses connection to the host.</div>
+                        <div>If unset, forceAdd is default to false.</div>
                 </td>
             </tr>
             <tr>
@@ -87,7 +90,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the host to be disconnected. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
+                        <div>Identifier of the host to be disconnected.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_host_info</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -133,6 +137,7 @@ Parameters
                 </td>
                 <td>
                         <div>The port of the host.</div>
+                        <div>If unset, port 443 will be used.</div>
                 </td>
             </tr>
             <tr>
@@ -186,6 +191,7 @@ Parameters
                 </td>
                 <td>
                         <div>The thumbprint of the SSL certificate, which the host is expected to have. The thumbprint is always computed using the SHA1 hash and is the string representation of that hash in the format: xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx where, &#x27;x&#x27; represents a hexadecimal digit.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>thumbprint_verification</em> is THUMBPRINT.</div>
                 </td>
             </tr>
             <tr>
@@ -204,7 +210,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>thumbprint_verification</code> defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>The <em>thumbprint_verification</em> enumerated type defines the thumbprint verification schemes for a host&#x27;s SSL certificate. Required with <em>state=[&#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -320,7 +326,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

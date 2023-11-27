@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Sets the virtual devices that will be used to boot the virtual machine.  The virtual machine will check the devices in order, attempting to boot from each, until the virtual machine boots successfully.  If the {@term list} is empty, the virtual machine will use a default boot sequence. There should be no more than one instance of {@link Entry} for a given device type except {@link Device.Type#ETHERNET} in the {@term list}.
+- Sets the virtual devices that will be used to boot the virtual machine. The virtual machine will check the devices in order, attempting to boot from each, until the virtual machine boots successfully. If the list is empty, the virtual machine will use a default boot sequence. There should be no more than one instance of Device.Entry for a given device type except ETHERNET in the list.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -57,15 +57,19 @@ Parameters
                 <td>
                         <div>Ordered list of boot devices. This parameter is mandatory.</div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The <code>type</code> defines the valid device types that may be used as bootable devices. ([&#x27;set&#x27;])</div>
+                        <div>- <code>type</code> (str): This option defines the valid device types that may be used as bootable devices. ([&#x27;set&#x27;])</div>
                         <div>This key is required with [&#x27;set&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- CDROM</div>
                         <div>- DISK</div>
                         <div>- ETHERNET</div>
                         <div>- FLOPPY</div>
-                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry. ([&#x27;set&#x27;])</div>
-                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order. ([&#x27;set&#x27;])</div>
+                        <div>- <code>nic</code> (str): Virtual Ethernet device. Ethernet device to use as boot device for this entry.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is ETHERNET.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_ethernet</span>. ([&#x27;set&#x27;])</div>
+                        <div>- <code>disks</code> (list): Virtual disk device. List of virtual disks in boot order.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is DISK.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_disk</span>. ([&#x27;set&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -206,7 +210,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -217,7 +222,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

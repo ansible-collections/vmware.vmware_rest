@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -58,6 +58,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the guest can connect and disconnect the device.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -72,9 +73,10 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Physical resource backing for the virtual serial port. Required with <em>state=[&#x27;present&#x27;]</em></div>
+                        <div>Physical resource backing for the virtual serial port.</div>
+                        <div>If unset, defaults to automatic detection of a suitable host device. Required with <em>state=[&#x27;present&#x27;]</em></div>
                         <div>Valid attributes are:</div>
-                        <div>- <code>type</code> (str): The <code>backing_type</code> defines the valid backing types for a virtual serial port. ([&#x27;present&#x27;])</div>
+                        <div>- <code>type</code> (str): This option defines the valid backing types for a virtual serial port. ([&#x27;present&#x27;])</div>
                         <div>This key is required with [&#x27;present&#x27;].</div>
                         <div>- Accepted values:</div>
                         <div>- FILE</div>
@@ -83,12 +85,23 @@ Parameters
                         <div>- NETWORK_SERVER</div>
                         <div>- PIPE_CLIENT</div>
                         <div>- PIPE_SERVER</div>
-                        <div>- <code>file</code> (str): Path of the file backing the virtual serial port. ([&#x27;present&#x27;])</div>
-                        <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port. ([&#x27;present&#x27;])</div>
-                        <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port. ([&#x27;present&#x27;])</div>
-                        <div>- <code>no_rx_loss</code> (bool): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun.  This allows the virtual machine to read all of the data transferred over the pipe with no data loss. ([&#x27;present&#x27;])</div>
-                        <div>- <code>network_location</code> (str): URI specifying the location of the network service backing the virtual serial port. &lt;ul&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_SERVER}, this field is the location used by clients to connect to this server.  The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.&lt;/li&gt; &lt;li&gt;If {@link #type} is {@link BackingType#NETWORK_CLIENT}, this field is the location used by the virtual machine to connect to the remote server.&lt;/li&gt; &lt;/ul&gt; ([&#x27;present&#x27;])</div>
-                        <div>- <code>proxy</code> (str): Proxy service that provides network access to the network backing.  If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy. ([&#x27;present&#x27;])</div>
+                        <div>- <code>file</code> (str): Path of the file backing the virtual serial port.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is FILE. ([&#x27;present&#x27;])</div>
+                        <div>- <code>host_device</code> (str): Name of the device backing the virtual serial port.</div>
+                        <div></div>
+                        <div></div>
+                        <div>If unset, the virtual serial port will be configured to automatically detect a suitable host device. ([&#x27;present&#x27;])</div>
+                        <div>- <code>pipe</code> (str): Name of the pipe backing the virtual serial port.</div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is one of PIPE_SERVER or PIPE_CLIENT. ([&#x27;present&#x27;])</div>
+                        <div>- <code>no_rx_loss</code> (bool): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun. This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</div>
+                        <div>If unset, defaults to false. ([&#x27;present&#x27;])</div>
+                        <div>- <code>network_location</code> (str): URI specifying the location of the network service backing the virtual serial port.</div>
+                        <div>- If <em>type</em> is NETWORK_SERVER, this field is the location used by clients to connect to this server. The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.</div>
+                        <div>- If <em>type</em> is NETWORK_CLIENT, this field is the location used by the virtual machine to connect to the remote server.</div>
+                        <div></div>
+                        <div>This field is optional and it is only relevant when the value of <em>type</em> is one of NETWORK_SERVER or NETWORK_CLIENT. ([&#x27;present&#x27;])</div>
+                        <div>- <code>proxy</code> (str): Proxy service that provides network access to the network backing. If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</div>
+                        <div>If unset, no proxy service should be used. ([&#x27;present&#x27;])</div>
                 </td>
             </tr>
             <tr>
@@ -118,7 +131,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual serial port identifier. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
+                        <div>Virtual serial port identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_hardware_serial</span>. Required with <em>state=[&#x27;absent&#x27;, &#x27;connect&#x27;, &#x27;disconnect&#x27;, &#x27;present&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -156,6 +170,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -281,7 +296,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -300,7 +316,10 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host. This field may be modified at any time, and changes applied to a connected virtual serial port take effect immediately.</div>
+                        <div>CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host.</div>
+                        <div>This field may be modified at any time, and changes applied to a connected virtual serial port take effect immediately.</div>
+                        <div></div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
     </table>
@@ -311,7 +330,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

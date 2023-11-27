@@ -5,7 +5,7 @@
 vmware.vmware_rest.vcenter_datastore_info
 *****************************************
 
-**Retrieves information about the datastore indicated by {@param.name datastore}.**
+**Retrieves information about the datastore indicated by datastore.**
 
 
 Version added: 0.1.0
@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Retrieves information about the datastore indicated by {@param.name datastore}.
+- Retrieves information about the datastore indicated by datastore.
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -55,6 +55,8 @@ Parameters
                 </td>
                 <td>
                         <div>Datacenters that must contain the datastore for the datastore to match the filter.</div>
+                        <div>If unset or empty, datastores in any datacenter match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datacenter_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_datacenters</div>
                 </td>
             </tr>
@@ -70,7 +72,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Identifier of the datastore for which information should be retrieved. Required with <em>state=[&#x27;get&#x27;]</em></div>
+                        <div>Identifier of the datastore for which information should be retrieved.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_datastore_info</span>. Required with <em>state=[&#x27;get&#x27;]</em></div>
                 </td>
             </tr>
             <tr>
@@ -87,6 +90,8 @@ Parameters
                 </td>
                 <td>
                         <div>Identifiers of datastores that can match the filter.</div>
+                        <div>If unset or empty, datastores with any identifier match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_datastore_info</span>.</div>
                 </td>
             </tr>
             <tr>
@@ -103,6 +108,8 @@ Parameters
                 </td>
                 <td>
                         <div>Folders that must contain the datastore for the datastore to match the filter.</div>
+                        <div>If unset or empty, datastores in any folder match the filter.</div>
+                        <div>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <span class='module'>vmware.vmware_rest.vcenter_folder_info</span>.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_folders</div>
                 </td>
             </tr>
@@ -119,7 +126,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Names that datastores must have to match the filter (see {@link Info#name}).</div>
+                        <div>Names that datastores must have to match the filter (see <em>name</em>).</div>
+                        <div>If unset or empty, datastores with any name match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_names</div>
                 </td>
             </tr>
@@ -154,7 +162,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Types that datastores must have to match the filter (see {@link Summary#type}).</div>
+                        <div>Types that datastores must have to match the filter (see <em>type</em>).</div>
+                        <div>If unset or empty, datastores with any type match the filter.</div>
                         <div style="font-size: small; color: darkgreen"><br/>aliases: filter_types</div>
                 </td>
             </tr>
@@ -256,7 +265,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

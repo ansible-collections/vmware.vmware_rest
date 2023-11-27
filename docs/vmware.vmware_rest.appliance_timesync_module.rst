@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -59,7 +59,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>time_sync_mode</code> defines time synchronization modes This parameter is mandatory.</div>
+                        <div>The <em>time_sync_mode</em> enumerated type defines time synchronization modes This parameter is mandatory.</div>
                 </td>
             </tr>
             <tr>
@@ -195,7 +195,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

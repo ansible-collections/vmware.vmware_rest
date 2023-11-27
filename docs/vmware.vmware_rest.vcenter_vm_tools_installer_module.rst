@@ -17,7 +17,7 @@ Version added: 0.1.0
 
 Synopsis
 --------
-- Connects the VMware Tools CD installer as a CD-ROM for the guest operating system. On Windows guest operating systems with autorun, this should cause the installer to initiate the Tools installation which will need user input to complete. On other (non-Windows) guest operating systems this will make the Tools installation available, and a a user will need to do guest-specific actions.  On Linux, this includes opening an archive and running the installer. To monitor the status of the Tools install, clients should check the {@name vcenter.vm.Tools.Info#versionStatus} and {@name vcenter.vm.Tools.Info#runState} from {@link vcenter.vm.Tools#get}
+- Connects the VMware Tools CD installer as a CD-ROM for the guest operating system. On Windows guest operating systems with autorun, this should cause the installer to initiate the Tools installation which will need user input to complete. On other (non-Windows) guest operating systems this will make the Tools installation available, and a a user will need to do guest-specific actions. On Linux, this includes opening an archive and running the installer. To monitor the status of the Tools install, clients should check the Tools.Info.version-status and Tools.Info.run-state from Tools.get
 
 
 
@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -181,7 +181,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine ID This parameter is mandatory.</div>
+                        <div>Virtual machine ID</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -192,7 +193,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 

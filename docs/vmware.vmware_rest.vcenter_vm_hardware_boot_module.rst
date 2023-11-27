@@ -25,7 +25,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- vSphere 7.0.2 or greater
+- vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
 
@@ -53,7 +53,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on.  This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
+                        <div>Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on. This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -73,6 +74,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether to use EFI legacy boot mode.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -91,7 +93,8 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots.  Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</div>
+                        <div>Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots. Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -110,7 +113,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>network_protocol</code> defines the valid network boot protocols supported when booting a virtual machine with {@link Type#EFI} firmware over the network.</div>
+                        <div>The <em>network_protocol</em> enumerated type defines the valid network boot protocols supported when booting a virtual machine with EFI firmware over the network.</div>
                 </td>
             </tr>
             <tr>
@@ -130,6 +133,7 @@ Parameters
                 </td>
                 <td>
                         <div>Flag indicating whether the virtual machine should automatically retry the boot process after a failure.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -144,7 +148,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Delay in milliseconds before retrying the boot process after a failure; applicable only when {@link Info#retry} is true.</div>
+                        <div>Delay in milliseconds before retrying the boot process after a failure; applicable only when <em>retry</em> is true.</div>
+                        <div>If unset, the value is unchanged.</div>
                 </td>
             </tr>
             <tr>
@@ -198,7 +203,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The <code>type</code> defines the valid firmware types for a virtual machine.</div>
+                        <div>The <em>type</em> enumerated type defines the valid firmware types for a virtual machine.</div>
                 </td>
             </tr>
             <tr>
@@ -304,7 +309,8 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Virtual machine identifier. This parameter is mandatory.</div>
+                        <div>Virtual machine identifier.</div>
+                        <div>The parameter must be the id of a resource returned by <span class='module'>vmware.vmware_rest.vcenter_vm_info</span>. This parameter is mandatory.</div>
                 </td>
             </tr>
     </table>
@@ -315,7 +321,7 @@ Notes
 -----
 
 .. note::
-   - Tested on vSphere 7.0.2
+   - Tested on vSphere 7.0.3
 
 
 
