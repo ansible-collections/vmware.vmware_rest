@@ -114,6 +114,9 @@ INVENTORY = {
 
 
 def get_credentials(**options):
+
+    # Just testing CI
+
     credentials = {}
     credentials["vcenter_hostname"] = options.get("vcenter_hostname") or os.getenv(
         "VMWARE_HOST"
