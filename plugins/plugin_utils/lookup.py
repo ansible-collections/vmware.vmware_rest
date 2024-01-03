@@ -124,9 +124,7 @@ def get_credentials(**options):
     credentials["vcenter_password"] = options.get("vcenter_password") or os.getenv(
         "VMWARE_PASSWORD"
     )
-    credentials["vcenter_validate_certs"] = options.get(
-        "vcenter_validate_certs"
-    )
+    credentials["vcenter_validate_certs"] = options.get("vcenter_validate_certs")
     if credentials["vcenter_validate_certs"] is None:
         credentials["vcenter_validate_certs"] = os.getenv("VMWARE_VALIDATE_CERTS")
     credentials["vcenter_rest_log_file"] = options.get(
