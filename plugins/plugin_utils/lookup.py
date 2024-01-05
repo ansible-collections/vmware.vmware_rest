@@ -8,7 +8,6 @@ __metaclass__ = type
 
 
 import asyncio
-import os
 import urllib
 
 from ansible.errors import AnsibleLookupError
@@ -120,7 +119,9 @@ class Lookup:
     @classmethod
     async def entry_point(cls, terms, options):
         if not terms or not terms[0]:
-            raise AnsibleLookupError("Option _terms is required but no object has been specified")
+            raise AnsibleLookupError(
+                "Option _terms is required but no object has been specified"
+            )
         session = None
 
         try:
