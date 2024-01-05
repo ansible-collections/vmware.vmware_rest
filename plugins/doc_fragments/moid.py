@@ -12,42 +12,43 @@ class ModuleDocFragment(object):
     options:
         _terms:
             description: Path to query.
-            required: true
+            required: True
+            type: string
         vcenter_hostname:
             description:
                 - The hostname or IP address of the vSphere vCenter.
-                - If the value is not specified in the task, the value of environment variable
-                  C(VMWARE_HOST) will be used instead.
-            required: true
-            type: str
+            env:
+                - name: VMWARE_HOST
+            required: True
+            type: string
         vcenter_password:
             description:
                 - The vSphere vCenter password.
-                - If the value is not specified in the task, the value of environment variable
-                  C(VMWARE_PASSWORD) will be used instead.
-            required: true
-            type: str
+            env:
+                - name: VMWARE_PASSWORD
+            required: True
+            type: string
         vcenter_rest_log_file:
             description:
                 - You can use this optional parameter to set the location of a log file.
-                - This file will be used to record the HTTP REST interaction.
-                - The file will be stored on the host that run the module.
-                - If the value is not specified in the task, the value of environment variable
-                  C(VMWARE_REST_LOG_FILE) will be used instead.
-            type: str
+                - This file will be used to record the HTTP REST interactions.
+                - The file will be stored on the host that runs the module.
+            env:
+                - name: VMWARE_REST_LOG_FILE
+            type: string
         vcenter_username:
             description:
                 - The vSphere vCenter username.
-                - If the value is not specified in the task, the value of environment variable
-                  C(VMWARE_USER) will be used instead.
-            required: true
-            type: str
+            env:
+                - name: VMWARE_USER
+            required: True
+            type: string
         vcenter_validate_certs:
-            default: true
             description:
-                - Allows connection when SSL certificates are not valid. Set to C(false) when
+                - Allows connection when SSL certificates are not valid. Set to V(false) when
                   certificates are not trusted.
-                - If the value is not specified in the task, the value of environment variable
-                  C(VMWARE_VALIDATE_CERTS) will be used instead.
-            type: bool
+            default: true
+            env:
+                - name: VMWARE_VALIDATE_CERTS
+            type: boolean
 """
