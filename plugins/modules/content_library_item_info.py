@@ -288,9 +288,7 @@ def build_url(params):
         )
     _in_query_parameters = PAYLOAD_FORMAT["list"]["query"].keys()
     return yarl.URL(
-        ("https://{vcenter_hostname}" "/api/content/library/item?library_id").format(
-            **params
-        )
+        ("https://{vcenter_hostname}" "/api/content/library/item").format(**params)
         + gen_args(params, _in_query_parameters),
         encoded=True,
     )
