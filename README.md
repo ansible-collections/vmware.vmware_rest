@@ -209,7 +209,7 @@ Name | Description
 
 ### Documentation
 
-The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/scenario_guides/guide_vmware_rest.html) gives a step by step introduction of the collection.
+The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/collections/vmware/vmware_rest/docsite/guide_vmware_rest.html) gives a step by step introduction of the collection.
 
 ## Development
 
