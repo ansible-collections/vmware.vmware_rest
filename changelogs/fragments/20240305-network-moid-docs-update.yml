@@ -1,0 +1,3 @@
+---
+trivial:
+  - network_moid lookup - Update docs to reflect unique network name requirement (https://github.com/ansible-collections/vmware.vmware_rest/issues/467).
