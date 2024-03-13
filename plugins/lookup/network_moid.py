@@ -12,6 +12,8 @@ name: network_moid
 short_description: Look up MoID for vSphere network objects using vCenter REST API
 description:
     - Returns Managed Object Reference (MoID) of the vSphere network object contained in the specified path.
+    - This lookup cannot distinguish between multiple networks with the same name defined in multiple switches
+      as that is not supported by the vSphere REST API; network names must be unique within a given datacenter/folder path.
 author:
     - Alina Buzachis (@alinabuzachis)
 version_added: 2.1.0
