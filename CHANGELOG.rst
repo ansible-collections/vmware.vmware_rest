@@ -4,6 +4,14 @@ vmware.vmware_rest Release Notes
 
 .. contents:: Topics
 
+v3.0.1
+===========
+
+Bugfixes
+--------
+
+- content_library_item_info - fixed error with unsupported property
+- lookup plugins - Refactor to use native options configuration via doc_fragment, which ensures that vcenter_validate_certs=false is honored (https://github.com/ansible-collections/vmware.vmware_rest/issues/425).
 
 v3.0.0
 ======
@@ -25,11 +33,6 @@ Breaking Changes / Porting Guide
 
 v2.3.1
 ======
-
-Release Summary
----------------
-
-This release brings some minor changes and bugfixes.
 
 Minor Changes
 -------------

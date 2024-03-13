@@ -671,3 +671,13 @@ releases:
     - start_gha_4_sanity_tests.yaml
     - use_7.0.3_spec.yaml
     release_date: '2023-11-27'
+  3.0.1:
+    changes:
+      bugfixes:
+      - content_library_item_info - fixed error with unsupported property
+      - lookup plugins - Refactor to use native options configuration via doc_fragment,
+        which ensures that vcenter_validate_certs=false is honored (https://github.com/ansible-collections/vmware.vmware_rest/issues/425).
+    fragments:
+    - 20240105-bugfix-lookup-options-parsing.yml
+    - 463_fix_library_url.yaml
+    release_date: '2024-03-13'
