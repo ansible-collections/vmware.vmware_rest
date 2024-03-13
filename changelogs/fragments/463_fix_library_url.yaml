@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "content_library_item_info - fixed error with unsupported property"

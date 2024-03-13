@@ -1800,7 +1800,7 @@
                 ]
             }
         },
-        "/api/content/library/item?library_id": {
+        "/api/content/library/item": {
             "get": {
                 "tags": [
                     "library/item"
