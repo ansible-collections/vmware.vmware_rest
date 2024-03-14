@@ -23,7 +23,7 @@ The collection depends on ``aiohttp`` has [requirement](https://docs.aiohttp.org
 
 ## vSphere compatibility
 
-The 2.0.0 version of this collection requires vSphere 7.0.2 or greater.
+The 3.0.0 version of this collection requires vSphere 7.0.3 or greater.
 
 ## Known limitations
 
