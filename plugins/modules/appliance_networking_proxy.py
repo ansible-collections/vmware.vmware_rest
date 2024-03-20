@@ -163,6 +163,12 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "test": {
+        "query": {},
+        "body": {"config": "config", "host": "host"},
+        "path": {"protocol": "protocol"},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
     "set": {
         "query": {},
         "body": {
@@ -174,12 +180,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"protocol": "protocol"},
     },
-    "test": {
-        "query": {},
-        "body": {"config": "config", "host": "host"},
-        "path": {"protocol": "protocol"},
-    },
-    "delete": {"query": {}, "body": {}, "path": {"protocol": "protocol"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback
@@ -195,7 +195,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
@@ -295,6 +294,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"

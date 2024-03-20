@@ -1253,11 +1253,6 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "publish": {
-        "query": {},
-        "body": {"subscriptions": "subscriptions"},
-        "path": {"library_id": "library_id"},
-    },
     "update": {
         "query": {},
         "body": {
@@ -1279,7 +1274,11 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "publish": {
+        "query": {},
+        "body": {"subscriptions": "subscriptions"},
+        "path": {"library_id": "library_id"},
+    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -1301,6 +1300,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback
@@ -1316,7 +1316,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
@@ -1425,6 +1424,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -1441,6 +1441,7 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["name"]
     comp_func = None

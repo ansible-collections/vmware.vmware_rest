@@ -260,7 +260,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {"resource_pool": "resource_pool"},
     },
-    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
     "create": {
         "query": {},
         "body": {
@@ -271,6 +270,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "delete": {"query": {}, "body": {}, "path": {"resource_pool": "resource_pool"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback
@@ -286,7 +286,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
@@ -382,6 +381,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -398,19 +398,17 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["resource_pool"]
     comp_func = None
 
     async def lookup_with_filters(params, session, url):
-        # e.g: for the datacenter resources
-        if "folder" not in params:
-            return
+        search_filter = ""
+
         if "name" not in params:
             return
-        async with session.get(
-            f"{url}?names={params['name']}&folders={params['folder']}"
-        ) as resp:
+        async with session.get(f"{url}?names={params['name']}{search_filter}") as resp:
             _json = await resp.json()
             if isinstance(_json, list) and len(_json) == 1:
                 return await get_device_info(session, url, _json[0]["resource_pool"])
