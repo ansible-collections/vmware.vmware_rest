@@ -1669,7 +1669,6 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -1686,7 +1685,6 @@ async def entry_point(module, session):
 
 
 async def _clone(params, session):
-
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["vm"]
     comp_func = None
@@ -1759,7 +1757,6 @@ async def _clone(params, session):
 
 
 async def _create(params, session):
-
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["vm"]
     comp_func = None
@@ -1850,7 +1847,6 @@ async def _delete(params, session):
 
 
 async def _instant_clone(params, session):
-
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["vm"]
     comp_func = None

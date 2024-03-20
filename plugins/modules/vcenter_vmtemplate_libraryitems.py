@@ -457,7 +457,6 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -474,7 +473,6 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
-
     lookup_url = "https://{vcenter_hostname}/api/content/library/item?library_id={library}".format(
         **params
     )

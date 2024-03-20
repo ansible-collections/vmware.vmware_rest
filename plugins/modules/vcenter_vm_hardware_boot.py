@@ -290,7 +290,6 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"

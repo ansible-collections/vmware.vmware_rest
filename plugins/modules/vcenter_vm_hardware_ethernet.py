@@ -461,7 +461,6 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -505,7 +504,6 @@ async def _connect(params, session):
 
 
 async def _create(params, session):
-
     lookup_url = per_id_url = build_url(params)
     uniquity_keys = ["nic"]
     comp_func = None

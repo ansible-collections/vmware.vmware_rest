@@ -276,7 +276,6 @@ def build_url(params):
 
 
 async def entry_point(module, session):
-
     func = globals()["_query"]
 
     return await func(module.params, session)
