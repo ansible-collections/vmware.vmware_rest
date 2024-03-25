@@ -109,8 +109,8 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "set": {"query": {}, "body": {"domains": "domains"}, "path": {}},
     "add": {"query": {}, "body": {"domain": "domain"}, "path": {}},
+    "set": {"query": {}, "body": {"domains": "domains"}, "path": {}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback
@@ -126,7 +126,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
