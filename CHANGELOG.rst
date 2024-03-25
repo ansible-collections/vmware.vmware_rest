@@ -4,6 +4,26 @@ vmware.vmware_rest Release Notes
 
 .. contents:: Topics
 
+v3.0.1
+======
+
+Release Summary
+----------------
+
+This release brings some minor changes and bugfixes.
+
+Minor Changes
+-------------
+
+- Add requires_ansible to manifest (https://github.com/ansible-community/ansible.content_builder/pull/76).
+- Generate action_groups for the vmware.vmware_rest collection (https://github.com/ansible-community/ansible.content_builder/issues/75).
+- Use folder attribute for host and dc module only (https://github.com/ansible-community/ansible.content_builder/pull/79).
+
+Bugfixes
+--------
+
+- content_library_item_info - fixed error with unsupported property
+- lookup plugins - Refactor to use native options configuration via doc_fragment, which ensures that vcenter_validate_certs=false is honored (https://github.com/ansible-collections/vmware.vmware_rest/issues/425).
 
 v3.0.0
 ======

@@ -18,7 +18,7 @@ author:
     - Alina Buzachis (@alinabuzachis)
 version_added: 2.1.0
 requirements:
-    - vSphere 7.0.2 or greater
+    - vSphere 7.0.3 or greater
     - python >= 3.6
     - aiohttp
 extends_documentation_fragment:
