@@ -1,0 +1,2 @@
+breaking_changes:
+  - Removing any support for ansible-core <=2.14
