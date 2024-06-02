@@ -194,7 +194,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     open_session,
     prepare_payload,

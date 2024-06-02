@@ -1250,18 +1250,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "register": {
-        "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
-        },
-        "path": {},
-    },
     "clone": {
         "query": {},
         "body": {
@@ -1275,6 +1263,23 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
+    "relocate": {
+        "query": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
+    },
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
+        },
+        "path": {},
+    },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -1299,12 +1304,7 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "instant_clone": {
         "query": {},
         "body": {
@@ -1334,7 +1334,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,
@@ -1691,14 +1690,11 @@ async def _clone(params, session):
     comp_func = None
 
     async def lookup_with_filters(params, session, url):
-        # e.g: for the datacenter resources
-        if "folder" not in params:
-            return
+        search_filter = ""
+
         if "name" not in params:
             return
-        async with session.get(
-            f"{url}?names={params['name']}&folders={params['folder']}"
-        ) as resp:
+        async with session.get(f"{url}?names={params['name']}{search_filter}") as resp:
             _json = await resp.json()
             if isinstance(_json, list) and len(_json) == 1:
                 return await get_device_info(session, url, _json[0]["vm"])
@@ -1766,14 +1762,11 @@ async def _create(params, session):
     comp_func = None
 
     async def lookup_with_filters(params, session, url):
-        # e.g: for the datacenter resources
-        if "folder" not in params:
-            return
+        search_filter = ""
+
         if "name" not in params:
             return
-        async with session.get(
-            f"{url}?names={params['name']}&folders={params['folder']}"
-        ) as resp:
+        async with session.get(f"{url}?names={params['name']}{search_filter}") as resp:
             _json = await resp.json()
             if isinstance(_json, list) and len(_json) == 1:
                 return await get_device_info(session, url, _json[0]["vm"])
@@ -1859,14 +1852,11 @@ async def _instant_clone(params, session):
     comp_func = None
 
     async def lookup_with_filters(params, session, url):
-        # e.g: for the datacenter resources
-        if "folder" not in params:
-            return
+        search_filter = ""
+
         if "name" not in params:
             return
-        async with session.get(
-            f"{url}?names={params['name']}&folders={params['folder']}"
-        ) as resp:
+        async with session.get(f"{url}?names={params['name']}{search_filter}") as resp:
             _json = await resp.json()
             if isinstance(_json, list) and len(_json) == 1:
                 return await get_device_info(session, url, _json[0]["vm"])

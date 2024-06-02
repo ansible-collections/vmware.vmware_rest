@@ -18,6 +18,7 @@ Version added: 2.1.0
 Synopsis
 --------
 - Returns Managed Object Reference (MoID) of the vSphere network object contained in the specified path.
+- This lookup cannot distinguish between multiple networks with the same name defined in multiple switches as that is not supported by the vSphere REST API; network names must be unique within a given datacenter/folder path.
 
 
 
@@ -48,7 +49,7 @@ Parameters
                     <b>_terms</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                          / <span style="color: red">required</span>
                     </div>
                 </td>
@@ -73,10 +74,10 @@ Parameters
                 <td>
                 </td>
                     <td>
+                                <div>env:VMWARE_HOST</div>
                     </td>
                 <td>
                         <div>The hostname or IP address of the vSphere vCenter.</div>
-                        <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_HOST</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -92,10 +93,10 @@ Parameters
                 <td>
                 </td>
                     <td>
+                                <div>env:VMWARE_PASSWORD</div>
                     </td>
                 <td>
                         <div>The vSphere vCenter password.</div>
-                        <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_PASSWORD</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -110,12 +111,12 @@ Parameters
                 <td>
                 </td>
                     <td>
+                                <div>env:VMWARE_REST_LOG_FILE</div>
                     </td>
                 <td>
                         <div>You can use this optional parameter to set the location of a log file.</div>
-                        <div>This file will be used to record the HTTP REST interaction.</div>
-                        <div>The file will be stored on the host that run the module.</div>
-                        <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_REST_LOG_FILE</code> will be used instead.</div>
+                        <div>This file will be used to record the HTTP REST interactions.</div>
+                        <div>The file will be stored on the host that runs the module.</div>
                 </td>
             </tr>
             <tr>
@@ -131,10 +132,10 @@ Parameters
                 <td>
                 </td>
                     <td>
+                                <div>env:VMWARE_USER</div>
                     </td>
                 <td>
                         <div>The vSphere vCenter username.</div>
-                        <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_USER</code> will be used instead.</div>
                 </td>
             </tr>
             <tr>
@@ -147,16 +148,13 @@ Parameters
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>no</li>
-                                    <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
-                        </ul>
+                        <b>Default:</b><br/><div style="color: blue">"yes"</div>
                 </td>
                     <td>
+                                <div>env:VMWARE_VALIDATE_CERTS</div>
                     </td>
                 <td>
-                        <div>Allows connection when SSL certificates are not valid. Set to <code>false</code> when certificates are not trusted.</div>
-                        <div>If the value is not specified in the task, the value of environment variable <code>VMWARE_VALIDATE_CERTS</code> will be used instead.</div>
+                        <div>Allows connection when SSL certificates are not valid. Set to V(false) when certificates are not trusted.</div>
                 </td>
             </tr>
     </table>
