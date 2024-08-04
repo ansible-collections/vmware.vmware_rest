@@ -107,6 +107,8 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     update_changed_flag,
 )
 
+# Meaningless diff with no code changes to trigger CI
+
 
 def prepare_argument_spec():
     argument_spec = {

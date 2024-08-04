@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fix CI (https://github.com/ansible-collections/vmware.vmware_rest/pull/507).
