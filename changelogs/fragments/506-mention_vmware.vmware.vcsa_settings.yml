@@ -1,0 +1,11 @@
+---
+trivial:
+  - appliance_access_consolecli - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_access_dcui - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_access_shell - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_access_ssh - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_networking_dns_domains - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_networking_dns_servers - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_ntp - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_system_time_timezone - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
+  - appliance_timesync - Mention new module `vmware.vmware.vcsa_settings` (https://github.com/ansible-collections/vmware.vmware_rest/pull/506).
