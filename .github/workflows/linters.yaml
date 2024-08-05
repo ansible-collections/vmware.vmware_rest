@@ -1,3 +1,4 @@
+---
 name: Linters
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
