@@ -78,7 +78,7 @@ options:
         - '     - policy (string): Identifier of the storage policy which should be
             associated with the VMDK file.'
         - 'When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.vcenter_storage_policies). '
+            be the id of a storage policy resource. '
         type: dict
     nvme:
         description:

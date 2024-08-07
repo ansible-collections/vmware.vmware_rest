@@ -198,7 +198,7 @@ options:
             must also be true. The subscription is still active even when automatic
             synchronization is turned off, but synchronization is only activated with
             an explicit call to M(vmware.vmware_rest.content_subscribedlibrary) with
-            C(state=sync) or M(vmware.vmware_rest.content_library_item) with C(state=sync).
+            C(state=sync).
             In other words, manual synchronization is still available even when automatic
             synchronization is disabled. ([''present'', ''probe''])'
         - ' - C(on_demand) (bool): Indicates whether a library item''s content will
@@ -206,11 +206,7 @@ options:
             item''s metadata will be synchronized but the item''s content (its files)
             will not be synchronized. The Content Library Service will synchronize
             the content upon request only. This can cause the first use of the content
-            to have a noticeable delay. Items without synchronized content can be
-            forcefully synchronized in advance using the M(vmware.vmware_rest.content_library_item)
-            with C(state=sync) call with C(force_sync_content) set to true. Once content
-            has been synchronized, the content can removed with the M(vmware.vmware_rest.content_library_item)
-            with C(state=sync) call. If this value is set to C(False), all content
+            to have a noticeable delay. If this value is set to C(False), all content
             will be synchronized in advance. ([''present'', ''probe''])'
         - ' - C(password) (str): The password to use when authenticating. The password
             must be set when using a password-based authentication method; empty strings

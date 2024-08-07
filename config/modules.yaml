@@ -164,11 +164,11 @@
 - vcenter_vm_power_info:
 - vcenter_vm_power:
     documentation:
-      short_description:  Operate a boot, hard shutdown, hard reset or hard suspend on a guest.
+      short_description: Operate a boot, hard shutdown, hard reset or hard suspend on a guest.
       seealso:
         - module: vmware.vmware_rest.vcenter_vm_guest_power
           description: Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot
-      description: Ask the vCenter to boot, force shutdown or force reset a guest. If you want to do a soft shutdown or a soft reset, you can use M(vmware.vmware_rest.vmware_vm_guest_power) instead.
+      description: Ask the vCenter to boot, force shutdown or force reset a guest.
 - vcenter_vm:
 - vcenter_vm_storage_policy_compliance_info:
 - vcenter_vm_storage_policy_compliance:
