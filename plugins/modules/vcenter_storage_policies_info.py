@@ -20,7 +20,7 @@ options:
         - Identifiers of storage policies that can match the filter.
         - If unset or empty, storage policies with any identifiers match the filter.
         - When clients pass a value of this structure as a parameter, the field must
-            contain the id of resources returned by M(vmware.vmware_rest.vcenter_storage_policies).
+            contain the id of storage policy resources.
         elements: str
         type: list
     session_timeout:

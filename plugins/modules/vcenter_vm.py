@@ -939,7 +939,7 @@ options:
         - ' - C(policy) (str): Identifier of the storage policy which should be associated
             with the virtual machine.'
         - When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.vcenter_storage_policies).
+            be the id of a storage policy resource.
             (['present'])
         - '   This key is required with [''present''].'
         type: dict
