@@ -182,7 +182,10 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-_terms"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-terms"><strong>Terms</strong></p>
 <a class="ansibleOptionLink" href="#parameter-_terms" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Path to query.</p>
+<td><div class="ansible-option-cell"><p>The absolute folder path to the object you would like to lookup.</p>
+<p>Folder paths always start with the datacenter name, and then the object type (host, vm, network, datastore).</p>
+<p>If the object is in a sub folder, the sub folder path should be added after the object type (for example /my_dc/vm/some/sub_folder/vm_name_to_lookup).</p>
+<p>Enter the object or folder names as seen in the VCenter GUI. Do not escape spaces or special characters.</p>
 </div></td>
 </tr>
 </tbody>
@@ -200,6 +203,15 @@ examples: <code class="docutils literal notranslate"><span class="pre">lookup('v
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-object_type"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-object-type"><strong>object_type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-object_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Should not be set by the user, it is set internally when using a specific lookup plugin.</p>
+<p>Describes the type of object to lookup. Example, cluster, datacenter, datastore, etc.</p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;cluster&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-vcenter_hostname"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-vcenter-hostname"><strong>vcenter_hostname</strong></p>
 <a class="ansibleOptionLink" href="#parameter-vcenter_hostname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -210,7 +222,7 @@ examples: <code class="docutils literal notranslate"><span class="pre">lookup('v
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-vcenter_password"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-vcenter-password"><strong>vcenter_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-vcenter_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -221,7 +233,7 @@ examples: <code class="docutils literal notranslate"><span class="pre">lookup('v
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-vcenter_rest_log_file"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-vcenter-rest-log-file"><strong>vcenter_rest_log_file</strong></p>
 <a class="ansibleOptionLink" href="#parameter-vcenter_rest_log_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -234,7 +246,7 @@ examples: <code class="docutils literal notranslate"><span class="pre">lookup('v
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-vcenter_username"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-vcenter-username"><strong>vcenter_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-vcenter_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -245,7 +257,7 @@ examples: <code class="docutils literal notranslate"><span class="pre">lookup('v
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-vcenter_validate_certs"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-datacenter-moid-lookup-parameter-vcenter-validate-certs"><strong>vcenter_validate_certs</strong></p>
 <a class="ansibleOptionLink" href="#parameter-vcenter_validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -271,24 +283,105 @@ examples: <code class="docutils literal notranslate"><span class="pre">lookup('v
 <ul class="simple">
 <li><p>When keyword and positional parameters are used together, positional parameters must be listed before keyword parameters:
 <code class="docutils literal notranslate"><span class="pre">lookup('vmware.vmware_rest.datacenter_moid',</span> <span class="pre">term1,</span> <span class="pre">term2,</span> <span class="pre">key1=value1,</span> <span class="pre">key2=value2)</span></code> and <code class="docutils literal notranslate"><span class="pre">query('vmware.vmware_rest.datacenter_moid',</span> <span class="pre">term1,</span> <span class="pre">term2,</span> <span class="pre">key1=value1,</span> <span class="pre">key2=value2)</span></code></p></li>
+<li><p>Lookup plugins are run on the ansible controller and are used to lookup information from an external resource. See <a class="reference external" href="https://docs.ansible.com/ansible/latest/plugins/lookup.html#lookup-plugins">https://docs.ansible.com/ansible/latest/plugins/lookup.html#lookup-plugins</a></p></li>
+<li><p>This collection’s plugins allow you to quickly gather VMWare resource identifiers and either store or use them, instead of requiring multiple modules and tasks to do the same thing. See the examples section for a comparison.</p></li>
 </ul>
 </div>
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># lookup sample</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set connection info</span>
-<span class="w">  </span><span class="nt">ansible.builtin.set_fact</span><span class="p">:</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># The examples below assume you have a datacenter named &#39;my_dc&#39;.</span>
+<span class="c1"># Replace these values as needed for your environment.</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+
+<span class="c1">#</span>
+<span class="c1"># Authentication / Connection Arguments</span>
+<span class="c1">#</span>
+<span class="c1"># You can explicitly set the connection arguments in each lookup. This may be clearer for some use cases</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pass In Connection Arguments Explicitly</span>
+<span class="w">  </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">      </span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc&#39;</span><span class="o">,</span>
+      <span class="nv">vcenter_hostname</span><span class="o">=</span><span class="s2">&quot;vcenter.test&quot;</span><span class="o">,</span>
+      <span class="nv">vcenter_username</span><span class="o">=</span><span class="s2">&quot;administrator@vsphere.local&quot;</span><span class="o">,</span>
+      <span class="nv">vcenter_password</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="o">)</span> <span class="cp">}}</span>
+
+<span class="c1"># Alternatively, you can add the connection arguments to a dictionary variable, and then pass that variable to the</span>
+<span class="c1"># lookup plugins. This makes the individual lookup plugin calls simpler</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Example Playbook</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">connection_args</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">vcenter_hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;vcenter.test&quot;</span>
-<span class="w">        </span><span class="nt">vcenter_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;administrator@vsphere.local&quot;</span>
-<span class="w">        </span><span class="nt">vcenter_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1234&quot;</span>
+<span class="w">      </span><span class="nt">vcenter_hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;vcenter.test&quot;</span>
+<span class="w">      </span><span class="nt">vcenter_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;administrator@vsphere.local&quot;</span>
+<span class="w">      </span><span class="nt">vcenter_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1234&quot;</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Add more tasks or lookups as needed, referencing the same connection_args variable</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lookup MoID of the object</span>
+<span class="w">      </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc&#39;</span><span class="o">,</span> <span class="o">**</span><span class="nv">connection_args</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lookup MoID of the object</span>
-<span class="w">  </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">msg=&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc&#39;</span><span class="o">,</span> <span class="o">**</span><span class="nv">connection_args</span><span class="o">)</span> <span class="cp">}}</span><span class="l l-Scalar l-Scalar-Plain">&quot;</span>
+<span class="c1"># Finally, you can also leverage the environment variables associated with each connection arg, and avoid passing</span>
+<span class="c1"># extra args to the lookup plugins</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Use a lookup plugin with VMWARE_* environment variables set</span>
+<span class="w">  </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lookup MoID of the object inside the path</span>
-<span class="w">  </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">msg=&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_folder/&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="l l-Scalar l-Scalar-Plain">&quot;</span>
+<span class="c1">#</span>
+<span class="c1"># Datacenter Search Path Examples</span>
+<span class="c1">#</span>
+<span class="c1"># Datacenters are located at the root of VMWare paths.</span>
+<span class="c1"># The basic path for a datacenter should look like &#39;/&lt;datacenter-name&gt;&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lookup Datacenter &#39;my_dc&#39;</span>
+<span class="w">  </span><span class="nt">ansible.builtin.debug</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+
+<span class="c1"># Usage in Playbooks</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># The lookup plugin can be used to simplify your playbook. Here is an example of how you might use it.</span>
+<span class="c1">#</span>
+<span class="c1"># Without the lookup, this takes two modules which both run on the remote host. This can slow down execution</span>
+<span class="c1"># and adds extra steps to the playbook:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Retrieve details about a datacenter named &#39;my_dc&#39;</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_datacenter_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">names</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_dc</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_dc_info</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">datacenter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">my_dc_info.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.datacebter</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RHEL_7_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_11</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">disks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SATA</span>
+<span class="w">        </span><span class="nt">new_vmdk</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_disk</span>
+<span class="w">          </span><span class="nt">capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3200</span>
+
+<span class="c1"># With the lookup, playbooks are shorter, quicker, and more intuitive:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">datacenter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datacenter_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RHEL_7_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_11</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">disks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SATA</span>
+<span class="w">        </span><span class="nt">new_vmdk</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">first_disk</span>
+<span class="w">          </span><span class="nt">capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3200</span>
 </pre></div>
 </div>
 </section>
