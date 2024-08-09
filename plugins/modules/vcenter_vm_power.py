@@ -11,9 +11,7 @@ DOCUMENTATION = r"""
 module: vcenter_vm_power
 short_description: Operate a boot, hard shutdown, hard reset or hard suspend on a
     guest.
-description: Ask the vCenter to boot, force shutdown or force reset a guest. If you
-    want to do a soft shutdown or a soft reset, you can use M(vmware.vmware_rest.vmware_vm_guest_power)
-    instead.
+description: Ask the vCenter to boot, force shutdown or force reset a guest.
 options:
     session_timeout:
         description:

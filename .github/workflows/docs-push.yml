@@ -1,5 +1,5 @@
 ---
-name: Collection Docs
+name: Publish Collection Docs
 concurrency:
   group: docs-push-${{ github.sha }}
   cancel-in-progress: true
@@ -9,9 +9,9 @@ on:
       - main
       - stable-*
     tags:
-      - '*'
+      - "*"
   schedule:
-    - cron: '0 12 * * *'
+    - cron: "0 12 * * *"
 
 jobs:
   build-docs:
@@ -27,13 +27,16 @@ jobs:
 
   publish-docs-gh-pages:
     # use to prevent running on forks
-    if: github.repository == 'ansible-collections/amazon.aws'
+    if: github.repository == 'ansible-collections/vmware.vmware_rest'
     permissions:
       contents: write
+      pages: write
+      id-token: write
     needs: [build-docs]
     name: Publish Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@main
     with:
       artifact-name: ${{ needs.build-docs.outputs.artifact-name }}
+      publish-gh-pages-branch: true
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
