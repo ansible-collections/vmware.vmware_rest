@@ -1,0 +1,3 @@
+---
+trivial:
+  - Add vmware.vmware for docs CI (https://github.com/ansible-collections/vmware.vmware_rest/pull/513).
