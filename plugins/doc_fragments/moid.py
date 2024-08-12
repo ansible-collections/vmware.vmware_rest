@@ -9,9 +9,24 @@ __metaclass__ = type
 class ModuleDocFragment(object):
     # Parameters for the Lookup Managed Object Reference (MoID) plugins
     DOCUMENTATION = r"""
+    notes:
+        - >-
+            Lookup plugins are run on the ansible controller and are used to lookup information from an external
+            resource. See https://docs.ansible.com/ansible/latest/plugins/lookup.html#lookup-plugins
+        - >-
+            This collection's plugins allow you to quickly gather VMWare resource identifiers and either store or
+            use them, instead of requiring multiple modules and tasks to do the same thing.
+            See the examples section for a comparison.
+
     options:
         _terms:
-            description: Path to query.
+            description:
+                - The absolute folder path to the object you would like to lookup.
+                - Folder paths always start with the datacenter name, and then the object type (host, vm, network, datastore).
+                - >-
+                    If the object is in a sub folder, the sub folder path should be added after the object type
+                    (for example /my_dc/vm/some/sub_folder/vm_name_to_lookup).
+                - Enter the object or folder names as seen in the VCenter GUI. Do not escape spaces or special characters.
             required: True
             type: string
         vcenter_hostname:
@@ -51,4 +66,11 @@ class ModuleDocFragment(object):
             env:
                 - name: VMWARE_VALIDATE_CERTS
             type: boolean
+        object_type:
+            description:
+                - Should not be set by the user, it is set internally when using a specific lookup plugin.
+                - Describes the type of object to lookup. Example, cluster, datacenter, datastore, etc.
+            default: 'cluster'
+            type: str
+            required: False
 """

@@ -11,33 +11,112 @@ DOCUMENTATION = r"""
 name: datacenter_moid
 short_description: Look up MoID for vSphere datacenter objects using vCenter REST API
 description:
-    - Returns Managed Object Reference (MoID) of the vSphere datacenter object contained in the specified path.
+  - Returns Managed Object Reference (MoID) of the vSphere datacenter object contained in the specified path.
 author:
-    - Alina Buzachis (@alinabuzachis)
+  - Alina Buzachis (@alinabuzachis)
 version_added: 2.1.0
 requirements:
-    - vSphere 7.0.2 or greater
-    - python >= 3.6
-    - aiohttp
+  - vSphere 7.0.3 or greater
+  - python >= 3.6
+  - aiohttp
 extends_documentation_fragment:
-- vmware.vmware_rest.moid
+  - vmware.vmware_rest.moid
 """
 
 
 EXAMPLES = r"""
-# lookup sample
-- name: set connection info
-  ansible.builtin.set_fact:
+#
+#
+# The examples below assume you have a datacenter named 'my_dc'.
+# Replace these values as needed for your environment.
+#
+#
+
+#
+# Authentication / Connection Arguments
+#
+# You can explicitly set the connection arguments in each lookup. This may be clearer for some use cases
+- name: Pass In Connection Arguments Explicitly
+  ansible.builtin.debug:
+    msg: >-
+      {{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc',
+      vcenter_hostname="vcenter.test",
+      vcenter_username="administrator@vsphere.local",
+      vcenter_password="1234") }}
+
+# Alternatively, you can add the connection arguments to a dictionary variable, and then pass that variable to the
+# lookup plugins. This makes the individual lookup plugin calls simpler
+- name: Example Playbook
+  hosts: all
+  vars:
     connection_args:
-        vcenter_hostname: "vcenter.test"
-        vcenter_username: "administrator@vsphere.local"
-        vcenter_password: "1234"
+      vcenter_hostname: "vcenter.test"
+      vcenter_username: "administrator@vsphere.local"
+      vcenter_password: "1234"
+  tasks:
+    # Add more tasks or lookups as needed, referencing the same connection_args variable
+    - name: Lookup MoID of the object
+      ansible.builtin.debug:
+        msg: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc', **connection_args) }}"
 
-- name: lookup MoID of the object
-  ansible.builtin.debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc', **connection_args) }}"
+# Finally, you can also leverage the environment variables associated with each connection arg, and avoid passing
+# extra args to the lookup plugins
+- name: Use a lookup plugin with VMWARE_* environment variables set
+  ansible.builtin.debug:
+    msg: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc') }}"
 
-- name: lookup MoID of the object inside the path
-  ansible.builtin.debug: msg="{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_folder/') }}"
+#
+# Datacenter Search Path Examples
+#
+# Datacenters are located at the root of VMWare paths.
+# The basic path for a datacenter should look like '/<datacenter-name>'
+- name: Lookup Datacenter 'my_dc'
+  ansible.builtin.debug:
+    msg: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc') }}"
+
+# Usage in Playbooks
+#
+#
+# The lookup plugin can be used to simplify your playbook. Here is an example of how you might use it.
+#
+# Without the lookup, this takes two modules which both run on the remote host. This can slow down execution
+# and adds extra steps to the playbook:
+- name: Retrieve details about a datacenter named 'my_dc'
+  vmware.vmware_rest.vcenter_datacenter_info:
+    names:
+      - my_dc
+  register: my_dc_info
+
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      datacenter: "{{ my_dc_info.value[0].datacebter }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      size_MiB: 1024
+    disks:
+      - type: SATA
+        new_vmdk:
+          name: first_disk
+          capacity: 3200
+
+# With the lookup, playbooks are shorter, quicker, and more intuitive:
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      datacenter: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/my_dc') }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      size_MiB: 1024
+    disks:
+      - type: SATA
+        new_vmdk:
+          name: first_disk
+          capacity: 3200
 """
 
 

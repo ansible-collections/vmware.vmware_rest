@@ -20,7 +20,7 @@ options:
         - Identifiers of storage policies that can match the filter.
         - If unset or empty, storage policies with any identifiers match the filter.
         - When clients pass a value of this structure as a parameter, the field must
-            contain the id of resources returned by M(vmware.vmware_rest.vcenter_storage_policies).
+            contain the id of storage policy resources.
         elements: str
         type: list
     session_timeout:
@@ -148,7 +148,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     gen_args,
     open_session,

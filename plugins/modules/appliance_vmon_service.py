@@ -117,14 +117,14 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
     "list_details": {"query": {}, "body": {}, "path": {}},
+    "start": {"query": {}, "body": {}, "path": {"service": "service"}},
+    "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
     "update": {
         "query": {},
         "body": {"startup_type": "spec/startup_type"},
         "path": {"service": "service"},
     },
-    "stop": {"query": {}, "body": {}, "path": {"service": "service"}},
     "restart": {"query": {}, "body": {}, "path": {"service": "service"}},
 }  # pylint: disable=line-too-long
 
@@ -141,7 +141,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,

@@ -198,7 +198,7 @@ options:
             must also be true. The subscription is still active even when automatic
             synchronization is turned off, but synchronization is only activated with
             an explicit call to M(vmware.vmware_rest.content_subscribedlibrary) with
-            C(state=sync) or M(vmware.vmware_rest.content_library_item) with C(state=sync).
+            C(state=sync).
             In other words, manual synchronization is still available even when automatic
             synchronization is disabled. ([''present'', ''probe''])'
         - ' - C(on_demand) (bool): Indicates whether a library item''s content will
@@ -206,11 +206,7 @@ options:
             item''s metadata will be synchronized but the item''s content (its files)
             will not be synchronized. The Content Library Service will synchronize
             the content upon request only. This can cause the first use of the content
-            to have a noticeable delay. Items without synchronized content can be
-            forcefully synchronized in advance using the M(vmware.vmware_rest.content_library_item)
-            with C(state=sync) call with C(force_sync_content) set to true. Once content
-            has been synchronized, the content can removed with the M(vmware.vmware_rest.content_library_item)
-            with C(state=sync) call. If this value is set to C(False), all content
+            to have a noticeable delay. If this value is set to C(False), all content
             will be synchronized in advance. ([''present'', ''probe''])'
         - ' - C(password) (str): The password to use when authenticating. The password
             must be set when using a password-based authentication method; empty strings
@@ -457,29 +453,7 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "create": {
-        "query": {"client_token": "client_token"},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "security_policy_id": "security_policy_id",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "unset_security_policy_id": "unset_security_policy_id",
-            "version": "version",
-        },
-        "path": {},
-    },
     "update": {
         "query": {},
         "body": {
@@ -506,6 +480,28 @@ PAYLOAD_FORMAT = {
         "body": {"subscription_info": "subscription_info"},
         "path": {},
     },
+    "create": {
+        "query": {"client_token": "client_token"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "security_policy_id": "security_policy_id",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "unset_security_policy_id": "unset_security_policy_id",
+            "version": "version",
+        },
+        "path": {},
+    },
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
@@ -522,7 +518,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,

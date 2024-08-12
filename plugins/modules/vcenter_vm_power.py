@@ -11,9 +11,7 @@ DOCUMENTATION = r"""
 module: vcenter_vm_power
 short_description: Operate a boot, hard shutdown, hard reset or hard suspend on a
     guest.
-description: Ask the vCenter to boot, force shutdown or force reset a guest. If you
-    want to do a soft shutdown or a soft reset, you can use M(vmware.vmware_rest.vmware_vm_guest_power)
-    instead.
+description: Ask the vCenter to boot, force shutdown or force reset a guest.
 options:
     session_timeout:
         description:
@@ -231,10 +229,10 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "reset": {"query": {}, "body": {}, "path": {"vm": "vm"}},
-    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "start": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "stop": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "suspend": {"query": {}, "body": {}, "path": {"vm": "vm"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback
@@ -250,7 +248,6 @@ try:
     AnsibleModule.collection_name = "vmware.vmware_rest"
 except ImportError:
     from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     exists,
     gen_args,

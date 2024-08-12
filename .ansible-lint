@@ -2,6 +2,7 @@
 profile: production
 
 exclude_paths:
+  - meta/runtime.yml
   - tests/integration
   - tests/sanity
   - modules.yaml

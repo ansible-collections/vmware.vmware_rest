@@ -30,6 +30,7 @@
 #    it has to adhere to Python compatibility and CI testing requirements described in
 #    https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html.
 
+---
 name: Sanity tests
 on:
   # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
@@ -77,6 +78,7 @@ jobs:
           # consider dropping testing against EOL versions and versions you don't support.
           - stable-2.15
           - stable-2.16
+          - stable-2.17
           # - devel
           # - milestone
     # Ansible-test on various stable branches does not yet work well with cgroups v2.
