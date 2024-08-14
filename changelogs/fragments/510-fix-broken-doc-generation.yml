@@ -1,9 +1,0 @@
----
-trivial:
-  - content_locallibrary - Removed doc reference to missing module `content_library_item` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
-  - content_subscribedlibrary - Removed doc reference to missing module `content_library_item` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
-  - vcenter_storage_policies_info - Removed doc reference to missing module `vcenter_storage_policies` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
-  - vcenter_vm - Removed doc reference to missing module `vcenter_storage_policies` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
-  - vcenter_vm_hardware_disk - Removed doc reference to missing module `vcenter_storage_policies` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
-  - vcenter_vm_power -  Removed doc reference to missing module `vcenter_vm_guest_power` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
-  - vcenter_vm_storage_policy - Removed doc reference to missing module `vcenter_storage_policies` (https://github.com/ansible-collections/vmware.vmware_rest/pull/510).
