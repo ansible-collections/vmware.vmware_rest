@@ -70,7 +70,7 @@ options:
         type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.0.0
+version_added: 1.0.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -81,9 +81,9 @@ notes:
 
 EXAMPLES = r"""
 """
-
 RETURN = r"""
 """
+
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
@@ -192,6 +192,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -261,5 +262,9 @@ async def _update(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    current_loop = asyncio.get_event_loop_policy().get_event_loop()
-    current_loop.run_until_complete(main())
+    current_loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(current_loop)
+        current_loop.run_until_complete(main())
+    finally:
+        current_loop.close()

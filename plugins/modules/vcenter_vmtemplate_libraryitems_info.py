@@ -10,9 +10,9 @@
 DOCUMENTATION = r"""
 module: vcenter_vmtemplate_libraryitems_info
 short_description: Returns information about a virtual machine template contained
-    in the library item specified by {@param.name templateLibraryItem}
+    in the library item specified by templateLibraryItem
 description: Returns information about a virtual machine template contained in the
-    library item specified by {@param.name templateLibraryItem}
+    library item specified by templateLibraryItem
 options:
     session_timeout:
         description:
@@ -25,6 +25,7 @@ options:
     template_library_item:
         description:
         - identifier of the library item containing the virtual machine template.
+        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
             Required with I(state=['get'])
         type: str
     vcenter_hostname:
@@ -66,7 +67,7 @@ options:
         type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 2.2.0
+version_added: 1.0.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -77,9 +78,9 @@ notes:
 
 EXAMPLES = r"""
 """
-
 RETURN = r"""
 """
+
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
@@ -208,5 +209,9 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    current_loop = asyncio.get_event_loop_policy().get_event_loop()
-    current_loop.run_until_complete(main())
+    current_loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(current_loop)
+        current_loop.run_until_complete(main())
+    finally:
+        current_loop.close()

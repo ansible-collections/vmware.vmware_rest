@@ -1,0 +1,867 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "",
+        "title": "hvc",
+        "version": "2.0.0"
+    },
+    "host": "<vcenter>",
+    "securityDefinitions": {
+        "session_id": {
+            "in": "header",
+            "name": "vmware-api-session-id",
+            "type": "apiKey"
+        },
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "basePath": "",
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "paths": {
+        "/api/hvc/links": {
+            "post": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Creates a new hybrid link between the local and foreign PSC. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires HLM.Manage.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcLinksCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The identifier of the newly linked domain.\nThe result will be an identifier for the resource type: vcenter.hvc.Links.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "If the SSL certificate of the foreign PSC cannot be validated by comparing with the thumbprint provided in Links.CreateSpec.ssl-thumbprint or if Links.CreateSpec.ssl-thumbprint is unset. The value of the {@link UnverifiedPeer#data) field will be a structure that contains all the fields defined in Links.CertificateInfo.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnverifiedPeer"
+                        }
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "create"
+            },
+            "get": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Enumerates the list of registered hybrid links. Usage beyond VMware Cloud on AWS is not supported.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of hybrid link information.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/VcenterHvcLinksSummary"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "list"
+            }
+        },
+        "/api/hvc/links/{link}": {
+            "get": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Gets information for a link. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires System.Read.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Unique identifier of the link.\nThe parameter must be an identifier for the resource type: vcenter.hvc.Links."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Information about the link.",
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcLinksInfo"
+                        }
+                    },
+                    "500": {
+                        "description": "if the service is busy.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsResourceBusy"
+                        }
+                    },
+                    "404": {
+                        "description": "if the hybrid link associated with link does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user is not authorized to perform this operation.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    }
+                },
+                "operationId": "get"
+            },
+            "delete": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Deletes an existing hybrid link. This API should be used when unlink is initiated from Cloud Gateway.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires HLM.Manage.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Identifier of the hybrid link.\nThe parameter must be an identifier for the resource type: vcenter.hvc.Links."
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "If the hybrid link associated with link does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "delete"
+            }
+        },
+        "/api/hvc/links/{link}?action=delete": {
+            "post": {
+                "tags": [
+                    "hvc/links"
+                ],
+                "summary": "Deletes an existing hybrid link. This API should be used when unlink is initiated from cloud vCenter. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires HLM.Manage.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "name": "link",
+                        "description": "Identifier of the hybrid link.\nThe parameter must be an identifier for the resource type: vcenter.hvc.Links."
+                    },
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcLinksDeleteWithCredentials"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "if the hybrid link associated with link does not exist.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsNotFound"
+                        }
+                    },
+                    "403": {
+                        "description": "if the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "delete_with_credentials"
+            }
+        },
+        "/api/hvc/management/administrators": {
+            "put": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Sets the groups in the local sso group. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires HLM.Manage.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcManagementAdministratorsSet"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "set",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Enumerates the set of all the groups in the local sso group. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires System.Read.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The set of all the groups.",
+                        "schema": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "get",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            }
+        },
+        "/api/hvc/management/administrators?action=add": {
+            "post": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Add the local sso group with the new group. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires HLM.Manage.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcManagementAdministratorsAdd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "add",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            }
+        },
+        "/api/hvc/management/administrators?action=remove": {
+            "post": {
+                "tags": [
+                    "hvc/management/administrators"
+                ],
+                "summary": "Remove the group from the local sso group. Usage beyond VMware Cloud on AWS is not supported.\nif you do not have all of the privileges described as follows: \n   -  Operation execution requires HLM.Manage.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "request_body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VcenterHvcManagementAdministratorsRemove"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "If the user is not authorized.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsUnauthorized"
+                        }
+                    },
+                    "500": {
+                        "description": "if the system reports an error while responding to the request.",
+                        "schema": {
+                            "$ref": "#/definitions/VapiStdErrorsError"
+                        }
+                    }
+                },
+                "operationId": "remove",
+                "security": [
+                    {
+                        "session_id": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "VapiStdErrorsAlreadyExists": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsError": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsErrorType": {
+            "type": "string",
+            "description": "Enumeration of all standard errors. Used as discriminator in protocols that have no standard means for transporting the error type, e.g. REST.",
+            "enum": [
+                "ERROR",
+                "ALREADY_EXISTS",
+                "ALREADY_IN_DESIRED_STATE",
+                "CANCELED",
+                "CONCURRENT_CHANGE",
+                "FEATURE_IN_USE",
+                "INTERNAL_SERVER_ERROR",
+                "INVALID_ARGUMENT",
+                "INVALID_ELEMENT_CONFIGURATION",
+                "INVALID_ELEMENT_TYPE",
+                "INVALID_REQUEST",
+                "NOT_ALLOWED_IN_CURRENT_STATE",
+                "NOT_FOUND",
+                "OPERATION_NOT_FOUND",
+                "RESOURCE_BUSY",
+                "RESOURCE_IN_USE",
+                "RESOURCE_INACCESSIBLE",
+                "SERVICE_UNAVAILABLE",
+                "TIMED_OUT",
+                "UNABLE_TO_ALLOCATE_RESOURCE",
+                "UNAUTHENTICATED",
+                "UNAUTHORIZED",
+                "UNEXPECTED_INPUT",
+                "UNSUPPORTED",
+                "UNVERIFIED_PEER"
+            ]
+        },
+        "VapiStdErrorsInvalidArgument": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsNotFound": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsResourceBusy": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnauthorized": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnsupported": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdErrorsUnverifiedPeer": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "description": "Stack of one or more localizable messages for human error consumers. \n The message at the top of the stack (first in the list) describes the error from the perspective of the operation the client invoked. \n\n Each subsequent message in the stack describes the \"cause\" of the prior message.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VapiStdLocalizableMessage"
+                    }
+                },
+                "data": {
+                    "description": "Data to facilitate clients responding to the operation reporting a standard error to indicating that it was unable to complete successfully. \n Operations may provide data that clients can use when responding to errors. Since the data that clients need may be specific to the context of the operation reporting the error, different operations that report the same error may provide different data in the error. The documentation for each each operation will describe what, if any, data it provides for each error it reports. \n\n The ArgumentLocations, FileLocations, and TransientIndication structures are intended as possible values for this field. DynamicID may also be useful as a value for this field (although that is not its primary purpose). Some services may provide their own specific structures for use as the value of this field when reporting errors from their operations.\n\nSome operations will not set this field when reporting errors.",
+                    "type": "object"
+                },
+                "error_type": {
+                    "description": "Discriminator field to help API consumers identify the structure type.\nCan be unset for compatibility with preceding implementations.",
+                    "$ref": "#/definitions/VapiStdErrorsErrorType"
+                }
+            },
+            "required": [
+                "messages"
+            ]
+        },
+        "VapiStdLocalizableMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. \n This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "default_message": {
+                    "description": "The value of this localizable string or message template in the en_US (English) locale. If LocalizableMessage.id refers to a message template, the default message will contain the substituted arguments. This value can be used by clients that do not need to display strings and messages in the native language of the user. It could also be used as a fallback if a client is unable to access the appropriate message catalog.",
+                    "type": "string"
+                },
+                "args": {
+                    "description": "Positional arguments to be substituted into the message template. This list will be empty if the message uses named arguments or has no arguments.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "params": {
+                    "description": "Named arguments to be substituted into the message template.\nUnset means that the message template requires no arguments or positional arguments are used.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/VapiStdLocalizationParam"
+                    }
+                },
+                "localized": {
+                    "description": "Localized string value as per request requirements.\nwhen the client has not requested specific locale the implementation may not populate this field to conserve resources.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "default_message",
+                "args"
+            ]
+        },
+        "VapiStdLocalizationParam": {
+            "type": "object",
+            "properties": {
+                "s": {
+                    "description": "String value associated with the parameter.\nthis field will be set when string value is used.",
+                    "type": "string"
+                },
+                "dt": {
+                    "description": "Date and time value associated with the parameter. Use the LocalizationParam.format field to specify date and time display style.\nthis field will be set when date and time value is used.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "i": {
+                    "description": "long value associated with the parameter.\nthis field will be set when long value is used.",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "d": {
+                    "description": "The double value associated with the parameter. The number of displayed fractional digits is changed via LocalizationParam.precision field.\nthis field will be set when double value is used.",
+                    "type": "number",
+                    "format": "double"
+                },
+                "l": {
+                    "description": "Nested localizable value associated with the parameter. This is useful construct to convert to human readable localized form enumerated type and boolean values. It can also be used for proper handling of pluralization and gender forms in localization. Recursive NestedLocalizableMessage instances can be used for localizing short lists of items.\nthis field will be set when nested localization message value is used.",
+                    "$ref": "#/definitions/VapiStdNestedLocalizableMessage"
+                },
+                "format": {
+                    "description": "Format associated with the date and time value in LocalizationParam.dt field. The enumeration value SHORT_DATETIME will be used as default.\nthis may not be set if enumeration value SHORT_DATETIME default format is appropriate",
+                    "$ref": "#/definitions/VapiStdLocalizationParamDateTimeFormat"
+                },
+                "precision": {
+                    "description": "Number of fractional digits to include in formatted double value.\nthis will be set when exact precision is required for rendering double numbers.",
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "VapiStdLocalizationParamDateTimeFormat": {
+            "type": "string",
+            "description": "The LocalizationParam.DateTimeFormat enumerated type lists possible date and time formatting options. It combines the Unicode CLDR format types - full, long, medium and short with 3 different presentations - date only, time only and combined date and time presentation.",
+            "enum": [
+                "SHORT_DATE",
+                "MED_DATE",
+                "LONG_DATE",
+                "FULL_DATE",
+                "SHORT_TIME",
+                "MED_TIME",
+                "LONG_TIME",
+                "FULL_TIME",
+                "SHORT_DATE_TIME",
+                "MED_DATE_TIME",
+                "LONG_DATE_TIME",
+                "FULL_DATE_TIME"
+            ]
+        },
+        "VapiStdNestedLocalizableMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Unique identifier of the localizable string or message template. \n This identifier is typically used to retrieve a locale-specific string or message template from a message catalog.",
+                    "type": "string"
+                },
+                "params": {
+                    "description": "Named Arguments to be substituted into the message template.\nservices will not populate this field when there are no parameters to be substituted",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/VapiStdLocalizationParam"
+                    }
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "VcenterHvcLinksCreate": {
+            "$ref": "#/definitions/VcenterHvcLinksCreateSpec",
+            "description": "Specification for the new link to be created."
+        },
+        "VcenterHvcLinksCreateSpec": {
+            "type": "object",
+            "properties": {
+                "psc_hostname": {
+                    "description": "The PSC hostname for the domain to be linked.",
+                    "type": "string"
+                },
+                "port": {
+                    "description": "The HTTPS port of the PSC to be linked.\nIf unset 443 will be used as default.",
+                    "type": "string"
+                },
+                "domain_name": {
+                    "description": "The domain to which the PSC belongs.",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The administrator username of the PSC.",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The administrator password of the PSC.",
+                    "type": "string",
+                    "format": "password"
+                },
+                "ssl_thumbprint": {
+                    "description": "The ssl thumbprint of the server.\nif unset no thumbprint is passed.",
+                    "type": "string"
+                },
+                "admin_groups": {
+                    "description": "List of groups to be added to enable administrator access to.\nif unset administrator access will not be set.",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "psc_hostname",
+                "domain_name",
+                "username",
+                "password"
+            ]
+        },
+        "VcenterHvcLinksCredentials": {
+            "type": "object",
+            "properties": {
+                "user_name": {
+                    "description": "Name of the user to authenticate",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Password for the user.",
+                    "type": "string",
+                    "format": "password"
+                }
+            },
+            "required": [
+                "user_name",
+                "password"
+            ]
+        },
+        "VcenterHvcLinksDeleteWithCredentials": {
+            "type": "object",
+            "properties": {
+                "credentials": {
+                    "$ref": "#/definitions/VcenterHvcLinksCredentials",
+                    "description": "Credentials to use for authentication to the remote system.\nThis parameter is currently required. In the future, it may become optional."
+                }
+            }
+        },
+        "VcenterHvcLinksInfo": {
+            "type": "object",
+            "properties": {
+                "connection_health_status": {
+                    "description": "Health status of the connection",
+                    "$ref": "#/definitions/VcenterHvcLinksInfoHealthStatus"
+                },
+                "health_status_message": {
+                    "description": "Localizable messages associated with health status\nThis field is optional and it is only relevant when the value of Links.Info.connection-health-status is UNHEALTHY.",
+                    "$ref": "#/definitions/VapiStdLocalizableMessage"
+                }
+            }
+        },
+        "VcenterHvcLinksInfoHealthStatus": {
+            "type": "string",
+            "description": "The Links.Info.HealthStatus enumerated type defines the possible states for health of a link.",
+            "enum": [
+                "HEALTHY",
+                "UNHEALTHY"
+            ]
+        },
+        "VcenterHvcLinksSummary": {
+            "type": "object",
+            "properties": {
+                "link": {
+                    "description": "Unique identifier for the link.\nWhen clients pass a value of this structure as a parameter, the field must be an identifier for the resource type: vcenter.hvc.Links. When operations return a value of this structure as a result, the field will be an identifier for the resource type: vcenter.hvc.Links.",
+                    "type": "string"
+                },
+                "display_name": {
+                    "description": "The display name is set to the domain name which was set during create.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "link",
+                "display_name"
+            ]
+        },
+        "VcenterHvcManagementAdministratorsAdd": {
+            "type": "object",
+            "properties": {
+                "group_name": {
+                    "type": "string",
+                    "description": "Name of the new group to be added. Ex - xyz@abc.com where xyz is the group name and abc.com is the domain name"
+                }
+            },
+            "required": [
+                "group_name"
+            ]
+        },
+        "VcenterHvcManagementAdministratorsRemove": {
+            "type": "object",
+            "properties": {
+                "group_name": {
+                    "type": "string",
+                    "description": "Name of the group to be removed. Ex - xyz@abc.com where xyz is the group name and abc.com is the domain name"
+                }
+            },
+            "required": [
+                "group_name"
+            ]
+        },
+        "VcenterHvcManagementAdministratorsSet": {
+            "type": "object",
+            "properties": {
+                "group_names": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Names the groups to be in the CloudAdminGroup Ex - xyz@abc.com where xyz is the group name and abc.com is the domain name"
+                }
+            },
+            "required": [
+                "group_names"
+            ]
+        }
+    }
+}

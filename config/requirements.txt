@@ -1,0 +1,9 @@
+ansible
+jsonschema
+boto3
+baron
+redbaron
+ruamel
+ruamel.yaml
+autoflake
+black

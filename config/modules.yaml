@@ -3,22 +3,22 @@
 - appliance_access_consolecli:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_access_dcui_info:
 - appliance_access_dcui:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_access_shell_info:
 - appliance_access_shell:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_access_ssh_info:
 - appliance_access_ssh:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_health_applmgmt_info:
 - appliance_health_database_info:
 - appliance_health_databasestorage_info:
@@ -46,14 +46,14 @@
 - appliance_networking_dns_domains:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_networking_dns_hostname_info:
 - appliance_networking_dns_hostname:
 - appliance_networking_dns_servers_info:
 - appliance_networking_dns_servers:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_networking_firewall_inbound_info:
 - appliance_networking_firewall_inbound:
 - appliance_networking_info:
@@ -71,7 +71,7 @@
 - appliance_ntp:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_services_info:
 - appliance_services:
 - appliance_shutdown_info:
@@ -85,17 +85,19 @@
 - appliance_system_time_timezone:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_system_version_info:
 - appliance_timesync_info:
 - appliance_timesync:
     documentation:
       seealso:
-        - M(vmware.vmware.vcsa_settings)
+        - module: vmware.vmware.vcsa_settings
 - appliance_update_info:
 - appliance_vmon_service_info:
 - appliance_vmon_service:
 - content_library_item_info:
+- content_library_info:
+- content_library_subscriptions_info:
 - content_locallibrary_info:
 - content_locallibrary:
 - content_subscribedlibrary_info:
@@ -109,11 +111,13 @@
 - vcenter_folder_info:
 - vcenter_host_info:
 - vcenter_host:
+- vcenter_info:
 - vcenter_network_info:
 - vcenter_ovf_libraryitem:
 - vcenter_resourcepool_info:
 - vcenter_resourcepool:
 - vcenter_storage_policies_info:
+- vcenter_storage_profile_info:
 - vcenter_vm_guest_customization:
     documentation:
       short_description: Applies a customization specification on the virtual machine

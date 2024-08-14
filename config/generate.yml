@@ -1,0 +1,35 @@
+---
+- name: Generate Modules For VMWare Rest
+  hosts: localhost
+  gather_facts: true
+  vars:
+    mock_sanity_ignore_versions:
+      - '2.9'
+      - '2.10'
+      - '2.11'
+      - '2.12'
+      - '2.13'
+      - '2.14'
+  pre_tasks:
+    - name: Create Output Dir
+      ansible.builtin.file:
+        state: directory
+        path: "{{ playbook_dir }}/output/tests/sanity"
+    - name: Make Stub Sanity Ignore Files
+      ansible.builtin.file:
+        state: touch
+        path: "{{ playbook_dir }}/output/tests/sanity/ignore-{{ item }}.txt"
+      loop: "{{ mock_sanity_ignore_versions }}"
+  roles:
+    - role: ansible.content_builder.run
+      manifest_file: "{{ playbook_dir }}/MANIFEST.yml"
+  tasks:
+    - name: Remove Stub Sanity Ignore Files
+      ansible.builtin.file:
+        state: absent
+        path: "{{ playbook_dir }}/output/tests/sanity/ignore-{{ item }}.txt"
+      loop: "{{ mock_sanity_ignore_versions }}"
+    - name: Sync Return and Example Blocks
+      ansible.builtin.command: python "{{ playbook_dir }}/copy_old_return_blocks.py"
+    - name: Reformat Modules
+      ansible.builtin.shell: black {{ playbook_dir }}/output/plugins/modules/*
