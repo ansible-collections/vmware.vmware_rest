@@ -11,28 +11,61 @@ DOCUMENTATION = r"""
 module: vcenter_vmtemplate_libraryitems
 short_description: Creates a library item in content library from a virtual machine
 description: Creates a library item in content library from a virtual machine. This
-    {@term operation} creates a library item in content library whose content is a
-    virtual machine template created from the source virtual machine, using the supplied
-    create specification. The virtual machine template is stored in a newly created
-    library item.
+    operation creates a library item in content library whose content is a virtual
+    machine template created from the source virtual machine, using the supplied create
+    specification. The virtual machine template is stored in a newly created library
+    item.
 options:
     description:
         description:
         - Description of the deployed virtual machine.
+        - If unset, the deployed virtual machine has the same description as the source
+            library item.
         type: str
     disk_storage:
         description:
-        - Storage specification for the virtual machine template's disks.
+        - Storage specification for the deployed virtual machine's disks.
+        - 'If both I(disk_storage_overrides) and I(disk_storage) are unset, the deployed
+            virtual machine''s disks are created with the same storage spec as the
+            corresponding disks in the source virtual machine template contained in
+            the library item. '
+        - ' If I(disk_storage_overrides) is unset and I(disk_storage) is specified,
+            all of the deployed virtual machine''s disks are created with the storage
+            spec specified by I(disk_storage). '
+        - ''
+        - ' If I(disk_storage_overrides) is specified and I(disk_storage) is unset,
+            disks with identifiers that are not in I(disk_storage_overrides) are created
+            with the same storage spec as the corresponding disks in the source virtual
+            machine template contained in the library item. '
+        - ''
+        - ' If both I(disk_storage_overrides) and I(disk_storage) are specified, disks
+            with identifiers that are not in I(disk_storage_overrides) are created
+            with the storage spec specified by I(disk_storage).'
         - 'Valid attributes are:'
         - ' - C(datastore) (str): Identifier for the datastore associated the deployed
-            virtual machine''s disk. ([''deploy'', ''present''])'
+            virtual machine''s disk.'
+        - 'This field is currently required. '
+        - ' If I(storage_policy) is also specified and is incompatible with the I(datastore),
+            then the disk will be flagged as being out of compliance with the specified
+            storage policy.'
+        - ''
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_datastore_info).
+            (['deploy', 'present'])
         - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
-            disk. ([''deploy'', ''present''])'
+            disk.'
+        - If unset, I(datastore) must be specified and the deployed virtual machine's
+            disk is created with the default storage policy associated with the I(datastore).
+            (['deploy', 'present'])
         - '   - Accepted keys:'
         - '     - type (string): Policy type for a virtual machine template''s disk.'
         - 'Accepted value for this field:'
         - '       - C(USE_SPECIFIED_POLICY)'
         - '     - policy (string): Identifier for the storage policy to use.'
+        - This field is optional and it is only relevant when the value of I(type)
+            is USE_SPECIFIED_POLICY.
+        - 'When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_storage_policies_info). '
         type: dict
     disk_storage_overrides:
         description:
@@ -40,38 +73,93 @@ options:
             This is specified as a mapping between disk identifiers in the source
             virtual machine template contained in the library item and their storage
             specifications.
+        - 'If both I(disk_storage_overrides) and I(disk_storage) are unset, the deployed
+            virtual machine''s disks are created with the same storage spec as the
+            corresponding disks in the source virtual machine template contained in
+            the library item. '
+        - ' If I(disk_storage_overrides) is unset and I(disk_storage) is specified,
+            all of the deployed virtual machine''s disks are created with the storage
+            spec specified by I(disk_storage). '
+        - ''
+        - ' If I(disk_storage_overrides) is specified and I(disk_storage) is unset,
+            disks with identifiers that are not in I(disk_storage_overrides) are created
+            with the same storage spec as the corresponding disks in the source virtual
+            machine template contained in the library item. '
+        - ''
+        - ' If both I(disk_storage_overrides) and I(disk_storage) are specified, disks
+            with identifiers that are not in I(disk_storage_overrides) are created
+            with the storage spec specified by I(disk_storage). '
+        - ''
+        - 'When clients pass a value of this structure as a parameter, the key in
+            the field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk). '
         type: dict
     guest_customization:
         description:
         - Guest customization spec to apply to the deployed virtual machine.
+        - If unset, the guest operating system is not customized after deployment.
         - 'Valid attributes are:'
-        - ' - C(name) (str): Name of the customization specification. ([''deploy''])'
+        - ' - C(name) (str): Name of the customization specification.'
+        - If unset, no guest customization is performed. (['deploy'])
         type: dict
     hardware_customization:
         description:
         - Hardware customization spec which specifies updates to the deployed virtual
             machine.
+        - If unset, the deployed virtual machine has the same hardware configuration
+            as the source virtual machine template contained in the library item.
         - 'Valid attributes are:'
-        - ' - C(nics) (dict): Map of Ethernet network adapters to update. ([''deploy''])'
+        - ' - C(nics) (dict): Map of Ethernet network adapters to update.'
+        - If unset, all Ethernet adapters will remain connected to the same network
+            as they were in the source virtual machine template. An Ethernet adapter
+            with a MacAddressType of MANUAL will not change. An Ethernet adapter with
+            a MacAddressType of GENERATED or ASSIGNED will receive a new address.
+        - When clients pass a value of this structure as a parameter, the key in the
+            field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_ethernet).
+            (['deploy'])
         - ' - C(disks_to_remove) (list): Idenfiers of disks to remove from the deployed
-            virtual machine. ([''deploy''])'
+            virtual machine.'
+        - If unset, all disks will be copied.
+        - When clients pass a value of this structure as a parameter, the field must
+            contain the id of resources returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+            (['deploy'])
         - ' - C(disks_to_update) (dict): Disk update specification for individual
-            disks in the deployed virtual machine. ([''deploy''])'
+            disks in the deployed virtual machine.'
+        - If unset, disks in the deployed virtual machine will have the same settings
+            as the corresponding disks in the source virtual machine template contained
+            in the library item.
+        - When clients pass a value of this structure as a parameter, the key in the
+            field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+            (['deploy'])
         - ' - C(cpu_update) (dict): CPU update specification for the deployed virtual
-            machine. ([''deploy''])'
+            machine.'
+        - If {@term.unset}, the deployed virtual machine has the same CPU settings
+            as the source virtual machine template contained in the library item.
+            (['deploy'])
         - '   - Accepted keys:'
         - '     - num_cpus (integer): Number of virtual processors in the deployed
             virtual machine.'
+        - If {@term.unset}, the deployed virtual machine has the same CPU count as
+            the source virtual machine template contained in the library item.
         - '     - num_cores_per_socket (integer): Number of cores among which to distribute
             CPUs in the deployed virtual machine.'
+        - If {@term.unset}, the deployed virtual machine has the same number of cores
+            per socket as the source virtual machine template contained in the library
+            item.
         - ' - C(memory_update) (dict): Memory update specification for the deployed
-            virtual machine. ([''deploy''])'
+            virtual machine.'
+        - If {@term.unset}, the deployed virtual machine has the same memory settings
+            as the source virtual machine template contained in the library item.
+            (['deploy'])
         - '   - Accepted keys:'
         - '     - memory (integer): Size of a virtual machine''s memory in MB.'
+        - If {@term.unset}, the deployed virtual machine has the same memory size
+            as the source virtual machine template.
         type: dict
     library:
         description:
         - Identifier of the library in which the new library item should be created.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.content_library_info).
             Required with I(state=['present'])
         type: str
     name:
@@ -81,25 +169,59 @@ options:
         type: str
     placement:
         description:
-        - Information used to place the virtual machine template.
+        - Information used to place the deployed virtual machine.
+        - 'This field is currently required. In the future, if this field is unset,
+            the system will use the values from the source virtual machine template
+            contained in the library item. '
+        - ' If specified, each field will be used for placement. If the fields result
+            in disjoint placement, the operation will fail. If the fields along with
+            the placement values of the source virtual machine template result in
+            disjoint placement, the operation will fail.'
         - 'Valid attributes are:'
         - ' - C(folder) (str): Virtual machine folder into which the deployed virtual
-            machine should be placed. ([''deploy'', ''present''])'
+            machine should be placed.'
+        - 'This field is currently required. '
+        - ' If unset, the system will attempt to choose a suitable folder for the
+            virtual machine; if a folder cannot be chosen, the virtual machine deployment
+            operation will fail. '
+        - ''
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_folder_info).
+            (['deploy', 'present'])
         - ' - C(resource_pool) (str): Resource pool into which the deployed virtual
-            machine should be placed. ([''deploy'', ''present''])'
+            machine should be placed.'
+        - If unset, the system will attempt to choose a suitable resource pool for
+            the virtual machine; if a resource pool cannot be chosen, the virtual
+            machine deployment operation will fail.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_resourcepool_info).
+            (['deploy', 'present'])
         - ' - C(host) (str): Host onto which the virtual machine should be placed.
-            If C(#host) and C(#resource_pool) are both specified, C(#resource_pool)
-            must belong to C(#host). If C(#host) and C(#cluster) are both specified,
-            C(#host) must be a member of C(#cluster). ([''deploy'', ''present''])'
+            If I(host) and I(resource_pool) are both specified, I(resource_pool) must
+            belong to I(host). If I(host) and I(cluster) are both specified, I(host)
+            must be a member of I(cluster).'
+        - This field may be unset if I(resource_pool) or I(cluster) is specified.
+            If unset, the system will attempt to choose a suitable host for the virtual
+            machine; if a host cannot be chosen, the virtual machine deployment operation
+            will fail.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_host_info).
+            (['deploy', 'present'])
         - ' - C(cluster) (str): Cluster onto which the deployed virtual machine should
-            be placed. If C(#cluster) and C(#resource_pool) are both specified, C(#resource_pool)
-            must belong to C(#cluster). If C(#cluster) and C(#host) are both specified,
-            C(#host) must be a member of C(#cluster). ([''deploy'', ''present''])'
+            be placed. If I(cluster) and I(resource_pool) are both specified, I(resource_pool)
+            must belong to I(cluster). If I(cluster) and I(host) are both specified,
+            I(host) must be a member of I(cluster).'
+        - If I(resource_pool) or I(host) is specified, it is recommended that this
+            field be unset.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_cluster_info).
+            (['deploy', 'present'])
         type: dict
     powered_on:
         description:
         - Specifies whether the deployed virtual machine should be powered on after
             deployment.
+        - If unset, the virtual machine will not be powered on after deployment.
         type: bool
     session_timeout:
         description:
@@ -112,6 +234,8 @@ options:
     source_vm:
         description:
         - Identifier of the source virtual machine to create the library item from.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_info).
             Required with I(state=['present'])
         type: str
     state:
@@ -124,7 +248,9 @@ options:
     template_library_item:
         description:
         - identifier of the content library item containing the source virtual machine
-            template to be deployed. Required with I(state=['deploy'])
+            template to be deployed.
+        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
+            Required with I(state=['deploy'])
         type: str
     vcenter_hostname:
         description:
@@ -167,17 +293,35 @@ options:
         description:
         - Storage location for the virtual machine template's configuration and log
             files.
+        - If unset, the virtual machine template's configuration and log files are
+            placed on the default storage backing associated with the library specified
+            by I()
         - 'Valid attributes are:'
         - ' - C(datastore) (str): Identifier of the datastore for the deployed virtual
-            machine''s configuration and log files. ([''deploy'', ''present''])'
+            machine''s configuration and log files.'
+        - 'This field is currently required. '
+        - ' When I(storage_policy) is also specified and is incompatible with the
+            I(datastore), then the deployed virtual machine will be flagged as being
+            out of compliance with the specified storage policy.'
+        - ''
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_datastore_info).
+            (['deploy', 'present'])
         - ' - C(storage_policy) (dict): Storage policy for the deployed virtual machine''s
-            configuration and log files. ([''deploy'', ''present''])'
+            configuration and log files.'
+        - If unset, I(datastore) must be specified and the deployed virtual machine's
+            configuration and log files are created with the default storage policy
+            associated with the I(datastore). (['deploy', 'present'])
         - '   - Accepted keys:'
         - '     - type (string): Policy type for the virtual machine template''s configuration
             and log files.'
         - 'Accepted value for this field:'
         - '       - C(USE_SPECIFIED_POLICY)'
         - '     - policy (string): Identifier for the storage policy to use.'
+        - This field is optional and it is only relevant when the value of I(type)
+            is USE_SPECIFIED_POLICY.
+        - 'When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_storage_policies_info). '
         type: dict
 author:
 - Ansible Cloud Team (@ansible-collections)
@@ -269,7 +413,6 @@ EXAMPLES = r"""
     state: deploy
   register: my_new_vm
 """
-
 RETURN = r"""
 # content generated by the update_return_section callback# task: Create a VM template on the library
 id:
@@ -307,8 +450,23 @@ value:
   type: dict
 """
 
+
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
+    "create": {
+        "query": {},
+        "body": {
+            "description": "description",
+            "disk_storage": "disk_storage",
+            "disk_storage_overrides": "disk_storage_overrides",
+            "library": "library",
+            "name": "name",
+            "placement": "placement",
+            "source_vm": "source_vm",
+            "vm_home_storage": "vm_home_storage",
+        },
+        "path": {},
+    },
     "deploy": {
         "query": {},
         "body": {
@@ -323,20 +481,6 @@ PAYLOAD_FORMAT = {
             "vm_home_storage": "vm_home_storage",
         },
         "path": {"template_library_item": "template_library_item"},
-    },
-    "create": {
-        "query": {},
-        "body": {
-            "description": "description",
-            "disk_storage": "disk_storage",
-            "disk_storage_overrides": "disk_storage_overrides",
-            "library": "library",
-            "name": "name",
-            "placement": "placement",
-            "source_vm": "source_vm",
-            "vm_home_storage": "vm_home_storage",
-        },
-        "path": {},
     },
 }  # pylint: disable=line-too-long
 
@@ -457,6 +601,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -473,6 +618,7 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
     lookup_url = "https://{vcenter_hostname}/api/content/library/item?library_id={library}".format(
         **params
     )
@@ -575,5 +721,9 @@ async def _deploy(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    current_loop = asyncio.get_event_loop_policy().get_event_loop()
-    current_loop.run_until_complete(main())
+    current_loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(current_loop)
+        current_loop.run_until_complete(main())
+    finally:
+        current_loop.close()

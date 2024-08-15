@@ -23,6 +23,8 @@ jobs:
       artifact-name: ${{ github.event.repository.name }}_docs_${{ github.event.pull_request.head.sha }}_validate
       intersphinx-links: |
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
+      provide-link-targets: |
+        ansible_collections.vmware.vmware.vcsa_settings_module
 
   build-docs:
     permissions:
@@ -35,6 +37,8 @@ jobs:
       init-fail-on-error: false
       intersphinx-links: |
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
+      provide-link-targets: |
+        ansible_collections.vmware.vmware.vcsa_settings_module
 
   # This job requires that the workflow trigger is pull_request_target. However that trigger uses
   # whatever version of the workflow is available on main instead of the feature branch.

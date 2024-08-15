@@ -688,3 +688,23 @@ releases:
     - 75-vmware_rest-action_groups.yaml
     - 76-vmware_rest-dont_use_folder.yaml
     release_date: '2024-03-21'
+  4.0.0:
+    changes:
+      breaking_changes:
+      - Removing any support for ansible-core <=2.14
+      minor_changes:
+      - cluster_moid - updated documentation around lookup plugin usage
+      - datacenter_moid - updated documentation around lookup plugin usage
+      - datastore_moid - updated documentation around lookup plugin usage
+      - folder_moid - updated documentation around lookup plugin usage
+      - host_moid - updated documentation around lookup plugin usage
+      - network_moid - updated documentation around lookup plugin usage
+      - resource_pool_moid - updated documentation around lookup plugin usage
+      - vm_moid - updated documentation around lookup plugin usage
+    fragments:
+    - 492-remove-support-ansible-2-14.yml
+    - 503_mm-feature_update_lookup_docs.yml
+    - 506-mention_vmware.vmware.vcsa_settings.yml
+    - 510-fix-broken-doc-generation.yml
+    - 513-add-vmware.vmware-for-docs-ci.yaml
+    release_date: '2024-08-14'

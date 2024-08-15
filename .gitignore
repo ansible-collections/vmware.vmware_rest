@@ -389,5 +389,6 @@ $RECYCLE.BIN/
 changelogs/.plugin-cache.yaml
 manual/source/vmware_rest_scenarios/task_outputs
 commit_message
+config/output
 tests/integration/inventory.networking
 manual/build

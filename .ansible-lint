@@ -6,6 +6,7 @@ exclude_paths:
   - tests/integration
   - tests/sanity
   - modules.yaml
+  - config
 
 skip_list:
- - yaml[indentation]
+  - yaml[indentation]

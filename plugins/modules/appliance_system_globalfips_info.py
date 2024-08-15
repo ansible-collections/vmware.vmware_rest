@@ -70,9 +70,9 @@ notes:
 
 EXAMPLES = r"""
 """
-
 RETURN = r"""
 """
+
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
@@ -195,5 +195,9 @@ async def _info(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    current_loop = asyncio.get_event_loop_policy().get_event_loop()
-    current_loop.run_until_complete(main())
+    current_loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(current_loop)
+        current_loop.run_until_complete(main())
+    finally:
+        current_loop.close()

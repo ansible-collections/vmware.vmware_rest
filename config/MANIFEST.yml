@@ -1,0 +1,16 @@
+collection:
+  path: "{{ playbook_dir }}/output"
+  namespace: vmware
+  name: vmware_rest
+  requires_ansible: "2.15.0"
+plugins:
+  - type: module_openapi
+    name: "vmware_rest"
+    content: cloud
+    api_object_path: "{{ playbook_dir }}/api_specifications/8.0.2"
+    resource: "{{ playbook_dir }}"
+    action: generate_all
+    unique_key: ""
+    rm_swagger_json: ""
+    module_version: "1.0.0"
+    author: "Ansible Cloud Team"

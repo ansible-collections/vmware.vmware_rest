@@ -11,20 +11,15 @@ DOCUMENTATION = r"""
 module: vcenter_ovf_libraryitem
 short_description: Creates a library item in content library from a virtual machine
     or virtual appliance
-description: Creates a library item in content library from a virtual machine or virtual
-    appliance. <p> This {@term operation} creates a library item in content library
-    whose content is an OVF package derived from a source virtual machine or virtual
-    appliance, using the supplied create specification. The OVF package may be stored
-    as in a newly created library item or in an in an existing library item. For an
-    existing library item whose content is updated by this {@term operation}, the
-    original content is overwritten. Meta data such as name and description is not
-    updated for the exisitng library item. </p>
+description: 'Creates a library item in content library from a virtual machine or
+    virtual appliance. '
 options:
     client_token:
         description:
         - Client-generated token used to retry a request if the client fails to get
             a response from the server. If the original request succeeded, the result
             of that request will be returned, otherwise the operation will be retried.
+        - If unset, the server will create a token.
         type: str
     create_spec:
         description:
@@ -32,11 +27,14 @@ options:
             or virtual appliance. Required with I(state=['present'])
         - 'Valid attributes are:'
         - ' - C(name) (str): Name to use in the OVF descriptor stored in the library
-            item. ([''present''])'
+            item.'
+        - If unset, the server will use source's current name. (['present'])
         - ' - C(description) (str): Description to use in the OVF descriptor stored
-            in the library item. ([''present''])'
+            in the library item.'
+        - If unset, the server will use source's current annotation. (['present'])
         - ' - C(flags) (list): Flags to use for OVF package creation. The supported
-            flags can be obtained using {@link ExportFlag#list}. ([''present''])'
+            flags can be obtained using ExportFlag.list.'
+        - If unset, no flags will be used. (['present'])
         type: dict
     deployment_spec:
         description:
@@ -44,49 +42,99 @@ options:
             with I(state=['deploy'])
         - 'Valid attributes are:'
         - ' - C(name) (str): Name assigned to the deployed target virtual machine
-            or virtual appliance. ([''deploy''])'
+            or virtual appliance.'
+        - If unset, the server will use the name from the OVF package. (['deploy'])
         - ' - C(annotation) (str): Annotation assigned to the deployed target virtual
-            machine or virtual appliance. ([''deploy''])'
+            machine or virtual appliance.'
+        - If unset, the server will use the annotation from the OVF package. (['deploy'])
         - ' - C(accept_all_EULA) (bool): Whether to accept all End User License Agreements.
-            ([''deploy''])'
+            See I() ([''deploy''])'
         - '   This key is required with [''deploy''].'
         - ' - C(network_mappings) (dict): Specification of the target network to use
             for sections of type ovf:NetworkSection in the OVF descriptor. The key
-            in the {@term map} is the section identifier of the ovf:NetworkSection
-            section in the OVF descriptor and the value is the target network to be
-            used for deployment. ([''deploy''])'
+            in the map is the section identifier of the ovf:NetworkSection section
+            in the OVF descriptor and the value is the target network to be used for
+            deployment.'
+        - If unset, the server will choose a network mapping.
+        - When clients pass a value of this structure as a parameter, the value in
+            the field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_network_info).
+            (['deploy'])
         - ' - C(storage_mappings) (dict): Specification of the target storage to use
             for sections of type vmw:StorageGroupSection in the OVF descriptor. The
-            key in the {@term map} is the section identifier of the ovf:StorageGroupSection
+            key in the map is the section identifier of the ovf:StorageGroupSection
             section in the OVF descriptor and the value is the target storage specification
-            to be used for deployment. ([''deploy''])'
-        - ' - C(storage_provisioning) (str): The C(disk_provisioning_type) defines
-            the virtual disk provisioning types that can be set for a disk on the
-            target platform. ([''deploy''])'
+            to be used for deployment. See I()'
+        - If unset, the server will choose a storage mapping. (['deploy'])
+        - ' - C(storage_provisioning) (str): This option defines the virtual disk
+            provisioning types that can be set for a disk on the target platform.
+            ([''deploy''])'
         - '   - Accepted values:'
         - '     - eagerZeroedThick'
         - '     - thick'
         - '     - thin'
         - ' - C(storage_profile_id) (str): Default storage profile to use for all
-            sections of type vmw:StorageSection in the OVF descriptor. ([''deploy''])'
-        - ' - C(locale) (str): The locale to use for parsing the OVF descriptor. ([''deploy''])'
+            sections of type vmw:StorageSection in the OVF descriptor.'
+        - If unset, the server will choose the default profile.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_storage_policies_info).
+            (['deploy'])
+        - ' - C(locale) (str): The locale to use for parsing the OVF descriptor.'
+        - If unset, the server locale will be used. (['deploy'])
         - ' - C(flags) (list): Flags to be use for deployment. The supported flag
-            values can be obtained using {@link ImportFlag#list}. ([''deploy''])'
+            values can be obtained using ImportFlag.list.'
+        - If unset, no flags will be used. (['deploy'])
         - ' - C(additional_parameters) (list): Additional OVF parameters that may
             be needed for the deployment. Additional OVF parameters may be required
             by the OVF descriptor of the OVF package in the library item. Examples
             of OVF parameters that can be specified through this field include, but
-            are not limited to: <ul> <li>{@link DeploymentOptionParams}</li> <li>{@link
-            ExtraConfigParams}</li> <li>{@link IpAllocationParams}</li> <li>{@link
-            PropertyParams}</li> <li>{@link ScaleOutParams}</li> <li>{@link VcenterExtensionParams}</li>
-            </ul> ([''deploy''])'
+            are not limited to: '
+        - '   - DeploymentOptionParams'
+        - '   - ExtraConfigParams'
+        - '   - IpAllocationParams'
+        - '   - PropertyParams'
+        - '   - ScaleOutParams'
+        - '   - VcenterExtensionParams'
+        - ' '
+        - If unset, the server will choose default settings for all parameters necessary
+            for the LibraryItem.deploy operation. See LibraryItem.deploy.
+        - When clients pass a value of this structure as a parameter, the field must
+            contain all the attributes defined in OvfParams. (['deploy'])
         - ' - C(default_datastore_id) (str): Default datastore to use for all sections
-            of type vmw:StorageSection in the OVF descriptor. ([''deploy''])'
+            of type vmw:StorageSection in the OVF descriptor.'
+        - If unset, the server will choose the default datastore.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_datastore_info).
+            (['deploy'])
+        - ' - C(vm_config_spec) (dict): The I(resource_pool_deployment_spec).vm-config-spec
+            is used for virtual machine configuration settings including hardware
+            specifications to use in place of the OVF descriptor. If set, the OVF
+            descriptor acts as a disk descriptor. Fields in the I(resource_pool_deployment_spec)
+            parameters such as I(resource_pool_deployment_spec).name that overlap
+            with settings in the I(resource_pool_deployment_spec).vm-config-spec are
+            not overridden and will continue to be used. Similarly, storage settings
+            in the I(resource_pool_deployment_spec) that affect the disks on the virtual
+            machine namely I(resource_pool_deployment_spec).storage-mappings, I(resource_pool_deployment_spec).storage-profile-id,
+            I(resource_pool_deployment_spec).storage-provisioning and I(resource_pool_deployment_spec).default-datastore-id
+            will also be honored.'
+        - If unset, the relevant virtual machine specifications in the OVF descriptor
+            of the OVF template will be used. (['deploy'])
+        - '   - Accepted keys:'
+        - '     - provider (string): The I(vm_config_spec_provider) is used to provide
+            the optional I(vm_config_spec) used when deploying an OVF template.'
+        - 'Accepted value for this field:'
+        - '       - C(XML)'
+        - '     - xml (string): The I(xml) is a conditional configuration made available
+            upon selecting the XML. It is used to pass in a vim.vm.ConfigSpec for
+            a virtual machine that has been serialized to XML and base64 encoded.'
+        - This field is optional and it is only relevant when the value of I(provider)
+            is XML.
         type: dict
     ovf_library_item_id:
         description:
         - Identifier of the content library item containing the OVF package to be
-            deployed. Required with I(state=['deploy', 'filter'])
+            deployed.
+        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
+            Required with I(state=['deploy', 'filter'])
         type: str
     session_timeout:
         description:
@@ -101,9 +149,14 @@ options:
         - Identifier of the virtual machine or virtual appliance to use as the source.
             Required with I(state=['present'])
         - 'Valid attributes are:'
-        - ' - C(type) (str): Type of the deployable resource. ([''present''])'
+        - ' - C(type) (str): Type of the deployable resource.'
+        - When clients pass a value of this structure as a parameter, the field must
+            be one of VirtualMachine or VirtualApp. (['present'])
         - '   This key is required with [''present''].'
-        - ' - C(id) (str): Identifier of the deployable resource. ([''present''])'
+        - ' - C(id) (str): Identifier of the deployable resource.'
+        - 'When clients pass a value of this structure as a parameter, the field must
+            be an identifier for one of these resource types: VirtualMachine or VirtualApp.
+            ([''present''])'
         - '   This key is required with [''present''].'
         type: dict
     state:
@@ -120,21 +173,43 @@ options:
             is mandatory.
         - 'Valid attributes are:'
         - ' - C(library_id) (str): Identifier of the library in which a new library
-            item should be created. This field is not used if the C(#library_item_id)
-            field is specified. ([''present''])'
+            item should be created. This field is not used if the I(library_item_id)
+            field is specified.'
+        - 'This field is currently required. '
+        - ' In the future, if unset, the I(library_item_id) field must be specified. '
+        - ''
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.content_library_info).
+            (['present'])
         - ' - C(library_item_id) (str): Identifier of the library item that should
-            be should be updated. ([''present''])'
+            be should be updated.'
+        - If unset, a new library item will be created. The I(library_id) field must
+            be specified if this field is set.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
+            (['present'])
         - ' - C(resource_pool_id) (str): Identifier of the resource pool to which
-            the virtual machine or virtual appliance should be attached. ([''deploy'',
-            ''filter''])'
+            the virtual machine or virtual appliance should be attached.'
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_resourcepool_info).
+            (['deploy', 'filter'])
         - '   This key is required with [''deploy'', ''filter''].'
         - ' - C(host_id) (str): Identifier of the target host on which the virtual
             machine or virtual appliance will run. The target host must be a member
-            of the cluster that contains the resource pool identified by {@link #resourcePoolId}.
-            ([''deploy'', ''filter''])'
+            of the cluster that contains the resource pool identified by I()'
+        - If unset, the server will automatically select a target host from the resource
+            pool if I(resource_pool_id) is a stand-alone host or a cluster with Distributed
+            Resource Scheduling (DRS) enabled.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_host_info).
+            (['deploy', 'filter'])
         - ' - C(folder_id) (str): Identifier of the vCenter folder that should contain
             the virtual machine or virtual appliance. The folder must be virtual machine
-            folder. ([''deploy'', ''filter''])'
+            folder.'
+        - If unset, the server will choose the deployment folder.
+        - When clients pass a value of this structure as a parameter, the field must
+            be the id of a resource returned by M(vmware.vmware_rest.vcenter_folder_info).
+            (['deploy', 'filter'])
         required: true
         type: dict
     vcenter_hostname:
@@ -258,7 +333,6 @@ EXAMPLES = r"""
       accept_all_EULA: true
       storage_provisioning: thin
 """
-
 RETURN = r"""
 # content generated by the update_return_section callback# task: Create a new VM from the OVF and specify the host and folder
 value:
@@ -276,13 +350,9 @@ value:
   type: dict
 """
 
+
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "deploy": {
-        "query": {"client_token": "client_token"},
-        "body": {"deployment_spec": "deployment_spec", "target": "target"},
-        "path": {"ovf_library_item_id": "ovf_library_item_id"},
-    },
     "filter": {
         "query": {},
         "body": {"target": "target"},
@@ -292,6 +362,11 @@ PAYLOAD_FORMAT = {
         "query": {"client_token": "client_token"},
         "body": {"create_spec": "create_spec", "source": "source", "target": "target"},
         "path": {},
+    },
+    "deploy": {
+        "query": {"client_token": "client_token"},
+        "body": {"deployment_spec": "deployment_spec", "target": "target"},
+        "path": {"ovf_library_item_id": "ovf_library_item_id"},
     },
 }  # pylint: disable=line-too-long
 
@@ -406,6 +481,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -422,6 +498,7 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
     library_id = (
         params["target"]["library_id"] if "library_id" in params["target"] else None
     )
@@ -540,5 +617,9 @@ async def _filter(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    current_loop = asyncio.get_event_loop_policy().get_event_loop()
-    current_loop.run_until_complete(main())
+    current_loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(current_loop)
+        current_loop.run_until_complete(main())
+    finally:
+        current_loop.close()

@@ -1,16 +1,31 @@
-================================
+=================================
 vmware.vmware_rest Release Notes
-================================
+=================================
 
 .. contents:: Topics
 
-v3.0.1
+v4.0.0
 ======
 
-Release Summary
-----------------
+Minor Changes
+-------------
 
-This release brings some minor changes and bugfixes.
+- cluster_moid - updated documentation around lookup plugin usage
+- datacenter_moid - updated documentation around lookup plugin usage
+- datastore_moid - updated documentation around lookup plugin usage
+- folder_moid - updated documentation around lookup plugin usage
+- host_moid - updated documentation around lookup plugin usage
+- network_moid - updated documentation around lookup plugin usage
+- resource_pool_moid - updated documentation around lookup plugin usage
+- vm_moid - updated documentation around lookup plugin usage
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Removing any support for ansible-core <=2.14
+
+v3.0.1
+======
 
 Minor Changes
 -------------
@@ -45,11 +60,6 @@ Breaking Changes / Porting Guide
 
 v2.3.1
 ======
-
-Release Summary
----------------
-
-This release brings some minor changes and bugfixes.
 
 Minor Changes
 -------------

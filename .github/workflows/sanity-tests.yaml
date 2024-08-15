@@ -44,7 +44,7 @@ on:
   # testing against latest version of ansible-test for each ansible-core
   # version
   schedule:
-    - cron: '23 4 * * *'
+    - cron: "23 4 * * *"
 
 concurrency:
   group: >-
@@ -54,11 +54,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
-###
-# Sanity tests (REQUIRED)
-#
-# https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+  ###
+  # Sanity tests (REQUIRED)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
     name: Sanity (Ⓐ${{ matrix.ansible }})
@@ -113,9 +112,9 @@ jobs:
           # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
           pull-request-change-detection: false
 
-  check:  # This job does nothing and is only used for the branch protection
-          # or multi-stage CI jobs, like making sure that all tests pass before
-          # a publishing job is started.
+  check: # This job does nothing and is only used for the branch protection
+    # or multi-stage CI jobs, like making sure that all tests pass before
+    # a publishing job is started.
     if: always()
 
     needs:

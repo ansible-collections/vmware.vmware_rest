@@ -1,0 +1,13 @@
+{
+    "files": [
+        "content",
+        "vapi",
+        "session",
+        "vcenter",
+        "stats",
+        "esx",
+        "appliance",
+        "cis",
+        "hvc"
+    ]
+}

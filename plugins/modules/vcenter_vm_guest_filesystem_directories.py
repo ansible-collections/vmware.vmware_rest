@@ -197,25 +197,24 @@ EXAMPLES = r"""
       user_name: root
       password: root
 """
-
 RETURN = r"""
 """
 
+
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "move": {
-        "query": {},
-        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
-        "path": {"vm": "vm"},
-    },
-    "create_temporary": {
+    "delete": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "parent_path": "parent_path",
-            "prefix": "prefix",
-            "suffix": "suffix",
+            "path": "path",
+            "recursive": "recursive",
         },
+        "path": {"vm": "vm"},
+    },
+    "move": {
+        "query": {},
+        "body": {"credentials": "credentials", "new_path": "new_path", "path": "path"},
         "path": {"vm": "vm"},
     },
     "create": {
@@ -227,12 +226,13 @@ PAYLOAD_FORMAT = {
         },
         "path": {"vm": "vm"},
     },
-    "delete": {
+    "create_temporary": {
         "query": {},
         "body": {
             "credentials": "credentials",
-            "path": "path",
-            "recursive": "recursive",
+            "parent_path": "parent_path",
+            "prefix": "prefix",
+            "suffix": "suffix",
         },
         "path": {"vm": "vm"},
     },
@@ -353,6 +353,7 @@ def build_url(params):
 
 
 async def entry_point(module, session):
+
     if module.params["state"] == "present":
         if "_create" in globals():
             operation = "create"
@@ -369,6 +370,7 @@ async def entry_point(module, session):
 
 
 async def _create(params, session):
+
     uniquity_keys = []
 
     payload = prepare_payload(params, PAYLOAD_FORMAT["create"])
@@ -482,5 +484,9 @@ async def _move(params, session):
 if __name__ == "__main__":
     import asyncio
 
-    current_loop = asyncio.get_event_loop_policy().get_event_loop()
-    current_loop.run_until_complete(main())
+    current_loop = asyncio.new_event_loop()
+    try:
+        asyncio.set_event_loop(current_loop)
+        current_loop.run_until_complete(main())
+    finally:
+        current_loop.close()
