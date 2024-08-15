@@ -1005,7 +1005,7 @@ options:
         type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 1.0.0
+version_added: 0.1.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -1267,12 +1267,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "relocate": {
-        "query": {},
-        "body": {"disks": "disks", "placement": "placement"},
-        "path": {"vm": "vm"},
-    },
-    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "create": {
         "query": {},
         "body": {
@@ -1297,7 +1291,6 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "clone": {
         "query": {},
         "body": {
@@ -1311,17 +1304,13 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "register": {
+    "delete": {"query": {}, "body": {}, "path": {"vm": "vm"}},
+    "relocate": {
         "query": {},
-        "body": {
-            "datastore": "datastore",
-            "datastore_path": "datastore_path",
-            "name": "name",
-            "path": "path",
-            "placement": "placement",
-        },
-        "path": {},
+        "body": {"disks": "disks", "placement": "placement"},
+        "path": {"vm": "vm"},
     },
+    "unregister": {"query": {}, "body": {}, "path": {"vm": "vm"}},
     "instant_clone": {
         "query": {},
         "body": {
@@ -1333,6 +1322,17 @@ PAYLOAD_FORMAT = {
             "placement": "placement",
             "serial_ports_to_update": "serial_ports_to_update",
             "source": "source",
+        },
+        "path": {},
+    },
+    "register": {
+        "query": {},
+        "body": {
+            "datastore": "datastore",
+            "datastore_path": "datastore_path",
+            "name": "name",
+            "path": "path",
+            "placement": "placement",
         },
         "path": {},
     },

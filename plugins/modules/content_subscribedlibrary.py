@@ -488,7 +488,7 @@ options:
         type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 1.0.0
+version_added: 2.0.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -631,11 +631,6 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "probe": {
-        "query": {},
-        "body": {"subscription_info": "subscription_info"},
-        "path": {},
-    },
     "create": {
         "query": {"client_token": "client_token"},
         "body": {
@@ -658,7 +653,6 @@ PAYLOAD_FORMAT = {
         "path": {},
     },
     "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "sync": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
     "update": {
         "query": {},
@@ -681,6 +675,12 @@ PAYLOAD_FORMAT = {
         },
         "path": {"library_id": "library_id"},
     },
+    "probe": {
+        "query": {},
+        "body": {"subscription_info": "subscription_info"},
+        "path": {},
+    },
+    "evict": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
 }  # pylint: disable=line-too-long
 
 from ansible.module_utils.basic import env_fallback

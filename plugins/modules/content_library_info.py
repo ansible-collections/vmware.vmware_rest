@@ -65,7 +65,7 @@ options:
         type: bool
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 1.0.0
+version_added: 4.0.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -76,9 +76,9 @@ notes:
 
 EXAMPLES = r"""
 """
+
 RETURN = r"""
 """
-
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {

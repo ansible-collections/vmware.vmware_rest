@@ -118,7 +118,7 @@ options:
         type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 1.0.0
+version_added: 0.1.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -177,7 +177,6 @@ value:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "connect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "create": {
         "query": {},
@@ -189,6 +188,7 @@ PAYLOAD_FORMAT = {
         "path": {"vm": "vm"},
     },
     "delete": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
+    "disconnect": {"query": {}, "body": {}, "path": {"floppy": "floppy", "vm": "vm"}},
     "update": {
         "query": {},
         "body": {

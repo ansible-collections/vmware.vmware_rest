@@ -137,7 +137,7 @@ options:
         type: list
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 1.0.0
+version_added: 0.1.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6

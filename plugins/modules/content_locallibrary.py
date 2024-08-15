@@ -497,7 +497,7 @@ options:
         type: str
 author:
 - Ansible Cloud Team (@ansible-collections)
-version_added: 1.0.0
+version_added: 2.0.0
 requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
@@ -1434,9 +1434,26 @@ results:
 
 # This structure describes the format of the data expected by the end-points
 PAYLOAD_FORMAT = {
-    "publish": {
+    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
+    "update": {
         "query": {},
-        "body": {"subscriptions": "subscriptions"},
+        "body": {
+            "creation_time": "creation_time",
+            "description": "description",
+            "id": "id",
+            "last_modified_time": "last_modified_time",
+            "last_sync_time": "last_sync_time",
+            "name": "name",
+            "optimization_info": "optimization_info",
+            "publish_info": "publish_info",
+            "security_policy_id": "security_policy_id",
+            "server_guid": "server_guid",
+            "storage_backings": "storage_backings",
+            "subscription_info": "subscription_info",
+            "type": "type",
+            "unset_security_policy_id": "unset_security_policy_id",
+            "version": "version",
+        },
         "path": {"library_id": "library_id"},
     },
     "create": {
@@ -1460,26 +1477,9 @@ PAYLOAD_FORMAT = {
         },
         "path": {},
     },
-    "delete": {"query": {}, "body": {}, "path": {"library_id": "library_id"}},
-    "update": {
+    "publish": {
         "query": {},
-        "body": {
-            "creation_time": "creation_time",
-            "description": "description",
-            "id": "id",
-            "last_modified_time": "last_modified_time",
-            "last_sync_time": "last_sync_time",
-            "name": "name",
-            "optimization_info": "optimization_info",
-            "publish_info": "publish_info",
-            "security_policy_id": "security_policy_id",
-            "server_guid": "server_guid",
-            "storage_backings": "storage_backings",
-            "subscription_info": "subscription_info",
-            "type": "type",
-            "unset_security_policy_id": "unset_security_policy_id",
-            "version": "version",
-        },
+        "body": {"subscriptions": "subscriptions"},
         "path": {"library_id": "library_id"},
     },
 }  # pylint: disable=line-too-long
