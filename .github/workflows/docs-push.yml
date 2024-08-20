@@ -24,6 +24,8 @@ jobs:
       init-fail-on-error: true
       intersphinx-links: |
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
+      provide-link-targets: |
+        ansible_collections.vmware.vmware.vcsa_settings_module
 
   publish-docs-gh-pages:
     # use to prevent running on forks
