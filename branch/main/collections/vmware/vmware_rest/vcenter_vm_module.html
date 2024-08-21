@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.vcenter_vm module – Creates a virtual machine.<a class="headerlink" href="#vmware-vmware-rest-vcenter-vm-module-creates-a-virtual-machine" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -537,6 +537,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <td><div class="ansible-option-cell"><p>The GuestOS enumerated type defines the valid guest operating system types used for configuring a virtual machine. Required with <em>state=[‘present’]</em></p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ALMALINUX_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AMAZONLINUX2_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AMAZONLINUX3_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_3&quot;</span></code></p></li>
@@ -572,11 +573,15 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_19_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_20_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_21_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_22_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_23_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_10&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_10_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_11&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_12&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_12_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_4&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_4_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_5&quot;</span></code></p></li>
@@ -601,6 +606,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_12_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_13&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_13_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_14&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_14_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;GENERIC_LINUX&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;MANDRAKE&quot;</span></code></p></li>
@@ -636,6 +643,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_5X_LINUX&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_5X_LINUX_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_6X_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_6X_LINUX_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_LINUX&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_LINUX_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;REDHAT&quot;</span></code></p></li>
@@ -652,6 +661,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_7_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_8_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ROCKYLINUX_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SJDS&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_10&quot;</span></code></p></li>
@@ -682,7 +692,10 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_6&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_65&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_8&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMWARE_PHOTON_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_12_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_7&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_7_64&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_7_SERVER_64&quot;</span></code></p></li>
@@ -695,6 +708,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_HYPERV&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_SERVER_2019&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_SERVER_2021&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_SERVER_2025&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_2000_ADV_SERV&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_2000_PRO&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_2000_SERV&quot;</span></code></p></li>
@@ -744,6 +758,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_17&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_18&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_19&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_20&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_21&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -794,7 +810,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p>VMXNET3</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">upt_compatibility_enabled</span></code> (bool): Flag indicating whether Universal Pass-Through (UPT) compatibility is enabled on this virtual Ethernet adapter.</p></li>
 </ul>
-<p>If unset, defaults to false. ([‘present’])</p>
+<p>If unset, UPT will not be enabled on the newly-created virtual Ethernet adapter. ([‘present’])</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">mac_type</span></code> (str): This option defines the valid MAC address origins for a virtual Ethernet adapter. ([‘present’])</p></li>
 <li><p>Accepted values:</p></li>
@@ -1139,7 +1155,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">policy</span></code> (str): Identifier of the storage policy which should be associated with the virtual machine.</p></li>
 </ul>
-<p>When clients pass a value of this structure as a parameter, the field must be the id of a storage policy resource. ([‘present’])</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_storage_policies_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-storage-policies-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_storage_policies_info</span></a>. ([‘present’])</p>
 <p>This key is required with [‘present’].</p>
 </div></td>
 </tr>

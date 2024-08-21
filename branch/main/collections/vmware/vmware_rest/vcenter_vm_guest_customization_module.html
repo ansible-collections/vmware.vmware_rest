@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.vcenter_vm_guest_customization module – Applies a customization specification on the virtual machine<a class="headerlink" href="#vmware-vmware-rest-vcenter-vm-guest-customization-module-applies-a-customization-specification-on-the-virtual-machine" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -218,7 +218,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <ul class="simple">
 <li><p>script_text (string): The script to run before and after Linux guest customization.</p></li>
 </ul>
-<p>The max size of the script is 1500 bytes. As long as the script (shell, perl, python…) has the right “#!” in the header, it is supported. The caller should not assume any environment variables when the script is run.</p>
+<p>The max size of the script is 65536 bytes. As long as the script (shell, perl, python…) has the right “#!” in the header, it is supported. The caller should not assume any environment variables when the script is run.</p>
 <p>The script is invoked by the customization engine using the command line: 1) with argument “precustomization” before customization, 2) with argument “postcustomization” after customization. The script should parse this argument and implement pre-customization or post-customization task code details in the corresponding block.</p>
 <p>A Linux shell script example:</p>
 <p>#!/bin/sh</p>
@@ -271,6 +271,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">mac_address</span></code> (str): The MAC address of a network adapter being customized.</p></li>
 </ul>
+<p>In vSphere 7.0 series, the MAC addresses must be specified in the ascending order of pciSlotNumber, otherwise a MAC address mismatch error will be reported. For further details, see the <a class="reference external" href="https://kb.vmware.com/s/article/87648">https://kb.vmware.com/s/article/87648</a></p>
 <p>If unset, the customization process maps the the settings from the list of <em>i_p_settings</em> in the CustomizationSpec.interfaces to the virtual machine’s network adapters, in PCI slot order. The first virtual network adapter on the PCI bus is assigned interfaces[0].IPSettings, the second adapter is assigned interfaces[1].IPSettings, and so on. ([‘set’])</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">adapter</span></code> (dict): The IP settings for the associated virtual network adapter. ([‘set’])</p></li>

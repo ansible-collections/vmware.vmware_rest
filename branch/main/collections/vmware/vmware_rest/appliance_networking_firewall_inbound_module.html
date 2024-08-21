@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.appliance_networking_firewall_inbound module – Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses<a class="headerlink" href="#vmware-vmware-rest-appliance-networking-firewall-inbound-module-set-the-ordered-list-of-firewall-rules-to-allow-or-deny-traffic-from-one-or-more-incoming-ip-addresses" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -156,7 +156,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses. This overwrites the existing firewall rules and creates a new rule list. Within the list of traffic rules, rules are processed in order of appearance, from top to bottom. For example, the list of rules can be as follows: [dropped table ]</p></li>
+<li><p>Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses. This overwrites the existing firewall rules and creates a new rule list. Within the list of traffic rules, rules are processed in order of appearance, from top to bottom. For example, the list of rules can be as follows:   AddressPrefixInterface NamePolicy   10.112.0.10*REJECT   10.112.0.10nic0ACCEPT   In the above example, the first rule drops all packets originating from 10.112.0.1 and</p></li>
 </ul>
 </section>
 <section id="requirements">

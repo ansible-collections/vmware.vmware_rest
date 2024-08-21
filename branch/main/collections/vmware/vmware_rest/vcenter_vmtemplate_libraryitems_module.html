@@ -24,7 +24,7 @@
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info module – Returns information about a virtual machine template contained in the library item specified by {@param.name templateLibraryItem}" href="vcenter_vmtemplate_libraryitems_info_module.html" />
+    <link rel="next" title="vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info module – Returns information about a virtual machine template contained in the library item specified by templateLibraryItem" href="vcenter_vmtemplate_libraryitems_info_module.html" />
     <link rel="prev" title="vmware.vmware_rest.vcenter_vm_tools_installer_info module – Get information about the VMware Tools installer." href="vcenter_vm_tools_installer_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.vcenter_vmtemplate_libraryitems module – Creates a library item in content library from a virtual machine<a class="headerlink" href="#vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module-creates-a-library-item-in-content-library-from-a-virtual-machine" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -156,7 +156,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Creates a library item in content library from a virtual machine. This <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> operation} creates a library item in content library whose content is a virtual machine template created from the source virtual machine, using the supplied create specification. The virtual machine template is stored in a newly created library item.</p></li>
+<li><p>Creates a library item in content library from a virtual machine. This operation creates a library item in content library whose content is a virtual machine template created from the source virtual machine, using the supplied create specification. The virtual machine template is stored in a newly created library item.</p></li>
 </ul>
 </section>
 <section id="requirements">
@@ -182,17 +182,30 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Description of the deployed virtual machine.</p>
+<p>If unset, the deployed virtual machine has the same description as the source library item.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-disk_storage"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module-parameter-disk-storage"><strong>disk_storage</strong></p>
 <a class="ansibleOptionLink" href="#parameter-disk_storage" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Storage specification for the virtual machine template’s disks.</p>
+<td><div class="ansible-option-cell"><p>Storage specification for the deployed virtual machine’s disks.</p>
+<p>If both <em>disk_storage_overrides</em> and <em>disk_storage</em> are unset, the deployed virtual machine’s disks are created with the same storage spec as the corresponding disks in the source virtual machine template contained in the library item.</p>
+<p>If <em>disk_storage_overrides</em> is unset and <em>disk_storage</em> is specified, all of the deployed virtual machine’s disks are created with the storage spec specified by <em>disk_storage</em>.</p>
+<p>If <em>disk_storage_overrides</em> is specified and <em>disk_storage</em> is unset, disks with identifiers that are not in <em>disk_storage_overrides</em> are created with the same storage spec as the corresponding disks in the source virtual machine template contained in the library item.</p>
+<p>If both <em>disk_storage_overrides</em> and <em>disk_storage</em> are specified, disks with identifiers that are not in <em>disk_storage_overrides</em> are created with the storage spec specified by <em>disk_storage</em>.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">datastore</span></code> (str): Identifier for the datastore associated the deployed virtual machine’s disk. ([‘deploy’, ‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">storage_policy</span></code> (dict): Storage policy for the deployed virtual machine’s disk. ([‘deploy’, ‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datastore</span></code> (str): Identifier for the datastore associated the deployed virtual machine’s disk.</p></li>
+</ul>
+<p>This field is currently required.</p>
+<p>If <em>storage_policy</em> is also specified and is incompatible with the <em>datastore</em>, then the disk will be flagged as being out of compliance with the specified storage policy.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_datastore_info</span></a>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_policy</span></code> (dict): Storage policy for the deployed virtual machine’s disk.</p></li>
+</ul>
+<p>If unset, <em>datastore</em> must be specified and the deployed virtual machine’s disk is created with the default storage policy associated with the <em>datastore</em>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
 <li><p>Accepted keys:</p></li>
 <li><p>type (string): Policy type for a virtual machine template’s disk.</p></li>
 </ul>
@@ -201,6 +214,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="docutils literal notranslate"><span class="pre">USE_SPECIFIED_POLICY</span></code></p></li>
 <li><p>policy (string): Identifier for the storage policy to use.</p></li>
 </ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is USE_SPECIFIED_POLICY.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_storage_policies_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-storage-policies-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_storage_policies_info</span></a>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -208,6 +223,11 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-disk_storage_overrides" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Storage specification for individual disks in the deployed virtual machine. This is specified as a mapping between disk identifiers in the source virtual machine template contained in the library item and their storage specifications.</p>
+<p>If both <em>disk_storage_overrides</em> and <em>disk_storage</em> are unset, the deployed virtual machine’s disks are created with the same storage spec as the corresponding disks in the source virtual machine template contained in the library item.</p>
+<p>If <em>disk_storage_overrides</em> is unset and <em>disk_storage</em> is specified, all of the deployed virtual machine’s disks are created with the storage spec specified by <em>disk_storage</em>.</p>
+<p>If <em>disk_storage_overrides</em> is specified and <em>disk_storage</em> is unset, disks with identifiers that are not in <em>disk_storage_overrides</em> are created with the same storage spec as the corresponding disks in the source virtual machine template contained in the library item.</p>
+<p>If both <em>disk_storage_overrides</em> and <em>disk_storage</em> are specified, disks with identifiers that are not in <em>disk_storage_overrides</em> are created with the storage spec specified by <em>disk_storage</em>.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_disk</span></a>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -215,10 +235,12 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-guest_customization" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Guest customization spec to apply to the deployed virtual machine.</p>
+<p>If unset, the guest operating system is not customized after deployment.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name of the customization specification. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name of the customization specification.</p></li>
 </ul>
+<p>If unset, no guest customization is performed. ([‘deploy’])</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -226,26 +248,53 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-hardware_customization" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Hardware customization spec which specifies updates to the deployed virtual machine.</p>
+<p>If unset, the deployed virtual machine has the same hardware configuration as the source virtual machine template contained in the library item.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">nics</span></code> (dict): Map of Ethernet network adapters to update. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">disks_to_remove</span></code> (list): Idenfiers of disks to remove from the deployed virtual machine. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">disks_to_update</span></code> (dict): Disk update specification for individual disks in the deployed virtual machine. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cpu_update</span></code> (dict): CPU update specification for the deployed virtual machine. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nics</span></code> (dict): Map of Ethernet network adapters to update.</p></li>
+</ul>
+<p>If unset, all Ethernet adapters will remain connected to the same network as they were in the source virtual machine template. An Ethernet adapter with a MacAddressType of MANUAL will not change. An Ethernet adapter with a MacAddressType of GENERATED or ASSIGNED will receive a new address.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_ethernet_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span></a>. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">disks_to_remove</span></code> (list): Idenfiers of disks to remove from the deployed virtual machine.</p></li>
+</ul>
+<p>If unset, all disks will be copied.</p>
+<p>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_disk</span></a>. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">disks_to_update</span></code> (dict): Disk update specification for individual disks in the deployed virtual machine.</p></li>
+</ul>
+<p>If unset, disks in the deployed virtual machine will have the same settings as the corresponding disks in the source virtual machine template contained in the library item.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_disk</span></a>. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu_update</span></code> (dict): CPU update specification for the deployed virtual machine.</p></li>
+</ul>
+<p>If <a class="reference external" href="mailto:{&#37;&#52;&#48;term&#46;unset">{<span>&#64;</span>term<span>&#46;</span>unset</a>}, the deployed virtual machine has the same CPU settings as the source virtual machine template contained in the library item. ([‘deploy’])</p>
+<ul class="simple">
 <li><p>Accepted keys:</p></li>
 <li><p>num_cpus (integer): Number of virtual processors in the deployed virtual machine.</p></li>
+</ul>
+<p>If <a class="reference external" href="mailto:{&#37;&#52;&#48;term&#46;unset">{<span>&#64;</span>term<span>&#46;</span>unset</a>}, the deployed virtual machine has the same CPU count as the source virtual machine template contained in the library item.</p>
+<ul class="simple">
 <li><p>num_cores_per_socket (integer): Number of cores among which to distribute CPUs in the deployed virtual machine.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">memory_update</span></code> (dict): Memory update specification for the deployed virtual machine. ([‘deploy’])</p></li>
+</ul>
+<p>If <a class="reference external" href="mailto:{&#37;&#52;&#48;term&#46;unset">{<span>&#64;</span>term<span>&#46;</span>unset</a>}, the deployed virtual machine has the same number of cores per socket as the source virtual machine template contained in the library item.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">memory_update</span></code> (dict): Memory update specification for the deployed virtual machine.</p></li>
+</ul>
+<p>If <a class="reference external" href="mailto:{&#37;&#52;&#48;term&#46;unset">{<span>&#64;</span>term<span>&#46;</span>unset</a>}, the deployed virtual machine has the same memory settings as the source virtual machine template contained in the library item. ([‘deploy’])</p>
+<ul class="simple">
 <li><p>Accepted keys:</p></li>
 <li><p>memory (integer): Size of a virtual machine’s memory in MB.</p></li>
 </ul>
+<p>If <a class="reference external" href="mailto:{&#37;&#52;&#48;term&#46;unset">{<span>&#64;</span>term<span>&#46;</span>unset</a>}, the deployed virtual machine has the same memory size as the source virtual machine template.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-library"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module-parameter-library"><strong>library</strong></p>
 <a class="ansibleOptionLink" href="#parameter-library" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Identifier of the library in which the new library item should be created. Required with <em>state=[‘present’]</em></p>
+<td><div class="ansible-option-cell"><p>Identifier of the library in which the new library item should be created.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>. Required with <em>state=[‘present’]</em></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -259,14 +308,31 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-placement"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module-parameter-placement"><strong>placement</strong></p>
 <a class="ansibleOptionLink" href="#parameter-placement" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Information used to place the virtual machine template.</p>
+<td><div class="ansible-option-cell"><p>Information used to place the deployed virtual machine.</p>
+<p>This field is currently required. In the future, if this field is unset, the system will use the values from the source virtual machine template contained in the library item.</p>
+<p>If specified, each field will be used for placement. If the fields result in disjoint placement, the operation will fail. If the fields along with the placement values of the source virtual machine template result in disjoint placement, the operation will fail.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">folder</span></code> (str): Virtual machine folder into which the deployed virtual machine should be placed. ([‘deploy’, ‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resource_pool</span></code> (str): Resource pool into which the deployed virtual machine should be placed. ([‘deploy’, ‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code> (str): Host onto which the virtual machine should be placed. If <code class="docutils literal notranslate"><span class="pre">#host</span></code> and <code class="docutils literal notranslate"><span class="pre">#resource_pool</span></code> are both specified, <code class="docutils literal notranslate"><span class="pre">#resource_pool</span></code> must belong to <code class="docutils literal notranslate"><span class="pre">#host</span></code>. If <code class="docutils literal notranslate"><span class="pre">#host</span></code> and <code class="docutils literal notranslate"><span class="pre">#cluster</span></code> are both specified, <code class="docutils literal notranslate"><span class="pre">#host</span></code> must be a member of <code class="docutils literal notranslate"><span class="pre">#cluster</span></code>. ([‘deploy’, ‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cluster</span></code> (str): Cluster onto which the deployed virtual machine should be placed. If <code class="docutils literal notranslate"><span class="pre">#cluster</span></code> and <code class="docutils literal notranslate"><span class="pre">#resource_pool</span></code> are both specified, <code class="docutils literal notranslate"><span class="pre">#resource_pool</span></code> must belong to <code class="docutils literal notranslate"><span class="pre">#cluster</span></code>. If <code class="docutils literal notranslate"><span class="pre">#cluster</span></code> and <code class="docutils literal notranslate"><span class="pre">#host</span></code> are both specified, <code class="docutils literal notranslate"><span class="pre">#host</span></code> must be a member of <code class="docutils literal notranslate"><span class="pre">#cluster</span></code>. ([‘deploy’, ‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">folder</span></code> (str): Virtual machine folder into which the deployed virtual machine should be placed.</p></li>
 </ul>
+<p>This field is currently required.</p>
+<p>If unset, the system will attempt to choose a suitable folder for the virtual machine; if a folder cannot be chosen, the virtual machine deployment operation will fail.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_folder_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-folder-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_folder_info</span></a>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_pool</span></code> (str): Resource pool into which the deployed virtual machine should be placed.</p></li>
+</ul>
+<p>If unset, the system will attempt to choose a suitable resource pool for the virtual machine; if a resource pool cannot be chosen, the virtual machine deployment operation will fail.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_resourcepool_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-resourcepool-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_resourcepool_info</span></a>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code> (str): Host onto which the virtual machine should be placed. If <em>host</em> and <em>resource_pool</em> are both specified, <em>resource_pool</em> must belong to <em>host</em>. If <em>host</em> and <em>cluster</em> are both specified, <em>host</em> must be a member of <em>cluster</em>.</p></li>
+</ul>
+<p>This field may be unset if <em>resource_pool</em> or <em>cluster</em> is specified. If unset, the system will attempt to choose a suitable host for the virtual machine; if a host cannot be chosen, the virtual machine deployment operation will fail.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_host_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-host-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_host_info</span></a>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cluster</span></code> (str): Cluster onto which the deployed virtual machine should be placed. If <em>cluster</em> and <em>resource_pool</em> are both specified, <em>resource_pool</em> must belong to <em>cluster</em>. If <em>cluster</em> and <em>host</em> are both specified, <em>host</em> must be a member of <em>cluster</em>.</p></li>
+</ul>
+<p>If <em>resource_pool</em> or <em>host</em> is specified, it is recommended that this field be unset.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_cluster_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-cluster-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_cluster_info</span></a>. ([‘deploy’, ‘present’])</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -274,6 +340,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-powered_on" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Specifies whether the deployed virtual machine should be powered on after deployment.</p>
+<p>If unset, the virtual machine will not be powered on after deployment.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
@@ -295,7 +362,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-source_vm"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module-parameter-source-vm"><strong>source_vm</strong></p>
 <a class="ansibleOptionLink" href="#parameter-source_vm" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Identifier of the source virtual machine to create the library item from. Required with <em>state=[‘present’]</em></p>
+<td><div class="ansible-option-cell"><p>Identifier of the source virtual machine to create the library item from.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_info</span></a>. Required with <em>state=[‘present’]</em></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -313,7 +381,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-template_library_item"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module-parameter-template-library-item"><strong>template_library_item</strong></p>
 <a class="ansibleOptionLink" href="#parameter-template_library_item" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>identifier of the content library item containing the source virtual machine template to be deployed. Required with <em>state=[‘deploy’]</em></p>
+<td><div class="ansible-option-cell"><p>identifier of the content library item containing the source virtual machine template to be deployed.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="content_library_item_info_module.html#ansible-collections-vmware-vmware-rest-content-library-item-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_item_info</span></a>. Required with <em>state=[‘deploy’]</em></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -369,10 +438,19 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-vm_home_storage" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Storage location for the virtual machine template’s configuration and log files.</p>
+<p>If unset, the virtual machine template’s configuration and log files are placed on the default storage backing associated with the library specified by <em></em></p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">datastore</span></code> (str): Identifier of the datastore for the deployed virtual machine’s configuration and log files. ([‘deploy’, ‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">storage_policy</span></code> (dict): Storage policy for the deployed virtual machine’s configuration and log files. ([‘deploy’, ‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datastore</span></code> (str): Identifier of the datastore for the deployed virtual machine’s configuration and log files.</p></li>
+</ul>
+<p>This field is currently required.</p>
+<p>When <em>storage_policy</em> is also specified and is incompatible with the <em>datastore</em>, then the deployed virtual machine will be flagged as being out of compliance with the specified storage policy.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_datastore_info</span></a>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_policy</span></code> (dict): Storage policy for the deployed virtual machine’s configuration and log files.</p></li>
+</ul>
+<p>If unset, <em>datastore</em> must be specified and the deployed virtual machine’s configuration and log files are created with the default storage policy associated with the <em>datastore</em>. ([‘deploy’, ‘present’])</p>
+<ul class="simple">
 <li><p>Accepted keys:</p></li>
 <li><p>type (string): Policy type for the virtual machine template’s configuration and log files.</p></li>
 </ul>
@@ -381,6 +459,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <li><p><code class="docutils literal notranslate"><span class="pre">USE_SPECIFIED_POLICY</span></code></p></li>
 <li><p>policy (string): Identifier for the storage policy to use.</p></li>
 </ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is USE_SPECIFIED_POLICY.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_storage_policies_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-storage-policies-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_storage_policies_info</span></a>.</p>
 </div></td>
 </tr>
 </tbody>
@@ -531,7 +611,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="vcenter_vm_tools_installer_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.vcenter_vm_tools_installer_info module – Get information about the VMware Tools installer." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="vcenter_vmtemplate_libraryitems_info_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info module – Returns information about a virtual machine template contained in the library item specified by {@param.name templateLibraryItem}" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vcenter_vmtemplate_libraryitems_info_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.vcenter_vmtemplate_libraryitems_info module – Returns information about a virtual machine template contained in the library item specified by templateLibraryItem" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

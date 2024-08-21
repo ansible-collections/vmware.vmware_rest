@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.vcenter_ovf_libraryitem module – Creates a library item in content library from a virtual machine or virtual appliance<a class="headerlink" href="#vmware-vmware-rest-vcenter-ovf-libraryitem-module-creates-a-library-item-in-content-library-from-a-virtual-machine-or-virtual-appliance" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -156,7 +156,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Creates a library item in content library from a virtual machine or virtual appliance. &lt;p&gt; This <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> operation} creates a library item in content library whose content is an OVF package derived from a source virtual machine or virtual appliance, using the supplied create specification. The OVF package may be stored as in a newly created library item or in an in an existing library item. For an existing library item whose content is updated by this <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> operation}, the original content is overwritten. Meta data such as name and description is not updated for the exisitng library item. &lt;/p&gt;</p></li>
+<li><p>Creates a library item in content library from a virtual machine or virtual appliance.</p></li>
 </ul>
 </section>
 <section id="requirements">
@@ -182,6 +182,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-client_token" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Client-generated token used to retry a request if the client fails to get a response from the server. If the original request succeeded, the result of that request will be returned, otherwise the operation will be retried.</p>
+<p>If unset, the server will create a token.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -191,10 +192,17 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <td><div class="ansible-option-cell"><p>Information used to create the OVF package from the source virtual machine or virtual appliance. Required with <em>state=[‘present’]</em></p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name to use in the OVF descriptor stored in the library item. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> (str): Description to use in the OVF descriptor stored in the library item. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (list): Flags to use for OVF package creation. The supported flags can be obtained using <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> ExportFlag#list}. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name to use in the OVF descriptor stored in the library item.</p></li>
 </ul>
+<p>If unset, the server will use source’s current name. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> (str): Description to use in the OVF descriptor stored in the library item.</p></li>
+</ul>
+<p>If unset, the server will use source’s current annotation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (list): Flags to use for OVF package creation. The supported flags can be obtained using ExportFlag.list.</p></li>
+</ul>
+<p>If unset, no flags will be used. ([‘present’])</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -204,32 +212,82 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <td><div class="ansible-option-cell"><p>Specification of how the OVF package should be deployed to the target. Required with <em>state=[‘deploy’]</em></p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name assigned to the deployed target virtual machine or virtual appliance. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">annotation</span></code> (str): Annotation assigned to the deployed target virtual machine or virtual appliance. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">accept_all_EULA</span></code> (bool): Whether to accept all End User License Agreements. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name assigned to the deployed target virtual machine or virtual appliance.</p></li>
+</ul>
+<p>If unset, the server will use the name from the OVF package. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">annotation</span></code> (str): Annotation assigned to the deployed target virtual machine or virtual appliance.</p></li>
+</ul>
+<p>If unset, the server will use the annotation from the OVF package. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">accept_all_EULA</span></code> (bool): Whether to accept all End User License Agreements. See <em></em> ([‘deploy’])</p></li>
 </ul>
 <p>This key is required with [‘deploy’].</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">network_mappings</span></code> (dict): Specification of the target network to use for sections of type ovf:NetworkSection in the OVF descriptor. The key in the {&#64;term map} is the section identifier of the ovf:NetworkSection section in the OVF descriptor and the value is the target network to be used for deployment. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">storage_mappings</span></code> (dict): Specification of the target storage to use for sections of type vmw:StorageGroupSection in the OVF descriptor. The key in the {&#64;term map} is the section identifier of the ovf:StorageGroupSection section in the OVF descriptor and the value is the target storage specification to be used for deployment. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">storage_provisioning</span></code> (str): The <code class="docutils literal notranslate"><span class="pre">disk_provisioning_type</span></code> defines the virtual disk provisioning types that can be set for a disk on the target platform. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">network_mappings</span></code> (dict): Specification of the target network to use for sections of type ovf:NetworkSection in the OVF descriptor. The key in the map is the section identifier of the ovf:NetworkSection section in the OVF descriptor and the value is the target network to be used for deployment.</p></li>
+</ul>
+<p>If unset, the server will choose a network mapping.</p>
+<p>When clients pass a value of this structure as a parameter, the value in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_network_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-network-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_network_info</span></a>. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_mappings</span></code> (dict): Specification of the target storage to use for sections of type vmw:StorageGroupSection in the OVF descriptor. The key in the map is the section identifier of the ovf:StorageGroupSection section in the OVF descriptor and the value is the target storage specification to be used for deployment. See <em></em></p></li>
+</ul>
+<p>If unset, the server will choose a storage mapping. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_provisioning</span></code> (str): This option defines the virtual disk provisioning types that can be set for a disk on the target platform. ([‘deploy’])</p></li>
 <li><p>Accepted values:</p></li>
 <li><p>eagerZeroedThick</p></li>
 <li><p>thick</p></li>
 <li><p>thin</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">storage_profile_id</span></code> (str): Default storage profile to use for all sections of type vmw:StorageSection in the OVF descriptor. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">locale</span></code> (str): The locale to use for parsing the OVF descriptor. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (list): Flags to be use for deployment. The supported flag values can be obtained using <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> ImportFlag#list}. ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">additional_parameters</span></code> (list): Additional OVF parameters that may be needed for the deployment. Additional OVF parameters may be required by the OVF descriptor of the OVF package in the library item. Examples of OVF parameters that can be specified through this field include, but are not limited to: &lt;ul&gt; &lt;li&gt;{&#64;link DeploymentOptionParams}&lt;/li&gt; &lt;li&gt;{&#64;link ExtraConfigParams}&lt;/li&gt; &lt;li&gt;{&#64;link IpAllocationParams}&lt;/li&gt; &lt;li&gt;{&#64;link PropertyParams}&lt;/li&gt; &lt;li&gt;{&#64;link ScaleOutParams}&lt;/li&gt; &lt;li&gt;{&#64;link VcenterExtensionParams}&lt;/li&gt; &lt;/ul&gt; ([‘deploy’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">default_datastore_id</span></code> (str): Default datastore to use for all sections of type vmw:StorageSection in the OVF descriptor. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_profile_id</span></code> (str): Default storage profile to use for all sections of type vmw:StorageSection in the OVF descriptor.</p></li>
 </ul>
+<p>If unset, the server will choose the default profile.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_storage_policies_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-storage-policies-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_storage_policies_info</span></a>. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">locale</span></code> (str): The locale to use for parsing the OVF descriptor.</p></li>
+</ul>
+<p>If unset, the server locale will be used. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (list): Flags to be use for deployment. The supported flag values can be obtained using ImportFlag.list.</p></li>
+</ul>
+<p>If unset, no flags will be used. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">additional_parameters</span></code> (list): Additional OVF parameters that may be needed for the deployment. Additional OVF parameters may be required by the OVF descriptor of the OVF package in the library item. Examples of OVF parameters that can be specified through this field include, but are not limited to:</p></li>
+<li><p>DeploymentOptionParams</p></li>
+<li><p>ExtraConfigParams</p></li>
+<li><p>IpAllocationParams</p></li>
+<li><p>PropertyParams</p></li>
+<li><p>ScaleOutParams</p></li>
+<li><p>VcenterExtensionParams</p></li>
+</ul>
+<p>If unset, the server will choose default settings for all parameters necessary for the LibraryItem.deploy operation. See LibraryItem.deploy.</p>
+<p>When clients pass a value of this structure as a parameter, the field must contain all the attributes defined in OvfParams. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">default_datastore_id</span></code> (str): Default datastore to use for all sections of type vmw:StorageSection in the OVF descriptor.</p></li>
+</ul>
+<p>If unset, the server will choose the default datastore.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_datastore_info</span></a>. ([‘deploy’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vm_config_spec</span></code> (dict): The <em>resource_pool_deployment_spec</em>.vm-config-spec is used for virtual machine configuration settings including hardware specifications to use in place of the OVF descriptor. If set, the OVF descriptor acts as a disk descriptor. Fields in the <em>resource_pool_deployment_spec</em> parameters such as <em>resource_pool_deployment_spec</em>.name that overlap with settings in the <em>resource_pool_deployment_spec</em>.vm-config-spec are not overridden and will continue to be used. Similarly, storage settings in the <em>resource_pool_deployment_spec</em> that affect the disks on the virtual machine namely <em>resource_pool_deployment_spec</em>.storage-mappings, <em>resource_pool_deployment_spec</em>.storage-profile-id, <em>resource_pool_deployment_spec</em>.storage-provisioning and <em>resource_pool_deployment_spec</em>.default-datastore-id will also be honored.</p></li>
+</ul>
+<p>If unset, the relevant virtual machine specifications in the OVF descriptor of the OVF template will be used. ([‘deploy’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>provider (string): The <em>vm_config_spec_provider</em> is used to provide the optional <em>vm_config_spec</em> used when deploying an OVF template.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">XML</span></code></p></li>
+<li><p>xml (string): The <em>xml</em> is a conditional configuration made available upon selecting the XML. It is used to pass in a vim.vm.ConfigSpec for a virtual machine that has been serialized to XML and base64 encoded.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>provider</em> is XML.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-ovf_library_item_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-ovf-library-item-id"><strong>ovf_library_item_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-ovf_library_item_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Identifier of the content library item containing the OVF package to be deployed. Required with <em>state=[‘deploy’, ‘filter’]</em></p>
+<td><div class="ansible-option-cell"><p>Identifier of the content library item containing the OVF package to be deployed.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="content_library_item_info_module.html#ansible-collections-vmware-vmware-rest-content-library-item-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_item_info</span></a>. Required with <em>state=[‘deploy’, ‘filter’]</em></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -249,12 +307,14 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <td><div class="ansible-option-cell"><p>Identifier of the virtual machine or virtual appliance to use as the source. Required with <em>state=[‘present’]</em></p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): Type of the deployable resource. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): Type of the deployable resource.</p></li>
 </ul>
+<p>When clients pass a value of this structure as a parameter, the field must be one of VirtualMachine or VirtualApp. ([‘present’])</p>
 <p>This key is required with [‘present’].</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> (str): Identifier of the deployable resource. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> (str): Identifier of the deployable resource.</p></li>
 </ul>
+<p>When clients pass a value of this structure as a parameter, the field must be an identifier for one of these resource types: VirtualMachine or VirtualApp. ([‘present’])</p>
 <p>This key is required with [‘present’].</p>
 </div></td>
 </tr>
@@ -277,15 +337,31 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <td><div class="ansible-option-cell"><p>Specification of the target content library and library item. This parameter is mandatory.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">library_id</span></code> (str): Identifier of the library in which a new library item should be created. This field is not used if the <code class="docutils literal notranslate"><span class="pre">#library_item_id</span></code> field is specified. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">library_item_id</span></code> (str): Identifier of the library item that should be should be updated. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resource_pool_id</span></code> (str): Identifier of the resource pool to which the virtual machine or virtual appliance should be attached. ([‘deploy’, ‘filter’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">library_id</span></code> (str): Identifier of the library in which a new library item should be created. This field is not used if the <em>library_item_id</em> field is specified.</p></li>
 </ul>
+<p>This field is currently required.</p>
+<p>In the future, if unset, the <em>library_item_id</em> field must be specified.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">library_item_id</span></code> (str): Identifier of the library item that should be should be updated.</p></li>
+</ul>
+<p>If unset, a new library item will be created. The <em>library_id</em> field must be specified if this field is set.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_item_info_module.html#ansible-collections-vmware-vmware-rest-content-library-item-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_item_info</span></a>. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_pool_id</span></code> (str): Identifier of the resource pool to which the virtual machine or virtual appliance should be attached.</p></li>
+</ul>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_resourcepool_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-resourcepool-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_resourcepool_info</span></a>. ([‘deploy’, ‘filter’])</p>
 <p>This key is required with [‘deploy’, ‘filter’].</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">host_id</span></code> (str): Identifier of the target host on which the virtual machine or virtual appliance will run. The target host must be a member of the cluster that contains the resource pool identified by <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #resourcePoolId}. ([‘deploy’, ‘filter’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">folder_id</span></code> (str): Identifier of the vCenter folder that should contain the virtual machine or virtual appliance. The folder must be virtual machine folder. ([‘deploy’, ‘filter’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">host_id</span></code> (str): Identifier of the target host on which the virtual machine or virtual appliance will run. The target host must be a member of the cluster that contains the resource pool identified by <em></em></p></li>
 </ul>
+<p>If unset, the server will automatically select a target host from the resource pool if <em>resource_pool_id</em> is a stand-alone host or a cluster with Distributed Resource Scheduling (DRS) enabled.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_host_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-host-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_host_info</span></a>. ([‘deploy’, ‘filter’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">folder_id</span></code> (str): Identifier of the vCenter folder that should contain the virtual machine or virtual appliance. The folder must be virtual machine folder.</p></li>
+</ul>
+<p>If unset, the server will choose the deployment folder.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_folder_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-folder-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_folder_info</span></a>. ([‘deploy’, ‘filter’])</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">

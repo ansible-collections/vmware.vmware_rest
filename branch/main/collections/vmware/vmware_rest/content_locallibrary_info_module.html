@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.content_locallibrary_info module – Returns a given local library.<a class="headerlink" href="#vmware-vmware-rest-content-locallibrary-info-module-returns-a-given-local-library" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -181,7 +181,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-library_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-info-module-parameter-library-id"><strong>library_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-library_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Identifier of the local library to return. Required with <em>state=[‘get’]</em></p>
+<td><div class="ansible-option-cell"><p>Identifier of the local library to return.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>. Required with <em>state=[‘get’]</em></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">

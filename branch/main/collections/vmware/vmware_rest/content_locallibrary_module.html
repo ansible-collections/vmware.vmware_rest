@@ -25,7 +25,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="vmware.vmware_rest.content_locallibrary_info module – Returns a given local library." href="content_locallibrary_info_module.html" />
-    <link rel="prev" title="vmware.vmware_rest.content_library_item_info module – Returns the {@link ItemModel} with the given identifier." href="content_library_item_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="prev" title="vmware.vmware_rest.content_library_subscriptions_info module – Returns information about the specified subscription of the published library." href="content_library_subscriptions_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.content_locallibrary module – Creates a new local library.<a class="headerlink" href="#vmware-vmware-rest-content-locallibrary-module-creates-a-new-local-library" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -181,7 +181,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-client_token"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-client-token"><strong>client_token</strong></p>
 <a class="ansibleOptionLink" href="#parameter-client_token" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>A unique token generated on the client for each creation request. The token should be a universally unique identifier (UUID), for example: <code class="docutils literal notranslate"><span class="pre">b8a2a2e3-2314-43cd-a871-6ede0f429751</span></code>. This token can be used to guarantee idempotent creation.</p>
+<td><div class="ansible-option-cell"><p>A unique token generated on the client for each creation request. The token should be a universally unique identifier (UUID), for example: b8a2a2e3-2314-43cd-a871-6ede0f429751. This token can be used to guarantee idempotent creation.</p>
+<p>If not specified creation is not idempotent.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -189,6 +190,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-creation_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The date and time when this library was created.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is not used for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -196,41 +198,51 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>A human-readable description for this library.</p>
+<p>This field is optional for the create operation. Leaving it unset during creation will result in an empty string value. It will always be present in the result of a get or list operation. It is optional for the update operation. Leaving it unset during update indicates that the description should be left unchanged.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-id"><strong>id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>An identifier which uniquely identifies this <code class="docutils literal notranslate"><span class="pre">library_model</span></code>.</p>
+<td><div class="ansible-option-cell"><p>An identifier which uniquely identifies this LibraryModel.</p>
+<p>This field is not used for the create operation. It will not be present in the result of the get or list operations. It is not used for the update operation.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-last_modified_time"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-last-modified-time"><strong>last_modified_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-last_modified_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The date and time when this library was last updated. This field is updated automatically when the library properties are changed. This field is not affected by adding, removing, or modifying a library item or its content within the library. Tagging the library or syncing the subscribed library does not alter this field.</p>
+<td><div class="ansible-option-cell"><p>The date and time when this library was last updated.</p>
+<p>This field is updated automatically when the library properties are changed. This field is not affected by adding, removing, or modifying a library item or its content within the library. Tagging the library or syncing the subscribed library does not alter this field.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is not used for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-last_sync_time"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-last-sync-time"><strong>last_sync_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-last_sync_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The date and time when this library was last synchronized. This field applies only to subscribed libraries. It is updated every time a synchronization is triggered on the library. The value is not set for a local library.</p>
+<td><div class="ansible-option-cell"><p>The date and time when this library was last synchronized.</p>
+<p>This field applies only to subscribed libraries. It is updated every time a synchronization is triggered on the library. The value is unset for a local library.</p>
+<p>This field is not used for the create operation. It is optional in the result of the get or list operations. It is not used for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-library_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-library-id"><strong>library_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-library_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Identifier of the local library to delete. Required with <em>state=[‘absent’, ‘present’, ‘publish’]</em></p>
+<td><div class="ansible-option-cell"><p>Identifier of the local library to delete.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>. Required with <em>state=[‘absent’, ‘present’, ‘publish’]</em></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-name"><strong>name</strong></p>
 <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The name of the library. A Library is identified by a human-readable name. Library names cannot be undefined or an empty string. Names do not have to be unique.</p>
+<td><div class="ansible-option-cell"><p>The name of the library.</p>
+<p>A Library is identified by a human-readable name. Library names cannot be undefined or an empty string. Names do not have to be unique.</p>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -238,37 +250,67 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-optimization_info" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Defines various optimizations and optimization parameters applied to this library.</p>
+<p>This field is optional for the create operation. It is optional in the result of the get or list operations. It is optional for the update operation.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">optimize_remote_publishing</span></code> (bool): If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> then library would be optimized for remote publishing. Turn it on if remote publishing is dominant use case for this library. Remote publishing means here that publisher and subscribers are not the part of the same <code class="docutils literal notranslate"><span class="pre">vcenter</span></code> SSO domain. Any optimizations could be done as result of turning on this optimization during library creation. For example, library content could be stored in different format but optimizations are not limited to just storage format. Note, that value of this toggle could be set only during creation of the library and you would need to migrate your library in case you need to change this value (optimize the library for different use case). ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optimize_remote_publishing</span></code> (bool): If set to true then library would be optimized for remote publishing.</p></li>
 </ul>
+<p>Turn it on if remote publishing is dominant use case for this library. Remote publishing means here that publisher and subscribers are not the part of the same Vcenter SSO domain.</p>
+<p>Any optimizations could be done as result of turning on this optimization during library creation. For example, library content could be stored in different format but optimizations are not limited to just storage format.</p>
+<p>Note, that value of this toggle could be set only during creation of the library and you would need to migrate your library in case you need to change this value (optimize the library for different use case).</p>
+<p>This field is optional for the create operation. If not specified for the create, the default is for the library to not be optmized for specific use case. It is not used for the update operation. ([‘present’])</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-publish_info"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-publish-info"><strong>publish_info</strong></p>
 <a class="ansibleOptionLink" href="#parameter-publish_info" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Defines how this library is published so that it can be subscribed to by a remote subscribed library. The <code class="docutils literal notranslate"><span class="pre">publish_info</span></code> defines where and how the metadata for this local library is accessible. A local library is only published publically if <code class="docutils literal notranslate"><span class="pre">publish_info.published</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<td><div class="ansible-option-cell"><p>Defines how this library is published so that it can be subscribed to by a remote subscribed library.</p>
+<p>The PublishInfo defines where and how the metadata for this local library is accessible. A local library is only published publically if PublishInfo.published is true.</p>
+<p>This field is optional for the create and update operations. If not specified during creation, the default is for the library to not be published. If not specified during update, the field is left unchanged.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> (str): The <code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> indicates how a subscribed library should authenticate to the published library endpoint. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> (str): This option indicates how a subscribed library should authenticate to the published library endpoint. ([‘present’])</p></li>
 <li><p>Accepted values:</p></li>
 <li><p>BASIC</p></li>
 <li><p>NONE</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">published</span></code> (bool): Whether the local library is published. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">publish_url</span></code> (str): The URL to which the library metadata is published by the Content Library Service. This value can be used to set the <code class="docutils literal notranslate"><span class="pre">subscription_info.subscriptionurl</span></code> property when creating a subscribed library. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code> (str): The username to require for authentication. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): The new password to require for authentication. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">current_password</span></code> (str): The current password to verify. This field is available starting in vSphere 6.7. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">persist_json_enabled</span></code> (bool): Whether library and library item metadata are persisted in the storage backing as JSON files. This flag only applies if the local library is published. Enabling JSON persistence allows you to synchronize a subscribed library manually instead of over HTTP. You copy the local library content and metadata to another storage backing manually and then create a subscribed library referencing the location of the library JSON file in the <code class="docutils literal notranslate"><span class="pre">subscription_info.subscriptionurl</span></code>. When the subscribed library’s storage backing matches the subscription URL, files do not need to be copied to the subscribed library. For a library backed by a datastore, the library JSON file will be stored at the path contentlib-{library_id}/lib.json on the datastore. For a library backed by a remote file system, the library JSON file will be stored at {library_id}/lib.json in the remote file system path. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">published</span></code> (bool): Whether the local library is published.</p></li>
 </ul>
+<p>This field is required for the LocalLibrary.create operation. It is optional for the LocalLibrary.update operation, and if unset the value will not be changed. When the existing authentication method is BASIC and the local library is published, the PublishInfo.current-password field is required before turning off publishing. This field will always be present in the results of the LocalLibrary.get operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">publish_url</span></code> (str): The URL to which the library metadata is published by the Content Library Service.</p></li>
+</ul>
+<p>This value can be used to set the SubscriptionInfo.subscription-url property when creating a subscribed library.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is not used for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code> (str): The username to require for authentication.</p></li>
+</ul>
+<p>This field is optional for the LocalLibrary.create and LocalLibrary.update operations. When the authentication method is NONE, the username can be left unset. When the authentication method is BASIC, the username is ignored in the current release. It defaults to “vcsp”. It is preferable to leave this unset. If specified, it must be set to “vcsp”. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): The new password to require for authentication.</p></li>
+</ul>
+<p>This field is optional for the LocalLibrary.create operation. When the authentication method is NONE, the password can be left unset. When the authentication method is BASIC, the password should be a non-empty string. This field is optional for the LocalLibrary.update operation. Leaving it unset during update indicates that the password is not changed. When the password is changed, the PublishInfo.current-password field is required. This field is not used for the LocalLibrary.get operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">current_password</span></code> (str): The current password to verify. This field is available starting in vSphere 6.7.</p></li>
+</ul>
+<p>This field is unused for the LocalLibrary.create operation. This field is optional for the LocalLibrary.update operation. When the existing authentication method is NONE, the current password can be left unset. When the existing authentication method is BASIC, the current password is verified before applying the new PublishInfo.password, turning off authentication, or unpublishing the library. This field is not used for the LocalLibrary.get operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">persist_json_enabled</span></code> (bool): Whether library and library item metadata are persisted in the storage backing as JSON files. This flag only applies if the local library is published.</p></li>
+</ul>
+<p>Enabling JSON persistence allows you to synchronize a subscribed library manually instead of over HTTP. You copy the local library content and metadata to another storage backing manually and then create a subscribed library referencing the location of the library JSON file in the SubscriptionInfo.subscription-url. When the subscribed library’s storage backing matches the subscription URL, files do not need to be copied to the subscribed library.</p>
+<p>For a library backed by a datastore, the library JSON file will be stored at the path contentlib-{library_id}/lib.json on the datastore.</p>
+<p>For a library backed by a remote file system, the library JSON file will be stored at {library_id}/lib.json in the remote file system path.</p>
+<p>This field is optional for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-security_policy_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-security-policy-id"><strong>security_policy_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-security_policy_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Represents the security policy applied to this library. Setting the field will make the library secure. This field is ignored in <code class="docutils literal notranslate"><span class="pre">update</span></code>operation if <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #unsetSecurityPolicyId} is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<td><div class="ansible-option-cell"><p>Represents the security policy applied to this library.</p>
+<p>Setting the field will make the library secure. This field is ignored in update operation if LibraryModel.unset-security-policy-id is set to true.</p>
+<p>This field is optional for the create and update operations. If not set in create operation, the library will be insecure. If not specified in update operation, the field is left unchanged.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -276,6 +318,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-server_guid" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The unique identifier of the vCenter server where the library exists.</p>
+<p>This field is optional for the create operation. It will always be present in the result of the get or list operations. It is not used for the update operation.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_cluster_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-cluster-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_cluster_info</span></a>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -304,40 +348,117 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-storage_backings"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-storage-backings"><strong>storage_backings</strong></p>
 <a class="ansibleOptionLink" href="#parameter-storage_backings" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The list of default storage backings which are available for this library. A storage backing defines a default storage location which can be used to store files for library items in this library. Some library items, for instance, virtual machine template items, support files that may be distributed across various storage backings. One or more item files may or may not be located on the default storage backing. Multiple default storage locations are not currently supported but may become supported in future releases.</p>
+<td><div class="ansible-option-cell"><p>The list of default storage backings which are available for this library.</p>
+<p>A StorageBacking defines a default storage location which can be used to store files for library items in this library. Some library items, for instance, virtual machine template items, support files that may be distributed across various storage backings. One or more item files may or may not be located on the default storage backing.</p>
+<p>Multiple default storage locations are not currently supported but may become supported in future releases.</p>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is not used for the update operation.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): The <code class="docutils literal notranslate"><span class="pre">type</span></code> specifies the type of the storage backing. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option specifies the type of the StorageBacking. ([‘present’])</p></li>
 <li><p>Accepted values:</p></li>
 <li><p>DATASTORE</p></li>
 <li><p>OTHER</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">datastore_id</span></code> (str): Identifier of the datastore used to store the content in the library. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">storage_uri</span></code> (str): URI identifying the location used to store the content in the library. The following URI formats are supported: vSphere 6.5 &lt;ul&gt; &lt;li&gt;nfs://server/path?version=4 (for vCenter Server Appliance only) - Specifies an NFS Version 4 server.&lt;/li&gt; &lt;li&gt;nfs://server/path (for vCenter Server Appliance only) - Specifies an NFS Version 3 server. The <a class="reference external" href="nfs://server:/path">nfs://server:/path</a> format is also supported.&lt;/li&gt; &lt;li&gt;smb://server/path - Specifies an SMB server or Windows share.&lt;/li&gt; &lt;/ul&gt; vSphere 6.0 Update 1 &lt;ul&gt; &lt;li&gt;nfs://server:/path (for vCenter Server Appliance only)&lt;/li&gt; &lt;li&gt;file://unc-server/path (for vCenter Server for Windows only)&lt;/li&gt; &lt;li&gt;file:///mount/point (for vCenter Server Appliance only) - Local file URIs are supported only when the path is a local mount point for an NFS file system. Use of file URIs is strongly discouraged. Instead, use an NFS URI to specify the remote file system.&lt;/li&gt; &lt;/ul&gt; vSphere 6.0 &lt;ul&gt; &lt;li&gt;nfs://server:/path (for vCenter Server Appliance only)&lt;/li&gt; &lt;li&gt;file://unc-server/path (for vCenter Server for Windows only)&lt;/li&gt; &lt;li&gt;file:///path - Local file URIs are supported but strongly discouraged because it may interfere with the performance of vCenter Server.&lt;/li&gt; &lt;/ul&gt; ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datastore_id</span></code> (str): Identifier of the datastore used to store the content in the library.</p></li>
 </ul>
+<p>This field is optional and it is only relevant when the value of StorageBacking.type is DATASTORE.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_datastore_info</span></a>. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_uri</span></code> (str): URI identifying the location used to store the content in the library.</p></li>
+</ul>
+<p>The following URI formats are supported:</p>
+<p>vSphere 6.5</p>
+<ul class="simple">
+<li><p><a class="reference external" href="nfs://server/path?version=4">nfs://server/path?version=4</a> (for vCenter Server Appliance only) - Specifies an NFS Version 4 server.</p></li>
+<li><p><a class="reference external" href="nfs://server/path">nfs://server/path</a> (for vCenter Server Appliance only) - Specifies an NFS Version 3 server. The <a class="reference external" href="nfs://server:/path">nfs://server:/path</a> format is also supported.</p></li>
+<li><p><a class="reference external" href="smb://server/path">smb://server/path</a> - Specifies an SMB server or Windows share.</p></li>
+</ul>
+<p>vSphere 6.0 Update 1</p>
+<ul class="simple">
+<li><p><a class="reference external" href="nfs://server:/path">nfs://server:/path</a> (for vCenter Server Appliance only)</p></li>
+<li><p><a class="reference external" href="file://unc-server/path">file://unc-server/path</a> (for vCenter Server for Windows only)</p></li>
+<li><p><a class="reference external" href="file:///mount/point">file:///mount/point</a> (for vCenter Server Appliance only) - Local file URIs are supported only when the path is a local mount point for an NFS file system. Use of file URIs is strongly discouraged. Instead, use an NFS URI to specify the remote file system.</p></li>
+</ul>
+<p>vSphere 6.0</p>
+<ul class="simple">
+<li><p><a class="reference external" href="nfs://server:/path">nfs://server:/path</a> (for vCenter Server Appliance only)</p></li>
+<li><p><a class="reference external" href="file://unc-server/path">file://unc-server/path</a> (for vCenter Server for Windows only)</p></li>
+<li><p><a class="reference external" href="file:///path">file:///path</a> - Local file URIs are supported but strongly discouraged because it may interfere with the performance of vCenter Server.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of StorageBacking.type is OTHER. ([‘present’])</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-subscription_info"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-subscription-info"><strong>subscription_info</strong></p>
 <a class="ansibleOptionLink" href="#parameter-subscription_info" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Defines the subscription behavior for this Library. The <code class="docutils literal notranslate"><span class="pre">subscription_info</span></code> defines how this subscribed library synchronizes to a remote source. Setting the value will determine the remote source to which the library synchronizes, and how. Changing the subscription will result in synchronizing to a new source. If the new source differs from the old one, the old library items and data will be lost. Setting <code class="docutils literal notranslate"><span class="pre">subscription_info.automaticSyncEnabled</span></code> to false will halt subscription but will not remove existing cached data.</p>
+<td><div class="ansible-option-cell"><p>Defines the subscription behavior for this Library.</p>
+<p>The SubscriptionInfo defines how this subscribed library synchronizes to a remote source. Setting the value will determine the remote source to which the library synchronizes, and how. Changing the subscription will result in synchronizing to a new source. If the new source differs from the old one, the old library items and data will be lost. Setting SubscriptionInfo.automatic-sync-enabled to false will halt subscription but will not remove existing cached data.</p>
+<p>This field is optional for the create and update operations. If not specified during creation, a default will be created without an active subscription. If not specified during update, the field is left unchanged.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> (str): Indicate how the subscribed library should authenticate with the published library endpoint. ([‘present’])</p></li>
 <li><p>Accepted values:</p></li>
 <li><p>BASIC</p></li>
 <li><p>NONE</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">automatic_sync_enabled</span></code> (bool): Whether the library should participate in automatic library synchronization. In order for automatic synchronization to happen, the global <code class="docutils literal notranslate"><span class="pre">configuration_model.automatic_sync_enabled</span></code> option must also be true. The subscription is still active even when automatic synchronization is turned off, but synchronization is only activated with an explicit call to <a class="reference internal" href="content_subscribedlibrary_module.html#ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module"><span class="std std-ref">vmware.vmware_rest.content_subscribedlibrary</span></a> with <code class="docutils literal notranslate"><span class="pre">state=sync</span></code>. In other words, manual synchronization is still available even when automatic synchronization is disabled. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">on_demand</span></code> (bool): Indicates whether a library item’s content will be synchronized only on demand. If this is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the library item’s metadata will be synchronized but the item’s content (its files) will not be synchronized. The Content Library Service will synchronize the content upon request only. This can cause the first use of the content to have a noticeable delay. If this value is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, all content will be synchronized in advance. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): The password to use when authenticating. The password must be set when using a password-based authentication method; empty strings are not allowed. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ssl_thumbprint</span></code> (str): An optional SHA-1 hash of the SSL certificate for the remote endpoint. If this value is defined the SSL certificate will be verified by comparing it to the SSL thumbprint. The SSL certificate must verify against the thumbprint. When specified, the standard certificate chain validation behavior is not used. The certificate chain is validated normally if this value is not set. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">subscription_url</span></code> (str): The URL of the endpoint where the metadata for the remotely published library is being served. This URL can be the <code class="docutils literal notranslate"><span class="pre">publish_info.publish_url</span></code> of the published library (for example, <a class="reference external" href="https://server/path/lib.json">https://server/path/lib.json</a>). If the source content comes from a published library with <code class="docutils literal notranslate"><span class="pre">publish_info.persist_json_enabled</span></code>, the subscription URL can be a URL pointing to the library JSON file on a datastore or remote file system. The supported formats are: vSphere 6.5 &lt;ul&gt; &lt;li&gt;ds:///vmfs/volumes/{uuid}/mylibrary/lib.json (for datastore)&lt;/li&gt; &lt;li&gt;nfs://server/path/mylibrary/lib.json (for NFSv3 server on vCenter Server Appliance)&lt;/li&gt; &lt;li&gt;nfs://server/path/mylibrary/lib.json?version=4 (for NFSv4 server on vCenter Server Appliance) &lt;/li&gt; &lt;li&gt;smb://server/path/mylibrary/lib.json (for SMB server)&lt;/li&gt; &lt;/ul&gt; vSphere 6.0 &lt;ul&gt; &lt;li&gt;file://server/mylibrary/lib.json (for UNC server on vCenter Server for Windows)&lt;/li&gt; &lt;li&gt;file:///path/mylibrary/lib.json (for local file system)&lt;/li&gt; &lt;/ul&gt; When you specify a DS subscription URL, the datastore must be on the same vCenter Server as the subscribed library. When you specify an NFS or SMB subscription URL, the <code class="docutils literal notranslate"><span class="pre">storage_backings.storage_uri</span></code> of the subscribed library must be on the same remote file server and should share a common parent path with the subscription URL. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code> (str): The username to use when authenticating. The username must be set when using a password-based authentication method. Empty strings are allowed for usernames. ([‘present’])</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">source_info</span></code> (dict): Information about the source published library. This field will be set for a subscribed library which is associated with a subscription of the published library. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">automatic_sync_enabled</span></code> (bool): Whether the library should participate in automatic library synchronization. In order for automatic synchronization to happen, the global ConfigurationModel.automatic-sync-enabled option must also be true. The subscription is still active even when automatic synchronization is turned off, but synchronization is only activated with an explicit call to SubscribedLibrary.sync or SubscribedItem.sync. In other words, manual synchronization is still available even when automatic synchronization is disabled.</p></li>
+</ul>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">on_demand</span></code> (bool): Indicates whether a library item’s content will be synchronized only on demand.</p></li>
+</ul>
+<p>If this is set to true, then the library item’s metadata will be synchronized but the item’s content (its files) will not be synchronized. The Content Library Service will synchronize the content upon request only. This can cause the first use of the content to have a noticeable delay.</p>
+<p>Items without synchronized content can be forcefully synchronized in advance using the SubscribedItem.sync call with forceSyncContent set to true. Once content has been synchronized, the content can removed with the SubscribedItem.evict call.</p>
+<p>If this value is set to false, all content will be synchronized in advance.</p>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): The password to use when authenticating.</p></li>
+</ul>
+<p>The password must be set when using a password-based authentication method; empty strings are not allowed.</p>
+<p>This field is optional for the create operation. It will not be present in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ssl_thumbprint</span></code> (str): An optional SHA-1 hash of the SSL certificate for the remote endpoint.</p></li>
+</ul>
+<p>If this value is defined the SSL certificate will be verified by comparing it to the SSL thumbprint. The SSL certificate must verify against the thumbprint. When specified, the standard certificate chain validation behavior is not used. The certificate chain is validated normally if this value is unset. The specified sslThumbprint will not be checked for SSL certificate validation if {SubscriptionInfo#sslCertificate} is also set.</p>
+<p>This field is optional for the create operation. It will not be present in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">subscription_url</span></code> (str): The URL of the endpoint where the metadata for the remotely published library is being served.</p></li>
+</ul>
+<p>This URL can be the PublishInfo.publish-url of the published library (for example, <a class="reference external" href="https://server/path/lib.json">https://server/path/lib.json</a>).</p>
+<p>If the source content comes from a published library with PublishInfo.persist-json-enabled, the subscription URL can be a URL pointing to the library JSON file on a datastore or remote file system. The supported formats are:</p>
+<p>vSphere 6.5</p>
+<ul class="simple">
+<li><p>ds:///vmfs/volumes/{uuid}/mylibrary/lib.json (for datastore)</p></li>
+<li><p><a class="reference external" href="nfs://server/path/mylibrary/lib.json">nfs://server/path/mylibrary/lib.json</a> (for NFSv3 server on vCenter Server Appliance)</p></li>
+<li><p><a class="reference external" href="nfs://server/path/mylibrary/lib.json?version=4">nfs://server/path/mylibrary/lib.json?version=4</a> (for NFSv4 server on vCenter Server Appliance)</p></li>
+<li><p><a class="reference external" href="smb://server/path/mylibrary/lib.json">smb://server/path/mylibrary/lib.json</a> (for SMB server)</p></li>
+</ul>
+<p>vSphere 6.0</p>
+<ul class="simple">
+<li><p><a class="reference external" href="file://server/mylibrary/lib.json">file://server/mylibrary/lib.json</a> (for UNC server on vCenter Server for Windows)</p></li>
+<li><p><a class="reference external" href="file:///path/mylibrary/lib.json">file:///path/mylibrary/lib.json</a> (for local file system)</p></li>
+</ul>
+<p>When you specify a DS subscription URL, the datastore must be on the same vCenter Server as the subscribed library. When you specify an NFS or SMB subscription URL, the StorageBacking.storage-uri of the subscribed library must be on the same remote file server and should share a common parent path with the subscription URL.</p>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code> (str): The username to use when authenticating.</p></li>
+</ul>
+<p>The username must be set when using a password-based authentication method. Empty strings are allowed for usernames.</p>
+<p>This field is optional for the create operation. It is optional in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">source_info</span></code> (dict): Information about the source published library. This field will be set for a subscribed library which is associated with a subscription of the published library.</p></li>
+</ul>
+<p>This field is optional for the create operation. It is optional in the result of the get or list operations. It is optional for the update operation. ([‘present’])</p>
+<ul class="simple">
 <li><p>Accepted keys:</p></li>
 <li><p>source_library (string): Identifier of the published library.</p></li>
+</ul>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_info_module.html#ansible-collections-vmware-vmware-rest-content-library-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_info</span></a>.</p>
+<ul class="simple">
 <li><p>subscription (string): Identifier of the subscription associated with the subscribed library.</p></li>
 </ul>
+<p>This field must be provided for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_subscriptions_info_module.html#ansible-collections-vmware-vmware-rest-content-library-subscriptions-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_subscriptions_info</span></a>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -347,8 +468,9 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <td><div class="ansible-option-cell"><p>The list of subscriptions to publish this library to.</p>
 <p>Valid attributes are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">subscription</span></code> (str): Identifier of the subscription associated with the subscribed library. ([‘publish’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subscription</span></code> (str): Identifier of the subscription associated with the subscribed library.</p></li>
 </ul>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="content_library_subscriptions_info_module.html#ansible-collections-vmware-vmware-rest-content-library-subscriptions-info-module"><span class="std std-ref">vmware.vmware_rest.content_library_subscriptions_info</span></a>. ([‘publish’])</p>
 <p>This key is required with [‘publish’].</p>
 </div></td>
 </tr>
@@ -356,7 +478,8 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-type"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-type"><strong>type</strong></p>
 <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The <code class="docutils literal notranslate"><span class="pre">library_type</span></code> defines the type of a Library. The type of a library can be used to determine which additional services can be performed with a library.</p>
+<td><div class="ansible-option-cell"><p>The <em>library_type</em> enumerated type defines the type of a LibraryModel.</p>
+<p>The type of a library can be used to determine which additional services can be performed with a library.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;LOCAL&quot;</span></code></p></li>
@@ -368,7 +491,9 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-unset_security_policy_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-unset-security-policy-id"><strong>unset_security_policy_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-unset_security_policy_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>This represents the intent of the change to <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #securityPolicyId} in <code class="docutils literal notranslate"><span class="pre">update</span></code>operation. If this field is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, any security policy applied to the library will be removed. If this field is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, any security policy applied to library will be changed to the value specified in <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #securityPolicyId}, if any.</p>
+<td><div class="ansible-option-cell"><p>This represents the intent of the change to LibraryModel.security-policy-id in update operation.</p>
+<p>If this field is set to true, any security policy applied to the library will be removed. If this field is set to false, any security policy applied to library will be changed to the value specified in LibraryModel.security-policy-id, if any.</p>
+<p>This field is optional for the update operation. If unset, any existing security policy will be changed to the value specified in LibraryModel.security-policy-id, if any.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
@@ -428,7 +553,9 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-version"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-locallibrary-module-parameter-version"><strong>version</strong></p>
 <a class="ansibleOptionLink" href="#parameter-version" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>A version number which is updated on metadata changes. This value allows clients to detect concurrent updates and prevent accidental clobbering of data. This value represents a number which is incremented every time library properties, such as name or description, are changed. It is not incremented by changes to a library item within the library, including adding or removing items. It is also not affected by tagging the library.</p>
+<td><div class="ansible-option-cell"><p>A version number which is updated on metadata changes. This value allows clients to detect concurrent updates and prevent accidental clobbering of data.</p>
+<p>This value represents a number which is incremented every time library properties, such as name or description, are changed. It is not incremented by changes to a library item within the library, including adding or removing items. It is also not affected by tagging the library.</p>
+<p>This field is not used for the create operation. It will always be present in the result of a get or list operation. It is optional for the update operation. Leaving it unset during update indicates that you do not need to detect concurrent updates.</p>
 </div></td>
 </tr>
 </tbody>
@@ -552,7 +679,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="content_library_item_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.content_library_item_info module – Returns the {@link ItemModel} with the given identifier." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="content_library_subscriptions_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.content_library_subscriptions_info module – Returns information about the specified subscription of the published library." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="content_locallibrary_info_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.content_locallibrary_info module – Returns a given local library." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

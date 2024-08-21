@@ -134,7 +134,7 @@
 <h1>vmware.vmware_rest.content_configuration module – Updates the configuration<a class="headerlink" href="#vmware-vmware-rest-content-configuration-module-updates-the-configuration" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0-dev0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 4.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
@@ -156,7 +156,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Updates the configuration. The update is incremental. Any <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> field} in the <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> ConfigurationModel} <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> structure} that is <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> unset} will not be modified. Note that this update <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> operation} doesn’t guarantee an atomic change of all the properties. In the case of a system crash or failure, some of the properties could be left unchanged while others may be updated.</p></li>
+<li><p>Updates the configuration. The update is incremental. Any field in the ConfigurationModel structure that is unset will not be modified. Note that this update operation doesn’t guarantee an atomic change of all the properties. In the case of a system crash or failure, some of the properties could be left unchanged while others may be updated.</p></li>
 </ul>
 </section>
 <section id="requirements">
@@ -181,7 +181,9 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <div class="ansibleOptionAnchor" id="parameter-automatic_sync_enabled"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-configuration-module-parameter-automatic-sync-enabled"><strong>automatic_sync_enabled</strong></p>
 <a class="ansibleOptionLink" href="#parameter-automatic_sync_enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Whether automatic synchronization is enabled. When automatic synchronization is enabled, the Content Library Service will automatically synchronize all subscribed libraries on a daily basis. Subscribed libraries with the <code class="docutils literal notranslate"><span class="pre">subscription_info.automaticSyncEnabled</span></code> flag turned on will be synchronized every hour between <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #automaticSyncStartHour} and <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #automaticSyncStopHour}.</p>
+<td><div class="ansible-option-cell"><p>Whether automatic synchronization is enabled.</p>
+<p>When automatic synchronization is enabled, the Content Library Service will automatically synchronize all subscribed libraries on a daily basis. Subscribed libraries with the SubscriptionInfo.automatic-sync-enabled flag turned on will be synchronized every hour between ConfigurationModel.automatic-sync-start-hour and ConfigurationModel.automatic-sync-stop-hour.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
@@ -194,6 +196,7 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-automatic_sync_start_hour" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The hour at which the automatic synchronization will start. This value is between 0 (midnight) and 23 inclusive.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -201,13 +204,16 @@ see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-
 <a class="ansibleOptionLink" href="#parameter-automatic_sync_stop_hour" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The hour at which the automatic synchronization will stop. Any active synchronization operation will continue to run, however no new synchronization operations will be triggered after the stop hour. This value is between 0 (midnight) and 23 inclusive.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-maximum_concurrent_item_syncs"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-configuration-module-parameter-maximum-concurrent-item-syncs"><strong>maximum_concurrent_item_syncs</strong></p>
 <a class="ansibleOptionLink" href="#parameter-maximum_concurrent_item_syncs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The maximum allowed number of library items to synchronize concurrently from remote libraries. This must be a positive number. The service may not be able to guarantee the requested concurrency if there is no available capacity. This setting is global across all subscribed libraries.</p>
+<td><div class="ansible-option-cell"><p>The maximum allowed number of library items to synchronize concurrently from remote libraries. This must be a positive number. The service may not be able to guarantee the requested concurrency if there is no available capacity.</p>
+<p>This setting is global across all subscribed libraries.</p>
+<p>This field is not used for the create operation. It will always be present in the result of the get or list operations. It is optional for the update operation.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
