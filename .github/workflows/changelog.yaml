@@ -7,6 +7,15 @@ concurrency:
 
 on:
   pull_request:
+    types:
+      - opened
+      - reopened
+      - labeled
+      - unlabeled
+      - synchronize
+    branches:
+      - main
+      - stable-*
 
 jobs:
   changelog:

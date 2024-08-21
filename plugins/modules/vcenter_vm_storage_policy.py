@@ -95,7 +95,7 @@ options:
         - This field is optional and it is only relevant when the value of I(type)
             is USE_SPECIFIED_POLICY.
         - When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.vcenter_storage_policies).
+            be the id of a storage policy resource.
             (['present'])
         required: true
         type: dict
