@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to collect information about your environment &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="How to create a Virtual Machine" href="3_create_vm.html" />
+    <link rel="prev" title="How to configure the vmware_rest collection" href="1_authentication.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../../index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Vmware.Vmware_Rest</a></li>
+          <li class="breadcrumb-item"><a href="../../guide_vmware_rest.html">VMware Guide (REST)</a></li>
+      <li class="breadcrumb-item active">How to collect information about your environment</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <section id="how-to-collect-information-about-your-environment">
+<span id="ansible-collections-vmware-vmware-rest-docsite-vmware-rest-collect-info"></span><h1>How to collect information about your environment<a class="headerlink" href="#how-to-collect-information-about-your-environment" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This section shows you how to utilize Ansible to collect information
+about your environment. This information is useful for the other
+tutorials.</p>
+</section>
+<section id="scenario-requirements">
+<h2>Scenario requirements<a class="headerlink" href="#scenario-requirements" title="Link to this heading"></a></h2>
+<p>In this scenario we”ve got a vCenter with an ESXi host.</p>
+<p>Our environment is pre-initialized with the following elements:</p>
+<ul class="simple">
+<li><p>A datacenter called <code class="docutils literal notranslate"><span class="pre">my_dc</span></code></p></li>
+<li><p>A cluster called <code class="docutils literal notranslate"><span class="pre">my_cluser</span></code></p></li>
+<li><p>A cluster called <code class="docutils literal notranslate"><span class="pre">my_cluser</span></code></p></li>
+<li><p>An ESXi host called <code class="docutils literal notranslate"><span class="pre">esxi1</span></code> is in the cluster</p></li>
+<li><p>Two datastores on the ESXi: <code class="docutils literal notranslate"><span class="pre">rw_datastore</span></code> and <code class="docutils literal notranslate"><span class="pre">ro_datastore</span></code></p></li>
+<li><p>A dvswitch based guest network</p></li>
+</ul>
+<p>Finally, we use the environment variables to authenticate ourselves as
+explained in vmware_rest_authentication.</p>
+</section>
+<section id="how-to-collect-information">
+<h2>How to collect information<a class="headerlink" href="#how-to-collect-information" title="Link to this heading"></a></h2>
+<p>In these examples, we use the <code class="docutils literal notranslate"><span class="pre">vcenter_*_info</span></code> module to collect
+information about the associated resources.</p>
+<p>All these modules return a <code class="docutils literal notranslate"><span class="pre">value</span></code> key. Depending on the context,
+this <code class="docutils literal notranslate"><span class="pre">value</span></code> key will be either a list or a dictionary.</p>
+<section id="datacenter">
+<h3>Datacenter<a class="headerlink" href="#datacenter" title="Link to this heading"></a></h3>
+<p>Here we use the <code class="docutils literal notranslate"><span class="pre">vcenter_datacenter_info</span></code> module to list all the
+datacenters. As expected, the <code class="docutils literal notranslate"><span class="pre">value</span></code> key of the output is a list.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">collect a list of the datacenters</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_datacenter_info</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_datacenters</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;datacenter&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;datacenter-1160&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;my_dc&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="cluster">
+<h3>Cluster<a class="headerlink" href="#cluster" title="Link to this heading"></a></h3>
+<p>Here we do the same with <code class="docutils literal notranslate"><span class="pre">vcenter_cluster_info</span></code> module:</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build a list of all the clusters</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_cluster_info</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all_the_clusters</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;cluster&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;domain-c1165&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;drs_enabled&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;ha_enabled&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;my_cluster&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>And we can also fetch the details about a specific cluster, with the
+<code class="docutils literal notranslate"><span class="pre">cluster</span></code> parameter:</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Retrieve details about the first cluster</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_cluster_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">all_the_clusters.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.cluster</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_cluster_info</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;domain-c1165&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;my_cluster&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;resource_pool&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;resgroup-1166&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>And the <code class="docutils literal notranslate"><span class="pre">value</span></code> key of the output is this time a dictionary.</p>
+</section>
+<section id="datastore">
+<h3>Datastore<a class="headerlink" href="#datastore" title="Link to this heading"></a></h3>
+<p>Here we use <code class="docutils literal notranslate"><span class="pre">vcenter_datastore_info</span></code> to get a list of all the
+datastore called <code class="docutils literal notranslate"><span class="pre">rw_datastore</span></code>:</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Retrieve a list of all the datastores</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_datastore_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rw_datastore</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_datastores</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;capacity&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">42314215424</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;datastore&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;datastore-1175&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;free_space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">40362840064</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;rw_datastore&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;NFS&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>We save the first datastore in <em>my_datastore</em> fact for later use.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set my_datastore</span>
+<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="w">     </span><span class="nt">my_datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_datastores.value</span><span class="o">|</span><span class="nf">first</span> <span class="cp">}}</span><span class="s">&#39;</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;ansible_facts&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;my_datastore&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;capacity&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">42314215424</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;datastore&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;datastore-1175&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;free_space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">40362840064</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;rw_datastore&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;NFS&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">},</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="folder">
+<h3>Folder<a class="headerlink" href="#folder" title="Link to this heading"></a></h3>
+<p>And here again, you use the <code class="docutils literal notranslate"><span class="pre">vcenter_folder_info</span></code> module to retrieve
+a list of all the folders.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build a list of all the folders</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_folder_info</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_folders</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-d1&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Datacenters&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;DATACENTER&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-h1162&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;host&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;HOST&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-n1164&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;network&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;NETWORK&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-s1163&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;datastore&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;DATASTORE&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-v1161&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;vm&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VIRTUAL_MACHINE&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-v1169&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Discovered</span><span class="nv"> </span><span class="s">virtual</span><span class="nv"> </span><span class="s">machine&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VIRTUAL_MACHINE&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-v1173&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;vCLS&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VIRTUAL_MACHINE&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>Most of the time, you will just want one type of folder. In this case
+we can use filters to reduce the amount to collect. Most of the
+<code class="docutils literal notranslate"><span class="pre">_info</span></code> modules come with similar filters.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build a list of all the folders with the type VIRTUAL_MACHINE and called vm</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_folder_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">filter_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VIRTUAL_MACHINE</span>
+<span class="w">    </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_folders</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-v1161&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;vm&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VIRTUAL_MACHINE&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>We register the first folder for later use with <code class="docutils literal notranslate"><span class="pre">set_fact</span></code>.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set my_virtual_machine_folder</span>
+<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">my_virtual_machine_folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_folders.value</span><span class="o">|</span><span class="nf">first</span> <span class="cp">}}</span><span class="s">&#39;</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;ansible_facts&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;my_virtual_machine_folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;folder&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;group-v1161&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;vm&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VIRTUAL_MACHINE&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">},</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="1_authentication.html" class="btn btn-neutral float-left" title="How to configure the vmware_rest collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="3_create_vm.html" class="btn btn-neutral float-right" title="How to create a Virtual Machine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

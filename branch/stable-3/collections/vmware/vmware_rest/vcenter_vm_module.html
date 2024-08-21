@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="2.12.0" name="antsibull-docs" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vmware.vmware_rest.vcenter_vm module – Creates a virtual machine. &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="vmware.vmware_rest.vcenter_vm_guest_customization module – Applies a customization specification on the virtual machine" href="vcenter_vm_guest_customization_module.html" />
+    <link rel="prev" title="vmware.vmware_rest.vcenter_storage_policies_info module – Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter" href="vcenter_storage_policies_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Vmware.Vmware_Rest</a></li>
+      <li class="breadcrumb-item active">vmware.vmware_rest.vcenter_vm module – Creates a virtual machine.</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module"></span><section id="vmware-vmware-rest-vcenter-vm-module-creates-a-virtual-machine">
+<h1>vmware.vmware_rest.vcenter_vm module – Creates a virtual machine.<a class="headerlink" href="#vmware-vmware-rest-vcenter-vm-module-creates-a-virtual-machine" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 3.0.1).</p>
+<p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
+To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
+You need further requirements to be able to use this module,
+see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-vcenter-vm-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">vmware.vmware_rest.vcenter_vm</span></code>.</p>
+</div>
+<p class="ansible-version-added">New in vmware.vmware_rest 0.1.0</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#notes" id="id4">Notes</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id5">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id6">Return Values</a></p></li>
+</ul>
+</nav>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Creates a virtual machine.</p></li>
+</ul>
+</section>
+<section id="requirements">
+<span id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>vSphere 7.0.3 or greater</p></li>
+<li><p>python &gt;= 3.6</p></li>
+<li><p>aiohttp</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Parameters</a><a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-bios_uuid"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-bios-uuid"><strong>bios_uuid</strong></p>
+<a class="ansibleOptionLink" href="#parameter-bios_uuid" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>128-bit SMBIOS UUID of a virtual machine represented as a hexadecimal string in “12345678-abcd-1234-cdef-123456789abc” format.</p>
+<p>If unset, will be generated.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-boot"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-boot"><strong>boot</strong></p>
+<a class="ansibleOptionLink" href="#parameter-boot" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Boot configuration.</p>
+<p>If unset, guest-specific default values will be used.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid firmware types for a virtual machine. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>BIOS</p></li>
+<li><p>EFI</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">efi_legacy_boot</span></code> (bool): Flag indicating whether to use EFI legacy boot mode.</p></li>
+</ul>
+<p>If unset, defaults to value that is recommended for the guest OS and is supported for the virtual hardware version. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">network_protocol</span></code> (str): This option defines the valid network boot protocols supported when booting a virtual machine with EFI firmware over the network. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>IPV4</p></li>
+<li><p>IPV6</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay</span></code> (int): Delay in milliseconds before beginning the firmware boot process when the virtual machine is powered on. This delay may be used to provide a time window for users to connect to the virtual machine console and enter BIOS setup mode.</p></li>
+</ul>
+<p>If unset, default value is 0. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">retry</span></code> (bool): Flag indicating whether the virtual machine should automatically retry the boot process after a failure.</p></li>
+</ul>
+<p>If unset, default value is false. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">retry_delay</span></code> (int): Delay in milliseconds before retrying the boot process after a failure; applicable only when <em>retry</em> is true.</p></li>
+</ul>
+<p>If unset, default value is 10000. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">enter_setup_mode</span></code> (bool): Flag indicating whether the firmware boot process should automatically enter setup mode the next time the virtual machine boots. Note that this flag will automatically be reset to false once the virtual machine enters setup mode.</p></li>
+</ul>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-boot_devices"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-boot-devices"><strong>boot_devices</strong></p>
+<a class="ansibleOptionLink" href="#parameter-boot_devices" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Boot device configuration.</p>
+<p>If unset, a server-specific boot sequence will be used.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid device types that may be used as bootable devices. ([‘present’])</p></li>
+</ul>
+<p>This key is required with [‘present’].</p>
+<ul class="simple">
+<li><p>Accepted values:</p></li>
+<li><p>CDROM</p></li>
+<li><p>DISK</p></li>
+<li><p>ETHERNET</p></li>
+<li><p>FLOPPY</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-cdroms"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-cdroms"><strong>cdroms</strong></p>
+<a class="ansibleOptionLink" href="#parameter-cdroms" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of CD-ROMs.</p>
+<p>If unset, no CD-ROM devices will be created.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid types of host bus adapters that may be used for attaching a Cdrom to a virtual machine. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>IDE</p></li>
+<li><p>SATA</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ide</span></code> (dict): Address for attaching the device to a virtual IDE adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available address; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</p></li>
+</ul>
+<p>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</p>
+<ul class="simple">
+<li><p>master (boolean): Flag specifying whether the device should be the master or slave device on the IDE adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sata</span></code> (dict): Address for attaching the device to a virtual SATA adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available address; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>bus (integer): Bus number of the adapter to which the device should be attached.</p></li>
+<li><p>unit (integer): Unit number of the device.</p></li>
+</ul>
+<p>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backing</span></code> (dict): Physical resource backing for the virtual CD-ROM device.</p></li>
+</ul>
+<p>If unset, defaults to automatic detection of a suitable host device. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>type (string): This option defines the valid backing types for a virtual CD-ROM device.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CLIENT_DEVICE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST_DEVICE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ISO_FILE</span></code></p></li>
+<li><p>iso_file (string): Path of the image file that should be used as the virtual CD-ROM device backing.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is ISO_FILE.</p>
+<ul class="simple">
+<li><p>host_device (string): Name of the device that should be used as the virtual CD-ROM device backing.</p></li>
+</ul>
+<p>If unset, the virtual CD-ROM device will be configured to automatically detect a suitable host device.</p>
+<ul class="simple">
+<li><p>device_access_type (string): This option defines the valid device access types for a physical device packing of a virtual CD-ROM device.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EMULATION</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PASSTHRU</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PASSTHRU_EXCLUSIVE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_connected</span></code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allow_guest_control</span></code> (bool): Flag indicating whether the guest can connect and disconnect the device.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-cpu"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-cpu"><strong>cpu</strong></p>
+<a class="ansibleOptionLink" href="#parameter-cpu" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>CPU configuration.</p>
+<p>If unset, guest-specific default values will be used.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code> (int): New number of CPU cores. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</p></li>
+</ul>
+<p>The supported range of CPU counts is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</p>
+<p>If the virtual machine is running, the number of CPU cores may only be increased if <em>hot_add_enabled</em> is true, and may only be decreased if <em>hot_remove_enabled</em> is true.</p>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cores_per_socket</span></code> (int): New number of CPU cores per socket. The number of CPU cores in the virtual machine must be a multiple of the number of cores per socket.</p></li>
+</ul>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hot_add_enabled</span></code> (bool): Flag indicating whether adding CPUs while the virtual machine is running is enabled.</p></li>
+</ul>
+<p>This field may only be modified if the virtual machine is powered off.</p>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hot_remove_enabled</span></code> (bool): Flag indicating whether removing CPUs while the virtual machine is running is enabled.</p></li>
+</ul>
+<p>This field may only be modified if the virtual machine is powered off.</p>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-datastore"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-datastore"><strong>datastore</strong></p>
+<a class="ansibleOptionLink" href="#parameter-datastore" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Identifier of the datastore on which the virtual machine’s configuration state is stored.</p>
+<p>If unset, <em>path</em> must also be unset and <em>datastore_path</em> must be set.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_datastore_info</span></a>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-datastore_path"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-datastore-path"><strong>datastore_path</strong></p>
+<a class="ansibleOptionLink" href="#parameter-datastore_path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Datastore path for the virtual machine’s configuration file in the format “[datastore name] path”. For example “[storage1] Test-VM/Test-VM.vmx”.</p>
+<p>If unset, both <em>datastore</em> and <em>path</em> must be set.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-disconnect_all_nics"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-disconnect-all-nics"><strong>disconnect_all_nics</strong></p>
+<a class="ansibleOptionLink" href="#parameter-disconnect_all_nics" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Indicates whether all NICs on the destination virtual machine should be disconnected from the newtwork</p>
+<p>If unset, connection status of all NICs on the destination virtual machine will be the same as on the source virtual machine.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-disks"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-disks"><strong>disks</strong></p>
+<a class="ansibleOptionLink" href="#parameter-disks" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Individual disk relocation map.</p>
+<p>If unset, all disks will migrate to the datastore specified in the <em>datastore</em> field of <em></em></p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_disk</span></a>.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid types of host bus adapters that may be used for attaching a virtual storage device to a virtual machine. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>IDE</p></li>
+<li><p>NVME</p></li>
+<li><p>SATA</p></li>
+<li><p>SCSI</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ide</span></code> (dict): Address for attaching the device to a virtual IDE adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available address; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>primary (boolean): Flag specifying whether the device should be attached to the primary or secondary IDE adapter of the virtual machine.</p></li>
+</ul>
+<p>If unset, the server will choose a adapter with an available connection. If no IDE connections are available, the request will be rejected.</p>
+<ul class="simple">
+<li><p>master (boolean): Flag specifying whether the device should be the master or slave device on the IDE adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available connection type. If no IDE connections are available, the request will be rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scsi</span></code> (dict): Address for attaching the device to a virtual SCSI adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available address; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>bus (integer): Bus number of the adapter to which the device should be attached.</p></li>
+<li><p>unit (integer): Unit number of the device.</p></li>
+</ul>
+<p>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sata</span></code> (dict): Address for attaching the device to a virtual SATA adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available address; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>bus (integer): Bus number of the adapter to which the device should be attached.</p></li>
+<li><p>unit (integer): Unit number of the device.</p></li>
+</ul>
+<p>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvme</span></code> (dict): Address for attaching the device to a virtual NVMe adapter.</p></li>
+</ul>
+<p>If unset, the server will choose an available address; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>bus (integer): Bus number of the adapter to which the device should be attached.</p></li>
+<li><p>unit (integer): Unit number of the device.</p></li>
+</ul>
+<p>If unset, the server will choose an available unit number on the specified adapter. If there are no available connections on the adapter, the request will be rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backing</span></code> (dict): Existing physical resource backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</p></li>
+</ul>
+<p>If unset, the virtual disk will not be connected to an existing backing. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>type (string): This option defines the valid backing types for a virtual disk.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">VMDK_FILE</span></code></p></li>
+<li><p>vmdk_file (string): Path of the VMDK file backing the virtual disk.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is VMDK_FILE.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">new_vmdk</span></code> (dict): Specification for creating a new VMDK backing for the virtual disk. Exactly one of <em>backing</em> or <em>new_vmdk</em> must be specified.</p></li>
+</ul>
+<p>If unset, a new VMDK backing will not be created. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>name (string): Base name of the VMDK file. The name should not include the ‘.vmdk’ file extension.</p></li>
+</ul>
+<p>If unset, a name (derived from the name of the virtual machine) will be chosen by the server.</p>
+<ul class="simple">
+<li><p>capacity (integer): Capacity of the virtual disk backing in bytes.</p></li>
+</ul>
+<p>If unset, defaults to a guest-specific capacity.</p>
+<ul class="simple">
+<li><p>storage_policy (object): The <em>storage_policy_spec</em> structure contains information about the storage policy that is to be associated the with VMDK file.</p></li>
+</ul>
+<p>If unset the default storage policy of the target datastore (if applicable) is applied. Currently a default storage policy is only supported by object based datastores : VVol &amp; vSAN. For non- object datastores, if unset then no storage policy would be associated with the VMDK file.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-disks_to_remove"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-disks-to-remove"><strong>disks_to_remove</strong></p>
+<a class="ansibleOptionLink" href="#parameter-disks_to_remove" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Set of Disks to Remove.</p>
+<p>If unset, all disks will be copied. If the same identifier is in <em>disks_to_update</em> InvalidArgument fault will be returned.</p>
+<p>When clients pass a value of this structure as a parameter, the field must contain the id of resources returned by <a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_disk</span></a>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-disks_to_update"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-disks-to-update"><strong>disks_to_update</strong></p>
+<a class="ansibleOptionLink" href="#parameter-disks_to_update" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Map of Disks to Update.</p>
+<p>If unset, all disks will copied to the datastore specified in the <em>datastore</em> field of <em></em> If the same identifier is in <em>disks_to_remove</em> InvalidArgument fault will be thrown.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_disk</span></a>.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-floppies"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-floppies"><strong>floppies</strong></p>
+<a class="ansibleOptionLink" href="#parameter-floppies" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of floppy drives.</p>
+<p>If unset, no floppy drives will be created.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backing</span></code> (dict): Physical resource backing for the virtual floppy drive.</p></li>
+</ul>
+<p>If unset, defaults to automatic detection of a suitable host device. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>type (string): This option defines the valid backing types for a virtual floppy drive.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CLIENT_DEVICE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST_DEVICE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IMAGE_FILE</span></code></p></li>
+<li><p>image_file (string): Path of the image file that should be used as the virtual floppy drive backing.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is IMAGE_FILE.</p>
+<ul class="simple">
+<li><p>host_device (string): Name of the device that should be used as the virtual floppy drive backing.</p></li>
+</ul>
+<p>If unset, the virtual floppy drive will be configured to automatically detect a suitable host device.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start_connected</span></code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allow_guest_control</span></code> (bool): Flag indicating whether the guest can connect and disconnect the device.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-guest_customization_spec"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-guest-customization-spec"><strong>guest_customization_spec</strong></p>
+<a class="ansibleOptionLink" href="#parameter-guest_customization_spec" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Guest customization spec to apply to the virtual machine after the virtual machine is deployed.</p>
+<p>If unset, the guest operating system is not customized after clone.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name of the customization specification.</p></li>
+</ul>
+<p>If unset, no guest customization is performed. ([‘clone’])</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-guest_OS"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-guest-os"><strong>guest_OS</strong></p>
+<a class="ansibleOptionLink" href="#parameter-guest_OS" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The GuestOS enumerated type defines the valid guest operating system types used for configuring a virtual machine. Required with <em>state=[‘present’]</em></p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AMAZONLINUX2_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AMAZONLINUX3_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_3&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_3_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_4&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_4_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_5_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_7_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_8_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASIANUX_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_6_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_7_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_8_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CENTOS_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;COREOS_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;CRXPOD_1&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_10&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_10_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_11&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_12_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_13_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_14_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_15_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_16_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_17_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_18_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_19_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_20_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_21_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DARWIN_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_10&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_10_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_11&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_4&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_4_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_5&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_5_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_6_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_7_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_8&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_8_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_9&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DEBIAN_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;DOS&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ECOMSTATION&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ECOMSTATION_2&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FEDORA&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FEDORA_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_11&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_12&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_12_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_13&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_13_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;FREEBSD_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;GENERIC_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;MANDRAKE&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;MANDRIVA&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;MANDRIVA_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;NETWARE_4&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;NETWARE_5&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;NETWARE_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;NLD_9&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OES&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OPENSERVER_5&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OPENSERVER_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OPENSUSE&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OPENSUSE_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_6_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_7_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_8_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ORACLE_LINUX_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OS2&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_24X_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_24X_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_26X_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_26X_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_3X_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_3X_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_4X_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_4X_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_5X_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_5X_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OTHER_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;REDHAT&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_2&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_3&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_3_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_4&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_4_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_5&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_5_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_6_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_7_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_8_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;RHEL_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SJDS&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_10&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_10_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_11&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_12&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_12_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_15_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_16_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SLES_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_10&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_10_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_11_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_8&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SOLARIS_9&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SUSE&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SUSE_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;TURBO_LINUX&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;TURBO_LINUX_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;UBUNTU&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;UBUNTU_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;UNIXWARE_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_5&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_6&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_65&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMKERNEL_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMWARE_PHOTON_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_7&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_7_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_7_SERVER_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_8&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_8_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_8_SERVER_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_9&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_9_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_9_SERVER_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_HYPERV&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_SERVER_2019&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WINDOWS_SERVER_2021&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_2000_ADV_SERV&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_2000_PRO&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_2000_SERV&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_31&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_95&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_98&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_LONGHORN&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_LONGHORN_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_ME&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_BUSINESS&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_DATACENTER&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_DATACENTER_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_ENTERPRISE&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_ENTERPRISE_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_STANDARD&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_STANDARD_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NET_WEB&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_NT&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_VISTA&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_VISTA_64&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_XP_HOME&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_XP_PRO&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;WIN_XP_PRO_64&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-hardware_version"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-hardware-version"><strong>hardware_version</strong></p>
+<a class="ansibleOptionLink" href="#parameter-hardware_version" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The <em>version</em> enumerated type defines the valid virtual hardware versions for a virtual machine. See <a class="reference external" href="https://kb.vmware.com/s/article/1003746">https://kb.vmware.com/s/article/1003746</a> (Virtual machine hardware versions (1003746)).</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_03&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_04&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_06&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_07&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_08&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_09&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_10&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_11&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_12&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_13&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_14&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_15&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_16&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_17&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_18&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMX_19&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-memory"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-memory"><strong>memory</strong></p>
+<a class="ansibleOptionLink" href="#parameter-memory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Memory configuration.</p>
+<p>If unset, guest-specific default values will be used.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size_MiB</span></code> (int): New memory size in mebibytes.</p></li>
+</ul>
+<p>The supported range of memory sizes is constrained by the configured guest operating system and virtual hardware version of the virtual machine.</p>
+<p>If the virtual machine is running, this value may only be changed if <em>hot_add_enabled</em> is true, and the new memory size must satisfy the constraints specified by <em>hot_add_increment_size_mib</em> and <em></em></p>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hot_add_enabled</span></code> (bool): Flag indicating whether adding memory while the virtual machine is running should be enabled.</p></li>
+</ul>
+<p>Some guest operating systems may consume more resources or perform less efficiently when they run on hardware that supports adding memory while the machine is running.</p>
+<p>This field may only be modified if the virtual machine is not powered on.</p>
+<p>If unset, the value is unchanged. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Virtual machine name.</p>
+<p>If unset, the display name from the virtual machine’s configuration file will be used.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-nics"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-nics"><strong>nics</strong></p>
+<a class="ansibleOptionLink" href="#parameter-nics" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of Ethernet adapters.</p>
+<p>If unset, no Ethernet adapters will be created.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid emulation types for a virtual Ethernet adapter. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>E1000</p></li>
+<li><p>E1000E</p></li>
+<li><p>PCNET32</p></li>
+<li><p>VMXNET</p></li>
+<li><p>VMXNET2</p></li>
+<li><p>VMXNET3</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upt_compatibility_enabled</span></code> (bool): Flag indicating whether Universal Pass-Through (UPT) compatibility is enabled on this virtual Ethernet adapter.</p></li>
+</ul>
+<p>If unset, defaults to false. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mac_type</span></code> (str): This option defines the valid MAC address origins for a virtual Ethernet adapter. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>ASSIGNED</p></li>
+<li><p>GENERATED</p></li>
+<li><p>MANUAL</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mac_address</span></code> (str): MAC address.</p></li>
+</ul>
+<p>Workaround for PR1459647 ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pci_slot_number</span></code> (int): Address of the virtual Ethernet adapter on the PCI bus. If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</p></li>
+</ul>
+<p>If unset, the server will choose an available address when the virtual machine is powered on. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wake_on_lan_enabled</span></code> (bool): Flag indicating whether wake-on-LAN is enabled on this virtual Ethernet adapter.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backing</span></code> (dict): Physical resource backing for the virtual Ethernet adapter.</p></li>
+</ul>
+<p>If unset, the system may try to find an appropriate backing. If one is not found, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>type (string): This option defines the valid backing types for a virtual Ethernet adapter.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DISTRIBUTED_PORTGROUP</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST_DEVICE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OPAQUE_NETWORK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STANDARD_PORTGROUP</span></code></p></li>
+<li><p>network (string): Identifier of the network that backs the virtual Ethernet adapter.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_network_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-network-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_network_info</span></a>.</p>
+<ul class="simple">
+<li><p>distributed_port (string): Key of the distributed virtual port that backs the virtual Ethernet adapter. Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected. This field cannot be specified as no free ports exist before use.</p></li>
+</ul>
+<p>May be used to specify a port when the network specified on the <em>network</em> field is a static or early binding distributed portgroup. If unset, the port will be automatically assigned to the Ethernet adapter based on the policy embodied by the portgroup type.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start_connected</span></code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allow_guest_control</span></code> (bool): Flag indicating whether the guest can connect and disconnect the device.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-nics_to_update"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-nics-to-update"><strong>nics_to_update</strong></p>
+<a class="ansibleOptionLink" href="#parameter-nics_to_update" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Map of NICs to update.</p>
+<p>If unset, no NICs will be updated.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_ethernet_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span></a>.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-nvme_adapters"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-nvme-adapters"><strong>nvme_adapters</strong></p>
+<a class="ansibleOptionLink" href="#parameter-nvme_adapters" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of NVMe adapters.</p>
+<p>If unset, any adapters necessary to connect the virtual machine’s storage devices will be created; this includes any devices that explicitly specify a NVMe host bus adapter, as well as any devices that do not specify a host bus adapter if the guest’s preferred adapter type is NVMe.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bus</span></code> (int): NVMe bus number.</p></li>
+</ul>
+<p>If unset, the server will choose an available bus number; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pci_slot_number</span></code> (int): Address of the NVMe adapter on the PCI bus.</p></li>
+</ul>
+<p>If unset, the server will choose an available address when the virtual machine is powered on. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parallel_ports"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-parallel-ports"><strong>parallel_ports</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parallel_ports" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of parallel ports.</p>
+<p>If unset, no parallel ports will be created.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backing</span></code> (dict): Physical resource backing for the virtual parallel port.</p></li>
+</ul>
+<p>If unset, defaults to automatic detection of a suitable host device. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>type (string): This option defines the valid backing types for a virtual parallel port.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FILE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST_DEVICE</span></code></p></li>
+<li><p>file (string): Path of the file that should be used as the virtual parallel port backing.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is FILE.</p>
+<ul class="simple">
+<li><p>host_device (string): Name of the device that should be used as the virtual parallel port backing.</p></li>
+</ul>
+<p>If unset, the virtual parallel port will be configured to automatically detect a suitable host device.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start_connected</span></code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allow_guest_control</span></code> (bool): Flag indicating whether the guest can connect and disconnect the device.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parallel_ports_to_update"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-parallel-ports-to-update"><strong>parallel_ports_to_update</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parallel_ports_to_update" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Map of parallel ports to Update.</p>
+<p>If unset, no parallel ports will be updated.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_parallel_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-parallel-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_parallel</span></a>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-path"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-path"><strong>path</strong></p>
+<a class="ansibleOptionLink" href="#parameter-path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Path to the virtual machine’s configuration file on the datastore corresponding to <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #datastore).</p>
+<p>If unset, <em>datastore</em> must also be unset and <em>datastore_path</em> must be set.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-placement"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-placement"><strong>placement</strong></p>
+<a class="ansibleOptionLink" href="#parameter-placement" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Virtual machine placement information.</p>
+<p>If this field is unset, the system will use the values from the source virtual machine. If specified, each field will be used for placement. If the fields result in disjoint placement the operation will fail. If the fields along with the other existing placement of the virtual machine result in disjoint placement the operation will fail.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">folder</span></code> (str): Virtual machine folder into which the virtual machine should be placed.</p></li>
+</ul>
+<p>If this field is unset, the virtual machine will stay in the current folder.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_folder_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-folder-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_folder_info</span></a>. ([‘clone’, ‘instant_clone’, ‘present’, ‘register’, ‘relocate’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_pool</span></code> (str): Resource pool into which the virtual machine should be placed.</p></li>
+</ul>
+<p>If this field is unset, the virtual machine will stay in the current resource pool.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_resourcepool_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-resourcepool-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_resourcepool_info</span></a>. ([‘clone’, ‘instant_clone’, ‘present’, ‘register’, ‘relocate’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code> (str): Host onto which the virtual machine should be placed.</p></li>
+</ul>
+<p>If <em>host</em> and <em>resource_pool</em> are both specified, <em>resource_pool</em> must belong to <em>host</em>.</p>
+<p>If <em>host</em> and <em>cluster</em> are both specified, <em>host</em> must be a member of <em>cluster</em>.</p>
+<p>If this field is unset, if <em>resource_pool</em> is unset, the virtual machine will remain on the current host. if <em>resource_pool</em> is set, and the target is a standalone host, the host is used. if <em>resource_pool</em> is set, and the target is a DRS cluster, a host will be picked by DRS. if <em>resource_pool</em> is set, and the target is a cluster without DRS, InvalidArgument will be thrown.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_host_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-host-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_host_info</span></a>. ([‘clone’, ‘present’, ‘register’, ‘relocate’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cluster</span></code> (str): Cluster into which the virtual machine should be placed.</p></li>
+</ul>
+<p>If <em>cluster</em> and <em>resource_pool</em> are both specified, <em>resource_pool</em> must belong to <em>cluster</em>.</p>
+<p>If <em>cluster</em> and <em>host</em> are both specified, <em>host</em> must be a member of <em>cluster</em>.</p>
+<p>If <em>resource_pool</em> or <em>host</em> is specified, it is recommended that this field be unset.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_cluster_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-cluster-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_cluster_info</span></a>. ([‘clone’, ‘present’, ‘register’, ‘relocate’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">datastore</span></code> (str): Datastore on which the virtual machine’s configuration state should be stored. This datastore will also be used for any virtual disks that are associated with the virtual machine, unless individually overridden.</p></li>
+</ul>
+<p>If this field is unset, the virtual machine will remain on the current datastore.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_datastore_info</span></a>. ([‘clone’, ‘instant_clone’, ‘present’, ‘relocate’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-power_on"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-power-on"><strong>power_on</strong></p>
+<a class="ansibleOptionLink" href="#parameter-power_on" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Attempt to perform a <em>power_on</em> after clone.</p>
+<p>If unset, the virtual machine will not be powered on.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-sata_adapters"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-sata-adapters"><strong>sata_adapters</strong></p>
+<a class="ansibleOptionLink" href="#parameter-sata_adapters" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of SATA adapters.</p>
+<p>If unset, any adapters necessary to connect the virtual machine’s storage devices will be created; this includes any devices that explicitly specify a SATA host bus adapter, as well as any devices that do not specify a host bus adapter if the guest’s preferred adapter type is SATA.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid emulation types for a virtual SATA adapter. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>AHCI</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bus</span></code> (int): SATA bus number.</p></li>
+</ul>
+<p>If unset, the server will choose an available bus number; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pci_slot_number</span></code> (int): Address of the SATA adapter on the PCI bus.</p></li>
+</ul>
+<p>If unset, the server will choose an available address when the virtual machine is powered on. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-scsi_adapters"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-scsi-adapters"><strong>scsi_adapters</strong></p>
+<a class="ansibleOptionLink" href="#parameter-scsi_adapters" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of SCSI adapters.</p>
+<p>If unset, any adapters necessary to connect the virtual machine’s storage devices will be created; this includes any devices that explicitly specify a SCSI host bus adapter, as well as any devices that do not specify a host bus adapter if the guest’s preferred adapter type is SCSI. The type of the SCSI adapter will be a guest-specific default type.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid emulation types for a virtual SCSI adapter. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>BUSLOGIC</p></li>
+<li><p>LSILOGIC</p></li>
+<li><p>LSILOGICSAS</p></li>
+<li><p>PVSCSI</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bus</span></code> (int): SCSI bus number.</p></li>
+</ul>
+<p>If unset, the server will choose an available bus number; if none is available, the request will fail. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pci_slot_number</span></code> (int): Address of the SCSI adapter on the PCI bus. If the PCI address is invalid, the server will change it when the VM is started or as the device is hot added.</p></li>
+</ul>
+<p>If unset, the server will choose an available address when the virtual machine is powered on. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sharing</span></code> (str): This option defines the valid bus sharing modes for a virtual SCSI adapter. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>NONE</p></li>
+<li><p>PHYSICAL</p></li>
+<li><p>VIRTUAL</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-serial_ports"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-serial-ports"><strong>serial_ports</strong></p>
+<a class="ansibleOptionLink" href="#parameter-serial_ports" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of serial ports.</p>
+<p>If unset, no serial ports will be created.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">yield_on_poll</span></code> (bool): CPU yield behavior. If set to true, the virtual machine will periodically relinquish the processor if its sole task is polling the virtual serial port. The amount of time it takes to regain the processor will depend on the degree of other virtual machine activity on the host.</p></li>
+</ul>
+<p>If unset, defaults to false. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backing</span></code> (dict): Physical resource backing for the virtual serial port.</p></li>
+</ul>
+<p>If unset, defaults to automatic detection of a suitable host device. ([‘present’])</p>
+<ul class="simple">
+<li><p>Accepted keys:</p></li>
+<li><p>type (string): This option defines the valid backing types for a virtual serial port.</p></li>
+</ul>
+<p>Accepted value for this field:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FILE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST_DEVICE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NETWORK_CLIENT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NETWORK_SERVER</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PIPE_CLIENT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PIPE_SERVER</span></code></p></li>
+<li><p>file (string): Path of the file backing the virtual serial port.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is FILE.</p>
+<ul class="simple">
+<li><p>host_device (string): Name of the device backing the virtual serial port.</p></li>
+</ul>
+<p>If unset, the virtual serial port will be configured to automatically detect a suitable host device.</p>
+<ul class="simple">
+<li><p>pipe (string): Name of the pipe backing the virtual serial port.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is one of PIPE_SERVER or PIPE_CLIENT.</p>
+<ul class="simple">
+<li><p>no_rx_loss (boolean): Flag that enables optimized data transfer over the pipe. When the value is true, the host buffers data to prevent data overrun. This allows the virtual machine to read all of the data transferred over the pipe with no data loss.</p></li>
+</ul>
+<p>If unset, defaults to false.</p>
+<ul class="simple">
+<li><p>network_location (string): URI specifying the location of the network service backing the virtual serial port.</p></li>
+<li><p>If <em>type</em> is NETWORK_SERVER, this field is the location used by clients to connect to this server. The hostname part of the URI should either be empty or should specify the address of the host on which the virtual machine is running.</p></li>
+<li><p>If <em>type</em> is NETWORK_CLIENT, this field is the location used by the virtual machine to connect to the remote server.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is one of NETWORK_SERVER or NETWORK_CLIENT.</p>
+<ul class="simple">
+<li><p>proxy (string): Proxy service that provides network access to the network backing. If set, the virtual machine initiates a connection with the proxy service and forwards the traffic to the proxy.</p></li>
+</ul>
+<p>If unset, no proxy service should be used.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">start_connected</span></code> (bool): Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">allow_guest_control</span></code> (bool): Flag indicating whether the guest can connect and disconnect the device.</p></li>
+</ul>
+<p>Defaults to false if unset. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-serial_ports_to_update"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-serial-ports-to-update"><strong>serial_ports_to_update</strong></p>
+<a class="ansibleOptionLink" href="#parameter-serial_ports_to_update" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Map of serial ports to Update.</p>
+<p>If unset, no serial ports will be updated.</p>
+<p>When clients pass a value of this structure as a parameter, the key in the field map must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_hardware_serial_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-serial-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_serial</span></a>.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-session_timeout"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-session-timeout"><strong>session_timeout</strong></p>
+<a class="ansibleOptionLink" href="#parameter-session_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">float</span></p>
+<p><em class="ansible-option-versionadded">added in vmware.vmware_rest 2.1.0</em></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Timeout settings for client session.</p>
+<p>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</p>
+<p>The default value is 300s.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-source"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-source"><strong>source</strong></p>
+<a class="ansibleOptionLink" href="#parameter-source" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Virtual machine to InstantClone from.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_info</span></a>. Required with <em>state=[‘clone’, ‘instant_clone’]</em></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;clone&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;instant_clone&quot;</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">&quot;present&quot;</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;register&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;relocate&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;unregister&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-storage_policy"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-storage-policy"><strong>storage_policy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-storage_policy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The <em>storage_policy_spec</em> structure contains information about the storage policy that is to be associated with the virtual machine home (which contains the configuration and log files).</p>
+<p>If unset the datastore default storage policy (if applicable) is applied. Currently a default storage policy is only supported by object datastores : VVol and vSAN. For non-object datastores, if unset then no storage policy would be associated with the virtual machine home. Required with <em>state=[‘present’]</em></p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">policy</span></code> (str): Identifier of the storage policy which should be associated with the virtual machine.</p></li>
+</ul>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a storage policy resource. ([‘present’])</p>
+<p>This key is required with [‘present’].</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_hostname"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-vcenter-hostname"><strong>vcenter_hostname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_hostname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The hostname or IP address of the vSphere vCenter</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_HOST</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_password"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-vcenter-password"><strong>vcenter_password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter password</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_rest_log_file"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-vcenter-rest-log-file"><strong>vcenter_rest_log_file</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_rest_log_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>You can use this optional parameter to set the location of a log file.</p>
+<p>This file will be used to record the HTTP REST interaction.</p>
+<p>The file will be stored on the host that run the module.</p>
+<p>If the value is not specified in the task, the value of</p>
+<p>environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_REST_LOG_FILE</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_username"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-vcenter-username"><strong>vcenter_username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter username</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_USER</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_validate_certs"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-vcenter-validate-certs"><strong>vcenter_validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Allows connection when SSL certificates are not valid. Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> when certificates are not trusted.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">true</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vm"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-parameter-vm"><strong>vm</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vm" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Identifier of the virtual machine to be unregistered.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_info</span></a>. Required with <em>state=[‘absent’, ‘relocate’, ‘unregister’]</em></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Tested on vSphere 7.0.3</p></li>
+</ul>
+</div>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.cluster_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/rw_datastore&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RHEL_7_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_11</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_vm</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.cluster_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/local&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RHEL_7_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_11</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">    </span><span class="nt">disks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SATA</span>
+<span class="w">      </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMDK_FILE</span>
+<span class="w">        </span><span class="nt">vmdk_file</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[local]</span><span class="nv"> </span><span class="s">test_vm1/</span><span class="cp">{{</span> <span class="nv">disk_name</span> <span class="cp">}}</span><span class="s">.vmdk&#39;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SATA</span>
+<span class="w">      </span><span class="nt">new_vmdk</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">second_disk</span>
+<span class="w">        </span><span class="nt">capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32000000000</span>
+<span class="w">    </span><span class="nt">cdroms</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SATA</span>
+<span class="w">      </span><span class="nt">sata</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">        </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">nics</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">        </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.network_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/network/VM Network&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_vm</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a content library based on a DataStore</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_locallibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_library_on_datastore</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">automated</span>
+<span class="w">    </span><span class="nt">publish_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">published</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">authentication_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NONE</span>
+<span class="w">    </span><span class="nt">storage_backings</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">datastore_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/local&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATASTORE</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs_lib</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get the list of items of the NFS library</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_library_item_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">library_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">nfs_lib.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lib_items</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Use the name to identify the item</span>
+<span class="w">  </span><span class="nt">set_fact</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">my_template_item</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lib_items.value</span> <span class="o">|</span> <span class="nf">selectattr</span><span class="o">(</span><span class="s1">&#39;name&#39;</span><span class="o">,</span> <span class="s1">&#39;equalto&#39;</span><span class="o">,</span> <span class="s1">&#39;golden-template&#39;</span><span class="o">)|</span><span class="nf">first</span> <span class="cp">}}</span><span class="s">&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy a new VM based on the template</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vmtemplate_libraryitems</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-from-template</span>
+<span class="w">    </span><span class="nt">library</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">nfs_lib.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">template_library_item</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_template_item.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.cluster_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_new_vm</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Retrieve all the details about the new VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_new_vm.value</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_new_vm_info</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create an instant clone of a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/local&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_vm.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm2</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instant_clone</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_instant_clone</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a clone of a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/local&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_vm.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm3</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">clone</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_clone_vm</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build a list of all the clusters</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_cluster_info</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all_the_clusters</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Retrieve details about the first cluster</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_cluster_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">all_the_clusters.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.cluster</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_cluster_info</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build a list of all the folders with the type VIRTUAL_MACHINE and called vm</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_folder_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">filter_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VIRTUAL_MACHINE</span>
+<span class="w">    </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_folders</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set my_virtual_machine_folder</span>
+<span class="w">  </span><span class="nt">ansible.builtin.set_fact</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">my_virtual_machine_folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_folders.value</span><span class="o">|</span><span class="nf">first</span> <span class="cp">}}</span><span class="s">&#39;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_cluster_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/local&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_virtual_machine_folder.folder</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_cluster_info.value.resource_pool</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEBIAN_7_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_10</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_vm</span>
+</pre></div>
+</div>
+</section>
+<section id="return-values">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Return Values</a><a class="headerlink" href="#return-values" title="Link to this heading"></a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible-core/devel/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible Core vdevel)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-return-id"><strong>id</strong></p>
+<a class="ansibleOptionLink" href="#return-id" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>moid of the resource</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">&quot;vm-1104&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-value"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-module-return-value"><strong>value</strong></p>
+<a class="ansibleOptionLink" href="#return-value" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Create an instant clone of a VM</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">{&quot;boot&quot;:</span> <span class="pre">{&quot;delay&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;enter_setup_mode&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;retry&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;retry_delay&quot;:</span> <span class="pre">10000,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;BIOS&quot;},</span> <span class="pre">&quot;boot_devices&quot;:</span> <span class="pre">[],</span> <span class="pre">&quot;cdroms&quot;:</span> <span class="pre">{&quot;16002&quot;:</span> <span class="pre">{&quot;allow_guest_control&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;backing&quot;:</span> <span class="pre">{&quot;auto_detect&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;device_access_type&quot;:</span> <span class="pre">&quot;EMULATION&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;HOST_DEVICE&quot;},</span> <span class="pre">&quot;label&quot;:</span> <span class="pre">&quot;CD/DVD</span> <span class="pre">drive</span> <span class="pre">1&quot;,</span> <span class="pre">&quot;sata&quot;:</span> <span class="pre">{&quot;bus&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;unit&quot;:</span> <span class="pre">2},</span> <span class="pre">&quot;start_connected&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;state&quot;:</span> <span class="pre">&quot;NOT_CONNECTED&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;SATA&quot;}},</span> <span class="pre">&quot;cpu&quot;:</span> <span class="pre">{&quot;cores_per_socket&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;count&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;hot_add_enabled&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;hot_remove_enabled&quot;:</span> <span class="pre">0},</span> <span class="pre">&quot;disks&quot;:</span> <span class="pre">{&quot;16000&quot;:</span> <span class="pre">{&quot;backing&quot;:</span> <span class="pre">{&quot;type&quot;:</span> <span class="pre">&quot;VMDK_FILE&quot;,</span> <span class="pre">&quot;vmdk_file&quot;:</span> <span class="pre">&quot;[local]</span> <span class="pre">test_vm2/test_vm2_2.vmdk&quot;},</span> <span class="pre">&quot;capacity&quot;:</span> <span class="pre">16106127360,</span> <span class="pre">&quot;label&quot;:</span> <span class="pre">&quot;Hard</span> <span class="pre">disk</span> <span class="pre">1&quot;,</span> <span class="pre">&quot;sata&quot;:</span> <span class="pre">{&quot;bus&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;unit&quot;:</span> <span class="pre">0},</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;SATA&quot;},</span> <span class="pre">&quot;16001&quot;:</span> <span class="pre">{&quot;backing&quot;:</span> <span class="pre">{&quot;type&quot;:</span> <span class="pre">&quot;VMDK_FILE&quot;,</span> <span class="pre">&quot;vmdk_file&quot;:</span> <span class="pre">&quot;[local]</span> <span class="pre">test_vm2/test_vm2_1.vmdk&quot;},</span> <span class="pre">&quot;capacity&quot;:</span> <span class="pre">32000000000,</span> <span class="pre">&quot;label&quot;:</span> <span class="pre">&quot;Hard</span> <span class="pre">disk</span> <span class="pre">2&quot;,</span> <span class="pre">&quot;sata&quot;:</span> <span class="pre">{&quot;bus&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;unit&quot;:</span> <span class="pre">1},</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;SATA&quot;}},</span> <span class="pre">&quot;floppies&quot;:</span> <span class="pre">{},</span> <span class="pre">&quot;guest_OS&quot;:</span> <span class="pre">&quot;RHEL_7_64&quot;,</span> <span class="pre">&quot;hardware&quot;:</span> <span class="pre">{&quot;upgrade_policy&quot;:</span> <span class="pre">&quot;NEVER&quot;,</span> <span class="pre">&quot;upgrade_status&quot;:</span> <span class="pre">&quot;NONE&quot;,</span> <span class="pre">&quot;version&quot;:</span> <span class="pre">&quot;VMX_11&quot;},</span> <span class="pre">&quot;identity&quot;:</span> <span class="pre">{&quot;bios_uuid&quot;:</span> <span class="pre">&quot;4231bf8b-3cb4-3a3f-1bfb-18c857ce95b6&quot;,</span> <span class="pre">&quot;instance_uuid&quot;:</span> <span class="pre">&quot;5031b322-6030-a020-8e73-1a9ad0fd03ce&quot;,</span> <span class="pre">&quot;name&quot;:</span> <span class="pre">&quot;test_vm2&quot;},</span> <span class="pre">&quot;instant_clone_frozen&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;memory&quot;:</span> <span class="pre">{&quot;hot_add_enabled&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;hot_add_increment_size_MiB&quot;:</span> <span class="pre">128,</span> <span class="pre">&quot;hot_add_limit_MiB&quot;:</span> <span class="pre">3072,</span> <span class="pre">&quot;size_MiB&quot;:</span> <span class="pre">1024},</span> <span class="pre">&quot;name&quot;:</span> <span class="pre">&quot;test_vm2&quot;,</span> <span class="pre">&quot;nics&quot;:</span> <span class="pre">{&quot;4000&quot;:</span> <span class="pre">{&quot;allow_guest_control&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;backing&quot;:</span> <span class="pre">{&quot;network&quot;:</span> <span class="pre">&quot;network-1095&quot;,</span> <span class="pre">&quot;network_name&quot;:</span> <span class="pre">&quot;VM</span> <span class="pre">Network&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;STANDARD_PORTGROUP&quot;},</span> <span class="pre">&quot;label&quot;:</span> <span class="pre">&quot;Network</span> <span class="pre">adapter</span> <span class="pre">1&quot;,</span> <span class="pre">&quot;mac_address&quot;:</span> <span class="pre">&quot;00:50:56:b1:26:0c&quot;,</span> <span class="pre">&quot;mac_type&quot;:</span> <span class="pre">&quot;ASSIGNED&quot;,</span> <span class="pre">&quot;pci_slot_number&quot;:</span> <span class="pre">160,</span> <span class="pre">&quot;start_connected&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;state&quot;:</span> <span class="pre">&quot;NOT_CONNECTED&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;VMXNET3&quot;,</span> <span class="pre">&quot;upt_compatibility_enabled&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;wake_on_lan_enabled&quot;:</span> <span class="pre">0}},</span> <span class="pre">&quot;nvme_adapters&quot;:</span> <span class="pre">{},</span> <span class="pre">&quot;parallel_ports&quot;:</span> <span class="pre">{},</span> <span class="pre">&quot;power_state&quot;:</span> <span class="pre">&quot;POWERED_ON&quot;,</span> <span class="pre">&quot;sata_adapters&quot;:</span> <span class="pre">{&quot;15000&quot;:</span> <span class="pre">{&quot;bus&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;label&quot;:</span> <span class="pre">&quot;SATA</span> <span class="pre">controller</span> <span class="pre">0&quot;,</span> <span class="pre">&quot;pci_slot_number&quot;:</span> <span class="pre">32,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;AHCI&quot;}},</span> <span class="pre">&quot;scsi_adapters&quot;:</span> <span class="pre">{},</span> <span class="pre">&quot;serial_ports&quot;:</span> <span class="pre">{}}</span></code></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ansible Cloud Team (&#64;ansible-collections)</p></li>
+</ul>
+</section>
+<section id="collection-links">
+<h3>Collection links<a class="headerlink" href="#collection-links" title="Link to this heading"></a></h3>
+<ul class="ansible-links">
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc" rel="noopener external" target="_blank">Issue Tracker</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest" rel="noopener external" target="_blank">Homepage</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest.git" rel="noopener external" target="_blank">Repository (Sources)</a></span></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vcenter_storage_policies_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.vcenter_storage_policies_info module – Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vcenter_vm_guest_customization_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.vcenter_vm_guest_customization module – Applies a customization specification on the virtual machine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

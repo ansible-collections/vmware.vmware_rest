@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to get information from a running virtual machine &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="How to configure the VMware tools of a running virtual machine" href="8_vm_tool_configuration.html" />
+    <link rel="prev" title="How to run a virtual machine" href="6_run_a_vm.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../../index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Vmware.Vmware_Rest</a></li>
+          <li class="breadcrumb-item"><a href="../../guide_vmware_rest.html">VMware Guide (REST)</a></li>
+      <li class="breadcrumb-item active">How to get information from a running virtual machine</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <section id="how-to-get-information-from-a-running-virtual-machine">
+<span id="ansible-collections-vmware-vmware-rest-docsite-vmware-rest-vm-tool-information"></span><h1>How to get information from a running virtual machine<a class="headerlink" href="#how-to-get-information-from-a-running-virtual-machine" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Introduction</p></li>
+<li><p>Scenario requirements</p></li>
+<li><p>How to collect information</p>
+<ul>
+<li><p>Filesystem</p></li>
+<li><p>Guest identity</p></li>
+<li><p>Network</p></li>
+<li><p>Network interfaces</p></li>
+<li><p>Network routes</p></li>
+</ul>
+</li>
+</ul>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This section shows you how to collection information from a running
+virtual machine.</p>
+</section>
+<section id="scenario-requirements">
+<h2>Scenario requirements<a class="headerlink" href="#scenario-requirements" title="Link to this heading"></a></h2>
+<p>You”ve already followed vmware_rest_run_a_vm and your virtual machine
+runs VMware Tools.</p>
+</section>
+<section id="how-to-collect-information">
+<h2>How to collect information<a class="headerlink" href="#how-to-collect-information" title="Link to this heading"></a></h2>
+<p>In this example, we use the <code class="docutils literal notranslate"><span class="pre">vcenter_vm_guest_*</span></code> module to collect
+information about the associated resources.</p>
+<section id="filesystem">
+<h3>Filesystem<a class="headerlink" href="#filesystem" title="Link to this heading"></a></h3>
+<p>Here we use <code class="docutils literal notranslate"><span class="pre">vcenter_vm_guest_localfilesystem_info</span></code> to retrieve the
+details about the filesystem of the guest. In this example we also use
+a <code class="docutils literal notranslate"><span class="pre">retries</span></code> loop. The VMware Tools may take a bit of time to start
+and by doing so, we give the VM a bit more time.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get guest filesystem information</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_guest_localfilesystem_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+<span class="w">  </span><span class="nt">until</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result is not failed</span>
+<span class="w">  </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
+<span class="w">  </span><span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;attempts&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">6</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;/&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;capacity&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">2515173376</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;free_space&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">774774784</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;mappings&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="guest-identity">
+<h3>Guest identity<a class="headerlink" href="#guest-identity" title="Link to this heading"></a></h3>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">vcenter_vm_guest_identity_info</span></code> to get details like the
+OS family or the hostname of the running VM.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get guest identity information</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_guest_identity_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;family&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;LINUX&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;full_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;args&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[],</span>
+<span class="w">            </span><span class="s">&quot;default_message&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Red</span><span class="nv"> </span><span class="s">Hat</span><span class="nv"> </span><span class="s">Fedora</span><span class="nv"> </span><span class="s">(64-bit)&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;vmsg.guestos.fedora64Guest.label&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;host_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;localhost.localdomain&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;ip_address&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;fe80::e5f5:b5f1:dd56:798&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;FEDORA_64&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="network">
+<h3>Network<a class="headerlink" href="#network" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">vcenter_vm_guest_networking_info</span></code> will return the OS network
+configuration.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get guest networking information</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_guest_networking_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;dns&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;ip_addresses&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">                </span><span class="s">&quot;10.0.2.3&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">],</span>
+<span class="w">            </span><span class="s">&quot;search_domains&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">                </span><span class="s">&quot;localdomain&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;dns_values&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;domain_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;localdomain&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;host_name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;localhost.localdomain&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="network-interfaces">
+<h3>Network interfaces<a class="headerlink" href="#network-interfaces" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">vcenter_vm_guest_networking_interfaces_info</span></code> will return a list of
+NIC configurations.</p>
+<p>See also vmware_rest_attach_a_network.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get guest network interfaces information</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;ip&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">                </span><span class="s">&quot;ip_addresses&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">                    </span><span class="p p-Indicator">{</span>
+<span class="w">                        </span><span class="s">&quot;ip_address&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;fe80::e5f5:b5f1:dd56:798&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">                        </span><span class="s">&quot;prefix_length&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">64</span><span class="p p-Indicator">,</span>
+<span class="w">                        </span><span class="s">&quot;state&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;UNKNOWN&quot;</span>
+<span class="w">                    </span><span class="p p-Indicator">}</span>
+<span class="w">                </span><span class="p p-Indicator">]</span>
+<span class="w">            </span><span class="p p-Indicator">},</span>
+<span class="w">            </span><span class="s">&quot;mac_address&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;00:50:56:b1:9c:a5&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;nic&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;4000&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+<section id="network-routes">
+<h3>Network routes<a class="headerlink" href="#network-routes" title="Link to this heading"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">vcenter_vm_guest_networking_routes_info</span></code> to explore the route
+table of your vitual machine.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get guest network routes information</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_guest_networking_routes_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;interface_index&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;network&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;fe80::&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;prefix_length&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">64</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;interface_index&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;network&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;fe80::e5f5:b5f1:dd56:798&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;prefix_length&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">128</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;interface_index&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;network&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;ff00::&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;prefix_length&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">8</span>
+<span class="w">        </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="6_run_a_vm.html" class="btn btn-neutral float-left" title="How to run a virtual machine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="8_vm_tool_configuration.html" class="btn btn-neutral float-right" title="How to configure the VMware tools of a running virtual machine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

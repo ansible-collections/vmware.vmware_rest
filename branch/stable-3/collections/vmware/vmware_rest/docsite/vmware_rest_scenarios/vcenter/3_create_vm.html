@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to create a Virtual Machine &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="Retrieve information from a specific VM" href="4_vm_info.html" />
+    <link rel="prev" title="How to collect information about your environment" href="2_collect_information.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../../index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Vmware.Vmware_Rest</a></li>
+          <li class="breadcrumb-item"><a href="../../guide_vmware_rest.html">VMware Guide (REST)</a></li>
+      <li class="breadcrumb-item active">How to create a Virtual Machine</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <section id="how-to-create-a-virtual-machine">
+<span id="ansible-collections-vmware-vmware-rest-docsite-vmware-rest-create-vm"></span><h1>How to create a Virtual Machine<a class="headerlink" href="#how-to-create-a-virtual-machine" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Introduction</p></li>
+<li><p>Scenario requirements</p></li>
+<li><p>How to create a virtual machine</p></li>
+</ul>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This section shows you how to use Ansible to create a virtual machine.</p>
+</section>
+<section id="scenario-requirements">
+<h2>Scenario requirements<a class="headerlink" href="#scenario-requirements" title="Link to this heading"></a></h2>
+<p>You”ve already followed vmware_rest_collect_info and you”ve got the
+following variables defined:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">my_cluster_info</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_datastore</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_virtual_machine_folder</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">my_cluster_info</span></code></p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>How to create a virtual machine<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>In this example, we will use the <code class="docutils literal notranslate"><span class="pre">vcenter_vm</span></code> module to create a new
+guest.</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">my_cluster_info.id</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">my_datastore.datastore</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">my_virtual_machine_folder.folder</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">my_cluster_info.value.resource_pool</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEBIAN_8_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_11</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">{</span>
+<span class="w">    </span><span class="s">&quot;changed&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;vm-1184&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">    </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">        </span><span class="s">&quot;boot&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;delay&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;enter_setup_mode&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;retry&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;retry_delay&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">10000</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;BIOS&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;boot_devices&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[],</span>
+<span class="w">        </span><span class="s">&quot;cdroms&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
+<span class="w">        </span><span class="s">&quot;cpu&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;cores_per_socket&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;count&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;hot_add_enabled&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;hot_remove_enabled&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;disks&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;2000&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">                </span><span class="s">&quot;backing&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">                    </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VMDK_FILE&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">                    </span><span class="s">&quot;vmdk_file&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;[rw_datastore]</span><span class="nv"> </span><span class="s">test_vm1/test_vm1.vmdk&quot;</span>
+<span class="w">                </span><span class="p p-Indicator">},</span>
+<span class="w">                </span><span class="s">&quot;capacity&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">17179869184</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="s">&quot;label&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;Hard</span><span class="nv"> </span><span class="s">disk</span><span class="nv"> </span><span class="s">1&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="s">&quot;scsi&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">                    </span><span class="s">&quot;bus&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">                    </span><span class="s">&quot;unit&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span>
+<span class="w">                </span><span class="p p-Indicator">},</span>
+<span class="w">                </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;SCSI&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;floppies&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
+<span class="w">        </span><span class="s">&quot;guest_OS&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;DEBIAN_8_64&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;hardware&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;upgrade_policy&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;NEVER&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;upgrade_status&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;NONE&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;version&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VMX_11&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;identity&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;bios_uuid&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;423123c1-253c-9785-5925-16de430abbe5&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;instance_uuid&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;50310cfd-c581-0f13-d0ed-9811073d02d7&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;test_vm1&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;instant_clone_frozen&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;memory&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;hot_add_enabled&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">            </span><span class="s">&quot;size_MiB&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">1024</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;name&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;test_vm1&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;nics&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
+<span class="w">        </span><span class="s">&quot;nvme_adapters&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
+<span class="w">        </span><span class="s">&quot;parallel_ports&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
+<span class="w">        </span><span class="s">&quot;power_state&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;POWERED_OFF&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">        </span><span class="s">&quot;sata_adapters&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{},</span>
+<span class="w">        </span><span class="s">&quot;scsi_adapters&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">            </span><span class="s">&quot;1000&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">                </span><span class="s">&quot;label&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;SCSI</span><span class="nv"> </span><span class="s">controller</span><span class="nv"> </span><span class="s">0&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="s">&quot;scsi&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<span class="w">                    </span><span class="s">&quot;bus&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">                    </span><span class="s">&quot;unit&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">7</span>
+<span class="w">                </span><span class="p p-Indicator">},</span>
+<span class="w">                </span><span class="s">&quot;sharing&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;NONE&quot;</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;PVSCSI&quot;</span>
+<span class="w">            </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">},</span>
+<span class="w">        </span><span class="s">&quot;serial_ports&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">    </span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Note: <code class="docutils literal notranslate"><span class="pre">vcenter_vm</span></code> accepts more parameters, however you may prefer to</dt><dd><p>start with a simple VM and use the <code class="docutils literal notranslate"><span class="pre">vcenter_vm_hardware</span></code> modules
+to tune it up afterwards. It”s easier this way to identify a
+potential problematical step.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="2_collect_information.html" class="btn btn-neutral float-left" title="How to collect information about your environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="4_vm_info.html" class="btn btn-neutral float-right" title="Retrieve information from a specific VM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

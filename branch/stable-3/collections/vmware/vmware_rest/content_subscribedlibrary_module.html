@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="2.12.0" name="antsibull-docs" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vmware.vmware_rest.content_subscribedlibrary module – Creates a new subscribed library &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="vmware.vmware_rest.content_subscribedlibrary_info module – Returns a given subscribed library." href="content_subscribedlibrary_info_module.html" />
+    <link rel="prev" title="vmware.vmware_rest.content_locallibrary_info module – Returns a given local library." href="content_locallibrary_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Vmware.Vmware_Rest</a></li>
+      <li class="breadcrumb-item active">vmware.vmware_rest.content_subscribedlibrary module – Creates a new subscribed library</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module"></span><section id="vmware-vmware-rest-content-subscribedlibrary-module-creates-a-new-subscribed-library">
+<h1>vmware.vmware_rest.content_subscribedlibrary module – Creates a new subscribed library<a class="headerlink" href="#vmware-vmware-rest-content-subscribedlibrary-module-creates-a-new-subscribed-library" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 3.0.1).</p>
+<p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
+To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
+You need further requirements to be able to use this module,
+see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">vmware.vmware_rest.content_subscribedlibrary</span></code>.</p>
+</div>
+<p class="ansible-version-added">New in vmware.vmware_rest 2.0.0</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#notes" id="id4">Notes</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id5">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id6">Return Values</a></p></li>
+</ul>
+</nav>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Creates a new subscribed library. &lt;p&gt; Once created, the subscribed library will be empty. If the <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> LibraryModel#subscriptionInfo} property is set, the Content Library Service will attempt to synchronize to the remote source. This is an asynchronous operation so the content of the published library may not immediately appear.</p></li>
+</ul>
+</section>
+<section id="requirements">
+<span id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>vSphere 7.0.3 or greater</p></li>
+<li><p>python &gt;= 3.6</p></li>
+<li><p>aiohttp</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Parameters</a><a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-client_token"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-client-token"><strong>client_token</strong></p>
+<a class="ansibleOptionLink" href="#parameter-client_token" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Unique token generated on the client for each creation request. The token should be a universally unique identifier (UUID), for example: <code class="docutils literal notranslate"><span class="pre">b8a2a2e3-2314-43cd-a871-6ede0f429751</span></code>. This token can be used to guarantee idempotent creation.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-creation_time"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-creation-time"><strong>creation_time</strong></p>
+<a class="ansibleOptionLink" href="#parameter-creation_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The date and time when this library was created.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-description"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-description"><strong>description</strong></p>
+<a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>A human-readable description for this library.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-id"><strong>id</strong></p>
+<a class="ansibleOptionLink" href="#parameter-id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>An identifier which uniquely identifies this <code class="docutils literal notranslate"><span class="pre">library_model</span></code>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-last_modified_time"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-last-modified-time"><strong>last_modified_time</strong></p>
+<a class="ansibleOptionLink" href="#parameter-last_modified_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The date and time when this library was last updated. This field is updated automatically when the library properties are changed. This field is not affected by adding, removing, or modifying a library item or its content within the library. Tagging the library or syncing the subscribed library does not alter this field.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-last_sync_time"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-last-sync-time"><strong>last_sync_time</strong></p>
+<a class="ansibleOptionLink" href="#parameter-last_sync_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The date and time when this library was last synchronized. This field applies only to subscribed libraries. It is updated every time a synchronization is triggered on the library. The value is not set for a local library.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-library_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-library-id"><strong>library_id</strong></p>
+<a class="ansibleOptionLink" href="#parameter-library_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Identifier of the subscribed library whose content should be evicted. Required with <em>state=[‘absent’, ‘evict’, ‘present’, ‘sync’]</em></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The name of the library. A Library is identified by a human-readable name. Library names cannot be undefined or an empty string. Names do not have to be unique.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-optimization_info"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-optimization-info"><strong>optimization_info</strong></p>
+<a class="ansibleOptionLink" href="#parameter-optimization_info" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Defines various optimizations and optimization parameters applied to this library.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">optimize_remote_publishing</span></code> (bool): If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> then library would be optimized for remote publishing. Turn it on if remote publishing is dominant use case for this library. Remote publishing means here that publisher and subscribers are not the part of the same <code class="docutils literal notranslate"><span class="pre">vcenter</span></code> SSO domain. Any optimizations could be done as result of turning on this optimization during library creation. For example, library content could be stored in different format but optimizations are not limited to just storage format. Note, that value of this toggle could be set only during creation of the library and you would need to migrate your library in case you need to change this value (optimize the library for different use case). ([‘present’])</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-publish_info"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-publish-info"><strong>publish_info</strong></p>
+<a class="ansibleOptionLink" href="#parameter-publish_info" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Defines how this library is published so that it can be subscribed to by a remote subscribed library. The <code class="docutils literal notranslate"><span class="pre">publish_info</span></code> defines where and how the metadata for this local library is accessible. A local library is only published publically if <code class="docutils literal notranslate"><span class="pre">publish_info.published</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> (str): The <code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> indicates how a subscribed library should authenticate to the published library endpoint. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>BASIC</p></li>
+<li><p>NONE</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">published</span></code> (bool): Whether the local library is published. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">publish_url</span></code> (str): The URL to which the library metadata is published by the Content Library Service. This value can be used to set the <code class="docutils literal notranslate"><span class="pre">subscription_info.subscriptionurl</span></code> property when creating a subscribed library. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code> (str): The username to require for authentication. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): The new password to require for authentication. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">current_password</span></code> (str): The current password to verify. This field is available starting in vSphere 6.7. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">persist_json_enabled</span></code> (bool): Whether library and library item metadata are persisted in the storage backing as JSON files. This flag only applies if the local library is published. Enabling JSON persistence allows you to synchronize a subscribed library manually instead of over HTTP. You copy the local library content and metadata to another storage backing manually and then create a subscribed library referencing the location of the library JSON file in the <code class="docutils literal notranslate"><span class="pre">subscription_info.subscriptionurl</span></code>. When the subscribed library’s storage backing matches the subscription URL, files do not need to be copied to the subscribed library. For a library backed by a datastore, the library JSON file will be stored at the path contentlib-{library_id}/lib.json on the datastore. For a library backed by a remote file system, the library JSON file will be stored at {library_id}/lib.json in the remote file system path. ([‘present’])</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-security_policy_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-security-policy-id"><strong>security_policy_id</strong></p>
+<a class="ansibleOptionLink" href="#parameter-security_policy_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Represents the security policy applied to this library. Setting the field will make the library secure. This field is ignored in <code class="docutils literal notranslate"><span class="pre">update</span></code>operation if <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #unsetSecurityPolicyId} is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_guid"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-server-guid"><strong>server_guid</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_guid" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The unique identifier of the vCenter server where the library exists.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-session_timeout"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-session-timeout"><strong>session_timeout</strong></p>
+<a class="ansibleOptionLink" href="#parameter-session_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">float</span></p>
+<p><em class="ansible-option-versionadded">added in vmware.vmware_rest 2.1.0</em></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Timeout settings for client session.</p>
+<p>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</p>
+<p>The default value is 300s.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;evict&quot;</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">&quot;present&quot;</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;probe&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sync&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-storage_backings"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-storage-backings"><strong>storage_backings</strong></p>
+<a class="ansibleOptionLink" href="#parameter-storage_backings" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The list of default storage backings which are available for this library. A storage backing defines a default storage location which can be used to store files for library items in this library. Some library items, for instance, virtual machine template items, support files that may be distributed across various storage backings. One or more item files may or may not be located on the default storage backing. Multiple default storage locations are not currently supported but may become supported in future releases.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): The <code class="docutils literal notranslate"><span class="pre">type</span></code> specifies the type of the storage backing. ([‘present’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>DATASTORE</p></li>
+<li><p>OTHER</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datastore_id</span></code> (str): Identifier of the datastore used to store the content in the library. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_uri</span></code> (str): URI identifying the location used to store the content in the library. The following URI formats are supported: vSphere 6.5 &lt;ul&gt; &lt;li&gt;nfs://server/path?version=4 (for vCenter Server Appliance only) - Specifies an NFS Version 4 server.&lt;/li&gt; &lt;li&gt;nfs://server/path (for vCenter Server Appliance only) - Specifies an NFS Version 3 server. The <a class="reference external" href="nfs://server:/path">nfs://server:/path</a> format is also supported.&lt;/li&gt; &lt;li&gt;smb://server/path - Specifies an SMB server or Windows share.&lt;/li&gt; &lt;/ul&gt; vSphere 6.0 Update 1 &lt;ul&gt; &lt;li&gt;nfs://server:/path (for vCenter Server Appliance only)&lt;/li&gt; &lt;li&gt;file://unc-server/path (for vCenter Server for Windows only)&lt;/li&gt; &lt;li&gt;file:///mount/point (for vCenter Server Appliance only) - Local file URIs are supported only when the path is a local mount point for an NFS file system. Use of file URIs is strongly discouraged. Instead, use an NFS URI to specify the remote file system.&lt;/li&gt; &lt;/ul&gt; vSphere 6.0 &lt;ul&gt; &lt;li&gt;nfs://server:/path (for vCenter Server Appliance only)&lt;/li&gt; &lt;li&gt;file://unc-server/path (for vCenter Server for Windows only)&lt;/li&gt; &lt;li&gt;file:///path - Local file URIs are supported but strongly discouraged because it may interfere with the performance of vCenter Server.&lt;/li&gt; &lt;/ul&gt; ([‘present’])</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-subscription_info"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-subscription-info"><strong>subscription_info</strong></p>
+<a class="ansibleOptionLink" href="#parameter-subscription_info" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Defines the subscription behavior for this Library. The <code class="docutils literal notranslate"><span class="pre">subscription_info</span></code> defines how this subscribed library synchronizes to a remote source. Setting the value will determine the remote source to which the library synchronizes, and how. Changing the subscription will result in synchronizing to a new source. If the new source differs from the old one, the old library items and data will be lost. Setting <code class="docutils literal notranslate"><span class="pre">subscription_info.automaticSyncEnabled</span></code> to false will halt subscription but will not remove existing cached data.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">authentication_method</span></code> (str): Indicate how the subscribed library should authenticate with the published library endpoint. ([‘present’, ‘probe’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>BASIC</p></li>
+<li><p>NONE</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">automatic_sync_enabled</span></code> (bool): Whether the library should participate in automatic library synchronization. In order for automatic synchronization to happen, the global <code class="docutils literal notranslate"><span class="pre">configuration_model.automatic_sync_enabled</span></code> option must also be true. The subscription is still active even when automatic synchronization is turned off, but synchronization is only activated with an explicit call to <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module"><span class="std std-ref">vmware.vmware_rest.content_subscribedlibrary</span></a> with <code class="docutils literal notranslate"><span class="pre">state=sync</span></code>. In other words, manual synchronization is still available even when automatic synchronization is disabled. ([‘present’, ‘probe’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">on_demand</span></code> (bool): Indicates whether a library item’s content will be synchronized only on demand. If this is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the library item’s metadata will be synchronized but the item’s content (its files) will not be synchronized. The Content Library Service will synchronize the content upon request only. This can cause the first use of the content to have a noticeable delay. If this value is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, all content will be synchronized in advance. ([‘present’, ‘probe’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): The password to use when authenticating. The password must be set when using a password-based authentication method; empty strings are not allowed. ([‘present’, ‘probe’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssl_thumbprint</span></code> (str): An optional SHA-1 hash of the SSL certificate for the remote endpoint. If this value is defined the SSL certificate will be verified by comparing it to the SSL thumbprint. The SSL certificate must verify against the thumbprint. When specified, the standard certificate chain validation behavior is not used. The certificate chain is validated normally if this value is not set. ([‘present’, ‘probe’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subscription_url</span></code> (str): The URL of the endpoint where the metadata for the remotely published library is being served. This URL can be the <code class="docutils literal notranslate"><span class="pre">publish_info.publish_url</span></code> of the published library (for example, <a class="reference external" href="https://server/path/lib.json">https://server/path/lib.json</a>). If the source content comes from a published library with <code class="docutils literal notranslate"><span class="pre">publish_info.persist_json_enabled</span></code>, the subscription URL can be a URL pointing to the library JSON file on a datastore or remote file system. The supported formats are: vSphere 6.5 &lt;ul&gt; &lt;li&gt;ds:///vmfs/volumes/{uuid}/mylibrary/lib.json (for datastore)&lt;/li&gt; &lt;li&gt;nfs://server/path/mylibrary/lib.json (for NFSv3 server on vCenter Server Appliance)&lt;/li&gt; &lt;li&gt;nfs://server/path/mylibrary/lib.json?version=4 (for NFSv4 server on vCenter Server Appliance) &lt;/li&gt; &lt;li&gt;smb://server/path/mylibrary/lib.json (for SMB server)&lt;/li&gt; &lt;/ul&gt; vSphere 6.0 &lt;ul&gt; &lt;li&gt;file://server/mylibrary/lib.json (for UNC server on vCenter Server for Windows)&lt;/li&gt; &lt;li&gt;file:///path/mylibrary/lib.json (for local file system)&lt;/li&gt; &lt;/ul&gt; When you specify a DS subscription URL, the datastore must be on the same vCenter Server as the subscribed library. When you specify an NFS or SMB subscription URL, the <code class="docutils literal notranslate"><span class="pre">storage_backings.storage_uri</span></code> of the subscribed library must be on the same remote file server and should share a common parent path with the subscription URL. ([‘present’, ‘probe’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code> (str): The username to use when authenticating. The username must be set when using a password-based authentication method. Empty strings are allowed for usernames. ([‘present’, ‘probe’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source_info</span></code> (dict): Information about the source published library. This field will be set for a subscribed library which is associated with a subscription of the published library. ([‘present’, ‘probe’])</p></li>
+<li><p>Accepted keys:</p></li>
+<li><p>source_library (string): Identifier of the published library.</p></li>
+<li><p>subscription (string): Identifier of the subscription associated with the subscribed library.</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-type"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-type"><strong>type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The <code class="docutils literal notranslate"><span class="pre">library_type</span></code> defines the type of a Library. The type of a library can be used to determine which additional services can be performed with a library.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;LOCAL&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SUBSCRIBED&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-unset_security_policy_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-unset-security-policy-id"><strong>unset_security_policy_id</strong></p>
+<a class="ansibleOptionLink" href="#parameter-unset_security_policy_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>This represents the intent of the change to <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #securityPolicyId} in <code class="docutils literal notranslate"><span class="pre">update</span></code>operation. If this field is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, any security policy applied to the library will be removed. If this field is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, any security policy applied to library will be changed to the value specified in <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #securityPolicyId}, if any.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_hostname"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-vcenter-hostname"><strong>vcenter_hostname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_hostname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The hostname or IP address of the vSphere vCenter</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_HOST</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_password"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-vcenter-password"><strong>vcenter_password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter password</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_rest_log_file"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-vcenter-rest-log-file"><strong>vcenter_rest_log_file</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_rest_log_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>You can use this optional parameter to set the location of a log file.</p>
+<p>This file will be used to record the HTTP REST interaction.</p>
+<p>The file will be stored on the host that run the module.</p>
+<p>If the value is not specified in the task, the value of</p>
+<p>environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_REST_LOG_FILE</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_username"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-vcenter-username"><strong>vcenter_username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter username</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_USER</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_validate_certs"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-vcenter-validate-certs"><strong>vcenter_validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Allows connection when SSL certificates are not valid. Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> when certificates are not trusted.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">true</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-version"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-parameter-version"><strong>version</strong></p>
+<a class="ansibleOptionLink" href="#parameter-version" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>A version number which is updated on metadata changes. This value allows clients to detect concurrent updates and prevent accidental clobbering of data. This value represents a number which is incremented every time library properties, such as name or description, are changed. It is not incremented by changes to a library item within the library, including adding or removing items. It is also not affected by tagging the library.</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Tested on vSphere 7.0.3</p></li>
+</ul>
+</div>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a content library pointing on a NFS share</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_locallibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_library_on_nfs</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">automated</span>
+<span class="w">    </span><span class="nt">publish_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">published</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">authentication_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NONE</span>
+<span class="w">    </span><span class="nt">storage_backings</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">storage_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs://datastore.test/srv/share/content-library</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OTHER</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs_lib</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create subscribed library</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_subscribedlibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub_lib</span>
+<span class="w">    </span><span class="nt">subscription_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">subscription_url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">nfs_lib.value.publish_info.publish_url</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">authentication_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NONE</span>
+<span class="w">      </span><span class="nt">automatic_sync_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">on_demand</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">storage_backings</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">datastore_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/rw_datastore&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATASTORE</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub_lib</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create subscribed library (again)</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_subscribedlibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub_lib</span>
+<span class="w">    </span><span class="nt">subscription_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">subscription_url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">nfs_lib.value.publish_info.publish_url</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">      </span><span class="nt">authentication_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NONE</span>
+<span class="w">      </span><span class="nt">automatic_sync_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">on_demand</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">storage_backings</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">datastore_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/rw_datastore&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATASTORE</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Clean up the cache</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_subscribedlibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub_lib</span>
+<span class="w">    </span><span class="nt">library_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">sub_lib.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">evict</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Trigger a library sync</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_subscribedlibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub_lib</span>
+<span class="w">    </span><span class="nt">library_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">sub_lib.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sync</span>
+</pre></div>
+</div>
+</section>
+<section id="return-values">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Return Values</a><a class="headerlink" href="#return-values" title="Link to this heading"></a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible-core/devel/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible Core vdevel)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-msg"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-return-msg"><strong>msg</strong></p>
+<a class="ansibleOptionLink" href="#return-msg" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Delete all the subscribed libraries</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">&quot;All</span> <span class="pre">items</span> <span class="pre">completed&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-results"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module-return-results"><strong>results</strong></p>
+<a class="ansibleOptionLink" href="#return-results" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Delete all the subscribed libraries</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">[{&quot;_ansible_item_label&quot;:</span> <span class="pre">{&quot;creation_time&quot;:</span> <span class="pre">&quot;2022-11-23T20:06:05.189Z&quot;,</span> <span class="pre">&quot;description&quot;:</span> <span class="pre">&quot;&quot;,</span> <span class="pre">&quot;id&quot;:</span> <span class="pre">&quot;8b4e355e-a463-44f1-9b04-d0786a49cc7d&quot;,</span> <span class="pre">&quot;last_modified_time&quot;:</span> <span class="pre">&quot;2022-11-23T20:06:05.189Z&quot;,</span> <span class="pre">&quot;last_sync_time&quot;:</span> <span class="pre">&quot;2022-11-23T20:06:07.717Z&quot;,</span> <span class="pre">&quot;name&quot;:</span> <span class="pre">&quot;sub_lib&quot;,</span> <span class="pre">&quot;server_guid&quot;:</span> <span class="pre">&quot;52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5&quot;,</span> <span class="pre">&quot;storage_backings&quot;:</span> <span class="pre">[{&quot;datastore_id&quot;:</span> <span class="pre">&quot;datastore-1065&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;DATASTORE&quot;}],</span> <span class="pre">&quot;subscription_info&quot;:</span> <span class="pre">{&quot;authentication_method&quot;:</span> <span class="pre">&quot;NONE&quot;,</span> <span class="pre">&quot;automatic_sync_enabled&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;on_demand&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;subscription_url&quot;:</span> <span class="pre">&quot;https://vcenter.test:443/cls/vcsp/lib/a66d5c73-57f8-4a3a-9361-292a55f68516/lib.json&quot;},</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;SUBSCRIBED&quot;,</span> <span class="pre">&quot;version&quot;:</span> <span class="pre">&quot;4&quot;},</span> <span class="pre">&quot;_ansible_no_log&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;ansible_loop_var&quot;:</span> <span class="pre">&quot;item&quot;,</span> <span class="pre">&quot;changed&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;failed&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;invocation&quot;:</span> <span class="pre">{&quot;module_args&quot;:</span> <span class="pre">{&quot;client_token&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;creation_time&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;description&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;id&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;last_modified_time&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;last_sync_time&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;library_id&quot;:</span> <span class="pre">&quot;8b4e355e-a463-44f1-9b04-d0786a49cc7d&quot;,</span> <span class="pre">&quot;name&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;optimization_info&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;publish_info&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;server_guid&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;session_timeout&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;state&quot;:</span> <span class="pre">&quot;absent&quot;,</span> <span class="pre">&quot;storage_backings&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;subscription_info&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">null,</span> <span class="pre">&quot;vcenter_hostname&quot;:</span> <span class="pre">&quot;vcenter.test&quot;,</span> <span class="pre">&quot;vcenter_password&quot;:</span> <span class="pre">&quot;VALUE_SPECIFIED_IN_NO_LOG_PARAMETER&quot;,</span> <span class="pre">&quot;vcenter_rest_log_file&quot;:</span> <span class="pre">&quot;/tmp/vmware_rest.log&quot;,</span> <span class="pre">&quot;vcenter_username&quot;:</span> <span class="pre">&quot;administrator&#64;vsphere.local&quot;,</span> <span class="pre">&quot;vcenter_validate_certs&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;version&quot;:</span> <span class="pre">null}},</span> <span class="pre">&quot;item&quot;:</span> <span class="pre">{&quot;creation_time&quot;:</span> <span class="pre">&quot;2022-11-23T20:06:05.189Z&quot;,</span> <span class="pre">&quot;description&quot;:</span> <span class="pre">&quot;&quot;,</span> <span class="pre">&quot;id&quot;:</span> <span class="pre">&quot;8b4e355e-a463-44f1-9b04-d0786a49cc7d&quot;,</span> <span class="pre">&quot;last_modified_time&quot;:</span> <span class="pre">&quot;2022-11-23T20:06:05.189Z&quot;,</span> <span class="pre">&quot;last_sync_time&quot;:</span> <span class="pre">&quot;2022-11-23T20:06:07.717Z&quot;,</span> <span class="pre">&quot;name&quot;:</span> <span class="pre">&quot;sub_lib&quot;,</span> <span class="pre">&quot;server_guid&quot;:</span> <span class="pre">&quot;52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5&quot;,</span> <span class="pre">&quot;storage_backings&quot;:</span> <span class="pre">[{&quot;datastore_id&quot;:</span> <span class="pre">&quot;datastore-1065&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;DATASTORE&quot;}],</span> <span class="pre">&quot;subscription_info&quot;:</span> <span class="pre">{&quot;authentication_method&quot;:</span> <span class="pre">&quot;NONE&quot;,</span> <span class="pre">&quot;automatic_sync_enabled&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;on_demand&quot;:</span> <span class="pre">1,</span> <span class="pre">&quot;subscription_url&quot;:</span> <span class="pre">&quot;https://vcenter.test:443/cls/vcsp/lib/a66d5c73-57f8-4a3a-9361-292a55f68516/lib.json&quot;},</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;SUBSCRIBED&quot;,</span> <span class="pre">&quot;version&quot;:</span> <span class="pre">&quot;4&quot;},</span> <span class="pre">&quot;value&quot;:</span> <span class="pre">{}}]</span></code></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ansible Cloud Team (&#64;ansible-collections)</p></li>
+</ul>
+</section>
+<section id="collection-links">
+<h3>Collection links<a class="headerlink" href="#collection-links" title="Link to this heading"></a></h3>
+<ul class="ansible-links">
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc" rel="noopener external" target="_blank">Issue Tracker</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest" rel="noopener external" target="_blank">Homepage</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest.git" rel="noopener external" target="_blank">Repository (Sources)</a></span></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="content_locallibrary_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.content_locallibrary_info module – Returns a given local library." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="content_subscribedlibrary_info_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.content_subscribedlibrary_info module – Returns a given subscribed library." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

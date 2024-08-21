@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="2.12.0" name="antsibull-docs" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vmware.Vmware_Rest &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="VMware Guide (REST)" href="docsite/guide_vmware_rest.html" />
+    <link rel="prev" title="Collections in the Vmware Namespace" href="../index.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Vmware.Vmware_Rest</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collections in the Vmware Namespace</a></li>
+      <li class="breadcrumb-item active">Vmware.Vmware_Rest</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <section id="vmware-vmware-rest">
+<span id="plugins-in-vmware-vmware-rest"></span><h1>Vmware.Vmware_Rest<a class="headerlink" href="#vmware-vmware-rest" title="Link to this heading"></a></h1>
+<p>Collection version 3.0.1</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
+<li><p><a class="reference internal" href="#scenario-guide" id="id2">Scenario Guide</a></p></li>
+<li><p><a class="reference internal" href="#developer-guide" id="id3">Developer Guide</a></p></li>
+<li><p><a class="reference internal" href="#plugin-index" id="id4">Plugin Index</a></p></li>
+</ul>
+</nav>
+<section id="description">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Description</a><a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>VMware collection for Ansible</p>
+<p><strong>Author:</strong></p>
+<ul class="simple">
+<li><p>Ansible (<a class="reference external" href="https://github.com/ansible">https://github.com/ansible</a>)</p></li>
+</ul>
+<p><strong>Supported ansible-core versions:</strong></p>
+<ul class="simple">
+<li><p>2.14.0 or newer</p></li>
+</ul>
+<ul class="ansible-links">
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc" rel="noopener external" target="_blank">Issue Tracker</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest" rel="noopener external" target="_blank">Homepage</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest.git" rel="noopener external" target="_blank">Repository (Sources)</a></span></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="scenario-guide">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Scenario Guide</a><a class="headerlink" href="#scenario-guide" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docsite/guide_vmware_rest.html">VMware Guide (REST)</a></li>
+</ul>
+</div>
+</section>
+<section id="developer-guide">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Developer Guide</a><a class="headerlink" href="#developer-guide" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docsite/dev_guide.html">Guidelines for VMware REST module development</a></li>
+</ul>
+</div>
+</section>
+<section id="plugin-index">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Plugin Index</a><a class="headerlink" href="#plugin-index" title="Link to this heading"></a></h2>
+<p>These are the plugins in the vmware.vmware_rest collection:</p>
+<section id="modules">
+<h3>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="appliance_access_consolecli_module.html#ansible-collections-vmware-vmware-rest-appliance-access-consolecli-module"><span class="std std-ref">appliance_access_consolecli module</span></a> – Set enabled state of the console-based controlled CLI (TTY1).</p></li>
+<li><p><a class="reference internal" href="appliance_access_consolecli_info_module.html#ansible-collections-vmware-vmware-rest-appliance-access-consolecli-info-module"><span class="std std-ref">appliance_access_consolecli_info module</span></a> – Get enabled state of the console-based controlled CLI (TTY1).</p></li>
+<li><p><a class="reference internal" href="appliance_access_dcui_module.html#ansible-collections-vmware-vmware-rest-appliance-access-dcui-module"><span class="std std-ref">appliance_access_dcui module</span></a> – Set enabled state of Direct Console User Interface (DCUI TTY2).</p></li>
+<li><p><a class="reference internal" href="appliance_access_dcui_info_module.html#ansible-collections-vmware-vmware-rest-appliance-access-dcui-info-module"><span class="std std-ref">appliance_access_dcui_info module</span></a> – Get enabled state of Direct Console User Interface (DCUI TTY2).</p></li>
+<li><p><a class="reference internal" href="appliance_access_shell_module.html#ansible-collections-vmware-vmware-rest-appliance-access-shell-module"><span class="std std-ref">appliance_access_shell module</span></a> – Set enabled state of BASH, that is, access to BASH from within the controlled CLI.</p></li>
+<li><p><a class="reference internal" href="appliance_access_shell_info_module.html#ansible-collections-vmware-vmware-rest-appliance-access-shell-info-module"><span class="std std-ref">appliance_access_shell_info module</span></a> – Get enabled state of BASH, that is, access to BASH from within the controlled CLI.</p></li>
+<li><p><a class="reference internal" href="appliance_access_ssh_module.html#ansible-collections-vmware-vmware-rest-appliance-access-ssh-module"><span class="std std-ref">appliance_access_ssh module</span></a> – Set enabled state of the SSH-based controlled CLI.</p></li>
+<li><p><a class="reference internal" href="appliance_access_ssh_info_module.html#ansible-collections-vmware-vmware-rest-appliance-access-ssh-info-module"><span class="std std-ref">appliance_access_ssh_info module</span></a> – Get enabled state of the SSH-based controlled CLI.</p></li>
+<li><p><a class="reference internal" href="appliance_health_applmgmt_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-applmgmt-info-module"><span class="std std-ref">appliance_health_applmgmt_info module</span></a> – Get health status of applmgmt services.</p></li>
+<li><p><a class="reference internal" href="appliance_health_database_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-database-info-module"><span class="std std-ref">appliance_health_database_info module</span></a> – Returns the health status of the database.</p></li>
+<li><p><a class="reference internal" href="appliance_health_databasestorage_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-databasestorage-info-module"><span class="std std-ref">appliance_health_databasestorage_info module</span></a> – Get database storage health.</p></li>
+<li><p><a class="reference internal" href="appliance_health_load_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-load-info-module"><span class="std std-ref">appliance_health_load_info module</span></a> – Get load health.</p></li>
+<li><p><a class="reference internal" href="appliance_health_mem_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-mem-info-module"><span class="std std-ref">appliance_health_mem_info module</span></a> – Get memory health.</p></li>
+<li><p><a class="reference internal" href="appliance_health_softwarepackages_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-softwarepackages-info-module"><span class="std std-ref">appliance_health_softwarepackages_info module</span></a> – Get information on available software updates available in the remote vSphere Update Manager repository</p></li>
+<li><p><a class="reference internal" href="appliance_health_storage_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-storage-info-module"><span class="std std-ref">appliance_health_storage_info module</span></a> – Get storage health.</p></li>
+<li><p><a class="reference internal" href="appliance_health_swap_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-swap-info-module"><span class="std std-ref">appliance_health_swap_info module</span></a> – Get swap health.</p></li>
+<li><p><a class="reference internal" href="appliance_health_system_info_module.html#ansible-collections-vmware-vmware-rest-appliance-health-system-info-module"><span class="std std-ref">appliance_health_system_info module</span></a> – Get overall health of system.</p></li>
+<li><p><a class="reference internal" href="appliance_infraprofile_configs_module.html#ansible-collections-vmware-vmware-rest-appliance-infraprofile-configs-module"><span class="std std-ref">appliance_infraprofile_configs module</span></a> – Exports the desired profile specification.</p></li>
+<li><p><a class="reference internal" href="appliance_infraprofile_configs_info_module.html#ansible-collections-vmware-vmware-rest-appliance-infraprofile-configs-info-module"><span class="std std-ref">appliance_infraprofile_configs_info module</span></a> – List all the profiles which are registered.</p></li>
+<li><p><a class="reference internal" href="appliance_localaccounts_globalpolicy_module.html#ansible-collections-vmware-vmware-rest-appliance-localaccounts-globalpolicy-module"><span class="std std-ref">appliance_localaccounts_globalpolicy module</span></a> – Set the global password policy.</p></li>
+<li><p><a class="reference internal" href="appliance_localaccounts_globalpolicy_info_module.html#ansible-collections-vmware-vmware-rest-appliance-localaccounts-globalpolicy-info-module"><span class="std std-ref">appliance_localaccounts_globalpolicy_info module</span></a> – Get the global password policy.</p></li>
+<li><p><a class="reference internal" href="appliance_localaccounts_info_module.html#ansible-collections-vmware-vmware-rest-appliance-localaccounts-info-module"><span class="std std-ref">appliance_localaccounts_info module</span></a> – Get the local user account information.</p></li>
+<li><p><a class="reference internal" href="appliance_monitoring_info_module.html#ansible-collections-vmware-vmware-rest-appliance-monitoring-info-module"><span class="std std-ref">appliance_monitoring_info module</span></a> – Get monitored item info</p></li>
+<li><p><a class="reference internal" href="appliance_monitoring_query_module.html#ansible-collections-vmware-vmware-rest-appliance-monitoring-query-module"><span class="std std-ref">appliance_monitoring_query module</span></a> – Get monitoring data.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-module"><span class="std std-ref">appliance_networking module</span></a> – Reset and restarts network configuration on all interfaces, also this will renew the DHCP lease for DHCP IP address.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_dns_domains_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-dns-domains-module"><span class="std std-ref">appliance_networking_dns_domains module</span></a> – Set DNS search domains.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_dns_domains_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-dns-domains-info-module"><span class="std std-ref">appliance_networking_dns_domains_info module</span></a> – Get list of DNS search domains.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_dns_hostname_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-dns-hostname-module"><span class="std std-ref">appliance_networking_dns_hostname module</span></a> – Set the Fully Qualified Domain Name.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_dns_hostname_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-dns-hostname-info-module"><span class="std std-ref">appliance_networking_dns_hostname_info module</span></a> – Get the Fully Qualified Doman Name.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_dns_servers_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-dns-servers-module"><span class="std std-ref">appliance_networking_dns_servers module</span></a> – Set the DNS server configuration</p></li>
+<li><p><a class="reference internal" href="appliance_networking_dns_servers_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-dns-servers-info-module"><span class="std std-ref">appliance_networking_dns_servers_info module</span></a> – Get DNS server configuration.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_firewall_inbound_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-firewall-inbound-module"><span class="std std-ref">appliance_networking_firewall_inbound module</span></a> – Set the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses</p></li>
+<li><p><a class="reference internal" href="appliance_networking_firewall_inbound_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-firewall-inbound-info-module"><span class="std std-ref">appliance_networking_firewall_inbound_info module</span></a> – Get the ordered list of firewall rules</p></li>
+<li><p><a class="reference internal" href="appliance_networking_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-info-module"><span class="std std-ref">appliance_networking_info module</span></a> – Get Networking information for all configured interfaces.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_interfaces_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-interfaces-info-module"><span class="std std-ref">appliance_networking_interfaces_info module</span></a> – Get information about a particular network interface.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_interfaces_ipv4_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-interfaces-ipv4-module"><span class="std std-ref">appliance_networking_interfaces_ipv4 module</span></a> – Set IPv4 network configuration for specific network interface.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_interfaces_ipv4_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-interfaces-ipv4-info-module"><span class="std std-ref">appliance_networking_interfaces_ipv4_info module</span></a> – Get IPv4 network configuration for specific NIC.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_interfaces_ipv6_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-interfaces-ipv6-module"><span class="std std-ref">appliance_networking_interfaces_ipv6 module</span></a> – Set IPv6 network configuration for specific interface.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_interfaces_ipv6_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-interfaces-ipv6-info-module"><span class="std std-ref">appliance_networking_interfaces_ipv6_info module</span></a> – Get IPv6 network configuration for specific interface.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_noproxy_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-noproxy-module"><span class="std std-ref">appliance_networking_noproxy module</span></a> – Sets servers for which no proxy configuration should be applied</p></li>
+<li><p><a class="reference internal" href="appliance_networking_noproxy_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-noproxy-info-module"><span class="std std-ref">appliance_networking_noproxy_info module</span></a> – Returns servers for which no proxy configuration will be applied.</p></li>
+<li><p><a class="reference internal" href="appliance_networking_proxy_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-proxy-module"><span class="std std-ref">appliance_networking_proxy module</span></a> – Configures which proxy server to use for the specified protocol</p></li>
+<li><p><a class="reference internal" href="appliance_networking_proxy_info_module.html#ansible-collections-vmware-vmware-rest-appliance-networking-proxy-info-module"><span class="std std-ref">appliance_networking_proxy_info module</span></a> – Gets the proxy configuration for a specific protocol.</p></li>
+<li><p><a class="reference internal" href="appliance_ntp_module.html#ansible-collections-vmware-vmware-rest-appliance-ntp-module"><span class="std std-ref">appliance_ntp module</span></a> – Set NTP servers</p></li>
+<li><p><a class="reference internal" href="appliance_ntp_info_module.html#ansible-collections-vmware-vmware-rest-appliance-ntp-info-module"><span class="std std-ref">appliance_ntp_info module</span></a> – Get the NTP configuration status</p></li>
+<li><p><a class="reference internal" href="appliance_services_module.html#ansible-collections-vmware-vmware-rest-appliance-services-module"><span class="std std-ref">appliance_services module</span></a> – Restarts a service</p></li>
+<li><p><a class="reference internal" href="appliance_services_info_module.html#ansible-collections-vmware-vmware-rest-appliance-services-info-module"><span class="std std-ref">appliance_services_info module</span></a> – Returns the state of a service.</p></li>
+<li><p><a class="reference internal" href="appliance_shutdown_module.html#ansible-collections-vmware-vmware-rest-appliance-shutdown-module"><span class="std std-ref">appliance_shutdown module</span></a> – Cancel pending shutdown action.</p></li>
+<li><p><a class="reference internal" href="appliance_shutdown_info_module.html#ansible-collections-vmware-vmware-rest-appliance-shutdown-info-module"><span class="std std-ref">appliance_shutdown_info module</span></a> – Get details about the pending shutdown action.</p></li>
+<li><p><a class="reference internal" href="appliance_system_globalfips_module.html#ansible-collections-vmware-vmware-rest-appliance-system-globalfips-module"><span class="std std-ref">appliance_system_globalfips module</span></a> – Enable/Disable Global FIPS mode for the appliance</p></li>
+<li><p><a class="reference internal" href="appliance_system_globalfips_info_module.html#ansible-collections-vmware-vmware-rest-appliance-system-globalfips-info-module"><span class="std std-ref">appliance_system_globalfips_info module</span></a> – Get current appliance FIPS settings.</p></li>
+<li><p><a class="reference internal" href="appliance_system_storage_module.html#ansible-collections-vmware-vmware-rest-appliance-system-storage-module"><span class="std std-ref">appliance_system_storage module</span></a> – Resize all partitions to 100 percent of disk size.</p></li>
+<li><p><a class="reference internal" href="appliance_system_storage_info_module.html#ansible-collections-vmware-vmware-rest-appliance-system-storage-info-module"><span class="std std-ref">appliance_system_storage_info module</span></a> – Get disk to partition mapping.</p></li>
+<li><p><a class="reference internal" href="appliance_system_time_info_module.html#ansible-collections-vmware-vmware-rest-appliance-system-time-info-module"><span class="std std-ref">appliance_system_time_info module</span></a> – Get system time.</p></li>
+<li><p><a class="reference internal" href="appliance_system_time_timezone_module.html#ansible-collections-vmware-vmware-rest-appliance-system-time-timezone-module"><span class="std std-ref">appliance_system_time_timezone module</span></a> – Set time zone.</p></li>
+<li><p><a class="reference internal" href="appliance_system_time_timezone_info_module.html#ansible-collections-vmware-vmware-rest-appliance-system-time-timezone-info-module"><span class="std std-ref">appliance_system_time_timezone_info module</span></a> – Get time zone.</p></li>
+<li><p><a class="reference internal" href="appliance_system_version_info_module.html#ansible-collections-vmware-vmware-rest-appliance-system-version-info-module"><span class="std std-ref">appliance_system_version_info module</span></a> – Get the version.</p></li>
+<li><p><a class="reference internal" href="appliance_timesync_module.html#ansible-collections-vmware-vmware-rest-appliance-timesync-module"><span class="std std-ref">appliance_timesync module</span></a> – Set time synchronization mode.</p></li>
+<li><p><a class="reference internal" href="appliance_timesync_info_module.html#ansible-collections-vmware-vmware-rest-appliance-timesync-info-module"><span class="std std-ref">appliance_timesync_info module</span></a> – Get time synchronization mode.</p></li>
+<li><p><a class="reference internal" href="appliance_update_info_module.html#ansible-collections-vmware-vmware-rest-appliance-update-info-module"><span class="std std-ref">appliance_update_info module</span></a> – Gets the current status of the appliance update.</p></li>
+<li><p><a class="reference internal" href="appliance_vmon_service_module.html#ansible-collections-vmware-vmware-rest-appliance-vmon-service-module"><span class="std std-ref">appliance_vmon_service module</span></a> – Lists details of services managed by vMon.</p></li>
+<li><p><a class="reference internal" href="appliance_vmon_service_info_module.html#ansible-collections-vmware-vmware-rest-appliance-vmon-service-info-module"><span class="std std-ref">appliance_vmon_service_info module</span></a> – Returns the state of a service.</p></li>
+<li><p><a class="reference internal" href="content_configuration_module.html#ansible-collections-vmware-vmware-rest-content-configuration-module"><span class="std std-ref">content_configuration module</span></a> – Updates the configuration</p></li>
+<li><p><a class="reference internal" href="content_configuration_info_module.html#ansible-collections-vmware-vmware-rest-content-configuration-info-module"><span class="std std-ref">content_configuration_info module</span></a> – Retrieves the current configuration values.</p></li>
+<li><p><a class="reference internal" href="content_library_item_info_module.html#ansible-collections-vmware-vmware-rest-content-library-item-info-module"><span class="std std-ref">content_library_item_info module</span></a> – Returns the <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> ItemModel} with the given identifier.</p></li>
+<li><p><a class="reference internal" href="content_locallibrary_module.html#ansible-collections-vmware-vmware-rest-content-locallibrary-module"><span class="std std-ref">content_locallibrary module</span></a> – Creates a new local library.</p></li>
+<li><p><a class="reference internal" href="content_locallibrary_info_module.html#ansible-collections-vmware-vmware-rest-content-locallibrary-info-module"><span class="std std-ref">content_locallibrary_info module</span></a> – Returns a given local library.</p></li>
+<li><p><a class="reference internal" href="content_subscribedlibrary_module.html#ansible-collections-vmware-vmware-rest-content-subscribedlibrary-module"><span class="std std-ref">content_subscribedlibrary module</span></a> – Creates a new subscribed library</p></li>
+<li><p><a class="reference internal" href="content_subscribedlibrary_info_module.html#ansible-collections-vmware-vmware-rest-content-subscribedlibrary-info-module"><span class="std std-ref">content_subscribedlibrary_info module</span></a> – Returns a given subscribed library.</p></li>
+<li><p><a class="reference internal" href="vcenter_cluster_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-cluster-info-module"><span class="std std-ref">vcenter_cluster_info module</span></a> – Retrieves information about the cluster corresponding to cluster.</p></li>
+<li><p><a class="reference internal" href="vcenter_datacenter_module.html#ansible-collections-vmware-vmware-rest-vcenter-datacenter-module"><span class="std std-ref">vcenter_datacenter module</span></a> – Create a new datacenter in the vCenter inventory</p></li>
+<li><p><a class="reference internal" href="vcenter_datacenter_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datacenter-info-module"><span class="std std-ref">vcenter_datacenter_info module</span></a> – Retrieves information about the datacenter corresponding to datacenter.</p></li>
+<li><p><a class="reference internal" href="vcenter_datastore_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-datastore-info-module"><span class="std std-ref">vcenter_datastore_info module</span></a> – Retrieves information about the datastore indicated by datastore.</p></li>
+<li><p><a class="reference internal" href="vcenter_folder_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-folder-info-module"><span class="std std-ref">vcenter_folder_info module</span></a> – Returns information about at most 1000 visible (subject to permission checks) folders in vCenter matching the Folder.FilterSpec.</p></li>
+<li><p><a class="reference internal" href="vcenter_host_module.html#ansible-collections-vmware-vmware-rest-vcenter-host-module"><span class="std std-ref">vcenter_host module</span></a> – Add a new standalone host in the vCenter inventory</p></li>
+<li><p><a class="reference internal" href="vcenter_host_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-host-info-module"><span class="std std-ref">vcenter_host_info module</span></a> – Returns information about at most 2500 visible (subject to permission checks) hosts in vCenter matching the Host.FilterSpec.</p></li>
+<li><p><a class="reference internal" href="vcenter_network_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-network-info-module"><span class="std std-ref">vcenter_network_info module</span></a> – Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the Network.FilterSpec.</p></li>
+<li><p><a class="reference internal" href="vcenter_ovf_libraryitem_module.html#ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module"><span class="std std-ref">vcenter_ovf_libraryitem module</span></a> – Creates a library item in content library from a virtual machine or virtual appliance</p></li>
+<li><p><a class="reference internal" href="vcenter_resourcepool_module.html#ansible-collections-vmware-vmware-rest-vcenter-resourcepool-module"><span class="std std-ref">vcenter_resourcepool module</span></a> – Creates a resource pool.</p></li>
+<li><p><a class="reference internal" href="vcenter_resourcepool_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-resourcepool-info-module"><span class="std std-ref">vcenter_resourcepool_info module</span></a> – Retrieves information about the resource pool indicated by resourcePool.</p></li>
+<li><p><a class="reference internal" href="vcenter_storage_policies_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-storage-policies-info-module"><span class="std std-ref">vcenter_storage_policies_info module</span></a> – Returns information about at most 1024 visible (subject to permission checks) storage solicies availabe in vCenter</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-module"><span class="std std-ref">vcenter_vm module</span></a> – Creates a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_customization_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-customization-module"><span class="std std-ref">vcenter_vm_guest_customization module</span></a> – Applies a customization specification on the virtual machine</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_filesystem_directories_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-filesystem-directories-module"><span class="std std-ref">vcenter_vm_guest_filesystem_directories module</span></a> – Creates a directory in the guest operating system</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_identity_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-identity-info-module"><span class="std std-ref">vcenter_vm_guest_identity_info module</span></a> – Return information about the guest.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_localfilesystem_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-localfilesystem-info-module"><span class="std std-ref">vcenter_vm_guest_localfilesystem_info module</span></a> – Returns details of the local file systems in the guest operating system.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_networking_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-networking-info-module"><span class="std std-ref">vcenter_vm_guest_networking_info module</span></a> – Returns information about the network configuration in the guest operating system.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_networking_interfaces_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-networking-interfaces-info-module"><span class="std std-ref">vcenter_vm_guest_networking_interfaces_info module</span></a> – Returns information about the networking interfaces in the guest operating system.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_networking_routes_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-networking-routes-info-module"><span class="std std-ref">vcenter_vm_guest_networking_routes_info module</span></a> – Returns information about network routing in the guest operating system.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_operations_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-operations-info-module"><span class="std std-ref">vcenter_vm_guest_operations_info module</span></a> – Get information about the guest operation status.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_power_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-power-module"><span class="std std-ref">vcenter_vm_guest_power module</span></a> – Issues a request to the guest operating system asking it to perform a soft shutdown, standby (suspend) or soft reboot</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_guest_power_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-guest-power-info-module"><span class="std std-ref">vcenter_vm_guest_power_info module</span></a> – Returns information about the guest operating system power state.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-module"><span class="std std-ref">vcenter_vm_hardware module</span></a> – Updates the virtual hardware settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_adapter_sata_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-adapter-sata-module"><span class="std std-ref">vcenter_vm_hardware_adapter_sata module</span></a> – Adds a virtual SATA adapter to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_adapter_sata_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-adapter-sata-info-module"><span class="std std-ref">vcenter_vm_hardware_adapter_sata_info module</span></a> – Returns information about a virtual SATA adapter.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_adapter_scsi_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-adapter-scsi-module"><span class="std std-ref">vcenter_vm_hardware_adapter_scsi module</span></a> – Adds a virtual SCSI adapter to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_adapter_scsi_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-adapter-scsi-info-module"><span class="std std-ref">vcenter_vm_hardware_adapter_scsi_info module</span></a> – Returns information about a virtual SCSI adapter.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_boot_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-boot-module"><span class="std std-ref">vcenter_vm_hardware_boot module</span></a> – Updates the boot-related settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_boot_device_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-boot-device-module"><span class="std std-ref">vcenter_vm_hardware_boot_device module</span></a> – Sets the virtual devices that will be used to boot the virtual machine</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_boot_device_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-boot-device-info-module"><span class="std std-ref">vcenter_vm_hardware_boot_device_info module</span></a> – Returns an ordered list of boot devices for the virtual machine</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_boot_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-boot-info-module"><span class="std std-ref">vcenter_vm_hardware_boot_info module</span></a> – Returns the boot-related settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_cdrom_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-cdrom-module"><span class="std std-ref">vcenter_vm_hardware_cdrom module</span></a> – Adds a virtual CD-ROM device to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_cdrom_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-cdrom-info-module"><span class="std std-ref">vcenter_vm_hardware_cdrom_info module</span></a> – Returns information about a virtual CD-ROM device.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_cpu_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-cpu-module"><span class="std std-ref">vcenter_vm_hardware_cpu module</span></a> – Updates the CPU-related settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_cpu_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-cpu-info-module"><span class="std std-ref">vcenter_vm_hardware_cpu_info module</span></a> – Returns the CPU-related settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_disk_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-module"><span class="std std-ref">vcenter_vm_hardware_disk module</span></a> – Adds a virtual disk to the virtual machine</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_disk_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-disk-info-module"><span class="std std-ref">vcenter_vm_hardware_disk_info module</span></a> – Returns information about a virtual disk.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_ethernet_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module"><span class="std std-ref">vcenter_vm_hardware_ethernet module</span></a> – Adds a virtual Ethernet adapter to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_ethernet_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-info-module"><span class="std std-ref">vcenter_vm_hardware_ethernet_info module</span></a> – Returns information about a virtual Ethernet adapter.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_floppy_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-floppy-module"><span class="std std-ref">vcenter_vm_hardware_floppy module</span></a> – Adds a virtual floppy drive to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_floppy_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-floppy-info-module"><span class="std std-ref">vcenter_vm_hardware_floppy_info module</span></a> – Returns information about a virtual floppy drive.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-info-module"><span class="std std-ref">vcenter_vm_hardware_info module</span></a> – Returns the virtual hardware settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_memory_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-memory-module"><span class="std std-ref">vcenter_vm_hardware_memory module</span></a> – Updates the memory-related settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_memory_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-memory-info-module"><span class="std std-ref">vcenter_vm_hardware_memory_info module</span></a> – Returns the memory-related settings of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_parallel_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-parallel-module"><span class="std std-ref">vcenter_vm_hardware_parallel module</span></a> – Adds a virtual parallel port to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_parallel_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-parallel-info-module"><span class="std std-ref">vcenter_vm_hardware_parallel_info module</span></a> – Returns information about a virtual parallel port.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_serial_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-serial-module"><span class="std std-ref">vcenter_vm_hardware_serial module</span></a> – Adds a virtual serial port to the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_hardware_serial_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-serial-info-module"><span class="std std-ref">vcenter_vm_hardware_serial_info module</span></a> – Returns information about a virtual serial port.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-info-module"><span class="std std-ref">vcenter_vm_info module</span></a> – Returns information about a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_libraryitem_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-libraryitem-info-module"><span class="std std-ref">vcenter_vm_libraryitem_info module</span></a> – Returns the information about the library item associated with the virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_power_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-power-module"><span class="std std-ref">vcenter_vm_power module</span></a> – Operate a boot, hard shutdown, hard reset or hard suspend on a guest.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_power_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-power-info-module"><span class="std std-ref">vcenter_vm_power_info module</span></a> – Returns the power state information of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_storage_policy_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-storage-policy-module"><span class="std std-ref">vcenter_vm_storage_policy module</span></a> – Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_storage_policy_compliance_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-storage-policy-compliance-module"><span class="std std-ref">vcenter_vm_storage_policy_compliance module</span></a> – Returns the storage policy Compliance Compliance.Info of a virtual machine after explicitly re-computing compliance check.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_storage_policy_compliance_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-storage-policy-compliance-info-module"><span class="std std-ref">vcenter_vm_storage_policy_compliance_info module</span></a> – Returns the cached storage policy compliance information of a virtual machine.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_storage_policy_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-storage-policy-info-module"><span class="std std-ref">vcenter_vm_storage_policy_info module</span></a> – Returns Information about Storage Policy associated with a virtual machine’s home directory and/or its virtual hard disks.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_tools_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-tools-module"><span class="std std-ref">vcenter_vm_tools module</span></a> – Update the properties of VMware Tools.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_tools_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-tools-info-module"><span class="std std-ref">vcenter_vm_tools_info module</span></a> – Get the properties of VMware Tools.</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_tools_installer_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-tools-installer-module"><span class="std std-ref">vcenter_vm_tools_installer module</span></a> – Connects the VMware Tools CD installer as a CD-ROM for the guest operating system</p></li>
+<li><p><a class="reference internal" href="vcenter_vm_tools_installer_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-tools-installer-info-module"><span class="std std-ref">vcenter_vm_tools_installer_info module</span></a> – Get information about the VMware Tools installer.</p></li>
+<li><p><a class="reference internal" href="vcenter_vmtemplate_libraryitems_module.html#ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-module"><span class="std std-ref">vcenter_vmtemplate_libraryitems module</span></a> – Creates a library item in content library from a virtual machine</p></li>
+<li><p><a class="reference internal" href="vcenter_vmtemplate_libraryitems_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vmtemplate-libraryitems-info-module"><span class="std std-ref">vcenter_vmtemplate_libraryitems_info module</span></a> – Returns information about a virtual machine template contained in the library item specified by <a class="reference external" href="mailto:{&#37;&#52;&#48;param&#46;name">{<span>&#64;</span>param<span>&#46;</span>name</a> templateLibraryItem}</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="lookup-plugins">
+<h3>Lookup Plugins<a class="headerlink" href="#lookup-plugins" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="cluster_moid_lookup.html#ansible-collections-vmware-vmware-rest-cluster-moid-lookup"><span class="std std-ref">cluster_moid lookup</span></a> – Look up MoID for vSphere cluster objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="datacenter_moid_lookup.html#ansible-collections-vmware-vmware-rest-datacenter-moid-lookup"><span class="std std-ref">datacenter_moid lookup</span></a> – Look up MoID for vSphere datacenter objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="datastore_moid_lookup.html#ansible-collections-vmware-vmware-rest-datastore-moid-lookup"><span class="std std-ref">datastore_moid lookup</span></a> – Look up MoID for vSphere datastore objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="folder_moid_lookup.html#ansible-collections-vmware-vmware-rest-folder-moid-lookup"><span class="std std-ref">folder_moid lookup</span></a> – Look up MoID for vSphere folder objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="host_moid_lookup.html#ansible-collections-vmware-vmware-rest-host-moid-lookup"><span class="std std-ref">host_moid lookup</span></a> – Look up MoID for vSphere host objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="network_moid_lookup.html#ansible-collections-vmware-vmware-rest-network-moid-lookup"><span class="std std-ref">network_moid lookup</span></a> – Look up MoID for vSphere network objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="resource_pool_moid_lookup.html#ansible-collections-vmware-vmware-rest-resource-pool-moid-lookup"><span class="std std-ref">resource_pool_moid lookup</span></a> – Look up MoID for vSphere resource pool objects using vCenter REST API</p></li>
+<li><p><a class="reference internal" href="vm_moid_lookup.html#ansible-collections-vmware-vmware-rest-vm-moid-lookup"><span class="std std-ref">vm_moid lookup</span></a> – Look up MoID for vSphere vm objects using vCenter REST API</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>List of <a class="reference internal" href="../../index.html#list-of-collections"><span class="std std-ref">collections</span></a> with docs hosted here.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Collections in the Vmware Namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="docsite/guide_vmware_rest.html" class="btn btn-neutral float-right" title="VMware Guide (REST)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

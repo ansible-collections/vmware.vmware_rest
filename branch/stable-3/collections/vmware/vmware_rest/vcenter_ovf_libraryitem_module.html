@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="2.12.0" name="antsibull-docs" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vmware.vmware_rest.vcenter_ovf_libraryitem module – Creates a library item in content library from a virtual machine or virtual appliance &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="vmware.vmware_rest.vcenter_resourcepool module – Creates a resource pool." href="vcenter_resourcepool_module.html" />
+    <link rel="prev" title="vmware.vmware_rest.vcenter_network_info module – Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the Network.FilterSpec." href="vcenter_network_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Vmware.Vmware_Rest</a></li>
+      <li class="breadcrumb-item active">vmware.vmware_rest.vcenter_ovf_libraryitem module – Creates a library item in content library from a virtual machine or virtual appliance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module"></span><section id="vmware-vmware-rest-vcenter-ovf-libraryitem-module-creates-a-library-item-in-content-library-from-a-virtual-machine-or-virtual-appliance">
+<h1>vmware.vmware_rest.vcenter_ovf_libraryitem module – Creates a library item in content library from a virtual machine or virtual appliance<a class="headerlink" href="#vmware-vmware-rest-vcenter-ovf-libraryitem-module-creates-a-library-item-in-content-library-from-a-virtual-machine-or-virtual-appliance" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 3.0.1).</p>
+<p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
+To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
+You need further requirements to be able to use this module,
+see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">vmware.vmware_rest.vcenter_ovf_libraryitem</span></code>.</p>
+</div>
+<p class="ansible-version-added">New in vmware.vmware_rest 2.0.0</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#notes" id="id4">Notes</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id5">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id6">Return Values</a></p></li>
+</ul>
+</nav>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Creates a library item in content library from a virtual machine or virtual appliance. &lt;p&gt; This <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> operation} creates a library item in content library whose content is an OVF package derived from a source virtual machine or virtual appliance, using the supplied create specification. The OVF package may be stored as in a newly created library item or in an in an existing library item. For an existing library item whose content is updated by this <a class="reference external" href="mailto:{&#37;&#52;&#48;term">{<span>&#64;</span>term</a> operation}, the original content is overwritten. Meta data such as name and description is not updated for the exisitng library item. &lt;/p&gt;</p></li>
+</ul>
+</section>
+<section id="requirements">
+<span id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>vSphere 7.0.3 or greater</p></li>
+<li><p>python &gt;= 3.6</p></li>
+<li><p>aiohttp</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Parameters</a><a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-client_token"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-client-token"><strong>client_token</strong></p>
+<a class="ansibleOptionLink" href="#parameter-client_token" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Client-generated token used to retry a request if the client fails to get a response from the server. If the original request succeeded, the result of that request will be returned, otherwise the operation will be retried.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-create_spec"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-create-spec"><strong>create_spec</strong></p>
+<a class="ansibleOptionLink" href="#parameter-create_spec" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Information used to create the OVF package from the source virtual machine or virtual appliance. Required with <em>state=[‘present’]</em></p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name to use in the OVF descriptor stored in the library item. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> (str): Description to use in the OVF descriptor stored in the library item. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (list): Flags to use for OVF package creation. The supported flags can be obtained using <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> ExportFlag#list}. ([‘present’])</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-deployment_spec"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-deployment-spec"><strong>deployment_spec</strong></p>
+<a class="ansibleOptionLink" href="#parameter-deployment_spec" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Specification of how the OVF package should be deployed to the target. Required with <em>state=[‘deploy’]</em></p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> (str): Name assigned to the deployed target virtual machine or virtual appliance. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">annotation</span></code> (str): Annotation assigned to the deployed target virtual machine or virtual appliance. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">accept_all_EULA</span></code> (bool): Whether to accept all End User License Agreements. ([‘deploy’])</p></li>
+</ul>
+<p>This key is required with [‘deploy’].</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">network_mappings</span></code> (dict): Specification of the target network to use for sections of type ovf:NetworkSection in the OVF descriptor. The key in the {&#64;term map} is the section identifier of the ovf:NetworkSection section in the OVF descriptor and the value is the target network to be used for deployment. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_mappings</span></code> (dict): Specification of the target storage to use for sections of type vmw:StorageGroupSection in the OVF descriptor. The key in the {&#64;term map} is the section identifier of the ovf:StorageGroupSection section in the OVF descriptor and the value is the target storage specification to be used for deployment. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_provisioning</span></code> (str): The <code class="docutils literal notranslate"><span class="pre">disk_provisioning_type</span></code> defines the virtual disk provisioning types that can be set for a disk on the target platform. ([‘deploy’])</p></li>
+<li><p>Accepted values:</p></li>
+<li><p>eagerZeroedThick</p></li>
+<li><p>thick</p></li>
+<li><p>thin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage_profile_id</span></code> (str): Default storage profile to use for all sections of type vmw:StorageSection in the OVF descriptor. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">locale</span></code> (str): The locale to use for parsing the OVF descriptor. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flags</span></code> (list): Flags to be use for deployment. The supported flag values can be obtained using <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> ImportFlag#list}. ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">additional_parameters</span></code> (list): Additional OVF parameters that may be needed for the deployment. Additional OVF parameters may be required by the OVF descriptor of the OVF package in the library item. Examples of OVF parameters that can be specified through this field include, but are not limited to: &lt;ul&gt; &lt;li&gt;{&#64;link DeploymentOptionParams}&lt;/li&gt; &lt;li&gt;{&#64;link ExtraConfigParams}&lt;/li&gt; &lt;li&gt;{&#64;link IpAllocationParams}&lt;/li&gt; &lt;li&gt;{&#64;link PropertyParams}&lt;/li&gt; &lt;li&gt;{&#64;link ScaleOutParams}&lt;/li&gt; &lt;li&gt;{&#64;link VcenterExtensionParams}&lt;/li&gt; &lt;/ul&gt; ([‘deploy’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default_datastore_id</span></code> (str): Default datastore to use for all sections of type vmw:StorageSection in the OVF descriptor. ([‘deploy’])</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ovf_library_item_id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-ovf-library-item-id"><strong>ovf_library_item_id</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ovf_library_item_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Identifier of the content library item containing the OVF package to be deployed. Required with <em>state=[‘deploy’, ‘filter’]</em></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-session_timeout"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-session-timeout"><strong>session_timeout</strong></p>
+<a class="ansibleOptionLink" href="#parameter-session_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">float</span></p>
+<p><em class="ansible-option-versionadded">added in vmware.vmware_rest 2.1.0</em></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Timeout settings for client session.</p>
+<p>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</p>
+<p>The default value is 300s.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-source"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-source"><strong>source</strong></p>
+<a class="ansibleOptionLink" href="#parameter-source" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Identifier of the virtual machine or virtual appliance to use as the source. Required with <em>state=[‘present’]</em></p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): Type of the deployable resource. ([‘present’])</p></li>
+</ul>
+<p>This key is required with [‘present’].</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> (str): Identifier of the deployable resource. ([‘present’])</p></li>
+</ul>
+<p>This key is required with [‘present’].</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;deploy&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;filter&quot;</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">&quot;present&quot;</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-target"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-target"><strong>target</strong></p>
+<a class="ansibleOptionLink" href="#parameter-target" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Specification of the target content library and library item. This parameter is mandatory.</p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">library_id</span></code> (str): Identifier of the library in which a new library item should be created. This field is not used if the <code class="docutils literal notranslate"><span class="pre">#library_item_id</span></code> field is specified. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">library_item_id</span></code> (str): Identifier of the library item that should be should be updated. ([‘present’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_pool_id</span></code> (str): Identifier of the resource pool to which the virtual machine or virtual appliance should be attached. ([‘deploy’, ‘filter’])</p></li>
+</ul>
+<p>This key is required with [‘deploy’, ‘filter’].</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">host_id</span></code> (str): Identifier of the target host on which the virtual machine or virtual appliance will run. The target host must be a member of the cluster that contains the resource pool identified by <a class="reference external" href="mailto:{&#37;&#52;&#48;link">{<span>&#64;</span>link</a> #resourcePoolId}. ([‘deploy’, ‘filter’])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">folder_id</span></code> (str): Identifier of the vCenter folder that should contain the virtual machine or virtual appliance. The folder must be virtual machine folder. ([‘deploy’, ‘filter’])</p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_hostname"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-vcenter-hostname"><strong>vcenter_hostname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_hostname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The hostname or IP address of the vSphere vCenter</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_HOST</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_password"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-vcenter-password"><strong>vcenter_password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter password</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_rest_log_file"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-vcenter-rest-log-file"><strong>vcenter_rest_log_file</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_rest_log_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>You can use this optional parameter to set the location of a log file.</p>
+<p>This file will be used to record the HTTP REST interaction.</p>
+<p>The file will be stored on the host that run the module.</p>
+<p>If the value is not specified in the task, the value of</p>
+<p>environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_REST_LOG_FILE</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_username"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-vcenter-username"><strong>vcenter_username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter username</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_USER</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_validate_certs"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-parameter-vcenter-validate-certs"><strong>vcenter_validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Allows connection when SSL certificates are not valid. Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> when certificates are not trusted.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">true</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Tested on vSphere 7.0.3</p></li>
+</ul>
+</div>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.cluster_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">datastore</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.datastore_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/datastore/rw_datastore&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+<span class="w">    </span><span class="nt">guest_OS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RHEL_7_64</span>
+<span class="w">    </span><span class="nt">hardware_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMX_11</span>
+<span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">hot_add_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">size_MiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_vm</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a content library pointing on a NFS share</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_locallibrary</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_library_on_nfs</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">automated</span>
+<span class="w">    </span><span class="nt">publish_info</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">published</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">authentication_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NONE</span>
+<span class="w">    </span><span class="nt">storage_backings</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">storage_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs://datastore.test/srv/share/content-library</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OTHER</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs_lib</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Export the VM as an OVF on the library</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_ovf_libraryitem</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">session_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2900</span>
+<span class="w">    </span><span class="nt">source</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_vm.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">target</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">library_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">nfs_lib.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">create_spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">golden_image</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">an OVF example</span>
+<span class="w">      </span><span class="nt">flags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ovf_item</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get the list of items of the NFS library</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.content_library_item_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">library_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">nfs_lib.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lib_items</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a new VM from the OVF</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_ovf_libraryitem</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ovf_library_item_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="o">(</span><span class="nv">lib_items.value</span><span class="o">|</span><span class="nf">selectattr</span><span class="o">(</span><span class="s2">&quot;name&quot;</span><span class="o">,</span> <span class="s2">&quot;equalto&quot;</span><span class="o">,</span> <span class="s2">&quot;golden_image&quot;</span><span class="o">)|</span><span class="nf">first</span><span class="o">)</span><span class="nv">.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
+<span class="w">    </span><span class="nt">target</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">resource_pool_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">deployment_spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_vm_from_ovf</span>
+<span class="w">      </span><span class="nt">accept_all_EULA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">storage_provisioning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thin</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a new VM from the OVF and specify the host and folder</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_ovf_libraryitem</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ovf_library_item_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="o">(</span><span class="nv">lib_items.value</span><span class="o">|</span><span class="nf">selectattr</span><span class="o">(</span><span class="s2">&quot;name&quot;</span><span class="o">,</span> <span class="s2">&quot;equalto&quot;</span><span class="o">,</span> <span class="s2">&quot;golden_image&quot;</span><span class="o">)|</span><span class="nf">first</span><span class="o">)</span><span class="nv">.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
+<span class="w">    </span><span class="nt">target</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">resource_pool_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.resource_pool_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/Resources&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">folder_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.folder_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/vm&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">      </span><span class="nt">host_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.host_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/host/my_cluster/esxi1.test/test_vm1&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">deployment_spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_vm_from_ovf_on_a_host</span>
+<span class="w">      </span><span class="nt">accept_all_EULA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">storage_provisioning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">thin</span>
+</pre></div>
+</div>
+</section>
+<section id="return-values">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Return Values</a><a class="headerlink" href="#return-values" title="Link to this heading"></a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible-core/devel/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible Core vdevel)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-value"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-ovf-libraryitem-module-return-value"><strong>value</strong></p>
+<a class="ansibleOptionLink" href="#return-value" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Create a new VM from the OVF and specify the host and folder</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">{&quot;error&quot;:</span> <span class="pre">{&quot;errors&quot;:</span> <span class="pre">[],</span> <span class="pre">&quot;information&quot;:</span> <span class="pre">[],</span> <span class="pre">&quot;warnings&quot;:</span> <span class="pre">[]},</span> <span class="pre">&quot;resource_id&quot;:</span> <span class="pre">{&quot;id&quot;:</span> <span class="pre">&quot;vm-1078&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;VirtualMachine&quot;},</span> <span class="pre">&quot;succeeded&quot;:</span> <span class="pre">1}</span></code></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ansible Cloud Team (&#64;ansible-collections)</p></li>
+</ul>
+</section>
+<section id="collection-links">
+<h3>Collection links<a class="headerlink" href="#collection-links" title="Link to this heading"></a></h3>
+<ul class="ansible-links">
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc" rel="noopener external" target="_blank">Issue Tracker</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest" rel="noopener external" target="_blank">Homepage</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest.git" rel="noopener external" target="_blank">Repository (Sources)</a></span></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vcenter_network_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.vcenter_network_info module – Returns information about at most 1000 visible (subject to permission checks) networks in vCenter matching the Network.FilterSpec." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vcenter_resourcepool_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.vcenter_resourcepool module – Creates a resource pool." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>
