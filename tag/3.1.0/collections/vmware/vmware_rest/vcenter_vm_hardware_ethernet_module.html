@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="2.12.0" name="antsibull-docs" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vmware.vmware_rest.vcenter_vm_hardware_ethernet module – Adds a virtual Ethernet adapter to the virtual machine. &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="vmware.vmware_rest.vcenter_vm_hardware_ethernet_info module – Returns information about a virtual Ethernet adapter." href="vcenter_vm_hardware_ethernet_info_module.html" />
+    <link rel="prev" title="vmware.vmware_rest.vcenter_vm_hardware_disk_info module – Returns information about a virtual disk." href="vcenter_vm_hardware_disk_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Vmware.Vmware_Rest</a></li>
+      <li class="breadcrumb-item active">vmware.vmware_rest.vcenter_vm_hardware_ethernet module – Adds a virtual Ethernet adapter to the virtual machine.</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module"></span><section id="vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-adds-a-virtual-ethernet-adapter-to-the-virtual-machine">
+<h1>vmware.vmware_rest.vcenter_vm_hardware_ethernet module – Adds a virtual Ethernet adapter to the virtual machine.<a class="headerlink" href="#vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-adds-a-virtual-ethernet-adapter-to-the-virtual-machine" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/vmware/vmware_rest/">vmware.vmware_rest collection</a> (version 3.1.0).</p>
+<p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
+To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">vmware.vmware_rest</span></code>.
+You need further requirements to be able to use this module,
+see <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span></code>.</p>
+</div>
+<p class="ansible-version-added">New in vmware.vmware_rest 0.1.0</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#notes" id="id4">Notes</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id5">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id6">Return Values</a></p></li>
+</ul>
+</nav>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Adds a virtual Ethernet adapter to the virtual machine.</p></li>
+</ul>
+</section>
+<section id="requirements">
+<span id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>vSphere 7.0.3 or greater</p></li>
+<li><p>python &gt;= 3.6</p></li>
+<li><p>aiohttp</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Parameters</a><a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-allow_guest_control"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-allow-guest-control"><strong>allow_guest_control</strong></p>
+<a class="ansibleOptionLink" href="#parameter-allow_guest_control" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Flag indicating whether the guest can connect and disconnect the device.</p>
+<p>If unset, the value is unchanged.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-backing"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-backing"><strong>backing</strong></p>
+<a class="ansibleOptionLink" href="#parameter-backing" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Physical resource backing for the virtual Ethernet adapter.</p>
+<p>If unset, the system may try to find an appropriate backing. If one is not found, the request will fail. Required with <em>state=[‘present’]</em></p>
+<p>Valid attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (str): This option defines the valid backing types for a virtual Ethernet adapter. ([‘present’])</p></li>
+</ul>
+<p>This key is required with [‘present’].</p>
+<ul class="simple">
+<li><p>Accepted values:</p></li>
+<li><p>DISTRIBUTED_PORTGROUP</p></li>
+<li><p>HOST_DEVICE</p></li>
+<li><p>OPAQUE_NETWORK</p></li>
+<li><p>STANDARD_PORTGROUP</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">network</span></code> (str): Identifier of the network that backs the virtual Ethernet adapter.</p></li>
+</ul>
+<p>This field is optional and it is only relevant when the value of <em>type</em> is one of STANDARD_PORTGROUP, DISTRIBUTED_PORTGROUP, or OPAQUE_NETWORK.</p>
+<p>When clients pass a value of this structure as a parameter, the field must be the id of a resource returned by <a class="reference internal" href="vcenter_network_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-network-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_network_info</span></a>. ([‘present’])</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">distributed_port</span></code> (str): Key of the distributed virtual port that backs the virtual Ethernet adapter. Depending on the type of the Portgroup, the port may be specified using this field. If the portgroup type is early-binding (also known as static), a port is assigned when the Ethernet adapter is configured to use the port. The port may be either automatically or specifically assigned based on the value of this field. If the portgroup type is ephemeral, the port is created and assigned to a virtual machine when it is powered on and the Ethernet adapter is connected. This field cannot be specified as no free ports exist before use.</p></li>
+</ul>
+<p>May be used to specify a port when the network specified on the <em>network</em> field is a static or early binding distributed portgroup. If unset, the port will be automatically assigned to the Ethernet adapter based on the policy embodied by the portgroup type. ([‘present’])</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-label"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-label"><strong>label</strong></p>
+<a class="ansibleOptionLink" href="#parameter-label" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The name of the item</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-mac_address"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-mac-address"><strong>mac_address</strong></p>
+<a class="ansibleOptionLink" href="#parameter-mac_address" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>MAC address.</p>
+<p>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</p>
+<p>If unset, the value is unchanged. Must be specified if <em>mac_type</em> is MANUAL. Must be unset if the MAC address type is not MANUAL.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-mac_type"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-mac-type"><strong>mac_type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-mac_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The <em>mac_address_type</em> enumerated type defines the valid MAC address origins for a virtual Ethernet adapter.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;ASSIGNED&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;GENERATED&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;MANUAL&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-nic"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-nic"><strong>nic</strong></p>
+<a class="ansibleOptionLink" href="#parameter-nic" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Virtual Ethernet adapter identifier.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="#ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span></a>. Required with <em>state=[‘absent’, ‘connect’, ‘disconnect’, ‘present’]</em></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-pci_slot_number"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-pci-slot-number"><strong>pci_slot_number</strong></p>
+<a class="ansibleOptionLink" href="#parameter-pci_slot_number" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Address of the virtual Ethernet adapter on the PCI bus. If the PCI address is invalid, the server will change when it the VM is started or as the device is hot added.</p>
+<p>If unset, the server will choose an available address when the virtual machine is powered on.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-session_timeout"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-session-timeout"><strong>session_timeout</strong></p>
+<a class="ansibleOptionLink" href="#parameter-session_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">float</span></p>
+<p><em class="ansible-option-versionadded">added in vmware.vmware_rest 2.1.0</em></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Timeout settings for client session.</p>
+<p>The maximal number of seconds for the whole operation including connection establishment, request sending and response.</p>
+<p>The default value is 300s.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-start_connected"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-start-connected"><strong>start_connected</strong></p>
+<a class="ansibleOptionLink" href="#parameter-start_connected" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Flag indicating whether the virtual device should be connected whenever the virtual machine is powered on.</p>
+<p>If unset, the value is unchanged.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;connect&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;disconnect&quot;</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">&quot;present&quot;</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-type"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-type"><strong>type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The <em>emulation_type</em> enumerated type defines the valid emulation types for a virtual Ethernet adapter.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;E1000&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;E1000E&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;PCNET32&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMXNET&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMXNET2&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;VMXNET3&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-upt_compatibility_enabled"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-upt-compatibility-enabled"><strong>upt_compatibility_enabled</strong></p>
+<a class="ansibleOptionLink" href="#parameter-upt_compatibility_enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Flag indicating whether Universal Pass-Through (UPT) compatibility should be enabled on this virtual Ethernet adapter.</p>
+<p>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</p>
+<p>If unset, the value is unchanged. Must be unset if the emulation type of the virtual Ethernet adapter is not VMXNET3.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_hostname"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-vcenter-hostname"><strong>vcenter_hostname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_hostname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The hostname or IP address of the vSphere vCenter</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_HOST</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_password"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-vcenter-password"><strong>vcenter_password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter password</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_rest_log_file"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-vcenter-rest-log-file"><strong>vcenter_rest_log_file</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_rest_log_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>You can use this optional parameter to set the location of a log file.</p>
+<p>This file will be used to record the HTTP REST interaction.</p>
+<p>The file will be stored on the host that run the module.</p>
+<p>If the value is not specified in the task, the value of</p>
+<p>environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_REST_LOG_FILE</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_username"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-vcenter-username"><strong>vcenter_username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The vSphere vCenter username</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_USER</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vcenter_validate_certs"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-vcenter-validate-certs"><strong>vcenter_validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vcenter_validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Allows connection when SSL certificates are not valid. Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> when certificates are not trusted.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">VMWARE_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">true</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-vm"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-vm"><strong>vm</strong></p>
+<a class="ansibleOptionLink" href="#parameter-vm" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Virtual machine identifier.</p>
+<p>The parameter must be the id of a resource returned by <a class="reference internal" href="vcenter_vm_info_module.html#ansible-collections-vmware-vmware-rest-vcenter-vm-info-module"><span class="std std-ref">vmware.vmware_rest.vcenter_vm_info</span></a>. This parameter is mandatory.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-wake_on_lan_enabled"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-parameter-wake-on-lan-enabled"><strong>wake_on_lan_enabled</strong></p>
+<a class="ansibleOptionLink" href="#parameter-wake_on_lan_enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Flag indicating whether wake-on-LAN shoud be enabled on this virtual Ethernet adapter.</p>
+<p>This field may be modified at any time, and changes will be applied the next time the virtual machine is powered on.</p>
+<p>If unset, the value is unchanged.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Tested on vSphere 7.0.3</p></li>
+</ul>
+</div>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get the dvswitch called my-portgroup</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_network_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">filter_types</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DISTRIBUTED_PORTGROUP</span>
+<span class="w">    </span><span class="nt">filter_names</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my portrgoup</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_portgroup</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Look up the VM called test_vm1 in the inventory</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search_result</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">filter_names</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Collect information about a specific VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">search_result.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.vm</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test_vm1_info</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Attach a VM to a dvswitch</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">pci_slot_number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DISTRIBUTED_PORTGROUP</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">my_portgroup.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.network</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">start_connected</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm_hardware_ethernet_1</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Turn the NIC&#39;s start_connected flag on</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">nic</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">vm_hardware_ethernet_1.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">start_connected</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Attach the VM to a standard portgroup</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">pci_slot_number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.network_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/network/VM Network&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Attach the VM to a standard portgroup (again)</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">pci_slot_number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.network_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/network/VM Network&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Collect a list of the NIC for a given VM</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm_nic</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Attach the VM to a standard portgroup (again) using the nic ID</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">nic</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">vm_nic.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.nic</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.network_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/network/VM Network&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Attach to another standard portgroup</span>
+<span class="w">  </span><span class="nt">vmware.vmware_rest.vcenter_vm_hardware_ethernet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">vm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">test_vm1_info.id</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">nic</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">vm_nic.value</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.nic</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">backing</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STANDARD_PORTGROUP</span>
+<span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s1">&#39;vmware.vmware_rest.network_moid&#39;</span><span class="o">,</span> <span class="s1">&#39;/my_dc/network/second_vswitch&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">_result</span>
+</pre></div>
+</div>
+</section>
+<section id="return-values">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Return Values</a><a class="headerlink" href="#return-values" title="Link to this heading"></a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible-core/devel/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible Core vdevel)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table class="longtable ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-id"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-return-id"><strong>id</strong></p>
+<a class="ansibleOptionLink" href="#return-id" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>moid of the resource</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">&quot;4000&quot;</span></code></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-value"></div><p class="ansible-option-title" id="ansible-collections-vmware-vmware-rest-vcenter-vm-hardware-ethernet-module-return-value"><strong>value</strong></p>
+<a class="ansibleOptionLink" href="#return-value" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Attach a VM to a dvswitch</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> On success</p>
+<p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">{&quot;allow_guest_control&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;backing&quot;:</span> <span class="pre">{&quot;connection_cookie&quot;:</span> <span class="pre">632732945,</span> <span class="pre">&quot;distributed_port&quot;:</span> <span class="pre">&quot;2&quot;,</span> <span class="pre">&quot;distributed_switch_uuid&quot;:</span> <span class="pre">&quot;50</span> <span class="pre">31</span> <span class="pre">d3</span> <span class="pre">c4</span> <span class="pre">2d</span> <span class="pre">09</span> <span class="pre">4f</span> <span class="pre">e3-0f</span> <span class="pre">d6</span> <span class="pre">7f</span> <span class="pre">30</span> <span class="pre">3d</span> <span class="pre">fe</span> <span class="pre">d4</span> <span class="pre">a0&quot;,</span> <span class="pre">&quot;network&quot;:</span> <span class="pre">&quot;dvportgroup-1022&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;DISTRIBUTED_PORTGROUP&quot;},</span> <span class="pre">&quot;label&quot;:</span> <span class="pre">&quot;Network</span> <span class="pre">adapter</span> <span class="pre">1&quot;,</span> <span class="pre">&quot;mac_address&quot;:</span> <span class="pre">&quot;00:50:56:b1:33:76&quot;,</span> <span class="pre">&quot;mac_type&quot;:</span> <span class="pre">&quot;ASSIGNED&quot;,</span> <span class="pre">&quot;pci_slot_number&quot;:</span> <span class="pre">4,</span> <span class="pre">&quot;start_connected&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;state&quot;:</span> <span class="pre">&quot;NOT_CONNECTED&quot;,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;VMXNET3&quot;,</span> <span class="pre">&quot;upt_compatibility_enabled&quot;:</span> <span class="pre">0,</span> <span class="pre">&quot;wake_on_lan_enabled&quot;:</span> <span class="pre">0}</span></code></p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ansible Cloud Team (&#64;ansible-collections)</p></li>
+</ul>
+</section>
+<section id="collection-links">
+<h3>Collection links<a class="headerlink" href="#collection-links" title="Link to this heading"></a></h3>
+<ul class="ansible-links">
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc" rel="noopener external" target="_blank">Issue Tracker</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest" rel="noopener external" target="_blank">Homepage</a></span></li>
+<li><span><a aria-role="button" class="ansible-link reference external" href="https://github.com/ansible-collections/vmware.vmware_rest.git" rel="noopener external" target="_blank">Repository (Sources)</a></span></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vcenter_vm_hardware_disk_info_module.html" class="btn btn-neutral float-left" title="vmware.vmware_rest.vcenter_vm_hardware_disk_info module – Returns information about a virtual disk." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vcenter_vm_hardware_ethernet_info_module.html" class="btn btn-neutral float-right" title="vmware.vmware_rest.vcenter_vm_hardware_ethernet_info module – Returns information about a virtual Ethernet adapter." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>

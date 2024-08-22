@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VMware Guide (REST) &mdash; Ansible collections  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5707b69d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/ansible.css?v=c5b67dd2" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/antsibull-minimal.css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/rtd-ethical-ads.css?v=289b023e" />
+
+  
+    <link rel="shortcut icon" href="../../../../_static/images/Ansible-Mark-RGB_Black.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=7f41d439"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="How to install the vmware_rest collection" href="vmware_rest_scenarios/vcenter/1_installation.html" />
+    <link rel="prev" title="Vmware.Vmware_Rest" href="../index.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+
+
+
+
+</head>
+
+<body class="wy-body-for-nav"><!-- extra body elements for Ansible beyond RTD Sphinx Theme -->
+
+<div class="DocSite-globalNav ansibleNav">
+  <ul>
+    <li><a href="https://www.ansible.com/blog" target="_blank">Blog</a></li>
+    <li><a href="https://forum.ansible.com/" target="_blank">Ansible community forum</a></li>
+    <li><a href="https://docs.ansible.com/" target="_blank">Documentation</a></li>
+  </ul>
+</div>
+
+<a class="DocSite-nav" href="/" style="padding-bottom: 30px;">
+
+  <img class="DocSiteNav-logo"
+    src="../../../../_static/images/Ansible-Mark-RGB_White.png"
+    alt="Ansible Logo">
+  <div class="DocSiteNav-title">Ansible Collections Documentation</div>
+</a>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Ansible collections
+          </a><!--- Based on https://github.com/rtfd/sphinx_rtd_theme/pull/438/files -->
+
+<div class="version">
+  
+    
+  
+</div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <label class="sr-only" for="q">Search docs:</label>
+    <input type="text" class="st-default-search-input" id="q" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+  
+              <p class="caption" role="heading"><span class="caption-text">Collections:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Collection Index</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Collections in the Vmware Namespace</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Vmware.Vmware_Rest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html#scenario-guide">Scenario Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#developer-guide">Developer Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../index.html#plugin-index">Plugin Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Plugin indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index_lookup.html">Index of all Lookup Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index_module.html">Index of all Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference indexes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../environment_variables.html">Index of all Collection Environment Variables</a></li>
+</ul>
+<!-- extra nav elements for Ansible beyond RTD Sphinx Theme -->
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Ansible collections</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Collection Index</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Collections in the Vmware Namespace</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Vmware.Vmware_Rest</a></li>
+      <li class="breadcrumb-item active">VMware Guide (REST)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+  
+           <div itemprop="articleBody">
+             
+  <section id="vmware-guide-rest">
+<span id="ansible-collections-vmware-vmware-rest-docsite-vmware-rest-ansible"></span><h1>VMware Guide (REST)<a class="headerlink" href="#vmware-guide-rest" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/1_installation.html">How to install the vmware_rest collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/1_authentication.html">How to configure the vmware_rest collection</a></li>
+</ul>
+</div>
+<section id="life-cycle-of-a-virtual-machine">
+<h2>Life cycle of a Virtual Machine<a class="headerlink" href="#life-cycle-of-a-virtual-machine" title="Link to this heading"></a></h2>
+<p>These scenarios teach you how to accomplish common VMware tasks using the REST API and the Ansible <code class="docutils literal notranslate"><span class="pre">vmware.vmware_rest</span></code> collection. To get started, please select the task you want to accomplish.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/2_collect_information.html">How to collect information about your environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/3_create_vm.html">How to create a Virtual Machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/4_vm_info.html">Retrieve information from a specific VM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/5_vm_hardware_tuning.html">How to modify a virtual machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/6_run_a_vm.html">How to run a virtual machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/7_vm_tool_information.html">How to get information from a running virtual machine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/vcenter/8_vm_tool_configuration.html">How to configure the VMware tools of a running virtual machine</a></li>
+</ul>
+</div>
+</section>
+<section id="manage-a-vcenter-server-appliance-vcsa">
+<h2>Manage a vCenter Server Appliance (VCSA)<a class="headerlink" href="#manage-a-vcenter-server-appliance-vcsa" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/appliance_access.html">Configure the console and SSH access</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/health.html">Get the health state of the VCSA components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/network.html">Network managment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/services.html">Services managment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/system_managment.html">System managment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/system_managment.html#fips-mode">FIPS mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/system_managment.html#time-and-timezone-configuration">Time and Timezone configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vmware_rest_scenarios/appliance/system_managment.html#storage-system">Storage system</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          
+
+<footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Vmware.Vmware_Rest" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vmware_rest_scenarios/vcenter/1_installation.html" class="btn btn-neutral float-right" title="How to install the vmware_rest collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Ansible contributors.</p>
+  </div>
+
+  
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script><!-- extra footer elements for Ansible beyond RTD Sphinx Theme -->
+
+</body>
+</html>
