@@ -2,18 +2,6 @@
 
 This repo hosts the `vmware.vmware_rest` Ansible Collection.
 
-The collection includes the VMware modules and plugins supported by Ansible VMware community to help the management of VMware infrastructure. These modules are different from `community.vmware` since they are based upon VMware vSphere REST API interface and not relying on any third party libraries such as [`Pyvmomi`](https://github.com/vmware/pyvmomi) and [`vSphere Automation SDK for Python`](https://github.com/vmware/vsphere-automation-sdk-python).
-
-
-
-
-
-
-
-# Ansible Collection: vmware.vmware_rest
-
-This repo hosts the `vmware.vmware_rest` Ansible Collection.
-
 The **vmware.vmware_rest** collection is part of the **Red Hat Ansible Certified Content for VMware** offering that brings Ansible automation to VMware. This collection brings forward the possibility to manage vSphere resources and automate operator tasks.
 
 This collection is based upon VMware vSphere REST API interface and does not rely on the VMware SDKs [`Pyvmomi`](https://github.com/vmware/pyvmomi) and [`vSphere Automation SDK for Python`](https://github.com/vmware/vsphere-automation-sdk-python).
@@ -51,21 +39,21 @@ Before using this collection, you need to install it with the Ansible Galaxy com
 ansible-galaxy collection install vmware.vmware_rest
 ```
 
-<br/>You can also include it in a requirements.yml file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
+You can also include it in a requirements.yml file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
 
 ```sh
 collections:
   - name: vmware.vmware_rest
 ```
 
-<br/>Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the Ansible package.
+Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the Ansible package.
 To upgrade the collection to the latest available version, run the following command:
 
 ```sh
 ansible-galaxy collection install vmware.vmware_rest --upgrade
 ```
 
-<br/>You can also install a specific version of the collection, for example, if you need to install a different version. Use the following syntax to install version 1.0.0:
+You can also install a specific version of the collection, for example, if you need to install a different version. Use the following syntax to install version 1.0.0:
 
 ```sh
 ansible-galaxy collection install vmware.vmware_rest:1.0.0
@@ -116,7 +104,7 @@ For more information about communication, see the [Ansible communication guide](
 
 As Red Hat Ansible [Certified Content](https://catalog.redhat.com/software/search?target_platforms=Red%20Hat%20Ansible%20Automation%20Platform), this collection is entitled to [support](https://access.redhat.com/support/) through [Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible) (AAP).
 
-<br/>If a support case cannot be opened with Red Hat and the collection has been obtained either from [Galaxy](https://galaxy.ansible.com/ui/) or [GitHub](https://github.com/ansible-collections/vmware.vmware_rest), there is community support available at no charge. Community support is limited to the collection; community support does not include any of the Ansible Automation Platform components or [ansible-core](https://github.com/ansible/ansible).
+If a support case cannot be opened with Red Hat and the collection has been obtained either from [Galaxy](https://galaxy.ansible.com/ui/) or [GitHub](https://github.com/ansible-collections/vmware.vmware_rest), there is community support available at no charge. Community support is limited to the collection; community support does not include any of the Ansible Automation Platform components or [ansible-core](https://github.com/ansible/ansible).
 
 
 ## Release Notes and Roadmap
