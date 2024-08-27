@@ -25,8 +25,7 @@ FILTER_MAPPINGS = {
     "datacenter": {
         "parent_folders": "folders",
     },
-    "folder": {
-    },
+    "folder": {},
     "cluster": {
         "parent_folders": "folders",
     },
@@ -39,13 +38,11 @@ FILTER_MAPPINGS = {
     "vm": {
         "parent_folders": "folders",
     },
-    "network": {
-        "parent_folders": "folders"
-    },
+    "network": {"parent_folders": "folders"},
 }
 
 
-class VcenterApi():
+class VcenterApi:
     def __init__(self, hostname, session):
         self.hostname = hostname
         self.session = session
@@ -60,26 +57,28 @@ class VcenterApi():
         if object_type == "resource_pool":
             object_type = object_type.replace("_", "-")
 
-        return (
-            f"https://{self.hostname}/api/vcenter/{object_type}"
-        ) + gen_args(corrected_filters_for_query, corrected_filters_for_query.keys())
-
+        return (f"https://{self.hostname}/api/vcenter/{object_type}") + gen_args(
+            corrected_filters_for_query, corrected_filters_for_query.keys()
+        )
 
     def correct_filter_names(self, filters, object_type):
         """
-            Objects in vSphere have slightly different filter names. For example, some use 'parent_folders' and some use 'folders'.
-            Its easier to read the code if we do all of the filter corrections at the end using a map.
-            Params:
-                filters: dict, The active filters that should be applied to the REST request
+        Objects in vSphere have slightly different filter names. For example, some use 'parent_folders' and some use 'folders'.
+        Its easier to read the code if we do all of the filter corrections at the end using a map.
+        Params:
+            filters: dict, The active filters that should be applied to the REST request
         """
         if object_type not in FILTER_MAPPINGS.keys():
             raise AnsibleLookupError(
-                "object_type must be one of [%s]." % ", ".join(list(FILTER_MAPPINGS.keys()))
+                "object_type must be one of [%s]."
+                % ", ".join(list(FILTER_MAPPINGS.keys()))
             )
         corrected_filters = {}
         for filter_key, filter_value in filters.items():
             try:
-                corrected_filters[FILTER_MAPPINGS[object_type][filter_key]] = filter_value
+                corrected_filters[FILTER_MAPPINGS[object_type][filter_key]] = (
+                    filter_value
+                )
             except KeyError:
                 corrected_filters[filter_key] = filter_value
 
@@ -126,18 +125,20 @@ class Lookup:
 
     async def search_for_object_moid_top_down(self):
         """
-            Searches for the lookup term in VSphere. Uses a top down approach to progress
-            through the path (for example /datacenter/vm/foo/bar/my-vm) until it reaches the
-            desired object. This guarantees we find the correct object even if multiple have the
-            same name, possibly at the cost of performance.
+        Searches for the lookup term in VSphere. Uses a top down approach to progress
+        through the path (for example /datacenter/vm/foo/bar/my-vm) until it reaches the
+        desired object. This guarantees we find the correct object even if multiple have the
+        same name, possibly at the cost of performance.
         """
         object_path = self._options["_terms"]
-        return_all_children = object_path.endswith('/')
+        return_all_children = object_path.endswith("/")
         path_parts = [_part for _part in object_path.split("/") if _part]
 
         for index, path_part in enumerate(path_parts):
-            if not self.active_filters.get('datacenters'):
-                datacenter_moid = await self.get_object_moid_by_name_and_type(path_part, "datacenter")
+            if not self.active_filters.get("datacenters"):
+                datacenter_moid = await self.get_object_moid_by_name_and_type(
+                    path_part, "datacenter"
+                )
                 if self.object_type == "datacenter" or not datacenter_moid:
                     return datacenter_moid
                 self.active_filters["datacenters"] = datacenter_moid
@@ -162,60 +163,63 @@ class Lookup:
 
     async def process_intermediate_path_part(self, intermediate_object_name):
         """
-            Finds and returns the MoID for an object in the middle of a search path. Different vSphere objects can be
-            children of other types of vSphere objects.
-              - VMs could be in a resource pool, a host, or a folder
-              - Networks could be in a host, or in a folder
-              - Hosts could be in a cluster, or in a folder
-              - Datastores could in a host, or in a folder
-              - Resource pools could be in a cluster, or a host
-            We start with the most restrictive searches and progressively expand the search area until something is found.
-            We also update the filters to include the proper object filter for the next round of searches.
-            Params:
-                intermediate_object_name: str, The name of the current object to search for
-                filters: dict, The active dictionary of filters to use when searching
-            Returns:
-                str or None, a single MoID or none if nothing was found
+        Finds and returns the MoID for an object in the middle of a search path. Different vSphere objects can be
+        children of other types of vSphere objects.
+          - VMs could be in a resource pool, a host, or a folder
+          - Networks could be in a host, or in a folder
+          - Hosts could be in a cluster, or in a folder
+          - Datastores could in a host, or in a folder
+          - Resource pools could be in a cluster, or a host
+        We start with the most restrictive searches and progressively expand the search area until something is found.
+        We also update the filters to include the proper object filter for the next round of searches.
+        Params:
+            intermediate_object_name: str, The name of the current object to search for
+        Returns:
+            str or None, a single MoID or none if nothing was found
         """
         if self.object_type == "vm":
-            result = await self.get_object_moid_by_name_and_type(intermediate_object_name, "resource_pool")
+            result = await self.get_object_moid_by_name_and_type(
+                intermediate_object_name, "resource_pool"
+            )
             if result:
-                self.clear_search_filters()
-                self.active_filters["resource_pools"] = result
+                self.set_new_filters_with_datacenter({"resource_pools": result})
                 return result
 
         if self.object_type in ("host", "resource_pool"):
-            result = await self.get_object_moid_by_name_and_type(intermediate_object_name, "cluster")
+            result = await self.get_object_moid_by_name_and_type(
+                intermediate_object_name, "cluster"
+            )
             if result:
-                self.clear_search_filters()
-                self.active_filters["clusters"] = result
+                self.set_new_filters_with_datacenter({"clusters": result})
                 return result
 
         if self.object_type in ("vm", "network", "datastore", "resource_pool"):
-            result = await self.get_object_moid_by_name_and_type(intermediate_object_name, "host")
+            result = await self.get_object_moid_by_name_and_type(
+                intermediate_object_name, "host"
+            )
             if result:
-                self.clear_search_filters()
-                self.active_filters["hosts"] = result
+                self.set_new_filters_with_datacenter({"hosts": result})
                 return result
 
         # resource pools cant continue past this point
         if self.object_type == "resource_pool":
             return None
 
-        result = await self.get_object_moid_by_name_and_type(intermediate_object_name, "folder")
-        self.clear_search_filters()
-        self.active_filters["parent_folders"] = result
+        result = await self.get_object_moid_by_name_and_type(
+            intermediate_object_name, "folder"
+        )
+        self.set_new_filters_with_datacenter({"parent_folders": result})
         return result
 
-    async def get_object_moid_by_name_and_type(self, object_name, _object_type = None):
+    async def get_object_moid_by_name_and_type(self, object_name, _object_type=None):
         """
-            Returns a single object MoID with a specific type, name, and filter set. If more than one object
-            is found, and error is thrown.
-            Params:
-                object_name: str, the name of the object to search for
-                _object_type: str, Optional name of the object type to search for. Defaults to the lookup plugin type
-            Returns:
-                str, a single MoID
+        Returns a single object MoID with a specific type, name, and filter set. If more than one object
+        is found, and error is thrown.
+        Params:
+            object_name: str, the name of the object to search for
+            _object_type: str, Optional name of the object type to search for. Defaults to the lookup plugin type
+        Returns:
+            str, a single MoID
         """
         if not _object_type:
             _object_type = self.object_type
@@ -228,11 +232,22 @@ class Lookup:
         _filters["names"] = object_name
         _result = await self.api.fetch_object_with_filters(_object_type, _filters)
 
-        object_moid = self.get_single_moid_from_result(_result, _object_type, object_name)
+        object_moid = self.get_single_moid_from_result(
+            _result, _object_type, object_name
+        )
         return object_moid
 
     @staticmethod
     def get_single_moid_from_result(result, object_type, object_name=None):
+        """
+        Parses vSphere returns query results as a json list, validates the results and extracts
+        the correct MoID
+        Params:
+            object_type: str, The type of object to search the results for
+            object_name: str, The name of the object to search the results for
+        Returns:
+            str or None, a single MoID or none if nothing was found
+        """
         if not result or not object_name:
             return None
 
@@ -244,12 +259,14 @@ class Lookup:
         for obj in result:
             if "%2f" in obj["name"]:
                 continue
-            results_with_decoded_names.append((obj['name'], obj[object_type]))
+            results_with_decoded_names.append((obj["name"], obj[object_type]))
 
         if len(results_with_decoded_names) > 1:
             raise AnsibleLookupError(
                 "More than one object found with matching name: [%s]."
-                % ", ".join([f"{item[0]} => {item[1]}" for item in results_with_decoded_names])
+                % ", ".join(
+                    [f"{item[0]} => {item[1]}" for item in results_with_decoded_names]
+                )
             )
 
         try:
@@ -258,25 +275,23 @@ class Lookup:
             raise AnsibleLookupError(to_native(e))
 
     async def get_all_children_in_object(self):
-        results = await self.api.fetch_object_with_filters(self.object_type, self.active_filters)
+        results = await self.api.fetch_object_with_filters(
+            self.object_type, self.active_filters
+        )
 
         try:
             return [result[self.object_type] for result in results]
         except KeyError:
             return None
 
-    def clear_search_filters(self, filter_keys = None):
+    def set_new_filters_with_datacenter(self, new_filters):
         """
-            Deletes filter key value pairs from the active filter dict. By default, it will leave
-            the datacenter filter since that is always used. You can also specify the keys you want to delete.
-            Params:
-                filter_keys: list(str), A list of keys you want to remove from the active filters
+        Deletes filter key value pairs from the active filter dict and replaces them with the new filters.
+        It will leave the datacenter filter since that is always used.
+        Params:
+            new_filters: dict, The new filters you want to apply as active
         """
-        if not filter_keys:
-            filter_keys = ['folders', 'parent_folders', 'clusters', 'resource_pools', 'hosts', 'names']
-
-        for key in filter_keys:
-            try:
-                del self.active_filters[key]
-            except KeyError:
-                pass
+        _dc = self.active_filters.get("datacenters")
+        self.active_filters = new_filters
+        if _dc:
+            self.active_filters["datacenters"] = _dc
