@@ -1,8 +1,5 @@
 ---
 sections:
-  - title: Scenario Guide
-    toctree:
-      - guide_vmware_rest
   - title: Developer Guide
     toctree:
       - dev_guide
