@@ -7,8 +7,8 @@ vmware.vmware\_rest Release Notes
 v4.0.1
 ======
 
-Minor Changes
--------------
+Bugfixes
+--------
 
 - Removed the scenario guides which are pretty much unmaintained and, therefor, possibly outdated and misleading (https://github.com/ansible-collections/vmware.vmware_rest/pull/524).
 
