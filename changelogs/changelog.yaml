@@ -708,3 +708,11 @@ releases:
     - 510-fix-broken-doc-generation.yml
     - 513-add-vmware.vmware-for-docs-ci.yaml
     release_date: '2024-08-14'
+  4.0.1:
+    changes:
+      minor_changes:
+      - Removed the scenario guides which are pretty much unmaintained and, therefor,
+        possibly outdated and misleading (https://github.com/ansible-collections/vmware.vmware_rest/pull/524).
+    fragments:
+    - 524-drop-scenaros.yml
+    release_date: '2024-08-28'
