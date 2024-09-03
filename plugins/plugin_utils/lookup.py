@@ -47,15 +47,9 @@ class VcenterApi:
         self.hostname = hostname
         self.session = session
 
-    async def fetch(self, url):
-        async with self.session.get(url) as response:
-            result = await response.json()
-            return result
-
     def build_url(self, object_type, filters):
         corrected_filters_for_query = self.correct_filter_names(filters, object_type)
-        if object_type == "resource_pool":
-            object_type = object_type.replace("_", "-")
+        object_type = object_type.replace("_", "-")
 
         return (f"https://{self.hostname}/api/vcenter/{object_type}") + gen_args(
             corrected_filters_for_query, corrected_filters_for_query.keys()
@@ -86,8 +80,8 @@ class VcenterApi:
 
     async def fetch_object_with_filters(self, object_type, filters):
         _url = self.build_url(object_type, filters)
-        res = await self.fetch(_url)
-        return await self.fetch(_url)
+        async with self.session.get(_url) as response:
+            return await response.json()
 
 
 class Lookup:
