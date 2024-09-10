@@ -19,7 +19,7 @@ To circumvent this limitation, you should store your VM templates in a [Content 
 ## Requirements
 
 The host running the tasks must have the python requirements described in [requirements.txt](./requirements.txt)
-Once the colelction is installed, you can install them into a python environment using pip: `pip install -r ~/.ansible/collections/ansible_collections/vmware/vmware_rest/requirements.txt`
+Once the collection is installed, you can install them into a python environment using pip: `pip install -r ~/.ansible/collections/ansible_collections/vmware/vmware_rest/requirements.txt`
 
 ### vSphere compatibility
 
@@ -70,7 +70,7 @@ The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/collectio
 All releases will meet the following test criteria.
 
 * 100% success for [Integration](./tests/integration) tests.
-* 100% success for [Sanity](https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html#all-sanity-tests) tests as part of[ansible-test](https://docs.ansible.com/ansible/latest/dev_guide/testing.html#run-sanity-tests).
+* 100% success for [Sanity](https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html#all-sanity-tests) tests as part of [ansible-test](https://docs.ansible.com/ansible/latest/dev_guide/testing.html#run-sanity-tests).
 * 100% success for [ansible-lint](https://ansible.readthedocs.io/projects/lint/) allowing only false positives.
 
 
