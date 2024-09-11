@@ -19,7 +19,7 @@ To circumvent this limitation, you should store your VM templates in a [Content 
 ## Requirements
 
 The host running the tasks must have the python requirements described in [requirements.txt](./requirements.txt)
-Once the colelction is installed, you can install them into a python environment using pip: `pip install -r ~/.ansible/collections/ansible_collections/vmware/vmware_rest/requirements.txt`
+Once the collection is installed, you can install them into a python environment using pip: `pip install -r ~/.ansible/collections/ansible_collections/vmware/vmware_rest/requirements.txt`
 
 ### vSphere compatibility
 
@@ -62,15 +62,72 @@ ansible-galaxy collection install vmware.vmware_rest:1.0.0
 
 ## Use Cases
 
-The [VMware REST modules guide](https://docs.ansible.com/ansible/devel/collections/vmware/vmware_rest/docsite/guide_vmware_rest.html) gives a step by step introduction of the collection.
+* Use Case Name: Modify vCenter Appliance Configuration
+  * Actors:
+    * System Admin
+  * Description:
+    * A systems administrator can modify the configuration of a running vCenter appliance.
+  * Modules:
+    * `vmware.vmware_rest.appliance_access_consolecli` - Sets the enabled state of the console-based controlled CLI (TTY1)
+    * `vmware.vmware_rest.appliance_access_dcui` - Sets the enabled state of Direct Console User Interface (DCUI TTY2)
+    * `vmware.vmware_rest.appliance_access_shell` - Sets the enabled state of BASH, that is, access to BASH from within the controlled CLI
+    * `vmware.vmware_rest.appliance_access_ssh` - Sets the enabled state of the SSH-based controlled CLI
+    * `vmware.vmware_rest.appliance_networking_dns_domains` - Sets DNS search domains
+    * `vmware.vmware_rest.appliance_networking_dns_hostname` - Sets the Fully Qualified Domain Name
+    * `vmware.vmware_rest.appliance_networking_dns_servers` - Sets the DNS server configuration
+    * `vmware.vmware_rest.appliance_networking_firewall_inbound` - Sets the ordered list of firewall rules to allow or deny traffic from one or more incoming IP addresses
+    * `vmware.vmware_rest.appliance_networking_interfaces_ipv4` - Sets the IPv4 network configuration for specific network interface
+    * `vmware.vmware_rest.appliance_networking_interfaces_ipv6` - Sets the IPv6 network configuration for specific interface
+    * `vmware.vmware_rest.appliance_networking_noproxy` - Sets servers for which no proxy configuration should be applied
+    * `vmware.vmware_rest.appliance_networking_proxy` - Configures which proxy server to use for the specified protocol
+    * `vmware.vmware_rest.appliance_ntp` - Sets the NTP servers
+    * `vmware.vmware_rest.appliance_system_globalfips` - Enables/Disables Global FIPS mode for the appliance
+    * `vmware.vmware_rest.appliance_system_time_timezone` - Sets the time zone
+    * `vmware.vmware_rest.appliance_timesync` - Sets the time synchronization mode
+    * `vmware.vmware_rest.appliance_vmon_service` - Lists the details of services managed by vMon
 
+* Use Case Name: Manage a Content Library
+  * Actors:
+    * System Admin
+  * Description:
+    * The system administrator can create or manage a content library.
+  * Modules:
+    * `vmware.vmware_rest.content_configuration` - Updates the library configuration
+    * `vmware.vmware_rest.content_locallibrary` - Creates a new local library
+    * `vmware.vmware_rest.content_subscribedlibrary` - Creates a new subscribed library
+
+* Use Case Name: Manage a VMs Settings
+  * Actors:
+    * System Admin
+  * Description:
+    * The system administrator can manage a VMs settings.
+  * Modules:
+    * `vmware.vmware_rest.vcenter_vm_guest_customization` - Applies a customization specification on the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_guest_filesystem_directories` - Creates a directory in the guest operating system
+    * `vmware.vmware_rest.vcenter_vm_guest_power` - Modifies a virtual machine's power state
+    * `vmware.vmware_rest.vcenter_vm_hardware_adapter_sata` - Adds a virtual SATA adapter to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi` - Adds a virtual SCSI adapter to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_boot_device` - Sets the virtual devices that will be used to boot the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_boot` - Updates the boot-related settings of a virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_cdrom` - Adds a virtual CD-ROM device to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_cpu` - Updates the CPU-related settings of a virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_disk` - Adds a virtual disk to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_ethernet` - Adds a virtual Ethernet adapter to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_memory` - Updates the memory-related settings of a virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_parallel` - Adds a virtual parallel port to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware` - Updates the virtual hardware settings of a virtual machine
+    * `vmware.vmware_rest.vcenter_vm_hardware_serial` - Adds a virtual serial port to the virtual machine
+    * `vmware.vmware_rest.vcenter_vm_power` - Operates a boot, hard shutdown, hard reset or hard suspend on a guest
+    * `vmware.vmware_rest.vcenter_vm_storage_policy` - Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks
+    * `vmware.vmware_rest.vcenter_vm_tools_installer` - Connects the VMware Tools CD installer as a CD-ROM for the guest operating system
+    * `vmware.vmware_rest.vcenter_vm_tools` - Updates the properties of VMware Tools
 
 ## Testing
 
 All releases will meet the following test criteria.
 
 * 100% success for [Integration](./tests/integration) tests.
-* 100% success for [Sanity](https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html#all-sanity-tests) tests as part of[ansible-test](https://docs.ansible.com/ansible/latest/dev_guide/testing.html#run-sanity-tests).
+* 100% success for [Sanity](https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html#all-sanity-tests) tests as part of [ansible-test](https://docs.ansible.com/ansible/latest/dev_guide/testing.html#run-sanity-tests).
 * 100% success for [ansible-lint](https://ansible.readthedocs.io/projects/lint/) allowing only false positives.
 
 
