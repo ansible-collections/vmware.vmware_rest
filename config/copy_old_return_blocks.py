@@ -33,7 +33,7 @@ def read_version_added(old_module_file_path):
         lines = f.readlines()
 
     for line in lines:
-        if line.startswith('version_added:'):
+        if line.startswith("version_added:"):
             return line
 
     return None
@@ -45,13 +45,15 @@ def format_new_content(module_file_path, example_and_return_blocks, version_adde
 
     with open(GALAXY_PATH, "r") as f:
         _galaxy_contents = yaml.safe_load(f)
-        default_version = _galaxy_contents['version']
+        default_version = _galaxy_contents["version"]
 
     new_content = []
     added_content = False
     open_block = False
     for line in lines:
-        if example_and_return_blocks and (line.startswith('EXAMPLES = r"""') or line.startswith('RETURN = r"""')):
+        if example_and_return_blocks and (
+            line.startswith('EXAMPLES = r"""') or line.startswith('RETURN = r"""')
+        ):
             open_block = True
             if not added_content:
                 new_content += example_and_return_blocks
@@ -62,11 +64,11 @@ def format_new_content(module_file_path, example_and_return_blocks, version_adde
             open_block = False
             continue
 
-        if line.startswith('version_added'):
+        if line.startswith("version_added"):
             if version_added:
                 new_content += [version_added]
             else:
-                new_content += [f'version_added: {default_version}\n']
+                new_content += [f"version_added: {default_version}\n"]
             continue
 
         new_content += [line]

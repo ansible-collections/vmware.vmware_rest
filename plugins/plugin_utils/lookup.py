@@ -144,7 +144,9 @@ class Lookup:
                 await self.process_intermediate_path_part(path_part)
                 continue
 
-        raise AnsibleLookupError("No objects could be found due to an invalid search path")
+        raise AnsibleLookupError(
+            "No objects could be found due to an invalid search path"
+        )
 
     async def process_intermediate_path_part(self, intermediate_object_name):
         """
@@ -162,7 +164,7 @@ class Lookup:
         Returns:
             str or None, a single MoID or none if nothing was found
         """
-        if not self.active_filters.get('datacenter'):
+        if not self.active_filters.get("datacenter"):
             result = await self.get_object_moid_by_name_and_type(
                 intermediate_object_name, "datacenter"
             )

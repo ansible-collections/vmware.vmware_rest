@@ -5,6 +5,7 @@ exclude_paths:
   - meta/runtime.yml
   - tests/integration
   - tests/sanity
+  - tests/manual
   - modules.yaml
   - config
 
