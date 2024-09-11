@@ -3,13 +3,17 @@
   ansible.builtin.assert:
     that: lookup('vmware.vmware_rest.datacenter_moid', '/' + vcenter_datacenter, **connection_args)
 
+- name: Lookup Clusters In Datacenter
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/', **connection_args)
+
+- name: Lookup Datastores In Datacenter
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/', **connection_args)
+
 - name: Lookup Cluster
   ansible.builtin.assert:
     that: lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster, **connection_args)
-
-- name: Lookup Cluster Contents
-  ansible.builtin.assert:
-    that: lookup('vmware.vmware_rest.cluster_moid',  '/' + vcenter_datacenter + '/' + vcenter_cluster + '/', **connection_args)
 
 - name: Lookup Datastores
   ansible.builtin.assert:

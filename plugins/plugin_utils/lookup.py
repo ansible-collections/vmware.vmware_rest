@@ -129,15 +129,6 @@ class Lookup:
         path_parts = [_part for _part in object_path.split("/") if _part]
 
         for index, path_part in enumerate(path_parts):
-            if not self.active_filters.get("datacenters"):
-                datacenter_moid = await self.get_object_moid_by_name_and_type(
-                    path_part, "datacenter"
-                )
-                if self.object_type == "datacenter" or not datacenter_moid:
-                    return datacenter_moid
-                self.active_filters["datacenters"] = datacenter_moid
-                continue
-
             if index == len(path_parts) - 1:
                 # were at the end of the object path. Either return the object, or return
                 # all of the objects it contains (for example, the children inside of a folder)
@@ -153,7 +144,7 @@ class Lookup:
                 await self.process_intermediate_path_part(path_part)
                 continue
 
-        raise Exception("here4")
+        raise AnsibleLookupError("No objects could be found due to an invalid search path")
 
     async def process_intermediate_path_part(self, intermediate_object_name):
         """
@@ -171,6 +162,13 @@ class Lookup:
         Returns:
             str or None, a single MoID or none if nothing was found
         """
+        if not self.active_filters.get('datacenter'):
+            result = await self.get_object_moid_by_name_and_type(
+                intermediate_object_name, "datacenter"
+            )
+            self.active_filters["datacenters"] = result
+            return result
+
         if self.object_type == "vm":
             result = await self.get_object_moid_by_name_and_type(
                 intermediate_object_name, "resource_pool"
