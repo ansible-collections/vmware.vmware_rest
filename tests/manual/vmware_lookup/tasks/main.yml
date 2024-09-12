@@ -1,0 +1,65 @@
+---
+- name: Lookup Datacenter
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.datacenter_moid', '/' + vcenter_datacenter, **connection_args)
+
+- name: Lookup Clusters In Datacenter
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/', **connection_args)
+
+- name: Lookup Datastores In Datacenter
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/', **connection_args)
+
+- name: Lookup Cluster
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster, **connection_args)
+
+- name: Lookup Datastores
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + item, **connection_args)
+  loop:
+    - "{{ vcenter_datastore }}"
+    - "{{ vcenter_esxi_host }}/{{ vcenter_datastore }}"
+    - "{{ vcenter_esxi_host }}/"
+
+- name: Lookup Folders
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + item, **connection_args)
+  loop:
+    - vm/{{ vcenter_vm_folder }}
+    - "{{ vcenter_vm_folder }}"
+
+- name: Lookup Networks
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + item, **connection_args)
+  loop:
+    - Management Network
+    - vMotion
+    - "{{ vcenter_nested_network | dirname }}/"
+    - "{{ vcenter_nested_network }}"
+
+- name: Lookup Hosts
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + item, **connection_args)
+  loop:
+    - "{{ vcenter_esxi_host }}"
+    - "{{ vcenter_cluster }}/"
+    - "{{ vcenter_cluster }}/{{ vcenter_esxi_host }}"
+
+- name: Lookup VMs
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + item, **connection_args)
+  loop:
+    - "{{ vcenter_esxi_host }}/"
+    - vCLS/
+    - "{{ vcenter_vm }}"
+    - "{{ vcenter_resource_pool }}/"
+
+- name: Lookup Resource Pools
+  ansible.builtin.assert:
+    that: lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + item, **connection_args)
+  loop:
+    - "{{ vcenter_resource_pool }}"
+    - "{{ vcenter_resource_pool }}/"
+    - "{{ vcenter_cluster }}/"
