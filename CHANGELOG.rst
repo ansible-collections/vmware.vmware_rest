@@ -4,6 +4,27 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.1.0
+======
+
+Minor Changes
+-------------
+
+- cluster_moid - Fix bug where lookup would return incosistent results for objects in nested paths. Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- datacenter_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- datastore_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- folder_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- host_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- network_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- resource_pool_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+- vm_moid - Fix bug where lookup would return incosistent results for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500 https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324 (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+
+Bugfixes
+--------
+
+- README - fixed various typos in documentation
+- lookup - fixed issue where searching for datacenter contents would throw an exception instead of returning expected results
+
 v4.0.1
 ======
 

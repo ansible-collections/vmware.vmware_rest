@@ -1,6 +1,0 @@
----
-trivial:
-  - tests - added manual test playbook for lookup plugins
-
-bugfixes:
-  - lookup - fixed issue where searching for datacenter contents would throw an exception instead of returning expected results

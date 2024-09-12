@@ -716,3 +716,48 @@ releases:
     fragments:
     - 524-drop-scenaros.yml
     release_date: '2024-08-28'
+  4.1.0:
+    changes:
+      bugfixes:
+      - README - fixed various typos in documentation
+      - lookup - fixed issue where searching for datacenter contents would throw an
+        exception instead of returning expected results
+      minor_changes:
+      - cluster_moid - Fix bug where lookup would return incosistent results for objects
+        in nested paths. Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - datacenter_moid - Fix bug where lookup would return incosistent results for
+        objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - datastore_moid - Fix bug where lookup would return incosistent results for
+        objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - folder_moid - Fix bug where lookup would return incosistent results for objects
+        in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - host_moid - Fix bug where lookup would return incosistent results for objects
+        in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - network_moid - Fix bug where lookup would return incosistent results for objects
+        in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - resource_pool_moid - Fix bug where lookup would return incosistent results
+        for objects in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+      - vm_moid - Fix bug where lookup would return incosistent results for objects
+        in nested paths Fixes issues https://github.com/ansible-collections/vmware.vmware_rest/issues/500
+        https://github.com/ansible-collections/vmware.vmware_rest/pull/445 https://github.com/ansible-collections/vmware.vmware_rest/issues/324
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/523)
+    fragments:
+    - 522-update-readme-format.yaml
+    - 523-refactor-lookup-plugins.yml
+    - 528-readme-typo-fix.yml
+    - 529-manual-test-play-for-lookups.yml
+    release_date: '2024-09-12'
