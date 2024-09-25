@@ -37,8 +37,7 @@ See [Ansible Using collections](https://docs.ansible.com/ansible/latest/user_gui
 
 The `generate.yml` playbook will copy the old blocks to the new modules. You can refresh the blocks if you introduce a new API version.
 
-
-**Note** The steps below will run a playbook that stops all of the VMs in a vcenter
+**Note** The steps below will run a playbook that stops all of the VMs in a vcenter. It will also potentially wipe out the examples and return values in each module, so please review changes carefully.
 
 Create `/tmp/inventory-vmware_rest` like:
 ```

@@ -228,28 +228,197 @@ notes:
 """
 
 EXAMPLES = r"""
+##########
+#
+# VM customization can be difficult to troubleshoot, since each environment is different. Here are some general tips:
+#
+# 1. Make sure perl is installed on the Linux systems. Make sure cloud-init is installed if using cloud-init
+# 2. Custom script execution is disabled by default. To enable it, you can run as root: vmware-toolbox-cmd config set deployPkg enable-custom-scripts  true
+# 3. VMware tools must be installed and recognized by vCenter before you can apply customization. See the example below for one approach to this.
+# 4. On Linux (RHEL specifically), customization script logs can be found at /var/log/vmware-imc/toolsDeployPkg.log
+# 5. Once the VM is started, the pending customization is applied. Even if that fails, the customization is then cleared. Meaning, you need to re-apply
+#    the customization spec in order to try again. Simply rebooting the VM will not change anything.
+#
+##########
+
+# Heres the basic workflow for creating a new VM and then customizing it
+- name: Deploy a new VM based on a template
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    name: vm-from-template
+    library: "{{ library_id }}"
+    template_library_item: "{{ template_id }}"
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+    state: deploy
+  register: my_new_vm
+
+- name: Power on the VM to register VMware tools
+  vmware.vmware_rest.vcenter_vm_power:
+    state: start
+    vm: "{{ my_new_vm.id }}"
+
+- name: Wait until my VMware tools are recognized
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: "{{ my_new_vm.id }}"
+  register: vm_tools_info
+  until:
+    - vm_tools_info is not failed
+    - vm_tools_info.value.run_state == "RUNNING"
+  retries: 60
+  delay: 5
+
+- name: Power Off VM
+  vmware.vmware_rest.vcenter_vm_power:
+    state: stop
+    vm: "{{ my_new_vm.id }}"
+
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
-    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/my_dc/vm/test_vm1') }}"
-    configuration_spec:
-      linux_config:
-        domain: mydomain
-        hostname:
-          fixed_name: foobar
-          type: FIXED
-    interfaces:
+  vm: "{{ my_new_vm.id }}"
+  global_DNS_settings:
+    dns_suffix_list:
+      - lan
+      - foo.internal
+    dns_servers:
+      - "8.8.8.8"
+  interfaces:
     - adapter:
         ipv4:
-          type: STATIC
-          gateways:
-          - 192.168.123.1
-          ip_address: 192.168.123.50
-          prefix: 24
-    global_DNS_settings:
-      dns_suffix_list: []
-      dns_servers:
-      - 1.1.1.1
+          type: DHCP
+  configuration_spec:
+    linux_config:
+      domain: test
+      hostname:
+        fixed_name: myhost
+        type: FIXED
+
+# Heres an example using the Linux script text. The script shebang can be anything (bash, perl, python), so long as the script will actually run
+# Theres also size and length limitation on the script text, as described in the module documentation.
+# Finally, note the script is run twice. Once before all of the other customization and once after.
+- name: Customize the VM
+  vmware.vmware_rest.vcenter_vm_guest_customization:
+  vm: "{{ my_new_vm.id }}"
+  global_DNS_settings:
+    dns_suffix_list:
+      - lan
+      - foo.internal
+    dns_servers:
+      - "8.8.8.8"
+  interfaces:
+    - adapter:
+        ipv4:
+          type: DHCP
+  configuration_spec:
+    linux_config:
+      domain: test
+      hostname:
+        fixed_name: myhost
+        type: FIXED
+      script_text: |
+        #!/bin/sh
+        if [ x$1 == x"precustomization" ]; then
+          echo "PRE" >> /tmp/vmware_rest_init_script.log
+          # add any other pre-customization tasks here
+        fi
+
+        if [ x$1 == x"postcustomization" ]; then
+          echo "POST" >> /tmp/vmware_rest_init_script.log
+          # add any other post-customization tasks here
+        fi
+
+# Heres a simple example using cloud-init
+# See also:
+#   https://developer.broadcom.com/xapis/vsphere-automation-api/latest/vcenter/data-structures/Guest_CloudinitConfiguration/
+#   https://knowledge.broadcom.com/external/article/311895/how-to-customize-virtual-machine-using-c.html
+#   https://cloudinit.readthedocs.io/en/latest/reference/examples.html
+#   https://cloudinit.readthedocs.io/en/23.4.1/reference/datasources/vmware.html#walkthrough-of-guestinfo-keys-transport
+#
+#   cloud-init required: metadata as plain-text JSON/YAML, maximum 512KB file size
+#   cloud-init optional: userdata as plain-text in raw cloud-init format with no compression / no base64 encoding, maximum 512KB file size
+- name: Customize the VM
+  vmware.vmware_rest.vcenter_vm_guest_customization:
+  vm: "{{ my_new_vm.id }}"
+  global_DNS_settings:
+    dns_suffix_list: []
+    dns_servers:
+      - "8.8.8.8"
+  interfaces:
+    - adapter:
+        ipv4:
+        type: DHCP
+  configuration_spec:
+    cloud_config:
+      type: CLOUDINIT
+      cloudinit:
+        metadata: |
+          instance-id: cloud-vm-example-1
+          local-hostname: cloud-vm
+          network:
+            config: disabled
+        userdata: |
+          #cloud-config
+          disable_root: 0
+          write_files:
+            - content: |
+                This is a test
+              path: /root/cloud-init-example
+
+# Heres a more complex cloud-init example
+- name: Set cloud-init variables for customization specification
+  ansible.builtin.set_fact:
+    metadata_yaml:
+      instance-id: "{{ vm_name }}"
+      hostname: "{{ vm_name }}"
+      local-hostname: "{{ vm_name }}"
+      network:
+        version: 2
+        ethernets:
+          nics:
+            match:
+              name: e*
+            dhcp4: true
+            dhcp6: false
+      public_ssh_keys:
+        - "{{ lookup('ansible.builtin.file', vmware_vm_ssh_public_key_file_path) }}"
+
+    userdata_yaml_text: |
+      #cloud-config
+      hostname: {{ vm_name }}
+      fqdn: {{ vm_name }}.{{ vm_domain }}
+
+      disable_root: false
+      ssh_pwauth: false
+      ssh_deletekeys: true
+      ssh:
+        emit_keys_to_console: false
+      no_ssh_fingerprints: false
+      ssh_authorized_keys:
+        - {{ lookup('ansible.builtin.file', vmware_vm_ssh_public_key_file_path) }}
+
+      users:
+        - name: root
+          ssh_authorized_keys:
+            - {{ lookup('ansible.builtin.file', vmware_vm_ssh_public_key_file_path) }}
+          lock_passwd: false
+
+      write_files:
+        - path: /etc/cloud/cloud-init.disabled
+          permissions: "0644"
+          content: ""
+
+- name: Apply customization specification to the VM in Powered Off state
+  vmware.vmware_rest.vcenter_vm_guest_customization:
+    vm: "{{ my_new_vm.id }}"
+    configuration_spec:
+      cloud_config:
+        type: CLOUDINIT
+        cloudinit:
+          metadata: "{{ metadata_yaml | to_json(ensure_ascii=true) }}"
+          userdata: "{{ userdata_yaml_text | trim }}" # remove last newline character
+    interfaces: []
+    global_DNS_settings: {}
 """
+
 RETURN = r"""
 # content generated by the update_return_section callback# task: Customize the VM
 value:
