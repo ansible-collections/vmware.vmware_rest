@@ -1,0 +1,27 @@
+- hosts: localhost
+  gather_facts: no
+  collections:
+    - community.general
+
+  tasks:
+
+    - name: Import eco-vcenter credentials
+      ansible.builtin.include_vars:
+        file: ../../integration_config.yml
+      tags: eco-vcenter-ci
+
+    - name: Import common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+      when: not run_on_simulator
+
+    # - name: Print vcenter
+    #   ansible.builtin.debug:  
+    #     var: "{{ vcenter_hostname }}"
+    #   tags: eco-vcenter-ci
+
+    - name: Import appliance role
+      ansible.builtin.import_role:
+        name: appliance
+      tags:
+        - eco-vcenter-ci
