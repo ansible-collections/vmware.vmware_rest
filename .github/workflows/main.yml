@@ -1,0 +1,46 @@
+---
+name: Ansible Eco vCenter Integration Test
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+      - 'release-\d.\d'
+permissions:
+  contents: read
+jobs:
+  ansible_integration_test:
+    runs-on: ["self-hosted", linux, X64]
+    steps:
+      - name: Update pip, git
+        if: runner.os == 'Linux' && startsWith(runner.name, 'ubuntu')
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install podman
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: ansible_collections/vmware/vmware_rest
+
+      - name: Generate integration config
+        working-directory: ansible_collections/vmware/vmware_rest/tests/integration
+        run: |
+          chmod +x generate_integration_config.sh
+          ./generate_integration_config.sh
+        env:
+          VCENTER_HOSTNAME: ${{ secrets.VCENTER_HOSTNAME }}
+          VCENTER_USERNAME: ${{ secrets.VCENTER_USERNAME }}
+          VCENTER_PASSWORD: ${{ secrets.VCENTER_PASSWORD }}
+
+      - name: Run integration tests
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          make eco-vcenter-ci
+        working-directory: ansible_collections/vmware/vmware_rest
+        env:
+          ANSIBLE_COLLECTIONS_PATH: "${{ github.workspace }}"
