@@ -1,0 +1,20 @@
+---
+- name: Create symlink to the runme.sh script in specific target directories
+  hosts: localhost
+  tasks:
+    - name: Find all target directories with specific prefix
+      ansible.builtin.find:
+        paths: ../tests/integration/targets
+        recurse: false
+        file_type: directory
+      register: target_dirs
+
+    - name: Create symlink and set executable permission in each target directory with prefix 'vmware_rest'
+      ansible.builtin.file:
+        src: "{{ playbook_dir }}/../tests/integration/targets/runme.sh"
+        dest: "{{ item.path }}/runme.sh"
+        state: link
+        mode: '0755'
+        force: true
+      loop: "{{ target_dirs.files }}"
+      when: item.path | basename | regex_search('^vmware_rest')
