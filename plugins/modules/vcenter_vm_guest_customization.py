@@ -190,7 +190,7 @@ options:
         description:
         - 'You can use this optional parameter to set the location of a log file. '
         - 'This file will be used to record the HTTP REST interaction. '
-        - 'The file will be stored on the host that run the module. '
+        - 'The file will be stored on the host that runs the module. '
         - 'If the value is not specified in the task, the value of '
         - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
         type: str
@@ -241,7 +241,7 @@ EXAMPLES = r"""
 #
 ##########
 
-# Heres the basic workflow for creating a new VM and then customizing it
+# Here is the basic workflow for creating a new VM and then customizing it
 - name: Deploy a new VM based on a template
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
     name: vm-from-template
@@ -274,59 +274,59 @@ EXAMPLES = r"""
 
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
-  vm: "{{ my_new_vm.id }}"
-  global_DNS_settings:
-    dns_suffix_list:
-      - lan
-      - foo.internal
-    dns_servers:
-      - "8.8.8.8"
-  interfaces:
-    - adapter:
-        ipv4:
-          type: DHCP
-  configuration_spec:
-    linux_config:
-      domain: test
-      hostname:
-        fixed_name: myhost
-        type: FIXED
+    vm: "{{ my_new_vm.id }}"
+    global_DNS_settings:
+      dns_suffix_list:
+        - lan
+        - foo.internal
+      dns_servers:
+        - "8.8.8.8"
+    interfaces:
+      - adapter:
+          ipv4:
+            type: DHCP
+    configuration_spec:
+      linux_config:
+        domain: test
+        hostname:
+          fixed_name: myhost
+          type: FIXED
 
-# Heres an example using the Linux script text. The script shebang can be anything (bash, perl, python), so long as the script will actually run
-# Theres also size and length limitation on the script text, as described in the module documentation.
+# Here is an example using the Linux script text. The script shebang can be anything (bash, perl, python), so long as the script will actually run
+# There is also size and length limitation on the script text, as described in the module documentation.
 # Finally, note the script is run twice. Once before all of the other customization and once after.
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
-  vm: "{{ my_new_vm.id }}"
-  global_DNS_settings:
-    dns_suffix_list:
-      - lan
-      - foo.internal
-    dns_servers:
-      - "8.8.8.8"
-  interfaces:
-    - adapter:
-        ipv4:
-          type: DHCP
-  configuration_spec:
-    linux_config:
-      domain: test
-      hostname:
-        fixed_name: myhost
-        type: FIXED
-      script_text: |
-        #!/bin/sh
-        if [ x$1 == x"precustomization" ]; then
-          echo "PRE" >> /tmp/vmware_rest_init_script.log
-          # add any other pre-customization tasks here
-        fi
+    vm: "{{ my_new_vm.id }}"
+    global_DNS_settings:
+      dns_suffix_list:
+        - lan
+        - foo.internal
+      dns_servers:
+        - "8.8.8.8"
+    interfaces:
+      - adapter:
+          ipv4:
+            type: DHCP
+    configuration_spec:
+      linux_config:
+        domain: test
+        hostname:
+          fixed_name: myhost
+          type: FIXED
+        script_text: |
+          #!/bin/sh
+          if [ x$1 == x"precustomization" ]; then
+            echo "PRE" >> /tmp/vmware_rest_init_script.log
+            # add any other pre-customization tasks here
+          fi
 
-        if [ x$1 == x"postcustomization" ]; then
-          echo "POST" >> /tmp/vmware_rest_init_script.log
-          # add any other post-customization tasks here
-        fi
+          if [ x$1 == x"postcustomization" ]; then
+            echo "POST" >> /tmp/vmware_rest_init_script.log
+            # add any other post-customization tasks here
+          fi
 
-# Heres a simple example using cloud-init
+# Here is a simple example using cloud-init
 # See also:
 #   https://developer.broadcom.com/xapis/vsphere-automation-api/latest/vcenter/data-structures/Guest_CloudinitConfiguration/
 #   https://knowledge.broadcom.com/external/article/311895/how-to-customize-virtual-machine-using-c.html
@@ -337,33 +337,33 @@ EXAMPLES = r"""
 #   cloud-init optional: userdata as plain-text in raw cloud-init format with no compression / no base64 encoding, maximum 512KB file size
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
-  vm: "{{ my_new_vm.id }}"
-  global_DNS_settings:
-    dns_suffix_list: []
-    dns_servers:
-      - "8.8.8.8"
-  interfaces:
-    - adapter:
-        ipv4:
-        type: DHCP
-  configuration_spec:
-    cloud_config:
-      type: CLOUDINIT
-      cloudinit:
-        metadata: |
-          instance-id: cloud-vm-example-1
-          local-hostname: cloud-vm
-          network:
-            config: disabled
-        userdata: |
-          #cloud-config
-          disable_root: 0
-          write_files:
-            - content: |
-                This is a test
-              path: /root/cloud-init-example
+    vm: "{{ my_new_vm.id }}"
+    global_DNS_settings:
+      dns_suffix_list: []
+      dns_servers:
+        - "8.8.8.8"
+    interfaces:
+      - adapter:
+          ipv4:
+            type: DHCP
+    configuration_spec:
+      cloud_config:
+        type: CLOUDINIT
+        cloudinit:
+          metadata: |
+            instance-id: cloud-vm-example-1
+            local-hostname: cloud-vm
+            network:
+              config: disabled
+          userdata: |
+            #cloud-config
+            disable_root: 0
+            write_files:
+              - content: |
+                  This is a test
+                path: /root/cloud-init-example
 
-# Heres a more complex cloud-init example
+# Here is a more complex cloud-init example
 - name: Set cloud-init variables for customization specification
   ansible.builtin.set_fact:
     metadata_yaml:
