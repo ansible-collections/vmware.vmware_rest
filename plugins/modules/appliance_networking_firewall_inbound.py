@@ -73,7 +73,7 @@ options:
         description:
         - 'You can use this optional parameter to set the location of a log file. '
         - 'This file will be used to record the HTTP REST interaction. '
-        - 'The file will be stored on the host that run the module. '
+        - 'The file will be stored on the host that runs the module. '
         - 'If the value is not specified in the task, the value of '
         - environment variable C(VMWARE_REST_LOG_FILE) will be used instead.
         type: str
