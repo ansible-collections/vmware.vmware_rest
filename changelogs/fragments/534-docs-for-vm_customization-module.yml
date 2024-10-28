@@ -1,4 +1,0 @@
----
-minor_changes:
-  - vcenter_vm_guest_customization - Added better examples that cover more use-cases
-    (https://github.com/ansible-collections/vmware.vmware_rest/pull/534).

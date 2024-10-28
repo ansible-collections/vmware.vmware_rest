@@ -1,4 +1,0 @@
----
-bugfixes:
-  - vcenter_vm_guest_customization - Fixed typos and spacing in the module examples
-  - Fixed grammatical error in vcenter_rest_log_file parameter description
