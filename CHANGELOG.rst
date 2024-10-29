@@ -4,6 +4,21 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.2.0
+======
+
+Minor Changes
+-------------
+
+- add a new ci job to the collection to run integration tests on bm vmware env
+- vcenter_vm_guest_customization - Added better examples that cover more use-cases (https://github.com/ansible-collections/vmware.vmware_rest/pull/534).
+
+Bugfixes
+--------
+
+- Fixed grammatical error in vcenter_rest_log_file parameter description
+- vcenter_vm_guest_customization - Fixed typos and spacing in the module examples
+
 v4.1.0
 ======
 

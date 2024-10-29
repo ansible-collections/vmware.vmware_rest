@@ -761,3 +761,17 @@ releases:
     - 528-readme-typo-fix.yml
     - 529-manual-test-play-for-lookups.yml
     release_date: '2024-09-12'
+  4.2.0:
+    changes:
+      bugfixes:
+      - Fixed grammatical error in vcenter_rest_log_file parameter description
+      - vcenter_vm_guest_customization - Fixed typos and spacing in the module examples
+      minor_changes:
+      - add a new ci job to the collection to run integration tests on bm vmware env
+      - vcenter_vm_guest_customization - Added better examples that cover more use-cases
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/534).
+    fragments:
+    - 534-docs-for-vm_customization-module.yml
+    - 538-add-eco-ci-job.yml
+    - 540-typo-fixes-in-module-docs.yml
+    release_date: '2024-10-28'
