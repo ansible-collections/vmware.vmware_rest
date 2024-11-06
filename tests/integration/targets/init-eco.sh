@@ -12,3 +12,9 @@ fi
 echo "ANSIBLE_COLLECTIONS_PATH: $ANSIBLE_COLLECTIONS_PATH"
 BASE_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 export ANSIBLE_ROLES_PATH=${BASE_DIR}
+
+# Authentication vars
+export VMWARE_HOST=$(awk '/VMWARE_HOST/ {print $2}' ../../integration_config.yml)
+export VMWARE_USER=$(awk '/VMWARE_USER/ {print $2}' ../../integration_config.yml)
+export VMWARE_PASSWORD=$(awk '/VMWARE_PASSWORD/ {print $2}' ../../integration_config.yml)
+export VMWARE_VALIDATE_CERTS=$(awk '/VMWARE_VALIDATE_CERTS/ {print $2}' ../../integration_config.yml)
