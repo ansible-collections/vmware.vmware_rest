@@ -1,0 +1,112 @@
+---
+- name: Get the database storage health status
+  vmware.vmware_rest.appliance_health_databasestorage_info:
+  register: db_storage_health
+
+- name: Print db_storage_health
+  ansible.builtin.debug: 
+    var: db_storage_health
+
+- name: Assert database storage health status
+  ansible.builtin.assert:
+    that:
+      - db_storage_health.value == "green"
+    fail_msg: "Database storage health status is not green"
+
+- name: Get the system load status
+  vmware.vmware_rest.appliance_health_load_info:
+  register: system_load_health
+
+- name: Print system_load_health
+  ansible.builtin.debug: 
+    var: system_load_health
+
+- name: Assert system load health status
+  ansible.builtin.assert:
+    that:
+      - system_load_health.value == "green"
+    fail_msg: "System load status is not green"
+
+- name: Get the system memory status
+  vmware.vmware_rest.appliance_health_mem_info:
+  register: system_mem_health
+
+- name: Print system_mem_health
+  ansible.builtin.debug: 
+    var: system_mem_health
+
+- name: Assert system memory health status
+  ansible.builtin.assert:
+    that:
+      - system_mem_health.value == "green"
+    fail_msg: "System memory health status is not green"
+
+- name: Get the system health status
+  vmware.vmware_rest.appliance_health_system_info:
+  register: system_health
+
+- name: Print system_health
+  ansible.builtin.debug: 
+    var: system_health
+
+- name: Assert system health status
+  ansible.builtin.assert:
+    that:
+      - system_health.value == "green"
+    fail_msg: "System health status is not green"
+
+- name: Get the health of the software package manager
+  vmware.vmware_rest.appliance_health_softwarepackages_info:
+  register: software_pkg_health
+
+- name: Print software_pkg_health
+  ansible.builtin.debug: 
+    var: software_pkg_health
+
+- name: Assert software package manager health status
+  ansible.builtin.assert:
+    that:
+      - software_pkg_health.value == "green"
+    fail_msg: "Software package manager health status is not green"
+
+- name: Get the health of the storage system
+  vmware.vmware_rest.appliance_health_storage_info:
+  register: storage_health
+
+- name: Print storage_health
+  ansible.builtin.debug: 
+    var: storage_health
+
+- name: Assert storage health status
+  ansible.builtin.assert:
+    that:
+      - storage_health.value == "green"
+    fail_msg: "Storage health status is not green"
+
+- name: Get the health of the swap
+  vmware.vmware_rest.appliance_health_swap_info:
+  register: swap_health
+
+- name: Print swap_health
+  ansible.builtin.debug: 
+    var: swap_health
+
+- name: Assert swap health status
+  ansible.builtin.assert:
+    that:
+      - swap_health.value == "green"
+    fail_msg: "Swap health status is not green"
+
+- name: Get the health state of applmgmt
+  vmware.vmware_rest.appliance_health_applmgmt_info:
+  register: applmgmt_health
+
+- name: Print applmgmt_health
+  ansible.builtin.debug: 
+    var: applmgmt_health
+
+- name: Assert appliance management health status
+  ansible.builtin.assert:
+    that:
+      - applmgmt_health.value == "green"
+    fail_msg: "Appliance management health status is not green"

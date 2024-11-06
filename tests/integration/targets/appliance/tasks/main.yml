@@ -2,7 +2,6 @@
 - import_tasks: appliance_access_dcui.yml
 - import_tasks: appliance_access_shell.yml
 - import_tasks: appliance_access_ssh.yml
-- import_tasks: appliance_health.yml
 - import_tasks: appliance_infraprofile_configs.yml
 - import_tasks: appliance_localaccounts.yml
 - import_tasks: appliance_monitoring.yml

@@ -1,0 +1,11 @@
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+  
+    - name: Import appliance role
+      ansible.builtin.import_role:
+        name: vmware_rest_appliance
+      tags:
+        - eco-vcenter-ci
+    
