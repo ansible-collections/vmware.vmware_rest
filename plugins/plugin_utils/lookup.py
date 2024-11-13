@@ -90,6 +90,10 @@ class Lookup:
         self.api = VcenterApi(options["vcenter_hostname"], session)
         self.active_filters = {}
         self.object_type = options["object_type"]
+        # this is an internal flag that indicates if we tried to find the datacenter or not
+        # if its true, we stop trying and save some api calls.
+        # see process_intermediate_path_part
+        self._searched_for_datacenter = False
 
     @classmethod
     async def entry_point(cls, terms, options):
@@ -164,12 +168,14 @@ class Lookup:
         Returns:
             str or None, a single MoID or none if nothing was found
         """
-        if not self.active_filters.get("datacenter"):
+        if not self._searched_for_datacenter:
+            self._searched_for_datacenter = True
             result = await self.get_object_moid_by_name_and_type(
                 intermediate_object_name, "datacenter"
             )
-            self.active_filters["datacenters"] = result
-            return result
+            if result:
+                self.active_filters["datacenters"] = result
+                return result
 
         if self.object_type == "vm":
             result = await self.get_object_moid_by_name_and_type(

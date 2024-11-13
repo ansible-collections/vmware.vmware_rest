@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - lookup plugins - Fixed issue where datacenter search filter was never properly set
