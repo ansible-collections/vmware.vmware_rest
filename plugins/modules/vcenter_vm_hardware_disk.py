@@ -9,10 +9,10 @@
 
 DOCUMENTATION = r"""
 module: vcenter_vm_hardware_disk
-short_description: Adds a virtual disk to the virtual machine
-description: Adds a virtual disk to the virtual machine. While adding the virtual
-    disk, a new VMDK file may be created or an existing VMDK file may be used to back
-    the virtual disk.
+short_description: Adds a thin provisioned virtual disk to the virtual machine
+description: Adds a virtual disk to the virtual machine. The disk (provision)
+    type is always 'thin'. While adding the virtual disk, a new VMDK file may
+    be created or an existing VMDK file may be used to back the virtual disk.
 options:
     backing:
         description:

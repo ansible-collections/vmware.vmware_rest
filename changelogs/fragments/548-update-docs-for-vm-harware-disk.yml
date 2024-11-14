@@ -1,0 +1,3 @@
+---
+trivial:
+  - vcenter_vm_hardware_disk - Updated description to explicitly mention that the disk type is thin

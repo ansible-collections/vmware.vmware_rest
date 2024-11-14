@@ -151,6 +151,9 @@
 - vcenter_vm_hardware_cpu:
 - vcenter_vm_hardware_disk_info:
 - vcenter_vm_hardware_disk:
+    documentation:
+      short_description: Adds a thin provisioned virtual disk to the virtual machine
+      description: Adds a virtual disk to the virtual machine. The disk (provision) type is always 'thin'. While adding the virtual disk, a new VMDK file may be created or an existing VMDK file may be used to back the virtual disk.
 - vcenter_vm_hardware_ethernet_info:
 - vcenter_vm_hardware_ethernet:
 - vcenter_vm_hardware_floppy_info:
