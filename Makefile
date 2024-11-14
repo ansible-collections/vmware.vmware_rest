@@ -7,12 +7,16 @@ NC=\033[0m  # No Color
 prepare_symlinks:
 	ansible-playbook tools/prepare_symlinks.yml
 
+.PHONY: install-ansible-collections
+install-ansible-collections:
+	ansible-galaxy collection install --upgrade -r tests/integration/requirements.yml
+
 .PHONY: remove_aliases
 remove_aliases:
 	@find tests/integration/targets/ -name "aliases" -exec rm -f {} +
 
 .PHONY: eco-vcenter-ci
-eco-vcenter-ci: prepare_symlinks remove_aliases
+eco-vcenter-ci: install-ansible-collections prepare_symlinks remove_aliases
 	@[ -f /tmp/vmware_rest_tests_report.txt ] && rm /tmp/vmware_rest_tests_report.txt || true; \
 	@failed=0; \
 	total=0; \

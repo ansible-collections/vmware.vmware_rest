@@ -1,7 +1,5 @@
 - hosts: localhost
   gather_facts: no
-  collections:
-    - vmware.vmware
 
   tasks:
     - name: Import eco-vcenter credentials
