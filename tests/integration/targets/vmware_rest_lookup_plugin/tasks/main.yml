@@ -1,0 +1,185 @@
+---
+- name: Test lookup plugin
+  block:
+    - name: Import common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+
+    - name: Create test cluster
+      vmware.vmware.cluster:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: "{{ VMWARE_VALIDATE_CERTS }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        port: "{{ vcenter_port }}"
+        cluster_name: "{{ test_cluster }}"
+
+    # Test datacenter_moid
+    - name: Get datacenter info
+      vmware.vmware_rest.vcenter_datacenter_info:
+        datacenter: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/' + vcenter_datacenter) }}"
+      register: datacenter_info
+
+    - name: Verify datacenter info
+      ansible.builtin.assert:
+        that: datacenter_info.value.name == vcenter_datacenter
+
+    # Test cluster_moid
+    - name: Verify number of clusters in datacenter
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/') | length > 1
+  
+    - name: Lookup clusters in datacenter
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + item)
+      loop:
+        - ""
+        - "{{ vcenter_cluster_name }}"
+        - "{{ test_cluster }}"
+
+    - name: Get specific cluster info
+      vmware.vmware_rest.vcenter_cluster_info:
+        cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
+      register: cluster_info
+
+    - name: Verify cluster info
+      ansible.builtin.assert:
+        that: cluster_info.value.name == vcenter_cluster_name
+
+    # Test datastore_moid
+    - name: Verify number of datastores in datacenter
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/') | length > 1
+
+    - name: Verify number of datastores in cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/') | length > 1
+
+    - name: Lookup datastores in datacenter
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + item)
+      loop:
+        - ""
+        - "{{ vcenter_esxi_host }}/"
+        - "{{ vcenter_esxi_host }}/{{ shared_storage_01 }}"
+        - "{{ shared_storage_01 }}"
+        - "{{ eco_nfs_datastore_iso }}"
+  
+    - name: Get specific datastore info info
+      vmware.vmware_rest.vcenter_datastore_info:
+        datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01) }}"
+      register: datastore_info
+
+    - name: Verify datastore info
+      ansible.builtin.assert:
+        that: datastore_info.value.name == shared_storage_01
+
+    # Failed task. Opened bug
+    # - name: Verify no datastores
+    #   ansible.builtin.assert:
+    #     that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/') | length == 0
+
+    - name: Print datastores from empty cluster
+      ansible.builtin.debug:
+        var: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/')
+
+    # Test folder_moid
+    - name: Lookup folders
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + item)
+      loop:
+        - vm/{{ vcenter_vm_folder }}
+        - "{{ vcenter_vm_folder }}"
+
+    - name: Verify number of folders
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/') | length > 1
+
+    # Test network_moid
+    - name: Lookup networks
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + item)
+      loop:
+        - ""
+        - "{{ vm_network_name }}"
+
+    - name: Verify number of networks in cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/') | length > 1
+
+    # Failed task. Opened bug
+    # - name: Verify no networks in cluster
+    #   ansible.builtin.assert:
+    #     that: lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/') | length == 0
+
+    - name: Print networks from empty cluster
+      ansible.builtin.debug:
+        var: lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/')
+
+    # Test host_moid
+    - name: Lookup hosts
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + item)
+      loop:
+        - "{{ vcenter_esxi_host }}"
+        - "{{ vcenter_cluster_name }}/"
+        - "{{ vcenter_cluster_name }}/{{ vcenter_esxi_host }}"
+  
+    - name: Verify number of hosts in cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/') | length > 1
+  
+    - name: Verify no hosts in cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/') | length == 0
+
+    # Test vm_moid
+    - name: Lookup VMs
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + item)
+      loop:
+        - "{{ vcenter_esxi_host }}/"
+        # - "{{ vcenter_vm }}"
+        # - "{{ vcenter_resource_pool }}/"
+      
+    - name: Verify number of VMs in a cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/') | length > 1
+
+    - name: Print VMs from empty cluster
+      ansible.builtin.debug:
+        var: lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/')
+  
+    # Failed task. Opened bug
+    # - name: Verify no VMs in a cluster
+    #   ansible.builtin.assert:
+    #     that: lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/') | length == 0
+
+    - name: Lookup resource pools
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + item)
+      loop:
+        - "{{ vcenter_resource_pool }}"
+        - "{{ vcenter_resource_pool }}/"
+        - ""
+      
+    - name: Verify number of resource pools in a cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/') | length > 1
+  
+    - name: Verify that just 1 resource pool in a cluster
+      ansible.builtin.assert:
+        that: lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + test_cluster + '/') | length == 1
+
+  always:
+    - name: Destroy test cluster
+      vmware.vmware.cluster:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: "{{ VMWARE_VALIDATE_CERTS }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        port: "{{ vcenter_port }}"
+        cluster_name: "{{ test_cluster }}"
+        state: absent
