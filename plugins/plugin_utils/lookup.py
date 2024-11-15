@@ -23,7 +23,8 @@ class InvalidVspherePathError(Exception):
         self.container_name = container_name
         self.object_type = object_type
         super().__init__(
-            "VSphere object '%s' cannot hold objects of type '%s'" % (container_name, object_type)
+            "VSphere object '%s' cannot hold objects of type '%s'"
+            % (container_name, object_type)
         )
 
 
@@ -216,14 +217,18 @@ class Lookup:
 
         # resource pools cant continue past this point
         if self.object_type == "resource_pool":
-            raise InvalidVspherePathError(container_name=intermediate_object_name, object_type=self.object_type)
+            raise InvalidVspherePathError(
+                container_name=intermediate_object_name, object_type=self.object_type
+            )
 
         result = await self.get_object_moid_by_name_and_type(
             intermediate_object_name, "folder"
         )
         self.set_new_filters_with_datacenter({"parent_folders": result})
         if not result:
-            raise InvalidVspherePathError(container_name=intermediate_object_name, object_type=self.object_type)
+            raise InvalidVspherePathError(
+                container_name=intermediate_object_name, object_type=self.object_type
+            )
         return result
 
     async def get_object_moid_by_name_and_type(self, object_name, _object_type=None):
