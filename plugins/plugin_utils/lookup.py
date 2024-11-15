@@ -17,6 +17,16 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
 )
 
+
+class InvalidVspherePathError(Exception):
+    def __init__(self, container_name, object_type):
+        self.container_name = container_name
+        self.object_type = object_type
+        super().__init__(
+            "VSphere object '%s' cannot hold objects of type '%s'" % (container_name, object_type)
+        )
+
+
 FILTER_MAPPINGS = {
     "resource_pool": {
         "parent_resource_pools": "parent_resource_pools",
@@ -118,8 +128,11 @@ class Lookup:
         lookup = cls(options, session)
         lookup._options["_terms"] = terms[0]
 
-        task = asyncio.create_task(lookup.search_for_object_moid_top_down())
-        return await task
+        try:
+            task = asyncio.create_task(lookup.search_for_object_moid_top_down())
+            return await task
+        except InvalidVspherePathError:
+            return ""
 
     async def search_for_object_moid_top_down(self):
         """
@@ -185,7 +198,7 @@ class Lookup:
                 self.set_new_filters_with_datacenter({"resource_pools": result})
                 return result
 
-        if self.object_type in ("host", "resource_pool"):
+        if self.object_type in ("vm", "host", "resource_pool"):
             result = await self.get_object_moid_by_name_and_type(
                 intermediate_object_name, "cluster"
             )
@@ -203,12 +216,14 @@ class Lookup:
 
         # resource pools cant continue past this point
         if self.object_type == "resource_pool":
-            return None
+            raise InvalidVspherePathError(container_name=intermediate_object_name, object_type=self.object_type)
 
         result = await self.get_object_moid_by_name_and_type(
             intermediate_object_name, "folder"
         )
         self.set_new_filters_with_datacenter({"parent_folders": result})
+        if not result:
+            raise InvalidVspherePathError(container_name=intermediate_object_name, object_type=self.object_type)
         return result
 
     async def get_object_moid_by_name_and_type(self, object_name, _object_type=None):
