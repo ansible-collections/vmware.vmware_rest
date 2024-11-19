@@ -17,6 +17,17 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest imp
     open_session,
 )
 
+
+class InvalidVspherePathError(Exception):
+    def __init__(self, container_name, object_type):
+        self.container_name = container_name
+        self.object_type = object_type
+        super().__init__(
+            "VSphere object '%s' cannot hold objects of type '%s'"
+            % (container_name, object_type)
+        )
+
+
 FILTER_MAPPINGS = {
     "resource_pool": {
         "parent_resource_pools": "parent_resource_pools",
@@ -92,7 +103,7 @@ class Lookup:
         self.object_type = options["object_type"]
         # this is an internal flag that indicates if we tried to find the datacenter or not
         # if its true, we stop trying and save some api calls.
-        # see process_intermediate_path_part
+        # see add_intermediate_path_part_to_filter_spec
         self._searched_for_datacenter = False
 
     @classmethod
@@ -118,8 +129,11 @@ class Lookup:
         lookup = cls(options, session)
         lookup._options["_terms"] = terms[0]
 
-        task = asyncio.create_task(lookup.search_for_object_moid_top_down())
-        return await task
+        try:
+            task = asyncio.create_task(lookup.search_for_object_moid_top_down())
+            return await task
+        except InvalidVspherePathError:
+            return ""
 
     async def search_for_object_moid_top_down(self):
         """
@@ -137,7 +151,7 @@ class Lookup:
                 # were at the end of the object path. Either return the object, or return
                 # all of the objects it contains (for example, the children inside of a folder)
                 if return_all_children:
-                    await self.process_intermediate_path_part(path_part)
+                    await self.add_intermediate_path_part_to_filter_spec(path_part)
                     return await self.get_all_children_in_object()
                 else:
                     return await self.get_object_moid_by_name_and_type(path_part)
@@ -145,71 +159,96 @@ class Lookup:
             else:
                 # were in the middle of an object path, lookup the object at this level
                 # and add it to the filters for the next round of searching
-                await self.process_intermediate_path_part(path_part)
+                await self.add_intermediate_path_part_to_filter_spec(path_part)
                 continue
 
         raise AnsibleLookupError(
             "No objects could be found due to an invalid search path"
         )
 
-    async def process_intermediate_path_part(self, intermediate_object_name):
+    async def add_intermediate_path_part_to_filter_spec(self, intermediate_object_name):
         """
-        Finds and returns the MoID for an object in the middle of a search path. Different vSphere objects can be
-        children of other types of vSphere objects.
-          - VMs could be in a resource pool, a host, or a folder
-          - Networks could be in a host, or in a folder
-          - Hosts could be in a cluster, or in a folder
-          - Datastores could in a host, or in a folder
-          - Resource pools could be in a cluster, or a host
-        We start with the most restrictive searches and progressively expand the search area until something is found.
-        We also update the filters to include the proper object filter for the next round of searches.
+        The intermediate object name is part of the search path that the user provided. This method tries to determine
+        what that intermediate object is based on its name and the type of lookup were doing. If the object is found,
+        its added to the final lookup filter spec.
+        If no object is found, that means the path is invalid for the lookup type, and we raise an error.
+        To find an objects filter spec definition, visit the VMware API docs.
         Params:
             intermediate_object_name: str, The name of the current object to search for
         Returns:
-            str or None, a single MoID or none if nothing was found
+            None
         """
+        # If we havnt searched for a datacenter yet, this is the first item in the path and its likely
+        # the datacenter. If its not, continue the search as normal and dont search for the datacenter
+        # again
         if not self._searched_for_datacenter:
-            self._searched_for_datacenter = True
-            result = await self.get_object_moid_by_name_and_type(
-                intermediate_object_name, "datacenter"
-            )
-            if result:
-                self.active_filters["datacenters"] = result
-                return result
+            if self.__add_datacenter_to_filter_spec_if_exists(intermediate_object_name):
+                return
 
+        # Resource pools can only be in the vm filter spec
         if self.object_type == "vm":
-            result = await self.get_object_moid_by_name_and_type(
-                intermediate_object_name, "resource_pool"
-            )
-            if result:
-                self.set_new_filters_with_datacenter({"resource_pools": result})
-                return result
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "resource_pool", "resource_pools"
+            ):
+                return
 
-        if self.object_type in ("host", "resource_pool"):
-            result = await self.get_object_moid_by_name_and_type(
-                intermediate_object_name, "cluster"
-            )
-            if result:
-                self.set_new_filters_with_datacenter({"clusters": result})
-                return result
+        # Clusters can be used in the vm, host, or resource pool filter specs
+        if self.object_type in ("vm", "host", "resource_pool"):
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "cluster", "clusters"
+            ):
+                return
 
+        # Hosts can be in the filter spec for vms, networks, datastores, or resource pools
         if self.object_type in ("vm", "network", "datastore", "resource_pool"):
-            result = await self.get_object_moid_by_name_and_type(
-                intermediate_object_name, "host"
-            )
-            if result:
-                self.set_new_filters_with_datacenter({"hosts": result})
-                return result
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "host", "hosts"
+            ):
+                return
 
-        # resource pools cant continue past this point
-        if self.object_type == "resource_pool":
-            return None
+        # Folders can be used in the filter spec for everything except resource pools
+        if self.object_type != "resource_pool":
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "folder", "parent_folders"
+            ):
+                return
 
-        result = await self.get_object_moid_by_name_and_type(
-            intermediate_object_name, "folder"
+        raise InvalidVspherePathError(
+            container_name=intermediate_object_name, object_type=self.object_type
         )
-        self.set_new_filters_with_datacenter({"parent_folders": result})
-        return result
+
+    async def __add_datacenter_to_filter_spec_if_exists(self, object_name):
+        """
+        Search for an object name as a datacenter. If found, add the datacenter to the
+        active filter spec.
+        Params:
+            object_name: str, The name of the current object to search for
+        Returns:
+            Datacenter MOID or None
+        """
+        self._searched_for_datacenter = True
+        result = await self.get_object_moid_by_name_and_type(object_name, "datacenter")
+        if result:
+            self.active_filters["datacenters"] = result
+            return result
+
+    async def __add_object_to_filter_spec_if_exists(
+        self, object_name, object_type, filter_key
+    ):
+        """
+        Search for an object name as a specific object type. If found, add the object ID to the
+        active filter spec.
+        Params:
+            object_name: str, The name of the current object to search for
+            object_type: str, The type of object to search for
+            filter_key: str, The key in the filter spec that the result will be stored under
+        Returns:
+            Object MOID or None
+        """
+        result = await self.get_object_moid_by_name_and_type(object_name, object_type)
+        if result:
+            self.set_new_filters_with_datacenter({filter_key: result})
+            return result
 
     async def get_object_moid_by_name_and_type(self, object_name, _object_type=None):
         """
