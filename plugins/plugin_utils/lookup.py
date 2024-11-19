@@ -187,22 +187,30 @@ class Lookup:
 
         # Resource pools can only be in the vm filter spec
         if self.object_type == "vm":
-            if self.__add_object_to_filter_spec_if_exists(intermediate_object_name, "resource_pool", "resource_pools"):
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "resource_pool", "resource_pools"
+            ):
                 return
 
         # Clusters can be used in the vm, host, or resource pool filter specs
         if self.object_type in ("vm", "host", "resource_pool"):
-            if self.__add_object_to_filter_spec_if_exists(intermediate_object_name, "cluster", "clusters"):
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "cluster", "clusters"
+            ):
                 return
 
         # Hosts can be in the filter spec for vms, networks, datastores, or resource pools
         if self.object_type in ("vm", "network", "datastore", "resource_pool"):
-            if self.__add_object_to_filter_spec_if_exists(intermediate_object_name, "host", "hosts"):
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "host", "hosts"
+            ):
                 return
 
         # Folders can be used in the filter spec for everything except resource pools
         if self.object_type != "resource_pool":
-            if self.__add_object_to_filter_spec_if_exists(intermediate_object_name, "folder", "parent_folders"):
+            if self.__add_object_to_filter_spec_if_exists(
+                intermediate_object_name, "folder", "parent_folders"
+            ):
                 return
 
         raise InvalidVspherePathError(
@@ -219,14 +227,14 @@ class Lookup:
             Datacenter MOID or None
         """
         self._searched_for_datacenter = True
-        result = await self.get_object_moid_by_name_and_type(
-            object_name, "datacenter"
-        )
+        result = await self.get_object_moid_by_name_and_type(object_name, "datacenter")
         if result:
             self.active_filters["datacenters"] = result
             return result
 
-    async def __add_object_to_filter_spec_if_exists(self, object_name, object_type, filter_key):
+    async def __add_object_to_filter_spec_if_exists(
+        self, object_name, object_type, filter_key
+    ):
         """
         Search for an object name as a specific object type. If found, add the object ID to the
         active filter spec.
@@ -237,9 +245,7 @@ class Lookup:
         Returns:
             Object MOID or None
         """
-        result = await self.get_object_moid_by_name_and_type(
-            object_name, object_type
-        )
+        result = await self.get_object_moid_by_name_and_type(object_name, object_type)
         if result:
             self.set_new_filters_with_datacenter({filter_key: result})
             return result
