@@ -248,7 +248,6 @@ class Lookup:
         result = await self.get_object_moid_by_name_and_type(object_name, object_type)
         if result:
             self.active_filters[filter_key] = result
-            #self.set_new_filters_with_datacenter({filter_key: result})
             return result
 
     async def get_object_moid_by_name_and_type(self, object_name, _object_type=None):
@@ -323,15 +322,3 @@ class Lookup:
             return [result[self.object_type] for result in results]
         except KeyError:
             return None
-
-    def set_new_filters_with_datacenter(self, new_filters):
-        """
-        Deletes filter key value pairs from the active filter dict and replaces them with the new filters.
-        It will leave the datacenter filter since that is always used.
-        Params:
-            new_filters: dict, The new filters you want to apply as active
-        """
-        _dc = self.active_filters.get("datacenters")
-        self.active_filters = new_filters
-        if _dc:
-            self.active_filters["datacenters"] = _dc
