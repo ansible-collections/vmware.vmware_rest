@@ -182,7 +182,9 @@ class Lookup:
         # the datacenter. If its not, continue the search as normal and dont search for the datacenter
         # again
         if not self._searched_for_datacenter:
-            if await self.__add_datacenter_to_filter_spec_if_exists(intermediate_object_name):
+            if await self.__add_datacenter_to_filter_spec_if_exists(
+                intermediate_object_name
+            ):
                 return
 
         # Resource pools can only be in the vm filter spec
