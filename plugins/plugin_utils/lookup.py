@@ -182,33 +182,35 @@ class Lookup:
         # the datacenter. If its not, continue the search as normal and dont search for the datacenter
         # again
         if not self._searched_for_datacenter:
-            if self.__add_datacenter_to_filter_spec_if_exists(intermediate_object_name):
+            if await self.__add_datacenter_to_filter_spec_if_exists(
+                intermediate_object_name
+            ):
                 return
 
         # Resource pools can only be in the vm filter spec
         if self.object_type == "vm":
-            if self.__add_object_to_filter_spec_if_exists(
+            if await self.__add_object_to_filter_spec_if_exists(
                 intermediate_object_name, "resource_pool", "resource_pools"
             ):
                 return
 
         # Clusters can be used in the vm, host, or resource pool filter specs
         if self.object_type in ("vm", "host", "resource_pool"):
-            if self.__add_object_to_filter_spec_if_exists(
+            if await self.__add_object_to_filter_spec_if_exists(
                 intermediate_object_name, "cluster", "clusters"
             ):
                 return
 
         # Hosts can be in the filter spec for vms, networks, datastores, or resource pools
         if self.object_type in ("vm", "network", "datastore", "resource_pool"):
-            if self.__add_object_to_filter_spec_if_exists(
+            if await self.__add_object_to_filter_spec_if_exists(
                 intermediate_object_name, "host", "hosts"
             ):
                 return
 
         # Folders can be used in the filter spec for everything except resource pools
         if self.object_type != "resource_pool":
-            if self.__add_object_to_filter_spec_if_exists(
+            if await self.__add_object_to_filter_spec_if_exists(
                 intermediate_object_name, "folder", "parent_folders"
             ):
                 return
@@ -247,7 +249,7 @@ class Lookup:
         """
         result = await self.get_object_moid_by_name_and_type(object_name, object_type)
         if result:
-            self.set_new_filters_with_datacenter({filter_key: result})
+            self.active_filters[filter_key] = result
             return result
 
     async def get_object_moid_by_name_and_type(self, object_name, _object_type=None):
@@ -266,7 +268,7 @@ class Lookup:
         if _object_type == "datacenter":
             _filters = {"folders": "group-d1"}
         else:
-            _filters = self.active_filters
+            _filters = self.active_filters.copy()
 
         _filters["names"] = object_name
         _result = await self.api.fetch_object_with_filters(_object_type, _filters)
@@ -322,15 +324,3 @@ class Lookup:
             return [result[self.object_type] for result in results]
         except KeyError:
             return None
-
-    def set_new_filters_with_datacenter(self, new_filters):
-        """
-        Deletes filter key value pairs from the active filter dict and replaces them with the new filters.
-        It will leave the datacenter filter since that is always used.
-        Params:
-            new_filters: dict, The new filters you want to apply as active
-        """
-        _dc = self.active_filters.get("datacenters")
-        self.active_filters = new_filters
-        if _dc:
-            self.active_filters["datacenters"] = _dc
