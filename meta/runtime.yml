@@ -136,3 +136,10 @@ action_groups:
     - vcenter_vm_tools_installer_info
     - vcenter_vm_tools_installer
     - vcenter_vm_tools
+
+plugin_routing:
+  modules:
+    content_library_item_info:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.content_library_item_info instead.

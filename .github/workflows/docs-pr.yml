@@ -25,6 +25,7 @@ jobs:
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
       provide-link-targets: |
         ansible_collections.vmware.vmware.vcsa_settings_module
+        ansible_collections.vmware.vmware.content_library_item_info_module
 
   build-docs:
     permissions:
@@ -39,6 +40,7 @@ jobs:
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
       provide-link-targets: |
         ansible_collections.vmware.vmware.vcsa_settings_module
+        ansible_collections.vmware.vmware.content_library_item_info_module
 
   # This job requires that the workflow trigger is pull_request_target. However that trigger uses
   # whatever version of the workflow is available on main instead of the feature branch.

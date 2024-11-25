@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: content_library_item_info
 short_description: Returns the ItemModel with the given identifier.
 description: Returns the ItemModel with the given identifier.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.content_library_item_info) instead.
 options:
     library_id:
         description:
