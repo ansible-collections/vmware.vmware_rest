@@ -1,0 +1,46 @@
+---
+- name: Test lookup plugin
+  block:
+    - name: Import common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+
+    - name: Create test cluster
+      vmware.vmware.cluster:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: "{{ VMWARE_VALIDATE_CERTS }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        port: "{{ vcenter_port }}"
+        cluster_name: "{{ test_cluster }}"
+
+    - name: Get random host info
+      vmware.vmware_rest.vcenter_host_info:
+        hosts: "{{ lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/')[0] }}"
+      register: vcenter_host_info
+
+    - name: Set host name for tests
+      ansible.builtin.set_fact:
+        vcenter_host_name: "{{ vcenter_host_info.value[0].name }}"
+  
+    - import_tasks: test_datacenter_moid.yml
+    - import_tasks: test_cluster_moid.yml
+    - import_tasks: test_host_moid.yml
+    - import_tasks: test_datastore_moid.yml
+    - import_tasks: test_folder_moid.yml
+    - import_tasks: test_network_moid.yml
+    - import_tasks: test_vm_moid.yml
+    - import_tasks: test_resource_pool_moid.yml
+
+  always:
+    - name: Destroy test cluster
+      vmware.vmware.cluster:
+        hostname: "{{ VMWARE_HOST }}"
+        username: "{{ VMWARE_USER }}"
+        password: "{{ VMWARE_PASSWORD }}"
+        validate_certs: "{{ VMWARE_VALIDATE_CERTS }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        port: "{{ vcenter_port }}"
+        cluster_name: "{{ test_cluster }}"
+        state: absent

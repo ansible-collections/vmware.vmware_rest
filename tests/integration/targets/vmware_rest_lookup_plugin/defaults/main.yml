@@ -1,0 +1,3 @@
+---
+vcenter_datastore: "{{ shared_storage_01 }}"
+test_cluster: "test-cluster"
