@@ -775,3 +775,16 @@ releases:
     - 538-add-eco-ci-job.yml
     - 540-typo-fixes-in-module-docs.yml
     release_date: '2024-10-28'
+  4.3.0:
+    changes:
+      bugfixes:
+      - lookup plugins - Fixed issue where datacenter search filter was never properly
+        set
+      deprecated_features:
+      - content_library_item_info - the module has been deprecated and will be removed
+        in vmware.vmware_rest 5.0.0
+    fragments:
+    - 547-fix-datacenter-loop-in-lookups.yml
+    - 548-update-docs-for-vm-harware-disk.yml
+    - 549-deprecate-content_library_item_info.yml
+    release_date: '2024-11-26'

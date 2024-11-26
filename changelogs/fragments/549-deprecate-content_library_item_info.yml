@@ -1,3 +1,0 @@
----
-deprecated_features:
-  - content_library_item_info - the module has been deprecated and will be removed in vmware.vmware_rest 5.0.0
