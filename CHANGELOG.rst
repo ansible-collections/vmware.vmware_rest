@@ -4,6 +4,19 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.3.0
+======
+
+Deprecated Features
+-------------------
+
+- content_library_item_info - the module has been deprecated and will be removed in vmware.vmware_rest 5.0.0
+
+Bugfixes
+--------
+
+- lookup plugins - Fixed issue where datacenter search filter was never properly set
+
 v4.2.0
 ======
 

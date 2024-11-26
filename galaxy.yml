@@ -2,7 +2,7 @@
 namespace: vmware
 name: vmware_rest
 readme: README.md
-version: "4.2.0"
+version: "4.3.0"
 authors:
   - Ansible (https://github.com/ansible)
 description: VMware collection for Ansible
