@@ -1,16 +1,8 @@
 ---
 - name: Test lookup plugin
   block:
-    - name: Import common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-
     - name: Create test cluster
       vmware.vmware.cluster:
-        hostname: "{{ VMWARE_HOST }}"
-        username: "{{ VMWARE_USER }}"
-        password: "{{ VMWARE_PASSWORD }}"
-        validate_certs: "{{ VMWARE_VALIDATE_CERTS }}"
         datacenter: "{{ vcenter_datacenter }}"
         port: "{{ vcenter_port }}"
         cluster_name: "{{ test_cluster }}"
@@ -36,10 +28,6 @@
   always:
     - name: Destroy test cluster
       vmware.vmware.cluster:
-        hostname: "{{ VMWARE_HOST }}"
-        username: "{{ VMWARE_USER }}"
-        password: "{{ VMWARE_PASSWORD }}"
-        validate_certs: "{{ VMWARE_VALIDATE_CERTS }}"
         datacenter: "{{ vcenter_datacenter }}"
         port: "{{ vcenter_port }}"
         cluster_name: "{{ test_cluster }}"
