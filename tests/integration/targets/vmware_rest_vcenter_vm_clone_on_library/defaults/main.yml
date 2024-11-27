@@ -1,0 +1,5 @@
+---
+resource_pool_name: "{{ tiny_prefix }}-clone-on-library-resource-pool"
+vm_name: "{{ tiny_prefix }}-clone-on-library-vm"
+vm_from_template_name: "{{ tiny_prefix }}-vm-from-template"
+library_name: "{{ tiny_prefix }}-library-on-datastore"
