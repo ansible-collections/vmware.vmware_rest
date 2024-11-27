@@ -1,0 +1,15 @@
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Import common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+      tags:
+        - eco-vcenter-ci
+
+    - name: Import appliance role
+      ansible.builtin.import_role:
+        name: vmware_rest_vcenter_vm_cloning
+      tags:
+        - eco-vcenter-ci

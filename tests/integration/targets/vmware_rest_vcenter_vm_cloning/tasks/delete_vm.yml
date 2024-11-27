@@ -1,0 +1,20 @@
+---
+- name: Power off VM
+  vmware.vmware_rest.vcenter_vm_guest_power:
+    vm: "{{ vm_id }}"
+    state: shutdown
+
+- name: Wait until VM is off
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: "{{ vm_id }}"
+  register: vm_info
+  until:
+  - vm_info is not failed
+  - vm_info.value.power_state == "POWERED_OFF"
+  retries: 60
+  delay: 5
+
+- name: Delete VM
+  vmware.vmware_rest.vcenter_vm:
+    vm: "{{ vm_id }}"
+    state: absent
