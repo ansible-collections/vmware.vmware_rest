@@ -1,0 +1,85 @@
+---
+- name: Test VM cloning on a real vCenter
+  block:
+    - name: Create a generic resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        name: "{{ resource_pool_name }}"
+        parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool) }}"
+      register: resource_pool_info
+
+    - name: Deploy a new VM based on the template
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        name: "{{ vm1_name }}"
+        template_library_item: "{{ vcenter_test_vm_template.id }}"
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          resource_pool: "{{ resource_pool_info.id }}"
+        state: deploy
+      register: vm_from_template
+
+    - name: Power on VM
+      vmware.vmware_rest.vcenter_vm_power:
+        state: start
+        vm: '{{ vm_from_template.value }}'
+
+    - name: Wait until VM is ready
+      vmware.vmware_rest.vcenter_vm_tools_info:
+        vm: '{{ vm_from_template.value }}'
+      register: vm_tools_info
+      until:
+      - vm_tools_info is not failed
+      - vm_tools_info.value.run_state == "RUNNING"
+      retries: 10
+      delay: 5
+
+    - name: Create an instant clone of VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          resource_pool: "{{ resource_pool_info.id }}"
+        source: "{{ vm_from_template.value }}"
+        name: "{{ vm2_name }}"
+        state: instant_clone
+      register: vm_instant_clone
+
+    - name: Verify an instant clone of VM is created
+      ansible.builtin.assert:
+        that:
+          - vm_instant_clone is changed
+          - vm_instant_clone.value.name == vm2_name
+
+    - name: Create a clone of VM
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          resource_pool: "{{ resource_pool_info.id }}"
+        source: "{{ vm_from_template.value }}"
+        name: "{{ vm3_name }}"
+        state: clone
+      register: clone_vm
+
+    - name: Verify a clone of VM is created
+      ansible.builtin.assert:
+        that:
+          - clone_vm is changed
+          - clone_vm.value.name == vm3_name
+
+  always:
+    - name: Delete VMs
+      ansible.builtin.include_tasks: delete_vm.yml
+      when: item is defined
+      vars:
+        vm_id: "{{ item }}"
+      loop:
+        - "{{ vm_from_template.value }}"
+        - "{{ vm_instant_clone.id }}"
+        - "{{ clone_vm.id }}"
+
+    - name: Delete resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        resource_pool: "{{ resource_pool_info.id }}"
+        state: absent
+      when: resource_pool_info.id is defined
