@@ -1,0 +1,83 @@
+- name: Validate and restore warn_days policy for local accounts
+  block:
+    - name: Retrieve the initial global policy of the local accounts
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
+      register: initial_global_policy
+
+    - name: Verify that the initial global policy is retrieved
+      ansible.builtin.assert:
+        that:
+          - initial_global_policy is defined
+          - initial_global_policy.value is not none
+        fail_msg: "Failed to retrieve the initial global policy for local accounts."
+
+    - name: Display the initial global policy
+      ansible.builtin.debug:
+        var: initial_global_policy
+
+    - name: Temporarily update the global policy of the local accounts
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy:
+        warn_days: 3
+
+    - name: Verify temporary global policy update
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
+      register: temp_global_policy
+
+    - name: Assert that the temporary global policy was updated warn_days to 3
+      ansible.builtin.assert:
+        that:
+          - temp_global_policy.value.warn_days == 3
+        fail_msg: "Temporary global policy was not updated to warn_days: 3."
+
+    - name: Update the global policy of the local accounts warn_days to 5
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy:
+        warn_days: 5
+
+    - name: Validate the global policy update warn_days to 5
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
+      register: updated_global_policy
+
+    - name: Assert that the global policy was updated warn_days to 5
+      ansible.builtin.assert:
+        that:
+          - updated_global_policy.value.warn_days == 5
+        fail_msg: "Global policy was not updated to warn_days: 5."
+
+    - name: Verify idempotency of the global policy update
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy:
+        warn_days: 5
+      register: idempotency_result
+
+    - name: Ensure the idempotency of the global policy update
+      ansible.builtin.assert:
+        that:
+          - not(idempotency_result.changed)
+        fail_msg: "Idempotency check failed. The global policy update triggered changes unnecessarily."
+
+    - name: Retrieve and validate the list of local accounts
+      vmware.vmware_rest.appliance_localaccounts_info:
+      register: local_accounts
+
+    - name: Assert that local accounts are retrieved successfully
+      ansible.builtin.assert:
+        that:
+          - local_accounts is defined
+          - local_accounts.value is not none
+        fail_msg: "Failed to retrieve the list of local accounts."
+
+    - name: Display the list of local accounts
+      ansible.builtin.debug:
+        var: local_accounts
+
+  always:
+    - name: Restore warn_days to default value - 5
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy:
+        warn_days: 5
+
+    - name: Validate the restoration of warn_days
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
+      register: restored_global_policy
+
+    - name: Display the restored global policy
+      ansible.builtin.debug:
+        var: restored_global_policy

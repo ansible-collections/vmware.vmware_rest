@@ -1,0 +1,34 @@
+---
+- name: Retrieve the current hostname configuration
+  vmware.vmware_rest.appliance_networking_dns_hostname_info:
+  register: current_hostname
+
+- name: Assert hostname configuration is retrieved
+  ansible.builtin.assert:
+    that:
+      - current_hostname is defined
+      - current_hostname.value is not none
+    fail_msg: "Failed to retrieve the current hostname configuration."
+
+- name: Print current hostname configuration
+  ansible.builtin.debug:
+    var: current_hostname
+
+- name: Test the hostname configuration
+  vmware.vmware_rest.appliance_networking_dns_hostname:
+    state: test
+    name: "{{ VMWARE_HOST }}"
+  register: test_hostname_result
+
+- name: Assert hostname test result is successful
+  ansible.builtin.assert:
+    that:
+      - test_hostname_result is defined
+      - test_hostname_result.value.status == "green"
+    fail_msg: >-
+      Hostname test failed with status: {{ test_hostname_result.value.status }}.
+      Messages: {{ test_hostname_result.value.messages }}
+
+- name: Print test hostname result
+  ansible.builtin.debug:
+    var: test_hostname_result

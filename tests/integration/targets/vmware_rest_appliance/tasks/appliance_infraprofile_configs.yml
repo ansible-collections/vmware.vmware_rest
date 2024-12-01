@@ -1,0 +1,34 @@
+---
+- name: List infraprofile configs
+  vmware.vmware_rest.appliance_infraprofile_configs_info:
+  register: infraprofile_configs
+
+- name: Print infraprofile_configs
+  ansible.builtin.debug:
+    var: infraprofile_configs
+
+- name: Assert infraprofile configs are present
+  ansible.builtin.assert:
+    that:
+      - infraprofile_configs is defined
+      - infraprofile_configs.value | length > 0
+    fail_msg: "No infraprofile configurations found."
+
+- name: Export the ApplianceManagement profile
+  vmware.vmware_rest.appliance_infraprofile_configs:
+    state: export
+    profiles:
+      - ApplianceManagement
+  register: exported_profile
+
+- name: Print exported_profile
+  ansible.builtin.debug:
+    msg: "{{ exported_profile.value | string }}"
+
+- name: Assert exported profile value is present
+  ansible.builtin.assert:
+    that:
+      - exported_profile is defined
+      - exported_profile.value is not none
+      - exported_profile.value | length > 0
+    fail_msg: "Failed to export the ApplianceManagement profile. No value returned."
