@@ -1,6 +1,11 @@
 ---
 - name: Test VM cloning on a real vCenter
   block:
+    - name: Import eco-vcenter common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+      tags: eco-vcenter-ci
+
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: "{{ resource_pool_name }}"
