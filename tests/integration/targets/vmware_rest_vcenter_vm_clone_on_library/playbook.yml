@@ -2,11 +2,6 @@
   gather_facts: no
 
   tasks:
-    - name: Import eco-vcenter credentials
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Import vmware_rest_lookup_plugin test
       ansible.builtin.import_role:
         name: vmware_rest_vcenter_vm_clone_on_library

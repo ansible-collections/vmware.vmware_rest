@@ -1,6 +1,11 @@
 ---
 - name: Test VM clone on library
   block:
+    - name: Import eco-vcenter common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+      tags: eco-vcenter-ci
+
     - name: Create a content library based on a DataStore
       vmware.vmware_rest.content_locallibrary:
         name: "{{ library_name }}"

@@ -1,6 +1,6 @@
 ---
-VMWARE_HOST: ${VCENTER_HOSTNAME}
-VMWARE_USER: ${VCENTER_USERNAME}
-VMWARE_PASSWORD: ${VCENTER_PASSWORD}
-VMWARE_VALIDATE_CERTS: false
+vcenter_hostname: ${VCENTER_HOSTNAME}
+vcenter_username: ${VCENTER_USERNAME}
+vcenter_password: ${VCENTER_PASSWORD}
+vcenter_validate_certs: false
 ansible_tags: eco-vcenter-ci

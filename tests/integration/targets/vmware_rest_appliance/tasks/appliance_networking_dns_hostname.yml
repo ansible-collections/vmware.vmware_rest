@@ -17,7 +17,7 @@
 - name: Test the hostname configuration
   vmware.vmware_rest.appliance_networking_dns_hostname:
     state: test
-    name: "{{ VMWARE_HOST }}"
+    name: "{{ vcenter_hostname }}"
   register: test_hostname_result
 
 - name: Assert hostname test result is successful
