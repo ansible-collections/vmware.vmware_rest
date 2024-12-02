@@ -114,6 +114,8 @@
 - vcenter_info:
 - vcenter_network_info:
 - vcenter_ovf_libraryitem:
+    documentation:
+      description: This operation creates a library item in content library whose content is an OVF package derived from a source virtual machine or virtual appliance, using the supplied create specification. For an existing library item whose content is updated by this operation, the original content is overwritten. Meta data such as name and description is not updated for the existing library item. PLease see the examples for a workaround if you need to update the description.
 - vcenter_resourcepool_info:
 - vcenter_resourcepool:
 - vcenter_storage_policies_info:
