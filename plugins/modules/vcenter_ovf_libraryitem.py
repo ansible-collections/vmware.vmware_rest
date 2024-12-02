@@ -305,7 +305,7 @@ EXAMPLES = r"""
   register: ovf_item
 
 - name: Get the list of items of the NFS library
-  vmware.vmware_rest.content_library_item_info:
+  vmware.vmware.content_library_item_info:
     library_id: '{{ nfs_lib.id }}'
   register: lib_items
 
