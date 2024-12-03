@@ -309,7 +309,7 @@ EXAMPLES = r"""
       id: "{{ lookup('vmware.vmware_rest.vm_moid', 'My VM') }}"
     target:
       library_id: 1111111-1111111-1111111-111111
-      library_item_id: "{{ _ovf_item.id }}"
+      library_item_id: "{{ _ovf_item.value.ovf_library_item_id }}"
     create_spec:
       description: A much better description for this template
       flags: []
@@ -318,7 +318,7 @@ EXAMPLES = r"""
 RETURN = r"""
 id:
   description: The ID of the OVF template
-  returned: When the template was created
+  returned: On success and not changed
   type: str
   sample:
     id: "3994f858-2d45-4dac-b407-0643a29308bd"
@@ -329,7 +329,7 @@ value:
   returned: On success
   type: dict
   sample:
-    # Values returned if OVF was created
+    # Values returned if OVF already exists and is unchanged
     cached: true
     certificate_verification_info:
       status: "INTERNAL"
@@ -346,7 +346,7 @@ value:
     type: "ovf"
     version: "1"
 
-    # Values returned if OVF already exists
+    # Values returned if OVF is changed
     error:
       errors: []
       information: []
