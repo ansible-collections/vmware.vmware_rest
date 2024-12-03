@@ -306,9 +306,9 @@ EXAMPLES = r"""
     session_timeout: 2900
     source:
       type: VirtualMachine
-      id: "{{ lookup('vmware.vmware_rest.vm_moid', vm_name) }}"
+      id: "{{ lookup('vmware.vmware_rest.vm_moid', 'My VM') }}"
     target:
-      library_id: "{{ library_id }}"
+      library_id: 1111111-1111111-1111111-111111
       library_item_id: "{{ _ovf_item.id }}"
     create_spec:
       description: A much better description for this template
@@ -318,17 +318,18 @@ EXAMPLES = r"""
 RETURN = r"""
 id:
   description: The ID of the OVF template
-  returned: When the template is created
+  returned: When the template was created
   type: str
   sample:
     id: "3994f858-2d45-4dac-b407-0643a29308bd"
 
-# Sample shows values if OVF is created
+
 value:
   description: Details about the OVF if it was created, or an ID if the OVF was updated
   returned: On success
   type: dict
   sample:
+    # Values returned if OVF was created
     cached: true
     certificate_verification_info:
       status: "INTERNAL"
@@ -344,6 +345,14 @@ value:
     size: 875576749
     type: "ovf"
     version: "1"
+
+    # Values returned if OVF already exists
+    error:
+      errors: []
+      information: []
+      warnings: []
+    ovf_library_item_id: "3994f858-2d45-4dac-b407-0643a29308bd"
+    succeeded: true
 """
 
 
