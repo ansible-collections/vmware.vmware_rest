@@ -1,0 +1,65 @@
+---
+- name: Manage NTP Configuration on vCenter
+  block:
+    - name: Reset the NTP configuration
+      vmware.vmware_rest.appliance_ntp:
+        servers:
+          - ca.pool.ntp.org
+      delegate_to: localhost
+
+    - name: Retrieve the initial NTP configuration
+      vmware.vmware_rest.appliance_ntp_info:
+      delegate_to: localhost
+
+    - name: Set the NTP configuration to use Google NTP servers
+      vmware.vmware_rest.appliance_ntp:
+        servers:
+          - time.google.com
+      delegate_to: localhost
+
+    - name: Verify idempotency of NTP configuration
+      vmware.vmware_rest.appliance_ntp:
+        servers:
+          - time.google.com
+      delegate_to: localhost
+      register: ntp_result
+
+    - name: Debug idempotency result
+      ansible.builtin.debug:
+        var: ntp_result
+
+    - name: Assert idempotency
+      ansible.builtin.assert:
+        that:
+          - not (ntp_result.changed)
+
+    - name: Retrieve the updated NTP configuration
+      vmware.vmware_rest.appliance_ntp_info:
+      delegate_to: localhost
+      register: ntp_info
+
+    - name: Debug updated NTP configuration
+      ansible.builtin.debug:
+        var: ntp_info
+
+    - name: Assert the NTP configuration matches expected servers
+      ansible.builtin.assert:
+        that:
+          - ntp_info.value == ["time.google.com"]
+
+    - name: Test the NTP configuration connectivity
+      vmware.vmware_rest.appliance_ntp:
+        state: test
+        servers:
+          - time.google.com
+      delegate_to: localhost
+      register: ntp_test_result
+
+    - name: Debug NTP test result
+      ansible.builtin.debug:
+        var: ntp_test_result
+
+    - name: Ensure the NTP server is reachable
+      ansible.builtin.assert:
+        that:
+          - ntp_test_result.value[0].status == "SERVER_REACHABLE"
