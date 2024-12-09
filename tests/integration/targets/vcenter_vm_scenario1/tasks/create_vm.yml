@@ -1,3 +1,18 @@
+- name: Build a list of all the datastores
+  vmware.vmware_rest.vcenter_datastore_info:
+  register: all_the_datastores
+
+- name: Print all datastores
+  ansible.builtin.debug:
+    var: all_the_datastores
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      - "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/') }}"
+      - "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/') }}"
+
 - name: Create a VM
   vmware.vmware_rest.vcenter_vm:
     placement:
