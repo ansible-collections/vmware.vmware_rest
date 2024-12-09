@@ -1,0 +1,132 @@
+- name: Validate and restore HTTP proxy and noproxy configurations
+  block:
+    # Step 1: Retrieve the initial HTTP proxy configuration
+    - name: Get the initial HTTP proxy configuration
+      vmware.vmware_rest.appliance_networking_proxy_info:
+      register: initial_proxy_config
+
+    - name: Print the initial HTTP proxy configuration
+      ansible.builtin.debug:
+        var: initial_proxy_config
+
+    - name: Ensure the initial HTTP proxy configuration is retrieved
+      ansible.builtin.assert:
+        that:
+          - initial_proxy_config.value.http is defined
+        fail_msg: "Failed to retrieve the initial HTTP proxy configuration."
+
+    # Step 2: Set the HTTP proxy configuration
+    - name: Set the HTTP proxy configuration
+      vmware.vmware_rest.appliance_networking_proxy:
+        enabled: true
+        server: http://localhost
+        port: 3128
+        protocol: http
+      register: set_proxy_result
+
+    - name: Print the result of setting the HTTP proxy configuration
+      ansible.builtin.debug:
+        var: set_proxy_result
+
+    - name: Ensure the HTTP proxy configuration is set successfully
+      ansible.builtin.assert:
+        that:
+          - set_proxy_result.changed or
+            (set_proxy_result.value.enabled == true and
+             set_proxy_result.value.server == "http://localhost" and
+             set_proxy_result.value.port == 3128)
+        fail_msg: "Failed to set or verify the HTTP proxy configuration."
+
+    # Step 3: Verify idempotency of the HTTP proxy configuration
+    - name: Set the HTTP proxy configuration again (idempotency check)
+      vmware.vmware_rest.appliance_networking_proxy:
+        enabled: true
+        server: http://localhost
+        port: 3128
+        protocol: http
+      register: proxy_idempotency_result
+
+    - name: Print the idempotency check result for the HTTP proxy configuration
+      ansible.builtin.debug:
+        var: proxy_idempotency_result
+
+    - name: Ensure the HTTP proxy configuration update is idempotent
+      ansible.builtin.assert:
+        that:
+          - not(proxy_idempotency_result.changed)
+        fail_msg: "Idempotency check failed for HTTP proxy configuration."
+
+    # Step 4: Retrieve the initial HTTP noproxy configuration
+    - name: Get the initial HTTP noproxy configuration
+      vmware.vmware_rest.appliance_networking_noproxy_info:
+      register: initial_noproxy_config
+
+    - name: Print the initial HTTP noproxy configuration
+      ansible.builtin.debug:
+        var: initial_noproxy_config
+
+    - name: Ensure the initial HTTP noproxy configuration is retrieved
+      ansible.builtin.assert:
+        that:
+          - initial_noproxy_config.value is defined
+        fail_msg: "Failed to retrieve the initial HTTP noproxy configuration."
+
+    # Step 5: Set the HTTP noproxy configuration
+    - name: Set the HTTP noproxy configuration
+      vmware.vmware_rest.appliance_networking_noproxy:
+        servers:
+          - redhat.com
+          - ansible.com
+      register: set_noproxy_result
+
+    - name: Print the result of setting the HTTP noproxy configuration
+      ansible.builtin.debug:
+        var: set_noproxy_result
+
+    - name: Ensure the HTTP noproxy configuration is set successfully
+      ansible.builtin.assert:
+        that:
+          - set_noproxy_result.changed
+        fail_msg: "Failed to set the HTTP noproxy configuration."
+
+    # Step 6: Verify idempotency of the HTTP noproxy configuration
+    - name: Set the HTTP noproxy configuration again (idempotency check)
+      vmware.vmware_rest.appliance_networking_noproxy:
+        servers:
+          - redhat.com
+          - ansible.com
+      register: noproxy_idempotency_result
+
+    - name: Print the idempotency check result for the HTTP noproxy configuration
+      ansible.builtin.debug:
+        var: noproxy_idempotency_result
+
+    - name: Ensure the HTTP noproxy configuration update is idempotent
+      ansible.builtin.assert:
+        that:
+          - not(noproxy_idempotency_result.changed)
+        fail_msg: "Idempotency check failed for HTTP noproxy configuration."
+
+  always:
+    # Restore the initial HTTP proxy configuration
+    - name: Restore the initial HTTP proxy configuration
+      vmware.vmware_rest.appliance_networking_proxy:
+        enabled: "{{ initial_proxy_config.value.http.enabled | default(false) }}"
+        server: "{{ initial_proxy_config.value.http.server | default('http://localhost') }}"
+        port: "{{ initial_proxy_config.value.http.port | default(3128) }}"
+        protocol: "http"
+      when: initial_proxy_config.value is defined and initial_proxy_config.value.http is defined
+
+    - name: Print the restored HTTP proxy configuration
+      ansible.builtin.debug:
+        var: initial_proxy_config.value.http
+
+    # Restore the initial HTTP noproxy configuration
+    - name: Restore the initial HTTP noproxy configuration
+      vmware.vmware_rest.appliance_networking_noproxy:
+        servers: "{{ initial_noproxy_config.value | default([]) }}"
+      when: initial_noproxy_config.value is defined
+
+    - name: Print the restored HTTP noproxy configuration
+      ansible.builtin.debug:
+        var: initial_noproxy_config.value
