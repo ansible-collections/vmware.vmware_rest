@@ -1,10 +1,23 @@
+- name: Reset license on host
+  ansible.builtin.shell: |
+    \cp -fR  /etc/vmware/.#license.cfg /etc/vmware/license.cfg && /etc/init.d/vpxa restart
+  register: _test
+  ignore_errors: true
+  delegate_to: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
+  vars:
+    ansible_ssh_user: "{{ lookup('env', 'ESXI1_USERNAME') }}"
+    ansible_ssh_pass: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
+
+- ansible.builtin.debug:
+    var: test
+
 - name: Connect the host(s)
   vmware.vmware_rest.vcenter_host:
     hostname: "{{ lookup('env', 'ESXI1_HOSTNAME') }}"
     user_name: "{{ lookup('env', 'ESXI1_USERNAME') }}"
     password: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
-    thumbprint_verification: 'NONE'
-    folder: '{{ my_host_folder.folder }}'
+    thumbprint_verification: "NONE"
+    folder: "{{ my_host_folder.folder }}"
   register: _result
 - ansible.builtin.debug: var=_result
 - ansible.builtin.assert:
