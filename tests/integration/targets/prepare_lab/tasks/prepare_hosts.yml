@@ -1,5 +1,5 @@
 - name: Reset license on host
-  ansible.builtin.shell: |
+  ansible.builtin.raw: |
     \cp -fR  /etc/vmware/.#license.cfg /etc/vmware/license.cfg && /etc/init.d/vpxa restart
   register: _test
   ignore_errors: true
@@ -9,7 +9,7 @@
     ansible_ssh_pass: "{{ lookup('env', 'ESXI1_PASSWORD') }}"
 
 - ansible.builtin.debug:
-    var: test
+    var: _test
 
 - name: Connect the host(s)
   vmware.vmware_rest.vcenter_host:
