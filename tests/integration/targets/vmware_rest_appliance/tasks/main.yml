@@ -3,11 +3,11 @@
 - import_tasks: appliance_localaccounts.yml
 - import_tasks: appliance_monitoring.yml
 - import_tasks: appliance_networking_dns_hostname.yml
-# - import_tasks: appliance_networking.yml
+- import_tasks: appliance_networking.yml
 # - import_tasks: appliance_networking_firewall_inbound.yml
 # - import_tasks: appliance_networking_interfaces_ipv4.yml
 # - import_tasks: appliance_networking_interfaces_ipv6.yml
-# - import_tasks: appliance_networking_proxy.yml
+- import_tasks: appliance_networking_proxy.yml
 # - import_tasks: appliance_services.yml
 # - import_tasks: appliance_shutdown.yml
 # - import_tasks: appliance_system.yml

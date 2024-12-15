@@ -1,0 +1,99 @@
+- name: Test and restore network configuration
+  block:
+    - name: Get the current network configuration
+      vmware.vmware_rest.appliance_networking_info:
+      register: network_info
+
+    - name: Print initial network information
+      ansible.builtin.debug:
+        var: network_info
+
+    - name: Assert network information is retrieved
+      ansible.builtin.assert:
+        that:
+          - network_info is defined
+          - network_info.value is not none
+        fail_msg: "Failed to retrieve network configuration."
+
+    - name: Disable IPv6 in network configuration
+      vmware.vmware_rest.appliance_networking:
+        ipv6_enabled: False
+      register: set_network_config
+
+    - name: Print updated network configuration
+      ansible.builtin.debug:
+        var: set_network_config
+
+    - name: Assert network configuration was updated
+      ansible.builtin.assert:
+        that:
+          - set_network_config is defined
+          - set_network_config.changed
+        fail_msg: "Failed to update the network configuration to disable IPv6."
+
+    - name: Refresh the current network configuration info
+      vmware.vmware_rest.appliance_networking_info:
+      register: network_info
+
+    - name: Print refreshed network information
+      ansible.builtin.debug:
+        var: network_info
+
+    - name: Assert IPv6 is disabled
+      ansible.builtin.assert:
+        that:
+          - not (network_info.value.interfaces.nic0.ipv6 is defined and 
+                 (network_info.value.interfaces.nic0.ipv6.autoconf or 
+                  network_info.value.interfaces.nic0.ipv6.dhcp))
+        fail_msg: "IPv6 is not fully disabled in the network configuration."
+
+    # Retrieve and Assert Network Interfaces
+    - name: Get the list of network interfaces
+      vmware.vmware_rest.appliance_networking_interfaces_info:
+      register: network_interfaces
+
+    - name: Print network interfaces
+      ansible.builtin.debug:
+        var: network_interfaces
+
+    - name: Assert network interfaces list is retrieved
+      ansible.builtin.assert:
+        that:
+          - network_interfaces is defined
+          - network_interfaces.value is not none
+          - network_interfaces.value | length > 0
+        fail_msg: "Failed to retrieve the list of network interfaces."
+
+    - name: Get details for the 'nic0' network interface
+      vmware.vmware_rest.appliance_networking_interfaces_info:
+        interface_name: nic0
+      register: nic0_details
+
+    - name: Print 'nic0' network interface details
+      ansible.builtin.debug:
+        var: nic0_details
+
+    - name: Assert 'nic0' network interface details are retrieved
+      ansible.builtin.assert:
+        that:
+          - nic0_details is defined
+          - nic0_details.value is not none
+        fail_msg: "Failed to retrieve details for the 'nic0' network interface."
+
+  always:
+    - name: Re-enable IPv6 in network configuration
+      vmware.vmware_rest.appliance_networking:
+        ipv6_enabled: True
+      register: restore_ipv6
+
+    - name: Print restored network configuration
+      ansible.builtin.debug:
+        var: restore_ipv6
+
+    - name: Refresh the current network configuration after restoration
+      vmware.vmware_rest.appliance_networking_info:
+      register: network_info
+
+    - name: Print refreshed network information after restoration
+      ansible.builtin.debug:
+        var: network_info
