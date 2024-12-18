@@ -10,7 +10,7 @@
 - import_tasks: appliance_networking_proxy.yml
 # - import_tasks: appliance_services.yml
 # - import_tasks: appliance_shutdown.yml
-# - import_tasks: appliance_system.yml
+- import_tasks: appliance_system.yml
 # - import_tasks: appliance_system_storage.yml
-# - import_tasks: appliance_time.yml
+- import_tasks: appliance_time.yml
 # - import_tasks: appliance_vmon_service.yml

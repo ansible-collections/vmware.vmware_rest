@@ -1,0 +1,40 @@
+---
+- name: Get the VCSA version
+  vmware.vmware_rest.appliance_system_version_info:
+  register: version_result
+
+- name: Debug VCSA Version
+  ansible.builtin.debug:
+    var: version_result
+
+- name: Validate VCSA Version Info
+  ansible.builtin.assert:
+    that:
+      - version_result is defined and version_result is not none         # Ensure version_result is returned
+      - version_result.value is defined and version_result.value is not none  # Ensure value field exists
+      - "'build' in version_result.value"                               # Ensure 'build' key exists
+      - "'version' in version_result.value"                             # Ensure 'version' key exists
+      - "'product' in version_result.value"                             # Ensure 'product' key exists
+      - "'install_time' in version_result.value"                        # Ensure 'install_time' key exists
+      - "'summary' in version_result.value"                             # Ensure 'summary' key exists
+      - "'releasedate' in version_result.value"                         # Ensure 'releasedate' key exists
+      - version_result.value.version is regex('^\d+\.\d+\.\d+.*$')      # Validate 'version' matches semantic versioning
+      - version_result.value.product == "VMware vCenter Server"         # Ensure product is VMware vCenter Server
+      - version_result.value.type is defined and version_result.value.type == "vCenter Server with an embedded Platform Services Controller"  # Check product type
+
+- name: Check if the system is up to date
+  vmware.vmware_rest.appliance_update_info:
+  register: update_result
+
+- name: Debug Update Info
+  ansible.builtin.debug:
+    var: update_result
+
+- name: Validate Update Info
+  ansible.builtin.assert:
+    that:
+      - update_result is defined and update_result is not none          # Ensure update_result is returned
+      - update_result.value is defined and update_result.value is not none  # Ensure value field exists
+      - "'state' in update_result.value"                                # Ensure 'state' key exists
+      - update_result.value.state == 'UP_TO_DATE'                      # Ensure the system is fully up-to-date
+    fail_msg: "The system is not up-to-date. Current state: {{ update_result.value.state }}"

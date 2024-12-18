@@ -1,0 +1,20 @@
+---
+- name: Get the current time
+  vmware.vmware_rest.appliance_system_time_info:
+  register: result
+
+- name: Debug Output
+  ansible.builtin.debug:
+    var: result
+
+- name: Validate Time Info
+  ansible.builtin.assert:
+    that:
+      - result is defined and result is not none                        # Ensure result is returned
+      - result.value is defined and result.value is not none           # Ensure the value field is returned
+      - "'date' in result.value"                                       # Ensure the 'date' key exists
+      - "'time' in result.value"                                       # Ensure the 'time' key exists
+      - "'seconds_since_epoch' in result.value"                        # Ensure the 'seconds_since_epoch' key exists
+      - "'timezone' in result.value"                                   # Ensure the 'timezone' key exists
+      - result.value.time is regex('^\d{2}:\d{2}:\d{2} [AP]M$')        # Validate 'time' matches 12-hour clock format
+      - result.value.date is regex('^[A-Za-z]{3} \d{2}-\d{2}-\d{4}$')  # Validate 'date' matches format "Wed 12-18-2024"
