@@ -788,3 +788,11 @@ releases:
     - 548-update-docs-for-vm-harware-disk.yml
     - 549-deprecate-content_library_item_info.yml
     release_date: '2024-11-26'
+  4.4.0:
+    changes:
+      bugfixes:
+      - vcenter_ovf_libraryitem - Update documentation to mention the metadata cannot
+        be updated via conventional means. Added example showing workaround (https://github.com/ansible-collections/vmware.vmware_rest/issues/385)
+    fragments:
+    - 560-update-vcenter-ovf-libraryitem-docs.yml
+    release_date: '2024-12-19'

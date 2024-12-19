@@ -4,6 +4,14 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.4.0
+======
+
+Bugfixes
+--------
+
+- vcenter_ovf_libraryitem - Update documentation to mention the metadata cannot be updated via conventional means. Added example showing workaround (https://github.com/ansible-collections/vmware.vmware_rest/issues/385)
+
 v4.3.0
 ======
 
