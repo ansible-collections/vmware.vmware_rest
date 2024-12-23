@@ -1,0 +1,10 @@
+---
+resource_pool_name: "{{ tiny_prefix }}-test-clone-on-library-ovf-resource-pool"
+vm_name: "{{ tiny_prefix }}-clone-on-library-ovf-vm"
+vm_from_ovf_image_name: "{{ tiny_prefix }}-vm-from-ovf"
+vm_from_ovf_image_on_host: "{{ tiny_prefix }}-vm-from-ovf-on-host"
+library_name: "{{ tiny_prefix }}-content-library-test"
+remote_path: '/nfs/iso_datastore'
+num_libraries_to_loop: 4
+vcenter_invalid_vm_folder: "invalid-folder-name"
+ovf_image_name: "ovf-image"
