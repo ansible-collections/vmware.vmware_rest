@@ -11,6 +11,10 @@ prepare_symlinks:
 install-ansible-collections:
 	ansible-galaxy collection install --upgrade -r tests/integration/requirements.yml
 
+.PHONY: install-python-packages
+install-python-packages:
+	pip3 install -r tests/integration/requirements.txt
+
 .PHONY: remove_aliases
 remove_aliases:
 	@find tests/integration/targets/ -name "aliases" -exec rm -f {} +
