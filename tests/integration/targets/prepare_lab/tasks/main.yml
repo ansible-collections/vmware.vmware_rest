@@ -1,3 +1,10 @@
+---
+- name: Fail If Running On Eco vCenter
+  ansible.builtin.fail:
+    msg: This test is very desctuctive and should only be run on Zuul!
+  when: >-
+    lookup('ansible.builtin.env', 'VCENTER_HOSTNAME') == "eco-vcenter-server.lab.eng.tlv2.redhat.com"
+
 - include_tasks: purge_vms.yml
 - include_tasks: purge_libraries.yml
 - include_tasks: cleanup.yml
