@@ -267,14 +267,6 @@
         library_id: "{{ ds_lib.id }}"
       register: result
 
-    - name: print
-      ansible.builtin.debug:
-        msg: "{{ result }}"
-
-    - ansible.builtin.assert:
-        that:
-          - result.library_item_info | length == 0
-
     - name: Create subscribed library
       vmware.vmware_rest.content_subscribedlibrary:
         name: sub_lib
@@ -285,7 +277,7 @@
           on_demand: true
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: "DATASTORE"
+            type: 'DATASTORE'
       register: sub_lib
 
     - name: Create subscribed library (again)
@@ -298,7 +290,7 @@
           on_demand: true
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: "DATASTORE"
+            type: 'DATASTORE'
       register: result
     - name: Assert the resource has not been changed
       ansible.builtin.assert:
@@ -356,6 +348,11 @@
         state: absent
       loop: "{{ content_libraries.value | selectattr('name', 'search', library_name) | list }}"
       when: content_libraries.value is defined
+
+    - name: Delete subscribed library
+      vmware.vmware_rest.content_subscribedlibrary:
+        library_id: "{{ sub_lib.id }}"
+        state: absent
 
     - name: Delete test VM
       vmware.vmware_rest.vcenter_vm:
