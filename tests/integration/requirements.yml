@@ -1,5 +1,2 @@
 collections:
   - name: vmware.vmware
-  - name: https://github.com/<your name>/vmware.vmware_rest.git
-    type: git
-    version: bugfix/report-changes-in-filesystem_directories
