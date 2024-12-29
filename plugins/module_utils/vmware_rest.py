@@ -203,6 +203,9 @@ async def update_changed_flag(data, status, operation):
     elif operation == "delete" and status in [200, 204]:
         data["failed"] = False
         data["changed"] = True
+    elif operation in ["create", "move", "create_temporary"] and status in [204]:
+        data["failed"] = False
+        data["changed"] = True
     elif operation == "delete" and status == 404:
         data["failed"] = False
         data["changed"] = False
