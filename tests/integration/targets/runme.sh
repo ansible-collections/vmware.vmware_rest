@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 source ../init-eco.sh
 
 # Generates a string starting with 'test-' followed by 4 random lowercase characters
