@@ -1,0 +1,375 @@
+---
+- name: Test vsphere library and ovf clone
+  block:
+    - name: Import eco-vcenter common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+      tags: eco-vcenter-ci
+
+    - name: Create a generic resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        name: "{{ resource_pool_name }}"
+        parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool) }}"
+      register: resource_pool_info
+
+    - name: Create a VM with optimized settings
+      vmware.vmware_rest.vcenter_vm:
+        placement:
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          resource_pool: "{{ resource_pool_info.id }}"
+        name: "{{ vm_name }}"
+        guest_OS: RHEL_9_64
+        hardware_version: VMX_21
+        memory:
+          hot_add_enabled: true
+          size_MiB: 512
+        cdroms: []  # Skip attaching ISO to simplify the export
+      register: test_vm
+
+    - name: List Local Content Library Prior Creation
+      vmware.vmware_rest.content_locallibrary_info:
+      register: test_content_library_before_creation
+
+    - name: Create a content library based on a DataStore
+      vmware.vmware_rest.content_locallibrary:
+        name: "{{ library_name }}"
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: 'NONE'
+        storage_backings:
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+            type: 'DATASTORE'
+        state: present
+      register: nfs_lib
+
+    - name: _Create content library based on a DataStore again
+      vmware.vmware_rest.content_locallibrary:
+        name: "{{ library_name }}"
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: 'NONE'
+        storage_backings:
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+            type: 'DATASTORE'
+        state: present
+      register: nfs_lib
+
+    - name: List Local Content Library After Creation
+      vmware.vmware_rest.content_locallibrary_info:
+      register: test_content_library_after_creation
+
+    - name: Assert that the content library length increased by 1
+      ansible.builtin.assert:
+        that:
+          - test_content_library_after_creation.value|length == test_content_library_before_creation.value|length + 1
+
+    # Create additional content libraries
+    - name: Create additional content libraries
+      vmware.vmware_rest.content_locallibrary:
+        name: "{{ library_name }}-{{ item }}"
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: "NONE"
+        storage_backings:
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+            type: 'DATASTORE'
+        state: present
+      loop: "{{ range(0, num_libraries_to_loop) | list }}"  # Loop through the range dynamically based on num_libraries
+
+    # Retrieve all content libraries
+    - name: Retrieve all content libraries
+      vmware.vmware_rest.content_locallibrary_info:
+      register: content_libraries
+
+    # Verify that the created libraries exist
+    - name: Check that created content libraries exist
+      assert:
+        that:
+          - "'{{ library_name }}-{{ item }}' in (content_libraries.value | map(attribute='name') | list)"
+        fail_msg: "Content library '{{ library_name }}-{{ item }}' does not exist"
+      loop: "{{ range(0, num_libraries_to_loop) | list }}"
+
+    - name: Export the VM as an OVF on the library
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 2900
+        source:
+          type: VirtualMachine
+          id: "{{ test_vm.id }}"
+        target:
+          library_id: "{{ nfs_lib.id }}"
+        create_spec:
+          name: "{{ ovf_image_name }}"
+          description: an OVF example
+          flags: []
+        state: present
+      register: ovf_item
+    - assert:
+        that:
+          - ovf_item is changed
+
+    - name: _Export again the VM as an OVF on the library
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 2900
+        source:
+          type: VirtualMachine
+          id: "{{ test_vm.id }}"
+        target:
+          library_id: "{{ nfs_lib.id }}"
+        create_spec:
+          name: "{{ ovf_image_name }}"
+          description: an OVF example
+          flags: []
+        state: present
+      register: _result
+    - assert:
+        that:
+          - not(_result is changed)
+          - _result.id
+
+    - name: Get the list of items of the NFS library
+      vmware.vmware.content_library_item_info:
+        library_id: "{{ nfs_lib.id }}"
+      register: lib_items
+
+    - name: debug
+      ansible.builtin.debug:
+        msg: '{{ lib_items.library_item_info }}'
+
+    - name: Create a new VM from the OVF Image
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        ovf_library_item_id: '{{ (lib_items.library_item_info|selectattr("name", "equalto", ovf_image_name)|first).id }}'
+        session_timeout: 10000
+        state: deploy
+        target:
+          resource_pool_id: "{{ resource_pool_info.id }}"
+        deployment_spec:
+          name: "{{ vm_from_ovf_image_name }}"
+          accept_all_EULA: true
+          storage_provisioning: thin
+      register: result
+
+    - name: Assert the result of the vm deployment
+      assert:
+        that:
+          - result.value.succeeded == true
+
+    - name: _Create a new VM from the OVF with a wrong folder
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 10000
+        ovf_library_item_id: '{{ (lib_items.library_item_info|selectattr("name", "equalto", ovf_image_name)|first).id }}'
+        state: deploy
+        target:
+          resource_pool_id: "{{ resource_pool_info.id }}"
+          folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_invalid_vm_folder) }}"
+        deployment_spec:
+          name: "{{ vm_from_ovf_image_name }}"
+          accept_all_EULA: true
+          storage_provisioning: thin
+      register: result
+      failed_when: >
+        not result.failed and
+        result.value.error_type != "INVALID_ARGUMENT"
+
+    - name: Get random host info
+      vmware.vmware_rest.vcenter_host_info:
+        hosts: "{{ lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/')[0] }}"
+      register: vcenter_host_info
+
+    - name: Create a new VM from the OVF and specify the host and folder
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        session_timeout: 10000
+        ovf_library_item_id: '{{ (lib_items.library_item_info|selectattr("name", "equalto", ovf_image_name)|first).id }}'
+        state: deploy
+        target:
+          resource_pool_id: "{{ resource_pool_info.id }}"
+          folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          host_id: '{{ vcenter_host_info.value[0].host }}'
+        deployment_spec:
+          name: "{{ vm_from_ovf_image_on_host }}"
+          accept_all_EULA: true
+          storage_provisioning: thin
+      register: result
+
+    - name: Assert the result of the vm deployment
+      assert:
+        that:
+          - result.value.succeeded == true
+
+    - name: Create a new content library based on a DataStore
+      vmware.vmware_rest.content_locallibrary:
+        name: "new-{{ library_name }}"
+        description: automated
+        publish_info:
+          published: true
+          authentication_method: 'NONE'
+        storage_backings:
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+            type: 'DATASTORE'
+        state: present
+      register: ds_lib
+
+    - name: Retrieve the local content library information based upon id check mode
+      vmware.vmware_rest.content_locallibrary_info:
+        library_id: "{{ ds_lib.id }}"
+      register: result
+      check_mode: true
+
+    - name: Assert that result is available in check mode
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+          - result.value is defined
+          - result.value['name'] is defined
+          - result.value['id'] is defined
+          - result.value['description'] is defined
+          - result.value['server_guid'] is defined
+          - result.value['creation_time'] is defined
+          - result.value['last_modified_time'] is defined
+          - result.value['storage_backings'] is defined
+          - result.value['version'] is defined
+          - result.value['id'] == ds_lib.id
+          - result.value['type'] == 'LOCAL'
+
+    - name: _Retrieve the local content library information based upon id
+      vmware.vmware_rest.content_locallibrary_info:
+        library_id: "{{ ds_lib.id }}"
+      register: result
+
+    - ansible.builtin.debug: var=result
+
+    - name: _check the content library id details
+      ansible.builtin.assert:
+        that:
+          - result.value is defined
+          - result.value['name'] is defined
+          - result.value['id'] is defined
+          - result.value['description'] is defined
+          - result.value['server_guid'] is defined
+          - result.value['creation_time'] is defined
+          - result.value['last_modified_time'] is defined
+          - result.value['storage_backings'] is defined
+          - result.value['version'] is defined
+          - result.value['id'] == ds_lib.id
+          - result.value['type'] == 'LOCAL'
+
+    - name: Get the list of items of the NFS library
+      vmware.vmware.content_library_item_info:
+        library_id: "{{ nfs_lib.id }}"
+      register: result
+
+    - name: Get the (empty) list of items of the library
+      vmware.vmware.content_library_item_info:
+        library_id: "{{ ds_lib.id }}"
+      register: result
+
+    - name: Create subscribed library
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        subscription_info:
+          subscription_url: "{{ nfs_lib.value.publish_info.publish_url }}"
+          authentication_method: NONE
+          automatic_sync_enabled: false
+          on_demand: true
+        storage_backings:
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+            type: 'DATASTORE'
+      register: sub_lib
+
+    - name: Create subscribed library (again)
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        subscription_info:
+          subscription_url: "{{ nfs_lib.value.publish_info.publish_url }}"
+          authentication_method: NONE
+          automatic_sync_enabled: false
+          on_demand: true
+        storage_backings:
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+            type: 'DATASTORE'
+      register: result
+    - name: Assert the resource has not been changed
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+      ignore_errors: true
+
+    - name: Ensure the OVF is here
+      vmware.vmware.content_library_item_info:
+        library_id: "{{ sub_lib.id }}"
+      register: result
+    - ansible.builtin.assert:
+        that:
+          - result.library_item_info|length > 0
+
+    - name: Trigger a library sync
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        library_id: "{{ sub_lib.id }}"
+        state: sync
+
+    - name: Clean up the cache
+      vmware.vmware_rest.content_subscribedlibrary:
+        name: sub_lib
+        library_id: "{{ sub_lib.id }}"
+        state: evict
+
+    - name: Get the vSphere content syncrhronization configuration
+      vmware.vmware_rest.content_configuration_info:
+      register: current_content_configuration
+
+    - name: Turn on the autmatic syncrhronization
+      vmware.vmware_rest.content_configuration:
+        automatic_sync_enabled: true
+
+    - name: List Subscribed Content Library
+      vmware.vmware_rest.content_subscribedlibrary_info:
+      register: my_content_library
+
+    - assert:
+        that:
+          - my_content_library.value|length == 1
+
+  always:
+
+    # Retrieve all content libraries
+    - name: Retrieve all content libraries
+      vmware.vmware_rest.content_locallibrary_info:
+      register: content_libraries
+
+    # Delete any content library that contains the value of library_name
+    - name: Delete content libraries containing "{{ library_name }}"
+      vmware.vmware_rest.content_locallibrary:
+        library_id: "{{ item.id }}"
+        state: absent
+      loop: "{{ content_libraries.value | selectattr('name', 'search', library_name) | list }}"
+      when: content_libraries.value is defined
+
+    - name: Delete subscribed library
+      vmware.vmware_rest.content_subscribedlibrary:
+        library_id: "{{ sub_lib.id }}"
+        state: absent
+
+    - name: Delete test VM
+      vmware.vmware_rest.vcenter_vm:
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_name) }}"
+        state: absent
+
+    - name: Delete VM from OVF image
+      vmware.vmware_rest.vcenter_vm:
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_ovf_image_name) }}"
+        state: absent
+
+    - name: Delete VM from OVF image on specific host
+      vmware.vmware_rest.vcenter_vm:
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_ovf_image_on_host) }}"
+        state: absent
+
+    - name: Delete resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + resource_pool_name) }}"
+        state: absent
