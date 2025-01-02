@@ -1,0 +1,3 @@
+---
+trivial:
+  - prepare_lab - make sure tests are not accidentally run against eco vcenter
