@@ -1,0 +1,7 @@
+---
+test_resource_pool_name: "{{ tiny_prefix }}-vm-customize-resource-pool"
+test_vm_name: "{{ tiny_prefix }}-vm"
+new_vm_setting:
+  vm_ip: 10.46.29.150
+  dns_host_name: test
+  dns_servers: 1.1.1.1
