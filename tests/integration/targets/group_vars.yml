@@ -17,3 +17,5 @@ vcenter_test_content_library:
 vcenter_test_vm_template:
   name: "test-vm-template"
   id: "009163b9-83aa-46ca-bf7c-07af4a916735"
+vcenter_test_vm_user_name: root
+vcenter_test_vm_user_password: redhat12345!

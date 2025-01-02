@@ -1,0 +1,8 @@
+---
+test_resource_pool_name: "{{ tiny_prefix }}-vm-dir-resource-pool"
+test_vm_name: "{{ tiny_prefix }}-vm"
+path_tmp:
+  dir: /tmp/test
+  new_dir: /tmp/new/
+  no_dir: /tmp/no_dir
+  new_no_dir: /tmp/new_no_dir
