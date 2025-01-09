@@ -1,0 +1,100 @@
+---
+- name: Manage and test ntpd service
+  block:
+    - name: Get information about the ntpd service
+      vmware.vmware_rest.appliance_services_info:
+        service: ntpd
+      register: initial_ntpd_info
+
+    - name: Debug initial ntpd service info
+      ansible.builtin.debug:
+        var: initial_ntpd_info
+
+    - name: Stop the ntpd service
+      vmware.vmware_rest.appliance_services:
+        service: ntpd
+        state: stop
+      register: stop_result
+
+    - name: Debug stop result
+      ansible.builtin.debug:
+        var: stop_result
+
+    - name: Get information about the ntpd service after it is stopped
+      vmware.vmware_rest.appliance_services_info:
+        service: ntpd
+      register: after_stop_ntpd_info
+
+    - name: Debug ntpd service info after it is stopped
+      ansible.builtin.debug:
+        var: after_stop_ntpd_info
+
+    - name: Validate ntpd service is stopped
+      ansible.builtin.assert:
+        that:
+          - after_stop_ntpd_info.failed == false
+          - after_stop_ntpd_info.value.state == "STOPPED"
+        fail_msg: "Failed to stop the ntpd service."
+
+    - name: Start the ntpd service
+      vmware.vmware_rest.appliance_services:
+        service: ntpd
+        state: start
+      register: start_result
+
+    - name: Debug start result
+      ansible.builtin.debug:
+        var: start_result
+
+    - name: Get information about the ntpd service after it has started
+      vmware.vmware_rest.appliance_services_info:
+        service: ntpd
+      register: after_start_ntpd_info
+
+    - name: Debug ntpd service info after it has started
+      ansible.builtin.debug:
+        var: after_start_ntpd_info
+
+    - name: Validate ntpd service is started
+      ansible.builtin.assert:
+        that:
+          - after_start_ntpd_info.failed == false
+          - after_start_ntpd_info.value.state == "STARTED"
+        fail_msg: "Failed to start the ntpd service."
+
+    - name: Restart the ntpd service
+      vmware.vmware_rest.appliance_services:
+        service: ntpd
+        state: restart
+      register: restart_result
+
+    - name: Debug restart result
+      ansible.builtin.debug:
+        var: restart_result
+
+    - name: Get information about the ntpd service after it is restarted
+      vmware.vmware_rest.appliance_services_info:
+        service: ntpd
+      register: after_restart_ntpd_info
+
+    - name: Debug ntpd service info after it is restarted
+      ansible.builtin.debug:
+        var: after_restart_ntpd_info
+
+    - name: Validate ntpd service is restarted
+      ansible.builtin.assert:
+        that:
+          - after_restart_ntpd_info.failed == false
+          - after_restart_ntpd_info.value.state == "STARTED"
+        fail_msg: "Failed to restart the ntpd service."
+
+  always:
+    - name: Ensure ntpd service is started
+      vmware.vmware_rest.appliance_services:
+        service: ntpd
+        state: start
+      register: ensure_started_result
+
+    - name: Debug ensure started result
+      ansible.builtin.debug:
+        var: ensure_started_result

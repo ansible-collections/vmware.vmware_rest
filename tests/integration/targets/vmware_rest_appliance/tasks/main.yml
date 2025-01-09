@@ -3,14 +3,12 @@
 - import_tasks: appliance_localaccounts.yml
 - import_tasks: appliance_monitoring.yml
 - import_tasks: appliance_networking_dns_hostname.yml
+- import_tasks: appliance_networking_proxy.yml
+- import_tasks: appliance_services.yml
+- import_tasks: appliance_system.yml
+- import_tasks: appliance_time.yml
 # - import_tasks: appliance_networking.yml - There is a bug
 # - import_tasks: appliance_networking_firewall_inbound.yml - There is a bug
 # - import_tasks: appliance_networking_interfaces_ipv4.yml - There is a bug
 # - import_tasks: appliance_networking_interfaces_ipv6.yml - There is a bug
-- import_tasks: appliance_networking_proxy.yml
-# - import_tasks: appliance_services.yml
-# - import_tasks: appliance_shutdown.yml
-- import_tasks: appliance_system.yml
 # - import_tasks: appliance_system_storage.yml - There is a bug
-- import_tasks: appliance_time.yml
-# - import_tasks: appliance_vmon_service.yml
