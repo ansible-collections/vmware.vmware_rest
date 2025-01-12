@@ -1,0 +1,3 @@
+---
+trivial:
+  - vcenter_vmtemplate_libraryitems - remove redundant libraryitems example modules
