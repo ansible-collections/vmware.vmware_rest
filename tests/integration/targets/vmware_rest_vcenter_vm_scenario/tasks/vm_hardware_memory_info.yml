@@ -1,0 +1,13 @@
+---
+- name: Retrieve the memory information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_memory_info:
+    vm: '{{ test_vm_id }}'
+  register: _memory_info
+
+- ansible.builtin.debug: var=_res_memory_infolt
+
+- name: Verify VM memory info
+  ansible.builtin.assert:
+    that:
+      - _memory_info is not failed
+      - _memory_info.value | length > 0

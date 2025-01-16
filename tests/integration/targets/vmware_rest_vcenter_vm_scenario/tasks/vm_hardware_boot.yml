@@ -1,13 +1,18 @@
 - name: Retrieve the boot information from the VM
   vmware.vmware_rest.vcenter_vm_hardware_boot_info:
-    vm: '{{ test_vm1_info.id }}'
+    vm: '{{ test_vm_id }}'
+  register: hardware_boot_info
+
+- debug: var=hardware_boot_info
 
 - name: Change a VM boot parameters
   vmware.vmware_rest.vcenter_vm_hardware_boot:
-    vm: '{{ test_vm1_info.id }}'
-    efi_legacy_boot: True
+    vm: '{{ test_vm_id }}'
     type: EFI
+    efi_legacy_boot: true
   register: _result
+
+- debug: var=_result
 
 - ansible.builtin.assert:
     that:
@@ -15,10 +20,12 @@
 
 - name: _Change a VM boot parameters (again)
   vmware.vmware_rest.vcenter_vm_hardware_boot:
-    vm: '{{ test_vm1_info.id }}'
-    efi_legacy_boot: True
+    vm: '{{ test_vm_id }}'
+    efi_legacy_boot: true
     type: EFI
   register: _result
+
+- debug: var=_result
 
 - ansible.builtin.assert:
     that:
@@ -26,7 +33,7 @@
 
 - name: Get information about the boot device
   vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
-    vm: '{{ test_vm1_info.id }}'
+    vm: '{{ test_vm_id }}'
   register: _result
 
 - ansible.builtin.debug: var=_result

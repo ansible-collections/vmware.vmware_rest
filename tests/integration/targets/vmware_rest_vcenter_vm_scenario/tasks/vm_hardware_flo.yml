@@ -1,25 +1,31 @@
 ---
 - name: List the floppy disk drives
   vmware.vmware_rest.vcenter_vm_hardware_floppy_info:
-    vm: '{{ test_vm1_info.id }}'
+    vm: '{{ test_vm_id }}'
   register: _result
 
 - ansible.builtin.debug: var=_result
 
+- ansible.builtin.assert:
+    that: _result.value | length == 0
+
 - name: Add a floppy disk drive
   vmware.vmware_rest.vcenter_vm_hardware_floppy:
-    vm: '{{ test_vm1_info.id }}'
+    vm: '{{ test_vm_id }}'
     allow_guest_control: true
   register: my_floppy_drive
 
 - ansible.builtin.debug: var=my_floppy_drive
 
 - ansible.builtin.assert:
-    that: my_floppy_drive is changed
+    that:
+      - my_floppy_drive is changed
+      - my_floppy_drive.value | length > 0
+      - my_floppy_drive.value.allow_guest_control
 
 - name: Remove a floppy drive
   vmware.vmware_rest.vcenter_vm_hardware_floppy:
-    vm: '{{ test_vm1_info.id }}'
+    vm: '{{ test_vm_id }}'
     floppy: '{{ my_floppy_drive.id }}'
     state: absent
   register: _result
@@ -27,4 +33,6 @@
 - ansible.builtin.debug: var=_result
 
 - ansible.builtin.assert:
-    that: _result is changed
+    that:
+      - _result is changed
+      - _result.value | length == 0
