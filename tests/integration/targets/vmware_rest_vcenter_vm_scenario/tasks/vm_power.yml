@@ -1,0 +1,20 @@
+---
+- name: Turn the power of the VM on
+  vmware.vmware.vm_powerstate:
+    datacenter: "{{ vcenter_datacenter }}"
+    moid: "{{ test_vm_id }}"
+    state: powered-on
+
+- name: Wait untill VM is powered on
+  vmware.vmware_rest.vcenter_vm_power_info:
+    vm: '{{ test_vm_id }}'
+  register: power_info
+  until:
+    - power_info is not failed
+    - power_info.value.state == "POWERED_ON"
+  retries: 5
+  delay: 5
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: power_info

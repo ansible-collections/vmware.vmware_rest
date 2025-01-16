@@ -4,7 +4,7 @@
 vcenter_cluster_name: "Eco-Cluster"
 vcenter_datacenter: "Eco-Datacenter"
 vcenter_port: 443
-rhel_9_3_iso_path: "[eco-nfs-datastore-iso] rhel-9.3-x86_64-dvd.iso"
+rhel_9_3_iso_path: "[eco-nfs-datastore-iso] rhel-9.3-x86_64-boot.iso"
 vm_network_name: "VM Network"
 test_network_name: "TestNetwork"
 shared_storage_01: "eco-iscsi-ds1"

@@ -1,0 +1,156 @@
+---
+- name: Retrieve the disk information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm_id }}'
+  register: _disk_info_by_name
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _disk_info_by_name
+
+- name: Verify disk information was retrieved
+  ansible.builtin.assert:
+    that:
+      - _disk_info_by_name.value | length == 1
+
+- name: Retrieve disk information using the label
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm_id }}'
+    label: "Hard disk 1"
+  register: _disk_info_by_label
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _disk_info_by_label
+
+- name: Verify disk information was retrieved
+  ansible.builtin.assert:
+    that: 
+      - _disk_info_by_name.value[0].disk == _disk_info_by_label.id
+
+- name: Add SATA adapter at PCI slot 34
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm_id }}'
+    pci_slot_number: 34
+
+- name: Create a new disk
+  vmware.vmware_rest.vcenter_vm_hardware_disk:
+    vm: '{{ test_vm_id }}'
+    type: SATA
+    new_vmdk:
+      capacity: 320000
+  register: new_disk_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: new_disk_info
+
+- name: Verify new disk creation
+  ansible.builtin.assert:
+    that:
+      - new_disk_info is changed
+      - new_disk_info.value.capacity == 320000
+      - not(_disk_info_by_name.value | map(attribute='disk') | list is contains new_disk_info.id)
+
+- name: Retrieve the disk information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm_id }}'
+  register: _disks_list
+
+- name: Verify number of disks changed
+  ansible.builtin.assert:
+    that:
+      - _disks_list.value | length == 2
+
+- name: Get VM storage policy
+  vmware.vmware_rest.vcenter_vm_storage_policy_info:
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- name: List existing storage policies
+  vmware.vmware_rest.vcenter_storage_policies_info:
+  register: storage_policies
+
+- name: Look up the VM Encryption Policy
+  ansible.builtin.set_fact:
+    vm_storage_policy: "{{ (storage_policies.value |  selectattr('name', 'equalto', 'VVol No Requirements Policy') | list | first) }}"
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: vm_storage_policy
+
+- name: Prepare the disk policy dict
+  ansible.builtin.set_fact:
+    vm_disk_policy: "{{ {} | combine({ new_disk_info.id: {'policy': vm_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: vm_disk_policy
+
+- name: Adjust VM storage policy
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: '{{ test_vm_id }}'
+    vm_home:
+      type: USE_DEFAULT_POLICY
+    disks: '{{ vm_disk_policy }}'
+  register: _result
+
+- name: Verify VM storage policy was adjust
+  ansible.builtin.assert:
+    that:
+      - _result is changed
+
+- name: _Adjust VM storage policy (again)
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: '{{ test_vm_id }}'
+    vm_home:
+      type: USE_DEFAULT_POLICY
+    disks: '{{ vm_disk_policy }}'
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+# Bug: https://issues.redhat.com/browse/ACA-2358
+# - name: Verify VM storage policy has not changed
+#   ansible.builtin.assert:
+#     that:
+#       - _result is not changed
+#   ignore_errors: true
+
+- name: Get VM storage policy compliance information
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- name: Delete the disk
+  vmware.vmware_rest.vcenter_vm_hardware_disk:
+    vm: '{{ test_vm_id }}'
+    disk:  '{{ new_disk_info.id }}'
+    state: absent
+  register: _result
+
+- name: Verify disk deletion succeeded
+  ansible.builtin.assert:
+    that: _result is changed
+
+- name: Retrieve the disk information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+    vm: '{{ test_vm_id }}'
+  register: _disks_list
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _disks_list
+
+- name: Verify disk deletion
+  ansible.builtin.assert:
+    that:
+      - _disks_list.value | length == 1
+
+- name: Remove SATA adapter at PCI slot 34
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
+    vm: '{{ test_vm_id }}'
+    pci_slot_number: 34
+    state: absent

@@ -1,0 +1,13 @@
+- name: List the cdrom devices on the guest
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
+    vm: '{{ test_vm_id }}'
+  register: _cdrom_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _cdrom_info
+
+- name: Verify VM cdrom info
+  ansible.builtin.assert:
+    that:
+      - _cdrom_info is not failed

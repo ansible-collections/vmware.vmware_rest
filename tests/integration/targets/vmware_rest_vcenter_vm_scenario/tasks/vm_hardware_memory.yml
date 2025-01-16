@@ -1,0 +1,15 @@
+---
+- name: Increase the memory of a VM
+  vmware.vmware_rest.vcenter_vm_hardware_memory:
+    vm: '{{ test_vm_id }}'
+    size_MiB: 3000
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify memory size changed
+  ansible.builtin.assert:
+    that:
+      - _result is changed

@@ -1,0 +1,14 @@
+---
+- name: Collect a list of the NIC for a given VM
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+    vm: '{{ test_vm_id }}'
+  register: _ethernet_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _ethernet_info
+
+- name: Verify VM ethernet info
+  ansible.builtin.assert:
+    that:
+      - _ethernet_info is not failed

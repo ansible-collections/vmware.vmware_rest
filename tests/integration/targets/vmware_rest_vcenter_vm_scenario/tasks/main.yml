@@ -1,0 +1,53 @@
+---
+- name: Run vmware_rest_vcenter_vm_scenario test
+  block:
+    - name: Import eco-vcenter common vars
+      ansible.builtin.include_vars:
+        file: ../group_vars.yml
+      tags: eco-vcenter-ci
+
+    - name: Set facts for tests
+      ansible.builtin.set_fact:
+        cluster_id: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
+        folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+        datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01) }}"
+        resource_pool_parent_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool) }}"
+
+    - include_tasks: verify_env_information.yml
+    - include_tasks: create_vm.yml
+
+    - name: Get test VM id
+      ansible.builtin.set_fact:
+        test_vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + test_vm_name) }}"
+
+    - include_tasks: vm_info.yml
+    - include_tasks: vm_hardware_adapter_info.yml
+    - include_tasks: vm_hardware_cdrom_info.yml
+    - include_tasks: vm_hardware_ethernet_info.yml
+    - include_tasks: vm_hardware_memory_info.yml
+    - include_tasks: vm_hardware_adapter.yml
+    - include_tasks: vm_hardware_cdrom.yml
+    - include_tasks: vm_hardware_boot_device.yml
+    # Can't be changed efi_legacy_boot due to the https://issues.redhat.com/browse/ACA-2216
+    # - include_tasks: vm_hardware_boot.yml
+    - include_tasks: vm_hardware_cpu.yml
+    - include_tasks: vm_hardware_disk.yml
+    - include_tasks: vm_hardware_ethernet.yml
+    - include_tasks: vm_hardware_flo.yml
+    - include_tasks: vm_hardware_memory.yml
+    - include_tasks: vm_hardware_parallel.yml
+    - include_tasks: vm_hardware_serial.yml
+    - include_tasks: vm_hardware.yml
+    - include_tasks: vm_libraryitem.yml
+    - include_tasks: vm_power.yml
+
+  always:
+    - name: Delete VM
+      ansible.builtin.include_tasks: ../../action_on_vm/delete_vm.yml
+      vars:
+        vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+
+    - name: Delete resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', test_resource_pool_name) }}"
+        state: absent

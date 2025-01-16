@@ -1,8 +1,10 @@
 ---
 - name: Power off VM
-  vmware.vmware_rest.vcenter_vm_guest_power:
-    vm: "{{ vm_id }}"
-    state: shutdown
+  vmware.vmware.vm_powerstate:
+    datacenter: "{{ vcenter_datacenter }}"
+    moid: "{{ vm_id }}"
+    force: true
+    state: powered-off
 
 - name: Wait until VM is off
   vmware.vmware_rest.vcenter_vm_info:

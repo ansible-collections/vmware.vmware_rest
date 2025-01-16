@@ -1,0 +1,83 @@
+---
+- name: Retrieve the serial ports information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Create a new serial port
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
+    vm: '{{ test_vm_id }}'
+    allow_guest_control: true
+  register: _serial_port_1
+
+- name: Verify new serial port creation
+  ansible.builtin.assert:
+    that:
+      - _serial_port_1 is changed
+      - _serial_port_1.value.allow_guest_control
+
+- name: Create another serial port with a label
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
+    vm: '{{ test_vm_id }}'
+    label: "Serial port 2"
+    allow_guest_control: true
+  register: _serial_port_2
+
+- name: Verify creation of another serial port with a label
+  ansible.builtin.assert:
+    that:
+      - _serial_port_2 is changed
+      - _serial_port_2.value.allow_guest_control
+      - _serial_port_2.value.label == "Serial port 2"
+
+- name: Create an existing serial port (label)
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
+    vm: '{{ test_vm_id }}'
+    label: "Serial port 2"
+    allow_guest_control: true
+  register: _result
+
+- name: Verify result is not changed 
+  ansible.builtin.assert:
+    that:
+      - not(_result is changed)
+
+- name: Get an existing serial port (label)
+  vmware.vmware_rest.vcenter_vm_hardware_serial_info:
+    vm: '{{ test_vm_id }}'
+    label: "Serial port 2"
+  register: _result
+
+- name: Verify serial port informatioin
+  ansible.builtin.assert:
+    that:
+      - _result.value.label == "Serial port 2"
+      - _result.id == _serial_port_2.id
+
+- name: Delete an existing serial port (port id)
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
+    vm: '{{ test_vm_id }}'
+    port: '{{ _serial_port_1.id }}'
+    state: absent
+  register: _result
+
+- name: Verify serial port deletion
+  ansible.builtin.assert:
+    that:
+      - _result is changed
+
+- name: Delete an existing serial port (label)
+  vmware.vmware_rest.vcenter_vm_hardware_serial:
+    vm: '{{ test_vm_id }}'
+    label: "Serial port 2"
+    state: absent
+  register: _result
+
+- name: Verify serial port deletion (label)
+  ansible.builtin.assert:
+    that:
+      - _result is changed

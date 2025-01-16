@@ -1,0 +1,71 @@
+---
+- name: Attach an ISO image to a guest VM
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom:
+    vm: '{{ test_vm_id }}'
+    type: SATA
+    sata:
+      bus: 0
+      unit: 2
+    start_connected: true
+    backing:
+      iso_file: "{{ rhel_9_3_iso_path }}"
+      type: ISO_FILE
+  register: _cdrom_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _cdrom_info
+
+- name: Verify ISO image attached
+  ansible.builtin.assert:
+    that:
+      - _cdrom_info is changed
+      - _cdrom_info.value.backing.iso_file == "{{ rhel_9_3_iso_path }}"
+      - _cdrom_info.value.type == "SATA"
+
+- name: Attach an ISO image to a guest VM (again)
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom:
+    vm: '{{ test_vm_id }}'
+    type: SATA
+    sata:
+      bus: 0
+      unit: 2
+    start_connected: true
+    backing:
+      iso_file: "{{ rhel_9_3_iso_path }}"
+      type: ISO_FILE
+  register: _result
+
+- name: Ensure idempotency
+  ansible.builtin.assert:
+    that: _result is not changed
+
+- name: List the cdrom devices on the guest
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
+    vm: '{{ test_vm_id }}'
+  register: _cdrom_list
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify CDROM is in a list
+  ansible.builtin.assert:
+    that:
+      - _cdrom_list.value | map(attribute='cdrom') | list is contains _cdrom_info.id
+
+- name: Set a boot device
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device:
+    vm: '{{ test_vm_id }}'
+    devices:
+      - type: "CDROM"
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify boot device was set
+  ansible.builtin.assert:
+    that:
+      - _result is changed

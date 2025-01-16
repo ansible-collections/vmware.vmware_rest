@@ -1,0 +1,56 @@
+- name: Retrieve the boot information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_boot_info:
+    vm: '{{ test_vm_id }}'
+  register: hardware_boot_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: hardware_boot_info
+
+- name: Change a VM boot parameters
+  vmware.vmware_rest.vcenter_vm_hardware_boot:
+    vm: '{{ test_vm_id }}'
+    type: EFI
+    efi_legacy_boot: true
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify boot device parameters were applied
+  ansible.builtin.assert:
+    that:
+      - _result is changed
+
+- name: _Change a VM boot parameters (again)
+  vmware.vmware_rest.vcenter_vm_hardware_boot:
+    vm: '{{ test_vm_id }}'
+    efi_legacy_boot: true
+    type: EFI
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify boot device parameters weren't applied
+  ansible.builtin.assert:
+    that:
+      - not(_result is changed)
+
+- name: Get information about the boot device
+  vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Restore a VM boot parameters
+  vmware.vmware_rest.vcenter_vm_hardware_boot:
+    vm: '{{ test_vm_id }}'
+    type: EFI
+    efi_legacy_boot: false
+  register: _result

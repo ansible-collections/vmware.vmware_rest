@@ -1,0 +1,67 @@
+- name: Create a generic resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: "{{ test_resource_pool_name }}"
+    parent: "{{ resource_pool_parent_id }}"
+  register: resource_pool_info
+
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ cluster_id }}"
+      datastore: "{{ datastore_id }}"
+      folder: "{{ folder_id }}"
+      resource_pool: "{{ resource_pool_info.id }}"
+    name: "{{ test_vm_name }}"
+    guest_OS: RHEL_8_64
+    hardware_version: VMX_20
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1028
+  register: test_vm
+
+- name: Verify VM creation
+  ansible.builtin.assert:
+    that:
+      - test_vm is changed
+      - test_vm.value.identity.name == test_vm_name
+
+- name: _Create a VM (again)
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ cluster_id }}"
+      datastore: "{{ datastore_id }}"
+      folder: "{{ folder_id }}"
+      resource_pool: "{{ resource_pool_info.id }}"
+    name: "{{ test_vm_name }}"
+    guest_OS: RHEL_8_64
+    hardware_version: VMX_20
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1028
+  register: result
+
+- name: Verify no VM created second time
+  ansible.builtin.assert:
+    that:
+      - not(result is changed)
+
+- name: Search VM with an invalid filter
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names: test_vm_does_not_exists
+  register: _should_be_empty
+
+- name: Verify no VM found
+  ansible.builtin.assert:
+    that:
+      - _should_be_empty.value == []
+
+- name: Get info about VM
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names: "{{ test_vm_name }}"
+  register: test_vm_info
+
+- name: Verify VM info
+  ansible.builtin.assert:
+    that:
+      - test_vm_info.value[0].name == test_vm_name
+      - test_vm_info.value[0].vm == test_vm.id
