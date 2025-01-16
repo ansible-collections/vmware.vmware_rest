@@ -1,0 +1,15 @@
+---
+- name: List the SCSI adapter of a given VM
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info:
+    vm: '{{ test_vm_id }}'
+  register: _adapter_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _adapter_info
+
+- name: Verify adapter info
+  ansible.builtin.assert:
+    that:
+      - _adapter_info is not failed
+      - _adapter_info.value | length > 0

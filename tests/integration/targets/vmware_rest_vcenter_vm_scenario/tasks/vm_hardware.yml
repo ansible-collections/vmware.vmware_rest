@@ -1,0 +1,34 @@
+---
+- name: Upgrade the VM hardware version
+  vmware.vmware_rest.vcenter_vm_hardware:
+    upgrade_policy: AFTER_CLEAN_SHUTDOWN
+    upgrade_version: VMX_21
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify VM hardware version was chenged
+  ansible.builtin.assert:
+    that:
+      - _result is changed
+
+- name: _Upgrade the VM hardware version (again)
+  vmware.vmware_rest.vcenter_vm_hardware:
+    upgrade_policy: AFTER_CLEAN_SHUTDOWN
+    upgrade_version: VMX_21
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: _result
+
+- name: Verify VM hardware version
+  ansible.builtin.assert:
+    that:
+      - not(_result is changed)
+      - _result.value.upgrade_status == "PENDING"
+      - _result.value.upgrade_version == "VMX_21"

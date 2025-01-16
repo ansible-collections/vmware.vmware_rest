@@ -1,8 +1,0 @@
-- hosts: localhost
-  gather_facts: no
-  collections:
-      - vmware.vmware_rest
-      - community.vmware
-  tasks:
-      - import_role:
-          name: prepare_lab

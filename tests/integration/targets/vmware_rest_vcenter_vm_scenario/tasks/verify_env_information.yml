@@ -1,0 +1,67 @@
+---
+- name: Check mandatory variables are defined
+  ansible.builtin.assert:
+    that:
+      - cluster_id is defined
+      - folder_id is defined
+      - datastore_id is defined
+      - resource_pool_parent_id is defined
+
+- name: Build a list of all the clusters
+  vmware.vmware.cluster_info:
+    datacenter: "{{ vcenter_datacenter }}"
+  register: all_the_clusters
+
+- name: Verify clusters list
+  ansible.builtin.assert:
+    that:
+      - all_the_clusters.clusters | length > 0
+      - all_the_clusters.clusters | list is contains vcenter_cluster_name
+
+- name: Retrieve details about Eco-cluster
+  vmware.vmware.cluster_info:
+    datacenter: "{{ vcenter_datacenter }}"
+    cluster: "{{ vcenter_cluster_name }}"
+  register: eco_cluster_info
+
+- name: Verify Eco-cluster info
+  ansible.builtin.assert:
+    that:
+      - eco_cluster_info.clusters[vcenter_cluster_name].moid == cluster_id
+
+- name: Build a list of all the folders
+  vmware.vmware_rest.vcenter_folder_info:
+  register: eco_cluster_folders
+
+- name: Verify folders list
+  ansible.builtin.assert:
+    that:
+      - eco_cluster_folders.value | length > 0
+      - eco_cluster_folders.value |  map(attribute='folder') | list is contains folder_id
+
+- name: Get folder name
+  vmware.vmware_rest.vcenter_folder_info:
+    folders: "{{ folder_id }}"
+  register: folder_info
+
+- name: Build a list of folders with the given type and name
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: VIRTUAL_MACHINE
+    filter_names: "{{ folder_info.value[0].name }}"
+  register: test_folders
+
+- name: Verify test folder found
+  ansible.builtin.assert:
+    that:
+      - test_folders.value | length > 0
+      - test_folders.value |  map(attribute='folder') | list is contains folder_id
+
+- name: Build a list of all the datastores
+  vmware.vmware_rest.vcenter_datastore_info:
+  register: all_the_datastores
+
+- name: Verify datastore list
+  ansible.builtin.assert:
+    that:
+      - all_the_datastores.value | length > 0
+      - all_the_datastores.value |  map(attribute='datastore') | list is contains datastore_id

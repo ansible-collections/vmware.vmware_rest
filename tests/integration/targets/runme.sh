@@ -2,7 +2,7 @@
 source ../init-eco.sh
 
 # Generates a string starting with 'test-' followed by 4 random lowercase characters
-TINY_PREFIX="test-$(uuidgen | tr -d '-' | cut -c1-4 | tr '[:upper:]' '[:lower:]')"
+TINY_PREFIX="test-vmware_rest-$(uuidgen | tr -d '-' | cut -c1-4 | tr '[:upper:]' '[:lower:]')"
 
 # Extract the ansible_tags from integration_config.yml
 ANSIBLE_TAGS=$(awk '/ansible_tags/ {print $2}' ../../integration_config.yml)

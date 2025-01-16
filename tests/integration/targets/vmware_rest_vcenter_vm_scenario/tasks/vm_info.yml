@@ -1,0 +1,44 @@
+---
+- name: Look up test VM in the inventory
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+      - "{{ test_vm_name }}"
+  register: test_vm_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: test_vm_info
+
+- name: Verify test VM info
+  ansible.builtin.assert:
+    that:
+      - test_vm_info.value[0].vm == test_vm_id
+
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ test_vm_id }}'
+  register: test_vm_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: test_vm_info
+
+- name: Verify test VM info
+  ansible.builtin.assert:
+    that:
+      - test_vm_info.value.identity.name == test_vm_name
+
+- name: Collect the hardware information
+  vmware.vmware_rest.vcenter_vm_hardware_info:
+    vm: '{{ test_vm_id }}'
+  register: vm_hardware_info
+
+- name: Print debug info
+  ansible.builtin.debug:
+    var: vm_hardware_info
+
+- name: Verify VM memory info
+  ansible.builtin.assert:
+    that:
+      - vm_hardware_info is not failed
+      - vm_hardware_info.value | length > 0
