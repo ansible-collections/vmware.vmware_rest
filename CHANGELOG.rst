@@ -4,6 +4,19 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.5.0
+======
+
+Minor Changes
+-------------
+
+- info - changed relative links in README.md to absolute links
+
+Bugfixes
+--------
+
+- module_utils - fixed return value for vmware.vmware_rest.vcenter_vm_guest_filesystem_directories module
+
 v4.4.0
 ======
 

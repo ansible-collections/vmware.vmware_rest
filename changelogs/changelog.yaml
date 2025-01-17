@@ -796,3 +796,15 @@ releases:
     fragments:
     - 560-update-vcenter-ovf-libraryitem-docs.yml
     release_date: '2024-12-19'
+  4.5.0:
+    changes:
+      bugfixes:
+      - module_utils - fixed return value for vmware.vmware_rest.vcenter_vm_guest_filesystem_directories
+        module
+      minor_changes:
+      - info - changed relative links in README.md to absolute links
+    fragments:
+    - 570-bugfix-relative-links.yml
+    - 573-restrict-prepare_lab-runs.yml
+    - 576-bugfix-report-changes-in-filesysten_directories.yml
+    release_date: '2025-01-17'
