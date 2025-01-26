@@ -335,6 +335,34 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Create a VM
+  vmware.vmware_rest.vcenter_vm:
+    placement:
+      cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
+      datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
+      resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/my_dc/host/my_cluster/Resources') }}"
+    name: test_vm1
+    guest_OS: RHEL_7_64
+    hardware_version: VMX_11
+    memory:
+      hot_add_enabled: true
+      size_MiB: 1024
+  register: my_vm
+
+- name: Create a content library based on a DataStore
+  vmware.vmware_rest.content_locallibrary:
+    name: my_library_on_datastore
+    description: automated
+    publish_info:
+      published: true
+      authentication_method: NONE
+    storage_backings:
+    - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/my_dc/datastore/local') }}"
+      type: DATASTORE
+    state: present
+  register: nfs_lib
+
 - name: Create a VM template on the library
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
     name: golden-template
@@ -350,7 +378,7 @@ EXAMPLES = r"""
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
     name: vm-from-template
     library: '{{ nfs_lib.id }}'
-    template_library_item: '{{ my_template_item.id }}'
+    template_library_item: '{{ mylib_item.id }}'
     placement:
       cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/my_dc/host/my_cluster') }}"
       folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/my_dc/vm') }}"
