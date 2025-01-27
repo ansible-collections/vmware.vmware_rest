@@ -419,6 +419,7 @@ RETURN = r"""
       "datastore": "datastore-3036"
     },
     "vm_template": "vm-77122"
+  }
   "type": "dict"
 }
 """
