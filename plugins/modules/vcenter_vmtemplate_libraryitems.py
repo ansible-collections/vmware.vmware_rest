@@ -408,7 +408,11 @@ value:
     guest_OS: RHEL_7_64
     memory:
       size_MiB: 1024
-    nics: {}
+    nics:
+      '4000':
+        backing_type: STANDARD_PORTGROUP
+        mac_type: ASSIGNED
+        network: network-1123
     vm_home_storage:
       datastore: datastore-3036
     vm_template: vm-77006
