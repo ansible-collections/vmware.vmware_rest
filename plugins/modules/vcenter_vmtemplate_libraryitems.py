@@ -420,6 +420,7 @@ RETURN = r"""
     },
     "vm_template": "vm-77122"
   "type": "dict"
+}
 """
 
 
