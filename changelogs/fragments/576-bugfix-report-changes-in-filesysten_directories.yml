@@ -1,3 +1,0 @@
----
-bugfixes:
-  - module_utils - fixed return value for vmware.vmware_rest.vcenter_vm_guest_filesystem_directories module
