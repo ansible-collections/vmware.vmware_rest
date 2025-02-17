@@ -808,3 +808,8 @@ releases:
     - 573-restrict-prepare_lab-runs.yml
     - 576-bugfix-report-changes-in-filesysten_directories.yml
     release_date: '2025-01-17'
+  4.6.0:
+    changes: {}
+    fragments:
+    - 580-update-libraryitems-examples.yml
+    release_date: '2025-02-17'
