@@ -4,6 +4,9 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.6.0
+======
+
 v4.5.0
 ======
 
