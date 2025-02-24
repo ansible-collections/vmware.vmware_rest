@@ -1,7 +1,11 @@
 ---
 - name: Get boot device info
   vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
-    vm: '{{ test_vm1_info.id }}'
+    vm: '{{ test_vm_id }}'
   register: _result
 
 - ansible.builtin.debug: var=_result
+
+- ansible.builtin.assert:
+    that:
+      - '_result.value == [{"type": "CDROM"}]'
