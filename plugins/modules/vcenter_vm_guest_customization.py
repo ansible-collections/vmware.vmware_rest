@@ -254,8 +254,8 @@ EXAMPLES = r"""
     state: deploy
   register: my_new_vm
 
-# If your template already has vmtools installed and vCenter recognizes the installation (you should be able to see the tools version when the template is cloned),
-# then you can skip this block in your workflow.
+# If your template already has vmtools installed and vCenter recognizes the installation (you should be able to see the tools version when the template
+# is cloned), then you can skip this block in your workflow.
 - name: Register VMware Tools with vCenter
   block:
     - name: Power on the VM
