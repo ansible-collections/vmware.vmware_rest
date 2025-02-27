@@ -241,7 +241,9 @@ EXAMPLES = r"""
 #
 ##########
 
+#
 # Here is the basic workflow for creating a new VM and then customizing it
+#
 - name: Deploy a new VM based on a template
   vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
     name: vm-from-template
@@ -252,25 +254,27 @@ EXAMPLES = r"""
     state: deploy
   register: my_new_vm
 
-- name: Power on the VM to register VMware tools
-  vmware.vmware_rest.vcenter_vm_power:
-    state: start
-    vm: "{{ my_new_vm.id }}"
-
-- name: Wait until my VMware tools are recognized
-  vmware.vmware_rest.vcenter_vm_tools_info:
-    vm: "{{ my_new_vm.id }}"
-  register: vm_tools_info
-  until:
-    - vm_tools_info is not failed
-    - vm_tools_info.value.run_state == "RUNNING"
-  retries: 60
-  delay: 5
-
-- name: Power Off VM
-  vmware.vmware_rest.vcenter_vm_power:
-    state: stop
-    vm: "{{ my_new_vm.id }}"
+# If your template already has vmtools installed and vCenter recognizes the installation (you should be able to see the tools version when the template is cloned),
+# then you can skip this block in your workflow.
+- name: Register VMware Tools with vCenter
+  block:
+    - name: Power on the VM
+      vmware.vmware_rest.vcenter_vm_power:
+        state: start
+        vm: "{{ my_new_vm.id }}"
+    - name: Wait until my VMware tools are recognized
+      vmware.vmware_rest.vcenter_vm_tools_info:
+        vm: "{{ my_new_vm.id }}"
+      register: vm_tools_info
+      until:
+        - vm_tools_info is not failed
+        - vm_tools_info.value.run_state == "RUNNING"
+      retries: 60
+      delay: 5
+    - name: Power Off VM
+      vmware.vmware_rest.vcenter_vm_power:
+        state: stop
+        vm: "{{ my_new_vm.id }}"
 
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
@@ -292,9 +296,16 @@ EXAMPLES = r"""
           fixed_name: myhost
           type: FIXED
 
+- name: Power on the VM
+  vmware.vmware_rest.vcenter_vm_power:
+    state: start
+    vm: "{{ my_new_vm.id }}"
+
+#
 # Here is an example using the Linux script text. The script shebang can be anything (bash, perl, python), so long as the script will actually run
 # There is also size and length limitation on the script text, as described in the module documentation.
 # Finally, note the script is run twice. Once before all of the other customization and once after.
+#
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
     vm: "{{ my_new_vm.id }}"
@@ -326,6 +337,7 @@ EXAMPLES = r"""
             # add any other post-customization tasks here
           fi
 
+#
 # Here is a simple example using cloud-init
 # See also:
 #   https://developer.broadcom.com/xapis/vsphere-automation-api/latest/vcenter/data-structures/Guest_CloudinitConfiguration/
@@ -335,6 +347,7 @@ EXAMPLES = r"""
 #
 #   cloud-init required: metadata as plain-text JSON/YAML, maximum 512KB file size
 #   cloud-init optional: userdata as plain-text in raw cloud-init format with no compression / no base64 encoding, maximum 512KB file size
+#
 - name: Customize the VM
   vmware.vmware_rest.vcenter_vm_guest_customization:
     vm: "{{ my_new_vm.id }}"
@@ -363,7 +376,9 @@ EXAMPLES = r"""
                   This is a test
                 path: /root/cloud-init-example
 
+#
 # Here is a more complex cloud-init example
+#
 - name: Set cloud-init variables for customization specification
   ansible.builtin.set_fact:
     metadata_yaml:
