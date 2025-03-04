@@ -1,0 +1,25 @@
+---
+- name: Dedicate two cores to the VM
+  vmware.vmware_rest.vcenter_vm_hardware_cpu:
+    vm: '{{ test_vm_id }}'
+    count: 6
+    cores_per_socket: 2
+  register: _result
+
+- ansible.builtin.debug: var=_result
+
+- ansible.builtin.assert:
+    that: 
+      - _result is changed
+
+- name: Retrieve the CPU information from the VM
+  vmware.vmware_rest.vcenter_vm_hardware_cpu_info:
+    vm: '{{ test_vm_id }}'
+  register: _result
+
+- ansible.builtin.debug: var=_result
+
+- ansible.builtin.assert:
+    that: 
+      - _result.value.count == 6
+      - _result.value.cores_per_socket == 2
