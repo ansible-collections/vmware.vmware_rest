@@ -15,6 +15,7 @@ Release versions follow the semver versioning pattern. To create a new release:
 6. Open a PR to merge the release branch into main.
 
 Once the PR has been merged:
+
 7. Use the Github UI to create a new release. You must tag main with the new version number. The tag is just the version number, not `v0.0.0`
 8. Pull the new version of main. You can do a `git reset --hard HEAD` and `git clean -dfx` if you have any extra files present. You do not want any extra files present.
 9. Build the collection, `ansible-galaxy collection build .`. This will create a tar file.
