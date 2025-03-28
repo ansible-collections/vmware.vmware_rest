@@ -24,16 +24,16 @@ jobs:
       intersphinx-links: |
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
       provide-link-targets: |
-        ansible_collections.vmware.vmware.appliance_info
-        ansible_collections.vmware.vmware.cluster_info
-        ansible_collections.vmware.vmware.content_library_item_info
-        ansible_collections.vmware.vmware.esxi_host
-        ansible_collections.vmware.vmware.local_content_library
-        ansible_collections.vmware.vmware.subscribed_content_library
-        ansible_collections.vmware.vmware.vcsa_settings
-        ansible_collections.vmware.vmware.vm_portgroup_info
-        ansible_collections.vmware.vmware.vm_powerstate
-        ansible_collections.vmware.vmware.vm_resource_info
+        ansible_collections.vmware.vmware.appliance_info_module
+        ansible_collections.vmware.vmware.cluster_info_module
+        ansible_collections.vmware.vmware.content_library_item_info_module
+        ansible_collections.vmware.vmware.esxi_host_module
+        ansible_collections.vmware.vmware.local_content_library_module
+        ansible_collections.vmware.vmware.subscribed_content_library_module
+        ansible_collections.vmware.vmware.vcsa_settings_module
+        ansible_collections.vmware.vmware.vm_portgroup_info_module
+        ansible_collections.vmware.vmware.vm_powerstate_module
+        ansible_collections.vmware.vmware.vm_resource_info_module
 
   build-docs:
     permissions:
@@ -47,16 +47,16 @@ jobs:
       intersphinx-links: |
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
       provide-link-targets: |
-        ansible_collections.vmware.vmware.appliance_info
-        ansible_collections.vmware.vmware.cluster_info
-        ansible_collections.vmware.vmware.content_library_item_info
-        ansible_collections.vmware.vmware.esxi_host
-        ansible_collections.vmware.vmware.local_content_library
-        ansible_collections.vmware.vmware.subscribed_content_library
-        ansible_collections.vmware.vmware.vcsa_settings
-        ansible_collections.vmware.vmware.vm_portgroup_info
-        ansible_collections.vmware.vmware.vm_powerstate
-        ansible_collections.vmware.vmware.vm_resource_info
+        ansible_collections.vmware.vmware.appliance_info_module
+        ansible_collections.vmware.vmware.cluster_info_module
+        ansible_collections.vmware.vmware.content_library_item_info_module
+        ansible_collections.vmware.vmware.esxi_host_module
+        ansible_collections.vmware.vmware.local_content_library_module
+        ansible_collections.vmware.vmware.subscribed_content_library_module
+        ansible_collections.vmware.vmware.vcsa_settings_module
+        ansible_collections.vmware.vmware.vm_portgroup_info_module
+        ansible_collections.vmware.vmware.vm_powerstate_module
+        ansible_collections.vmware.vmware.vm_resource_info_module
 
   # This job requires that the workflow trigger is pull_request_target. However that trigger uses
   # whatever version of the workflow is available on main instead of the feature branch.
