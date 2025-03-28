@@ -333,3 +333,8 @@ plugin_routing:
       deprecation:
         removal_version: 5.0.0
         warning_text: Use vmware.vmware.vm_powerstate instead.
+
+    vcenter_vm_libraryitem_info:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.content_library_item_info instead.
