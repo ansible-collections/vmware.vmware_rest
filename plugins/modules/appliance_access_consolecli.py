@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: appliance_access_consolecli
 short_description: Set enabled state of the console-based controlled CLI (TTY1).
 description: Set enabled state of the console-based controlled CLI (TTY1).
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     enabled:
         description:

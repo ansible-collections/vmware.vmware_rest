@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: vcenter_cluster_info
 short_description: Retrieves information about the cluster corresponding to cluster.
 description: Retrieves information about the cluster corresponding to cluster.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.cluster_info) instead.
 options:
     cluster:
         description:

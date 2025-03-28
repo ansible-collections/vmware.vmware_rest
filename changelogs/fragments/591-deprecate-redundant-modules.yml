@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - Deprecated modules with redundant functionality in vmware.vmware. The next major release is currently not planned, so no removal date is provided. See https://github.com/ansible-collections/vmware.vmware_rest/issues/589

@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: appliance_networking_noproxy_info
 short_description: Returns servers for which no proxy configuration will be applied.
 description: Returns servers for which no proxy configuration will be applied.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.appliance_info) instead.
 options:
     session_timeout:
         description:

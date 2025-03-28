@@ -15,6 +15,10 @@ description: Sets servers for which no proxy configuration should be applied. Th
     a logout from appliance or a service restart is required. If IPv4 is enabled,
     "127.0.0.1" and "localhost" will always bypass the proxy (even if they are not
     explicitly configured).
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     servers:
         description:

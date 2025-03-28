@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: appliance_timesync
 short_description: Set time synchronization mode.
 description: Set time synchronization mode.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     mode:
         choices:
@@ -80,8 +84,6 @@ requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
-seealso:
--   module: vmware.vmware.vcsa_settings
 notes:
 - Tested on vSphere 7.0.3
 """

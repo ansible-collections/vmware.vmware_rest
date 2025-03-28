@@ -13,6 +13,10 @@ short_description: Configures which proxy server to use for the specified protoc
 description: Configures which proxy server to use for the specified protocol. This
     operation sets environment variables for using proxy. In order for this configuration
     to take effect a logout / service restart is required.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     config:
         description:
