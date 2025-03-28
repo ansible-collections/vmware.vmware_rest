@@ -18,6 +18,10 @@ description: 'Set the ordered list of firewall rules to allow or deny traffic fr
     be as follows:   AddressPrefixInterface NamePolicy   10.112.0.10*REJECT   10.112.0.10nic0ACCEPT   In
     the above example, the first rule drops all packets originating from 10.112.0.1
     and'
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     rules:
         description:

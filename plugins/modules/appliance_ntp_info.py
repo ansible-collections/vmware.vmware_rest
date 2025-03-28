@@ -15,6 +15,10 @@ description: Get the NTP configuration status. If you run the 'timesync.get' com
     The 'ntp' command always returns the NTP server information, even when the time
     synchronization mode is not set to NTP. If the time synchronization mode is not
     NTP-based, the NTP server status is displayed as down.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.appliance_info) instead.
 options:
     session_timeout:
         description:

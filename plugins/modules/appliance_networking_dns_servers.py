@@ -12,6 +12,10 @@ module: appliance_networking_dns_servers
 short_description: Set the DNS server configuration
 description: Set the DNS server configuration. If you set the mode argument to "DHCP",
     a DHCP refresh is forced.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     mode:
         choices:

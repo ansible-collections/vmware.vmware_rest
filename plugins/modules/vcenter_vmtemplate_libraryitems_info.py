@@ -13,6 +13,10 @@ short_description: Returns information about a virtual machine template containe
     in the library item specified by templateLibraryItem
 description: Returns information about a virtual machine template contained in the
     library item specified by templateLibraryItem
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.content_library_items_info) instead.
 options:
     session_timeout:
         description:

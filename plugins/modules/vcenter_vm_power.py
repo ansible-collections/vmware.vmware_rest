@@ -12,6 +12,10 @@ module: vcenter_vm_power
 short_description: Operate a boot, hard shutdown, hard reset or hard suspend on a
     guest.
 description: Ask the vCenter to boot, force shutdown or force reset a guest.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vm_powerstate) instead.
 options:
     session_timeout:
         description:

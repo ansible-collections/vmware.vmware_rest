@@ -14,6 +14,10 @@ description: Get the ordered list of firewall rules. Within the list of traffic 
     rules are processed in order of appearance, from top to bottom. When a connection
     matches a firewall rule, further processing for the connection stops, and the
     appliance ignores any additional firewall rules you have set.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.appliance_info) instead.
 options:
     session_timeout:
         description:

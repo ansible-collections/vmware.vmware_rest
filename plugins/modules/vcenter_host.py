@@ -16,6 +16,10 @@ description: Add a new standalone host in the vCenter inventory. The newly conne
     cannot be verified because the Certificate Authority is not recognized or the
     certificate is self signed, the vCenter Server will fall back to thumbprint verification
     mode as defined by Host.CreateSpec.ThumbprintVerification.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.esxi_host) instead.
 options:
     folder:
         description:

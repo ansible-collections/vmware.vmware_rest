@@ -13,6 +13,10 @@ short_description: Get enabled state of BASH, that is, access to BASH from withi
     the controlled CLI.
 description: Get enabled state of BASH, that is, access to BASH from within the controlled
     CLI.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.appliance_info) instead.
 options:
     session_timeout:
         description:

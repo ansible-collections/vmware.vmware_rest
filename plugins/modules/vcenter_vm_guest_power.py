@@ -14,6 +14,10 @@ short_description: Issues a request to the guest operating system asking it to p
 description: Issues a request to the guest operating system asking it to perform a
     soft shutdown, standby (suspend) or soft reboot. This request returns immediately
     and does not wait for the guest operating.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vm_powerstate) instead.
 options:
     session_timeout:
         description:
