@@ -16,7 +16,7 @@ description: Returns information about a virtual machine template contained in t
 deprecated:
     removed_in: 5.0.0
     why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
-    alternative: Use M(vmware.vmware.content_library_items_info) instead.
+    alternative: Use M(vmware.vmware.content_library_item_info) instead.
 options:
     session_timeout:
         description:
