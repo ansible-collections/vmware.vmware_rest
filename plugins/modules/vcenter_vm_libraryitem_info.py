@@ -13,6 +13,10 @@ short_description: Returns the information about the library item associated wit
     the virtual machine.
 description: Returns the information about the library item associated with the virtual
     machine.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.content_library_item_info) instead.
 options:
     session_timeout:
         description:

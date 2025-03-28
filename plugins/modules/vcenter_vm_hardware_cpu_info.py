@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: vcenter_vm_hardware_cpu_info
 short_description: Returns the CPU-related settings of a virtual machine.
 description: Returns the CPU-related settings of a virtual machine.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vm_resource_info) instead.
 options:
     session_timeout:
         description:

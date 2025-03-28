@@ -15,6 +15,10 @@ description: Set NTP servers. This method updates old NTP servers from configura
     is used internally, the NTP daemon will be restarted to reload given NTP configuration.
     In case NTP based time synchronization is not used, this method only replaces
     servers in the NTP configuration.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vcsa_settings) instead.
 options:
     servers:
         description:
@@ -81,8 +85,6 @@ requirements:
 - vSphere 7.0.3 or greater
 - python >= 3.6
 - aiohttp
-seealso:
--   module: vmware.vmware.vcsa_settings
 notes:
 - Tested on vSphere 7.0.3
 """

@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: appliance_networking_dns_domains_info
 short_description: Get list of DNS search domains.
 description: Get list of DNS search domains.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.appliance_info) instead.
 options:
     session_timeout:
         description:
