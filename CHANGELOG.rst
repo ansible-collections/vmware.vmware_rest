@@ -4,6 +4,14 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.7.0
+======
+
+Minor Changes
+-------------
+
+- Deprecated modules with redundant functionality in vmware.vmware. The next major release is currently not planned, so no removal date is provided. See https://github.com/ansible-collections/vmware.vmware_rest/issues/589
+
 v4.6.0
 ======
 
