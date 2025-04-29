@@ -40,6 +40,8 @@ jobs:
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
+          pip install --pre 'ansible-core>=2.19.0b2'
+          ansible --version
           make eco-vcenter-ci
         working-directory: ansible_collections/vmware/vmware_rest
         env:
