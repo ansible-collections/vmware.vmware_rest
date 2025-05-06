@@ -13,14 +13,14 @@ install-ansible-collections:
 
 .PHONY: install-python-packages
 install-python-packages:
-	pip3 install -r tests/integration/requirements.txt
+	pip3 install -r tests/integration/requirements.txt --force
 
 .PHONY: remove_aliases
 remove_aliases:
 	@find tests/integration/targets/ -name "aliases" -exec rm -f {} +
 
 .PHONY: eco-vcenter-ci
-eco-vcenter-ci: install-ansible-collections prepare_symlinks remove_aliases
+eco-vcenter-ci: install-python-packages install-ansible-collections prepare_symlinks remove_aliases
 	@[ -f /tmp/vmware_rest_tests_report.txt ] && rm /tmp/vmware_rest_tests_report.txt || true; \
 	@failed=0; \
 	total=0; \

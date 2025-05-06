@@ -1,14 +1,8 @@
-- name: Get random VM's info
-  vmware.vmware_rest.vcenter_vm_info:
-    vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/')[0] }}"
-  register: vm_info
-
 - name: Lookup VMs
   ansible.builtin.assert:
     that: lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + item)
   loop:
     - "{{ vcenter_host_name }}/"
-    - "{{ vm_info.value.identity.name }}"
     - "{{ vcenter_resource_pool }}/"
 
 - name: Verify number of VMs in a cluster
