@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - change cloud.common dependency to 4.1 to support anisble 2.19
