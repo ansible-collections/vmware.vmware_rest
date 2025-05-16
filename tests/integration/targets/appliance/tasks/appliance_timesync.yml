@@ -1,9 +1,0 @@
-- name: Get information regarding the clock synchronization
-  vmware.vmware_rest.appliance_timesync_info:
-  register: result
-
-- ansible.builtin.debug: var=result
-
-- name: Ensure we use NTP
-  vmware.vmware_rest.appliance_timesync:
-    mode: NTP

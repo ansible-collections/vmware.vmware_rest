@@ -1,4 +1,3 @@
 collections:
   - name: vmware.vmware
   - name: community.vmware
-  - name: cloud.common

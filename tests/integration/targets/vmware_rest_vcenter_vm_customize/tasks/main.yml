@@ -1,11 +1,7 @@
 ---
 - name: Test VM customize on a real vCenter
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Create VM from template
       ansible.builtin.include_tasks: ../../action_on_vm/create_vm_from_template.yml
       vars:
@@ -23,8 +19,8 @@
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
       register: vm_tools_info
       until:
-      - vm_tools_info is not failed
-      - vm_tools_info.value.run_state == "RUNNING"
+        - vm_tools_info is not failed
+        - vm_tools_info.value.run_state == "RUNNING"
       retries: 60
       delay: 5
 
@@ -38,8 +34,8 @@
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
       register: vm_info
       until:
-      - vm_info is not failed
-      - vm_info.value.power_state == "POWERED_OFF"
+        - vm_info is not failed
+        - vm_info.value.power_state == "POWERED_OFF"
       retries: 10
       delay: 5
 
@@ -50,7 +46,7 @@
 
     - name: Verify power status of the VM
       ansible.builtin.assert:
-        that: 
+        that:
           - vm_power_info.value.state == "NOT_RUNNING"
           - not vm_power_info.value.operations_ready
 
@@ -89,8 +85,8 @@
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
       register: vm_tools_info
       until:
-      - vm_tools_info is not failed
-      - vm_tools_info.value.run_state == "RUNNING"
+        - vm_tools_info is not failed
+        - vm_tools_info.value.run_state == "RUNNING"
       retries: 60
       delay: 5
 
@@ -101,7 +97,7 @@
 
     - name: Verify power status of the VM
       ansible.builtin.assert:
-        that: 
+        that:
           - vm_power_info.value.state == "RUNNING"
           - vm_power_info.value.operations_ready
 
@@ -118,9 +114,9 @@
       ansible.builtin.debug:
         var: vm_dns_info
 
-    - name: Verify DNS settings of VM  
+    - name: Verify DNS settings of VM
       ansible.builtin.assert:
-        that: 
+        that:
           - vm_dns_info.value.dns_values.host_name == new_vm_setting.dns_host_name
           - vm_dns_info.value.dns.ip_addresses is contains new_vm_setting.dns_servers
           - vm_dns_info.value.dns.search_domains | length == 0
@@ -130,9 +126,9 @@
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
       register: vm_ip_info
 
-    - name: Verify IP adress of VM  
+    - name: Verify IP adress of VM
       ansible.builtin.assert:
-        that: 
+        that:
           - vm_ip_info.value[0].ip.ip_addresses|map(attribute='ip_address')|list is contains new_vm_setting.vm_ip
 
     - name: Get information about the vm-tools

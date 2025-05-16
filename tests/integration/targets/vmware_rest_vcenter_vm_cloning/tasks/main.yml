@@ -1,11 +1,7 @@
 ---
 - name: Test VM cloning on a real vCenter
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: "{{ resource_pool_name }}"
@@ -26,15 +22,15 @@
     - name: Power on VM
       vmware.vmware_rest.vcenter_vm_power:
         state: start
-        vm: '{{ vm_from_template.value }}'
+        vm: "{{ vm_from_template.value }}"
 
     - name: Wait until VM is ready
       vmware.vmware_rest.vcenter_vm_tools_info:
-        vm: '{{ vm_from_template.value }}'
+        vm: "{{ vm_from_template.value }}"
       register: vm_tools_info
       until:
-      - vm_tools_info is not failed
-      - vm_tools_info.value.run_state == "RUNNING"
+        - vm_tools_info is not failed
+        - vm_tools_info.value.run_state == "RUNNING"
       retries: 10
       delay: 5
 

@@ -1,21 +1,17 @@
 ---
 - name: Test VM clone on library
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Create a content library based on a DataStore
       vmware.vmware_rest.content_locallibrary:
         name: "{{ library_name }}"
         description: automated
         publish_info:
           published: true
-          authentication_method: 'NONE'
+          authentication_method: "NONE"
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
         state: present
       register: nfs_lib
 
@@ -85,7 +81,7 @@
 
     - name: Get the list of items of the NFS library
       vmware.vmware.content_library_item_info:
-        library_id: '{{ nfs_lib.id }}'
+        library_id: "{{ nfs_lib.id }}"
       register: nfs_lib_items
 
     - name: Verify VM template name

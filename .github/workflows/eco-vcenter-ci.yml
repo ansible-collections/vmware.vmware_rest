@@ -24,13 +24,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          path: ansible_collections/vmware/vmware_rest
 
       - name: Generate integration config
-        working-directory: ansible_collections/vmware/vmware_rest/tests/integration
         run: |
-          chmod +x generate_integration_config.sh
-          ./generate_integration_config.sh
+          make tests/integration/integration_config.yml
         env:
           VCENTER_HOSTNAME: ${{ secrets.VCENTER_HOSTNAME }}
           VCENTER_USERNAME: ${{ secrets.VCENTER_USERNAME }}
@@ -41,6 +38,8 @@ jobs:
           python3 -m venv .venv
           source .venv/bin/activate
           make eco-vcenter-ci
-        working-directory: ansible_collections/vmware/vmware_rest
         env:
           ANSIBLE_COLLECTIONS_PATH: "${{ github.workspace }}"
+          VCENTER_HOSTNAME: ${{ secrets.VCENTER_HOSTNAME }}
+          VCENTER_USERNAME: ${{ secrets.VCENTER_USERNAME }}
+          VCENTER_PASSWORD: ${{ secrets.VCENTER_PASSWORD }}
