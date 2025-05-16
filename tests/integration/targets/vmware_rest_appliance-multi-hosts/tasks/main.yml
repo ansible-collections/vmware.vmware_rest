@@ -1,1 +1,4 @@
-- import_tasks: appliance_ntp.yml
+- name: Test
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - import_tasks: appliance_ntp.yml

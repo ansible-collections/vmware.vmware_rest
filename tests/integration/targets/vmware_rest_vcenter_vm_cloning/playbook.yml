@@ -1,9 +1,0 @@
-- hosts: localhost
-  gather_facts: no
-
-  tasks:
-    - name: Import appliance role
-      ansible.builtin.import_role:
-        name: vmware_rest_vcenter_vm_cloning
-      tags:
-        - eco-vcenter-ci

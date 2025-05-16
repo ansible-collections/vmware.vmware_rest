@@ -1,9 +1,0 @@
-- hosts: localhost
-  gather_facts: no
-
-  tasks:
-    - name: Import vcenter vm cusromize test
-      ansible.builtin.import_role:
-        name: vmware_rest_vcenter_vm_customize
-      tags:
-        - eco-vcenter-ci

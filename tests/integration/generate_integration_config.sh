@@ -6,9 +6,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 cd "$SCRIPT_DIR" || exit 1
 
 # Truncate the output file
-truncate -s 0 integration_config.yml
+truncate -s 0 "${SCRIPT_DIR}/integration_config.yml"
 
 # Read the template and substitute environment variables
 while read -r line; do
-    eval 'echo "'"$line"'"' >> integration_config.yml
-done < "integration_config.yml.tpl"
+    eval 'echo "'"$line"'"' >> "${SCRIPT_DIR}/integration_config.yml"
+done < "${SCRIPT_DIR}/integration_config.yml.tpl"

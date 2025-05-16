@@ -1,11 +1,7 @@
 ---
 - name: Test lookup plugin
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Create test cluster
       vmware.vmware.cluster:
         datacenter: "{{ vcenter_datacenter }}"
@@ -20,7 +16,7 @@
     - name: Set host name for tests
       ansible.builtin.set_fact:
         vcenter_host_name: "{{ vcenter_host_info.value[0].name }}"
-  
+
     - import_tasks: test_datacenter_moid.yml
     - import_tasks: test_cluster_moid.yml
     - import_tasks: test_host_moid.yml

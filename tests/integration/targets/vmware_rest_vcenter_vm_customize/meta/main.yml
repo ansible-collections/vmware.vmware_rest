@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: prepare_test_vars
+  # prepare_vm must be included now so the role
+  # is copied to the ansible test temp dir and can be used later.
+  # when state == none (the default), this role does nothing
+  - role: prepare_vm

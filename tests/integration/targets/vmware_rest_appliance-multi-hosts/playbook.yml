@@ -1,9 +1,0 @@
-- hosts: localhost
-  gather_facts: no
-
-  tasks:
-    - name: Import appliance multi-hosts role
-      ansible.builtin.import_role:
-        name: vmware_rest_appliance-multi-hosts
-      tags:
-        - eco-vcenter-ci

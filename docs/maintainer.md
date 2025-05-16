@@ -34,8 +34,3 @@ When you are ready to add a new version of Ansible core, you need to add it to t
 Testing is done as a part of the pull request workflow. There are a few key tests:
 - integration tests, run against an actual vCenter (Eco-vCenter)
 - sanity tests (includes a variety of linters)
-
-## Tools
-
-`prepare_symlinks.yml` - this is used by the integration tests
-
