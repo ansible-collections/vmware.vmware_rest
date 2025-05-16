@@ -1,0 +1,3 @@
+---
+# default is to do nothing
+prepare_vm_state: none
