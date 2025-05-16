@@ -1,11 +1,7 @@
 ---
 - name: Run vmware_rest_vcenter_vm_scenario test
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Set facts for tests
       ansible.builtin.set_fact:
         cluster_id: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"

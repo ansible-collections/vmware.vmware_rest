@@ -1,11 +1,7 @@
 ---
 - name: Test vmware_rest_vm_guest_filesystem_directories module on a real vCenter
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Create VM from template
       ansible.builtin.include_tasks: ../../action_on_vm/create_vm_from_template.yml
       vars:
@@ -137,7 +133,7 @@
         that:
           - vm_dir_info_temp.changed
           - vm_dir_info_temp.value
-  
+
     - name: Delete directories in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"

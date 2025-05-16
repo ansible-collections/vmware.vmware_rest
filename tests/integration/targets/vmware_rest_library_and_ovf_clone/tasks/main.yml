@@ -1,11 +1,7 @@
 ---
 - name: Test vsphere library and ovf clone
+  environment: "{{ environment_auth_vars }}"
   block:
-    - name: Import eco-vcenter common vars
-      ansible.builtin.include_vars:
-        file: ../group_vars.yml
-      tags: eco-vcenter-ci
-
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: "{{ resource_pool_name }}"
@@ -25,7 +21,7 @@
         memory:
           hot_add_enabled: true
           size_MiB: 512
-        cdroms: []  # Skip attaching ISO to simplify the export
+        cdroms: [] # Skip attaching ISO to simplify the export
       register: test_vm
 
     - name: List Local Content Library Prior Creation
@@ -38,10 +34,10 @@
         description: automated
         publish_info:
           published: true
-          authentication_method: 'NONE'
+          authentication_method: "NONE"
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
         state: present
       register: nfs_lib
 
@@ -51,10 +47,10 @@
         description: automated
         publish_info:
           published: true
-          authentication_method: 'NONE'
+          authentication_method: "NONE"
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
         state: present
       register: nfs_lib
 
@@ -77,9 +73,9 @@
           authentication_method: "NONE"
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
         state: present
-      loop: "{{ range(0, num_libraries_to_loop) | list }}"  # Loop through the range dynamically based on num_libraries
+      loop: "{{ range(0, num_libraries_to_loop) | list }}" # Loop through the range dynamically based on num_libraries
 
     # Retrieve all content libraries
     - name: Retrieve all content libraries
@@ -138,7 +134,7 @@
 
     - name: debug
       ansible.builtin.debug:
-        msg: '{{ lib_items.library_item_info }}'
+        msg: "{{ lib_items.library_item_info }}"
 
     - name: Create a new VM from the OVF Image
       vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -188,7 +184,7 @@
         target:
           resource_pool_id: "{{ resource_pool_info.id }}"
           folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
-          host_id: '{{ vcenter_host_info.value[0].host }}'
+          host_id: "{{ vcenter_host_info.value[0].host }}"
         deployment_spec:
           name: "{{ vm_from_ovf_image_on_host }}"
           accept_all_EULA: true
@@ -206,10 +202,10 @@
         description: automated
         publish_info:
           published: true
-          authentication_method: 'NONE'
+          authentication_method: "NONE"
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
         state: present
       register: ds_lib
 
@@ -277,7 +273,7 @@
           on_demand: true
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
       register: sub_lib
 
     - name: Create subscribed library (again)
@@ -290,7 +286,7 @@
           on_demand: true
         storage_backings:
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
-            type: 'DATASTORE'
+            type: "DATASTORE"
       register: result
     - name: Assert the resource has not been changed
       ansible.builtin.assert:
@@ -335,7 +331,6 @@
           - my_content_library.value|length == 1
 
   always:
-
     # Retrieve all content libraries
     - name: Retrieve all content libraries
       vmware.vmware_rest.content_locallibrary_info:

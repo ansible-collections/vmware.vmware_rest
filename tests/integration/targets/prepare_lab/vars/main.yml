@@ -1,3 +1,0 @@
----
-prepare_lab_restricted_vcenters:
-  - eco-vcenter-server.lab.eng.tlv2.redhat.com

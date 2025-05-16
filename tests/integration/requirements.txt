@@ -1,10 +1,6 @@
-aiohttp
-pyVim
-podman
-requests
-pycdlib
 ansible-core
 
-pyVmomi>=6.7
-# automation sdk >tag:8.0.2.0 requires pyVmomi 8
-git+https://github.com/vmware/vsphere-automation-sdk-python.git@v8.0.2.0
+# required for vmware.vmware
+requests
+pyVmomi
+git+https://github.com/vmware/vsphere-automation-sdk-python.git

@@ -1,0 +1,32 @@
+---
+- name: Include Test Vars
+  ansible.builtin.include_vars:
+    file: vcenter_vars.yml
+
+- name: Import integration_config.yml
+  ansible.builtin.include_vars:
+    file: "{{ role_path }}/../../integration_config.yml"
+  ignore_errors: true
+
+- name: Check For Tiny Prefix
+  ansible.builtin.assert:
+    that: tiny_prefix is defined and (tiny_prefix | length) > 0
+    fail_msg: Variable must be set in the integration_config.yml
+
+- name: Set auth vars for later
+  ansible.builtin.set_fact:
+    # most testing blocks can use these as environment variables, so you dont need to define
+    # them for every task
+    environment_auth_vars:
+      VMWARE_HOST: "{{ vcenter_hostname }}"
+      VMWARE_USER: "{{ vcenter_username }}"
+      VMWARE_PASSWORD: "{{ vcenter_password }}"
+      VMWARE_VALIDATE_CERTS: "False"
+      VMWARE_PORT: "{{ vcenter_port }}"
+    # the vmware_rest lookups dont respect the env vars set at block levels, but you can
+    # pass in this dict using ** instead
+    vmware_rest_auth_vars:
+      vcenter_hostname: "{{ vcenter_hostname }}"
+      vcenter_username: "{{ vcenter_username }}"
+      vcenter_password: "{{ vcenter_password }}"
+      vcenter_validate_certs: false

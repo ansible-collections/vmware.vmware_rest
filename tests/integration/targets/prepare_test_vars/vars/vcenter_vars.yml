@@ -1,0 +1,26 @@
+---
+# vcenter specific vars
+# please edit according to your vcenter configs
+
+# do not put these in vars/main.yml. They will be included even when this role is skipped
+vcenter_cluster_name: "Eco-Cluster"
+vcenter_datacenter: "Eco-Datacenter"
+vcenter_resource_pool: "Resources"
+vcenter_port: 443
+vcenter_validate_certs: false
+
+shared_storage_01: "eco-iscsi-ds1"
+
+rhel_9_3_iso_path: "[eco-nfs-datastore-iso] rhel-9.3-x86_64-boot.iso"
+vm_network_name: "VM Network"
+test_network_name: "TestNetwork"
+eco_nfs_datastore_iso: "eco-nfs-datastore-iso"
+vcenter_vm_folder: "e2e-qe"
+vcenter_test_content_library:
+  name: "test-content-library"
+  id: "7aeadc2a-9925-4d97-9bd6-c5a289ae0e46"
+vcenter_test_vm_template:
+  name: "test-vm-template"
+  id: "009163b9-83aa-46ca-bf7c-07af4a916735"
+vcenter_test_vm_user_name: root
+vcenter_test_vm_user_password: redhat12345!
