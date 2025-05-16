@@ -1,3 +1,4 @@
+---
 - name: Test
   environment: "{{ environment_auth_vars }}"
   block:

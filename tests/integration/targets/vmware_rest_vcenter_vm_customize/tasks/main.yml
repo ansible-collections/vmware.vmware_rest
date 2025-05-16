@@ -3,8 +3,10 @@
   environment: "{{ environment_auth_vars }}"
   block:
     - name: Create VM from template
-      ansible.builtin.include_tasks: ../../action_on_vm/create_vm_from_template.yml
+      ansible.builtin.include_role:
+        name: prepare_vm
       vars:
+        prepare_vm_state: present
         resource_pool_name: "{{ test_resource_pool_name }}"
         resource_pool_parent_name: "{{ vcenter_resource_pool }}"
         vm_name: "{{ test_vm_name }}"
@@ -154,8 +156,10 @@
 
   always:
     - name: Delete VM
-      ansible.builtin.include_tasks: ../../action_on_vm/delete_vm.yml
+      ansible.builtin.include_role:
+        name: prepare_vm
       vars:
+        prepare_vm_state: absent
         vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
 
     - name: Delete resource pool
