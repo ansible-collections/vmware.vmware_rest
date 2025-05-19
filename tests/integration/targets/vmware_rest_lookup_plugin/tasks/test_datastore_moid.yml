@@ -1,10 +1,10 @@
 - name: Verify number of datastores in datacenter
   ansible.builtin.assert:
-    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/') | length > 1
+    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/', **vmware_rest_auth_vars) | length > 1
 
 - name: Lookup datastores in datacenter
   ansible.builtin.assert:
-    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + item)
+    that: lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + item, **vmware_rest_auth_vars)
   loop:
     - ""
     - "{{ vcenter_host_name }}/"
@@ -14,7 +14,7 @@
 
 - name: Get specific datastore info
   vmware.vmware_rest.vcenter_datastore_info:
-    datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01) }}"
+    datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01, **vmware_rest_auth_vars) }}"
   register: datastore_info
 
 - name: Verify datastore info

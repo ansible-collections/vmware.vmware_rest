@@ -20,11 +20,11 @@
     - name: Power on VM
       vmware.vmware_rest.vcenter_vm_power:
         state: start
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
 
     - name: Wait until VM is ready
       vmware.vmware_rest.vcenter_vm_tools_info:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
       register: vm_tools_info
       until:
         - vm_tools_info is not failed
@@ -34,7 +34,7 @@
 
     - name: Create a directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
         credentials:
@@ -55,7 +55,7 @@
 
     - name: Create directory with name duplication in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
         credentials:
@@ -77,7 +77,7 @@
 
     - name: Move directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
         path: "{{ path_tmp.dir }}"
         new_path: "{{ path_tmp.new_dir }}"
         create_parents: true
@@ -100,7 +100,7 @@
 
     - name: Create a directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
         credentials:
@@ -121,7 +121,7 @@
 
     - name: Create a temporary directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
         suffix: test
         prefix: test
         credentials:
@@ -144,7 +144,7 @@
 
     - name: Delete directories in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
         path: "{{ item }}"
         credentials:
           interactive_session: false
@@ -179,9 +179,9 @@
         name: prepare_vm
       vars:
         prepare_vm_state: absent
-        vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name) }}"
+        vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', test_resource_pool_name) }}"
+        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', test_resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent

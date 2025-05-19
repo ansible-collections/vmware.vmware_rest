@@ -16,7 +16,7 @@
           published: true
           authentication_method: "NONE"
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
+          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
         state: present
       register: nfs_lib
@@ -24,15 +24,15 @@
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: "{{ resource_pool_name }}"
-        parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool) }}"
+        parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
       register: resource_pool_info
 
     - name: Create a VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         name: "{{ vm_name }}"
         guest_OS: RHEL_9_64
@@ -44,7 +44,7 @@
           - type: VMXNET3
             backing:
               type: DISTRIBUTED_PORTGROUP
-              network: "{{ lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + vm_network_name) }}"
+              network: "{{ lookup('vmware.vmware_rest.network_moid', '/' + vcenter_datacenter + '/' + vm_network_name, **vmware_rest_auth_vars) }}"
             start_connected: true
         cdroms:
           - backing:
@@ -59,8 +59,8 @@
         library: "{{ nfs_lib.id }}"
         source_vm: "{{ test_vm.id }}"
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
       register: nfs_lib_item
 
@@ -75,8 +75,8 @@
         library: "{{ nfs_lib.id }}"
         source_vm: "{{ test_vm.id }}"
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
       register: _result
 
@@ -101,8 +101,8 @@
         library: "{{ nfs_lib.id }}"
         template_library_item: "{{ nfs_lib_item.id }}"
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder) }}"
+          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         state: deploy
       register: vm_from_template
@@ -120,12 +120,12 @@
   always:
     - name: Delete test VM's
       vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_name, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete VM from template
       vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_template_name) }}"
+        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_template_name, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete nfs library
@@ -136,5 +136,5 @@
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + resource_pool_name) }}"
+        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent
