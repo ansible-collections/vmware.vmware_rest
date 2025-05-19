@@ -9,7 +9,7 @@
     VMWARE_PORT: "{{ vcenter_port }}"
   block:
     - name: Create VM from template
-      ansible.builtin.include_role:
+      ansible.builtin.import_role:
         name: prepare_vm
       vars:
         prepare_vm_state: present
@@ -175,7 +175,7 @@
 
   always:
     - name: Delete VM
-      ansible.builtin.include_role:
+      ansible.builtin.import_role:
         name: prepare_vm
       vars:
         prepare_vm_state: absent
