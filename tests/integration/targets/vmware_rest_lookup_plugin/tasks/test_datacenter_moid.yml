@@ -1,6 +1,6 @@
 - name: Get datacenter info
   vmware.vmware_rest.vcenter_datacenter_info:
-    datacenter: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/' + vcenter_datacenter) }}"
+    datacenter: "{{ lookup('vmware.vmware_rest.datacenter_moid', '/' + vcenter_datacenter, **vmware_rest_auth_vars) }}"
   register: datacenter_info
 
 - name: Verify datacenter info

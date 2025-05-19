@@ -1,10 +1,10 @@
 - name: Lookup folders
   ansible.builtin.assert:
-    that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + item)
+    that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + item, **vmware_rest_auth_vars)
   loop:
     - vm/{{ vcenter_vm_folder }}
     - "{{ vcenter_vm_folder }}"
 
 - name: Verify number of folders
   ansible.builtin.assert:
-    that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/') | length > 1
+    that: lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/', **vmware_rest_auth_vars) | length > 1

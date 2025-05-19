@@ -16,7 +16,7 @@
 
     - name: Get random host info
       vmware.vmware_rest.vcenter_host_info:
-        hosts: "{{ lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/')[0] }}"
+        hosts: "{{ lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/', **vmware_rest_auth_vars)[0] }}"
       register: vcenter_host_info
 
     - name: Set host name for tests
