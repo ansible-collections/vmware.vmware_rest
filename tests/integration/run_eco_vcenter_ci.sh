@@ -11,7 +11,7 @@ if [ -f /tmp/vmware_vmware_tests_report.txt ]; then
 fi
 
 # Generates a string starting with 'test-' followed by 4 random lowercase characters
-tiny_prefix="test-vmware-$(uuidgen | tr -d '-' | cut -c1-4 | tr '[:upper:]' '[:lower:]')"
+tiny_prefix="test-vmware-rest-$(uuidgen | tr -d '-' | cut -c1-4 | tr '[:upper:]' '[:lower:]')"
 if grep -qa 'tiny_prefix' "${BASE_DIR}/integration_config.yml"; then
     sed -i "s|tiny_prefix:.*|tiny_prefix: $tiny_prefix|" "${BASE_DIR}/integration_config.yml"
 else
