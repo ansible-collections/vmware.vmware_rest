@@ -45,7 +45,7 @@
 
   always:
     - name: Delete VM
-      ansible.builtin.include_role:
+      ansible.builtin.import_role:
         name: prepare_vm
       vars:
         prepare_vm_state: absent
