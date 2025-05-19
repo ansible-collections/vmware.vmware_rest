@@ -1,6 +1,8 @@
 ---
 - name: Create VM
   when: prepare_vm_state == 'present'
+  environment:
+    dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
   block:
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:

@@ -7,6 +7,8 @@
         name: "{{ resource_pool_name }}"
         parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool) }}"
       register: resource_pool_info
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Create a VM with optimized settings
       vmware.vmware_rest.vcenter_vm:
@@ -23,6 +25,8 @@
           size_MiB: 512
         cdroms: [] # Skip attaching ISO to simplify the export
       register: test_vm
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: List Local Content Library Prior Creation
       vmware.vmware_rest.content_locallibrary_info:
@@ -40,6 +44,8 @@
             type: "DATASTORE"
         state: present
       register: nfs_lib
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: _Create content library based on a DataStore again
       vmware.vmware_rest.content_locallibrary:
@@ -76,6 +82,8 @@
             type: "DATASTORE"
         state: present
       loop: "{{ range(0, num_libraries_to_loop) | list }}" # Loop through the range dynamically based on num_libraries
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     # Retrieve all content libraries
     - name: Retrieve all content libraries
@@ -170,11 +178,15 @@
       failed_when: >
         not result.failed and
         result.value.error_type != "INVALID_ARGUMENT"
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Get random host info
       vmware.vmware_rest.vcenter_host_info:
         hosts: "{{ lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/')[0] }}"
       register: vcenter_host_info
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Create a new VM from the OVF and specify the host and folder
       vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -190,6 +202,8 @@
           accept_all_EULA: true
           storage_provisioning: thin
       register: result
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Assert the result of the vm deployment
       assert:
@@ -208,6 +222,8 @@
             type: "DATASTORE"
         state: present
       register: ds_lib
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Retrieve the local content library information based upon id check mode
       vmware.vmware_rest.content_locallibrary_info:
@@ -275,6 +291,8 @@
           - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso) }}"
             type: "DATASTORE"
       register: sub_lib
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Create subscribed library (again)
       vmware.vmware_rest.content_subscribedlibrary:
@@ -293,6 +311,8 @@
         that:
           - not result.changed
       ignore_errors: true
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Ensure the OVF is here
       vmware.vmware.content_library_item_info:
@@ -353,18 +373,26 @@
       vmware.vmware_rest.vcenter_vm:
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_name) }}"
         state: absent
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Delete VM from OVF image
       vmware.vmware_rest.vcenter_vm:
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_ovf_image_name) }}"
         state: absent
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Delete VM from OVF image on specific host
       vmware.vmware_rest.vcenter_vm:
         vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_ovf_image_on_host) }}"
         state: absent
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + resource_pool_name) }}"
         state: absent
+      environment:
+        dummy: var # https://github.com/ansible-collections/cloud.common/issues/179
