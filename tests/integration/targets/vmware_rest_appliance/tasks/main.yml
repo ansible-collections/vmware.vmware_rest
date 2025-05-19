@@ -1,6 +1,12 @@
 ---
 - name: Test
-  environment: "{{ environment_auth_vars }}"
+  # https://github.com/ansible-collections/cloud.common/issues/179
+  environment:
+    VMWARE_HOST: "{{ vcenter_hostname }}"
+    VMWARE_USER: "{{ vcenter_username }}"
+    VMWARE_PASSWORD: "{{ vcenter_password }}"
+    VMWARE_VALIDATE_CERTS: "False"
+    VMWARE_PORT: "{{ vcenter_port }}"
   block:
     - import_tasks: appliance_health.yml
     - import_tasks: appliance_infraprofile_configs.yml

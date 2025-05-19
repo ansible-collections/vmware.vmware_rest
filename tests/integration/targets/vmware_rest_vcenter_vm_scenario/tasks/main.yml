@@ -1,6 +1,12 @@
 ---
 - name: Run vmware_rest_vcenter_vm_scenario test
-  environment: "{{ environment_auth_vars }}"
+  # https://github.com/ansible-collections/cloud.common/issues/179
+  environment:
+    VMWARE_HOST: "{{ vcenter_hostname }}"
+    VMWARE_USER: "{{ vcenter_username }}"
+    VMWARE_PASSWORD: "{{ vcenter_password }}"
+    VMWARE_VALIDATE_CERTS: "False"
+    VMWARE_PORT: "{{ vcenter_port }}"
   block:
     - name: Set facts for tests
       ansible.builtin.set_fact:
