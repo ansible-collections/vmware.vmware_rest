@@ -34,3 +34,21 @@ When you are ready to add a new version of Ansible core, you need to add it to t
 Testing is done as a part of the pull request workflow. There are a few key tests:
 - integration tests, run against an actual vCenter (Eco-vCenter)
 - sanity tests (includes a variety of linters)
+
+### Run tests locally
+
+These commands will attempt to install python packages. You can create and activate a virtual env beforehand to avoid installing packages to the system python.
+
+To run sanity tests:
+```bash
+make sanity
+```
+
+To run integration tests against a vCenter lab:
+```bash
+# set env variables for auth
+export VCENTER_HOSTNAME='my-vcenter.example.com'
+export VCENTER_USERNAME='someuser@vcenter.local'
+export VCENTER_PASSWORD='password'
+make eco-vcenter-ci
+```
