@@ -28,4 +28,4 @@ jobs:
           fetch-depth: "0"
 
       - name: Run linters
-        run: CI=true make linters
+        run: make linters
