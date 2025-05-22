@@ -17,6 +17,12 @@ tests/integration/integration_config.yml:
 	./tests/integration/generate_integration_config.sh
 
 # test commands
+.PHONY: linters
+linters:  ## Run extra linter tests
+	@pip install -r linters.requirements.txt; err=0; echo "\nStart tests.\n"; \
+	black --check --diff --color . || err=1; \
+	if [ "$$err" = 1 ]; then echo "\nAt least one linter failed\n" >&2; exit 1; fi
+
 .PHONY: sanity
 sanity: upgrade-collections
 	cd ~/.ansible/collections/ansible_collections/vmware/vmware_rest; \
