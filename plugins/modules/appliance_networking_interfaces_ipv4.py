@@ -160,7 +160,7 @@ from ansible.module_utils.basic import env_fallback
 import os
 
 try:
-    if not os.getenv('VMWARE_ENABLE_TURBO', False):
+    if not os.getenv("VMWARE_ENABLE_TURBO", False):
         raise ImportError()
 
     from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
