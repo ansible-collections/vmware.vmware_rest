@@ -15,6 +15,13 @@ System programmers can enable pipelines to setup, tear down and deploy VMs while
 These modules are based on the [vSphere REST API](https://developer.vmware.com/apis/vsphere-automation/latest/). This API doesn't provide any mechanism to list or clone VM templates when they are stored in a VM folder.
 To circumvent this limitation, you should store your VM templates in a [Content Library](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-254B2CE8-20A8-43F0-90E8-3F6776C2C896.html).
 
+#### Slower execution times
+
+This collection is capable of leveraging a feature of the cloud.common collection called the "turbo server". This is a caching mechanism that speeds up repeated API calls, but it does come with some downsides.
+
+This collection has used turbo mode up until version 4.8.0. With the release of 4.8.0, turbo mode is disabled by default but can be re-enabled using an environment variable. Read more [here](docs/turbo_mode.md).
+
+
 
 ## Requirements
 
