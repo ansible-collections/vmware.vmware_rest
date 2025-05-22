@@ -14,15 +14,18 @@ on:
       - main
       - stable-*
     tags:
-      - '*'
+      - "*"
 
 jobs:
   linters:
-    uses: ansible-network/github_actions/.github/workflows/tox-linters.yml@main
-  ansible-lint:
+    name: Run custom linters
     runs-on: ubuntu-latest
     steps:
-      - uses: ansible-network/github_actions/.github/actions/checkout_dependency@main
+      - name: Checkout the collection repository
+        uses: ansible-network/github_actions/.github/actions/checkout_dependency@main
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: "0"
 
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint@v6.21.0
+      - name: Run linters
+        run: CI=true make linters
