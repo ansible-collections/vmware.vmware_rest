@@ -1,5 +1,5 @@
 ---
-minor_changes:
+major_changes:
   - >-
     modules - disable turbo mode for module execution by default. Make it optional
     to enable it using an environment variable
