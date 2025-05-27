@@ -93,20 +93,21 @@ PAYLOAD_FORMAT = {
 from ansible.module_utils.basic import env_fallback
 import os
 
-try:
-    if not os.getenv("VMWARE_ENABLE_TURBO", False):
-        raise ImportError()
+if os.getenv("VMWARE_ENABLE_TURBO", False):
+    try:
+        from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+            EmbeddedModuleFailure,
+        )
+        from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
+            AnsibleTurboModule as AnsibleModule,
+        )
 
-    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-        EmbeddedModuleFailure,
-    )
-    from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
-        AnsibleTurboModule as AnsibleModule,
-    )
-
-    AnsibleModule.collection_name = "vmware.vmware_rest"
-except ImportError:
+        AnsibleModule.collection_name = "vmware.vmware_rest"
+    except ImportError:
+        from ansible.module_utils.basic import AnsibleModule
+else:
     from ansible.module_utils.basic import AnsibleModule
+
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.vmware_rest import (
     gen_args,
     open_session,
