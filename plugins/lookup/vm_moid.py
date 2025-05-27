@@ -119,9 +119,12 @@ import os
 import asyncio
 
 if os.getenv("VMWARE_ENABLE_TURBO", False):
-    from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
-        TurboLookupBase as LookupBase,
-    )
+    try:
+        from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
+            TurboLookupBase as LookupBase,
+        )
+    except ImportError:
+        from ansible.plugins.lookup import LookupBase
 else:
     from ansible.plugins.lookup import LookupBase
 
