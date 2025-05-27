@@ -1,0 +1,6 @@
+---
+major_changes:
+  - >-
+    lookups - disable turbo mode for lookup execution by default. Make it optional
+    to enable it using an environment variable
+    (https://github.com/ansible-collections/vmware.vmware_rest/issues/499)

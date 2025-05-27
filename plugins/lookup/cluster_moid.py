@@ -128,18 +128,43 @@ _raw:
     sample: domain-c1007
 """
 
+import os
+import asyncio
 
-from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
-    TurboLookupBase as LookupBase,
-)
+if os.getenv("VMWARE_ENABLE_TURBO", False):
+    from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
+        TurboLookupBase as LookupBase,
+    )
+else:
+    from ansible.plugins.lookup import LookupBase
+
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import Lookup
 
 
 class LookupModule(LookupBase):
+    # needed for turbo mode
     async def _run(self, terms, variables, **kwargs):
         self.set_options(var_options=variables, direct=kwargs)
         self.set_option("object_type", "cluster")
         result = await Lookup.entry_point(terms, self._options)
         return [result]
 
-    run = _run if not hasattr(LookupBase, "run_on_daemon") else LookupBase.run_on_daemon
+    def _run_no_turbo(self, terms, variables, **kwargs):
+        self.set_options(var_options=variables, direct=kwargs)
+        self.set_option("object_type", "cluster")
+        current_loop = asyncio.new_event_loop()
+        try:
+            asyncio.set_event_loop(current_loop)
+            result = current_loop.run_until_complete(
+                Lookup.entry_point(terms, self._options)
+            )
+        finally:
+            current_loop.close()
+
+        return [result]
+
+    run = (
+        _run_no_turbo
+        if not hasattr(LookupBase, "run_on_daemon")
+        else LookupBase.run_on_daemon
+    )
