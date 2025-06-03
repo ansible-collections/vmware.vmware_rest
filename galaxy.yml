@@ -12,7 +12,8 @@ tags:
   - vmware
   - virtualization
 dependencies:
-  cloud.common: ">=4.1.0,<5.0.0"
+  # pinned at 4.0.0 because higher versions break the lookup plugins, and do not support ansible-core 2.19
+  cloud.common: ">=3.0.0,<=4.0.0"
 repository: https://github.com/ansible-collections/vmware.vmware_rest
 homepage: https://github.com/ansible-collections/vmware.vmware_rest
 issues: https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
