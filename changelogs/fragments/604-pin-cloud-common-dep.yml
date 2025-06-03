@@ -1,3 +1,3 @@
 ---
 minor_changes:
-  - restrict highest cloud.common version to 4.0.0. Higher versions do not support anisble 2.19 and cause instability in the lookup plugins
+  - restrict highest cloud.common version to 4.0.0. Higher versions cause instability in the lookup plugins
