@@ -1,0 +1,3 @@
+---
+trivial:
+  - lookup plugins - Deprecate all lookup plugins in favor of vmware.vmware.moid_from_path

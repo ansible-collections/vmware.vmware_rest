@@ -338,3 +338,44 @@ plugin_routing:
       deprecation:
         removal_version: 5.0.0
         warning_text: Use vmware.vmware.content_library_item_info instead.
+
+  lookup:
+    cluster_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    datacenter_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    datastore_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    folder_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    host_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    network_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    resource_pool_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
+
+    vm_moid:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.moid_from_path instead.
