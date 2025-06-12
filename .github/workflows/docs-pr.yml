@@ -34,6 +34,7 @@ jobs:
         ansible_collections.vmware.vmware.vm_portgroup_info_module
         ansible_collections.vmware.vmware.vm_powerstate_module
         ansible_collections.vmware.vmware.vm_resource_info_module
+        ansible_collections.vmware.vmware.moid_from_path_module
 
   build-docs:
     permissions:
@@ -57,6 +58,7 @@ jobs:
         ansible_collections.vmware.vmware.vm_portgroup_info_module
         ansible_collections.vmware.vmware.vm_powerstate_module
         ansible_collections.vmware.vmware.vm_resource_info_module
+        ansible_collections.vmware.vmware.moid_from_path_module
 
   # This job requires that the workflow trigger is pull_request_target. However that trigger uses
   # whatever version of the workflow is available on main instead of the feature branch.
