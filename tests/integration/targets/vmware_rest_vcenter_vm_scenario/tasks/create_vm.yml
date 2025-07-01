@@ -22,7 +22,7 @@
 - name: Verify VM creation
   ansible.builtin.assert:
     that:
-      - test_vm is changed
+      - test_vm is ansible.builtin.changed
       - test_vm.value.identity.name == test_vm_name
 
 - name: _Create a VM (again)
@@ -43,7 +43,7 @@
 - name: Verify no VM created second time
   ansible.builtin.assert:
     that:
-      - not(result is changed)
+      - not(result is ansible.builtin.changed)
 
 - name: Search VM with an invalid filter
   vmware.vmware_rest.vcenter_vm_info:

@@ -1,17 +1,17 @@
 ---
 - name: Retrieve the parallel port information from the VM
   vmware.vmware_rest.vcenter_vm_hardware_parallel_info:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
   register: _result
 
 - name: Turn on guest control on the parallel port
   vmware.vmware_rest.vcenter_vm_hardware_parallel:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     allow_guest_control: true
   register: _result
 
 - name: Verify parallel port parameters were changed
   ansible.builtin.assert:
     that:
-      - _result is changed
+      - _result is ansible.builtin.changed
       - _result.value.allow_guest_control

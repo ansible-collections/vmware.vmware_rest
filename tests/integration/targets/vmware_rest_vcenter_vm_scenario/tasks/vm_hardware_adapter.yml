@@ -1,7 +1,7 @@
 ---
 - name: Create a SATA adapter at PCI slot 34
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     pci_slot_number: 34
   register: _sata_adapter_result_1
 
@@ -12,27 +12,27 @@
 - name: Verify SATA adapter creation
   ansible.builtin.assert:
     that:
-      - _sata_adapter_result_1 is changed
+      - _sata_adapter_result_1 is ansible.builtin.changed
       - _sata_adapter_result_1.value.pci_slot_number == 34
       - '"SATA" in _sata_adapter_result_1.value.label'
 
 - name: _Create a SATA adapter at PCI slot 34 (again)
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     pci_slot_number: 34
   register: _sata_adapter_result_2
 
 - name: Ensure the second call was idempotent
   ansible.builtin.assert:
     that:
-      - _sata_adapter_result_2 is not changed
+      - _sata_adapter_result_2 is not ansible.builtin.changed
       - _sata_adapter_result_1.value.pci_slot_number == _sata_adapter_result_2.value.pci_slot_number
       - _sata_adapter_result_1.id == _sata_adapter_result_2.id
 
 - name: Get information about a specific controller
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info:
-    vm: '{{ test_vm_id }}'
-    adapter: '{{ _sata_adapter_result_1.id }}'
+    vm: "{{ test_vm_id }}"
+    adapter: "{{ _sata_adapter_result_1.id }}"
   register: adapter_sata_info
 
 - name: Print debug info
@@ -46,7 +46,7 @@
 
 - name: List the controller
   vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
   register: adapters_info
 
 - name: Verify SATA adapter is in a list of controllers
@@ -56,43 +56,43 @@
 
 - name: List the SCSI adapter of a given VM
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
   register: _result
 
 - name: Verify list the SCSI adapter of a given VM found
   ansible.builtin.assert:
     that:
-      - _result is not failed 
+      - _result is not failed
 
 - name: Create a SCSI adapter at PCI slot 35
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     pci_slot_number: 35
   register: _scsi_adapter_result_1
 
 - name: _Create a SCSI adapter at PCI slot 35 (again)
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     pci_slot_number: 35
   register: _scsi_adapter_result_2
 
 - name: Ensure the second call was idempotent
   ansible.builtin.assert:
     that:
-      - _scsi_adapter_result_2 is not changed
+      - _scsi_adapter_result_2 is not ansible.builtin.changed
       - _scsi_adapter_result_1.value.pci_slot_number == _scsi_adapter_result_2.value.pci_slot_number
       - _scsi_adapter_result_1.id == _scsi_adapter_result_2.id
 
 - name: Drop the SCSI controller
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     pci_slot_number: 35
     state: absent
   register: _result
 
 - name: Get list of SCSI adapters
   vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
   register: _result
 
 - name: Verify SCSI adapter droped

@@ -1,7 +1,7 @@
 ---
 - name: Dedicate cores to the VM
   vmware.vmware_rest.vcenter_vm_hardware_cpu:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     count: 6
     cores_per_socket: 2
   register: _result
@@ -12,12 +12,12 @@
 
 - name: Verify new CPU pataremetrs were set
   ansible.builtin.assert:
-    that: 
-      - _result is changed
+    that:
+      - _result is ansible.builtin.changed
 
 - name: Retrieve the CPU information from the VM
   vmware.vmware.vm_resource_info:
-    moid: '{{ test_vm_id }}'
+    moid: "{{ test_vm_id }}"
   register: _result
 
 - name: Print debug info
@@ -26,6 +26,6 @@
 
 - name: Verify CPU information
   ansible.builtin.assert:
-    that: 
+    that:
       - _result.vms[0].cpu.processor_count == 6
       - _result.vms[0].cpu.cores_per_socket == 2

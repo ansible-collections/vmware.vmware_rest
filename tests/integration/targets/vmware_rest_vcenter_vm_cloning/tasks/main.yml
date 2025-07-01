@@ -54,7 +54,7 @@
     - name: Verify an instant clone of VM is created
       ansible.builtin.assert:
         that:
-          - vm_instant_clone is changed
+          - vm_instant_clone is ansible.builtin.changed
           - vm_instant_clone.value.name == vm2_name
 
     - name: Create a clone of VM
@@ -71,7 +71,7 @@
     - name: Verify a clone of VM is created
       ansible.builtin.assert:
         that:
-          - clone_vm is changed
+          - clone_vm is ansible.builtin.changed
           - clone_vm.value.name == vm3_name
 
   always:
