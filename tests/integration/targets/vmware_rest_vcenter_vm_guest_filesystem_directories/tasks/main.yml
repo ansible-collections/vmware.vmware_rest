@@ -51,7 +51,7 @@
     - name: Verify changed true
       ansible.builtin.assert:
         that:
-          - vm_dir_info.changed
+          - vm_dir_info is changed
 
     - name: Create directory with name duplication in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
@@ -72,7 +72,7 @@
     - name: Verify no changes
       ansible.builtin.assert:
         that:
-          - not vm_dir_info.changed
+          - vm_dir_info is not changed
           - vm_dir_info.value.error_type == "ALREADY_EXISTS"
 
     - name: Move directory in /tmp
@@ -96,7 +96,7 @@
     - name: Verify changed true
       ansible.builtin.assert:
         that:
-          - vm_dir_info.changed
+          - vm_dir_info is changed
 
     - name: Create a directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
@@ -117,7 +117,7 @@
     - name: Verify changed true
       ansible.builtin.assert:
         that:
-          - vm_dir_info.changed
+          - vm_dir_info is changed
 
     - name: Create a temporary directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
@@ -139,8 +139,8 @@
     - name: Verify changed true
       ansible.builtin.assert:
         that:
-          - vm_dir_info_temp.changed
-          - vm_dir_info_temp.value
+          - vm_dir_info_temp is changed
+          - vm_dir_info_temp.value is defined and vm_dir_info_temp.value != ''
 
     - name: Delete directories in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
