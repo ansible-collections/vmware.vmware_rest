@@ -1,7 +1,7 @@
 ---
 - name: Attach an ISO image to a guest VM
   vmware.vmware_rest.vcenter_vm_hardware_cdrom:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     type: SATA
     sata:
       bus: 0
@@ -19,13 +19,13 @@
 - name: Verify ISO image attached
   ansible.builtin.assert:
     that:
-      - _cdrom_info is changed
+      - _cdrom_info is ansible.builtin.changed
       - _cdrom_info.value.backing.iso_file == "{{ rhel_9_3_iso_path }}"
       - _cdrom_info.value.type == "SATA"
 
 - name: Attach an ISO image to a guest VM (again)
   vmware.vmware_rest.vcenter_vm_hardware_cdrom:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     type: SATA
     sata:
       bus: 0
@@ -38,11 +38,11 @@
 
 - name: Ensure idempotency
   ansible.builtin.assert:
-    that: _result is not changed
+    that: _result is not ansible.builtin.changed
 
 - name: List the cdrom devices on the guest
   vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
   register: _cdrom_list
 
 - name: Print debug info
@@ -56,7 +56,7 @@
 
 - name: Set a boot device
   vmware.vmware_rest.vcenter_vm_hardware_boot_device:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ test_vm_id }}"
     devices:
       - type: "CDROM"
   register: _result
@@ -68,4 +68,4 @@
 - name: Verify boot device was set
   ansible.builtin.assert:
     that:
-      - _result is changed
+      - _result is ansible.builtin.changed

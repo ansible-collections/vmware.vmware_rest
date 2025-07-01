@@ -112,7 +112,7 @@
       register: ovf_item
     - assert:
         that:
-          - ovf_item is changed
+          - ovf_item is ansible.builtin.changed
 
     - name: _Export again the VM as an OVF on the library
       vmware.vmware_rest.vcenter_ovf_libraryitem:
@@ -130,7 +130,7 @@
       register: _result
     - assert:
         that:
-          - not(_result is changed)
+          - not(_result is ansible.builtin.changed)
           - _result.id is defined and _result.id != ''
 
     - name: Get the list of items of the NFS library

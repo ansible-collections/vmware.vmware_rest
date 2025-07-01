@@ -67,7 +67,7 @@
     - name: Verify VM template added to the library
       ansible.builtin.assert:
         that:
-          - nfs_lib_item is changed
+          - nfs_lib_item is ansible.builtin.changed
 
     - name: _Create the same template again
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
@@ -83,7 +83,7 @@
     - name: Verify no VM template added to the library
       ansible.builtin.assert:
         that:
-          - not (_result is changed)
+          - not (_result is ansible.builtin.changed)
 
     - name: Get the list of items of the NFS library
       vmware.vmware.content_library_item_info:
