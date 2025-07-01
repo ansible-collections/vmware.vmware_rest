@@ -1,4 +1,4 @@
-ansible-core
+ansible-core==2.19.0b5
 
 # required for vmware.vmware
 requests
