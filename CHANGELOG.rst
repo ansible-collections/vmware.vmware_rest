@@ -4,6 +4,24 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.8.0
+======
+
+Major Changes
+-------------
+
+- modules - disable turbo mode for module execution by default. Make it optional to enable it using an environment variable (https://github.com/ansible-collections/vmware.vmware_rest/issues/499)
+
+Minor Changes
+-------------
+
+- change cloud.common dependency to 4.1 to support anisble 2.19
+
+Deprecated Features
+-------------------
+
+- lookup plugins - Deprecate all lookup plugins in favor of vmware.vmware.moid_from_path (https://github.com/ansible-collections/vmware.vmware_rest/pull/608)
+
 v4.7.0
 ======
 
