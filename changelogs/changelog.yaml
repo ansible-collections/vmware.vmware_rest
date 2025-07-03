@@ -823,3 +823,20 @@ releases:
     - 588-add-maintainer-docs.yml
     - 591-deprecate-redundant-modules.yml
     release_date: '2025-04-02'
+  4.8.0:
+    changes:
+      deprecated_features:
+      - lookup plugins - Deprecate all lookup plugins in favor of vmware.vmware.moid_from_path
+        (https://github.com/ansible-collections/vmware.vmware_rest/pull/608)
+      major_changes:
+      - modules - disable turbo mode for module execution by default. Make it optional
+        to enable it using an environment variable (https://github.com/ansible-collections/vmware.vmware_rest/issues/499)
+      minor_changes:
+      - change cloud.common dependency to 4.1 to support anisble 2.19
+    fragments:
+    - 598-bump-cloud-common-dep.yml
+    - 600-disable-turbo-mode.yml
+    - 606-remove-broken-test.yml
+    - 608-deprecate-lookup-plugins.yml
+    - 609-test-with-219.yml
+    release_date: '2025-07-03'

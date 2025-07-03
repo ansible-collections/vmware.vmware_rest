@@ -1,4 +1,0 @@
----
-trivial:
-  - run integration tests with ansible-core 2.19.0b5
-    (https://github.com/ansible-collections/vmware.vmware_rest/issues/593)
