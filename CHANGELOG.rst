@@ -4,6 +4,14 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.8.1
+======
+
+Bugfixes
+--------
+
+- Allow cloud.common 5.0.0 and later again (https://github.com/ansible-collections/vmware.vmware_rest/pull/614).
+
 v4.8.0
 ======
 
