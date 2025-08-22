@@ -130,10 +130,9 @@ _raw:
 """
 
 
-from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
-    TurboLookupBase as LookupBase,
-)
+from ansible.plugins.lookup import LookupBase
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import Lookup
+import asyncio
 
 
 class LookupModule(LookupBase):
@@ -143,4 +142,6 @@ class LookupModule(LookupBase):
         result = await Lookup.entry_point(terms, self._options)
         return [result]
 
-    run = _run if not hasattr(LookupBase, "run_on_daemon") else LookupBase.run_on_daemon
+    def run(self, terms, variables, **kwargs):
+        result = asyncio.run(self._run(terms, variables, **kwargs))
+        return result
