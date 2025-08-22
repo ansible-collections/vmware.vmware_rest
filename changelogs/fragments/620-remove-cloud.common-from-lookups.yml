@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - lookup plugins - remove turbo server capibility from lookup plugins
+    (fixes https://github.com/ansible-collections/vmware.vmware_rest/issues/619)
