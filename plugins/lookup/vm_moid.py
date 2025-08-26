@@ -19,6 +19,8 @@ requirements:
   - vSphere 7.0.3 or greater
   - python >= 3.6
   - aiohttp
+notes:
+  - This plugin requires the cloud.common collection, which will not be installed automatically as a dependency.
 extends_documentation_fragment:
   - vmware.vmware_rest.moid
 """
@@ -115,9 +117,17 @@ _raw:
 """
 
 
-from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
-    TurboLookupBase as LookupBase,
-)
+from ansible.errors import AnsiblePluginError
+
+try:
+    from ansible_collections.cloud.common.plugins.plugin_utils.turbo.lookup import (
+        TurboLookupBase as LookupBase,
+    )
+except ImportError:
+    raise AnsiblePluginError(
+        message="This plugin requires the cloud.common collection."
+    )
+
 from ansible_collections.vmware.vmware_rest.plugins.plugin_utils.lookup import Lookup
 
 
