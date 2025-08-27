@@ -117,9 +117,6 @@ import os
 
 if os.getenv("VMWARE_ENABLE_TURBO", False):
     try:
-        from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-            EmbeddedModuleFailure,
-        )
         from ansible_collections.cloud.common.plugins.module_utils.turbo.module import (
             AnsibleTurboModule as AnsibleModule,
         )
