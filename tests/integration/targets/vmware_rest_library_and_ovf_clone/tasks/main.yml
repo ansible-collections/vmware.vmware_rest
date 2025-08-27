@@ -19,7 +19,7 @@
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
           datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         name: "{{ vm_name }}"
         guest_OS: RHEL_9_64

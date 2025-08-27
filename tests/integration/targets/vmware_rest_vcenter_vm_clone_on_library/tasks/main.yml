@@ -32,7 +32,7 @@
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
           datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         name: "{{ vm_name }}"
         guest_OS: RHEL_9_64
@@ -60,7 +60,7 @@
         source_vm: "{{ test_vm.id }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
       register: nfs_lib_item
 
@@ -76,7 +76,7 @@
         source_vm: "{{ test_vm.id }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
       register: _result
 
@@ -102,7 +102,7 @@
         template_library_item: "{{ nfs_lib_item.id }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         state: deploy
       register: vm_from_template
