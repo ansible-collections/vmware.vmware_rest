@@ -1,4 +1,4 @@
 ---
-minor_changes:
+major_changes:
   - Remove ``cloud.common`` as a dependency, so it will not be installed automatically anymore
     (https://github.com/ansible-collections/vmware.vmware_rest/pull/621).
