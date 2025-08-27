@@ -37,6 +37,13 @@ import urllib.parse
 from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.parsing.convert_bool import boolean
 
+try:
+    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+        EmbeddedModuleFailure as ModuleFailureException,
+    )
+except ImportError:
+    ModuleFailureException = Exception
+
 
 async def open_session(
     vcenter_hostname=None,
@@ -58,16 +65,13 @@ async def open_session(
     if digest in open_session._pool:
         return open_session._pool[digest]
 
-    exceptions = importlib.import_module(
-        "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
-    )
     try:
         aiohttp = importlib.import_module("aiohttp")
     except ImportError:
-        raise exceptions.EmbeddedModuleFailure(msg=missing_required_lib("aiohttp"))
+        raise ModuleFailureException(missing_required_lib("aiohttp"))
 
     if not aiohttp:
-        raise exceptions.EmbeddedModuleFailure(msg="Failed to import aiohttp")
+        raise ModuleFailureException("Failed to import aiohttp")
 
     if log_file:
         trace_config = aiohttp.TraceConfig()
@@ -103,14 +107,14 @@ async def open_session(
                 auth=auth,
             ) as resp:
                 if resp.status != 200:
-                    raise exceptions.EmbeddedModuleFailure(
+                    raise ModuleFailureException(
                         "Authentication failure. code: {0}, json: {1}".format(
                             resp.status, await resp.text()
                         )
                     )
                 json = await resp.json()
         except aiohttp.client_exceptions.ClientConnectorError as e:
-            raise exceptions.EmbeddedModuleFailure(f"Authentication failure: {e}")
+            raise ModuleFailureException(f"Authentication failure: {e}")
 
     session_id = json["value"]
     session = aiohttp.ClientSession(
@@ -151,16 +155,13 @@ def gen_args(params, in_query_parameter):
 
 
 def session_timeout(params):
-    exceptions = importlib.import_module(
-        "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
-    )
     try:
         aiohttp = importlib.import_module("aiohttp")
     except ImportError:
-        raise exceptions.EmbeddedModuleFailure(msg=missing_required_lib("aiohttp"))
+        raise ModuleFailureException(missing_required_lib("aiohttp"))
 
     if not aiohttp:
-        raise exceptions.EmbeddedModuleFailure(msg="Failed to import aiohttp")
+        raise ModuleFailureException("Failed to import aiohttp")
     out = {}
     if params.get("session_timeout"):
         out["timeout"] = aiohttp.ClientTimeout(total=params.get("session_timeout"))
@@ -346,10 +347,7 @@ async def exists(
             elif isinstance(device, list):
                 v = device
             else:
-                exceptions = importlib.import_module(
-                    "ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions"
-                )
-                raise exceptions.EmbeddedModuleFailure(msg="Unexpect type")
+                raise ModuleFailureException("Unexpect type")
 
             if isinstance(k, int) or isinstance(v, str):
                 k = str(k)
