@@ -266,7 +266,7 @@ async def main():
             log_file=module.params["vcenter_rest_log_file"],
         )
     except Exception as err:
-        if hasattr(err, 'get_message'):
+        if hasattr(err, "get_message"):
             module.fail_json(err.get_message())
         else:
             module.fail_json(str(err))
@@ -348,9 +348,7 @@ async def _create(params, session):
     async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         if resp.status == 500:
             text = await resp.text()
-            raise EmbeddedModuleFailure(
-                f"Request has failed: status={resp.status}, {text}"
-            )
+            raise Exception(f"Request has failed: status={resp.status}, {text}")
         try:
             if resp.headers["Content-Type"] == "application/json":
                 _json = await resp.json()
