@@ -239,7 +239,7 @@ async def main():
             log_file=module.params["vcenter_rest_log_file"],
         )
     except Exception as err:
-        if hasattr(err, 'get_message'):
+        if hasattr(err, "get_message"):
             module.fail_json(err.get_message())
         else:
             module.fail_json(str(err))
