@@ -20,7 +20,7 @@
         template_library_item: "{{ vcenter_test_vm_template.id }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         state: deploy
       register: vm_from_template
@@ -44,7 +44,7 @@
       vmware.vmware_rest.vcenter_vm:
         placement:
           datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         source: "{{ vm_from_template.value }}"
         name: "{{ vm2_name }}"

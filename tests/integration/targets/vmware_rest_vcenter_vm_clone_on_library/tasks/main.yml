@@ -93,7 +93,7 @@
     - name: Verify VM template name
       ansible.builtin.assert:
         that:
-          - nfs_lib_items.library_item_info[0].name == "{{ vm_name }}-template"
+          - nfs_lib_items.library_item_info[0].name == vm_name + "-template"
 
     - name: Deploy a new VM based on the template
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:

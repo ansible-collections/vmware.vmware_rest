@@ -167,7 +167,7 @@
         state: deploy
         target:
           resource_pool_id: "{{ resource_pool_info.id }}"
-          folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_invalid_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_invalid_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
         deployment_spec:
           name: "{{ vm_from_ovf_image_name }}"
           accept_all_EULA: true
@@ -189,7 +189,7 @@
         state: deploy
         target:
           resource_pool_id: "{{ resource_pool_info.id }}"
-          folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+          folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           host_id: "{{ vcenter_host_info.value[0].host }}"
         deployment_spec:
           name: "{{ vm_from_ovf_image_on_host }}"
