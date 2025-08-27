@@ -11,7 +11,7 @@
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: "{{ resource_pool_name }}"
-        parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
+        parent: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
       register: resource_pool_info
 
     - name: Deploy a new VM based on the template
@@ -19,8 +19,8 @@
         name: "{{ vm1_name }}"
         template_library_item: "{{ vcenter_test_vm_template.id }}"
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
+          cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         state: deploy
       register: vm_from_template
@@ -43,8 +43,8 @@
     - name: Create an instant clone of VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
+          datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         source: "{{ vm_from_template.value }}"
         name: "{{ vm2_name }}"
@@ -60,8 +60,8 @@
     - name: Create a clone of VM
       vmware.vmware_rest.vcenter_vm:
         placement:
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
+          datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         source: "{{ vm_from_template.value }}"
         name: "{{ vm3_name }}"

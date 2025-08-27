@@ -11,15 +11,15 @@
     - name: Create a generic resource pool
       vmware.vmware_rest.vcenter_resourcepool:
         name: "{{ resource_pool_name }}"
-        parent: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
+        parent: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
       register: resource_pool_info
 
     - name: Create a VM with optimized settings
       vmware.vmware_rest.vcenter_vm:
         placement:
-          cluster: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          datastore: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
+          cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+          datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           resource_pool: "{{ resource_pool_info.id }}"
         name: "{{ vm_name }}"
         guest_OS: RHEL_9_64
@@ -42,7 +42,7 @@
           published: true
           authentication_method: "NONE"
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
         state: present
       register: nfs_lib
@@ -55,7 +55,7 @@
           published: true
           authentication_method: "NONE"
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
         state: present
       register: nfs_lib
@@ -78,7 +78,7 @@
           published: true
           authentication_method: "NONE"
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
         state: present
       loop: "{{ range(0, num_libraries_to_loop) | list }}" # Loop through the range dynamically based on num_libraries
@@ -167,7 +167,7 @@
         state: deploy
         target:
           resource_pool_id: "{{ resource_pool_info.id }}"
-          folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_invalid_vm_folder, **vmware_rest_auth_vars) }}"
+          folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_invalid_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
         deployment_spec:
           name: "{{ vm_from_ovf_image_name }}"
           accept_all_EULA: true
@@ -179,7 +179,7 @@
 
     - name: Get random host info
       vmware.vmware_rest.vcenter_host_info:
-        hosts: "{{ lookup('vmware.vmware_rest.host_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/', **vmware_rest_auth_vars)[0] }}"
+        hosts: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/', type='host', wantlist=True, **vmware_rest_auth_vars)[0] }}"
       register: vcenter_host_info
 
     - name: Create a new VM from the OVF and specify the host and folder
@@ -189,7 +189,7 @@
         state: deploy
         target:
           resource_pool_id: "{{ resource_pool_info.id }}"
-          folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
+          folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
           host_id: "{{ vcenter_host_info.value[0].host }}"
         deployment_spec:
           name: "{{ vm_from_ovf_image_on_host }}"
@@ -210,7 +210,7 @@
           published: true
           authentication_method: "NONE"
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
         state: present
       register: ds_lib
@@ -278,7 +278,7 @@
           automatic_sync_enabled: false
           on_demand: true
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
       register: sub_lib
 
@@ -291,7 +291,7 @@
           automatic_sync_enabled: false
           on_demand: true
         storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
+          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
             type: "DATASTORE"
       register: result
     - name: Assert the resource has not been changed
@@ -358,20 +358,20 @@
 
     - name: Delete test VM
       vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_name, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete VM from OVF image
       vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_ovf_image_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_ovf_image_name, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete VM from OVF image on specific host
       vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vm_from_ovf_image_on_host, **vmware_rest_auth_vars) }}"
+        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_ovf_image_on_host, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent

@@ -10,17 +10,17 @@
   block:
     - name: Set facts for tests
       ansible.builtin.set_fact:
-        cluster_id: "{{ lookup('vmware.vmware_rest.cluster_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-        folder_id: "{{ lookup('vmware.vmware_rest.folder_moid', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, **vmware_rest_auth_vars) }}"
-        datastore_id: "{{ lookup('vmware.vmware_rest.datastore_moid', '/' + vcenter_datacenter + '/' + shared_storage_01, **vmware_rest_auth_vars) }}"
-        resource_pool_parent_id: "{{ lookup('vmware.vmware_rest.resource_pool_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
+        cluster_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+        folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+        datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
+        resource_pool_parent_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
 
     - include_tasks: verify_env_information.yml
     - include_tasks: create_vm.yml
 
     - name: Get test VM id
       ansible.builtin.set_fact:
-        test_vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', '/' + vcenter_datacenter + '/' + vcenter_cluster_name + '/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        test_vm_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
 
     - include_tasks: vm_info.yml
     - include_tasks: vm_hardware_adapter_info.yml
@@ -49,9 +49,9 @@
         name: prepare_vm
       vars:
         prepare_vm_state: absent
-        vm_id: "{{ lookup('vmware.vmware_rest.vm_moid', test_vm_name, **vmware_rest_auth_vars) }}"
+        vm_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware_rest.resource_pool_moid', test_resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' +  test_resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent
