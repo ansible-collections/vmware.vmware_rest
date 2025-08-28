@@ -17,14 +17,18 @@
         resource_pool_parent_name: "{{ vcenter_resource_pool }}"
         vm_name: "{{ test_vm_name }}"
 
+    - name: Lookup the VM ID
+      ansible.builtin.set_fact:
+        _test_vm_moid: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder + '/' + test_vm_name, **vmware_rest_auth_vars) }}"
+
     - name: Power on VM
       vmware.vmware_rest.vcenter_vm_power:
         state: start
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
 
     - name: Wait until VM is ready
       vmware.vmware_rest.vcenter_vm_tools_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_tools_info
       until:
         - vm_tools_info is not failed
@@ -35,11 +39,11 @@
     - name: Shut down the VM
       vmware.vmware_rest.vcenter_vm_guest_power:
         state: shutdown
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
 
     - name: Wait until VM is off
       vmware.vmware_rest.vcenter_vm_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_info
       until:
         - vm_info is not failed
@@ -49,7 +53,7 @@
 
     - name: Read the power status of the VM
       vmware.vmware_rest.vcenter_vm_guest_power_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_power_info
 
     - name: Verify power status of the VM
@@ -60,7 +64,7 @@
 
     - name: Customize the VM
       vmware.vmware_rest.vcenter_vm_guest_customization:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
         configuration_spec:
           linux_config:
             domain: testdomain
@@ -86,11 +90,11 @@
     - name: Turn on the power of the VM
       vmware.vmware_rest.vcenter_vm_power:
         state: start
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
 
     - name: Wait until VM is ready
       vmware.vmware_rest.vcenter_vm_tools_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_tools_info
       until:
         - vm_tools_info is not failed
@@ -100,7 +104,7 @@
 
     - name: Read the power status of the VM
       vmware.vmware_rest.vcenter_vm_guest_power_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_power_info
 
     - name: Verify power status of the VM
@@ -115,7 +119,7 @@
 
     - name: Collect information about VM network
       vmware.vmware_rest.vcenter_vm_guest_networking_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_dns_info
 
     - name: Print VM network info
@@ -131,7 +135,7 @@
 
     - name: Collect information about networking interface of VM
       vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_ip_info
 
     - name: Verify IP adress of VM
@@ -141,7 +145,7 @@
 
     - name: Get information about the vm-tools
       vmware.vmware_rest.vcenter_vm_tools_installer_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_info
 
     - ansible.builtin.assert:
@@ -149,12 +153,12 @@
 
     - name: Update the vm-tools
       vmware.vmware_rest.vcenter_vm_tools_installer:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
         state: connect
 
     - name: Get information about the vm-tools
       vmware.vmware_rest.vcenter_vm_tools_installer_info:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm: "{{ _test_vm_moid }}"
       register: vm_info
 
     - ansible.builtin.assert:
@@ -166,7 +170,7 @@
         name: prepare_vm
       vars:
         prepare_vm_state: absent
-        vm_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + test_vm_name, **vmware_rest_auth_vars) }}"
+        vm_id: "{{ _test_vm_moid }}"
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
