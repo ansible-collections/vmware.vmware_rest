@@ -92,7 +92,7 @@
     - name: Check that created content libraries exist
       assert:
         that:
-          - "'{{ library_name }}-{{ item }}' in (content_libraries.value | map(attribute='name') | list)"
+          - library_name + '-' + item in (content_libraries.value | map(attribute='name') | list)
         fail_msg: "Content library '{{ library_name }}-{{ item }}' does not exist"
       loop: "{{ range(0, num_libraries_to_loop) | list }}"
 
