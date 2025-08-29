@@ -1,7 +1,0 @@
----
-major_changes:
-  - Remove ``cloud.common`` as a dependency, so it will not be installed automatically anymore
-    (https://github.com/ansible-collections/vmware.vmware_rest/pull/621).
-known_issues:
-  - The lookup plugins use ``cloud.common``, but this collection does not support ansible-core 2.19 or higher
-    (https://github.com/ansible-collections/vmware.vmware_rest/pull/621).
