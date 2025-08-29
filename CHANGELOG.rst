@@ -4,6 +4,19 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.9.0
+======
+
+Major Changes
+-------------
+
+- Remove ``cloud.common`` as a dependency, so it will not be installed automatically anymore (https://github.com/ansible-collections/vmware.vmware_rest/pull/621).
+
+Known Issues
+------------
+
+- The lookup plugins use ``cloud.common``, but this collection does not support ansible-core 2.19 or higher (https://github.com/ansible-collections/vmware.vmware_rest/pull/621).
+
 v4.8.1
 ======
 
