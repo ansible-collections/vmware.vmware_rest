@@ -33,6 +33,10 @@ See [Ansible Using collections](https://docs.ansible.com/ansible/latest/user_gui
     b. Copy the contents of `config/output` to the proper places in this repo
     c. The main things to copy will be `plugins`, `tests`, and `runtime`. The other generated files probably dont need to replace the existing files
 
+6. Update check mode
+    a. The non-info modules in this collection do not support check mode. Unfortunately the generation method is not flexible enough to handle this (or updating it takes too much effort ATM).
+    b. The easiest way to do this is in a code editor like VSCode. Do a find and replace for `supports_check_mode=True` and change it to False, and exclude `*_info.py`
+
 #### (Optional) Update the `RETURN Block` of the vmware modules using the test-suite
 
 The `generate.yml` playbook will copy the old blocks to the new modules. You can refresh the blocks if you introduce a new API version.
