@@ -15,6 +15,10 @@ description: Applies a customization specification on the virtual machine in {@p
     is powered on. If there is a pending customization for the virtual machine and
     a new one is set, then the existing customization setting will be overwritten
     with the new settings.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vm_apply_customization) instead.
 options:
     configuration_spec:
         description:

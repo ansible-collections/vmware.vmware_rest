@@ -11,6 +11,10 @@ DOCUMENTATION = r"""
 module: vcenter_vm_hardware_cdrom
 short_description: Adds a virtual CD-ROM device to the virtual machine.
 description: Adds a virtual CD-ROM device to the virtual machine.
+deprecated:
+    removed_in: 5.0.0
+    why: This module has been moved to the L(new vmware.vmware collection,https://forum.ansible.com/t/5880)
+    alternative: Use M(vmware.vmware.vm) instead.
 options:
     allow_guest_control:
         description:
