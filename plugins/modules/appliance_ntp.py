@@ -201,7 +201,7 @@ async def main():
 
     module_args = prepare_argument_spec()
     module = AnsibleModule(
-        argument_spec=module_args, required_if=required_if, supports_check_mode=True
+        argument_spec=module_args, required_if=required_if, supports_check_mode=False
     )
     if not module.params["vcenter_hostname"]:
         module.fail_json("vcenter_hostname cannot be empty")
