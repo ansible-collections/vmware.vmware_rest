@@ -30,6 +30,7 @@ jobs:
     name: Build Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@main
     with:
+      extra-collections: vmware.vmware
       artifact-name: ${{ github.event.repository.name }}_docs_${{ github.event.pull_request.head.sha }}_build
       init-lenient: true
       init-fail-on-error: false
