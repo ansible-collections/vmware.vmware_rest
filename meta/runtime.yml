@@ -339,6 +339,51 @@ plugin_routing:
         removal_version: 5.0.0
         warning_text: Use vmware.vmware.content_library_item_info instead.
 
+    vcenter_vm_guest_customization:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm_apply_customization instead.
+
+    vcenter_vm_hardware_adapter_sata:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm_hardware_adapter_scsi:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm_hardware_cdrom:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm_hardware_cpu:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm_hardware_disk:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm_hardware_ethernet:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm_hardware_memory:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
+    vcenter_vm:
+      deprecation:
+        removal_version: 5.0.0
+        warning_text: Use vmware.vmware.vm instead.
+
   lookup:
     cluster_moid:
       deprecation:
