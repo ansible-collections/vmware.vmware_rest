@@ -23,6 +23,18 @@ jobs:
       artifact-name: ${{ github.event.repository.name }}_docs_${{ github.event.pull_request.head.sha }}_validate
       intersphinx-links: |
         ansible_devel:https://docs.ansible.com/ansible-core/devel/
+      provide-link-targets: |
+        ansible_collections.vmware.vmware.appliance_info_module
+        ansible_collections.vmware.vmware.cluster_info_module
+        ansible_collections.vmware.vmware.content_library_item_info_module
+        ansible_collections.vmware.vmware.esxi_host_module
+        ansible_collections.vmware.vmware.local_content_library_module
+        ansible_collections.vmware.vmware.subscribed_content_library_module
+        ansible_collections.vmware.vmware.vcsa_settings_module
+        ansible_collections.vmware.vmware.vm_portgroup_info_module
+        ansible_collections.vmware.vmware.vm_powerstate_module
+        ansible_collections.vmware.vmware.vm_resource_info_module
+        ansible_collections.vmware.vmware.moid_from_path_module
 
   build-docs:
     permissions:
