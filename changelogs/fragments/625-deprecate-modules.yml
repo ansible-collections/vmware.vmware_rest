@@ -1,5 +1,5 @@
 ---
-minor_changes:
+deprecated_features:
   - Deprecate modules that have been moved to the new vmware.vmware collection. Includes
     vcenter_vm_guest_customization,
     vcenter_vm_hardware_adapter_sata,
