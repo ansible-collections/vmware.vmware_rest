@@ -22,9 +22,10 @@
         _test_vm_moid: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder + '/' + test_vm_name, **vmware_rest_auth_vars) }}"
 
     - name: Power on VM
-      vmware.vmware_rest.vcenter_vm_power:
-        state: start
-        vm: "{{ _test_vm_moid }}"
+      vmware.vmware.vm_powerstate:
+        datacenter: "{{ vcenter_datacenter }}"
+        moid: "{{ _test_vm_moid }}"
+        state: powered-on
 
     - name: Wait until VM is ready
       vmware.vmware_rest.vcenter_vm_tools_info:

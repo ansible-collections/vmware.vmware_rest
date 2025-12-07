@@ -28,36 +28,29 @@
       register: resource_pool_info
 
     - name: Create a VM
-      vmware.vmware_rest.vcenter_vm:
-        placement:
-          cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
-          resource_pool: "{{ resource_pool_info.id }}"
+      vmware.vmware.vm:
+        datacenter: "{{ vcenter_datacenter }}"
+        resource_pool: "{{ resource_pool_info.id }}"
+        datastore: "{{ shared_storage_01 }}"
         name: "{{ vm_name }}"
-        guest_OS: RHEL_9_64
-        hardware_version: VMX_21
+        guest_id: rhel9_64Guest
         memory:
-          hot_add_enabled: true
-          size_MiB: 2000
-        nics:
-          - type: VMXNET3
-            backing:
-              type: DISTRIBUTED_PORTGROUP
-              network: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/network/' + vm_network_name, **vmware_rest_auth_vars) }}"
-            start_connected: true
-        cdroms:
-          - backing:
-              type: ISO_FILE
-              iso_file: "{{ rhel_9_3_iso_path }}"
-            start_connected: true
+          size_mb: 2000
+        cpu:
+          cores: 2
+        disks:
+          - size: 10gb
+            device_node: SCSI(0:0)
+        scsi_controllers:
+          - controller_type: paravirtual
+            bus_number: 0
       register: test_vm
 
     - name: Create a VM template on the library
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
         name: "{{ vm_name }}-template"
         library: "{{ nfs_lib.id }}"
-        source_vm: "{{ test_vm.id }}"
+        source_vm: "{{ test_vm.vm.moid }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
           folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
@@ -73,7 +66,7 @@
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
         name: "{{ vm_name }}-template"
         library: "{{ nfs_lib.id }}"
-        source_vm: "{{ test_vm.id }}"
+        source_vm: "{{ test_vm.vm.moid }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
           folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
@@ -119,13 +112,14 @@
 
   always:
     - name: Delete test VM's
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_name, **vmware_rest_auth_vars) }}"
+      vmware.vmware.vm:
+        moid: "{{ test_vm.vm.moid }}"
         state: absent
+      when: test_vm.vm is defined
 
     - name: Delete VM from template
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_template_name, **vmware_rest_auth_vars) }}"
+      vmware.vmware.vm:
+        moid: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_template_name, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete nfs library
@@ -136,5 +130,5 @@
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/Resources/' + resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent

@@ -12,7 +12,7 @@ vcenter_validate_certs: false
 shared_storage_01: "eco-iscsi-ds1"
 
 rhel_9_3_iso_path: "[eco-nfs-datastore-iso] rhel-9.3-x86_64-boot.iso"
-vm_network_name: "VM Network"
+vm_network_name: "vm_traffic"
 test_network_name: "TestNetwork"
 eco_nfs_datastore_iso: "eco-nfs-datastore-iso"
 vcenter_vm_folder: "e2e-qe"

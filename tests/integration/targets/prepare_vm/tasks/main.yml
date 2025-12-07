@@ -24,24 +24,8 @@
 - name: Destroy VM
   when: prepare_vm_state == 'absent'
   block:
-    - name: Power off VM
-      vmware.vmware.vm_powerstate:
-        datacenter: "{{ vcenter_datacenter }}"
-        moid: "{{ vm_id }}"
-        force: true
-        state: powered-off
-
-    - name: Wait until VM is off
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: "{{ vm_id }}"
-      register: vm_info
-      until:
-        - vm_info is not failed
-        - vm_info.value.power_state == "POWERED_OFF"
-      retries: 60
-      delay: 5
-
     - name: Delete VM
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ vm_id }}"
+      vmware.vmware.vm:
+        moid: "{{ vm_id }}"
         state: absent
+        allow_power_cycling: true
