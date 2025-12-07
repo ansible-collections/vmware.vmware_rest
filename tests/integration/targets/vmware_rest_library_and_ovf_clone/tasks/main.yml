@@ -15,19 +15,23 @@
       register: resource_pool_info
 
     - name: Create a VM with optimized settings
-      vmware.vmware_rest.vcenter_vm:
-        placement:
-          cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
-          datastore: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
-          folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
-          resource_pool: "{{ resource_pool_info.id }}"
+      vmware.vmware.vm:
+        datacenter: "{{ vcenter_datacenter }}"
+        cluster: "{{ vcenter_cluster_name }}"
+        datastore: "{{ shared_storage_01 }}"
+        resource_pool: "{{ resource_pool_info.id }}"
         name: "{{ vm_name }}"
-        guest_OS: RHEL_9_64
-        hardware_version: VMX_21
+        guest_id: rhel9_64Guest
         memory:
-          hot_add_enabled: true
-          size_MiB: 512
-        cdroms: [] # Skip attaching ISO to simplify the export
+          size_mb: 512
+        cpu:
+          cores: 2
+        disks:
+          - size: 10gb
+            device_node: SCSI(0:0)
+        scsi_controllers:
+          - controller_type: paravirtual
+            bus_number: 0
       register: test_vm
 
     - name: List Local Content Library Prior Creation
@@ -101,7 +105,7 @@
         session_timeout: 2900
         source:
           type: VirtualMachine
-          id: "{{ test_vm.id }}"
+          id: "{{ test_vm.vm.moid }}"
         target:
           library_id: "{{ nfs_lib.id }}"
         create_spec:
@@ -119,7 +123,7 @@
         session_timeout: 2900
         source:
           type: VirtualMachine
-          id: "{{ test_vm.id }}"
+          id: "{{ test_vm.vm.moid }}"
         target:
           library_id: "{{ nfs_lib.id }}"
         create_spec:
@@ -357,21 +361,22 @@
       when: sub_lib.id is defined
 
     - name: Delete test VM
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_name, **vmware_rest_auth_vars) }}"
+      vmware.vmware.vm:
+        moid: "{{ test_vm.vm.moid }}"
         state: absent
+      when: test_vm.vm is defined
 
     - name: Delete VM from OVF image
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_ovf_image_name, **vmware_rest_auth_vars) }}"
+      vmware.vmware.vm:
+        moid: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_ovf_image_name, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete VM from OVF image on specific host
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_ovf_image_on_host, **vmware_rest_auth_vars) }}"
+      vmware.vmware.vm:
+        moid: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vm_from_ovf_image_on_host, **vmware_rest_auth_vars) }}"
         state: absent
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/Resources/' + resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent
