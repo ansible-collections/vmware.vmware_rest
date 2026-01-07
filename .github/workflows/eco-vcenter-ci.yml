@@ -50,4 +50,4 @@ jobs:
       - name: Clean working directory
         if: always()
         run: |
-          rm -rf ${{ github.workspace }}/*
+          rm -rf ./*
