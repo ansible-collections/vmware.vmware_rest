@@ -46,3 +46,8 @@ jobs:
           VCENTER_HOSTNAME: ${{ secrets.VCENTER_HOSTNAME }}
           VCENTER_USERNAME: ${{ secrets.VCENTER_USERNAME }}
           VCENTER_PASSWORD: ${{ secrets.VCENTER_PASSWORD }}
+
+      - name: Clean working directory
+        if: always()
+        run: |
+          rm -rf ${{ github.workspace }}/*
