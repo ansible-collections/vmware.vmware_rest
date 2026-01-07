@@ -7,11 +7,14 @@ on:
     branches:
       - main
       - 'release-\d.\d'
+
 permissions:
   contents: read
+
 jobs:
   ansible_integration_test:
     runs-on: ["self-hosted", linux, X64]
+    environment: eco-vcenter
     steps:
       - name: Update pip, git
         if: runner.os == 'Linux' && startsWith(runner.name, 'ubuntu')
