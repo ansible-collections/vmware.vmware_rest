@@ -5,9 +5,10 @@ GREEN="\033[0;32m"
 RED="\033[0;31m"
 NC="\033[0m"  # No Color
 BASE_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+TEST_OUTPUT_LOG="/tmp/vmware_vmware_rest_tests_report.txt"
 
-if [ -f /tmp/vmware_vmware_tests_report.txt ]; then
-    rm -f /tmp/vmware_vmware_tests_report.txt
+if [ -f "$TEST_OUTPUT_LOG" ]; then
+    rm -f "$TEST_OUTPUT_LOG"
 fi
 
 # Generates a string starting with 'test-' followed by 4 random lowercase characters
@@ -32,20 +33,20 @@ total=0
     echo "==============="
     echo "Tests Summary"
     echo "==============="
-} >> /tmp/vmware_vmware_tests_report.txt
+} >> "$TEST_OUTPUT_LOG"
 
 for target in $(ansible-test integration --list-target | grep 'vmware_'); do
     echo "Running integration test for $target"
     total=$((total + 1))
     if ansible-test integration $target --skip-tags force-simulator-run; then
-        echo -e "Test: $target ${GREEN}Passed${NC}" | tee -a /tmp/vmware_vmware_tests_report.txt
+        echo -e "Test: $target ${GREEN}Passed${NC}" | tee -a "$TEST_OUTPUT_LOG"
     else
-        echo -e "Test: $target ${RED}Failed${NC}" | tee -a /tmp/vmware_vmware_tests_report.txt
+        echo -e "Test: $target ${RED}Failed${NC}" | tee -a "$TEST_OUTPUT_LOG"
         failed=$((failed + 1))
     fi
 done
-echo "$failed test(s) failed out of $total." >> /tmp/vmware_vmware_tests_report.txt
-cat /tmp/vmware_vmware_tests_report.txt
+echo "$failed test(s) failed out of $total." >> "$TEST_OUTPUT_LOG"
+cat "$TEST_OUTPUT_LOG"
 if [ $failed -gt 0 ]; then
     exit 1
 fi
