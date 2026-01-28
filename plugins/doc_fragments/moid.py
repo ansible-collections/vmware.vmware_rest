@@ -22,7 +22,7 @@ class ModuleDocFragment(object):
         removed_in: 5.0.0
         why: >-
           This plugin will not work with ansible-core 2.19 and above. Refer to
-          L(the migration documentation,https://github.com/ansible-collections/vmware.vmware/tree/main/docs/lookup_plugin_migration.md)
+          L(the migration documentation,https://github.com/ansible-collections/vmware.vmware_rest/tree/main/docs/lookup_plugin_migration.md)
           for migration examples.
         alternative: Use M(vmware.vmware.moid_from_path) instead.
 
