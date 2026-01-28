@@ -4,6 +4,19 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.10.0
+=======
+
+Minor Changes
+-------------
+
+- Disable check mode for all non-info modules in this collection. Check mode was never supported for these modules. Fixes https://github.com/ansible-collections/vmware.vmware_rest/issues/363
+
+Deprecated Features
+-------------------
+
+- Deprecate modules that have been moved to the new vmware.vmware collection. Includes vcenter_vm_guest_customization, vcenter_vm_hardware_adapter_sata, vcenter_vm_hardware_adapter_scsi, vcenter_vm_hardware_cdrom, vcenter_vm_hardware_cpu, vcenter_vm_hardware_disk, vcenter_vm_hardware_ethernet, vcenter_vm_hardware_memory, vcenter_vm
+
 v4.9.0
 ======
 
