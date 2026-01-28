@@ -2,7 +2,6 @@
 import os
 import yaml
 
-
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 OLD_MODULE_PATH = f"{SCRIPT_DIR}/../../temp/vmware.vmware_rest/plugins/modules"
 NEW_MODULE_PATH = f"{SCRIPT_DIR}/output/plugins/modules"
