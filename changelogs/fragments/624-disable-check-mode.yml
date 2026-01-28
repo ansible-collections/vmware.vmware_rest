@@ -1,4 +1,0 @@
----
-minor_changes:
-  - Disable check mode for all non-info modules in this collection. Check mode was never supported for these modules.
-    Fixes https://github.com/ansible-collections/vmware.vmware_rest/issues/363

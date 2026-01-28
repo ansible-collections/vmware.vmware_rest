@@ -761,6 +761,21 @@ releases:
     - 528-readme-typo-fix.yml
     - 529-manual-test-play-for-lookups.yml
     release_date: '2024-09-12'
+  4.10.0:
+    changes:
+      deprecated_features:
+      - Deprecate modules that have been moved to the new vmware.vmware collection.
+        Includes vcenter_vm_guest_customization, vcenter_vm_hardware_adapter_sata,
+        vcenter_vm_hardware_adapter_scsi, vcenter_vm_hardware_cdrom, vcenter_vm_hardware_cpu,
+        vcenter_vm_hardware_disk, vcenter_vm_hardware_ethernet, vcenter_vm_hardware_memory,
+        vcenter_vm
+      minor_changes:
+      - Disable check mode for all non-info modules in this collection. Check mode
+        was never supported for these modules. Fixes https://github.com/ansible-collections/vmware.vmware_rest/issues/363
+    fragments:
+    - 624-disable-check-mode.yml
+    - 625-deprecate-modules.yml
+    release_date: '2026-01-28'
   4.2.0:
     changes:
       bugfixes:
