@@ -33,15 +33,19 @@ import importlib
 import json
 import re
 import urllib.parse
+import os
 
 from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.parsing.convert_bool import boolean
 
-try:
-    from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
-        EmbeddedModuleFailure as ModuleFailureException,
-    )
-except ImportError:
+if os.getenv("VMWARE_ENABLE_TURBO", False):
+    try:
+        from ansible_collections.cloud.common.plugins.module_utils.turbo.exceptions import (
+            EmbeddedModuleFailure as ModuleFailureException,
+        )
+    except ImportError:
+        ModuleFailureException = Exception
+else:
     ModuleFailureException = Exception
 
 
