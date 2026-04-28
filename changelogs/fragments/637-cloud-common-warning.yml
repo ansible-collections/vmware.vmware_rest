@@ -1,0 +1,5 @@
+bugfixes:
+  - >-
+    module_utils - Avoid importing cloud.common turbo exceptions unless turbo mode
+    is explicitly enabled, preventing a cloud.common Ansible 2.20 support warning
+    in module runs when turbo is off (https://github.com/ansible-collections/vmware.vmware_rest/issues/637).
