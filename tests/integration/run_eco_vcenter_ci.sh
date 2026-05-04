@@ -19,6 +19,11 @@ else
     echo "tiny_prefix: $tiny_prefix" >> "${BASE_DIR}/integration_config.yml"
 fi
 
+echo "pip freeze"
+pip freeze
+echo ""
+echo ""
+
 echo ""
 echo ""
 echo "******   Starting Eco vCenter tests   ******"
