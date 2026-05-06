@@ -1,6 +1,7 @@
-# vmware.vmware_rest Turbo Mode
+> [!WARNING]
+> Please be aware that Turbo Mode is deprecated and will be removed in a future major release.
 
-!!! Please be aware that this is deprecated and will be removed in a future major release. !!!
+# vmware.vmware_rest Turbo Mode
 
 This collection is capable of leveraging a feature of the cloud.common collection called the "turbo server". This is basically a caching mechanism that speeds up repeated API calls. This collection has used turbo mode up until version 4.8.0. With the release of 4.8.0, turbo mode is disabled by default but can be re-enabled using an environment variable.
 
