@@ -179,6 +179,10 @@ async def main():
         module.fail_json("vcenter_username cannot be empty")
     if not module.params["vcenter_password"]:
         module.fail_json("vcenter_password cannot be empty")
+    if os.getenv("VMWARE_ENABLE_TURBO") is not None:
+        module.warn(
+            "VMWARE_ENABLE_TURBO is deprecated and will be removed in vmware.vmware_rest 5.0.0"
+        )
     try:
         session = await open_session(
             vcenter_hostname=module.params["vcenter_hostname"],
