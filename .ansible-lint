@@ -2,6 +2,7 @@
 profile: production
 
 exclude_paths:
+  - .venv/
   - meta/runtime.yml
   - tests/integration
   - tests/sanity
