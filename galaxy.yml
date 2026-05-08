@@ -16,3 +16,7 @@ homepage: https://github.com/ansible-collections/vmware.vmware_rest
 issues: https://github.com/ansible-collections/vmware.vmware_rest/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
 build_ignore:
   - config/*
+  - .venv/*
+  - venv/*
+  - .ansible/*
+  - .agents/*

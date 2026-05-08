@@ -40,7 +40,15 @@ total=0
     echo "==============="
 } >> "$TEST_OUTPUT_LOG"
 
-for target in $(ansible-test integration --list-target | grep 'vmware_'); do
+if [ -n "${1:-}" ]; then
+    read -ra target_list <<<"$1"
+elif [ -n "${ECO_VCENTER_CI_TARGETS:-}" ]; then
+    read -ra target_list <<<"${ECO_VCENTER_CI_TARGETS}"
+else
+    mapfile -t target_list < <(ansible-test integration --list-target | grep 'vmware_')
+fi
+
+for target in "${target_list[@]}"; do
     echo "Running integration test for $target"
     total=$((total + 1))
     if ansible-test integration $target --skip-tags force-simulator-run; then

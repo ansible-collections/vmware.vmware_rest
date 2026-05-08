@@ -1,3 +1,8 @@
+# Optional extra args for ansible-test (leave unset for full suite)
+SANITY_TARGETS ?=
+INTEGRATION_TARGETS ?=
+UNIT_TARGETS ?=
+
 # setup commands
 .PHONY: upgrade-collections
 upgrade-collections:
@@ -23,10 +28,14 @@ linters:  ## Run extra linter tests
 	black --check --diff --color . || err=1; \
 	if [ "$$err" = 1 ]; then echo "\nAt least one linter failed\n" >&2; exit 1; fi
 
+.PHONY: units
+units:
+	echo "Unit tests are not yet implemented"
+
 .PHONY: sanity
 sanity: upgrade-collections
 	cd ~/.ansible/collections/ansible_collections/vmware/vmware_rest; \
-	ansible-test sanity -v --color --coverage --junit --docker default
+	ansible-test sanity -v --color --coverage --junit --docker default $(SANITY_TARGETS)
 
 .PHONY: eco-vcenter-ci
 eco-vcenter-ci: tests/integration/integration_config.yml install-integration-reqs upgrade-collections
@@ -38,4 +47,4 @@ eco-vcenter-ci: tests/integration/integration_config.yml install-integration-req
 	chmod +x tests/integration/run_eco_vcenter_ci.sh; \
 	ANSIBLE_ROLES_PATH=~/.ansible/collections/ansible_collections/vmware/vmware_rest/tests/integration/targets \
 		ANSIBLE_COLLECTIONS_PATH=~/.ansible/collections/ansible_collections \
-		./tests/integration/run_eco_vcenter_ci.sh
+		./tests/integration/run_eco_vcenter_ci.sh $(INTEGRATION_TARGETS)

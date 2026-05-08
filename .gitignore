@@ -5,6 +5,16 @@
 ### dotenv ###
 .env
 
+# AI
+.agents/skills/shared
+.agents/skills/shared/
+.agents/rules/SHARED.md
+
+# Ansible test/sanity
+.tmp/
+.ansible/
+.tmp-run/
+
 # Integration tests
 tests/integration/integration_config.yml
 tests/integration/inventory
