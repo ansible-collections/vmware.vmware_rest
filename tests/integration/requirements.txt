@@ -2,5 +2,5 @@ ansible-core==2.19.0b5
 
 # required for vmware.vmware
 requests
-vcf-sdk==9.0.0.0
+vcf-sdk==9.1.0.0
 setuptools >= 82
