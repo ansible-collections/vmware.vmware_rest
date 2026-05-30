@@ -274,7 +274,9 @@ async def _list_details(params, session):
         "https://{vcenter_hostname}"
         # aa
         "/rest/appliance/vmon/service"
-    ).format(**params) + gen_args(params, _in_query_parameters)
+    ).format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
     async with session.get(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
