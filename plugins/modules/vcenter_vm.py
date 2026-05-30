@@ -1970,7 +1970,9 @@ async def _register(params, session):
         "https://{vcenter_hostname}"
         # aa
         "/api/vcenter/vm?action=register"
-    ).format(**params) + gen_args(params, _in_query_parameters)
+    ).format(
+        **params
+    ) + gen_args(params, _in_query_parameters)
     async with session.post(_url, json=payload, **session_timeout(params)) as resp:
         try:
             if resp.headers["Content-Type"] == "application/json":
