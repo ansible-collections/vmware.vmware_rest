@@ -1,0 +1,6 @@
+---
+minor_changes:
+  - Add support for ansible-core 2.21
+
+major_changes:
+  - Update minimum required ansible-core version to 2.16 in meta/runtime.yml
