@@ -2,7 +2,7 @@ collection:
   path: "{{ playbook_dir }}/output"
   namespace: vmware
   name: vmware_rest
-  requires_ansible: "2.15.0"
+  requires_ansible: "2.16.0"
 plugins:
   - type: module_openapi
     name: "vmware_rest"
