@@ -2,5 +2,5 @@ ansible-core>=2.21
 
 # required for vmware.vmware
 requests
-pyVmomi
-git+https://github.com/vmware/vsphere-automation-sdk-python.git
+pyVmomi>=8.0.3.0.1
+vmware-vcenter>=9.1.0.0
