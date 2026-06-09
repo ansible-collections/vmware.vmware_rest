@@ -1,0 +1,6 @@
+# .lola-req - AI context modules for this project
+
+https://github.com/ansible-community/ai-forge.git#subdirectory=ansible-collection-sdlc/module
+https://github.com/ansible-community/ai-forge.git#subdirectory=ansible-collection-standards/module
+
+https://github.com/RedHatProductSecurity/prodsec-skills.git

@@ -20,3 +20,16 @@ build_ignore:
   - venv/*
   - .ansible/*
   - .agents/*
+  - .github/*
+  - skills/*
+  - GEMINI.md
+  - CLAUDE.md
+  - AGENTS.md
+  - .lola/*
+  - .opencode/*
+  - .vscode/*
+  - .claude/*
+  - .gemini/*
+  - .ansible-lint
+  - .yamllint
+  - AGENTS.md
