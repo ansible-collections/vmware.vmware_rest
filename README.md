@@ -166,9 +166,11 @@ For more information about communication, see the [Ansible communication guide](
 
 ## Support
 
-As Red Hat Ansible [Certified Content](https://catalog.redhat.com/software/search?target_platforms=Red%20Hat%20Ansible%20Automation%20Platform), this collection is entitled to [support](https://access.redhat.com/support/) through [Ansible Automation Platform](https://www.redhat.com/en/technologies/management/ansible) (AAP).
+As Red Hat Ansible Certified Content, this collection is entitled to support through the Ansible Automation Platform (AAP) using the **Create issue** button on the top right corner.
 
-If a support case cannot be opened with Red Hat and the collection has been obtained either from [Galaxy](https://galaxy.ansible.com/ui/) or [GitHub](https://github.com/ansible-collections/vmware.vmware_rest), there is community support available at no charge. Community support is limited to the collection; community support does not include any of the Ansible Automation Platform components or [ansible-core](https://github.com/ansible/ansible).
+If a support case cannot be opened with Red Hat and the collection has been obtained either from Galaxy or GitHub, there may community help available via:
+- GitHub issues for bugs or feature requests: https://github.com/ansible-collections/vmware.vmware_rest/issues
+- the [Ansible Forum](https://forum.ansible.com/) for general inqueries or workflow questions
 
 
 ## Release Notes and Roadmap

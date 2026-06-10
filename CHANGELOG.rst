@@ -4,6 +4,29 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v4.11.0
+=======
+
+Major Changes
+-------------
+
+- Update minimum required ansible-core version to 2.16 in meta/runtime.yml
+
+Minor Changes
+-------------
+
+- Add support for ansible-core 2.21
+
+Deprecated Features
+-------------------
+
+- turbo mode and the associated environment variable ``VMWARE_ENABLE_TURBO`` are deprecated and will be removed from ``vmware.vmware_rest`` 5.0.0 (https://github.com/ansible-collections/vmware.vmware_rest/pull/639).
+
+Bugfixes
+--------
+
+- module_utils - Avoid importing cloud.common turbo exceptions unless turbo mode is explicitly enabled, preventing a cloud.common Ansible 2.20 support warning in module runs when turbo is off (https://github.com/ansible-collections/vmware.vmware_rest/issues/637).
+
 v4.10.0
 =======
 
