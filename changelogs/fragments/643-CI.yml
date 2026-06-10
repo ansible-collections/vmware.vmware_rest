@@ -1,5 +1,0 @@
-trivial:
-  - Replace deprecated ``actions/checkout@v4`` with ``actions/checkout@v6``
-    (https://github.com/ansible-collections/vmware.vmware_rest/pull/643).
-  - Fix some linting errors
-    (https://github.com/ansible-collections/vmware.vmware_rest/pull/643).

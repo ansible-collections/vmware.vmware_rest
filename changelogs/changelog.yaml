@@ -776,6 +776,25 @@ releases:
     - 624-disable-check-mode.yml
     - 625-deprecate-modules.yml
     release_date: '2026-01-28'
+  4.11.0:
+    changes:
+      bugfixes:
+      - module_utils - Avoid importing cloud.common turbo exceptions unless turbo
+        mode is explicitly enabled, preventing a cloud.common Ansible 2.20 support
+        warning in module runs when turbo is off (https://github.com/ansible-collections/vmware.vmware_rest/issues/637).
+      deprecated_features:
+      - turbo mode and the associated environment variable ``VMWARE_ENABLE_TURBO``
+        are deprecated and will be removed from ``vmware.vmware_rest`` 5.0.0 (https://github.com/ansible-collections/vmware.vmware_rest/pull/639).
+      major_changes:
+      - Update minimum required ansible-core version to 2.16 in meta/runtime.yml
+      minor_changes:
+      - Add support for ansible-core 2.21
+    fragments:
+    - 09062026-add-2.21.yml
+    - 637-cloud-common-warning.yml
+    - 639-vmware_enable_turbo.yml
+    - 643-CI.yml
+    release_date: '2026-06-10'
   4.2.0:
     changes:
       bugfixes:
