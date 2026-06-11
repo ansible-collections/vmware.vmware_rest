@@ -1,0 +1,42 @@
+# Maps vSphere major versions to Broadcom VCF API specification releases.
+#
+# Broadcom publishes VCF API specs at:
+#   https://developer.broadcom.com/sdks/vcf-api-specification/latest/
+#   https://developer.broadcom.com/sdks/vcf-api-specification/9.0/
+#
+# The authoritative source repository is:
+#   https://github.com/vmware/vcf-api-specs
+#
+# vSphere OpenAPI YAML specs live under:
+#   specifications/vsphere/openapi/
+#
+# Older vSphere versions (6.x–8.x) are not published on the Broadcom portal.
+# Use vmsgen against a live vCenter instead (see docs/development.md).
+
+vsphere_major_versions:
+  "9":
+    vcf_tag: "9.1.0.0"
+    broadcom_portal_path: "latest"
+    github_zipball: "https://api.github.com/repos/vmware/vcf-api-specs/zipball/9.1.0.0"
+    output_directory: "9.1.0"
+    notes: >
+      VCF 9.x YAML specs are extracted as-is from the zip into
+      config/api_specifications/<version>/.
+  "8":
+    available_on_broadcom: false
+    fallback: vmsgen
+    notes: >
+      No VCF API spec for vSphere 8.x on Broadcom. Generate from a live vCenter
+      with vmware-openapi-generator (vmsgen.py) per docs/development.md.
+  "7":
+    available_on_broadcom: false
+    fallback: vmsgen
+    notes: >
+      No VCF API spec for vSphere 7.x on Broadcom. Generate from a live vCenter
+      with vmware-openapi-generator (vmsgen.py) per docs/development.md.
+  "6":
+    available_on_broadcom: false
+    fallback: vmsgen
+    notes: >
+      No VCF API spec for vSphere 6.x on Broadcom. Generate from a live vCenter
+      with vmware-openapi-generator (vmsgen.py) per docs/development.md.

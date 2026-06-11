@@ -42,8 +42,12 @@ For test commands, patterns, and requirements see `skills/run-tests/SKILL.md`.
 
 Subagent definitions live in `.agents/subagents/`. When a task matches a subagent's trigger conditions, delegate to it.
 
+| Subagent | Use when |
+| --- | --- |
+| `fetch-vsphere-openapi-spec` | Downloading or updating vSphere OpenAPI specs under `config/api_specifications/` |
+| `generate-ansible-modules` | Generating Ansible modules from module names and an API spec version |
+
 ## Agent Skills
 
 Project Skills live in `.agents/skills/*/SKILL.md` (YAML frontmatter + instructions). At session start, scan and register all skills. When a request matches a skill's trigger, load and apply it.
 Additional skills may be found in `skills/*/SKILL.md`. These skills are placed by the `lola` command line tool, and are general SDLC skills.
-
