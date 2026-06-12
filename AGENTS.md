@@ -44,8 +44,37 @@ Subagent definitions live in `.agents/subagents/`. When a task matches a subagen
 
 | Subagent | Use when |
 | --- | --- |
+| `orchestrate-module-generation` | **Start here** for end-to-end module generation from a vSphere API version: fetch spec → generate modules (≤2 per batch) → unit tests → integration tests → unit regression verify |
 | `fetch-vsphere-openapi-spec` | Downloading or updating vSphere OpenAPI specs under `config/api_specifications/` |
-| `generate-ansible-modules` | Generating Ansible modules from module names and an API spec version |
+| `generate-ansible-modules` | Generating Ansible modules from module names and an API spec version (writes only under `plugins/modules/`) |
+| `generate-unit-tests` | Generating unit tests for modules; API spec is the source of truth for mocks/assertions (writes only under `tests/unit/`) |
+| `generate-integration-tests` | Generating ansible-test integration targets for modules using the MockServer simulator (writes only under `tests/integration/`) |
+| `validate-module-documentation` | Read-only review of module DOCUMENTATION, EXAMPLES, and RETURN; compares CRUD/info pairs, integration test tasks, and runtime return values |
+
+### Module generation pipeline
+
+Use `orchestrate-module-generation` when a user asks to generate modules from a
+vSphere API major version. The orchestrator:
+
+1. **Fetch** — `fetch-vsphere-openapi-spec` installs the spec under
+   `config/api_specifications/<version>/`.
+2. **Batch** — groups up to two related modules per batch (typically `*_info` +
+   CRUD for the same resource).
+3. **Phase 1 — Unit gate** — `generate-ansible-modules` writes modules;
+   `validate-module-documentation` (`mode: structural`) reviews docs;
+   `generate-unit-tests` (`mode: generate`) writes and runs unit tests; iterate
+   on `module_error` or `doc_corrections_needed` until unit tests pass.
+4. **Phase 2 — Integration** — `generate-integration-tests` writes the target
+   and runs `make integration`; `validate-module-documentation`
+   (`mode: integration`) cross-checks EXAMPLES and RETURN against tests;
+   `module_error` / doc failures relay back to `generate-ansible-modules`, then
+   re-run integration until pass.
+5. **Phase 3 — Regression** — `generate-unit-tests` (`mode: verify`) re-runs
+   unit tests to confirm integration fixes did not break unit coverage.
+6. **Next batch** — proceed to the next module pair.
+
+Use `skip_integration: true` to run Phase 1 only. Full workflow:
+`.agents/subagents/orchestrate-module-generation.md`
 
 ## Agent Skills
 

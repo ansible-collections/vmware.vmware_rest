@@ -11,13 +11,16 @@ import json
 import time
 import logging
 
-from urllib.error import URLError
-from urllib.parse import quote, urlencode
+from typing import Optional, Union
+
+from urllib.error import URLError, HTTPError
+from urllib.parse import urlencode
 from ansible.module_utils.urls import Request, basic_auth_header
 
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
     UnexpectedAPIResponse,
     ApiCommunicationError,
+    VmwareModuleError,
 )
 
 
@@ -62,9 +65,11 @@ class Response:
 class Client:
     def __init__(
         self,
+        error_handler: "ClientRequestErrorHandler",
         host,
         username=None,
         password=None,
+        port=None,
         timeout=None,
         validate_certs=None,
         log_file=None,
@@ -75,7 +80,9 @@ class Client:
                 "Value should be the hostname of the vCenter server, not including the 'https://' or 'http://'"
             )
 
+        self.error_handler = error_handler
         self.host = host
+        self.port = port
         self.username = username
         self.password = password
         self.timeout = timeout
@@ -98,10 +105,14 @@ class Client:
 
     def _login(self):
         try:
-            response = self.request(
+            headers = dict(
+                **DEFAULT_HEADERS,
+                Authorization=basic_auth_header(self.username, self.password),
+            )
+            response = self._do_request(
                 method="POST",
-                path="/rest/com/vmware/cis/session",
-                headers=basic_auth_header(self.username, self.password),
+                path=self._build_url("/rest/com/vmware/cis/session"),
+                headers=headers,
             )
         except Exception as e:
             raise Exception(f"Authentication failure: {e}")
@@ -123,17 +134,27 @@ class Client:
             "timeout": self.timeout,
             "validate_certs": self.validate_certs
         }
-        request_error_handler = ClientRequestErrorHandler(method, path, request_kwargs)
 
         try:
             raw_resp = self._client.open(method, path, **request_kwargs)
-        except Exception as e:
-            # An exception occurred, and we need to parse it to add additional context
-            request_error_handler.handle_request_error(exception=e)
+        except HTTPError as e:
+            # An HTTP error occurred, but that might be a valid response from the API.
+            # The caller should handle it
+            response = Response(e.code, e.read(), e.headers)
 
-        response = Response(raw_resp.status, raw_resp.read(), raw_resp.headers)
+        except Exception as e:
+            self.error_handler.handle_request_error(
+                exception=e,
+                method=method,
+                path=path,
+                request_kwargs=request_kwargs,
+            )
+        else:
+            response = Response(raw_resp.status, raw_resp.read(), raw_resp.headers)
+
         if self.log_file:
             response.log_to_file(self.log_file)
+
         return response
 
     def request(self, method, path, query=None, data=None, headers=None, bytes=None):
@@ -155,44 +176,84 @@ class Client:
 
         return self._do_request(method, url, data=data, headers=headers)
 
+    def _normalize_api_path(self, path):
+        """
+        Normalize an API path for URL construction.
+
+        OpenAPI 3 YAML specs declare servers with base URL https://{host}/api and
+        paths relative to that base (e.g. /vcenter/resource-pool). Swagger 2 JSON
+        specs store fully qualified paths (e.g. /api/vcenter/resource-pool).
+        Session authentication uses /rest/... paths outside the /api prefix.
+        """
+        normalized = path.strip("/")
+        if normalized.startswith("api/") or normalized.startswith("rest/"):
+            return normalized
+        return "api/{0}".format(normalized)
+
     def _build_url(self, path, query=None):
-        escaped_path = quote(path.strip("/"))
-        if escaped_path:
-            escaped_path = f"/{escaped_path}"
-        url = f"https://{self.host}{escaped_path}"
+        if self.port:
+            host = f"{self.host}:{self.port}"
+        else:
+            host = self.host
+        url = f"https://{host}/{self._normalize_api_path(path)}"
         if query:
-            url = f"{url}?{urlencode(query)}"
+            url = "{0}?{1}".format(url, urlencode(query, doseq=True))
         return url
 
     def get(self, path, query=None):
         resp = self.request("GET", path, query=query)
         if resp.status in (200, 404):
             return resp
-        raise UnexpectedAPIResponse(resp.status, resp.data)
+        self.error_handler.handle_request_error(
+            exception=UnexpectedAPIResponse(resp.status, resp.data),
+            method="GET",
+            path=path,
+            request_kwargs=dict(query=query),
+        )
 
     def post(self, path, data, query=None):
         resp = self.request("POST", path, data=data, query=query)
         if resp.status in (200, 201):
             return resp
-        raise UnexpectedAPIResponse(resp.status, resp.data)
+        self.error_handler.handle_request_error(
+            exception=UnexpectedAPIResponse(resp.status, resp.data),
+            method="POST",
+            path=path,
+            request_kwargs=dict(data=data, query=query),
+        )
 
     def patch(self, path, data, query=None):
         resp = self.request("PATCH", path, data=data, query=query)
-        if resp.status == 200:
+        if resp.status in (200, 204):
             return resp
-        raise UnexpectedAPIResponse(resp.status, resp.data)
+        self.error_handler.handle_request_error(
+            exception=UnexpectedAPIResponse(resp.status, resp.data),
+            method="PATCH",
+            path=path,
+            request_kwargs=dict(data=data, query=query),
+        )
 
     def put(self, path, data, query=None):
         resp = self.request("PUT", path, data=data, query=query)
         if resp.status == 200:
             return resp
-        raise UnexpectedAPIResponse(resp.status, resp.data)
+        self.error_handler.handle_request_error(
+            exception=UnexpectedAPIResponse(resp.status, resp.data),
+            method="PUT",
+            path=path,
+            request_kwargs=dict(data=data, query=query),
+        )
 
     def delete(self, path, query=None):
         resp = self.request("DELETE", path, query=query)
         if resp.status in (200, 204):
             return resp
-        raise UnexpectedAPIResponse(resp.status, resp.data)
+        self.error_handler.handle_request_error(
+            exception=UnexpectedAPIResponse(resp.status, resp.data),
+            method="DELETE",
+            path=path,
+            request_kwargs=dict(query=query),
+        )
 
 
 class ClientRequestErrorHandler:
@@ -211,12 +272,10 @@ class ClientRequestErrorHandler:
             timeout, validate_certs, client_cert, etc. Used for error context.
     """
 
-    def __init__(self, method, path, request_kwargs):
-        self.method = method
-        self.path = path
-        self.request_kwargs = request_kwargs
+    def __init__(self, module):
+        self.module = module
 
-    def handle_request_error(self, exception, retry_is_allowed=False):
+    def handle_request_error(self, exception, method, path, request_kwargs):
         """
         Route exception to the appropriate handler based on exception type.
 
@@ -241,24 +300,25 @@ class ClientRequestErrorHandler:
                 to retry the request.
         """
         if isinstance(exception, URLError):
-            self._handle_request_urlerror(exception, retry_is_allowed)
+            self._handle_request_urlerror(exception, method, path, request_kwargs)
         else:
-            self._raise_generic_communication_error(exception)
+            self._raise_generic_communication_error(exception, method, path, request_kwargs)
 
-    def _raise_generic_communication_error(self, exception):
+    def _raise_generic_communication_error(self, exception, method, path, request_kwargs):
         """
         Raise a generic ApiCommunicationError for unexpected exceptions.
         """
-        raise ApiCommunicationError(
+        e = ApiCommunicationError(
             exception=exception,
             message="Unexpected error communicating with vCenter instance: %s"
             % exception,
-            method=self.method,
-            path=self.path,
-            **self.request_kwargs,
+            method=method,
+            path=path,
+            **request_kwargs,
         )
+        self.fail_module_with_error(e)
 
-    def _handle_request_urlerror(self, exception, retry_is_allowed=False):
+    def _handle_request_urlerror(self, exception, method, path, request_kwargs):
         """
         Handle URLError exceptions, including timeouts and handshake failures.
 
@@ -289,23 +349,37 @@ class ClientRequestErrorHandler:
             reason = None
 
         if reason == "timed out":
-            raise ApiCommunicationError(
+            e = ApiCommunicationError(
                 exception=exception,
                 message="The request to the vCenter instance timed out.",
-                method=self.method,
-                path=self.path,
-                timeout_setting=self.request_kwargs.get("timeout", "unknown"),
+                method=method,
+                path=path,
+                timeout_setting=request_kwargs.get("timeout", "unknown"),
             )
+            self.fail_module_with_error(e)
 
         if reason and reason.endswith("The handshake operation timed out"):
-            if retry_is_allowed:
-                return
-
-            raise ApiCommunicationError(
+            e = ApiCommunicationError(
                 exception=exception,
                 message="Failed to communicate with instance. The TLS handshake operation timed out.",
-                method=self.method,
-                path=self.path,
+                method=method,
+                path=path,
             )
+            self.fail_module_with_error(e)
 
-        self._raise_generic_communication_error(exception)
+        self._raise_generic_communication_error(exception, method, path, request_kwargs)
+
+    def fail_module_with_error(self, error: Union[Exception, VmwareModuleError], message: Optional[str] = None):
+        """
+        Helper method to fail the module with an error.
+        If the error is an instance of VmwareModuleError, it will be used to format the error message.
+        Otherwise, a generic error message will be used.
+
+        The fail_json method is used to terminate the module execution and return a structured error to the user.
+        """
+        if isinstance(error, VmwareModuleError):
+            self.module.fail_json(**error.to_module_fail_json_output())
+        else:
+            if message is None:
+                message = f"An unexpected error occurred: {str(error)}"
+            self.module.fail_json(msg=message)

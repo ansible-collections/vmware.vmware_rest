@@ -1,7 +1,7 @@
 from ansible.module_utils.basic import env_fallback
 
 
-def prepare_argument_spec():
+def connection_params_argument_spec():
     argument_spec = {
         "vcenter_hostname": dict(
             type="str",
@@ -18,6 +18,11 @@ def prepare_argument_spec():
             required=True,
             no_log=True,
             fallback=(env_fallback, ["VMWARE_PASSWORD"]),
+        ),
+        "vcenter_port": dict(
+            type="int",
+            required=False,
+            fallback=(env_fallback, ["VMWARE_PORT"]),
         ),
         "vcenter_validate_certs": dict(
             type="bool",

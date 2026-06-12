@@ -7,8 +7,9 @@
 # The authoritative source repository is:
 #   https://github.com/vmware/vcf-api-specs
 #
-# vSphere OpenAPI YAML specs live under:
+# vSphere OpenAPI specs are downloaded as YAML from:
 #   specifications/vsphere/openapi/
+# and converted to JSON under config/api_specifications/<version>/.
 #
 # Older vSphere versions (6.x–8.x) are not published on the Broadcom portal.
 # Use vmsgen against a live vCenter instead (see docs/development.md).
@@ -20,8 +21,8 @@ vsphere_major_versions:
     github_zipball: "https://api.github.com/repos/vmware/vcf-api-specs/zipball/9.1.0.0"
     output_directory: "9.1.0"
     notes: >
-      VCF 9.x YAML specs are extracted as-is from the zip into
-      config/api_specifications/<version>/.
+      VCF 9.x YAML specs are downloaded from the zip, converted to JSON, and
+      installed under config/api_specifications/<version>/ (YAML is not kept).
   "8":
     available_on_broadcom: false
     fallback: vmsgen

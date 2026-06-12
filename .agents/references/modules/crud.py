@@ -1,217 +1,137 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-#
-# Copyright: (c) <YEAR>, Ansible Project
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-#
-# This module is generated using LLM agents and skills defined in the vmware.vmware_rest repository.
-# See: https://github.com/ansible-collections/vmware.vmware_rest
-#
-
+## Insert the module header (.agents/references/modules/header.py) here.
 ## Note to AI: If a comment starts with two hashes (##), it is a note to the AI, not to be included in the final file.
 ## Values in angle brackets (<>) are placeholders for values that will be replaced by the AI.
 ## Otherwise, values should be considered examples or descriptions of the actual values. The AI should read the value, and use
 ## it as a reference, not as a literal value (unless otherwise specified).
 
-
-DOCUMENTATION = r"""
-## This section is the documentation for the module. It should be a valid yaml document that shows how to use the module in an ansible playbook.
-module: <MODULE_NAME>
-short_description: A short description of what the module does or what it is used for. Should be one or two sentences.
-description: >-
-  A longer description of what the module does or what it is used for. Should be a few sentences. It can
-  include general information about the module, interactions with the vSphere API, and any other relevant information.
-  Keep it concise and to the point, this is not meant to be a comprehensive documentation, it is meant to be a quick
-  reference for the module.
-
-## This section is literal, do not change it.
-author:
-  - Ansible Eco Content Team (@eco-ansible-content)
-## End of literal section.
-
-options:
-  ## This should be a dictionary of all the options for the module. The options described here should reflect the
-  ## argument_spec dictionary in the python code in this module.
-  ## CRUD modules must include a state option when the API supports multiple lifecycle operations.
-  state:
-    description:
-      - The desired state of the resource.
-      - Use C(present) to create or update the resource.
-      - Use C(absent) to delete the resource.
-    type: str
-    choices:
-      - present
-      - absent
-    default: present
-  <OPTION_NAME>:
-    description:
-      - A list of one or two sentences describing the option.
-      - Each line can address a different aspect of the option. For example, specify relationships with other options,
-        or what specific value(s) mean in real terms.
-      - Do not include the default value, the type, or a list of choices. Those are documented in additional attributes.
-    type: The python type of the option, e.g. str, int, bool, list, dict.
-    required: true or false, whether the option is always required or optional.
-    default: The default value of the option, if any. If there is no default value, this can be omitted.
-    choices: A list of valid choices for the option, if any. If there are not specific valid choices, this can be omitted.
-    elements: The type of the elements of the option, if the option is a list. If the option is not a list, this can be omitted.
-    options: A dictionary of options for the option, if the option is a dictionary or the option is a list of element dictionaries. Otherwise, this can be omitted.
-
-version_added: The current version of this collection, as seen in the galaxy.yml file's version attribute.
-requirements: []
-
-notes:
-  - Include a sentence about what version of the API spec was used to generate the module.
-"""
-
-EXAMPLES = r"""
-## This should be a valid yaml document that shows how to use the module in an ansible playbook.
-## Each example should have a self-explanatory task name, or have a brief comment
-## explaining what the example is doing.
-## Examples should focus how to use the module, not on the expected output. The expected output is documented in the RETURN section.
-## Examples should not try to show all usage scenarios, but rather focus on the most common or important scenarios (create, update, delete).
-## If there are complex or many options, use a single example to show the most common usage, and use a separate example to show the complex usage.
-## Examples should be in the following format:
-## - name: <TASK_NAME>
-##   vmware.vmware_rest.<MODULE_NAME>:
-##     state: present
-##     <OPTION_NAME>: <VALUE>
-"""
-
-RETURN = r"""
-## This section is a spec for the expected output of the module.
-## Example:
-value:
-  description:
-    - The resource representation after the operation.
-  returned: On success
-  sample: {}
-  type: dict
-"""
-
-
-## This structure describes the format of the payload expected by the end-points.
-## Include one entry per supported operation (create, update, delete, set, etc.).
-PAYLOAD_FORMAT = {
-    "create": {"query": {}, "body": {}, "path": {}},
-    "update": {"query": {}, "body": {}, "path": {}},
-    "delete": {"query": {}, "body": {}, "path": {}},
-}
-
-## This section is literal, do not change it.
+## These imports are definitely needed. You may need additional imports from the _module_base.py file.
+## Check it for helper methods and other useful imports.
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._argument_spec import (
-    prepare_argument_spec
+    connection_params_argument_spec
 )
-from ansible_collections.vmware.vmware_rest.plugins.module_utils._client import (
-    Client
+from ansible_collections.vmware.vmware_rest.plugins.module_utils._module_base import (
+    VmwareRestCrudModuleBase
 )
-from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
-    UnexpectedAPIResponse,
-)
-## End of literal section.
 
 
-def build_path(params, path_template):
-    ## Substitute path parameters from module params into the API path template.
-    ## Example: "/vcenter/datacenter/{datacenter}" with params["datacenter"] = "dc-1"
-    ## returns "/vcenter/datacenter/dc-1"
-    path = path_template
-    for key, value in params.items():
-        path = path.replace("{" + key + "}", str(value))
-    return path
+## Be sure to review the VmwareRestModuleBase and VmwareRestCrudModuleBase classes in
+## plugins/module_utils/_module_base.py for helper methods (fetch_list, build_updatable_payload,
+## resolve_resource_id, delete_if_exists, update_if_changed, params_differ, payload_body_subset).
+class VmwareRestCrudModule(VmwareRestCrudModuleBase):
+    ## Define create body once; derive update body with payload_body_subset excluding create-only fields.
+    ## _CREATE_BODY = {"name": "name", "parent": "parent", ...}
+    ## PAYLOAD_FORMAT = {
+    ##     "create": {"query": {}, "body": _CREATE_BODY, "path": {}},
+    ##     "update": {"query": {}, "body": payload_body_subset(_CREATE_BODY, exclude=("parent",)), "path": {}},
+    ##     ...
+    ## }
+    ## UPDATABLE_PARAMS = ("name", ...)  # must align with update body module_param keys
+    PAYLOAD_FORMAT = {
+        "create": {"query": {}, "body": {}, "path": {}},
+        "update": {"query": {}, "body": {}, "path": {}},
+        "delete": {"query": {}, "body": {}, "path": {}},
+    }
 
+    UPDATABLE_PARAMS = ()
 
-def build_payload(params, payload_format):
-    ## Build request body from module params using PAYLOAD_FORMAT body mapping.
-    body = {}
-    for api_field, module_param in payload_format.get("body", {}).items():
-        if module_param in params and params[module_param] is not None:
-            body[api_field] = params[module_param]
-    return body
+    def ensure_present(self, path_template: str) -> dict:
+        """
+        One of two primary entry points for the module. This method should be called from the main method of the module when
+        the user has specified that the resource should be present (state=present).
+        The present state ensures a resource exists and matches the desired parameters provided by the user.
+        If the resource does not exist, it should be created.
+        If the resource exists and does not match one or more desired parameters, it should be updated to match the desired parameters.
+        If the resource exists and matches the desired parameters, it should do nothing.
 
+        The method should return the MOID of the managed resource. It should also return a list of changed parameters, if any.
+        If no change was made, the method should return None.
+        Here is the general pattern for the method:
+        1. GET current state (404 means resource does not exist).
+        2. If absent, POST to create.
+        3. If present, compare current vs desired; PUT/PATCH only if different.
+        4. Return changed=True only when the resource was actually modified.
 
-def build_query(params, payload_format):
-    ## Build query parameters from module params using PAYLOAD_FORMAT query mapping.
-    query = {}
-    for api_param, module_param in payload_format.get("query", {}).items():
-        if module_param in params and params[module_param] is not None:
-            query[api_param] = params[module_param]
-    return query or None
+        Although this method is the primary entry point for the module, you should be wary of making it too complex. Many modules
+        may benefit for helper methods dedicated to specific tasks, like creating the resource, comparing current and desired states,
+        and updating the resource.
+        """
+        path = self.build_path(path_template)
+        desired = self.build_payload(self.PAYLOAD_FORMAT["update"])
 
-
-def ensure_present(client, module, path_template):
-    ## Implement create-or-update logic:
-    ## 1. GET current state (404 means resource does not exist).
-    ## 2. If absent, POST to create.
-    ## 3. If present, compare current vs desired; PUT/PATCH only if different.
-    ## 4. Return changed=True only when the resource was actually modified.
-    path = build_path(module.params, path_template)
-    payload_format = PAYLOAD_FORMAT["update"]
-    desired = build_payload(module.params, payload_format)
-
-    try:
-        current_resp = client.get(path)
-        current = current_resp.json
+        ## Client methods have built-in error handling, so we can just call them and let them handle the errors.
+        response = self.client.get(path)
+        if response.status == 404:
+            return {"changed": False}
+        current = response.json
         exists = True
-    except UnexpectedAPIResponse as err:
-        if err.message and "404" in err.message:
-            exists = False
-            current = {}
-        else:
-            module.fail_json(msg="Failed to get current state: {0}".format(err))
 
-    if not exists:
-        create_format = PAYLOAD_FORMAT["create"]
-        create_path = build_path(module.params, path_template)
-        create_body = build_payload(module.params, create_format)
-        create_query = build_query(module.params, create_format)
-        response = client.post(create_path, data=create_body, query=create_query)
+        if not exists:
+            create_path = self.build_path(path_template)
+            create_body = self.build_payload(self.PAYLOAD_FORMAT["create"])
+            create_query = self.build_query(self.PAYLOAD_FORMAT["create"])
+            response = self.client.post(create_path, data=create_body, query=create_query)
+            result = response.json
+            result["changed"] = True
+            return result
+
+        ## The module should be idempotent. This means that the comparison between the desired parameters and the current state must be done
+        ## recursively, and only by comparing parameters that are explicitly specified by the user.
+        ## For example, if the user specifies a desired name for the resource, but does not specify a desired description,
+        ## the module should not consider the description when comparing the current state to the desired state.
+        ## This is because the description is not explicitly specified by the user, and is therefore not a desired parameter.
+        if current == desired:
+            return {"changed": False, "value": current}
+
+        update_body = self.build_payload(self.PAYLOAD_FORMAT["update"])
+        update_query = self.build_query(self.PAYLOAD_FORMAT["update"])
+        response = self.client.put(path, data=update_body, query=update_query)
         result = response.json
         result["changed"] = True
         return result
 
-    if current == desired:
-        return {"changed": False, "value": current}
 
-    update_body = build_payload(module.params, payload_format)
-    update_query = build_query(module.params, payload_format)
-    response = client.put(path, data=update_body, query=update_query)
-    result = response.json
-    result["changed"] = True
-    return result
+    def ensure_absent(self, path_template: str) -> dict:
+        ## Implement delete logic:
+        ## 1. GET or attempt DELETE.
+        ## 2. If resource does not exist (404), return changed=False.
+        ## 3. Otherwise DELETE and return changed=True.
+        path = self.build_path(path_template)
 
+        ## Client methods have built-in error handling, so we can just call them and let them handle the errors.
+        response = self.client.get(path)
+        if response.status == 404:
+          return {"changed": False}
 
-def ensure_absent(client, module, path_template):
-    ## Implement delete logic:
-    ## 1. GET or attempt DELETE.
-    ## 2. If resource does not exist (404), return changed=False.
-    ## 3. Otherwise DELETE and return changed=True.
-    path = build_path(module.params, path_template)
-
-    try:
-        client.get(path)
-    except UnexpectedAPIResponse as err:
-        if err.message and "404" in err.message:
-            return {"changed": False}
-        module.fail_json(msg="Failed to check resource existence: {0}".format(err))
-
-    delete_format = PAYLOAD_FORMAT["delete"]
-    delete_query = build_query(module.params, delete_format)
-    client.delete(path, query=delete_query)
-    return {"changed": True}
+        delete_body = self.build_payload(self.PAYLOAD_FORMAT["delete"])
+        delete_query = self.build_query(self.PAYLOAD_FORMAT["delete"])
+        self.client.delete(path, query=delete_query)
+        return {"changed": True}
 
 
 def main():
     ## The Ansible module spec is described in this documentation: https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec
     ## Use this section as a starting point for the module spec, and add to it as needed.
     ## CRUD modules must set supports_check_mode=False.
-    module_args = prepare_argument_spec()
+    module_args = connection_params_argument_spec()
     module_args["state"] = {
         "type": "str",
         "choices": ["present", "absent"],
         "default": "present",
     }
     ## Add API-specific options to module_args here.
+    ## For dict options, nest suboptions under the 'options' key in argument_spec.
+    ## Example:
+    ## module_args["cpu_allocation"] = {
+    ##     "type": "dict",
+    ##     "options": {
+    ##         "reservation": {"type": "int"},
+    ##         "shares": {
+    ##             "type": "dict",
+    ##             "options": {"level": {"type": "str", "choices": ["LOW", "NORMAL", "HIGH", "CUSTOM"]}},
+    ##         },
+    ##     },
+    ## }
 
     module = AnsibleModule(
         argument_spec=module_args,
@@ -219,27 +139,17 @@ def main():
     )
     ## End of module spec section.
 
-    ## This section is literal, do not change it.
-    try:
-        client = Client(
-            host=module.params["vcenter_hostname"],
-            username=module.params["vcenter_username"],
-            password=module.params["vcenter_password"],
-            validate_certs=module.params["vcenter_validate_certs"],
-            timeout=module.params["session_timeout"],
-            log_file=module.params["vcenter_rest_log_file"],
-        )
-    except Exception as err:
-        module.fail_json(msg="Failed to create a client for vCenter: {0}".format(err))
-    ## End of literal section.
+    crud_module = VmwareRestCrudModule(module)
 
-    path_template = "<api uri path with {param} placeholders>"
-
+    path_template = "<api uri path from spec with {param} placeholders, e.g. /vcenter/resource-pool/{resource_pool}; Client adds /api prefix>"
     if module.params["state"] == "present":
-        result = ensure_present(client, module, path_template)
+        result = crud_module.ensure_present(path_template)
     elif module.params["state"] == "absent":
-        result = ensure_absent(client, module, path_template)
+        result = crud_module.ensure_absent(path_template)
     else:
         module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))
 
     module.exit_json(**result)
+
+if __name__ == '__main__':
+    main()

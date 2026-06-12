@@ -94,15 +94,20 @@ def _list_openapi_yaml_entries(zip_bytes: bytes) -> list[tuple[str, str]]:
     entries.sort(key=lambda item: item[1])
     if not entries:
         raise FileNotFoundError(
-            f"No YAML files found under specifications/vsphere/openapi/ in archive"
+            "No YAML files found under specifications/vsphere/openapi/ in archive"
         )
     return entries
+
+
+def _yaml_relative_to_json(relative_yaml_path: str) -> str:
+    path = Path(relative_yaml_path)
+    return str(path.with_suffix(".json"))
 
 
 def _read_spec_version(zip_bytes: bytes, entries: list[tuple[str, str]]) -> str | None:
     with zipfile.ZipFile(io.BytesIO(zip_bytes)) as archive:
         for archive_path, relative in entries:
-            if relative.endswith("vcenter.yaml"):
+            if relative.endswith(("vcenter.yaml", "vcenter.yml")):
                 spec = yaml.safe_load(archive.read(archive_path))
                 version = spec.get("info", {}).get("version")
                 if version:
@@ -117,18 +122,34 @@ def _normalize_output_version(spec_version: str) -> str:
     return spec_version
 
 
-def _extract_yaml_files(
+def _write_json_spec(target: Path, spec: dict) -> None:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open("w", encoding="utf-8") as handle:
+        json.dump(spec, handle, indent=2, ensure_ascii=False)
+        handle.write("\n")
+
+
+def _remove_yaml_counterpart(output_dir: Path, relative_yaml_path: str) -> None:
+    yaml_path = output_dir / relative_yaml_path
+    if yaml_path.exists():
+        yaml_path.unlink()
+
+
+def _install_json_specs(
     zip_bytes: bytes,
     output_dir: Path,
     entries: list[tuple[str, str]],
 ) -> list[str]:
+    """Convert YAML specs from the archive to JSON and remove YAML counterparts."""
     written: list[str] = []
     with zipfile.ZipFile(io.BytesIO(zip_bytes)) as archive:
-        for archive_path, relative in entries:
-            target = output_dir / relative
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(archive.read(archive_path))
-            written.append(relative)
+        for archive_path, relative_yaml in entries:
+            spec = yaml.safe_load(archive.read(archive_path))
+            relative_json = _yaml_relative_to_json(relative_yaml)
+            target = output_dir / relative_json
+            _write_json_spec(target, spec)
+            _remove_yaml_counterpart(output_dir, relative_yaml)
+            written.append(relative_json)
     return written
 
 
@@ -162,8 +183,11 @@ def fetch_and_install(
         "vcf_tag": vcf_tag,
         "spec_version": spec_version,
         "output_directory": str(output_dir.relative_to(REPO_ROOT)),
-        "format": "yaml",
-        "extracted_files": [relative for _, relative in entries],
+        "format": "json",
+        "source_format": "yaml",
+        "installed_files": [
+            _yaml_relative_to_json(relative) for _, relative in entries
+        ],
         "dry_run": dry_run,
     }
 
@@ -171,7 +195,7 @@ def fetch_and_install(
         return result
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    result["extracted_files"] = _extract_yaml_files(zip_bytes, output_dir, entries)
+    result["installed_files"] = _install_json_specs(zip_bytes, output_dir, entries)
     return result
 
 
@@ -187,7 +211,7 @@ def main() -> int:
     parser.add_argument(
         "--output-version",
         help="Target directory name under config/api_specifications/ (e.g. 9.1.0). "
-        "Defaults to the spec info.version from vcenter.yaml.",
+        "Defaults to the spec info.version from automation/vcenter.json.",
     )
     parser.add_argument(
         "--dry-run",

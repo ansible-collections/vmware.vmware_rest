@@ -3,6 +3,10 @@ SANITY_TARGETS ?=
 INTEGRATION_TARGETS ?=
 UNIT_TARGETS ?=
 
+UNIT_PYTHON_VERSION ?= 3.12
+
+COLLECTION_ROOT = ~/.ansible/collections/ansible_collections/vmware/vmware_rest
+
 # setup commands
 .PHONY: upgrade-collections
 upgrade-collections:
@@ -29,22 +33,39 @@ linters:  ## Run extra linter tests
 	if [ "$$err" = 1 ]; then echo "\nAt least one linter failed\n" >&2; exit 1; fi
 
 .PHONY: units
-units:
-	echo "Unit tests are not yet implemented"
+units: upgrade-collections
+	cd $(COLLECTION_ROOT); \
+	ansible-test units --docker --python $(UNIT_PYTHON_VERSION) --coverage $(UNIT_TARGETS); \
+	ansible-test coverage combine --requirements --export tests/output/coverage/; \
+	ansible-test coverage report --requirements --docker --omit 'tests/*' --show-missing;
+
+.PHONY: units-coverage
+units-coverage: units
+	cd $(COLLECTION_ROOT); \
+	ansible-test coverage xml --requirements; \
+	cp tests/output/reports/coverage.xml $(CURDIR)/coverage-units.xml;
 
 .PHONY: sanity
 sanity: upgrade-collections
-	cd ~/.ansible/collections/ansible_collections/vmware/vmware_rest; \
+	cd $(COLLECTION_ROOT); \
 	ansible-test sanity -v --color --coverage --junit --docker default $(SANITY_TARGETS)
 
 .PHONY: eco-vcenter-ci
 eco-vcenter-ci: tests/integration/integration_config.yml install-integration-reqs upgrade-collections
-	rm -rf ~/.ansible/collections/ansible_collections/cloud/common; \
-	cd ~/.ansible/collections/ansible_collections/vmware/vmware_rest; \
+	rm -rf $(COLLECTION_ROOT)/../../cloud/common; \
+	cd $(COLLECTION_ROOT); \
 	ansible --version; \
 	ansible-test --version; \
-	ANSIBLE_COLLECTIONS_PATH=~/.ansible/collections/ansible_collections ansible-galaxy collection list; \
+	ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. ansible-galaxy collection list; \
 	chmod +x tests/integration/run_eco_vcenter_ci.sh; \
-	ANSIBLE_ROLES_PATH=~/.ansible/collections/ansible_collections/vmware/vmware_rest/tests/integration/targets \
-		ANSIBLE_COLLECTIONS_PATH=~/.ansible/collections/ansible_collections \
+	ANSIBLE_ROLES_PATH=$(COLLECTION_ROOT)/tests/integration/targets \
+		ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. \
 		./tests/integration/run_eco_vcenter_ci.sh $(INTEGRATION_TARGETS)
+
+.PHONY: integration
+integration: upgrade-collections
+	cd $(COLLECTION_ROOT); \
+	ansible --version; \
+	ansible-test --version; \
+	ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. ansible-galaxy collection list; \
+	ANSIBLE_ROLES_PATH=$(COLLECTION_ROOT)/tests/integration/targets ansible-test integration $(INTEGRATION_TARGETS)
