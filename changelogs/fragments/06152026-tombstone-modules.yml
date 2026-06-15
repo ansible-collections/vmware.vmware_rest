@@ -1,0 +1,3 @@
+---
+breaking_changes:
+  - Tombstoned modules that were previously deprecated. See the Release Notes (and linked PR) for a full list.
