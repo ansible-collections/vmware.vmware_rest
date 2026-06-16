@@ -193,7 +193,7 @@ options:
         description:
         - Individual disk relocation map.
         - If unset, all disks will migrate to the datastore specified in the I(datastore)
-            field of I()
+            field
         - 'When clients pass a value of this structure as a parameter, the key in
             the field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk). '
         - 'Valid attributes are:'
@@ -291,7 +291,7 @@ options:
         description:
         - Map of Disks to Update.
         - If unset, all disks will copied to the datastore specified in the I(datastore)
-            field of I() If the same identifier is in I(disks_to_remove) InvalidArgument
+            field. If the same identifier is in I(disks_to_remove) InvalidArgument
             fault will be thrown.
         - 'When clients pass a value of this structure as a parameter, the key in
             the field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk). '
@@ -573,7 +573,7 @@ options:
         - ''
         - ' If the virtual machine is running, this value may only be changed if I(hot_add_enabled)
             is true, and the new memory size must satisfy the constraints specified
-            by I(hot_add_increment_size_mib) and I()'
+            by I(hot_add_increment_size_mib)'
         - ''
         - If unset, the value is unchanged. (['present'])
         - ' - C(hot_add_enabled) (bool): Flag indicating whether adding memory while

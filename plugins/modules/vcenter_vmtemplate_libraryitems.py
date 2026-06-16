@@ -295,7 +295,6 @@ options:
             files.
         - If unset, the virtual machine template's configuration and log files are
             placed on the default storage backing associated with the library specified
-            by I()
         - 'Valid attributes are:'
         - ' - C(datastore) (str): Identifier of the datastore for the deployed virtual
             machine''s configuration and log files.'

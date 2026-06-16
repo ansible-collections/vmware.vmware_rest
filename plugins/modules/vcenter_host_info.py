@@ -26,7 +26,7 @@ options:
         type: list
     connection_states:
         description:
-        - Connection states that a host must be in to match the filter (see I()
+        - Connection states that a host must be in to match the filter
         - If unset or empty, hosts in any connection state match the filter.
         elements: str
         type: list

@@ -52,7 +52,6 @@ options:
             machine or virtual appliance.'
         - If unset, the server will use the annotation from the OVF package. (['deploy'])
         - ' - C(accept_all_EULA) (bool): Whether to accept all End User License Agreements.
-            See I() ([''deploy''])'
         - '   This key is required with [''deploy''].'
         - ' - C(network_mappings) (dict): Specification of the target network to use
             for sections of type ovf:NetworkSection in the OVF descriptor. The key
@@ -67,7 +66,7 @@ options:
             for sections of type vmw:StorageGroupSection in the OVF descriptor. The
             key in the map is the section identifier of the ovf:StorageGroupSection
             section in the OVF descriptor and the value is the target storage specification
-            to be used for deployment. See I()'
+            to be used for deployment.
         - If unset, the server will choose a storage mapping. (['deploy'])
         - ' - C(storage_provisioning) (str): This option defines the virtual disk
             provisioning types that can be set for a disk on the target platform.
@@ -200,7 +199,7 @@ options:
         - '   This key is required with [''deploy'', ''filter''].'
         - ' - C(host_id) (str): Identifier of the target host on which the virtual
             machine or virtual appliance will run. The target host must be a member
-            of the cluster that contains the resource pool identified by I()'
+            of the cluster that contains the resource pool identified by'
         - If unset, the server will automatically select a target host from the resource
             pool if I(resource_pool_id) is a stand-alone host or a cluster with Distributed
             Resource Scheduling (DRS) enabled.
