@@ -1,0 +1,5 @@
+---
+trivial:
+  - Update README.md to reflect the new collection versioning methodology and remove mentions of deprecated modules.
+  - Remove old documentation files that are not used
+  - Update GH workflows to use same doc linting workflow as vmware.vmware
