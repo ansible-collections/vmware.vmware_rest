@@ -62,8 +62,7 @@ options:
         type: list
     power_states:
         description:
-        - Power states that a virtual machine must be in to match the filter (see
-            I()
+        - Power states that a virtual machine must be in to match the filter
         - If unset or empty, virtual machines in any power state match the filter.
         elements: str
         type: list

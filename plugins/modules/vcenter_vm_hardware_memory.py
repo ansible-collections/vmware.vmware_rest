@@ -45,7 +45,7 @@ options:
         - ''
         - ' If the virtual machine is running, this value may only be changed if I(hot_add_enabled)
             is true, and the new memory size must satisfy the constraints specified
-            by I(hot_add_increment_size_mib) and I()'
+            by I(hot_add_increment_size_mib)'
         - ''
         - If unset, the value is unchanged.
         type: int
