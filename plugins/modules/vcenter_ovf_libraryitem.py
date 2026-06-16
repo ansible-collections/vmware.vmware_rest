@@ -51,7 +51,7 @@ options:
         - ' - C(annotation) (str): Annotation assigned to the deployed target virtual
             machine or virtual appliance.'
         - If unset, the server will use the annotation from the OVF package. (['deploy'])
-        - ' - C(accept_all_EULA) (bool): Whether to accept all End User License Agreements.
+        - ' - C(accept_all_EULA) (bool): Whether to accept all End User License Agreements.'
         - '   This key is required with [''deploy''].'
         - ' - C(network_mappings) (dict): Specification of the target network to use
             for sections of type ovf:NetworkSection in the OVF descriptor. The key
@@ -66,7 +66,7 @@ options:
             for sections of type vmw:StorageGroupSection in the OVF descriptor. The
             key in the map is the section identifier of the ovf:StorageGroupSection
             section in the OVF descriptor and the value is the target storage specification
-            to be used for deployment.
+            to be used for deployment.'
         - If unset, the server will choose a storage mapping. (['deploy'])
         - ' - C(storage_provisioning) (str): This option defines the virtual disk
             provisioning types that can be set for a disk on the target platform.

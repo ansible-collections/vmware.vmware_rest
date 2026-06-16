@@ -12,6 +12,10 @@ System programmers can enable pipelines to setup, tear down and deploy VMs while
 
 These modules are based on the [vSphere REST API](https://developer.broadcom.com/sdks/vcf-api-specification/latest/). This API provides partial functionality to the vSphere environment. Feature requests for functionality that is not directly tied to an API endpoint should be created in the [vmware.vmware](https://github.com/ansible-collections/vmware.vmware) collection.
 
+### Breaking changes in version 5.0.0
+
+This collection has had many breaking changes in version `5.0.0`. These changes were done to aid in collection maintenance and increase the ability to support more vSphere environments.
+Previous versions of the collection may still be useful if you do not require vSphere 9+ support.
 
 ## Requirements
 
@@ -22,9 +26,11 @@ There are no additional requirements for this collection, apart from those that 
 ### vSphere
 
 In previous versions of this collection, the major version of the collection was built to support a specific major version of vSphere.
-Starting with version `5.0.0`, the collection will support multiple versions of vSphere when possible.
+Starting with version `5.0.0`, the collection will be generated against a specific version of vSphere, but attempt to document support for other versions as well.
 
 Module notes will dictate what versions of vSphere was used to generate the module, and what versions of vSphere should be compatible. If there is a known incompatibility or deprecation, that will also be listed in the module notes.
+
+If a module says it is compatible with a version other than the one it was generated from, that means that the API spec indicates there should be no conflict. It is still possible that you may encounter issues, or notice a difference in return values. If this is the case, please feel free to open a Github issue as described in the support section below.
 
 ### Ansible version
 
@@ -58,7 +64,6 @@ You can also install a specific version of the collection, for example, if you n
 ```sh
 ansible-galaxy collection install vmware.vmware_rest:5.0.0
 ```
-
 
 ## Use Cases
 
