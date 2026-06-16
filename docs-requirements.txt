@@ -1,4 +1,0 @@
-sphinx
-sphinx-ansible
-sphinx-ansible-theme
-sphinxcontrib-restbuilder
