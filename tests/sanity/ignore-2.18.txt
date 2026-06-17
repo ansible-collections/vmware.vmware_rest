@@ -3,3 +3,6 @@
 .agents/scripts/validate_api_compatibility.py shebang!skip
 .agents/references/modules/full_examples/vcenter_resourcepool.py shebang!skip
 .agents/references/modules/full_examples/vcenter_resourcepool_info.py shebang!skip
+
+config/api_specifications/9.1.0/automation/vcenter.json no-smart-quotes!skip
+config/api_specifications/9.1.0/vi-json/vi-json.json no-smart-quotes!skip
