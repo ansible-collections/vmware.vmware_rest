@@ -189,7 +189,7 @@ def fetch_and_install(
         "format": "json",
         "source_format": "yaml",
         "installed_files": [
-            _yaml_relative_to_json(relative) for _, relative in entries
+            _yaml_relative_to_json(relative) for _, relative in entries  # pylint: disable=disallowed-name
         ],
         "dry_run": dry_run,
     }

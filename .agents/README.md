@@ -52,9 +52,9 @@ Cursor copies live in `.cursor/agents/`.
 
 | Path | Purpose |
 | --- | --- |
-| `references/modules/info.py` | Info module template |
-| `references/modules/crud.py` | CRUD module template |
-| `references/tests/unit_module.py` | Unit test template |
+| `references/modules/info.py.template` | Info module template |
+| `references/modules/crud.py.template` | CRUD module template |
+| `references/tests/unit_module.py.template` | Unit test template |
 | `references/tests/integration_target/` | Integration target template (MockServer + prepare_simulator) |
 | `references/vcf-spec-versions.yaml` | vSphere major → VCF spec mapping |
 

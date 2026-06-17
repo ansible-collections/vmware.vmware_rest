@@ -1,4 +1,11 @@
-#!/usr/bin/python
+## Note to AI: If a comment starts with two hashes (##), it is a note to the AI, not to be included in the final file.
+## Values in angle brackets (<>) are placeholders for values that will be replaced by the AI.
+## Otherwise, values should be considered examples or descriptions of the actual values. The AI should read the value, and use
+## it as a reference, not as a literal value (unless otherwise specified).
+
+## This is a module header. It should be included in all modules. You will need to inject a shebang at the top,
+## such as #!/usr/bin/python
+
 # -*- coding: utf-8 -*-
 #
 # Copyright: (c) <YEAR>, Ansible Project
@@ -7,11 +14,6 @@
 # This module is generated using LLM agents and skills defined in the vmware.vmware_rest repository.
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
-
-## Note to AI: If a comment starts with two hashes (##), it is a note to the AI, not to be included in the final file.
-## Values in angle brackets (<>) are placeholders for values that will be replaced by the AI.
-## Otherwise, values should be considered examples or descriptions of the actual values. The AI should read the value, and use
-## it as a reference, not as a literal value (unless otherwise specified).
 
 
 DOCUMENTATION = r"""

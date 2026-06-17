@@ -19,8 +19,8 @@ Derive all module content from these sources only:
 
 | Source | Purpose |
 | --- | --- |
-| `.agents/references/modules/info.py` | Info module scaffold |
-| `.agents/references/modules/crud.py` | CRUD module scaffold |
+| `.agents/references/modules/info.py.template` | Info module scaffold |
+| `.agents/references/modules/crud.py.template` | CRUD module scaffold |
 | `config/api_specifications/<version>/` | API endpoints, parameters, schemas |
 | `config/modules.yaml` | Modules that must not be implemented (comments only) |
 | `galaxy.yml` | Collection `version` for `version_added` |
@@ -72,8 +72,8 @@ Determine the module type from the module name:
 
 | Pattern | Type | Reference template | HTTP methods |
 | --- | --- | --- | --- |
-| Name ends with `_info` | Info (read-only) | `.agents/references/modules/info.py` | GET, HEAD only |
-| All other names | CRUD (state management) | `.agents/references/modules/crud.py` | Any CRUD operation |
+| Name ends with `_info` | Info (read-only) | `.agents/references/modules/info.py.template` | GET, HEAD only |
+| All other names | CRUD (state management) | `.agents/references/modules/crud.py.template` | Any CRUD operation |
 
 ### Info modules (`*_info`)
 
@@ -187,7 +187,7 @@ For each module in `module_names`:
 ```
 Task Progress:
 - [ ] Resolve module type (info vs CRUD)
-- [ ] Load reference template (info.py or crud.py)
+- [ ] Load reference template (info.py.template or crud.py.template)
 - [ ] Locate API endpoint in spec
 - [ ] Build argument_spec from API parameters (including dict `options`)
 - [ ] Build DOCUMENTATION suboptions for dict parameters
@@ -202,8 +202,8 @@ Task Progress:
 
 Read the appropriate reference file and use it as the structural scaffold:
 
-- Info: `.agents/references/modules/info.py`
-- CRUD: `.agents/references/modules/crud.py`
+- Info: `.agents/references/modules/info.py.template`
+- CRUD: `.agents/references/modules/crud.py.template`
 
 Follow the `##` comments in the template. Lines starting with `##` are
 instructions for you — do not include them in the output file. Replace

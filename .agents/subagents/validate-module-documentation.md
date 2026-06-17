@@ -26,7 +26,7 @@ modify files** — you report findings so the orchestrator can relay
 | --- | --- |
 | `plugins/modules/<name>.py` | `DOCUMENTATION`, `EXAMPLES`, `RETURN`, `argument_spec` |
 | `.agents/references/modules/full_examples/` | Canonical doc patterns for CRUD/info pairs |
-| `.agents/references/modules/crud.py`, `info.py` | Expected structure and wording conventions |
+| `.agents/references/modules/crud.py.template`, `info.py.template` | Expected structure and wording conventions |
 | `plugins/doc_fragments/connection_params.py` | Connection options (via `extends_documentation_fragment`) |
 | `tests/integration/targets/<target_name>/tasks/main.yml` | Parameters used in integration scenarios |
 | `config/api_specifications/<version>/` | Authoritative API parameter names and response schemas |

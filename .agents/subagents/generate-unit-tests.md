@@ -45,7 +45,7 @@ report); do not silently align the test to buggy module code.
 
 | Source | Purpose |
 | --- | --- |
-| `.agents/references/tests/unit_module.py` | Unit test scaffold |
+| `.agents/references/tests/unit_module.py.template` | Unit test scaffold |
 | `config/api_specifications/<version>/` | Operations, response codes, schemas |
 | `plugins/modules/<name>.py` | Wiring only (class name, Client call pattern) |
 | `plugins/module_utils/_client.py` | `Response` helper for building mock returns |
@@ -175,7 +175,7 @@ Task Progress:
 
 ### Step 1: Load reference template
 
-Read `.agents/references/tests/unit_module.py` and follow `##` comments.
+Read `.agents/references/tests/unit_module.py.template` and follow `##` comments.
 Do not include `##` lines in output.
 
 ### Step 2: Build fixtures from schemas
