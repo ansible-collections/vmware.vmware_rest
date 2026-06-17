@@ -5,7 +5,16 @@ UNIT_TARGETS ?=
 
 UNIT_PYTHON_VERSION ?= 3.12
 
+GALAXY_YML ?= $(CURDIR)/galaxy.yml
 COLLECTION_ROOT = ~/.ansible/collections/ansible_collections/vmware/vmware_rest
+
+# Emit --exclude flags for build_ignore directories that exist (ansible-test errors on missing paths).
+# $(1) = path to galaxy.yml; run from COLLECTION_ROOT so -d checks the install tree.
+define sanity_build_ignore_excludes
+sed -n '/^build_ignore:/,$$p' "$(1)" | sed '1d' | sed -n 's/^[[:space:]]*-[[:space:]]*//p' | while IFS= read -r path; do \
+		if [ -d "$$path" ]; then printf ' --exclude %s' "$$path"; fi; \
+done
+endef
 
 # setup commands
 .PHONY: upgrade-collections
@@ -38,6 +47,7 @@ units-coverage: units
 
 .PHONY: integration
 integration: upgrade-collections
+		ansible-galaxy collection install -r tests/integration/requirements.yml; \
 		cd $(COLLECTION_ROOT); \
 		ansible --version; \
 		ansible-test --version; \
@@ -48,5 +58,7 @@ integration: upgrade-collections
 
 .PHONY: sanity
 sanity: upgrade-collections
-	cd $(COLLECTION_ROOT); \
-	ansible-test sanity -v --color --coverage --junit --docker default $(SANITY_TARGETS)
+		cd $(COLLECTION_ROOT); \
+		SANITY_EXCLUDES=$$($(call sanity_build_ignore_excludes,$(GALAXY_YML))); \
+		ansible-test sanity -v --color --coverage --junit \
+				--docker default $$SANITY_EXCLUDES $(SANITY_TARGETS)
