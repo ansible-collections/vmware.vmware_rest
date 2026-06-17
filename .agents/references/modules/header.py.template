@@ -15,6 +15,10 @@
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
 
+## These imports are needed for Ansible functionality.
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
 
 DOCUMENTATION = r"""
 ## This section is the documentation for the module. It should be a valid yaml document that shows how to use the module in an ansible playbook.
