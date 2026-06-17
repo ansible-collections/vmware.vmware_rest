@@ -1,0 +1,180 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VM Storage Policy Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/storage/policy": {
+      "get": {
+        "tags": [
+          "Vcenter.Vm.Storage.Policy"
+        ],
+        "description": "Returns Information about Storage Policy associated with a virtual machine's home directory and/or its virtual hard disks.",
+        "operationId": "Vcenter.Vm.Storage.Policy_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Overview of Storage Policy associated with a virtual machine's home directory and/or its associated virtual hard disks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.Info"
+                },
+                "example": {
+                  "vm_home": "policy-123",
+                  "disks": {
+                    "2000": "policy-456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Vcenter.Vm.Storage.Policy"
+        ],
+        "description": "Updates the storage policy configuration of a virtual machine and/or its associated virtual hard disks.",
+        "operationId": "Vcenter.Vm.Storage.Policy_update",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.UpdateSpec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success!"
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vcenter.Vm.Storage.Policy.VmHomePolicySpec": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "USE_SPECIFIED_POLICY",
+              "USE_DEFAULT_POLICY"
+            ]
+          },
+          "policy": {
+            "type": "string"
+          }
+        }
+      },
+      "Vcenter.Vm.Storage.Policy.DiskPolicySpec": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "USE_SPECIFIED_POLICY",
+              "USE_DEFAULT_POLICY"
+            ]
+          },
+          "policy": {
+            "type": "string"
+          }
+        }
+      },
+      "Vcenter.Vm.Storage.Policy.UpdateSpec": {
+        "type": "object",
+        "properties": {
+          "vm_home": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.VmHomePolicySpec"
+              }
+            ]
+          },
+          "disks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.DiskPolicySpec"
+            }
+          }
+        }
+      },
+      "Vcenter.Vm.Storage.Policy.Info": {
+        "required": [
+          "disks"
+        ],
+        "type": "object",
+        "properties": {
+          "vm_home": {
+            "type": "string"
+          },
+          "disks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key_auth": {
+        "type": "apiKey",
+        "name": "vmware-api-session-id",
+        "in": "header"
+      }
+    }
+  }
+}

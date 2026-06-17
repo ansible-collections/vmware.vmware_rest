@@ -80,3 +80,7 @@ Use `skip_integration: true` to run Phase 1 only. Full workflow:
 
 Project Skills live in `.agents/skills/*/SKILL.md` (YAML frontmatter + instructions). At session start, scan and register all skills. When a request matches a skill's trigger, load and apply it.
 Additional skills may be found in `skills/*/SKILL.md`. These skills are placed by the `lola` command line tool, and are general SDLC skills.
+
+| Skill | Use when |
+| --- | --- |
+| `validate-module-api-compatibility` | Checking whether an LLM-generated module works with a vSphere API version other than its generation spec; compares endpoints against `config/api_specifications/` and updates `notes:` when compatible |

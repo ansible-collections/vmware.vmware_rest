@@ -257,8 +257,12 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
 
     def _create(self):
         create_body = self.build_payload(self.PAYLOAD_FORMAT["create"])
-        response = self.client.post(LIST_PATH, data=create_body)
-        return {"changed": True, "value": response.json}
+        if not self.module.check_mode:
+            response = self.client.post(LIST_PATH, data=create_body)
+            value = response.json
+        else:
+            value = {}
+        return {"changed": True, "value": value}
 
     def _ensure_present_by_id(self, resource_pool):
         path = self.build_path(ITEM_PATH, {"resource_pool": resource_pool})
@@ -300,7 +304,7 @@ def main():
 
     module = AnsibleModule(
         argument_spec=module_args,
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
 
     crud_module = VmwareRestCrudModule(module)

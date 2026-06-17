@@ -1,0 +1,102 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Networking Interfaces IPv6 Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/networking/interfaces/{interface_name}/ipv6": {
+      "get": {
+        "summary": "Get IPv6 configuration.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IPv6 configuration",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "dhcp": false,
+                  "autoconf": true,
+                  "addresses": [
+                    {
+                      "address": "fc00:10:20:83:20c:29ff:fe94:bb5a",
+                      "prefix": 64,
+                      "origin": "MANUAL",
+                      "status": "PREFERRED"
+                    }
+                  ],
+                  "default_gateway": "fc00:10:20:83::1",
+                  "configurable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Set IPv6 configuration.",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dhcp": { "type": "boolean" },
+                  "autoconf": { "type": "boolean" },
+                  "addresses": { "type": "array" },
+                  "default_gateway": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated IPv6 configuration",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "dhcp": false,
+                  "autoconf": true,
+                  "addresses": [],
+                  "default_gateway": "",
+                  "configurable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

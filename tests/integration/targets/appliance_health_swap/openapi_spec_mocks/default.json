@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Health Swap Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/health/swap": {
+      "get": {
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "Swap health",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "green"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

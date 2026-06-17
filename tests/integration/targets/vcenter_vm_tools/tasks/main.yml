@@ -1,0 +1,169 @@
+---
+- name: Test vcenter_vm_tools modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get (manual)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_manual.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+
+    - name: Get VMware Tools information
+      vmware.vmware_rest.vcenter_vm_tools_info:
+        vm: vm-1001
+      register: get_vm_tools_info
+
+    - name: Assert VMware Tools information
+      ansible.builtin.assert:
+        that:
+          - get_vm_tools_info.value is defined
+          - get_vm_tools_info.value.run_state == 'RUNNING'
+          - get_vm_tools_info.value.upgrade_policy == 'MANUAL'
+          - get_vm_tools_info.value.version_status == 'CURRENT'
+          - get_vm_tools_info.value.auto_update_supported is true
+
+    - name: Load API spec expectations for update to upgrade at power cycle
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_manual.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+            Vcenter.Vm.Tools_update: "204"
+
+    - name: Set VMware Tools upgrade policy to upgrade at power cycle
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: vm-1001
+        upgrade_policy: UPGRADE_AT_POWER_CYCLE
+      register: update_vm_tools
+
+    - name: Assert VMware Tools upgrade policy was updated
+      ansible.builtin.assert:
+        that:
+          - update_vm_tools is changed
+          - update_vm_tools.value is defined
+
+    - name: Load API spec expectations for idempotent update
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_upgrade_at_power_cycle.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+            Vcenter.Vm.Tools_update: "204"
+
+    - name: Set VMware Tools upgrade policy to upgrade at power cycle again
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: vm-1001
+        upgrade_policy: UPGRADE_AT_POWER_CYCLE
+      register: update_vm_tools_again
+
+    - name: Assert no change on second update
+      ansible.builtin.assert:
+        that:
+          - update_vm_tools_again is not changed
+          - update_vm_tools_again.value.upgrade_policy == 'UPGRADE_AT_POWER_CYCLE'
+
+    - name: Load API spec expectations for get (upgrade at power cycle)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_upgrade_at_power_cycle.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+
+    - name: Get VMware Tools information after update
+      vmware.vmware_rest.vcenter_vm_tools_info:
+        vm: vm-1001
+      register: get_vm_tools_info_after_update
+
+    - name: Assert updated VMware Tools information
+      ansible.builtin.assert:
+        that:
+          - get_vm_tools_info_after_update.value is defined
+          - get_vm_tools_info_after_update.value.upgrade_policy == 'UPGRADE_AT_POWER_CYCLE'
+          - get_vm_tools_info_after_update.value.run_state == 'RUNNING'
+
+    - name: Load API spec expectations for update to manual
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_upgrade_at_power_cycle.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+            Vcenter.Vm.Tools_update: "204"
+
+    - name: Set VMware Tools upgrade policy to manual
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: vm-1001
+        upgrade_policy: MANUAL
+      register: update_vm_tools_manual
+
+    - name: Assert VMware Tools upgrade policy was set to manual
+      ansible.builtin.assert:
+        that:
+          - update_vm_tools_manual is changed
+          - update_vm_tools_manual.value is defined
+
+    - name: Load API spec expectations for idempotent manual update
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_manual.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+            Vcenter.Vm.Tools_update: "204"
+
+    - name: Set VMware Tools upgrade policy to manual again
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: vm-1001
+        upgrade_policy: MANUAL
+      register: update_vm_tools_manual_again
+
+    - name: Assert no change on second manual update
+      ansible.builtin.assert:
+        that:
+          - update_vm_tools_manual_again is not changed
+          - update_vm_tools_manual_again.value.upgrade_policy == 'MANUAL'
+
+    - name: Load API spec expectations for no-op present
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/tools_manual.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools_get: "200"
+
+    - name: Ensure VMware Tools present without changes
+      vmware.vmware_rest.vcenter_vm_tools:
+        vm: vm-1001
+      register: ensure_vm_tools_present
+
+    - name: Assert no change when upgrade policy is omitted
+      ansible.builtin.assert:
+        that:
+          - ensure_vm_tools_present is not changed
+          - ensure_vm_tools_present.value.upgrade_policy == 'MANUAL'

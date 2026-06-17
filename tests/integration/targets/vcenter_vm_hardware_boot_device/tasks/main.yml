@@ -1,0 +1,86 @@
+---
+- name: Test vcenter_vm_hardware_boot_device modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware.Boot.Device_get: "200"
+
+    - name: Get boot device order
+      vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
+        vm: vm-1001
+      register: get_boot_devices
+
+    - name: Assert boot device order
+      ansible.builtin.assert:
+        that:
+          - get_boot_devices.value is defined
+          - get_boot_devices.value | length == 1
+
+    - name: Load API spec expectations for set
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/update.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware.Boot.Device_get: "200"
+            Vcenter.Vm.Hardware.Boot.Device_set: "204"
+
+    - name: Set boot device order
+      vmware.vmware_rest.vcenter_vm_hardware_boot_device:
+        vm: vm-1001
+        devices:
+          - type: DISK
+            disks:
+              - "2000"
+          - type: CDROM
+      register: set_boot_devices
+
+    - name: Assert boot device order was set
+      ansible.builtin.assert:
+        that:
+          - set_boot_devices is changed
+
+    - name: Create PUT expectation for reset boot devices
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "PUT",
+              "path": "/api/vcenter/vm/vm-1001/hardware/boot/device",
+              "body": {"devices": []}
+            },
+            "httpResponse": {"statusCode": 204}
+          }'
+
+    - name: Create GET expectation for empty boot devices
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/vcenter/vm/vm-1001/hardware/boot/device"
+            },
+            "httpResponse": {"statusCode": 200, "body": []}
+          }'
+
+    - name: Reset boot device order
+      vmware.vmware_rest.vcenter_vm_hardware_boot_device:
+        vm: vm-1001
+        state: absent
+      register: reset_boot_devices
+
+    - name: Assert boot device order was reset
+      ansible.builtin.assert:
+        that:
+          - reset_boot_devices is changed

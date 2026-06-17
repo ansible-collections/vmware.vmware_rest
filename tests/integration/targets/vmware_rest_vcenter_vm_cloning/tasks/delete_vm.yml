@@ -1,6 +1,0 @@
----
-- name: Delete VM
-  vmware.vmware.vm:
-    moid: "{{ vm_id }}"
-    state: absent
-    allow_power_cycling: true

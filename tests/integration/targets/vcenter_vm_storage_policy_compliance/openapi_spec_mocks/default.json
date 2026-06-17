@@ -1,0 +1,209 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VM Storage Policy Compliance Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/storage/policy/compliance": {
+      "get": {
+        "tags": [
+          "Vcenter.Vm.Storage.Policy.Compliance"
+        ],
+        "description": "Returns the cached storage policy compliance information of a virtual machine.",
+        "operationId": "Vcenter.Vm.Storage.Policy.Compliance_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Virtual machine storage policy compliance information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.Compliance.Info"
+                },
+                "example": {
+                  "overall_compliance": "COMPLIANT",
+                  "vm_home": {
+                    "status": "COMPLIANT",
+                    "check_time": "2026-01-15T10:30:00Z",
+                    "policy": "policy-123",
+                    "failure_cause": []
+                  },
+                  "disks": {
+                    "2000": {
+                      "status": "COMPLIANT",
+                      "check_time": "2026-01-15T10:30:00Z",
+                      "policy": "policy-123",
+                      "failure_cause": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      }
+    },
+    "/vcenter/vm/{vm}/storage/policy/compliance?action=check": {
+      "post": {
+        "tags": [
+          "Vcenter.Vm.Storage.Policy.Compliance"
+        ],
+        "description": "Re-computes and returns storage policy compliance for a virtual machine.",
+        "operationId": "Vcenter.Vm.Storage.Policy.Compliance_check",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.Compliance.CheckSpec"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Virtual machine storage policy compliance information after check.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.Compliance.Info"
+                },
+                "example": {
+                  "overall_compliance": "COMPLIANT",
+                  "vm_home": {
+                    "status": "COMPLIANT",
+                    "check_time": "2026-01-15T10:30:00Z",
+                    "policy": "policy-123",
+                    "failure_cause": []
+                  },
+                  "disks": {
+                    "2000": {
+                      "status": "COMPLIANT",
+                      "check_time": "2026-01-15T10:30:00Z",
+                      "policy": "policy-123",
+                      "failure_cause": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vcenter.Vm.Storage.Policy.Compliance.Info": {
+        "required": [
+          "disks",
+          "overall_compliance"
+        ],
+        "type": "object",
+        "properties": {
+          "overall_compliance": {
+            "type": "string"
+          },
+          "vm_home": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.Compliance.VmComplianceInfo"
+              }
+            ]
+          },
+          "disks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Vcenter.Vm.Storage.Policy.Compliance.VmComplianceInfo"
+            }
+          }
+        },
+        "nullable": true
+      },
+      "Vcenter.Vm.Storage.Policy.Compliance.VmComplianceInfo": {
+        "required": [
+          "check_time",
+          "failure_cause",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "check_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "policy": {
+            "type": "string"
+          },
+          "failure_cause": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Vcenter.Vm.Storage.Policy.Compliance.CheckSpec": {
+        "required": [
+          "vm_home"
+        ],
+        "type": "object",
+        "properties": {
+          "vm_home": {
+            "type": "boolean"
+          },
+          "disks": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -67,11 +67,15 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
         exists = True
 
         if not exists:
+
             create_path = self.build_path(path_template)
             create_body = self.build_payload(self.PAYLOAD_FORMAT["create"])
             create_query = self.build_query(self.PAYLOAD_FORMAT["create"])
-            response = self.client.post(create_path, data=create_body, query=create_query)
-            result = response.json
+            if not self.module.check_mode:
+                response = self.client.post(create_path, data=create_body, query=create_query)
+                result = response.json
+            else:
+                result = {}
             result["changed"] = True
             return result
 
@@ -85,8 +89,11 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
 
         update_body = self.build_payload(self.PAYLOAD_FORMAT["update"])
         update_query = self.build_query(self.PAYLOAD_FORMAT["update"])
-        response = self.client.put(path, data=update_body, query=update_query)
-        result = response.json
+        if not self.module.check_mode:
+            response = self.client.put(path, data=update_body, query=update_query)
+            result = response.json
+        else:
+            result = {}
         result["changed"] = True
         return result
 
@@ -105,14 +112,16 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
 
         delete_body = self.build_payload(self.PAYLOAD_FORMAT["delete"])
         delete_query = self.build_query(self.PAYLOAD_FORMAT["delete"])
-        self.client.delete(path, query=delete_query)
+        ## If the module is in check mode, do not actually delete the resource.
+        if not self.module.check_mode:
+            self.client.delete(path, query=delete_query)
         return {"changed": True}
 
 
 def main():
     ## The Ansible module spec is described in this documentation: https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec
     ## Use this section as a starting point for the module spec, and add to it as needed.
-    ## CRUD modules must set supports_check_mode=False.
+    ## CRUD modules must set supports_check_mode to True or False; see below.
     module_args = connection_params_argument_spec()
     module_args["state"] = {
         "type": "str",
@@ -133,9 +142,17 @@ def main():
     ##     },
     ## }
 
+    ## CRUD modules must set supports_check_mode to True or False, depending on whether the module can be executed in a
+    ## read-only manner. In check mode, the module should execute as much of the logic as possible, but should not make any
+    ## changes to the system. Operations like PUT, PATCH, and DELETE should be skipped in check mode (with the exception
+    ## being the authentication operations).
+    ## Obviously, not all return values can be set when running in check mode. For example, you cannot return the MOID of
+    ## a resource that was created, since the module did not actually create the resource. This is OK and expected. Return
+    ## what values you can; nothing additional is needed or needs to be documented.
+    ## See the module code above for an example of how to encorporate check mode into the module.
     module = AnsibleModule(
         argument_spec=module_args,
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
     ## End of module spec section.
 

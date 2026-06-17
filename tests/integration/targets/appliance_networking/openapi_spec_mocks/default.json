@@ -1,0 +1,86 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Networking Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/networking": {
+      "get": {
+        "summary": "Get Networking information for all configured interfaces.",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "Networking information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "dns": {
+                    "mode": "STATIC",
+                    "hostname": "vcenter.example.com",
+                    "servers": ["192.168.1.1"]
+                  },
+                  "interfaces": {
+                    "nic0": {
+                      "mac": "00:0C:29:94:BB:5A",
+                      "name": "nic0",
+                      "status": "up"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Enable or disable IPv6 on all interfaces.",
+        "operationId": "update",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ipv6_enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/appliance/networking?action=reset": {
+      "post": {
+        "summary": "Reset appliance networking configuration.",
+        "operationId": "reset",
+        "responses": {
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}

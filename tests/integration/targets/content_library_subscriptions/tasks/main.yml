@@ -1,0 +1,36 @@
+---
+- name: Test content_library_subscriptions_info against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Create GET expectation for list subscriptions
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/content/library/lib-1/subscriptions"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": [
+                {
+                  "subscription": "subscription-1",
+                  "subscribed_library": "subscribed-lib-1",
+                  "subscribed_library_name": "my-subscribed-library"
+                }
+              ]
+            }
+          }'
+
+    - name: Invoke content_library_subscriptions_info
+      vmware.vmware_rest.content_library_subscriptions_info:
+        library: lib-1
+      register: result
+
+    - name: Assert module returned value
+      ansible.builtin.assert:
+        that:
+          - result.value is defined
+          - result.value | length == 1
+          - result.value[0].subscription == 'subscription-1'
+          - result.value[0].subscribed_library_name == 'my-subscribed-library'

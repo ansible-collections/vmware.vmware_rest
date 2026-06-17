@@ -1,0 +1,74 @@
+---
+- name: Test vcenter_vmtemplate_libraryitems against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.VmTemplate.LibraryItems_create: "200"
+            Vcenter.VmTemplate.LibraryItems_get: "200"
+
+    - name: Create GET expectation for list library items
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/content/library/item",
+              "queryStringParameters": {
+                "library_id": ["fbcc0f38-b7d9-4243-95f6-fb28f1ab35a6"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": []
+            }
+          }'
+
+    - name: Create a template library item
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        name: my-template
+        library: fbcc0f38-b7d9-4243-95f6-fb28f1ab35a6
+        source_vm: vm-1001
+      register: create_template
+
+    - name: Assert template library item was created
+      ansible.builtin.assert:
+        that:
+          - create_template is changed
+          - create_template.value is defined
+
+    - name: Create deploy template expectation
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/vcenter/vm-template/library-items/tmpl-lib-item-1"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": "\"vm-2001\""
+            }
+          }'
+
+    - name: Deploy a virtual machine from template
+      vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+        state: deploy
+        name: deployed-from-template
+        template_library_item: tmpl-lib-item-1
+        placement:
+          resource_pool: resgroup-1009
+      register: deploy_template
+
+    - name: Assert virtual machine was deployed from template
+      ansible.builtin.assert:
+        that:
+          - deploy_template is changed
+          - deploy_template.value == 'vm-2001'

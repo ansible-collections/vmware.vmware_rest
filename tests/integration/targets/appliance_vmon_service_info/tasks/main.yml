@@ -1,0 +1,80 @@
+---
+- name: Test appliance_vmon_service_info module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for list vMon services
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+
+    - name: List vMon-managed services
+      vmware.vmware_rest.appliance_vmon_service_info:
+      register: list_vmon_services
+
+    - name: Assert vMon services are listed
+      ansible.builtin.assert:
+        that:
+          - list_vmon_services.value is defined
+          - list_vmon_services.value | length >= 1
+          - list_vmon_services.value[0].key == 'vpxd'
+
+    - name: Reset MockServer expectations before get scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create GET expectation for vpxd service
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/rest/appliance/vmon/service/vpxd"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": {
+                  "name_key": "cis.vpxd.ServiceName",
+                  "description_key": "cis.vpxd.ServiceDescription",
+                  "startup_type": "AUTOMATIC",
+                  "state": "STARTED"
+                }
+              }
+            }
+          }'
+
+    - name: Get vpxd vMon service information
+      vmware.vmware_rest.appliance_vmon_service_info:
+        service: vpxd
+      register: get_vpxd_service
+
+    - name: Assert vpxd service information
+      ansible.builtin.assert:
+        that:
+          - get_vpxd_service.value is defined
+          - get_vpxd_service.value.state == 'STARTED'
+          - get_vpxd_service.value.startup_type == 'AUTOMATIC'

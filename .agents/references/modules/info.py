@@ -75,7 +75,7 @@ def main():
     ## and document them with 'suboptions' in DOCUMENTATION.
     module = AnsibleModule(
         argument_spec=module_args,
-        supports_check_mode=True
+        supports_check_mode=True  ## Info modules always support check mode, since they are read-only.
     )
 
     info_module = VmwareRestInfoModule(module)

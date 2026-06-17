@@ -85,7 +85,6 @@ action_groups:
     - vcenter_resourcepool_info
     - vcenter_resourcepool
     - vcenter_storage_policies_info
-    - vcenter_vm_guest_customization
     - vcenter_vm_guest_filesystem_directories
     - vcenter_vm_guest_identity_info
     - vcenter_vm_guest_localfilesystem_info
@@ -96,26 +95,17 @@ action_groups:
     - vcenter_vm_guest_power_info
     - vcenter_vm_guest_power
     - vcenter_vm_hardware_adapter_sata_info
-    - vcenter_vm_hardware_adapter_sata
     - vcenter_vm_hardware_adapter_scsi_info
-    - vcenter_vm_hardware_adapter_scsi
     - vcenter_vm_hardware_boot_device_info
     - vcenter_vm_hardware_boot_device
     - vcenter_vm_hardware_boot_info
     - vcenter_vm_hardware_boot
     - vcenter_vm_hardware_cdrom_info
-    - vcenter_vm_hardware_cdrom
-    - vcenter_vm_hardware_cpu_info
-    - vcenter_vm_hardware_cpu
     - vcenter_vm_hardware_disk_info
-    - vcenter_vm_hardware_disk
     - vcenter_vm_hardware_ethernet_info
-    - vcenter_vm_hardware_ethernet
     - vcenter_vm_hardware_floppy_info
     - vcenter_vm_hardware_floppy
     - vcenter_vm_hardware_info
-    - vcenter_vm_hardware_memory_info
-    - vcenter_vm_hardware_memory
     - vcenter_vm_hardware_parallel_info
     - vcenter_vm_hardware_parallel
     - vcenter_vm_hardware
@@ -125,7 +115,6 @@ action_groups:
     - vcenter_vm_libraryitem_info
     - vcenter_vm_power_info
     - vcenter_vm_power
-    - vcenter_vm
     - vcenter_vm_storage_policy_compliance_info
     - vcenter_vm_storage_policy_compliance
     - vcenter_vm_storage_policy_info
@@ -338,51 +327,6 @@ plugin_routing:
       deprecation:
         removal_version: 5.0.0
         warning_text: Use vmware.vmware.content_library_item_info instead.
-
-    vcenter_vm_guest_customization:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm_apply_customization instead.
-
-    vcenter_vm_hardware_adapter_sata:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm_hardware_adapter_scsi:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm_hardware_cdrom:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm_hardware_cpu:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm_hardware_disk:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm_hardware_ethernet:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm_hardware_memory:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
-
-    vcenter_vm:
-      deprecation:
-        removal_version: 5.0.0
-        warning_text: Use vmware.vmware.vm instead.
 
   lookup:
     cluster_moid:

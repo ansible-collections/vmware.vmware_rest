@@ -1,0 +1,176 @@
+---
+- name: Test vcenter_vm_storage_policy_compliance modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get cached compliance
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy.Compliance_get: "200"
+
+    - name: Get cached VM storage policy compliance information
+      vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
+        vm: vm-1009
+      register: get_vm_compliance_info
+
+    - name: Assert cached storage policy compliance information
+      ansible.builtin.assert:
+        that:
+          - get_vm_compliance_info.value is defined
+          - get_vm_compliance_info.value.overall_compliance == 'COMPLIANT'
+          - get_vm_compliance_info.value.vm_home is defined
+          - get_vm_compliance_info.value.vm_home.status == 'COMPLIANT'
+          - get_vm_compliance_info.value.vm_home.policy == 'policy-123'
+          - get_vm_compliance_info.value.disks is defined
+          - get_vm_compliance_info.value.disks['2000'] is defined
+          - get_vm_compliance_info.value.disks['2000'].status == 'COMPLIANT'
+
+    - name: Create compliance check endpoint expectation
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/expectation
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          httpRequest:
+            method: POST
+            path: /api/vcenter/vm/vm-1009/storage/policy/compliance
+            queryStringParameters:
+              action: ["check"]
+          httpResponse:
+            statusCode: 200
+            headers:
+              Content-Type: ["application/json"]
+            body:
+              overall_compliance: COMPLIANT
+              vm_home:
+                status: COMPLIANT
+                check_time: "2026-01-15T10:30:00Z"
+                policy: policy-123
+                failure_cause: []
+              disks:
+                "2000":
+                  status: COMPLIANT
+                  check_time: "2026-01-15T10:30:00Z"
+                  policy: policy-123
+                  failure_cause: []
+
+    - name: Re-compute storage policy compliance for a virtual machine
+      vmware.vmware_rest.vcenter_vm_storage_policy_compliance:
+        state: check
+        vm: vm-1009
+      register: check_vm_compliance
+
+    - name: Assert storage policy compliance check result
+      ansible.builtin.assert:
+        that:
+          - check_vm_compliance is changed
+          - check_vm_compliance.value is defined
+          - check_vm_compliance.value.overall_compliance == 'COMPLIANT'
+          - check_vm_compliance.value.vm_home is defined
+          - check_vm_compliance.value.vm_home.status == 'COMPLIANT'
+          - check_vm_compliance.value.disks['2000'] is defined
+
+    - name: Re-compute storage policy compliance again
+      vmware.vmware_rest.vcenter_vm_storage_policy_compliance:
+        state: check
+        vm: vm-1009
+      register: check_vm_compliance_again
+
+    - name: Assert compliance check always reports changed
+      ansible.builtin.assert:
+        that:
+          - check_vm_compliance_again is changed
+          - check_vm_compliance_again.value.overall_compliance == 'COMPLIANT'
+
+    - name: Create compliance check with disks endpoint expectation
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/expectation
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          priority: 10
+          httpRequest:
+            method: POST
+            path: /api/vcenter/vm/vm-1009/storage/policy/compliance
+            queryStringParameters:
+              action: ["check"]
+            body:
+              type: JSON
+              matchType: ONLY_MATCHING_FIELDS
+              json:
+                vm_home: true
+                disks:
+                  - "2000"
+                  - "2001"
+          httpResponse:
+            statusCode: 200
+            headers:
+              Content-Type: ["application/json"]
+            body:
+              overall_compliance: COMPLIANT
+              vm_home:
+                status: COMPLIANT
+                check_time: "2026-01-15T10:30:00Z"
+                policy: policy-123
+                failure_cause: []
+              disks:
+                "2000":
+                  status: COMPLIANT
+                  check_time: "2026-01-15T10:30:00Z"
+                  policy: policy-123
+                  failure_cause: []
+                "2001":
+                  status: COMPLIANT
+                  check_time: "2026-01-15T10:30:00Z"
+                  policy: policy-123
+                  failure_cause: []
+
+    - name: Re-compute compliance for VM home and specific disks
+      vmware.vmware_rest.vcenter_vm_storage_policy_compliance:
+        state: check
+        vm: vm-1009
+        vm_home: true
+        disks:
+          - "2000"
+          - "2001"
+      register: check_vm_compliance_disks
+
+    - name: Assert compliance check with specific disks
+      ansible.builtin.assert:
+        that:
+          - check_vm_compliance_disks is changed
+          - check_vm_compliance_disks.value is defined
+          - check_vm_compliance_disks.value.overall_compliance == 'COMPLIANT'
+          - check_vm_compliance_disks.value.vm_home.status == 'COMPLIANT'
+          - check_vm_compliance_disks.value.disks['2000'] is defined
+          - check_vm_compliance_disks.value.disks['2001'] is defined
+
+    - name: Load API spec expectations for get after check with disks
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/compliance_with_disks.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy.Compliance_get: "200"
+
+    - name: Get cached compliance information after check with disks
+      vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
+        vm: vm-1009
+      register: get_vm_compliance_info_after_check
+
+    - name: Assert cached compliance includes both disks
+      ansible.builtin.assert:
+        that:
+          - get_vm_compliance_info_after_check.value is defined
+          - get_vm_compliance_info_after_check.value.disks['2000'] is defined
+          - get_vm_compliance_info_after_check.value.disks['2001'] is defined

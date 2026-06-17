@@ -178,7 +178,8 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         if response.status == 404:
             return {"changed": False}
 
-        self.client.delete(path)
+        if not self.module.check_mode:
+            self.client.delete(path)
         return {"changed": True}
 
     def update_if_changed(self, path, current, update_body):
@@ -189,9 +190,15 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         if not params_differ(current, update_body):
             return {"changed": False, "value": current}
 
-        self.client.patch(path, data=update_body)
-        updated = self.client.get(path)
-        return {"changed": True, "value": updated.json}
+        if not self.module.check_mode:
+            updated = self.client.patch(path, data=update_body)
+            if updated.status in (200, 204) and not updated.data:
+                value = self.client.get(path).json
+            else:
+                value = updated.json
+        else:
+            value = current
+        return {"changed": True, "value": value}
 
 
 class VmwareRestInfoModuleBase(VmwareRestModuleBase):

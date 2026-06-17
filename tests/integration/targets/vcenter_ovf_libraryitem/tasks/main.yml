@@ -1,0 +1,136 @@
+---
+- name: Test vcenter_ovf_libraryitem against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Ovf.LibraryItem_create: "200"
+
+    - name: Create GET expectation for list library items
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/content/library/item",
+              "queryStringParameters": {
+                "library_id": ["fbcc0f38-b7d9-4243-95f6-fb28f1ab35a6"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": []
+            }
+          }'
+
+    - name: Export a virtual machine as an OVF library item
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        source:
+          type: VirtualMachine
+          id: vm-1001
+        target:
+          library_id: fbcc0f38-b7d9-4243-95f6-fb28f1ab35a6
+        create_spec:
+          name: Golden Image
+          description: A golden image for templating
+          flags: []
+        state: present
+      register: ovf_create
+
+    - name: Assert OVF library item was created
+      ansible.builtin.assert:
+        that:
+          - ovf_create is changed
+          - ovf_create.value is defined
+          - ovf_create.value.succeeded is true
+
+    - name: Load API spec expectations for deploy
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/deploy.json"
+          operationsAndResponses:
+            Vcenter.Ovf.LibraryItem_deploy: "200"
+
+    - name: Create deploy OVF expectation
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/vcenter/ovf/library-item/3994f858-2d45-4dac-b407-0643a29308bd",
+              "queryStringParameters": {"action": ["deploy"]}
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {"succeeded": true, "ovf_library_item_id": "3994f858-2d45-4dac-b407-0643a29308bd"}
+            }
+          }'
+
+    - name: Deploy an OVF library item
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        ovf_library_item_id: 3994f858-2d45-4dac-b407-0643a29308bd
+        state: deploy
+        target:
+          resource_pool_id: resgroup-1009
+        deployment_spec:
+          name: deployed-vm
+          accept_all_eula: true
+          storage_provisioning: thin
+      register: ovf_deploy
+
+    - name: Assert OVF library item was deployed
+      ansible.builtin.assert:
+        that:
+          - ovf_deploy is changed
+          - ovf_deploy.value is defined
+
+    - name: Load API spec expectations for filter
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/deploy.json"
+          operationsAndResponses:
+            Vcenter.Ovf.LibraryItem_filter: "200"
+
+    - name: Create filter OVF expectation
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/vcenter/ovf/library-item/3994f858-2d45-4dac-b407-0643a29308bd",
+              "queryStringParameters": {"action": ["filter"]}
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {"succeeded": true, "ovf_library_item_id": "3994f858-2d45-4dac-b407-0643a29308bd"}
+            }
+          }'
+
+    - name: Get OVF deployment metadata
+      vmware.vmware_rest.vcenter_ovf_libraryitem:
+        ovf_library_item_id: 3994f858-2d45-4dac-b407-0643a29308bd
+        state: filter
+        target:
+          resource_pool_id: resgroup-1009
+      register: ovf_filter
+
+    - name: Assert OVF deployment metadata
+      ansible.builtin.assert:
+        that:
+          - ovf_filter.value is defined
+          - ovf_filter.value.succeeded is true

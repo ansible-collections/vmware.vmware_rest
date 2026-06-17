@@ -1,0 +1,23 @@
+---
+- name: Test vcenter_network_info against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+
+    - name: Invoke vcenter_network_info
+      vmware.vmware_rest.vcenter_network_info:
+      register: result
+
+    - name: Assert module returned value
+      ansible.builtin.assert:
+        that:
+          - result.value is defined

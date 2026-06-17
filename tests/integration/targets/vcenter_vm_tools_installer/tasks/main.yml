@@ -1,0 +1,176 @@
+---
+- name: Test vcenter_vm_tools_installer modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get (disconnected)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+
+    - name: Get VMware Tools installer information (disconnected)
+      vmware.vmware_rest.vcenter_vm_tools_installer_info:
+        vm: vm-1009
+      register: tools_installer_info_disconnected
+
+    - name: Assert installer is disconnected
+      ansible.builtin.assert:
+        that:
+          - tools_installer_info_disconnected.value is defined
+          - tools_installer_info_disconnected.value.is_connected is false
+
+    - name: Load API spec expectations for connect (get)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+
+    - name: Create connect endpoint expectation
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/vcenter/vm/vm-1009/tools/installer",
+              "queryStringParameters": {
+                "action": ["connect"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 204
+            }
+          }'
+
+    - name: Connect the VMware Tools installer CD
+      vmware.vmware_rest.vcenter_vm_tools_installer:
+        vm: vm-1009
+      register: connect_tools_installer
+
+    - name: Assert installer was connected
+      ansible.builtin.assert:
+        that:
+          - connect_tools_installer is changed
+
+    - name: Load API spec expectations for get (connected)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/connected.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+
+    - name: Get VMware Tools installer information (connected)
+      vmware.vmware_rest.vcenter_vm_tools_installer_info:
+        vm: vm-1009
+      register: tools_installer_info_connected
+
+    - name: Assert installer is connected
+      ansible.builtin.assert:
+        that:
+          - tools_installer_info_connected.value is defined
+          - tools_installer_info_connected.value.is_connected is true
+
+    - name: Load API spec expectations for idempotent connect
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/connected.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+
+    - name: Connect the VMware Tools installer CD again (idempotent)
+      vmware.vmware_rest.vcenter_vm_tools_installer:
+        vm: vm-1009
+      register: connect_tools_installer_again
+
+    - name: Assert no change on second connect
+      ansible.builtin.assert:
+        that:
+          - connect_tools_installer_again is not changed
+          - connect_tools_installer_again.value is defined
+          - connect_tools_installer_again.value.is_connected is true
+
+    - name: Load API spec expectations for disconnect
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/connected.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+            Vcenter.Vm.Tools.Installer_disconnect: "204"
+
+    - name: Disconnect the VMware Tools installer CD
+      vmware.vmware_rest.vcenter_vm_tools_installer:
+        state: absent
+        vm: vm-1009
+      register: disconnect_tools_installer
+
+    - name: Assert installer was disconnected
+      ansible.builtin.assert:
+        that:
+          - disconnect_tools_installer is changed
+
+    - name: Load API spec expectations for idempotent disconnect
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+
+    - name: Disconnect the VMware Tools installer CD again (idempotent)
+      vmware.vmware_rest.vcenter_vm_tools_installer:
+        state: absent
+        vm: vm-1009
+      register: disconnect_tools_installer_again
+
+    - name: Assert no change on second disconnect
+      ansible.builtin.assert:
+        that:
+          - disconnect_tools_installer_again is not changed
+          - disconnect_tools_installer_again.value is defined
+          - disconnect_tools_installer_again.value.is_connected is false
+
+    - name: Load API spec expectations for get after disconnect
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Tools.Installer_get: "200"
+
+    - name: Get VMware Tools installer information after disconnect
+      vmware.vmware_rest.vcenter_vm_tools_installer_info:
+        vm: vm-1009
+      register: tools_installer_info_after_disconnect
+
+    - name: Assert installer is disconnected after disconnect
+      ansible.builtin.assert:
+        that:
+          - tools_installer_info_after_disconnect.value is defined
+          - tools_installer_info_after_disconnect.value.is_connected is false

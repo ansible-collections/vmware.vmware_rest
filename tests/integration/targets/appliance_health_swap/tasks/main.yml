@@ -1,0 +1,24 @@
+---
+- name: Test appliance_health_swap_info module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get swap health
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get the swap health status
+      vmware.vmware_rest.appliance_health_swap_info:
+      register: get_swap_health_info
+
+    - name: Assert swap health status
+      ansible.builtin.assert:
+        that:
+          - get_swap_health_info.value is defined
+          - get_swap_health_info.value == 'green'

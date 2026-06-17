@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: prepare_simulator
+    vars:
+      prepare_simulator_mock_api_spec_file_dir: appliance_update/openapi_spec_mocks

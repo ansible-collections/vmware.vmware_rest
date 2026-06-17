@@ -1,0 +1,106 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter OVF Library Item Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/ovf/library-item": {
+      "post": {
+        "operationId": "Vcenter.Ovf.LibraryItem_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "succeeded": true,
+                  "ovf_library_item_id": "3994f858-2d45-4dac-b407-0643a29308bd"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vcenter/ovf/library-item/{ovfLibraryItemId}?action=deploy": {
+      "post": {
+        "operationId": "Vcenter.Ovf.LibraryItem_deploy",
+        "parameters": [
+          {
+            "name": "ovfLibraryItemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "succeeded": true,
+                  "ovf_library_item_id": "3994f858-2d45-4dac-b407-0643a29308bd"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vcenter/ovf/library-item/{ovfLibraryItemId}?action=filter": {
+      "post": {
+        "operationId": "Vcenter.Ovf.LibraryItem_filter",
+        "parameters": [
+          {
+            "name": "ovfLibraryItemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "succeeded": true,
+                  "ovf_library_item_id": "3994f858-2d45-4dac-b407-0643a29308bd"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

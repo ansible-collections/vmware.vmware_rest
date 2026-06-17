@@ -1,0 +1,119 @@
+---
+- name: Test appliance_networking_interfaces_ipv4 modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get IPv4
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get IPv4 configuration for nic0
+      vmware.vmware_rest.appliance_networking_interfaces_ipv4_info:
+        interface_name: nic0
+      register: get_ipv4_info
+
+    - name: Assert IPv4 configuration is returned
+      ansible.builtin.assert:
+        that:
+          - get_ipv4_info.value is defined
+          - get_ipv4_info.value.mode == 'STATIC'
+          - get_ipv4_info.value.address == '10.20.80.191'
+          - get_ipv4_info.value.prefix == 24
+          - get_ipv4_info.value.default_gateway == '10.20.80.1'
+
+    - name: Reset MockServer expectations before update scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create GET expectation for current static IPv4 config
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/networking/interfaces/nic0/ipv4"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "configurable": true,
+                "mode": "STATIC",
+                "address": "10.20.80.191",
+                "prefix": 24,
+                "default_gateway": "10.20.80.1"
+              }
+            },
+            "times": {
+              "remainingTimes": 1
+            }
+          }'
+
+    - name: Create PUT expectation for DHCP update
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "PUT",
+              "path": "/api/appliance/networking/interfaces/nic0/ipv4",
+              "body": {
+                "mode": "DHCP"
+              }
+            },
+            "httpResponse": {
+              "statusCode": 200
+            }
+          }'
+
+    - name: Create GET expectation for updated DHCP IPv4 config
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/networking/interfaces/nic0/ipv4"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "configurable": true,
+                "mode": "DHCP"
+              }
+            }
+          }'
+
+    - name: Set nic0 to use DHCP
+      vmware.vmware_rest.appliance_networking_interfaces_ipv4:
+        interface_name: nic0
+        mode: DHCP
+      register: set_ipv4_dhcp
+
+    - name: Assert IPv4 was updated to DHCP
+      ansible.builtin.assert:
+        that:
+          - set_ipv4_dhcp is changed
+          - set_ipv4_dhcp.value is defined
+          - set_ipv4_dhcp.value.mode == 'DHCP'

@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Networking Interfaces Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/networking/interfaces": {
+      "get": {
+        "summary": "List network interfaces.",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "List of interfaces",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "status": { "type": "string" },
+                      "mac": { "type": "string" }
+                    },
+                    "required": ["name", "status", "mac"]
+                  }
+                },
+                "example": [
+                  {
+                    "mac": "00:0C:29:94:BB:5A",
+                    "name": "nic0",
+                    "status": "up"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/networking/interfaces/{interface_name}": {
+      "get": {
+        "summary": "Get network interface information.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Interface information",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "mac": "00:0C:29:94:BB:5A",
+                  "name": "nic0",
+                  "status": "up"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

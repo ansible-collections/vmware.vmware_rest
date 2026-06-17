@@ -23,6 +23,7 @@ description: >-
   include general information about the module, interactions with the vSphere API, and any other relevant information.
   Keep it concise and to the point, this is not meant to be a comprehensive documentation, it is meant to be a quick
   reference for the module.
+  Do not include details about API deprecation or obsolescence here; those are documented in the notes section.
 
 ## This section is literal, do not change it.
 author:
@@ -68,6 +69,8 @@ requirements: []
 
 notes:
   - Include a sentence about what version of the API spec was used to generate the module.
+  - If the API endpoint is deprecated, include a sentence about that here. For example:
+    "This API endpoint is deprecated in vSphere 8.0.0 and the module will not be compatible with future versions of vSphere."
 """
 
 EXAMPLES = r"""

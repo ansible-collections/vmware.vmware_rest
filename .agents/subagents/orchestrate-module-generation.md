@@ -95,6 +95,37 @@ Delegate to each subagent by following its definition in
 `.agents/subagents/<name>.md`. Pass structured inputs and read structured
 reports from each step.
 
+### Subagent availability and fallbacks
+
+Not every specialist is registered as a launchable Task subagent. When
+delegation fails with an invalid `subagent_type`, use the fallback below —
+do **not** skip the step.
+
+| Subagent | Typical launch | Fallback when unavailable |
+| --- | --- | --- |
+| `fetch-vsphere-openapi-spec` | Task or `.agents/scripts/fetch_vsphere_openapi_spec.py` | Run the helper script from the repo root |
+| `generate-ansible-modules` | Task | Follow `.agents/subagents/generate-ansible-modules.md` inline; write only `plugins/modules/` |
+| `generate-unit-tests` | Task | Follow `.agents/subagents/generate-unit-tests.md` inline; write only `tests/unit/` |
+| `generate-integration-tests` | Task or `generalPurpose` agent with subagent definition | Follow `.agents/subagents/generate-integration-tests.md` inline; write only `tests/integration/` |
+| `validate-module-documentation` | _(read-only; often not launchable)_ | **Orchestrator inline review:** read modules + integration tasks per `.agents/subagents/validate-module-documentation.md`; produce the report format from that definition; relay `doc_corrections_needed` to `generate-ansible-modules` |
+
+Record in the final report whether each step used a subagent delegate or an
+inline fallback.
+
+### Test execution rules
+
+`make units` and `make integration` both run `ansible-galaxy collection install
+--upgrade`, which **replaces** the installed collection under
+`~/.ansible/collections/ansible_collections/vmware/vmware_rest/`. Running more
+than one test command concurrently disrupts in-progress runs.
+
+| Rule | Requirement |
+| --- | --- |
+| Sequential tests | Run **one** `make units` or `make integration` at a time; wait for exit before starting the next |
+| Per-target integration | Prefer `INTEGRATION_TARGETS=<single_target>` per batch; do not combine unrelated targets in one run unless verifying a final sweep |
+| After module doc fixes | Re-run unit regression (`mode: verify`) for the affected batch before marking complete |
+| Collection install | Expect each `make` invocation to reinstall the collection from the working tree |
+
 ## User inputs
 
 Parse from the user request:
@@ -189,10 +220,11 @@ documenting failures attributed to the module.
 #### 3a-doc. Validate module documentation (structural)
 
 After modules are generated or fixed, run a read-only documentation review
-before unit tests:
+before unit tests. **Do not skip this step** even when unit tests already pass.
 
 ```
 Delegate → validate-module-documentation
+  (or inline fallback per "Subagent availability and fallbacks")
 Inputs:
   module_names: [<batch modules>]
   api_spec_version: <version>
@@ -240,6 +272,14 @@ Phase 1 exit: all unit tests pass, or `max_iterations` exceeded (stop batch).
 Run after Phase 1 succeeds. Run up to `max_iterations` cycles until integration
 tests pass.
 
+**MockServer note:** OpenAPI expectation loading often fails (HTTP 502) for
+`POST` requests with `?action=<verb>` query parameters (e.g. `action=check`,
+`action=connect`) and for `PATCH` bodies containing JSON `null`. Integration
+targets may need explicit `PUT /mockserver/expectation` tasks — see
+`vcenter_vm_tools_installer` and `vcenter_vm_storage_policy_compliance`
+targets. This is a **test_error** / **simulator_error** fix in
+`tests/integration/`, not a module fix.
+
 #### 3d. Generate and run integration tests
 
 ```
@@ -257,10 +297,13 @@ and runs `make integration INTEGRATION_TARGETS=<target_name>`.
 #### 3d-doc. Validate module documentation (integration)
 
 After integration tests pass, run a full documentation review comparing
-EXAMPLES to integration tasks and RETURN to captured module output:
+EXAMPLES to integration tasks and RETURN to captured module output. **Do not
+skip this step** — it is required before Phase 3 even when integration and
+unit tests already pass.
 
 ```
 Delegate → validate-module-documentation
+  (or inline fallback per "Subagent availability and fallbacks")
 Inputs:
   module_names: [<batch modules>]
   api_spec_version: <version>
@@ -270,19 +313,23 @@ Inputs:
 ```
 
 If RETURN validation needs module payloads not visible in test assertions,
-re-run integration with `ANSIBLE_VERBOSITY=2` or delegate to
-`generate-integration-tests` to add temporary `debug: var:` tasks, then
-re-invoke validation with the captured output.
+re-run integration with `ANSIBLE_VERBOSITY=2` (sequentially — see test
+execution rules) or delegate to `generate-integration-tests` to add temporary
+`debug: var:` tasks, then re-invoke validation with the captured output.
 
 | Outcome | Action |
 | --- | --- |
 | `status: pass` | Proceed to Phase 3 |
-| `status: fail` (errors) | Relay `doc_corrections_needed` → `generate-ansible-modules` (3a) → Phase 1–2 |
+| `status: fail` (errors) | Relay `doc_corrections_needed` → `generate-ansible-modules` (3a) → re-validate (3a-doc) → Phase 2 → 3d-doc |
 | Warnings only | Proceed to Phase 3; include warnings in final report |
 
 Run 3d-doc only when integration tests pass. If integration fails with
 `module_error`, fix the module first; doc validation against broken output
 is misleading.
+
+When doc fixes change only `DOCUMENTATION` / `EXAMPLES` / `RETURN`, re-run
+Phase 3 unit regression; integration re-run is optional unless EXAMPLES changed
+in ways that integration tasks should mirror.
 
 #### 3e. Evaluate integration test report
 
@@ -432,6 +479,8 @@ After all batches complete (or fail), return a summary:
 - Batch 1: <module names>
   - Phase 1 iterations: <n>
   - Phase 2 iterations: <n>
+  - Doc validation (structural): <pass|fail|inline fallback>
+  - Doc validation (integration): <pass|fail|skipped|inline fallback>
   - Unit tests: <passed>/<total>
   - Integration target: <target_name> — <passed|failed|skipped>
   - Files:
@@ -449,9 +498,14 @@ After all batches complete (or fail), return a summary:
 
 ## Orchestrator constraints
 
-- **Do not** implement modules or tests directly — delegate to subagents.
+- **Do not** implement modules or tests directly — delegate to subagents, except
+  when using documented **inline fallbacks** (read-only doc validation, or when
+  a specialist subagent cannot be launched).
 - **Do not** modify files outside what subagents are allowed to write, except
-  when acting as the user's general agent with explicit permission.
+  when acting as the user's general agent with explicit permission or executing
+  an inline fallback with the same write scope as the specialist.
+- **Do not** run `make units` or `make integration` concurrently (see test
+  execution rules).
 - **Respect write scopes:** modules → `plugins/modules/`; unit tests →
   `tests/unit/`; integration → `tests/integration/`; fetch →
   `config/api_specifications/`.

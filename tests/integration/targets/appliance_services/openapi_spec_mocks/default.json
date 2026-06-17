@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Services Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/services": {
+      "get": {
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "Services map",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ntpd": {
+                    "description": "ntpd.service",
+                    "state": "STOPPED"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/services/{service}": {
+      "get": {
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service info",
+            "content": {
+              "application/json": {
+                "example": {
+                  "description": "ntpd.service",
+                  "state": "STOPPED"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "start",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Action accepted"
+          }
+        }
+      }
+    }
+  }
+}

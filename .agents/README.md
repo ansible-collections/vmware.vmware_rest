@@ -40,6 +40,12 @@ The **`orchestrate-module-generation`** subagent coordinates the full pipeline.
 
 Cursor copies live in `.cursor/agents/`.
 
+## Skills
+
+| Name | Definition | Write scope |
+| --- | --- | --- |
+| `validate-module-api-compatibility` | [skills/validate-module-api-compatibility/SKILL.md](skills/validate-module-api-compatibility/SKILL.md) | `plugins/modules/<name>.py` `notes:` only when compatible |
+
 ## Reference scaffolds
 
 | Path | Purpose |

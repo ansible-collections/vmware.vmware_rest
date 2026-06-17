@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Infraprofile Configs Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/infraprofile/configs": {
+      "get": {
+        "summary": "List all the profiles which are registered.",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "List of profiles with description are registered.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "info": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["name", "info"]
+                  }
+                },
+                "example": [
+                  {
+                    "name": "default",
+                    "info": "Default profile"
+                  },
+                  {
+                    "name": "ApplianceManagement",
+                    "info": "Appliance management profile"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/infraprofile/configs?action=export": {
+      "post": {
+        "summary": "Exports the desired profile specification.",
+        "operationId": "export",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profiles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Configuration specification JSON in string format.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{\"action\":\"RESTART_SERVICE\",\"productName\":\"VMware vCenter Server\",\"profiles\":{\"ApplianceManagement\":{\"name\":\"ApplianceManagement\"}}}"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

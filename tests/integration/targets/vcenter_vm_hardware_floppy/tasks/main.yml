@@ -1,0 +1,91 @@
+---
+- name: Test vcenter_vm_hardware_floppy modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware.Floppy_list: "200"
+
+    - name: List resources (empty)
+      vmware.vmware_rest.vcenter_vm_hardware_floppy_info:
+        vm: vm-1001
+      register: list_info
+
+    - name: Assert empty list
+      ansible.builtin.assert:
+        that:
+          - list_info.value is defined
+          - list_info.value | length == 0
+
+    - name: Load API spec expectations for create
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/crud.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware.Floppy_list: "200"
+            Vcenter.Vm.Hardware.Floppy_create: "200"
+
+    - name: Create expectation for module item-path GET with literal vm placeholder
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/vcenter/vm/{vm}/hardware/floppy/8000"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "label": "Floppy drive 1",
+                "type": "CLIENT",
+                "start_connected": false
+              }
+            }
+          }'
+
+    - name: Create resource
+      vmware.vmware_rest.vcenter_vm_hardware_floppy:
+        vm: vm-1001
+        start_connected: false
+      register: create_result
+
+    - name: Assert resource was created
+      ansible.builtin.assert:
+        that:
+          - create_result is changed
+          - create_result.value is defined
+
+    - name: Load API spec expectations for get
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/crud.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware.Floppy_get: "200"
+
+    - name: Get created resource
+      vmware.vmware_rest.vcenter_vm_hardware_floppy_info:
+        vm: vm-1001
+        floppy: "{{ create_result.id }}"
+      register: get_info
+
+    - name: Assert resource details
+      ansible.builtin.assert:
+        that:
+          - get_info.value is defined
+
+

@@ -1,0 +1,27 @@
+---
+- name: Test vcenter_storage_policies_info against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Storage.Policies_list: "200"
+
+    - name: Invoke vcenter_storage_policies_info
+      vmware.vmware_rest.vcenter_storage_policies_info: {}
+      register: result
+
+    - name: Assert module returned value
+      ansible.builtin.assert:
+        that:
+          - result.value is defined
+          - result.value | length == 1
+          - result.value[0].policy == '08d5e973-1d60-48e0-877b-66f5e0c3d88b'
+          - result.value[0].name == 'vSAN Default Storage Policy'
+          - result.value[0].description == 'Storage policy used by default for vSAN datastores'

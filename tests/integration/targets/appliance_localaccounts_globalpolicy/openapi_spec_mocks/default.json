@@ -1,0 +1,67 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Local Accounts Global Policy Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/local-accounts/global-policy": {
+      "get": {
+        "summary": "Get the global password policy.",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "Global password policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "max_days": { "type": "integer" },
+                    "min_days": { "type": "integer" },
+                    "warn_days": { "type": "integer" },
+                    "minimum_length": { "type": "integer" }
+                  }
+                },
+                "example": {
+                  "max_days": 90,
+                  "min_days": 1,
+                  "warn_days": 7,
+                  "minimum_length": 8
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Set the global password policy.",
+        "operationId": "set",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Policy updated"
+          }
+        }
+      }
+    }
+  }
+}

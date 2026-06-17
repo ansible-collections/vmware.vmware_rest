@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Resource Pool Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/resource-pool": {
+      "get": {
+        "operationId": "Vcenter.ResourcePool_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": [
+                  {
+                    "resource_pool": "resgroup-1009",
+                    "name": "my_resource_pool"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vcenter/resource-pool/{resourcePool}": {
+      "get": {
+        "operationId": "Vcenter.ResourcePool_get",
+        "parameters": [
+          {
+            "name": "resourcePool",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "name": "my_resource_pool",
+                  "resource_pools": [],
+                  "cpu_allocation": {
+                    "expandable_reservation": true,
+                    "limit": 8000,
+                    "reservation": 1000,
+                    "shares": {
+                      "level": "NORMAL"
+                    }
+                  },
+                  "memory_allocation": {
+                    "expandable_reservation": true,
+                    "limit": 4096,
+                    "reservation": 1024,
+                    "shares": {
+                      "level": "NORMAL"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Vcenter.ResourcePool_update",
+        "parameters": [
+          {
+            "name": "resourcePool",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "ok"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "Vcenter.ResourcePool_delete",
+        "parameters": [
+          {
+            "name": "resourcePool",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}
