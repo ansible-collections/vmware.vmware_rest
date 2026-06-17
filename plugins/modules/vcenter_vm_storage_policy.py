@@ -20,7 +20,7 @@ options:
             diks.
         - if unset the current storage policy is retained.
         - 'When clients pass a value of this structure as a parameter, the key in
-            the field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk). '
+            the field map must be the MOID of a virtual disk resource. '
         type: dict
     session_timeout:
         description:

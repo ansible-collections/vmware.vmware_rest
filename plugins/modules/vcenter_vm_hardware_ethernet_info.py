@@ -19,7 +19,7 @@ options:
     nic:
         description:
         - Virtual Ethernet adapter identifier.
-        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_ethernet).
+        - The parameter must be the MOID of a virtual Ethernet adapter resource.
             Required with I(state=['get'])
         type: str
     session_timeout:

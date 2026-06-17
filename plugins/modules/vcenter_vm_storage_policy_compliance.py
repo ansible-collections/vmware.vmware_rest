@@ -20,7 +20,7 @@ options:
             should be checked.
         - If unset or empty, compliance check is invoked on all the associated disks.
         - When clients pass a value of this structure as a parameter, the field must
-            contain the id of resources returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+            contain the MOID of virtual disk resources.
         elements: str
         type: list
     session_timeout:
