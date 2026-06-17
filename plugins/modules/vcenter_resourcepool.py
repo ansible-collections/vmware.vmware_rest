@@ -249,9 +249,7 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
 
         name = self.params.get("name")
         if not name:
-            self.module.fail_json(
-                msg="name is required when creating a resource pool"
-            )
+            self.module.fail_json(msg="name is required when creating a resource pool")
 
         found_id = self._find_by_name(name)
         if found_id:
@@ -338,9 +336,7 @@ def main():
     elif module.params["state"] == "absent":
         result = crud_module.ensure_absent()
     else:
-        module.fail_json(
-            msg="Unsupported state: {0}".format(module.params["state"])
-        )
+        module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))
 
     module.exit_json(**result)
 

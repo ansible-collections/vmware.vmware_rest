@@ -55,7 +55,11 @@ def set_module_args(args):
 
 
 API_PATH = "/appliance/shutdown"
-SAMPLE_BODY = {'action': 'reboot', 'reason': 'this is an example', 'shutdown_time': '2022-11-24T06:12:16.000Z'}
+SAMPLE_BODY = {
+    "action": "reboot",
+    "reason": "this is an example",
+    "shutdown_time": "2022-11-24T06:12:16.000Z",
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

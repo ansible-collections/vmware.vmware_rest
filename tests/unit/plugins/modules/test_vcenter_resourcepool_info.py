@@ -55,8 +55,25 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/resource-pool"
-SAMPLE_BODY = [{'name': 'my_resource_pool', 'resource_pool': 'resgroup-1009', 'resource_pools': [], 'cpu_allocation': {'expandable_reservation': True, 'limit': -1, 'reservation': 0, 'shares': {'level': 'NORMAL'}}, 'memory_allocation': {'expandable_reservation': True, 'limit': -1, 'reservation': 0, 'shares': {'level': 'NORMAL'}}}]
-
+SAMPLE_BODY = [
+    {
+        "name": "my_resource_pool",
+        "resource_pool": "resgroup-1009",
+        "resource_pools": [],
+        "cpu_allocation": {
+            "expandable_reservation": True,
+            "limit": -1,
+            "reservation": 0,
+            "shares": {"level": "NORMAL"},
+        },
+        "memory_allocation": {
+            "expandable_reservation": True,
+            "limit": -1,
+            "reservation": 0,
+            "shares": {"level": "NORMAL"},
+        },
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")
@@ -68,8 +85,8 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     mock_module.params = set_module_args({})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.side_effect = [
-        _response(200, [{'resource_pool': 'resgroup-1009', 'name': 'rp1'}]),
-        _response(200, {'name': 'rp1'}),
+        _response(200, [{"resource_pool": "resgroup-1009", "name": "rp1"}]),
+        _response(200, {"name": "rp1"}),
     ]
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()

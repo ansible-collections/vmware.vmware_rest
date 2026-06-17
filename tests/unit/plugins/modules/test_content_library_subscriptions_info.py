@@ -55,8 +55,13 @@ def set_module_args(args):
 
 
 API_PATH = "/content/library/{library}/subscriptions"
-SAMPLE_BODY = [{'subscribed_library': 'subscribed-lib-id', 'subscribed_library_name': 'my-subscribed-library', 'subscription': 'subscription-id'}]
-
+SAMPLE_BODY = [
+    {
+        "subscribed_library": "subscribed-lib-id",
+        "subscribed_library_name": "my-subscribed-library",
+        "subscription": "subscription-id",
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

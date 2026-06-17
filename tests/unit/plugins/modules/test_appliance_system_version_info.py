@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/appliance/system/version"
-SAMPLE_BODY = {'value': '9.1.0.0'}
+SAMPLE_BODY = {"value": "9.1.0.0"}
 
 
 @patch.object(module_under_test, "AnsibleModule")

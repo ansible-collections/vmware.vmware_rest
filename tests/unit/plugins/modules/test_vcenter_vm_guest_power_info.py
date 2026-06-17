@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/guest/power"
-SAMPLE_BODY = {'operations_ready': True, 'state': 'RUNNING'}
+SAMPLE_BODY = {"operations_ready": True, "state": "RUNNING"}
 
 
 @patch.object(module_under_test, "AnsibleModule")

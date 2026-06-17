@@ -52,7 +52,10 @@ def _resolve_vcf_tag(vsphere_major: str, version_map: dict) -> dict:
         raise ValueError(
             f"Unsupported vSphere major version {major_key!r}. Supported: {supported}"
         )
-    if mapping.get("available_on_broadcom") is False or mapping.get("fallback") == "vmsgen":
+    if (
+        mapping.get("available_on_broadcom") is False
+        or mapping.get("fallback") == "vmsgen"
+    ):
         raise ValueError(
             f"vSphere {major_key}.x specs are not published on Broadcom. "
             f"Use vmsgen against a live vCenter (see docs/development.md)."

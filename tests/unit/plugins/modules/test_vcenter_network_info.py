@@ -55,7 +55,14 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/network"
-SAMPLE_BODY = [{'name': 'VM Network', 'network': 'network-1016', 'type': 'STANDARD_PORTGROUP'}, {'name': 'my-portgroup', 'network': 'dvportgroup-1022', 'type': 'DISTRIBUTED_PORTGROUP'}]
+SAMPLE_BODY = [
+    {"name": "VM Network", "network": "network-1016", "type": "STANDARD_PORTGROUP"},
+    {
+        "name": "my-portgroup",
+        "network": "dvportgroup-1022",
+        "type": "DISTRIBUTED_PORTGROUP",
+    },
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

@@ -64,6 +64,7 @@ def mock_client():
 def set_module_args(args):
     return {**CONNECTION_PARAMS, **args}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestOvfLibraryItemModule, "_create_client")
 def test_module_invokes_client(mock_create_client, mock_ansible_module, mock_client):

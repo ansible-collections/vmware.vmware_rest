@@ -93,7 +93,9 @@ def test_get_service(mock_create_client, mock_ansible_module, mock_client):
     mock_module.params = set_module_args({"service": "ntpd"})
     mock_module.exit_json.side_effect = exit_json
 
-    mock_client.get.return_value = _response(200, {"description": "ntpd.service", "state": "STARTED"})
+    mock_client.get.return_value = _response(
+        200, {"description": "ntpd.service", "state": "STARTED"}
+    )
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()

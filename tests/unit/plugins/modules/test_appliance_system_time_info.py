@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/appliance/system/time"
-SAMPLE_BODY = {'value': '1406835512.0'}
+SAMPLE_BODY = {"value": "1406835512.0"}
 
 
 @patch.object(module_under_test, "AnsibleModule")

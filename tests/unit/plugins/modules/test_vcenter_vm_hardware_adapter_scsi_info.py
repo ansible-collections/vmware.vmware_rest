@@ -55,7 +55,16 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/adapter/scsi"
-SAMPLE_BODY = [{'id': 'scsi-2000', 'label': 'SCSI controller 0', 'type': 'PVSCSI', 'sharing': 'NONE', 'scsi': {'bus': 0, 'unit': 7}, 'pci_slot_number': 16}]
+SAMPLE_BODY = [
+    {
+        "id": "scsi-2000",
+        "label": "SCSI controller 0",
+        "type": "PVSCSI",
+        "sharing": "NONE",
+        "scsi": {"bus": 0, "unit": 7},
+        "pci_slot_number": 16,
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

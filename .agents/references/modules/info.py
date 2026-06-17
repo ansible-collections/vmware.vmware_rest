@@ -9,19 +9,17 @@
 ## Check it for helper methods and other useful imports.
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._argument_spec import (
-    connection_params_argument_spec
+    connection_params_argument_spec,
 )
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._module_base import (
-    VmwareRestInfoModuleBase
+    VmwareRestInfoModuleBase,
 )
 
 
 ## Use fetch_list() from VmwareRestModuleBase for collection GET + normalize_list_response.
 class VmwareRestInfoModule(VmwareRestInfoModuleBase):
     ## This structure describes the format of the payload expected by the end-points
-    PAYLOAD_FORMAT = {
-        "get": {"query": {}, "body": {}, "path": {}}
-    }
+    PAYLOAD_FORMAT = {"get": {"query": {}, "body": {}, "path": {}}}
 
     def get_info(self):
         """
@@ -37,32 +35,32 @@ class VmwareRestInfoModule(VmwareRestInfoModuleBase):
         """
         result = []
         searched_resource_ids_response = self.client.get(
-          method="GET",
-          path="<api uri path from spec, e.g. /vcenter/resource-pool; Client adds /api prefix>",
-          ## The options below should be filled in with the appropriate values. They are all optional.
-          ## They query and data specs come from the vSphere API specification, and the values should come from the module parameters.
-          query=None, ## This should be a dictionary of the query parameters for the API call.
-          data=None, ## This should be a dictionary of the data to be sent to the API call.
-          headers=None, ## This should be a dictionary of the headers to be sent to the API call.
-          bytes=None, ## This should be the bytes to be sent to the API call. If not None, the data parameter will be ignored.
+            method="GET",
+            path="<api uri path from spec, e.g. /vcenter/resource-pool; Client adds /api prefix>",
+            ## The options below should be filled in with the appropriate values. They are all optional.
+            ## They query and data specs come from the vSphere API specification, and the values should come from the module parameters.
+            query=None,  ## This should be a dictionary of the query parameters for the API call.
+            data=None,  ## This should be a dictionary of the data to be sent to the API call.
+            headers=None,  ## This should be a dictionary of the headers to be sent to the API call.
+            bytes=None,  ## This should be the bytes to be sent to the API call. If not None, the data parameter will be ignored.
         )
         if searched_resource_ids_response.status == 404:
-          return result
+            return result
 
         for resource_id in searched_resource_ids_response.json["value"]:
-          resource_info = self.client.get(
-              method="GET",
-              path="<api uri path from spec, e.g. /vcenter/resource-pool/{resource_id}; Client adds /api prefix>",
-              query=None,
-              data=None,
-              headers=None,
-              bytes=None,
-          )
-          resource_json = resource_info.json
-          if 'info' not in resource_json:
-            resource_json['id'] = resource_id
+            resource_info = self.client.get(
+                method="GET",
+                path="<api uri path from spec, e.g. /vcenter/resource-pool/{resource_id}; Client adds /api prefix>",
+                query=None,
+                data=None,
+                headers=None,
+                bytes=None,
+            )
+            resource_json = resource_info.json
+            if "info" not in resource_json:
+                resource_json["id"] = resource_id
 
-          result.append(resource_json)
+            result.append(resource_json)
         return result
 
 
@@ -75,7 +73,7 @@ def main():
     ## and document them with 'suboptions' in DOCUMENTATION.
     module = AnsibleModule(
         argument_spec=module_args,
-        supports_check_mode=True  ## Info modules always support check mode, since they are read-only.
+        supports_check_mode=True,  ## Info modules always support check mode, since they are read-only.
     )
 
     info_module = VmwareRestInfoModule(module)
@@ -83,5 +81,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

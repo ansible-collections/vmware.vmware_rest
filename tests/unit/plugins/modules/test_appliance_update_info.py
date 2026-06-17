@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/appliance/update"
-SAMPLE_BODY = {'value': 'UP_TO_DATE'}
+SAMPLE_BODY = {"value": "UP_TO_DATE"}
 
 
 @patch.object(module_under_test, "AnsibleModule")

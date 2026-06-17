@@ -55,7 +55,10 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/guest/operations"
-SAMPLE_BODY = {'guest_operations_ready': True, 'interactive_guest_operations_ready': True}
+SAMPLE_BODY = {
+    "guest_operations_ready": True,
+    "interactive_guest_operations_ready": True,
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

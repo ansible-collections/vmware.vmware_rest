@@ -55,8 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware"
-SAMPLE_BODY = {'version': 'VMX_19', 'upgrade_policy': 'NEVER', 'upgrade_status': 'NONE'}
-
+SAMPLE_BODY = {"version": "VMX_19", "upgrade_policy": "NEVER", "upgrade_status": "NONE"}
 
 
 @patch.object(module_under_test, "AnsibleModule")

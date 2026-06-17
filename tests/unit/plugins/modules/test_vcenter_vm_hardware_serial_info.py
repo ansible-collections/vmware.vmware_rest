@@ -55,8 +55,17 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/serial"
-SAMPLE_BODY = [{'port': '5000', 'label': 'Serial port 1', 'state': 'NOT_CONNECTED', 'start_connected': False, 'allow_guest_control': True, 'yield_on_poll': False, 'backing': {'type': 'HOST_DEVICE'}}]
-
+SAMPLE_BODY = [
+    {
+        "port": "5000",
+        "label": "Serial port 1",
+        "state": "NOT_CONNECTED",
+        "start_connected": False,
+        "allow_guest_control": True,
+        "yield_on_poll": False,
+        "backing": {"type": "HOST_DEVICE"},
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")
@@ -65,11 +74,11 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
-    mock_module.params = set_module_args({'vm': 'vm-1'})
+    mock_module.params = set_module_args({"vm": "vm-1"})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.side_effect = [
-        _response(200, ['serial-1']),
-        _response(200, {'start_connected': True}),
+        _response(200, ["serial-1"]),
+        _response(200, {"start_connected": True}),
     ]
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
@@ -82,7 +91,7 @@ def test_get_not_found(mock_create_client, mock_ansible_module, mock_client):
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
-    mock_module.params = set_module_args({'vm': 'vm-1'})
+    mock_module.params = set_module_args({"vm": "vm-1"})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.return_value = _response(404, None)
     with pytest.raises(AnsibleExitJson) as exc:

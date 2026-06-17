@@ -114,9 +114,7 @@ class VmwareRestModule(VmwareRestModuleBase):
 
     def ensure_present(self):
         if self.params.get("ipv6_enabled") is None:
-            self.module.fail_json(
-                msg="ipv6_enabled is required when state is present."
-            )
+            self.module.fail_json(msg="ipv6_enabled is required when state is present.")
 
         current_response = self.client.get(NETWORKING_PATH)
         current = current_response.json

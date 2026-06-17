@@ -55,7 +55,14 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/floppy"
-SAMPLE_BODY = {'floppy': '4000', 'label': 'Floppy drive 1', 'state': 'NOT_CONNECTED', 'start_connected': False, 'allow_guest_control': True, 'backing': {'type': 'CLIENT_DEVICE'}}
+SAMPLE_BODY = {
+    "floppy": "4000",
+    "label": "Floppy drive 1",
+    "state": "NOT_CONNECTED",
+    "start_connected": False,
+    "allow_guest_control": True,
+    "backing": {"type": "CLIENT_DEVICE"},
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

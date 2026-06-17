@@ -44,7 +44,11 @@ def params_differ(current, desired):
 def payload_body_subset(body, exclude=()):
     """Build a PAYLOAD_FORMAT body map omitting excluded API fields."""
     excluded = set(exclude)
-    return {api_field: module_param for api_field, module_param in body.items() if api_field not in excluded}
+    return {
+        api_field: module_param
+        for api_field, module_param in body.items()
+        if api_field not in excluded
+    }
 
 
 def find_summary_id(summaries, name, name_key="name", id_key="resource_pool"):

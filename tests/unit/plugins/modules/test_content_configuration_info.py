@@ -55,7 +55,12 @@ def set_module_args(args):
 
 
 API_PATH = "/content/configuration"
-SAMPLE_BODY = {'automatic_sync_enabled': True, 'automatic_sync_start_hour': 20, 'automatic_sync_stop_hour': 7, 'maximum_concurrent_item_syncs': 5}
+SAMPLE_BODY = {
+    "automatic_sync_enabled": True,
+    "automatic_sync_start_hour": 20,
+    "automatic_sync_stop_hour": 7,
+    "maximum_concurrent_item_syncs": 5,
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

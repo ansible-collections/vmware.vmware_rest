@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/folder"
-SAMPLE_BODY = [{'folder': 'group-v42', 'name': 'vm', 'type': 'VIRTUAL_MACHINE'}]
+SAMPLE_BODY = [{"folder": "group-v42", "name": "vm", "type": "VIRTUAL_MACHINE"}]
 
 
 @patch.object(module_under_test, "AnsibleModule")

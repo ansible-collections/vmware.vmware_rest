@@ -8,10 +8,10 @@
 ## Check it for helper methods and other useful imports.
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._argument_spec import (
-    connection_params_argument_spec
+    connection_params_argument_spec,
 )
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._module_base import (
-    VmwareRestCrudModuleBase
+    VmwareRestCrudModuleBase,
 )
 
 
@@ -72,7 +72,9 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
             create_body = self.build_payload(self.PAYLOAD_FORMAT["create"])
             create_query = self.build_query(self.PAYLOAD_FORMAT["create"])
             if not self.module.check_mode:
-                response = self.client.post(create_path, data=create_body, query=create_query)
+                response = self.client.post(
+                    create_path, data=create_body, query=create_query
+                )
                 result = response.json
             else:
                 result = {}
@@ -97,7 +99,6 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
         result["changed"] = True
         return result
 
-
     def ensure_absent(self, path_template: str) -> dict:
         ## Implement delete logic:
         ## 1. GET or attempt DELETE.
@@ -108,7 +109,7 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
         ## Client methods have built-in error handling, so we can just call them and let them handle the errors.
         response = self.client.get(path)
         if response.status == 404:
-          return {"changed": False}
+            return {"changed": False}
 
         delete_body = self.build_payload(self.PAYLOAD_FORMAT["delete"])
         delete_query = self.build_query(self.PAYLOAD_FORMAT["delete"])
@@ -168,5 +169,6 @@ def main():
 
     module.exit_json(**result)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

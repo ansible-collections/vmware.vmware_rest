@@ -23,7 +23,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import 
     VmwareModuleError,
 )
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -31,9 +30,7 @@ DEFAULT_HEADERS = dict(Accept="application/json")
 
 
 class Response:
-    def __init__(
-        self, status, data, headers=None
-    ):
+    def __init__(self, status, data, headers=None):
         self.status = status
         self.data = data
         # [('h1', 'v1'), ('H2', 'V2')] -> {'h1': 'v1', 'h2': 'V2'}
@@ -132,7 +129,7 @@ class Client:
             "data": data,
             "headers": headers,
             "timeout": self.timeout,
-            "validate_certs": self.validate_certs
+            "validate_certs": self.validate_certs,
         }
 
         try:
@@ -302,9 +299,13 @@ class ClientRequestErrorHandler:
         if isinstance(exception, URLError):
             self._handle_request_urlerror(exception, method, path, request_kwargs)
         else:
-            self._raise_generic_communication_error(exception, method, path, request_kwargs)
+            self._raise_generic_communication_error(
+                exception, method, path, request_kwargs
+            )
 
-    def _raise_generic_communication_error(self, exception, method, path, request_kwargs):
+    def _raise_generic_communication_error(
+        self, exception, method, path, request_kwargs
+    ):
         """
         Raise a generic ApiCommunicationError for unexpected exceptions.
         """
@@ -369,7 +370,9 @@ class ClientRequestErrorHandler:
 
         self._raise_generic_communication_error(exception, method, path, request_kwargs)
 
-    def fail_module_with_error(self, error: Union[Exception, VmwareModuleError], message: Optional[str] = None):
+    def fail_module_with_error(
+        self, error: Union[Exception, VmwareModuleError], message: Optional[str] = None
+    ):
         """
         Helper method to fail the module with an error.
         If the error is an instance of VmwareModuleError, it will be used to format the error message.

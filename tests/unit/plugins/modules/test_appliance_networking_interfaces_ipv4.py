@@ -95,9 +95,7 @@ def test_update_mode_to_dhcp(mock_create_client, mock_ansible_module, mock_clien
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
     mock_module.check_mode = False
-    mock_module.params = set_module_args(
-        {"interface_name": "nic0", "mode": "DHCP"}
-    )
+    mock_module.params = set_module_args({"interface_name": "nic0", "mode": "DHCP"})
     mock_module.exit_json.side_effect = exit_json
 
     mock_client.get.side_effect = [
@@ -110,9 +108,7 @@ def test_update_mode_to_dhcp(mock_create_client, mock_ansible_module, mock_clien
         module_under_test.main()
 
     mock_client.get.assert_has_calls([call(IPV4_PATH), call(IPV4_PATH)])
-    mock_client.request.assert_called_once_with(
-        "PUT", IPV4_PATH, data={"mode": "DHCP"}
-    )
+    mock_client.request.assert_called_once_with("PUT", IPV4_PATH, data={"mode": "DHCP"})
     assert exc.value.kwargs == {"changed": True, "value": UPDATED_DHCP}
 
 

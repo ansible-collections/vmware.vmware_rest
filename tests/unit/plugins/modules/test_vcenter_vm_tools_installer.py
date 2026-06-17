@@ -69,7 +69,9 @@ def set_module_args(args):
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
-def test_connect_already_connected(mock_create_client, mock_ansible_module, mock_client):
+def test_connect_already_connected(
+    mock_create_client, mock_ansible_module, mock_client
+):
     # GET Vcenter.Vm.Tools.Installer_get — 200, installer already connected
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()

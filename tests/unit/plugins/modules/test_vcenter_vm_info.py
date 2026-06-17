@@ -55,7 +55,15 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm"
-SAMPLE_BODY = [{'name': 'my-vm', 'guest_os': 'RHEL_9_64', 'power_state': 'POWERED_OFF', 'memory': {'size_mib': 4096}, 'cpu': {'count': 2}}]
+SAMPLE_BODY = [
+    {
+        "name": "my-vm",
+        "guest_os": "RHEL_9_64",
+        "power_state": "POWERED_OFF",
+        "memory": {"size_mib": 4096},
+        "cpu": {"count": 2},
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

@@ -55,8 +55,16 @@ def set_module_args(args):
 
 
 API_PATH = "/content/subscribed-library"
-SAMPLE_BODY = [{'creation_time': '2024-01-01T00:00:00.000Z', 'description': 'Example subscribed library', 'id': 'subscribed-library-id', 'last_modified_time': '2024-01-02T00:00:00.000Z', 'name': 'example-subscribed-library', 'type': 'SUBSCRIBED'}]
-
+SAMPLE_BODY = [
+    {
+        "creation_time": "2024-01-01T00:00:00.000Z",
+        "description": "Example subscribed library",
+        "id": "subscribed-library-id",
+        "last_modified_time": "2024-01-02T00:00:00.000Z",
+        "name": "example-subscribed-library",
+        "type": "SUBSCRIBED",
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

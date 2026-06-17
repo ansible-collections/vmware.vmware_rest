@@ -138,7 +138,9 @@ def test_client_request_serializes_json_payload(client):
         "vmware-api-session-id": "sid",
         "content-type": "application/json",
     }
-    with patch.object(client, "_do_request", return_value=api_response) as mock_do_request:
+    with patch.object(
+        client, "_do_request", return_value=api_response
+    ) as mock_do_request:
         client.request("POST", "/vcenter/vm", data={"name": "vm-1"})
     _, kwargs = mock_do_request.call_args
     assert kwargs["data"] == '{"name":"vm-1"}'
@@ -210,7 +212,9 @@ def test_client_http_methods_success(client, method_name, status, args):
         ("delete", 500, ("/vcenter/vm/vm-1",)),
     ],
 )
-def test_client_http_methods_unexpected_status(client, error_handler, method_name, status, args):
+def test_client_http_methods_unexpected_status(
+    client, error_handler, method_name, status, args
+):
     body = b"error body"
     with patch.object(client, "request", return_value=Response(status, body)):
         getattr(client, method_name)(*args)
@@ -282,7 +286,9 @@ def test_client_request_error_handler_fail_with_plain_exception():
     module = MagicMock()
     handler = ClientRequestErrorHandler(module)
     handler.fail_module_with_error(ValueError("bad value"))
-    module.fail_json.assert_called_once_with(msg="An unexpected error occurred: bad value")
+    module.fail_json.assert_called_once_with(
+        msg="An unexpected error occurred: bad value"
+    )
 
 
 def test_client_request_error_handler_fail_with_api_communication_error():

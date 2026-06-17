@@ -274,9 +274,7 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
         path = self.build_path(ITEM_PATH, {"port": port})
         response = self.client.get(path)
         if response.status == 404:
-            self.module.fail_json(
-                msg="Virtual serial port not found: {0}".format(port)
-            )
+            self.module.fail_json(msg="Virtual serial port not found: {0}".format(port))
 
         update_body = self.build_updatable_payload()
         result = self.update_if_changed(path, response.json, update_body)
@@ -350,9 +348,7 @@ def main():
     elif module.params["state"] == "absent":
         result = crud_module.ensure_absent()
     else:
-        module.fail_json(
-            msg="Unsupported state: {0}".format(module.params["state"])
-        )
+        module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))
 
     module.exit_json(**result)
 

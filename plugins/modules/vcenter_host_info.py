@@ -198,9 +198,7 @@ class VmwareRestInfoModule(VmwareRestInfoModuleBase):
         if response.status == 404:
             if host:
                 self.client.error_handler.handle_request_error(
-                    exception=UnexpectedAPIResponse(
-                        response.status, response.data
-                    ),
+                    exception=UnexpectedAPIResponse(response.status, response.data),
                     method="GET",
                     path=LIST_PATH,
                     request_kwargs={"query": query},
@@ -212,9 +210,7 @@ class VmwareRestInfoModule(VmwareRestInfoModuleBase):
             for item in result:
                 if item.get("host") == host:
                     return item
-            self.module.fail_json(
-                msg="Host '{0}' was not found.".format(host)
-            )
+            self.module.fail_json(msg="Host '{0}' was not found.".format(host))
 
         return result
 

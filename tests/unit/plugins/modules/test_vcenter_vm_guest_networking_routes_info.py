@@ -55,7 +55,14 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/guest/networking/routes"
-SAMPLE_BODY = [{'network': '0.0.0.0', 'prefix_length': 0, 'gateway_address': '192.0.2.1', 'interface_index': 0}]
+SAMPLE_BODY = [
+    {
+        "network": "0.0.0.0",
+        "prefix_length": 0,
+        "gateway_address": "192.0.2.1",
+        "interface_index": 0,
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

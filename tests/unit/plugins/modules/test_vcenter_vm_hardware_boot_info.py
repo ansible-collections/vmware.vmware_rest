@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/boot"
-SAMPLE_BODY = {'value': 'EFI'}
+SAMPLE_BODY = {"value": "EFI"}
 
 
 @patch.object(module_under_test, "AnsibleModule")

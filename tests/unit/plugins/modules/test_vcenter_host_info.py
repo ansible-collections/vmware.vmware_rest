@@ -55,7 +55,15 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/host"
-SAMPLE_BODY = [{'host': 'host-42', 'name': 'esxi01.example.com', 'connection_state': 'CONNECTED', 'power_state': 'POWERED_ON', 'host_uuid': '42000000-0000-0000-0000-000000000000'}]
+SAMPLE_BODY = [
+    {
+        "host": "host-42",
+        "name": "esxi01.example.com",
+        "connection_state": "CONNECTED",
+        "power_state": "POWERED_ON",
+        "host_uuid": "42000000-0000-0000-0000-000000000000",
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate unit tests and integration scaffolds for vmware.vmware_rest batches."""
+
 from __future__ import annotations
 
 import ast
@@ -23,7 +24,7 @@ CONNECTION_PARAMS = """CONNECTION_PARAMS = {
     "session_timeout": None,
 }"""
 
-UNIT_HEADER = '''# -*- coding: utf-8 -*-
+UNIT_HEADER = """# -*- coding: utf-8 -*-
 # Copyright: (c) 2026, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -69,7 +70,7 @@ def mock_client():
 
 def set_module_args(args):
     return {{**CONNECTION_PARAMS, **args}}
-'''
+"""
 
 
 def load_batches():
@@ -151,21 +152,29 @@ def has_existing_integration(target: str) -> bool:
     return (INT_DIR / target / "tasks/main.yml").exists()
 
 
-def generate_info_unit_test(module_name: str, path: str, class_name: str, sample, required_params: dict):
+def generate_info_unit_test(
+    module_name: str, path: str, class_name: str, sample, required_params: dict
+):
     sample_repr = repr(sample)
     params_setup = repr({**required_params})
     not_found_expected = (
-        '{"value": ""}' if isinstance(sample, str) else
-        '{"value": None}' if sample is not None and not isinstance(sample, list) else
-        '{"value": []}'
+        '{"value": ""}'
+        if isinstance(sample, str)
+        else (
+            '{"value": None}'
+            if sample is not None and not isinstance(sample, list)
+            else '{"value": []}'
+        )
     )
     if module_name.endswith("_info") and "LIST_PATH" in path:
         return None  # skip complex list modules in auto-gen
 
     api_path = path if isinstance(path, str) else path.get("get", path.get("list", ""))
 
-    return UNIT_HEADER.format(module_name=module_name, connection_params=CONNECTION_PARAMS) + textwrap.dedent(
-        f'''
+    return UNIT_HEADER.format(
+        module_name=module_name, connection_params=CONNECTION_PARAMS
+    ) + textwrap.dedent(
+        f"""
 
         API_PATH = "{api_path}"
         SAMPLE_BODY = {sample_repr}
@@ -204,7 +213,7 @@ def generate_info_unit_test(module_name: str, path: str, class_name: str, sample
                 module_under_test.main()
 
             mock_client.get.assert_called_once()
-        '''
+        """
     )
 
 
@@ -218,7 +227,12 @@ dependencies:
     mock_spec = {
         "openapi": "3.0.3",
         "info": {"title": f"{target} Mock", "version": "9.1.0.0"},
-        "servers": [{"url": "https://{host}/api", "variables": {"host": {"default": "localhost"}}}],
+        "servers": [
+            {
+                "url": "https://{host}/api",
+                "variables": {"host": {"default": "localhost"}},
+            }
+        ],
         "paths": {},
     }
     paths = extract_paths(MODULES_DIR / f"{module_name}.py")
@@ -229,7 +243,12 @@ dependencies:
             "responses": {
                 "200": {
                     "description": "ok",
-                    "content": {"application/json": {"schema": {"type": "object"}, "example": {"status": "ok"}}},
+                    "content": {
+                        "application/json": {
+                            "schema": {"type": "object"},
+                            "example": {"status": "ok"},
+                        }
+                    },
                 }
             },
         }
@@ -286,12 +305,26 @@ def main():
             class_name = extract_class_name(mod_path)
             sample = extract_return_sample(mod_path)
             if module_name.endswith("_info"):
-                api_path = paths.get("LIST_PATH") or paths.get("PATH") or paths.get("SERVICE_PATH") or paths.get("SHUTDOWN_PATH") or paths.get("STORAGE_PATH") or paths.get("SYSTEM_TIME_PATH") or paths.get("SYSTEM_VERSION_PATH") or paths.get("UPDATE_PATH") or list(paths.values())[0] if paths else ""
+                api_path = (
+                    paths.get("LIST_PATH")
+                    or paths.get("PATH")
+                    or paths.get("SERVICE_PATH")
+                    or paths.get("SHUTDOWN_PATH")
+                    or paths.get("STORAGE_PATH")
+                    or paths.get("SYSTEM_TIME_PATH")
+                    or paths.get("SYSTEM_VERSION_PATH")
+                    or paths.get("UPDATE_PATH")
+                    or list(paths.values())[0]
+                    if paths
+                    else ""
+                )
                 if "{service}" in api_path:
                     api_path = api_path.replace("{service}", "ntpd")
                 if "{interface_name}" in api_path:
                     api_path = api_path.replace("{interface_name}", "nic0")
-                content = generate_info_unit_test(module_name, api_path, class_name, sample, {})
+                content = generate_info_unit_test(
+                    module_name, api_path, class_name, sample, {}
+                )
                 if content:
                     out = UNIT_DIR / f"test_{module_name}.py"
                     out.write_text(content)
@@ -299,7 +332,11 @@ def main():
 
         if not has_existing_integration(tn):
             info_mod = batch[0] if batch[0].endswith("_info") else batch[0]
-            op = "list" if "LIST_PATH" in extract_paths(MODULES_DIR / f"{info_mod}.py") else "get"
+            op = (
+                "list"
+                if "LIST_PATH" in extract_paths(MODULES_DIR / f"{info_mod}.py")
+                else "get"
+            )
             meta, spec, tasks = generate_integration_info(tn, info_mod, op)
             (INT_DIR / tn).mkdir(parents=True, exist_ok=True)
             (INT_DIR / tn / "meta").mkdir(exist_ok=True)

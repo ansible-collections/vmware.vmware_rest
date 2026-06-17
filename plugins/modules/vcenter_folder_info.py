@@ -161,9 +161,7 @@ class VmwareRestInfoModule(VmwareRestInfoModuleBase):
         if response.status == 404:
             if folder:
                 self.client.error_handler.handle_request_error(
-                    exception=UnexpectedAPIResponse(
-                        response.status, response.data
-                    ),
+                    exception=UnexpectedAPIResponse(response.status, response.data),
                     method="GET",
                     path=LIST_PATH,
                     request_kwargs={"query": query},
@@ -175,9 +173,7 @@ class VmwareRestInfoModule(VmwareRestInfoModuleBase):
             for item in result:
                 if item.get("folder") == folder:
                     return item
-            self.module.fail_json(
-                msg="Folder '{0}' was not found.".format(folder)
-            )
+            self.module.fail_json(msg="Folder '{0}' was not found.".format(folder))
 
         return result
 

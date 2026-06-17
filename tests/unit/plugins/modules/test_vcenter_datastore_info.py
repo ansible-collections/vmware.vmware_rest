@@ -55,8 +55,17 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/datastore"
-SAMPLE_BODY = [{'id': 'datastore-1001', 'name': 'shared_vmfs', 'type': 'VMFS', 'accessible': True, 'free_space': 107374182400, 'multiple_host_access': True, 'thin_provisioning_supported': True}]
-
+SAMPLE_BODY = [
+    {
+        "id": "datastore-1001",
+        "name": "shared_vmfs",
+        "type": "VMFS",
+        "accessible": True,
+        "free_space": 107374182400,
+        "multiple_host_access": True,
+        "thin_provisioning_supported": True,
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")
@@ -68,8 +77,8 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     mock_module.params = set_module_args({})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.side_effect = [
-        _response(200, [{'datastore': 'datastore-1001', 'name': 'ds1'}]),
-        _response(200, {'name': 'ds1', 'type': 'VMFS'}),
+        _response(200, [{"datastore": "datastore-1001", "name": "ds1"}]),
+        _response(200, {"name": "ds1", "type": "VMFS"}),
     ]
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()

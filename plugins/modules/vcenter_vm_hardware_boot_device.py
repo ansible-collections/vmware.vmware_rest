@@ -187,9 +187,7 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
 
     def ensure_present(self):
         if self.params.get("devices") is None:
-            self.module.fail_json(
-                msg="devices must be specified when state is present"
-            )
+            self.module.fail_json(msg="devices must be specified when state is present")
 
         desired = self.params["devices"]
         path = self.build_path(BOOT_DEVICE_PATH)

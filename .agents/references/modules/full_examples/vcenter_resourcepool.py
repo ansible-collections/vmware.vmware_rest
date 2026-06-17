@@ -237,12 +237,16 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
             found_id = self._find_by_name(name)
             if found_id:
                 return self._ensure_present_by_id(found_id)
-            self.module.fail_json(msg="Resource pool not found with name: {0}".format(name))
+            self.module.fail_json(
+                msg="Resource pool not found with name: {0}".format(name)
+            )
 
         if name and parent:
             return self._create()
 
-        self.module.fail_json(msg="name and parent are required when creating a resource pool")
+        self.module.fail_json(
+            msg="name and parent are required when creating a resource pool"
+        )
 
     def ensure_absent(self):
         resource_pool = self.resolve_resource_id(

@@ -290,13 +290,9 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
         library = self.params.get("library")
         source_vm = self.params.get("source_vm")
         if not library:
-            self.module.fail_json(
-                msg="library is required when state is present"
-            )
+            self.module.fail_json(msg="library is required when state is present")
         if not source_vm:
-            self.module.fail_json(
-                msg="source_vm is required when state is present"
-            )
+            self.module.fail_json(msg="source_vm is required when state is present")
 
         template_library_item = self.params.get("template_library_item")
         if template_library_item:
@@ -340,7 +336,9 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
                 msg="template_library_item is required when state is deploy"
             )
 
-        path = self.build_path(DEPLOY_PATH, {"template_library_item": template_library_item})
+        path = self.build_path(
+            DEPLOY_PATH, {"template_library_item": template_library_item}
+        )
         deploy_body = self.build_payload(self.PAYLOAD_FORMAT["deploy"])
         query = self.build_query(self.PAYLOAD_FORMAT["deploy"])
         if not self.module.check_mode:

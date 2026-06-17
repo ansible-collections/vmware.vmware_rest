@@ -160,9 +160,7 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
     def ensure_present(self):
         startup_type = self.params.get("startup_type")
         if startup_type is None:
-            self.module.fail_json(
-                msg="startup_type is required when state is present."
-            )
+            self.module.fail_json(msg="startup_type is required when state is present.")
 
         current = self._get_service_info()
         if current.get("startup_type") == startup_type:

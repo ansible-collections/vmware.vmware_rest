@@ -379,9 +379,7 @@ class VmwareRestOvfLibraryItemModule(VmwareRestModuleBase):
         if not library_id or not name:
             return None
 
-        response = self.client.get(
-            LIBRARY_ITEMS_PATH, query={"library_id": library_id}
-        )
+        response = self.client.get(LIBRARY_ITEMS_PATH, query={"library_id": library_id})
         if response.status == 404:
             return None
 
@@ -428,9 +426,7 @@ class VmwareRestOvfLibraryItemModule(VmwareRestModuleBase):
                 msg="ovf_library_item_id is required when state=deploy"
             )
         if not self.params.get("deployment_spec"):
-            self.module.fail_json(
-                msg="deployment_spec is required when state=deploy"
-            )
+            self.module.fail_json(msg="deployment_spec is required when state=deploy")
 
         path = self.build_path(DEPLOY_PATH)
         body = self.build_payload(self.PAYLOAD_FORMAT["deploy"])

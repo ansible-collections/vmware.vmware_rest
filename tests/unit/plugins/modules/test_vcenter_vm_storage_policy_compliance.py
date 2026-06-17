@@ -90,7 +90,9 @@ def set_module_args(args):
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestComplianceModule, "_create_client")
-def test_check_success_minimal(mock_create_client, mock_ansible_module, mock_client, module_args):
+def test_check_success_minimal(
+    mock_create_client, mock_ansible_module, mock_client, module_args
+):
     # POST /vcenter/vm/{vm}/storage/policy/compliance?action=check — Vcenter.Vm.Storage.Policy.Compliance_check — 200
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
@@ -147,7 +149,9 @@ def test_check_success_with_vm_home_and_disks(
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestComplianceModule, "_create_client")
-def test_check_null_response(mock_create_client, mock_ansible_module, mock_client, module_args):
+def test_check_null_response(
+    mock_create_client, mock_ansible_module, mock_client, module_args
+):
     # POST /vcenter/vm/{vm}/storage/policy/compliance?action=check — Vcenter.Vm.Storage.Policy.Compliance_check — 200 nullable
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()

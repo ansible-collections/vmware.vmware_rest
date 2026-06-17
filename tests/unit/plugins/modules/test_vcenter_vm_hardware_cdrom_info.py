@@ -55,7 +55,15 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/cdrom"
-SAMPLE_BODY = {'cdrom': '3000', 'type': 'SATA', 'label': 'CD/DVD drive 1', 'state': 'NOT_CONNECTED', 'start_connected': False, 'allow_guest_control': True, 'backing': {'type': 'CLIENT_DEVICE'}}
+SAMPLE_BODY = {
+    "cdrom": "3000",
+    "type": "SATA",
+    "label": "CD/DVD drive 1",
+    "state": "NOT_CONNECTED",
+    "start_connected": False,
+    "allow_guest_control": True,
+    "backing": {"type": "CLIENT_DEVICE"},
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

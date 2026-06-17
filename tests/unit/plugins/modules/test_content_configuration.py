@@ -71,7 +71,7 @@ def test_module_invokes_client(mock_create_client, mock_ansible_module, mock_cli
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
-    mock_module.params = set_module_args({'state': 'present'})
+    mock_module.params = set_module_args({"state": "present"})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.return_value = _response(200, {})
     mock_module.fail_json.side_effect = fail_json

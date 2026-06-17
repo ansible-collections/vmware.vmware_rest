@@ -55,7 +55,17 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/guest/identity"
-SAMPLE_BODY = {'family': 'LINUX', 'full_name': {'args': [], 'default_message': 'Red Hat Enterprise Linux 9 (64-bit)', 'id': 'vmsg.guestos.rhel9_64Guest.label'}, 'host_name': 'my-vm.example.com', 'name': 'RHEL_9_64', 'ip_address': '192.0.2.10'}
+SAMPLE_BODY = {
+    "family": "LINUX",
+    "full_name": {
+        "args": [],
+        "default_message": "Red Hat Enterprise Linux 9 (64-bit)",
+        "id": "vmsg.guestos.rhel9_64Guest.label",
+    },
+    "host_name": "my-vm.example.com",
+    "name": "RHEL_9_64",
+    "ip_address": "192.0.2.10",
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

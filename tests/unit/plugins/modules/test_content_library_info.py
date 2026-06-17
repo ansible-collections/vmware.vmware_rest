@@ -55,7 +55,15 @@ def set_module_args(args):
 
 
 API_PATH = "/content/library"
-SAMPLE_BODY = {'creation_time': '2024-01-15T10:30:00Z', 'description': 'Production templates', 'id': '12345678-1234-1234-1234-123456789abc', 'last_modified_time': '2024-06-01T14:00:00Z', 'name': 'prod-templates', 'type': 'LOCAL', 'version': '1'}
+SAMPLE_BODY = {
+    "creation_time": "2024-01-15T10:30:00Z",
+    "description": "Production templates",
+    "id": "12345678-1234-1234-1234-123456789abc",
+    "last_modified_time": "2024-06-01T14:00:00Z",
+    "name": "prod-templates",
+    "type": "LOCAL",
+    "version": "1",
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

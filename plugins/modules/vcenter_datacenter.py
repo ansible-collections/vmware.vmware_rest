@@ -187,9 +187,7 @@ class VmwareRestCrudModule(VmwareRestCrudModuleBase):
         path = self.build_path(ITEM_PATH, {"datacenter": datacenter})
         response = self.client.get(path)
         if response.status == 404:
-            self.module.fail_json(
-                msg="Datacenter not found: {0}".format(datacenter)
-            )
+            self.module.fail_json(msg="Datacenter not found: {0}".format(datacenter))
 
         return {"changed": False, "id": datacenter}
 

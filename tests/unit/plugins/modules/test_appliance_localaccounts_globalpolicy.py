@@ -118,9 +118,7 @@ def test_update_warn_days(mock_create_client, mock_ansible_module, mock_client):
         module_under_test.main()
 
     mock_client.get.assert_has_calls([call(PATH), call(PATH)])
-    mock_client.request.assert_called_once_with(
-        "PUT", PATH, data={"warn_days": 5}
-    )
+    mock_client.request.assert_called_once_with("PUT", PATH, data={"warn_days": 5})
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"changed": True, "value": UPDATED_POLICY}
 

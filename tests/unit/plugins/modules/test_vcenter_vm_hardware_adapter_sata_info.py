@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/adapter/sata"
-SAMPLE_BODY = [{'adapter': 'sata-15000'}]
+SAMPLE_BODY = [{"adapter": "sata-15000"}]
 
 
 @patch.object(module_under_test, "AnsibleModule")

@@ -179,9 +179,25 @@ def main():
     module_args["upgrade_version"] = {
         "type": "str",
         "choices": [
-            "VMX_03", "VMX_04", "VMX_06", "VMX_07", "VMX_08", "VMX_09",
-            "VMX_10", "VMX_11", "VMX_12", "VMX_13", "VMX_14", "VMX_15",
-            "VMX_16", "VMX_17", "VMX_18", "VMX_19", "VMX_20", "VMX_21", "VMX_22",
+            "VMX_03",
+            "VMX_04",
+            "VMX_06",
+            "VMX_07",
+            "VMX_08",
+            "VMX_09",
+            "VMX_10",
+            "VMX_11",
+            "VMX_12",
+            "VMX_13",
+            "VMX_14",
+            "VMX_15",
+            "VMX_16",
+            "VMX_17",
+            "VMX_18",
+            "VMX_19",
+            "VMX_20",
+            "VMX_21",
+            "VMX_22",
         ],
     }
 

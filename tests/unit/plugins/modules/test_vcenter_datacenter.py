@@ -64,6 +64,7 @@ def mock_client():
 def set_module_args(args):
     return {**CONNECTION_PARAMS, **args}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_create_datacenter(mock_create_client, mock_ansible_module, mock_client):
@@ -71,9 +72,15 @@ def test_create_datacenter(mock_create_client, mock_ansible_module, mock_client)
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
     mock_module.check_mode = False
-    mock_module.params = set_module_args({
-        "state": "present", "name": "my_dc", "folder": None, "datacenter": None, "force": None,
-    })
+    mock_module.params = set_module_args(
+        {
+            "state": "present",
+            "name": "my_dc",
+            "folder": None,
+            "datacenter": None,
+            "force": None,
+        }
+    )
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.return_value = _response(200, [])
     mock_client.post.return_value = _response(200, "datacenter-1001")

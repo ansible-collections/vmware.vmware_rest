@@ -166,9 +166,7 @@ class VmwareRestInfoModule(VmwareRestInfoModuleBase):
         if response.status == 404:
             if fail_if_missing:
                 self.client.error_handler.handle_request_error(
-                    exception=UnexpectedAPIResponse(
-                        response.status, response.data
-                    ),
+                    exception=UnexpectedAPIResponse(response.status, response.data),
                     method="GET",
                     path=path,
                     request_kwargs={},

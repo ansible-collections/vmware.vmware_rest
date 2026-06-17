@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/boot/device"
-SAMPLE_BODY = [{'type': 'CDROM'}, {'type': 'DISK', 'disks': ['2000']}]
+SAMPLE_BODY = [{"type": "CDROM"}, {"type": "DISK", "disks": ["2000"]}]
 
 
 @patch.object(module_under_test, "AnsibleModule")

@@ -55,8 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/power"
-SAMPLE_BODY = {'state': 'POWERED_ON', 'clean_power_off': True}
-
+SAMPLE_BODY = {"state": "POWERED_ON", "clean_power_off": True}
 
 
 class AnsibleFailJson(Exception):

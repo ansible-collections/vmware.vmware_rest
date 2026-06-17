@@ -306,9 +306,7 @@ def main():
     elif module.params["state"] == "absent":
         result = crud_module.ensure_absent()
     else:
-        module.fail_json(
-            msg="Unsupported state: {0}".format(module.params["state"])
-        )
+        module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))
 
     module.exit_json(**result)
 

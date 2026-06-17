@@ -112,7 +112,9 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client, modul
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
-def test_get_not_found(mock_create_client, mock_ansible_module, mock_client, module_args):
+def test_get_not_found(
+    mock_create_client, mock_ansible_module, mock_client, module_args
+):
     # GET /vcenter/vm/{vm}/storage/policy/compliance — Vcenter.Vm.Storage.Policy.Compliance_get — 404
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
@@ -131,7 +133,9 @@ def test_get_not_found(mock_create_client, mock_ansible_module, mock_client, mod
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
-def test_get_null_response(mock_create_client, mock_ansible_module, mock_client, module_args):
+def test_get_null_response(
+    mock_create_client, mock_ansible_module, mock_client, module_args
+):
     # GET /vcenter/vm/{vm}/storage/policy/compliance — Vcenter.Vm.Storage.Policy.Compliance_get — 200 nullable
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()

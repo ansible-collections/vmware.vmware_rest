@@ -55,7 +55,19 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/guest/local-filesystem"
-SAMPLE_BODY = {'/': {'capacity': 107374182400, 'free_space': 53687091200, 'filesystem': 'ext4', 'mappings': [{'disk': '2000'}]}, 'C:\\': {'capacity': 536870912000, 'free_space': 268435456000, 'filesystem': 'NTFS'}}
+SAMPLE_BODY = {
+    "/": {
+        "capacity": 107374182400,
+        "free_space": 53687091200,
+        "filesystem": "ext4",
+        "mappings": [{"disk": "2000"}],
+    },
+    "C:\\": {
+        "capacity": 536870912000,
+        "free_space": 268435456000,
+        "filesystem": "NTFS",
+    },
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

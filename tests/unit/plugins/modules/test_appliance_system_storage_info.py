@@ -55,7 +55,16 @@ def set_module_args(args):
 
 
 API_PATH = "/appliance/system/storage"
-SAMPLE_BODY = [{'disk': '1', 'partition': 'lv_root_0', 'description': {'default_message': 'Root partition', 'id': 'storage.partition.lv_root_0'}}]
+SAMPLE_BODY = [
+    {
+        "disk": "1",
+        "partition": "lv_root_0",
+        "description": {
+            "default_message": "Root partition",
+            "id": "storage.partition.lv_root_0",
+        },
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

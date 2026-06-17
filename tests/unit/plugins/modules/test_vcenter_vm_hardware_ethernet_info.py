@@ -55,8 +55,17 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/hardware/ethernet"
-SAMPLE_BODY = [{'nic': '4000', 'label': 'Network adapter 1', 'type': 'VMXNET3', 'mac_type': 'GENERATED', 'start_connected': True, 'state': 'NOT_CONNECTED', 'backing': {'type': 'DISTRIBUTED_PORTGROUP', 'network': 'network-1001'}}]
-
+SAMPLE_BODY = [
+    {
+        "nic": "4000",
+        "label": "Network adapter 1",
+        "type": "VMXNET3",
+        "mac_type": "GENERATED",
+        "start_connected": True,
+        "state": "NOT_CONNECTED",
+        "backing": {"type": "DISTRIBUTED_PORTGROUP", "network": "network-1001"},
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")
@@ -65,11 +74,11 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
-    mock_module.params = set_module_args({'vm': 'vm-1'})
+    mock_module.params = set_module_args({"vm": "vm-1"})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.side_effect = [
-        _response(200, ['nic-1']),
-        _response(200, {'type': 'VMXNET3'}),
+        _response(200, ["nic-1"]),
+        _response(200, {"type": "VMXNET3"}),
     ]
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
@@ -82,7 +91,7 @@ def test_get_not_found(mock_create_client, mock_ansible_module, mock_client):
     mock_create_client.return_value = mock_client
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
-    mock_module.params = set_module_args({'vm': 'vm-1'})
+    mock_module.params = set_module_args({"vm": "vm-1"})
     mock_module.exit_json.side_effect = exit_json
     mock_client.get.return_value = _response(404, None)
     with pytest.raises(AnsibleExitJson) as exc:

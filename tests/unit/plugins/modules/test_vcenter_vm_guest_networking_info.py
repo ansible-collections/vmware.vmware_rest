@@ -55,7 +55,7 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/vm/{vm}/guest/networking"
-SAMPLE_BODY = {'configured': True}
+SAMPLE_BODY = {"configured": True}
 
 
 @patch.object(module_under_test, "AnsibleModule")

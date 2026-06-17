@@ -55,7 +55,13 @@ def set_module_args(args):
 
 
 API_PATH = "/vcenter/storage/policies"
-SAMPLE_BODY = [{'policy': '08d5e973-1d60-48e0-877b-66f5e0c3d88b', 'name': 'vSAN Default Storage Policy', 'description': 'Storage policy used by default for vSAN datastores'}]
+SAMPLE_BODY = [
+    {
+        "policy": "08d5e973-1d60-48e0-877b-66f5e0c3d88b",
+        "name": "vSAN Default Storage Policy",
+        "description": "Storage policy used by default for vSAN datastores",
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")

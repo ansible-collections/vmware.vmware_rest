@@ -166,9 +166,7 @@ def test_interface_not_found(mock_create_client, mock_ansible_module, mock_clien
     mock_module = MagicMock()
     mock_ansible_module.return_value = mock_module
     mock_module.check_mode = False
-    mock_module.params = set_module_args(
-        {"interface_name": "nic0", "autoconf": True}
-    )
+    mock_module.params = set_module_args({"interface_name": "nic0", "autoconf": True})
     mock_module.fail_json.side_effect = fail_json
 
     mock_client.get.return_value = _response(404, None)

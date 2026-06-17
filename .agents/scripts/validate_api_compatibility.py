@@ -465,11 +465,7 @@ def dedupe_operations(
     }
 
     for method, path, op_name, query in raw_ops:
-        if (
-            method == "post"
-            and "?" not in path
-            and strip_query(path) in action_bases
-        ):
+        if method == "post" and "?" not in path and strip_query(path) in action_bases:
             continue
 
         key = (method.lower(), path)
@@ -579,7 +575,11 @@ def validate_module(
     module_path = MODULES_DIR / f"{module_name}.py"
     meta = parse_llm_module(module_path)
     if not meta:
-        return {"module": module_name, "status": "skipped", "reason": "not LLM-generated"}
+        return {
+            "module": module_name,
+            "status": "skipped",
+            "reason": "not LLM-generated",
+        }
 
     source_version = meta["source_version"]
     if same_major_version(source_version, target_version):
@@ -639,7 +639,9 @@ def resolve_target_version(requested: str) -> str:
         raise ValueError("target version is required")
 
     available = sorted(
-        p.name for p in SPECS_DIR.iterdir() if p.is_dir() and re.match(r"^[0-9]", p.name)
+        p.name
+        for p in SPECS_DIR.iterdir()
+        if p.is_dir() and re.match(r"^[0-9]", p.name)
     )
     if requested in available:
         return requested
@@ -649,9 +651,7 @@ def resolve_target_version(requested: str) -> str:
     if matches:
         return matches[-1]
 
-    raise ValueError(
-        f"No spec for {requested!r}. Available: {', '.join(available)}"
-    )
+    raise ValueError(f"No spec for {requested!r}. Available: {', '.join(available)}")
 
 
 def main() -> int:

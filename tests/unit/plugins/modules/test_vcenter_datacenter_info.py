@@ -56,7 +56,13 @@ def set_module_args(args):
 
 API_PATH = "/vcenter/datacenter"
 LIST_BODY = [{"datacenter": "datacenter-1001", "name": "Eco-Datacenter"}]
-DETAIL_BODY = {"name": "Eco-Datacenter", "datastore_folder": "group-d1", "host_folder": "group-h1", "network_folder": "group-n1", "vm_folder": "group-v1"}
+DETAIL_BODY = {
+    "name": "Eco-Datacenter",
+    "datastore_folder": "group-d1",
+    "host_folder": "group-h1",
+    "network_folder": "group-n1",
+    "vm_folder": "group-v1",
+}
 
 
 @patch.object(module_under_test, "AnsibleModule")

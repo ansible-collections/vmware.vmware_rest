@@ -55,8 +55,16 @@ def set_module_args(args):
 
 
 API_PATH = "/content/local-library"
-SAMPLE_BODY = [{'creation_time': '2024-01-01T00:00:00.000Z', 'description': 'automated', 'id': 'library-id', 'last_modified_time': '2024-01-01T00:00:00.000Z', 'name': 'my-local-library', 'type': 'LOCAL'}]
-
+SAMPLE_BODY = [
+    {
+        "creation_time": "2024-01-01T00:00:00.000Z",
+        "description": "automated",
+        "id": "library-id",
+        "last_modified_time": "2024-01-01T00:00:00.000Z",
+        "name": "my-local-library",
+        "type": "LOCAL",
+    }
+]
 
 
 @patch.object(module_under_test, "AnsibleModule")
