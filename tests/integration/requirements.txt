@@ -1,6 +1,0 @@
-ansible-core>=2.21
-
-# required for vmware.vmware
-requests
-pyVmomi>=8.0.3.0.1
-vmware-vcenter>=9.1.0.0
