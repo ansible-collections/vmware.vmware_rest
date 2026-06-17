@@ -16,15 +16,6 @@ upgrade-collections:
 install-collection-python-reqs:
 	pip install -r requirements.txt
 
-.PHONY: install-integration-reqs
-install-integration-reqs: install-collection-python-reqs
-	pip install -r tests/integration/requirements.txt; \
-	ansible-galaxy collection install --upgrade -p ~/.ansible/collections -r tests/integration/requirements.yml
-
-tests/integration/integration_config.yml:
-	chmod +x ./tests/integration/generate_integration_config.sh; \
-	./tests/integration/generate_integration_config.sh
-
 # test commands
 .PHONY: linters
 linters:  ## Run extra linter tests
@@ -46,7 +37,7 @@ units-coverage: units
 		cp tests/output/reports/coverage.xml $(CURDIR)/coverage-units.xml;
 
 .PHONY: integration
-integration: install-integration-reqs upgrade-collections
+integration: upgrade-collections
 		cd $(COLLECTION_ROOT); \
 		ansible --version; \
 		ansible-test --version; \
