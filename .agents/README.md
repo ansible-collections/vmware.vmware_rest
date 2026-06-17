@@ -55,6 +55,7 @@ Cursor copies live in `.cursor/agents/`.
 | `references/modules/info.py.template` | Info module template |
 | `references/modules/crud.py.template` | CRUD module template |
 | `references/tests/unit_module.py.template` | Unit test template |
+| `tests/unit/common/utils.py` | Shared unit test helpers |
 | `references/tests/integration_target/` | Integration target template (MockServer + prepare_simulator) |
 | `references/vcf-spec-versions.yaml` | vSphere major → VCF spec mapping |
 

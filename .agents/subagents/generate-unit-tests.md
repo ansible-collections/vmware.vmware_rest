@@ -46,9 +46,10 @@ report); do not silently align the test to buggy module code.
 | Source | Purpose |
 | --- | --- |
 | `.agents/references/tests/unit_module.py.template` | Unit test scaffold |
+| `tests/unit/common/utils.py` | Shared helpers (`_response`, `exit_json`, `CONNECTION_PARAMS`, fixtures) |
 | `config/api_specifications/<version>/` | Operations, response codes, schemas |
 | `plugins/modules/<name>.py` | Wiring only (class name, Client call pattern) |
-| `plugins/module_utils/_client.py` | `Response` helper for building mock returns |
+| `plugins/module_utils/_client.py` | `Response` type used by `_response()` in test utils |
 | `plugins/module_utils/_module_base.py` | How `Client` is created (`_create_client`) |
 | `galaxy.yml` | Collection identity (imports) |
 
@@ -114,12 +115,26 @@ Patch `VmwareRestModuleBase._create_client` (or the concrete module class's
 inheritance target) to inject a `unittest.mock.MagicMock` client. Do **not**
 mock HTTP at the `urllib` layer unless the module bypasses `Client`.
 
-Build return values with `Response(status, json.dumps(body).encode())` from
-`_client.py`, matching what the real client returns.
+Build return values with `_response(status, body)` from `tests/unit/common/utils.py`
+(JSON-encodes the body the same way the real `Client` does). Import shared
+helpers with a relative import from the test file:
+
+```python
+from ...common.utils import (
+    AnsibleExitJson,
+    exit_json,
+    mock_client,
+    set_module_args,
+    _response,
+)
+```
+
+Import `AnsibleFailJson`, `fail_json`, or `CONNECTION_PARAMS` from the same
+module when a scenario needs them.
 
 Patch `AnsibleModule` so `exit_json` / `fail_json` raise catchable exceptions
-(see reference scaffold). Call `main()` and assert on the raised kwargs or
-`exit_json` call args.
+(helpers in `tests/unit/common/utils.py`). Call `main()` and assert on the
+raised kwargs or `exit_json` call args.
 
 ### Module type scenarios
 
@@ -178,6 +193,13 @@ Task Progress:
 Read `.agents/references/tests/unit_module.py.template` and follow `##` comments.
 Do not include `##` lines in output.
 
+Reuse helpers from `tests/unit/common/utils.py` via relative import
+(`from ...common.utils import ...`). Do not copy `AnsibleExitJson`,
+`_response`, `CONNECTION_PARAMS`, or other shared helpers into each test file.
+
+`_response(status, body)` encodes JSON bodies; `None` becomes an empty body for
+404/204 (and other error statuses) and JSON `null` for successful 2xx responses.
+
 ### Step 2: Build fixtures from schemas
 
 For each schema used in responses:
@@ -197,7 +219,8 @@ For each schema used in responses:
 
 ### Step 4: Connection parameters
 
-Use the connection param block from the reference template so
+Use `set_module_args()` from `tests/unit/common/utils.py` (merges
+`CONNECTION_PARAMS` with scenario-specific options) so
 `prepare_argument_spec()` options are satisfied.
 
 ### Modes

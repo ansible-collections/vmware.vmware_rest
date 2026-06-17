@@ -23,17 +23,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import 
     UnexpectedAPIResponse,
     VmwareModuleError,
 )
-
-
-class AnsibleFailJson(Exception):
-    def __init__(self, kwargs):
-        self.kwargs = kwargs
-
-
-def fail_json(*args, **kwargs):
-    if args:
-        kwargs.update(args[0])
-    raise AnsibleFailJson(kwargs)
+from ...common.utils import AnsibleFailJson, fail_json
 
 
 @pytest.fixture
