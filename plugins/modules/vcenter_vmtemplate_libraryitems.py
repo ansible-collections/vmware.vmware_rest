@@ -91,7 +91,7 @@ options:
             with the storage spec specified by I(disk_storage). '
         - ''
         - 'When clients pass a value of this structure as a parameter, the key in
-            the field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk). '
+            the field map must be the ID of a virtual disk resource. '
         type: dict
     guest_customization:
         description:
@@ -114,13 +114,13 @@ options:
             with a MacAddressType of MANUAL will not change. An Ethernet adapter with
             a MacAddressType of GENERATED or ASSIGNED will receive a new address.
         - When clients pass a value of this structure as a parameter, the key in the
-            field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_ethernet).
+            field map must be the MOID of a virtual Ethernet adapter resource.
             (['deploy'])
         - ' - C(disks_to_remove) (list): Idenfiers of disks to remove from the deployed
             virtual machine.'
         - If unset, all disks will be copied.
         - When clients pass a value of this structure as a parameter, the field must
-            contain the id of resources returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+            contain the MOID of virtual disk resources.
             (['deploy'])
         - ' - C(disks_to_update) (dict): Disk update specification for individual
             disks in the deployed virtual machine.'
@@ -128,7 +128,7 @@ options:
             as the corresponding disks in the source virtual machine template contained
             in the library item.
         - When clients pass a value of this structure as a parameter, the key in the
-            field map must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+            field map must be the MOID of a virtual disk resource.
             (['deploy'])
         - ' - C(cpu_update) (dict): CPU update specification for the deployed virtual
             machine.'
@@ -159,7 +159,7 @@ options:
         description:
         - Identifier of the library in which the new library item should be created.
         - When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.content_library_info).
+            be the MOID of a content library resource.
             Required with I(state=['present'])
         type: str
     name:
@@ -214,7 +214,7 @@ options:
         - If I(resource_pool) or I(host) is specified, it is recommended that this
             field be unset.
         - When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.vcenter_cluster_info).
+            be the MOID of a ClusterComputeResource resource.
             (['deploy', 'present'])
         type: dict
     powered_on:
@@ -249,7 +249,7 @@ options:
         description:
         - identifier of the content library item containing the source virtual machine
             template to be deployed.
-        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
+        - The parameter must be the MOID of a content library item resource.
             Required with I(state=['deploy'])
         type: str
     vcenter_hostname:

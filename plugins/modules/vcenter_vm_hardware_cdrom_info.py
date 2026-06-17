@@ -15,7 +15,7 @@ options:
     cdrom:
         description:
         - Virtual CD-ROM device identifier.
-        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_cdrom).
+        - The parameter must be the MOID of a virtual CD-ROM device resource.
             Required with I(state=['get'])
         type: str
     label:

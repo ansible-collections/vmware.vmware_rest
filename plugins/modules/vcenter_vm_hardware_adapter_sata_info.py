@@ -15,7 +15,7 @@ options:
     adapter:
         description:
         - Virtual SATA adapter identifier.
-        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_adapter_sata).
+        - The parameter must be the MOID of a virtual SATA adapter resource.
             Required with I(state=['get'])
         type: str
     label:

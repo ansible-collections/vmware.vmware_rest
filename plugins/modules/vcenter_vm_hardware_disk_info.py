@@ -15,7 +15,7 @@ options:
     disk:
         description:
         - Virtual disk identifier.
-        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+        - The parameter must be the MOID of a virtual disk resource.
             Required with I(state=['get'])
         type: str
     label:

@@ -34,14 +34,14 @@ options:
         - This field is optional and it is only relevant when the value of I(type)
             is ETHERNET.
         - When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.vcenter_vm_hardware_ethernet).
+            be the MOID of a virtual Ethernet adapter resource.
             (['set'])
         - ' - C(disks) (list): Virtual disk device. List of virtual disks in boot
             order.'
         - This field is optional and it is only relevant when the value of I(type)
             is DISK.
         - When clients pass a value of this structure as a parameter, the field must
-            contain the id of resources returned by M(vmware.vmware_rest.vcenter_vm_hardware_disk).
+            contain the MOID of virtual disk resources.
             (['set'])
         elements: dict
         required: true

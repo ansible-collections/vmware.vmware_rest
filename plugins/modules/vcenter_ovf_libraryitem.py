@@ -136,7 +136,7 @@ options:
         description:
         - Identifier of the content library item containing the OVF package to be
             deployed.
-        - The parameter must be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
+        - The parameter must be the MOID of a content library item resource.
             Required with I(state=['deploy', 'filter'])
         type: str
     session_timeout:
@@ -189,7 +189,7 @@ options:
         - If unset, a new library item will be created. The I(library_id) field must
             be specified if this field is set.
         - When clients pass a value of this structure as a parameter, the field must
-            be the id of a resource returned by M(vmware.vmware_rest.content_library_item_info).
+            be the MOID of a content library item resource.
             (['present'])
         - ' - C(resource_pool_id) (str): Identifier of the resource pool to which
             the virtual machine or virtual appliance should be attached.'
