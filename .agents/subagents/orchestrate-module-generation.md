@@ -4,9 +4,10 @@ description: >-
   End-to-end workflow for generating vmware.vmware_rest Ansible modules from a
   vSphere API major version. Fetches the OpenAPI spec, generates up to two
   related modules per batch (e.g. CRUD + info), generates unit tests, generates
-  integration tests, and iterates between module and test subagents until all
-  tests pass. Use when asked to generate modules from a vSphere API version,
-  scaffold a set of modules with tests, or run the full module generation pipeline.
+  integration tests, validates formatting and sanity, and iterates between module
+  and test subagents until all tests pass. Use when asked to generate modules
+  from a vSphere API version, scaffold a set of modules with tests, or run the
+  full module generation pipeline.
 model: inherit
 readonly: false
 is_background: false
@@ -77,6 +78,23 @@ User request
               ▼
       unit tests pass? ──no──► Phase 1 (module/test fix loop)
               │ yes
+    ══════════╦══════════════════════════════════════════
+    Phase 4   ║  Formatting and sanity
+    ══════════╬══════════════════════════════════════════
+              ▼
+    ┌─────────────────────────────┐
+    │ validate-formatting-and-    │──┐ sanity/linters fail
+    │ sanity                      │  │ (max_iterations)
+    └─────────┬───────────────────┘  │
+              ▼                      │
+    linters + sanity pass? ──────────┘
+              │ yes
+              ▼
+    module code changed? ──yes──► generate-unit-tests (mode: verify)
+              │                         │
+              │ pass ◄──────────────────┘
+              │ fail ──► Phase 1 (module fix loop)
+              │ no
               ▼
         Next batch
 ```
@@ -90,6 +108,7 @@ User request
 | `generate-unit-tests` | `tests/unit/` | Generate, run, fix unit tests; regression verify |
 | `generate-integration-tests` | `tests/integration/` | Generate, run, fix integration targets |
 | `validate-module-documentation` | _(read-only)_ | Inspect DOCUMENTATION, EXAMPLES, RETURN |
+| `validate-formatting-and-sanity` | collection-wide fixes | Run linters + sanity; black; re-run units if modules change |
 
 Delegate to each subagent by following its definition in
 `.agents/subagents/<name>.md`. Pass structured inputs and read structured
@@ -108,6 +127,7 @@ do **not** skip the step.
 | `generate-unit-tests` | Task | Follow `.agents/subagents/generate-unit-tests.md` inline; write only `tests/unit/` |
 | `generate-integration-tests` | Task or `generalPurpose` agent with subagent definition | Follow `.agents/subagents/generate-integration-tests.md` inline; write only `tests/integration/` |
 | `validate-module-documentation` | _(read-only; often not launchable)_ | **Orchestrator inline review:** read modules + integration tasks per `.agents/subagents/validate-module-documentation.md`; produce the report format from that definition; relay `doc_corrections_needed` to `generate-ansible-modules` |
+| `validate-formatting-and-sanity` | Task or inline | Follow `.agents/subagents/validate-formatting-and-sanity.md` inline; run `make linters`, `black`, `make sanity`; fix failures; delegate unit verify if module code changed |
 
 Record in the final report whether each step used a subagent delegate or an
 inline fallback.
@@ -193,8 +213,8 @@ all phases (or fails).
 
 ## Step 3: Per-batch phases
 
-Each batch runs three phases in order. Phases 2–3 are skipped when
-`skip_integration` is true (batch completes after Phase 1).
+Each batch runs four phases in order. Phases 2–3 are skipped when
+`skip_integration` is true (Phase 4 still runs after Phase 1).
 
 ---
 
@@ -371,9 +391,47 @@ files unless a **test_error** requires a test fix.
 
 | Outcome | Action |
 | --- | --- |
-| All unit tests pass | Mark batch complete; proceed to next batch |
+| All unit tests pass | Proceed to Phase 4 |
 | **test_error** | Re-delegate `generate-unit-tests` with `mode: verify` |
-| **module_error** | Build `correction_feedback`, restart **Phase 1** (3a → 3b), then re-run Phases 2–3 |
+| **module_error** | Build `correction_feedback`, restart **Phase 1** (3a → 3b), then re-run Phases 2–4 |
+
+---
+
+### Phase 4: Formatting and sanity
+
+Run **once** after Phase 3 succeeds (or after Phase 1 when
+`skip_integration` is true). Ensures the collection passes linters and
+ansible-test sanity before the batch is marked complete.
+
+```
+Delegate → validate-formatting-and-sanity
+  (or inline fallback per "Subagent availability and fallbacks")
+Inputs:
+  module_names: [<batch modules>]
+  api_spec_version: <version>
+  target_name: <target_name>   # optional; for reporting
+  max_iterations: <max_iterations>
+```
+
+The subagent:
+
+1. Runs `make linters`; on failure applies
+   `black --extend-exclude ".agents/*" .` and re-runs until pass.
+2. Runs `make sanity`; fixes sanity failures and re-runs until pass.
+3. If module or `module_utils` code was modified, delegates
+   `generate-unit-tests` with `mode: verify` for the batch.
+
+#### 3g. Evaluate formatting and sanity report
+
+| Outcome | Action |
+| --- | --- |
+| `status: pass` (and unit regression pass if run) | Mark batch complete; proceed to next batch |
+| Linter/sanity failures after `max_iterations` | Stop batch; report failures |
+| `module_corrections_needed` | Relay to `generate-ansible-modules` (3a), restart Phase 1 → Phases 2–4 |
+| Unit regression fails after sanity module fixes | Build `correction_feedback`, restart **Phase 1** |
+
+Phase 4 exit: linters and sanity pass, and unit regression passes when
+triggered, or `max_iterations` exceeded (stop batch).
 
 ---
 
@@ -457,11 +515,12 @@ Use the appropriate header so the module subagent knows the failure source.
 
 | Outcome | Action |
 | --- | --- |
-| Phase 1 + 2 + 3 all pass | Batch complete; next batch |
+| Phase 1 + 2 + 3 + 4 all pass | Batch complete; next batch |
 | Phase 1 `max_iterations` exceeded | Stop batch; report failures |
 | Phase 2 `max_iterations` exceeded | Stop batch; report failures |
 | Phase 3 regression fails after Phase 1 restart | Continue Phase 1 loop or stop at `max_iterations` |
-| `skip_integration` | Batch complete after Phase 1 |
+| Phase 4 linters/sanity `max_iterations` exceeded | Stop batch; report failures |
+| `skip_integration` | Batch complete after Phase 1 + Phase 4 |
 
 ## Step 4: Final report
 
@@ -479,6 +538,7 @@ After all batches complete (or fail), return a summary:
 - Batch 1: <module names>
   - Phase 1 iterations: <n>
   - Phase 2 iterations: <n>
+  - Phase 4 (linters/sanity): <pass|fail|inline fallback>
   - Doc validation (structural): <pass|fail|inline fallback>
   - Doc validation (integration): <pass|fail|skipped|inline fallback>
   - Unit tests: <passed>/<total>
@@ -492,7 +552,6 @@ After all batches complete (or fail), return a summary:
 - <any issues flagged by test agents>
 
 ### Next steps for user
-- Run sanity: ansible-test sanity --docker default plugins/modules/<name>.py
 - Add changelog fragments before merge
 ```
 
@@ -510,8 +569,9 @@ After all batches complete (or fail), return a summary:
   `tests/unit/`; integration → `tests/integration/`; fetch →
   `config/api_specifications/`.
 - **Batch limit:** at most two modules per batch.
-- **Phase ordering:** Phase 1 → Phase 2 → Phase 3. Do not skip Phase 3 after
-  integration module fixes until integration tests pass, then run regression.
+- **Phase ordering:** Phase 1 → Phase 2 → Phase 3 → Phase 4. Do not skip
+  Phase 3 after integration module fixes until integration tests pass, then run
+  regression, then Phase 4 formatting and sanity.
 - **API spec is authoritative** for expected API behavior; module fixes should
   align modules to the spec, not tests to buggy modules.
 
@@ -533,4 +593,5 @@ After all batches complete (or fail), return a summary:
 | `generate-unit-tests` | `.agents/subagents/generate-unit-tests.md` |
 | `generate-integration-tests` | `.agents/subagents/generate-integration-tests.md` |
 | `validate-module-documentation` | `.agents/subagents/validate-module-documentation.md` |
+| `validate-formatting-and-sanity` | `.agents/subagents/validate-formatting-and-sanity.md` |
 | `orchestrate-module-generation` | `.agents/subagents/orchestrate-module-generation.md` |

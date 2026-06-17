@@ -347,11 +347,18 @@ Part of the `orchestrate-module-generation` pipeline in two phases:
 2. Fix `test_error` failures in `tests/unit/` only.
 3. Report `module_error` failures — orchestrator restarts Phase 1.
 
+**Phase 4 — after sanity module fixes (`mode: verify`):**
+
+When `validate-formatting-and-sanity` modifies module code, the orchestrator
+may re-delegate here with `mode: verify` to confirm sanity fixes did not break
+unit coverage.
+
 Do not modify `plugins/modules/` — that is the module subagent's job.
 
 | Subagent | Role |
 | --- | --- |
-| `orchestrate-module-generation` | Coordinates fetch → modules → unit → integration → unit verify |
+| `orchestrate-module-generation` | Coordinates fetch → modules → unit → integration → unit verify → formatting/sanity |
 | `generate-ansible-modules` | Creates/fixes `plugins/modules/` from spec |
-| `generate-unit-tests` | Creates/fixes `tests/unit/`; classifies failures |
+| `generate-unit-tests` | Creates/fixes `tests/unit/`; classifies failures; Phase 1, 3, and 4 verify |
 | `generate-integration-tests` | Creates/fixes `tests/integration/`; classifies failures |
+| `validate-formatting-and-sanity` | Phase 4: linters, black, sanity; may trigger unit verify |

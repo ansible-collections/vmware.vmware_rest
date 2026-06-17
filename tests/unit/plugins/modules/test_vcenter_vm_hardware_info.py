@@ -23,10 +23,21 @@ class AnsibleExitJson(Exception):
         self.kwargs = kwargs
 
 
+class AnsibleFailJson(Exception):
+    def __init__(self, kwargs):
+        self.kwargs = kwargs
+
+
 def exit_json(*args, **kwargs):
     if args:
         kwargs.update(args[0])
     raise AnsibleExitJson(kwargs)
+
+
+def fail_json(*args, **kwargs):
+    if args:
+        kwargs.update(args[0])
+    raise AnsibleFailJson(kwargs)
 
 
 def _response(status, body):

@@ -25,7 +25,8 @@ The **`orchestrate-module-generation`** subagent coordinates the full pipeline.
 | 5b. Validate docs (integration) | `validate-module-documentation` | EXAMPLES/RETURN vs tests |
 | 6. Iterate Phase 2 | orchestrator relays `module_error` / `doc_corrections_needed` → step 2 → step 5 | until integration pass |
 | 7. Phase 3 — regression | `generate-unit-tests` (`mode: verify`) | re-run `make units` |
-| 8. Next batch | repeat for next resource (≤2 modules per batch) | |
+| 8. Phase 4 — formatting and sanity | `validate-formatting-and-sanity` | `make linters`, `black`, `make sanity` |
+| 9. Next batch | repeat for next resource (≤2 modules per batch) | |
 
 ## Subagents
 
@@ -37,6 +38,7 @@ The **`orchestrate-module-generation`** subagent coordinates the full pipeline.
 | `generate-unit-tests` | [subagents/generate-unit-tests.md](subagents/generate-unit-tests.md) | `tests/unit/` |
 | `generate-integration-tests` | [subagents/generate-integration-tests.md](subagents/generate-integration-tests.md) | `tests/integration/` |
 | `validate-module-documentation` | [subagents/validate-module-documentation.md](subagents/validate-module-documentation.md) | read-only |
+| `validate-formatting-and-sanity` | [subagents/validate-formatting-and-sanity.md](subagents/validate-formatting-and-sanity.md) | linters, sanity fixes, black |
 
 Cursor copies live in `.cursor/agents/`.
 
@@ -85,6 +87,13 @@ Integration target (MockServer simulator):
 
 ```bash
 make integration INTEGRATION_TARGETS=<target_name>
+```
+
+Linters and sanity:
+
+```bash
+make linters
+make sanity
 ```
 
 First-time integration setup:

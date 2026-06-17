@@ -19,8 +19,10 @@ build_ignore:
   - venv/*
   - .ansible/*
   - .agents/*
+  - .cursor/*
   - .github/*
   - skills/*
+  - config/api_specifications/*
   - GEMINI.md
   - CLAUDE.md
   - AGENTS.md

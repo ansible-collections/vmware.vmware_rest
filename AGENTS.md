@@ -50,6 +50,7 @@ Subagent definitions live in `.agents/subagents/`. When a task matches a subagen
 | `generate-unit-tests` | Generating unit tests for modules; API spec is the source of truth for mocks/assertions (writes only under `tests/unit/`) |
 | `generate-integration-tests` | Generating ansible-test integration targets for modules using the MockServer simulator (writes only under `tests/integration/`) |
 | `validate-module-documentation` | Read-only review of module DOCUMENTATION, EXAMPLES, and RETURN; compares CRUD/info pairs, integration test tasks, and runtime return values |
+| `validate-formatting-and-sanity` | Runs `make linters` and `make sanity` after test generation; applies black formatting; fixes sanity issues; re-runs unit tests when module code changes |
 
 ### Module generation pipeline
 
@@ -71,9 +72,12 @@ vSphere API major version. The orchestrator:
    re-run integration until pass.
 5. **Phase 3 — Regression** — `generate-unit-tests` (`mode: verify`) re-runs
    unit tests to confirm integration fixes did not break unit coverage.
-6. **Next batch** — proceed to the next module pair.
+6. **Phase 4 — Formatting and sanity** — `validate-formatting-and-sanity`
+   runs `make linters` (applying `black` when needed) and `make sanity`;
+   fixes sanity failures; re-runs unit tests when module code changes.
+7. **Next batch** — proceed to the next module pair.
 
-Use `skip_integration: true` to run Phase 1 only. Full workflow:
+Use `skip_integration: true` to run Phases 1 and 4 only (skip Phases 2–3). Full workflow:
 `.agents/subagents/orchestrate-module-generation.md`
 
 ## Agent Skills

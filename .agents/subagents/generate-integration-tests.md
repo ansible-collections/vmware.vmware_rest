@@ -440,15 +440,18 @@ to `generate-ansible-modules`, then re-runs this subagent — do not fix modules
 from this subagent.
 
 After integration tests pass, the orchestrator runs **Phase 3**: unit tests in
-`verify` mode to confirm module fixes did not regress unit coverage.
+`verify` mode to confirm module fixes did not regress unit coverage. **Phase 4**
+(`validate-formatting-and-sanity`) may trigger another `verify` run if sanity
+fixes change module code.
 
 | Subagent | Role |
 | --- | --- |
 | `orchestrate-module-generation` | Phase 2: invoke after unit gate; loop on module_error |
 | `generate-ansible-modules` | Fixes `plugins/modules/` when module_errors reported |
-| `generate-unit-tests` | Phase 1 generate + Phase 3 verify |
+| `generate-unit-tests` | Phase 1 generate + Phase 3 verify + Phase 4 verify after sanity fixes |
 | `generate-integration-tests` | Phase 2: targets under `tests/integration/` |
 | `validate-module-documentation` | May request temporary `debug: var:` tasks or verbose re-runs to capture RETURN payloads |
+| `validate-formatting-and-sanity` | Phase 4: linters, black, sanity after Phase 3 |
 
 ### RETURN capture for documentation validation
 

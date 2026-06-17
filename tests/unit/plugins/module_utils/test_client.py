@@ -65,7 +65,8 @@ def test_response_text_and_json():
 def test_response_json_invalid_raises():
     response = Response(200, b"not-json")
     with pytest.raises(Exception, match="invalid JSON"):
-        _ = response.json
+        parsed_json = response.json
+        assert parsed_json is None
 
 
 def test_response_log_to_file(tmp_path):
@@ -123,7 +124,8 @@ def test_client_login_failure_on_non_200(client):
     login_response = Response(401, b'{"error":"unauthorized"}')
     with patch.object(client, "_do_request", return_value=login_response):
         with pytest.raises(Exception, match="Authentication failure"):
-            _ = client.auth_headers
+            headers = client.auth_headers
+            assert headers is None
 
 
 def test_client_request_rejects_data_and_bytes(client):
@@ -142,7 +144,7 @@ def test_client_request_serializes_json_payload(client):
         client, "_do_request", return_value=api_response
     ) as mock_do_request:
         client.request("POST", "/vcenter/vm", data={"name": "vm-1"})
-    _, kwargs = mock_do_request.call_args
+    mock_args, kwargs = mock_do_request.call_args
     assert kwargs["data"] == '{"name":"vm-1"}'
     assert kwargs["headers"]["Content-type"] == "application/json"
 

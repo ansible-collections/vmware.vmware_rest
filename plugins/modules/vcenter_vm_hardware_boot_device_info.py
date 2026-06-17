@@ -42,7 +42,8 @@ EXAMPLES = r"""
 - name: Verify CD-ROM is the first boot device
   ansible.builtin.assert:
     that:
-      - boot_devices.value == [{"type": "CDROM"}]
+      - boot_devices.value | length > 0
+      - boot_devices.value[0].type == "CDROM"
 """
 
 RETURN = r"""

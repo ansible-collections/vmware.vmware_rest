@@ -61,7 +61,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import 
 )
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._module_base import (
     VmwareRestInfoModuleBase,
-    normalize_list_response,
 )
 
 HARDWARE_PATH = "/vcenter/vm/{vm}/hardware"

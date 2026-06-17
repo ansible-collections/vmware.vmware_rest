@@ -87,5 +87,3 @@
       ansible.builtin.assert:
         that:
           - get_info.value is defined
-
-

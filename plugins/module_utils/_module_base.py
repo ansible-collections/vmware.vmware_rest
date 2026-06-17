@@ -89,9 +89,9 @@ class VmwareRestModuleBase(ABC):
         )
 
     def build_path(self, path_template: str, params: dict = None) -> str:
-        ## Substitute path parameters from module params into the API path template.
-        ## Example: "/vcenter/datacenter/{datacenter}" with params["datacenter"] = "dc-1"
-        ## returns "/vcenter/datacenter/dc-1"
+        # Substitute path parameters from module params into the API path template.
+        # Example: "/vcenter/datacenter/{datacenter}" with params["datacenter"] = "dc-1"
+        # returns "/vcenter/datacenter/dc-1"
         if params is None:
             params = self.params
 
@@ -101,8 +101,8 @@ class VmwareRestModuleBase(ABC):
         return path
 
     def build_payload(self, payload_format: dict, params: dict = None) -> dict:
-        ## Build request body from module params using PAYLOAD_FORMAT body mapping.
-        ## The payload_format parameter is the PAYLOAD_FORMAT entry for the operation being performed.
+        # Build request body from module params using PAYLOAD_FORMAT body mapping.
+        # The payload_format parameter is the PAYLOAD_FORMAT entry for the operation being performed.
         if params is None:
             params = self.params
 
@@ -113,8 +113,8 @@ class VmwareRestModuleBase(ABC):
         return body
 
     def build_query(self, payload_format: dict, params: dict = None) -> dict:
-        ## Build query parameters from module params using PAYLOAD_FORMAT query mapping.
-        ## The payload_format parameter is the PAYLOAD_FORMAT entry for the operation being performed.
+        # Build query parameters from module params using PAYLOAD_FORMAT query mapping.
+        # The payload_format parameter is the PAYLOAD_FORMAT entry for the operation being performed.
         if params is None:
             params = self.params
         query = {}
