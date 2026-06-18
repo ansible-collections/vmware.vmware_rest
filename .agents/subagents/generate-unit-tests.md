@@ -123,11 +123,14 @@ helpers with a relative import from the test file:
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
 ```
+
+The `mock_client` fixture is registered in
+`tests/unit/plugins/modules/conftest.py`; use it as a test function parameter
+without importing it.
 
 Import `AnsibleFailJson`, `fail_json`, or `CONNECTION_PARAMS` from the same
 module when a scenario needs them.

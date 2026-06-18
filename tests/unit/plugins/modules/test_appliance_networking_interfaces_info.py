@@ -17,7 +17,6 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -29,6 +28,7 @@ NIC0 = {
 }
 
 INTERFACE_LIST = [NIC0]
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -49,6 +49,7 @@ def test_list_interfaces(mock_create_client, mock_ansible_module, mock_client):
     )
     assert exc.value.kwargs == {"value": INTERFACE_LIST}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_get_interface(mock_create_client, mock_ansible_module, mock_client):
@@ -65,6 +66,7 @@ def test_get_interface(mock_create_client, mock_ansible_module, mock_client):
 
     mock_client.get.assert_called_once_with("/appliance/networking/interfaces/nic0")
     assert exc.value.kwargs == {"value": NIC0}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

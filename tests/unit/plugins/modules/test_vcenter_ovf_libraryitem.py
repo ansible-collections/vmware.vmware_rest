@@ -17,10 +17,10 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestOvfLibraryItemModule, "_create_client")

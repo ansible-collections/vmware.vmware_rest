@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -52,6 +51,7 @@ DEFAULT_PARAMS = {
     "minimum_special_char_count": None,
 }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_update_warn_days(mock_create_client, mock_ansible_module, mock_client):
@@ -77,6 +77,7 @@ def test_update_warn_days(mock_create_client, mock_ansible_module, mock_client):
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"changed": True, "value": UPDATED_POLICY}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_no_change_idempotent(mock_create_client, mock_ansible_module, mock_client):
@@ -96,6 +97,7 @@ def test_no_change_idempotent(mock_create_client, mock_ansible_module, mock_clie
     mock_client.request.assert_not_called()
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"changed": False, "value": CURRENT_POLICY}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")

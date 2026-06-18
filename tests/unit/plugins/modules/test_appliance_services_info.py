@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -29,6 +28,7 @@ SERVICES_MAP = {
 }
 
 NTPD_INFO = {"description": "ntpd.service", "state": "STARTED", "id": "ntpd"}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -48,6 +48,7 @@ def test_list_services(mock_create_client, mock_ansible_module, mock_client):
     result = exc.value.kwargs["value"]
     assert len(result) == 2
     assert result[0]["id"] in ("ntpd", "vpxd")
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

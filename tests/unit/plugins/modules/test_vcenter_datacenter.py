@@ -15,10 +15,10 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")

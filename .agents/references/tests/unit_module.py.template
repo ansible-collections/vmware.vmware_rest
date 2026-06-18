@@ -23,7 +23,6 @@ from ...common.utils import (
     AnsibleExitJson,
     CONNECTION_PARAMS,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )

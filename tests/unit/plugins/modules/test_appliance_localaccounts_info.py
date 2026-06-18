@@ -17,7 +17,6 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -35,6 +34,7 @@ ADMIN_ACCOUNT = {
     "has_password": True,
     "roles": ["admin"],
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -70,6 +70,7 @@ def test_list_accounts(mock_create_client, mock_ansible_module, mock_client):
         ],
     }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_get_single_account(mock_create_client, mock_ansible_module, mock_client):
@@ -87,6 +88,7 @@ def test_get_single_account(mock_create_client, mock_ansible_module, mock_client
     mock_client.get.assert_called_once_with("/appliance/local-accounts/root")
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"value": dict(ROOT_ACCOUNT, username="root")}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

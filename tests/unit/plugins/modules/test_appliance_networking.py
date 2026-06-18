@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -35,6 +34,7 @@ NETWORKING_INFO = {
         },
     },
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestModule, "_create_client")
@@ -58,6 +58,7 @@ def test_update_ipv6_enabled(mock_create_client, mock_ansible_module, mock_clien
     assert mock_client.get.call_count == 2
     mock_client.get.assert_any_call(NETWORKING_PATH)
     assert exc.value.kwargs == {"changed": True, "value": NETWORKING_INFO}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestModule, "_create_client")

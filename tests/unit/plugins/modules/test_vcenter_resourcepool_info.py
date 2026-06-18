@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -41,6 +40,7 @@ SAMPLE_BODY = [
     }
 ]
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_get_success(mock_create_client, mock_ansible_module, mock_client):
@@ -56,6 +56,7 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
     assert len(exc.value.kwargs["value"]) == 1
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

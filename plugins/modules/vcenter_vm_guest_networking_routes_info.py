@@ -79,7 +79,7 @@ value:
       description:
         - Index of the network interface associated with this route.
         - Refers to the relative position of an element in the list returned by
-          M(vmware.vmware_rest.vcenter_vm_guest_networking_interfaces_info).
+          the vcenter_vm_guest_networking_interfaces_info module.
       type: int
       sample: 0
 """

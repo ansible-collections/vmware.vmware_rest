@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -38,6 +37,7 @@ QUERY_RESULT = [
         "data": ["1024", "2048"],
     },
 ]
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestQueryModule, "_create_client")
@@ -66,6 +66,7 @@ def test_query_monitoring_data(mock_create_client, mock_ansible_module, mock_cli
     )
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"value": QUERY_RESULT}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestQueryModule, "_create_client")

@@ -17,13 +17,13 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
 
 API_PATH = "/vcenter/vm/{vm}/hardware"
 SAMPLE_BODY = {"version": "VMX_19", "upgrade_policy": "NEVER", "upgrade_status": "NONE"}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -37,6 +37,7 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
     assert "value" in exc.value.kwargs
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

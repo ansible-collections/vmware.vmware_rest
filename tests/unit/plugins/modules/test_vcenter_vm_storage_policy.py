@@ -17,7 +17,6 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -45,6 +44,7 @@ UPDATED_DISK_POLICY = {
         "2000": "policy-999",
     },
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -92,6 +92,7 @@ def test_update_vm_home_specified_policy(
         "changed": True,
         "value": UPDATED_VM_HOME_POLICY,
     }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -143,6 +144,7 @@ def test_update_disk_specified_policy(
         "value": UPDATED_DISK_POLICY,
     }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_no_change(mock_create_client, mock_ansible_module, mock_client):
@@ -175,6 +177,7 @@ def test_no_change(mock_create_client, mock_ansible_module, mock_client):
         "value": CURRENT_POLICY,
     }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_vm_not_found(mock_create_client, mock_ansible_module, mock_client):
@@ -203,6 +206,7 @@ def test_vm_not_found(mock_create_client, mock_ansible_module, mock_client):
         "msg": "Virtual machine not found: {0}".format(VM),
     }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_state_absent(mock_create_client, mock_ansible_module, mock_client):
@@ -225,6 +229,7 @@ def test_state_absent(mock_create_client, mock_ansible_module, mock_client):
     mock_client.get.assert_not_called()
     mock_client.patch.assert_not_called()
     assert exc.value.kwargs == {"changed": False}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")

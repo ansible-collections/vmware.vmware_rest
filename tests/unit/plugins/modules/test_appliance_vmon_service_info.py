@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -46,6 +45,7 @@ SERVICE_INFO = {
     }
 }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_list_services(mock_create_client, mock_ansible_module, mock_client):
@@ -62,6 +62,7 @@ def test_list_services(mock_create_client, mock_ansible_module, mock_client):
 
     mock_client.get.assert_called_once_with(LIST_PATH)
     assert exc.value.kwargs == {"value": SERVICE_LIST["value"]}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

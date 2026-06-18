@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -25,6 +24,7 @@ PROFILE_LIST = [
     {"name": "default", "info": "Default profile"},
     {"name": "ApplianceManagement", "info": "Appliance management profile"},
 ]
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -46,6 +46,7 @@ def test_list_success(mock_create_client, mock_ansible_module, mock_client):
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"value": PROFILE_LIST}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_list_empty(mock_create_client, mock_ansible_module, mock_client):
@@ -65,6 +66,7 @@ def test_list_empty(mock_create_client, mock_ansible_module, mock_client):
     )
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"value": []}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

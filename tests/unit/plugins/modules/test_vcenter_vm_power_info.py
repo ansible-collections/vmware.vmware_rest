@@ -17,7 +17,6 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -25,10 +24,12 @@ from ...common.utils import (
 API_PATH = "/vcenter/vm/{vm}/power"
 SAMPLE_BODY = {"state": "POWERED_ON", "clean_power_off": True}
 
+
 def fail_json(*args, **kwargs):
     if args:
         kwargs.update(args[0])
     raise AnsibleFailJson(kwargs)
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -42,6 +43,7 @@ def test_get_success(mock_create_client, mock_ansible_module, mock_client):
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
     assert exc.value.kwargs["value"]["state"] == "POWERED_ON"
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

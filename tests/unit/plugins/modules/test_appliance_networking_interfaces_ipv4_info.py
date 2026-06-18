@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -29,6 +28,7 @@ IPV4_CONFIG = {
     "prefix": 24,
     "default_gateway": "10.20.80.1",
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -46,6 +46,7 @@ def test_get_ipv4_config(mock_create_client, mock_ansible_module, mock_client):
 
     mock_client.get.assert_called_once_with(IPV4_PATH)
     assert exc.value.kwargs == {"value": IPV4_CONFIG}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -23,6 +22,7 @@ from ...common.utils import (
 SERVICE_PATH = "/appliance/services/ntpd"
 STOPPED_SERVICE = {"description": "ntpd.service", "state": "STOPPED"}
 STARTED_SERVICE = {"description": "ntpd.service", "state": "STARTED"}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -45,6 +45,7 @@ def test_start_service(mock_create_client, mock_ansible_module, mock_client):
         "POST", SERVICE_PATH, query={"action": "start"}
     )
     assert exc.value.kwargs == {"changed": True}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")

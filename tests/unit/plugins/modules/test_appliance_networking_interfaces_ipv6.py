@@ -17,7 +17,6 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -47,6 +46,7 @@ DEFAULT_PARAMS = {
     "addresses": None,
     "default_gateway": None,
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -87,6 +87,7 @@ def test_enable_autoconf(mock_create_client, mock_ansible_module, mock_client):
     )
     assert exc.value.kwargs == {"changed": True, "value": UPDATED_AUTOCONF}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_no_change_idempotent(mock_create_client, mock_ansible_module, mock_client):
@@ -113,6 +114,7 @@ def test_no_change_idempotent(mock_create_client, mock_ansible_module, mock_clie
     mock_client.get.assert_called_once_with(IPV6_PATH)
     mock_client.put.assert_not_called()
     assert exc.value.kwargs == {"changed": False, "value": UPDATED_AUTOCONF}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")

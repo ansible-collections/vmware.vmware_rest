@@ -17,7 +17,6 @@ from ...common.utils import (
     AnsibleFailJson,
     exit_json,
     fail_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -38,6 +37,7 @@ TOOLS_INFO_POWER_CYCLE = {
     "upgrade_policy": "UPGRADE_AT_POWER_CYCLE",
     "version_status": "CURRENT",
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -79,6 +79,7 @@ def test_update_upgrade_policy_changed(
         "value": TOOLS_INFO_POWER_CYCLE,
     }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_update_no_change(mock_create_client, mock_ansible_module, mock_client):
@@ -108,6 +109,7 @@ def test_update_no_change(mock_create_client, mock_ansible_module, mock_client):
         "changed": False,
         "value": TOOLS_INFO_MANUAL,
     }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -140,6 +142,7 @@ def test_update_without_upgrade_policy(
         "changed": False,
         "value": TOOLS_INFO_MANUAL,
     }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")

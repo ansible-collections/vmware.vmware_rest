@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -30,6 +29,7 @@ MONITORING_ITEMS = [
         "description": "com.vmware.applmgmt.mon.descr.mem.total",
     },
 ]
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -49,6 +49,7 @@ def test_list_monitored_items(mock_create_client, mock_ansible_module, mock_clie
     mock_client.get.assert_called_once_with("/appliance/monitoring")
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"value": MONITORING_ITEMS}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

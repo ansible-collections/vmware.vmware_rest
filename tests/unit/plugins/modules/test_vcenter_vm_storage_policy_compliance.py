@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -39,9 +38,11 @@ COMPLIANCE_INFO = {
     },
 }
 
+
 @pytest.fixture
 def module_args():
     return {"state": "check", "vm": "vm-1009"}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestComplianceModule, "_create_client")
@@ -67,6 +68,7 @@ def test_check_success_minimal(
     )
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"changed": True, "value": COMPLIANCE_INFO}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestComplianceModule, "_create_client")
@@ -99,6 +101,7 @@ def test_check_success_with_vm_home_and_disks(
     )
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"changed": True, "value": COMPLIANCE_INFO}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestComplianceModule, "_create_client")

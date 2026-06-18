@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -23,9 +22,11 @@ from ...common.utils import (
 VM_MOID = "vm-1009"
 INSTALLER_PATH = "/vcenter/vm/{0}/tools/installer".format(VM_MOID)
 
+
 @pytest.fixture
 def module_args():
     return {"vm": VM_MOID}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
@@ -48,6 +49,7 @@ def test_get_installer_connected(
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"value": {"is_connected": True}}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_get_installer_not_connected(
@@ -67,6 +69,7 @@ def test_get_installer_not_connected(
 
     mock_client.get.assert_called_once_with(INSTALLER_PATH)
     assert exc.value.kwargs == {"value": {"is_connected": False}}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

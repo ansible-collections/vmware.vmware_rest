@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -30,6 +29,7 @@ EXPORT_PARSED = {
     "productName": "VMware vCenter Server",
     "profiles": {"ApplianceManagement": {"name": "ApplianceManagement"}},
 }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestModule, "_create_client")
@@ -59,6 +59,7 @@ def test_export_profiles(mock_create_client, mock_ansible_module, mock_client):
     )
     mock_module.exit_json.assert_called_once()
     assert exc.value.kwargs == {"changed": True, "value": EXPORT_PARSED}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestModule, "_create_client")

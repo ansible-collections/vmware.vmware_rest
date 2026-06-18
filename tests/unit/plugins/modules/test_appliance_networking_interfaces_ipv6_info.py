@@ -15,7 +15,6 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
@@ -37,6 +36,7 @@ IPV6_CONFIG = {
     "configurable": True,
 }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")
 def test_get_ipv6_config(mock_create_client, mock_ansible_module, mock_client):
@@ -53,6 +53,7 @@ def test_get_ipv6_config(mock_create_client, mock_ansible_module, mock_client):
 
     mock_client.get.assert_called_once_with(IPV6_PATH)
     assert exc.value.kwargs == {"value": IPV6_CONFIG}
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestInfoModule, "_create_client")

@@ -15,13 +15,13 @@ from ansible_collections.vmware.vmware_rest.plugins.modules import (
 from ...common.utils import (
     AnsibleExitJson,
     exit_json,
-    mock_client,
     set_module_args,
     _response,
 )
 
 VM_MOID = "vm-1009"
 INSTALLER_PATH = "/vcenter/vm/{0}/tools/installer".format(VM_MOID)
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
@@ -48,6 +48,7 @@ def test_connect_already_connected(
         "value": {"is_connected": True},
     }
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_connect_success(mock_create_client, mock_ansible_module, mock_client):
@@ -73,6 +74,7 @@ def test_connect_success(mock_create_client, mock_ansible_module, mock_client):
     )
     assert exc.value.kwargs == {"changed": True}
 
+
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
 def test_disconnect_already_disconnected(
@@ -97,6 +99,7 @@ def test_disconnect_already_disconnected(
         "changed": False,
         "value": {"is_connected": False},
     }
+
 
 @patch.object(module_under_test, "AnsibleModule")
 @patch.object(module_under_test.VmwareRestCrudModule, "_create_client")
