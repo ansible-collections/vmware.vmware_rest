@@ -1,0 +1,163 @@
+---
+- name: Test appliance_localaccounts_globalpolicy modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get global policy
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get the global policy of the local accounts
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy_info:
+      register: get_global_policy_info
+
+    - name: Assert global policy details
+      ansible.builtin.assert:
+        that:
+          - get_global_policy_info.value is defined
+          - get_global_policy_info.value.warn_days == 7
+          - get_global_policy_info.value.max_days == 90
+
+    - name: Reset MockServer expectations before update scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create first GET expectation (before update)
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/local-accounts/global-policy"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "max_days": 90,
+                "min_days": 1,
+                "warn_days": 7,
+                "minimum_length": 8
+              }
+            },
+            "times": {
+              "remainingTimes": 1
+            }
+          }'
+
+    - name: Create PUT expectation
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "PUT",
+              "path": "/api/appliance/local-accounts/global-policy"
+            },
+            "httpResponse": {
+              "statusCode": 204
+            }
+          }'
+
+    - name: Create second GET expectation (after update)
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/local-accounts/global-policy"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "max_days": 90,
+                "min_days": 1,
+                "warn_days": 5,
+                "minimum_length": 8
+              }
+            }
+          }'
+
+    - name: Update the global policy of the local accounts
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy:
+        warn_days: 5
+      register: update_global_policy
+
+    - name: Assert global policy was updated
+      ansible.builtin.assert:
+        that:
+          - update_global_policy is changed
+          - update_global_policy.value.warn_days == 5
+
+    - name: Reset MockServer expectations before idempotent scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset for idempotent check
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create GET expectation for idempotent check
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/local-accounts/global-policy"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "max_days": 90,
+                "min_days": 1,
+                "warn_days": 5,
+                "minimum_length": 8
+              }
+            }
+          }'
+
+    - name: Update global policy again with same parameters
+      vmware.vmware_rest.appliance_localaccounts_globalpolicy:
+        warn_days: 5
+      register: update_global_policy_idempotent
+
+    - name: Assert idempotent update
+      ansible.builtin.assert:
+        that:
+          - update_global_policy_idempotent is not changed

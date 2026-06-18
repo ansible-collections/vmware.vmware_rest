@@ -1,0 +1,56 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Health Database Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/health/database": {
+      "get": {
+        "tags": [
+          "health/database"
+        ],
+        "summary": "Returns the health status of the database.",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "Health status of the database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "required": ["status", "messages"]
+                },
+                "example": {
+                  "status": "HEALTHY",
+                  "messages": []
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

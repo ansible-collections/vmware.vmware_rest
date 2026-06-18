@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Monitoring Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/monitoring": {
+      "get": {
+        "summary": "Get the list of monitored items.",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "List of monitored items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "name": { "type": "string" },
+                      "units": { "type": "string" },
+                      "category": { "type": "string" },
+                      "instance": { "type": "string" },
+                      "description": { "type": "string" }
+                    },
+                    "required": ["id", "name"]
+                  }
+                },
+                "example": [
+                  {
+                    "id": "mem.total",
+                    "name": "Memory total",
+                    "units": "MB",
+                    "category": "mem",
+                    "instance": "total",
+                    "description": "com.vmware.applmgmt.mon.descr.mem.total"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/monitoring/query": {
+      "get": {
+        "summary": "Get monitoring data.",
+        "operationId": "query",
+        "parameters": [
+          { "name": "names", "in": "query", "required": true, "schema": { "type": "array", "items": { "type": "string" } } },
+          { "name": "interval", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "function", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "start_time", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "end_time", "in": "query", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Monitoring query results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "example": [
+                  {
+                    "name": "mem.total",
+                    "interval": "MINUTES5",
+                    "function": "AVG",
+                    "start_time": "2024-10-30T00:00:00.000Z",
+                    "end_time": "2024-10-31T00:00:00.000Z",
+                    "data": ["1024", "2048"]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

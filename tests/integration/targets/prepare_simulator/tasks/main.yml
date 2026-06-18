@@ -1,0 +1,77 @@
+---
+- name: Determine where the collection was installed
+  ansible.builtin.shell: >-
+    ansible-galaxy collection list --format yaml vmware.vmware_rest | grep -m 1 ':' | tr -d ':'
+  register: _collection_root_path
+
+- name: Create a container test network
+  containers.podman.podman_network:
+    name: "{{ prepare_combined_vcenter_simulator_network }}"
+
+- name: Run REST Container
+  containers.podman.podman_container:
+    name: vmwarerest
+    image: docker.io/mockserver/mockserver:latest
+    state: started
+    recreate: yes
+    network: "{{ prepare_combined_vcenter_simulator_network }}"
+    volumes:
+      - "{{ role_path }}/../{{ prepare_simulator_mock_api_spec_file_dir }}:/mockserver_specs:Z"
+    exposed_ports:
+      - 1080
+    ports:
+      - "{{ prepare_rest_port }}:1080"
+
+- name: Pause
+  ansible.builtin.pause:
+    seconds: 3
+
+- name: Create auth endpoint
+  ansible.builtin.command:
+    cmd: >-
+      curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+        "httpRequest": {
+          "method": "POST",
+          "path": "/rest/com/vmware/cis/session"
+        },
+        "httpResponse": {
+          "statusCode": 200,
+          "body": {
+            "value": "1234567890"
+          }
+        }
+      }'
+
+- name: Run API gateway container
+  containers.podman.podman_container:
+    name: combined-vcenter-gateway
+    image: docker.io/library/nginx:latest
+    state: started
+    recreate: yes
+    expose:
+      - 443
+    ports:
+      - "{{ vcenter_port }}:443"
+    network: "{{ prepare_combined_vcenter_simulator_network }}"
+    volumes:
+      - "{{ role_path }}/files/default.conf:/etc/nginx/conf.d/default.conf:Z"
+      - "{{ role_path }}/files/entrypoint.sh:/entrypoint.sh:Z"
+    command:
+      - /bin/bash
+      - -c
+      - chmod +x /entrypoint.sh && /entrypoint.sh
+
+- name: Wait for simulator
+  ansible.builtin.wait_for:
+    port: "{{ vcenter_port }}"
+
+- name: Set auth vars for later
+  ansible.builtin.set_fact:
+    # most testing blocks can use these as environment variables, so you dont need to define
+    # them for every task
+    environment_auth_vars:
+      VMWARE_HOST: "{{ vcenter_hostname }}"
+      VMWARE_USER: "{{ vcenter_username }}"
+      VMWARE_PASSWORD: "{{ vcenter_password }}"
+      VMWARE_VALIDATE_CERTS: "False"
+      VMWARE_PORT: "{{ vcenter_port }}"

@@ -1,0 +1,72 @@
+---
+- name: Test appliance_networking_interfaces_info module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get interface
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get a specific network interface
+      vmware.vmware_rest.appliance_networking_interfaces_info:
+        interface_name: nic0
+      register: get_nic0_interface_info
+
+    - name: Assert specific interface details
+      ansible.builtin.assert:
+        that:
+          - get_nic0_interface_info.value is defined
+          - get_nic0_interface_info.value.name == 'nic0'
+          - get_nic0_interface_info.value.status == 'up'
+          - get_nic0_interface_info.value.mac == '00:0C:29:94:BB:5A'
+
+    - name: Reset MockServer expectations before list scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Load API spec expectations for list interfaces
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+
+    - name: List all network interfaces
+      vmware.vmware_rest.appliance_networking_interfaces_info:
+      register: list_network_interfaces_info
+
+    - name: Assert network interfaces are listed
+      ansible.builtin.assert:
+        that:
+          - list_network_interfaces_info.value is defined
+          - list_network_interfaces_info.value | length >= 1
+          - list_network_interfaces_info.value[0].name == 'nic0'
+          - list_network_interfaces_info.value[0].status == 'up'

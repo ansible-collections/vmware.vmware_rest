@@ -1,0 +1,2 @@
+minor_changes:
+  - appliance_networking - new module to enable or disable IPv6 and reset appliance networking configuration.

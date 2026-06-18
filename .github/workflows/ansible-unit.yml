@@ -1,0 +1,114 @@
+# README FIRST
+# 1. Subscribe to https://github.com/ansible-collections/news-for-maintainers
+#    (click the Watch button on the homepage > Custom > Issues)
+#    and keep this matrix up to date in accordance to related announcements.
+#    Timely add new ansible-core versions and consider dropping support
+#    and testing against its EOL versions.
+# 2. If your collection repository is under the ansible-collections org,
+#    please keep in mind that the number of GHA jobs is limited
+#    and shared across all the collections in the org.
+#    So, focusing on good test coverage of your collection,
+#    please avoid testing against unnecessary entities such as
+#    ansible-core EOL versions your collection does not support
+#    or ansible-core versions that are not EOL yet but not supported by the collection.
+# 3. If you don't have unit or integration tests, remove corresponding sections.
+# 4. If your collection depends on other collections ensure they are installed,
+#    add them to the "test-deps" input.
+# 5. For the comprehensive list of the inputs supported by the
+#    ansible-community/ansible-test-gh-action GitHub Action, see
+#    https://github.com/marketplace/actions/ansible-test.
+# 6. If you want to prevent merging PRs that do not pass all tests,
+#    make sure to add the "check" job to your repository branch
+#    protection once this workflow is added.
+#    It is also possible to tweak which jobs are allowed to fail. See
+#    https://github.com/marketplace/actions/alls-green#gotchas for more detail.
+# 7. If you need help please ask in #community:ansible.com on Matrix
+#    or in bridged #ansible-community on the Libera.Chat IRC channel.
+#    See https://docs.ansible.com/ansible/devel/community/communication.html
+#    for details.
+# 8. If your collection is [going to get] included in the Ansible package,
+#    it has to adhere to Python compatibility and CI testing requirements described in
+#    https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html.
+
+name: Units
+on:
+  # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
+  push:
+    branches:
+      - main
+      - stable-*
+  pull_request:
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{
+      github.event.pull_request.number || github.sha
+    }}
+  cancel-in-progress: true
+
+jobs:
+  units:
+    name: Units (Ⓐ${{ matrix.versions.ansible }} - ${{ matrix.versions.python }})
+    strategy:
+      matrix:
+        versions:
+          # Testing all ansible-core and controller Python versions is impractical. Only test the
+          # newest and oldest controller Python versions supported by each ansible-core we support.
+          # https://endoflife.date/ansible-core (Control node Python column)
+          # Add publish_coverage: true to the version you want to publish coverage for, usually latest.
+          - { python: "3.14", ansible: stable-2.21 }
+          - { python: "3.12", ansible: stable-2.21 }
+          - { python: "3.14", ansible: stable-2.20, publish_coverage: true }
+          - { python: "3.12", ansible: stable-2.20 }
+          - { python: "3.13", ansible: stable-2.19 }
+          - { python: "3.11", ansible: stable-2.19 }
+          - { python: "3.12", ansible: stable-2.16 }
+          - { python: "3.10", ansible: stable-2.16 }
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Install python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.versions.python }}
+
+      - name: Install ansible-core
+        run: |
+          python -m pip install https://github.com/ansible/ansible/archive/${{ matrix.versions.ansible }}.tar.gz;
+
+      - name: Install collection and python requirements
+        run: |
+          ansible-galaxy collection install . --force;
+
+      - name: Perform unit tests
+        run: |
+          make units UNIT_PYTHON_VERSION=${{ matrix.versions.python }};
+
+      - name: Publish coverage report
+        if: ${{ matrix.versions.publish_coverage }}
+        run: |
+          make units-coverage UNIT_PYTHON_VERSION=${{ matrix.versions.python }};
+
+      - name: Upload coverage artifact
+        if: ${{ matrix.versions.publish_coverage }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: units-coverage
+          path: ${{ github.workspace }}/coverage-units.xml
+
+  # This job does nothing and is only used for the branch protection
+  # or multi-stage CI jobs, like making sure that all tests pass before
+  # a publishing job is started.
+  unit-check:
+    if: always()
+    needs:
+      - units
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}

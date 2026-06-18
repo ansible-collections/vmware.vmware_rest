@@ -9,6 +9,7 @@ exclude_paths:
   - tests/manual
   - modules.yaml
   - config
+  - .agents/
 
 skip_list:
   - yaml[indentation]

@@ -1,0 +1,127 @@
+---
+- name: Test appliance_networking_interfaces_ipv6 modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get IPv6
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get IPv6 configuration for nic0
+      vmware.vmware_rest.appliance_networking_interfaces_ipv6_info:
+        interface_name: nic0
+      register: get_ipv6_info
+
+    - name: Assert IPv6 configuration is returned
+      ansible.builtin.assert:
+        that:
+          - get_ipv6_info.value is defined
+          - get_ipv6_info.value.autoconf == true
+          - get_ipv6_info.value.dhcp == false
+          - get_ipv6_info.value.default_gateway == 'fc00:10:20:83::1'
+
+    - name: Reset MockServer expectations before update scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create GET expectation for current IPv6 config
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/networking/interfaces/nic0/ipv6"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "dhcp": false,
+                "autoconf": false,
+                "addresses": [],
+                "default_gateway": "",
+                "configurable": true
+              }
+            },
+            "times": {
+              "remainingTimes": 1
+            }
+          }'
+
+    - name: Create PUT expectation for autoconf update
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "PUT",
+              "path": "/api/appliance/networking/interfaces/nic0/ipv6",
+              "body": {
+                "dhcp": false,
+                "autoconf": true,
+                "addresses": [],
+                "default_gateway": ""
+              }
+            },
+            "httpResponse": {
+              "statusCode": 200
+            }
+          }'
+
+    - name: Create GET expectation for updated IPv6 config
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/networking/interfaces/nic0/ipv6"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "dhcp": false,
+                "autoconf": true,
+                "addresses": [],
+                "default_gateway": "",
+                "configurable": true
+              }
+            }
+          }'
+
+    - name: Enable IPv6 SLAAC on nic0
+      vmware.vmware_rest.appliance_networking_interfaces_ipv6:
+        interface_name: nic0
+        autoconf: true
+        dhcp: false
+        addresses: []
+        default_gateway: ""
+      register: set_ipv6_autoconf
+
+    - name: Assert IPv6 was updated
+      ansible.builtin.assert:
+        that:
+          - set_ipv6_autoconf is changed
+          - set_ipv6_autoconf.value is defined
+          - set_ipv6_autoconf.value.autoconf == true

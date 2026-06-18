@@ -1,0 +1,156 @@
+---
+- name: Test vcenter_resourcepool modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for list empty
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.ResourcePool_list: "200"
+
+    - name: List resource pools (empty)
+      vmware.vmware_rest.vcenter_resourcepool_info: {}
+      register: list_rp_info
+
+    - name: Assert empty list
+      ansible.builtin.assert:
+        that:
+          - list_rp_info.value is defined
+          - list_rp_info.value | length == 0
+
+    - name: Load API spec expectations for create
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.ResourcePool_list: "200"
+            Vcenter.ResourcePool_create: "200"
+
+    - name: Create a resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        name: my_resource_pool
+        parent: resgroup-8
+        cpu_allocation:
+          reservation: 1000
+          limit: 4000
+        memory_allocation:
+          reservation: 1024
+          limit: 4096
+      register: create_rp
+
+    - name: Assert resource pool was created
+      ansible.builtin.assert:
+        that:
+          - create_rp is changed
+          - create_rp.value == 'resgroup-1009'
+
+    - name: Load API spec expectations for get
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.ResourcePool_list: "200"
+            Vcenter.ResourcePool_get: "200"
+
+    - name: Get the created resource pool
+      vmware.vmware_rest.vcenter_resourcepool_info:
+        resource_pool: "{{ create_rp.value }}"
+      register: get_rp_info
+
+    - name: Assert resource pool details
+      ansible.builtin.assert:
+        that:
+          - get_rp_info.value is defined
+          - get_rp_info.value.name == 'my_resource_pool'
+
+    - name: Load API spec expectations for update
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.ResourcePool_get: "200"
+            Vcenter.ResourcePool_update: "204"
+
+    - name: Update the resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        resource_pool: "{{ create_rp.value }}"
+        cpu_allocation:
+          limit: 8000
+      register: update_rp
+
+    - name: Assert resource pool was updated
+      ansible.builtin.assert:
+        that:
+          - update_rp is changed
+
+    - name: Ensure resource pool without changes
+      vmware.vmware_rest.vcenter_resourcepool:
+        resource_pool: "{{ create_rp.value }}"
+      register: ensure_rp
+
+    - name: Assert no change when update parameters are omitted
+      ansible.builtin.assert:
+        that:
+          - ensure_rp is not changed
+
+    - name: Load API spec expectations for delete
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/updated.json"
+          operationsAndResponses:
+            Vcenter.ResourcePool_get: "200"
+            Vcenter.ResourcePool_delete: "204"
+
+    - name: Delete the resource pool
+      vmware.vmware_rest.vcenter_resourcepool:
+        state: absent
+        resource_pool: "{{ create_rp.value }}"
+      register: delete_rp
+
+    - name: Assert resource pool was deleted
+      ansible.builtin.assert:
+        that:
+          - delete_rp is changed
+
+    - name: Load API spec expectations for idempotent delete
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/deleted.json"
+          operationsAndResponses:
+            Vcenter.ResourcePool_get: "404"
+
+    - name: Delete the resource pool again (idempotent)
+      vmware.vmware_rest.vcenter_resourcepool:
+        state: absent
+        resource_pool: "{{ create_rp.value }}"
+      register: delete_rp_again
+
+    - name: Assert no change on second delete
+      ansible.builtin.assert:
+        that:
+          - delete_rp_again is not changed

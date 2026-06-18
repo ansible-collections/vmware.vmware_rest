@@ -1,0 +1,43 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "content_library_subscriptions Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/content/library/{library}/subscriptions": {
+      "get": {
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": [
+                  {
+                    "subscription": "subscription-1",
+                    "subscribed_library": "subscribed-lib-1",
+                    "subscribed_library_name": "my-subscribed-library"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

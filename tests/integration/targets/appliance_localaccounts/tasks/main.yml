@@ -1,0 +1,74 @@
+---
+- name: Test appliance_localaccounts_info module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get local account
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get a specific local account
+      vmware.vmware_rest.appliance_localaccounts_info:
+        username: root
+      register: get_root_account_info
+
+    - name: Assert specific account details
+      ansible.builtin.assert:
+        that:
+          - get_root_account_info.value is defined
+          - get_root_account_info.value.username == 'root'
+          - get_root_account_info.value.fullname == 'root'
+          - get_root_account_info.value.has_password == true
+
+    - name: Reset MockServer expectations before list scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Load API spec expectations for list and get local accounts
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+            get: "200"
+
+    - name: List the local accounts
+      vmware.vmware_rest.appliance_localaccounts_info:
+      register: list_local_accounts_info
+
+    - name: Assert local accounts are listed
+      ansible.builtin.assert:
+        that:
+          - list_local_accounts_info.value is defined
+          - list_local_accounts_info.value | length >= 1
+          - list_local_accounts_info.value[0].username == 'root'
+          - list_local_accounts_info.value[0].enabled == true
+          - list_local_accounts_info.value[0].roles is defined

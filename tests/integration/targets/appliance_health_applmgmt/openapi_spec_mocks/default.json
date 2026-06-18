@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Health Applmgmt Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/health/applmgmt": {
+      "get": {
+        "tags": [
+          "health/applmgmt"
+        ],
+        "summary": "Get health status of applmgmt services.",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "green"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

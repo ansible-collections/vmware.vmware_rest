@@ -1,0 +1,92 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Networking Interfaces IPv4 Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/networking/interfaces/{interface_name}/ipv4": {
+      "get": {
+        "summary": "Get IPv4 configuration.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IPv4 configuration",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "configurable": true,
+                  "mode": "STATIC",
+                  "address": "10.20.80.191",
+                  "prefix": 24,
+                  "default_gateway": "10.20.80.1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Set IPv4 configuration.",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": { "type": "string" },
+                  "address": { "type": "string" },
+                  "prefix": { "type": "integer" },
+                  "default_gateway": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated IPv4 configuration",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "configurable": true,
+                  "mode": "DHCP"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

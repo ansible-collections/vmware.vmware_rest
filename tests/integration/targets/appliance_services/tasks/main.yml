@@ -1,0 +1,93 @@
+---
+- name: Test appliance_services modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for list services
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+
+    - name: List appliance services
+      vmware.vmware_rest.appliance_services_info:
+      register: list_services_info
+
+    - name: Assert services are listed
+      ansible.builtin.assert:
+        that:
+          - list_services_info.value is defined
+          - list_services_info.value | length >= 1
+
+    - name: Reset MockServer expectations before start scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create GET expectation for stopped ntpd service
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "GET",
+              "path": "/api/appliance/services/ntpd"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "description": "ntpd.service",
+                "state": "STOPPED"
+              }
+            },
+            "times": {
+              "remainingTimes": 1
+            }
+          }'
+
+    - name: Create POST expectation for start action
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/appliance/services/ntpd",
+              "queryStringParameters": {
+                "action": ["start"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 204
+            }
+          }'
+
+    - name: Start the ntpd service
+      vmware.vmware_rest.appliance_services:
+        service: ntpd
+        state: start
+      register: start_service
+
+    - name: Assert service start was requested
+      ansible.builtin.assert:
+        that:
+          - start_service is changed

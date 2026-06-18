@@ -1,0 +1,59 @@
+---
+- name: Test appliance_infraprofile_configs modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for list profiles
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+
+    - name: List registered infrastructure profiles
+      vmware.vmware_rest.appliance_infraprofile_configs_info:
+      register: list_infraprofile_configs_info
+
+    - name: Assert infrastructure profiles are listed
+      ansible.builtin.assert:
+        that:
+          - list_infraprofile_configs_info.value is defined
+          - list_infraprofile_configs_info.value | length >= 1
+          - list_infraprofile_configs_info.value[0].name is defined
+          - list_infraprofile_configs_info.value[0].info is defined
+
+    - name: Create export endpoint expectation
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/appliance/infraprofile/configs",
+              "queryStringParameters": {
+                "action": ["export"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": "{\"action\":\"RESTART_SERVICE\",\"productName\":\"VMware vCenter Server\",\"profiles\":{\"ApplianceManagement\":{\"name\":\"ApplianceManagement\"}}}"
+            }
+          }'
+
+    - name: Export the ApplianceManagement profile
+      vmware.vmware_rest.appliance_infraprofile_configs:
+        state: export
+        profiles:
+          - ApplianceManagement
+      register: export_infraprofile_configs
+
+    - name: Assert profile was exported
+      ansible.builtin.assert:
+        that:
+          - export_infraprofile_configs is changed
+          - export_infraprofile_configs.value is defined
+          - export_infraprofile_configs.value.action == 'RESTART_SERVICE'
+          - export_infraprofile_configs.value.productName == 'VMware vCenter Server'
+          - export_infraprofile_configs.value.profiles.ApplianceManagement.name == 'ApplianceManagement'

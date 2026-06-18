@@ -1,0 +1,25 @@
+---
+- name: Test appliance_health_database_info module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get database health
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+
+    - name: Get the database health status
+      vmware.vmware_rest.appliance_health_database_info:
+      register: get_database_health_info
+
+    - name: Assert database health status
+      ansible.builtin.assert:
+        that:
+          - get_database_health_info.value is defined
+          - get_database_health_info.value.status == 'HEALTHY'
+          - get_database_health_info.value.messages | length == 0

@@ -1,0 +1,25 @@
+---
+- name: Test vcenter_vm_hardware_disk_info against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware.Disk_list: "200"
+
+    - name: List disks (empty)
+      vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+        vm: vm-1001
+      register: list_info
+
+    - name: Assert empty list
+      ansible.builtin.assert:
+        that:
+          - list_info.value is defined
+          - list_info.value | length == 0

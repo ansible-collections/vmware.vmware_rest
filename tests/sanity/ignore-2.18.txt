@@ -1,2 +1,7 @@
-plugins/modules/vcenter_vm_guest_customization.py pep8!skip
-plugins/modules/appliance_infraprofile_configs.py pep8!skip
+.agents/scripts/fetch_vsphere_openapi_spec.py shebang!skip
+.agents/scripts/generate_batch_tests.py shebang!skip
+.agents/scripts/validate_api_compatibility.py shebang!skip
+.agents/references/modules/full_examples/vcenter_resourcepool.py shebang!skip
+.agents/references/modules/full_examples/vcenter_resourcepool_info.py shebang!skip
+config/api_specifications/9.1.0/automation/vcenter.json no-smart-quotes!skip
+config/api_specifications/9.1.0/vi-json/vi-json.json no-smart-quotes!skip

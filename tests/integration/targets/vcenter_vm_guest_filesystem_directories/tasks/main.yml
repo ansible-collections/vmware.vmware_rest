@@ -1,0 +1,68 @@
+---
+- name: Test vcenter_vm_guest_filesystem_directories against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Create expectation for create directory
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/vcenter/vm/vm-1001/guest/filesystem/directories",
+              "queryStringParameters": {
+                "action": ["create"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 204
+            }
+          }'
+
+    - name: Create a guest directory
+      vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+        vm: vm-1001
+        path: /tmp/testdir
+        credentials:
+          interactive_session: false
+          type: USERNAME_PASSWORD
+          user_name: root
+          password: secret
+      register: create_dir
+
+    - name: Assert directory was created
+      ansible.builtin.assert:
+        that:
+          - create_dir is changed
+
+    - name: Create expectation for delete directory
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/vcenter/vm/vm-1001/guest/filesystem/directories",
+              "queryStringParameters": {
+                "action": ["delete"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 204
+            }
+          }'
+
+    - name: Delete a guest directory
+      vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+        vm: vm-1001
+        path: /tmp/testdir
+        state: absent
+        credentials:
+          interactive_session: false
+          type: USERNAME_PASSWORD
+          user_name: root
+          password: secret
+      register: delete_dir
+
+    - name: Assert directory was deleted
+      ansible.builtin.assert:
+        that:
+          - delete_dir is changed

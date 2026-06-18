@@ -1,0 +1,84 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Appliance Local Accounts Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/local-accounts": {
+      "get": {
+        "summary": "List local accounts.",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "List of account usernames",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "example": ["root"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/local-accounts/{username}": {
+      "get": {
+        "summary": "Get local account information.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Local account information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": { "type": "boolean" },
+                    "fullname": { "type": "string" },
+                    "has_password": { "type": "boolean" },
+                    "roles": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  }
+                },
+                "example": {
+                  "enabled": true,
+                  "fullname": "root",
+                  "has_password": true,
+                  "roles": ["superAdmin"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

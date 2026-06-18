@@ -1,0 +1,79 @@
+---
+- name: Test appliance_monitoring modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for list monitored items
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            list: "200"
+
+    - name: Get the list of monitored items
+      vmware.vmware_rest.appliance_monitoring_info:
+      register: list_monitored_items_info
+
+    - name: Assert monitored items are listed
+      ansible.builtin.assert:
+        that:
+          - list_monitored_items_info.value is defined
+          - list_monitored_items_info.value | length >= 1
+          - list_monitored_items_info.value[0].id == 'mem.total'
+          - list_monitored_items_info.value[0].name == 'Memory total'
+
+    - name: Reset MockServer expectations before query scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Load API spec expectations for monitoring query
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            query: "200"
+
+    - name: Query the monitoring backend for memory usage
+      vmware.vmware_rest.appliance_monitoring_query:
+        end_time: "2024-10-31T00:00:00.000Z"
+        start_time: "2024-10-30T00:00:00.000Z"
+        names:
+          - mem.total
+        interval: MINUTES5
+        function: AVG
+      register: monitoring_query_result
+
+    - name: Assert monitoring query results
+      ansible.builtin.assert:
+        that:
+          - monitoring_query_result.value is defined
+          - monitoring_query_result.value | length >= 1
+          - monitoring_query_result.value[0].name == 'mem.total'
+          - monitoring_query_result.value[0].interval == 'MINUTES5'
+          - monitoring_query_result.value[0].function == 'AVG'
+          - monitoring_query_result.value[0].data | length >= 1

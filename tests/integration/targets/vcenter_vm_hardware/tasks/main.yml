@@ -1,0 +1,71 @@
+---
+- name: Test vcenter_vm_hardware against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware_get: "200"
+
+    - name: Get current configuration
+      vmware.vmware_rest.vcenter_vm_hardware:
+        vm: vm-1001
+      register: get_initial
+
+    - name: Assert initial configuration
+      ansible.builtin.assert:
+        that:
+          - get_initial is not changed
+          - get_initial.value is defined
+          - get_initial.value.upgrade_policy == 'NEVER'
+
+    - name: Load API spec expectations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware_get: "200"
+            Vcenter.Vm.Hardware_update: "204"
+
+    - name: Update configuration
+      vmware.vmware_rest.vcenter_vm_hardware:
+        vm: vm-1001
+        upgrade_policy: AFTER_CLEAN_SHUTDOWN
+      register: update_result
+
+    - name: Assert configuration was updated
+      ansible.builtin.assert:
+        that:
+          - update_result is changed
+          - update_result.value is defined
+
+    - name: Load API spec expectations for no-op
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/updated.json"
+          operationsAndResponses:
+            Vcenter.Vm.Hardware_get: "200"
+
+    - name: Ensure configuration without changes
+      vmware.vmware_rest.vcenter_vm_hardware:
+        vm: vm-1001
+      register: ensure_result
+
+    - name: Assert no change when parameters are omitted
+      ansible.builtin.assert:
+        that:
+          - ensure_result is not changed

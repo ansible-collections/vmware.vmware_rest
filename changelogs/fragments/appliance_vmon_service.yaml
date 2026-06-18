@@ -1,0 +1,3 @@
+minor_changes:
+  - appliance_vmon_service - new deprecated module for managing vMon services (generated from vSphere API 8.0.2).
+  - appliance_vmon_service_info - new deprecated module for retrieving vMon service information (generated from vSphere API 8.0.2).

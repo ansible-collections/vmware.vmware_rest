@@ -1,0 +1,87 @@
+---
+- name: Test appliance_networking modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for networking operations
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            get: "200"
+            update: "204"
+            reset: "204"
+
+    - name: Get vCenter appliance networking information
+      vmware.vmware_rest.appliance_networking_info:
+      register: get_appliance_networking_info
+
+    - name: Assert networking information
+      ansible.builtin.assert:
+        that:
+          - get_appliance_networking_info.value is defined
+          - get_appliance_networking_info.value.dns.mode == 'STATIC'
+          - get_appliance_networking_info.value.dns.hostname == 'vcenter.example.com'
+          - get_appliance_networking_info.value.interfaces.nic0.status == 'up'
+
+    - name: Disable IPv6 on all appliance interfaces
+      vmware.vmware_rest.appliance_networking:
+        ipv6_enabled: false
+      register: update_appliance_networking
+
+    - name: Assert networking update was requested
+      ansible.builtin.assert:
+        that:
+          - update_appliance_networking is changed
+          - update_appliance_networking.value is defined
+
+    - name: Reset MockServer expectations before reset scenario
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/reset
+        method: PUT
+        status_code: [200]
+
+    - name: Recreate auth endpoint after reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -v -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/rest/com/vmware/cis/session"
+            },
+            "httpResponse": {
+              "statusCode": 200,
+              "body": {
+                "value": "1234567890"
+              }
+            }
+          }'
+
+    - name: Create POST expectation for networking reset
+      ansible.builtin.command:
+        cmd: >-
+          curl -X PUT http://localhost:1080/mockserver/expectation -d '{
+            "httpRequest": {
+              "method": "POST",
+              "path": "/api/appliance/networking",
+              "queryStringParameters": {
+                "action": ["reset"]
+              }
+            },
+            "httpResponse": {
+              "statusCode": 204
+            }
+          }'
+
+    - name: Reset appliance networking configuration
+      vmware.vmware_rest.appliance_networking:
+        state: reset
+      register: reset_appliance_networking
+
+    - name: Assert networking reset was requested
+      ansible.builtin.assert:
+        that:
+          - reset_appliance_networking is changed

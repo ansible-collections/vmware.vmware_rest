@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VM Tools Installer Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/tools/installer": {
+      "get": {
+        "tags": [
+          "Vcenter.Vm.Tools.Installer"
+        ],
+        "description": "Get information about the VMware Tools installer.",
+        "operationId": "Vcenter.Vm.Tools.Installer_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "description": "Identifier of the virtual machine.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about the VMware Tools installer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vcenter.Vm.Tools.Installer.Info"
+                },
+                "example": {
+                  "is_connected": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "if the virtual machine is not found."
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Vcenter.Vm.Tools.Installer"
+        ],
+        "description": "Connects the VMware Tools CD installer as a CD-ROM for the guest operating system.",
+        "operationId": "Vcenter.Vm.Tools.Installer_connect",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "description": "Virtual machine ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "description": "Connect action",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "connect"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success!"
+          },
+          "404": {
+            "description": "if the virtual machine is not found."
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vcenter.Vm.Tools.Installer.Info": {
+        "required": [
+          "is_connected"
+        ],
+        "type": "object",
+        "properties": {
+          "is_connected": {
+            "type": "boolean",
+            "description": "Flag indicating whether the VMware Tools installer is mounted as a CD-ROM."
+          }
+        },
+        "description": "Information about the VMware Tools installer."
+      }
+    },
+    "securitySchemes": {
+      "api_key_auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "vmware-api-session-id"
+      }
+    }
+  }
+}

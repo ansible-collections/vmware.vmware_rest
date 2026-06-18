@@ -1,0 +1,173 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VM Tools Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/tools": {
+      "get": {
+        "tags": [
+          "Vcenter.Vm.Tools"
+        ],
+        "description": "Get the properties of VMware Tools.",
+        "operationId": "Vcenter.Vm.Tools_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "VMware Tools properties.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vcenter.Vm.Tools.Info"
+                },
+                "example": {
+                  "auto_update_supported": true,
+                  "run_state": "RUNNING",
+                  "upgrade_policy": "UPGRADE_AT_POWER_CYCLE",
+                  "version_status": "CURRENT",
+                  "version": "12.1.5",
+                  "version_number": 12389,
+                  "install_type": "OPEN_VM_TOOLS",
+                  "guest_reboot_status": {
+                    "reboot_requested": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Vcenter.Vm.Tools"
+        ],
+        "description": "Update the properties of VMware Tools.",
+        "operationId": "Vcenter.Vm.Tools_update",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vcenter.Vm.Tools.UpdateSpec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success!"
+          }
+        },
+        "security": [
+          {
+            "api_key_auth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vcenter.Vm.Tools.GuestRebootStatus": {
+        "required": [
+          "reboot_requested"
+        ],
+        "type": "object",
+        "properties": {
+          "reboot_requested": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Vcenter.Vm.Tools.Info": {
+        "required": [
+          "auto_update_supported",
+          "run_state",
+          "upgrade_policy"
+        ],
+        "type": "object",
+        "properties": {
+          "auto_update_supported": {
+            "type": "boolean"
+          },
+          "run_state": {
+            "type": "string"
+          },
+          "upgrade_policy": {
+            "type": "string"
+          },
+          "version_status": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "version_number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "install_type": {
+            "type": "string"
+          },
+          "guest_reboot_status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Vcenter.Vm.Tools.GuestRebootStatus"
+              }
+            ]
+          }
+        }
+      },
+      "Vcenter.Vm.Tools.UpdateSpec": {
+        "type": "object",
+        "properties": {
+          "upgrade_policy": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key_auth": {
+        "type": "apiKey",
+        "name": "vmware-api-session-id",
+        "in": "header"
+      }
+    }
+  }
+}

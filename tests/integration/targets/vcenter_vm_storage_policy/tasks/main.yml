@@ -1,0 +1,192 @@
+---
+- name: Test vcenter_vm_storage_policy modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load API spec expectations for get (initial)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+
+    - name: Get VM storage policy information
+      vmware.vmware_rest.vcenter_vm_storage_policy_info:
+        vm: vm-1009
+      register: get_vm_storage_policy_info
+
+    - name: Assert initial VM storage policy information
+      ansible.builtin.assert:
+        that:
+          - get_vm_storage_policy_info.value is defined
+          - get_vm_storage_policy_info.value.vm_home == 'policy-123'
+          - get_vm_storage_policy_info.value.disks['2000'] == 'policy-456'
+
+    - name: Load API spec expectations for disk policy update
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+            Vcenter.Vm.Storage.Policy_update: "204"
+
+    - name: Set storage policy on a virtual disk
+      vmware.vmware_rest.vcenter_vm_storage_policy:
+        vm: vm-1009
+        disks:
+          "2000":
+            type: USE_SPECIFIED_POLICY
+            policy: policy-123
+      register: update_disk_storage_policy
+
+    - name: Assert virtual disk storage policy was updated
+      ansible.builtin.assert:
+        that:
+          - update_disk_storage_policy is changed
+          - update_disk_storage_policy.value is defined
+
+    - name: Load API spec expectations for idempotent disk policy update
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/disk_policy_123.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+            Vcenter.Vm.Storage.Policy_update: "204"
+
+    - name: Set storage policy on a virtual disk again
+      vmware.vmware_rest.vcenter_vm_storage_policy:
+        vm: vm-1009
+        disks:
+          "2000":
+            type: USE_SPECIFIED_POLICY
+            policy: policy-123
+      register: update_disk_storage_policy_again
+
+    - name: Assert no change on second disk policy update
+      ansible.builtin.assert:
+        that:
+          - update_disk_storage_policy_again is not changed
+          - update_disk_storage_policy_again.value.disks['2000'] == 'policy-123'
+
+    - name: Load API spec expectations for get (disk policy updated)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/disk_policy_123.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+
+    - name: Get VM storage policy information after disk update
+      vmware.vmware_rest.vcenter_vm_storage_policy_info:
+        vm: vm-1009
+      register: get_vm_storage_policy_info_after_disk_update
+
+    - name: Assert VM storage policy information after disk update
+      ansible.builtin.assert:
+        that:
+          - get_vm_storage_policy_info_after_disk_update.value is defined
+          - get_vm_storage_policy_info_after_disk_update.value.disks['2000'] == 'policy-123'
+          - get_vm_storage_policy_info_after_disk_update.value.vm_home == 'policy-123'
+
+    - name: Load API spec expectations for vm home default policy update
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/disk_policy_123.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+
+    - name: Create vm home default policy update expectation
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/expectation
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          httpRequest:
+            method: PATCH
+            path: /api/vcenter/vm/vm-1009/storage/policy
+            body:
+              type: JSON
+              matchType: ONLY_MATCHING_FIELDS
+              json:
+                vm_home:
+                  type: USE_DEFAULT_POLICY
+                  policy: null
+          httpResponse:
+            statusCode: 204
+
+    - name: Set VM home to default storage policy
+      vmware.vmware_rest.vcenter_vm_storage_policy:
+        vm: vm-1009
+        vm_home:
+          type: USE_DEFAULT_POLICY
+      register: update_vm_home_default_policy
+
+    - name: Assert VM home default storage policy was updated
+      ansible.builtin.assert:
+        that:
+          - update_vm_home_default_policy is changed
+          - update_vm_home_default_policy.value is defined
+
+    - name: Load API spec expectations for get (vm home default policy)
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/vm_home_default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+
+    - name: Get VM storage policy information after vm home update
+      vmware.vmware_rest.vcenter_vm_storage_policy_info:
+        vm: vm-1009
+      register: get_vm_storage_policy_info_after_vm_home_update
+
+    - name: Assert VM storage policy information after vm home update
+      ansible.builtin.assert:
+        that:
+          - get_vm_storage_policy_info_after_vm_home_update.value is defined
+          - get_vm_storage_policy_info_after_vm_home_update.value.disks['2000'] == 'policy-123'
+          - get_vm_storage_policy_info_after_vm_home_update.value.vm_home is not defined
+
+    - name: Load API spec expectations for absent state
+      ansible.builtin.uri:
+        url: http://localhost:1080/mockserver/openapi
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/vm_home_default.json"
+          operationsAndResponses:
+            Vcenter.Vm.Storage.Policy_get: "200"
+
+    - name: Ensure absent state reports no change
+      vmware.vmware_rest.vcenter_vm_storage_policy:
+        state: absent
+        vm: vm-1009
+      register: absent_vm_storage_policy
+
+    - name: Assert absent state is not supported
+      ansible.builtin.assert:
+        that:
+          - absent_vm_storage_policy is not changed

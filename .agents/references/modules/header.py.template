@@ -1,0 +1,123 @@
+## Note to AI: If a comment starts with two hashes (##), it is a note to the AI, not to be included in the final file.
+## Values in angle brackets (<>) are placeholders for values that will be replaced by the AI.
+## Otherwise, values should be considered examples or descriptions of the actual values. The AI should read the value, and use
+## it as a reference, not as a literal value (unless otherwise specified).
+
+## This is a module header. It should be included in all modules. You will need to inject a shebang at the top,
+## such as #!/usr/bin/python
+
+# -*- coding: utf-8 -*-
+#
+# Copyright: (c) <YEAR>, Ansible Project
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+#
+# This module is generated using LLM agents and skills defined in the vmware.vmware_rest repository.
+# See: https://github.com/ansible-collections/vmware.vmware_rest
+#
+
+## These imports are needed for Ansible functionality.
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+DOCUMENTATION = r"""
+## This section is the documentation for the module. It should be a valid yaml document that shows how to use the module in an ansible playbook.
+module: <MODULE_NAME>
+short_description: A short description of what the module does or what it is used for. Should be one or two sentences.
+description: >-
+  A longer description of what the module does or what it is used for. Should be a few sentences. It can
+  include general information about the module, interactions with the vSphere API, and any other relevant information.
+  Keep it concise and to the point, this is not meant to be a comprehensive documentation, it is meant to be a quick
+  reference for the module.
+  Do not include details about API deprecation or obsolescence here; those are documented in the notes section.
+
+## This section is literal, do not change it.
+author:
+  - Ansible Eco Content Team (@eco-ansible-content)
+## End of literal section.
+
+extends_documentation_fragment:
+  ## This section lists other YAML doc fragments that will be used to extend the documentation for the module.
+  ## The fragments are loaded first, and then the module documentation is loaded.
+  ## This fragment contains the connection parameters for the module (vcenter_hostname, session_timeout, etc.)
+  - vmware.vmware_rest.connection_params
+
+options:
+  ## This should be a dictionary of all the options for the module. The options described here should reflect the
+  ## argument_spec dictionary in the python code in this module.
+  ## CRUD modules must include a state option when the API supports multiple lifecycle operations.
+  state:
+    description:
+      - The desired state of the resource.
+      - Use C(present) to create or update the resource.
+      - Use C(absent) to delete the resource.
+    type: str
+    choices:
+      - present
+      - absent
+    default: present
+  <OPTION_NAME>:
+    description:
+      - A list of one or two sentences describing the option.
+      - Each line can address a different aspect of the option. For example, specify relationships with other options,
+        or what specific value(s) mean in real terms.
+      - Do not include the default value, the type, or a list of choices. Those are documented in additional attributes.
+      - When describing resource identifiers from the API spec, use "identifier (MOID)" (e.g. "Must be an identifier (MOID) for a C(ResourcePool) resource.").
+    type: The python type of the option, e.g. str, int, bool, list, dict.
+    required: true or false, whether the option is always required or optional.
+    default: The default value of the option, if any. If there is no default value, this can be omitted.
+    choices: A list of valid choices for the option, if any. If there are not specific valid choices, this can be omitted.
+    elements: The type of the elements of the option, if the option is a list. If the option is not a list, this can be omitted.
+    suboptions: A dictionary of suboptions for the option, if the option is a dictionary or the option is a list of element dictionaries. Otherwise, this can be omitted. In the argument spec, this corresponds to the 'options' key.
+
+version_added: The current version of this collection, as seen in the galaxy.yml file's version attribute.
+requirements: []
+
+notes:
+  - Include a sentence about what version of the API spec was used to generate the module.
+  - If the API endpoint is deprecated, include a sentence about that here. For example:
+    "This API endpoint is deprecated in vSphere 8.0.0 and the module will not be compatible with future versions of vSphere."
+"""
+
+EXAMPLES = r"""
+## This should be a valid yaml document that shows how to use the module in an ansible playbook.
+## Each example should have a self-explanatory task name, or have a brief comment
+## explaining what the example is doing.
+## Examples should focus how to use the module, not on the expected output. The expected output is documented in the RETURN section.
+## Examples should not try to show all usage scenarios, but rather focus on the most common or important scenarios (create, update, delete).
+## If there are complex or many options, use a single example to show the most common usage, and use a separate example to show the complex usage.
+## Examples should be in the following format:
+## - name: <TASK_NAME>
+##   vmware.vmware_rest.<MODULE_NAME>:
+##     state: present
+##     <OPTION_NAME>: <VALUE>
+"""
+
+RETURN = r"""
+## This section is a spec for the expected output of the module.
+## For info modules, the return dictionary should have a value key, which should be a list of dictionaries, each containing the information about a single resource.
+## For crud modules, the return dictionary should utilize the following keys:
+## - changed: True if the resource was changed, False otherwise. (This return does not need to be documented in the RETURN section.)
+## - value: Any options or attributes that were changed by the operation. Only returned on update, not on create or delete.
+## - id: The MOID of the resource, if available.
+## Example for a crud module:
+id:
+  description:
+    - The MOID of the resource, if available.
+  returned: On success
+  sample: "1234567890"
+  type: str
+
+value:
+  description:
+    - Any options or attributes that were changed by the operation. Only returned on update, not on create or delete.
+  returned: On update
+  sample: {
+    "some_attribute": {
+      "before": "old-value",
+      "after": "new-value",
+    },
+  }
+  type: dict
+"""
