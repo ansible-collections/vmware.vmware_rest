@@ -8,6 +8,10 @@
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
 
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 DOCUMENTATION = r"""
 module: appliance_health_mem_info
 short_description: Retrieves memory health of the vCenter appliance.

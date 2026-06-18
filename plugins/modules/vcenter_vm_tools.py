@@ -8,6 +8,10 @@
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
 
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 DOCUMENTATION = r"""
 module: vcenter_vm_tools
 short_description: Updates VMware Tools properties for a virtual machine.

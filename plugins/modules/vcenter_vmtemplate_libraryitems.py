@@ -8,6 +8,10 @@
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
 
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 DOCUMENTATION = r"""
 module: vcenter_vmtemplate_libraryitems
 short_description: Create or deploy virtual machine template library items.

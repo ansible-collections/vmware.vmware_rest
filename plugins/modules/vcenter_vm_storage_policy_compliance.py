@@ -8,6 +8,10 @@
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
 
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 DOCUMENTATION = r"""
 module: vcenter_vm_storage_policy_compliance
 short_description: Re-computes and returns storage policy compliance for a virtual machine

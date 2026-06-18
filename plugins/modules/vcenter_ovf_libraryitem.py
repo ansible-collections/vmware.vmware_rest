@@ -8,6 +8,10 @@
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
 
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 DOCUMENTATION = r"""
 module: vcenter_ovf_libraryitem
 short_description: Manage OVF library items in a vCenter content library.

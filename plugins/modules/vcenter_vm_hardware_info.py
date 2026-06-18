@@ -7,6 +7,10 @@
 # This module is generated using LLM agents and skills defined in the vmware.vmware_rest repository.
 # See: https://github.com/ansible-collections/vmware.vmware_rest
 #
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
 DOCUMENTATION = r"""
 module: vcenter_vm_hardware_info
 short_description: Get virtual hardware settings for a virtual machine.

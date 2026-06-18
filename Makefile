@@ -8,14 +8,6 @@ UNIT_PYTHON_VERSION ?= 3.12
 GALAXY_YML ?= $(CURDIR)/galaxy.yml
 COLLECTION_ROOT = ~/.ansible/collections/ansible_collections/vmware/vmware_rest
 
-# Emit --exclude flags for build_ignore directories that exist (ansible-test errors on missing paths).
-# $(1) = path to galaxy.yml; run from COLLECTION_ROOT so -d checks the install tree.
-define sanity_build_ignore_excludes
-sed -n '/^build_ignore:/,$$p' "$(1)" | sed '1d' | sed -n 's/^[[:space:]]*-[[:space:]]*//p' | while IFS= read -r path; do \
-		if [ -d "$$path" ]; then printf ' --exclude %s' "$$path"; fi; \
-done
-endef
-
 # setup commands
 .PHONY: upgrade-collections
 upgrade-collections:
@@ -56,9 +48,12 @@ integration: upgrade-collections
 				ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. \
 				ansible-test integration $(INTEGRATION_TARGETS) $(CLI_ARGS);
 
+# Copy .agents and config to the collection root so they are available for sanity tests.
+# This is a workaround to make the local tests match the CI tests.
 .PHONY: sanity
 sanity: upgrade-collections
+		cp -r .agents $(COLLECTION_ROOT)/; \
+		cp -r config $(COLLECTION_ROOT)/; \
 		cd $(COLLECTION_ROOT); \
-		SANITY_EXCLUDES=$$($(call sanity_build_ignore_excludes,$(GALAXY_YML))); \
 		ansible-test sanity -v --color --coverage --junit \
-				--docker default $$SANITY_EXCLUDES $(SANITY_TARGETS)
+				--docker default; \
