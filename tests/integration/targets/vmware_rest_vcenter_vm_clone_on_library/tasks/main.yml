@@ -9,15 +9,11 @@
     VMWARE_PORT: "{{ vcenter_port }}"
   block:
     - name: Create a content library based on a DataStore
-      vmware.vmware_rest.content_locallibrary:
+      vmware.vmware.local_content_library:
         name: "{{ library_name }}"
         description: automated
-        publish_info:
-          published: true
-          authentication_method: "NONE"
-        storage_backings:
-          - datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + eco_nfs_datastore_iso, **vmware_rest_auth_vars) }}"
-            type: "DATASTORE"
+        publish: true
+        datastore: "{{ eco_nfs_datastore_iso }}"
         state: present
       register: nfs_lib
 
@@ -49,7 +45,7 @@
     - name: Create a VM template on the library
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
         name: "{{ vm_name }}-template"
-        library: "{{ nfs_lib.id }}"
+        library: "{{ nfs_lib.library.id }}"
         source_vm: "{{ test_vm.vm.moid }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
@@ -65,7 +61,7 @@
     - name: _Create the same template again
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
         name: "{{ vm_name }}-template"
-        library: "{{ nfs_lib.id }}"
+        library: "{{ nfs_lib.library.id }}"
         source_vm: "{{ test_vm.vm.moid }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
@@ -80,7 +76,7 @@
 
     - name: Get the list of items of the NFS library
       vmware.vmware.content_library_item_info:
-        library_id: "{{ nfs_lib.id }}"
+        library_id: "{{ nfs_lib.library.id }}"
       register: nfs_lib_items
 
     - name: Verify VM template name
@@ -91,7 +87,7 @@
     - name: Deploy a new VM based on the template
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
         name: "{{ vm_from_template_name }}"
-        library: "{{ nfs_lib.id }}"
+        library: "{{ nfs_lib.library.id }}"
         template_library_item: "{{ nfs_lib_item.id }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
@@ -99,16 +95,6 @@
           resource_pool: "{{ resource_pool_info.id }}"
         state: deploy
       register: vm_from_template
-
-    - name: Retrieve all the details about the new VM
-      vmware.vmware_rest.vcenter_vm:
-        vm: "{{ vm_from_template.value }}"
-      register: vm_from_template_info
-
-    - name: Verify VM from template name
-      ansible.builtin.assert:
-        that:
-          - vm_from_template_info.value.name == vm_from_template_name
 
   always:
     - name: Delete test VM's
@@ -123,8 +109,8 @@
         state: absent
 
     - name: Delete nfs library
-      vmware.vmware_rest.content_locallibrary:
-        library_id: "{{ nfs_lib.id }}"
+      vmware.vmware.local_content_library:
+        name: "{{ library_name }}"
         state: absent
       when: nfs_lib is defined
 

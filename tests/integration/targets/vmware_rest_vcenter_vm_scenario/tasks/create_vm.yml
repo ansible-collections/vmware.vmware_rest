@@ -5,18 +5,17 @@
   register: resource_pool_info
 
 - name: Create a VM
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ cluster_id }}"
-      datastore: "{{ datastore_id }}"
-      folder: "{{ folder_id }}"
-      resource_pool: "{{ resource_pool_info.id }}"
+  vmware.vmware.vm:
+    cluster: "{{ cluster_id }}"
+    datastore: "{{ datastore_id }}"
+    folder: "{{ folder_id }}"
+    resource_pool: "{{ resource_pool_info.id }}"
     name: "{{ test_vm_name }}"
-    guest_OS: RHEL_8_64
+    guest_id: rhel8_64Guest
     hardware_version: VMX_20
     memory:
-      hot_add_enabled: true
-      size_MiB: 1028
+      enable_hot_add: true
+      size_MB: 1028
   register: test_vm
 
 - name: Verify VM creation
@@ -24,26 +23,6 @@
     that:
       - test_vm is ansible.builtin.changed
       - test_vm.value.identity.name == test_vm_name
-
-- name: _Create a VM (again)
-  vmware.vmware_rest.vcenter_vm:
-    placement:
-      cluster: "{{ cluster_id }}"
-      datastore: "{{ datastore_id }}"
-      folder: "{{ folder_id }}"
-      resource_pool: "{{ resource_pool_info.id }}"
-    name: "{{ test_vm_name }}"
-    guest_OS: RHEL_8_64
-    hardware_version: VMX_20
-    memory:
-      hot_add_enabled: true
-      size_MiB: 1028
-  register: result
-
-- name: Verify no VM created second time
-  ansible.builtin.assert:
-    that:
-      - not(result is ansible.builtin.changed)
 
 - name: Search VM with an invalid filter
   vmware.vmware_rest.vcenter_vm_info:

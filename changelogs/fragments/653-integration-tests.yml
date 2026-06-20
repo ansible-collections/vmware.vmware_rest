@@ -1,0 +1,3 @@
+---
+trivial:
+  - Fix integration tests (https://github.com/ansible-collections/vmware.vmware_rest/pull/654).

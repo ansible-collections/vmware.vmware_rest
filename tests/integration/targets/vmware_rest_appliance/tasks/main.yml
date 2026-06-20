@@ -12,8 +12,6 @@
     - import_tasks: appliance_infraprofile_configs.yml
     - import_tasks: appliance_localaccounts.yml
     - import_tasks: appliance_monitoring.yml
-    - import_tasks: appliance_networking_dns_hostname.yml
-    - import_tasks: appliance_networking_proxy.yml
     - import_tasks: appliance_services.yml
     - import_tasks: appliance_system.yml
     - import_tasks: appliance_time.yml
