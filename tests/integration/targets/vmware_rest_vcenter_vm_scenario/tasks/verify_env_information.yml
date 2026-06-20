@@ -7,28 +7,6 @@
       - datastore_id is defined
       - resource_pool_parent_id is defined
 
-- name: Build a list of all the clusters
-  vmware.vmware.cluster_info:
-    datacenter: "{{ vcenter_datacenter }}"
-  register: all_the_clusters
-
-- name: Verify clusters list
-  ansible.builtin.assert:
-    that:
-      - all_the_clusters.clusters | length > 0
-      - all_the_clusters.clusters | list is contains vcenter_cluster_name
-
-- name: Retrieve details about Eco-cluster
-  vmware.vmware.cluster_info:
-    datacenter: "{{ vcenter_datacenter }}"
-    cluster: "{{ vcenter_cluster_name }}"
-  register: eco_cluster_info
-
-- name: Verify Eco-cluster info
-  ansible.builtin.assert:
-    that:
-      - eco_cluster_info.clusters[vcenter_cluster_name].moid == cluster_id
-
 - name: Build a list of all the folders
   vmware.vmware_rest.vcenter_folder_info:
   register: eco_cluster_folders

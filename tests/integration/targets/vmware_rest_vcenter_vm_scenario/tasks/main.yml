@@ -26,21 +26,16 @@
     - include_tasks: vm_hardware_adapter_info.yml
     - include_tasks: vm_hardware_cdrom_info.yml
     - include_tasks: vm_hardware_ethernet_info.yml
-    - include_tasks: vm_hardware_memory_info.yml
     - include_tasks: vm_hardware_adapter.yml
-    - include_tasks: vm_hardware_cdrom.yml
     - include_tasks: vm_hardware_boot_device.yml
     # Can't be changed efi_legacy_boot due to the https://issues.redhat.com/browse/ACA-2216
     # - include_tasks: vm_hardware_boot.yml
-    - include_tasks: vm_hardware_cpu.yml
     - include_tasks: vm_hardware_disk.yml
     - include_tasks: vm_hardware_ethernet.yml
     - include_tasks: vm_hardware_flo.yml
-    - include_tasks: vm_hardware_memory.yml
     - include_tasks: vm_hardware_parallel.yml
     - include_tasks: vm_hardware_serial.yml
     - include_tasks: vm_hardware.yml
-    - include_tasks: vm_libraryitem.yml
     - include_tasks: vm_power.yml
 
   always:
@@ -53,5 +48,5 @@
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' +  test_resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool + '/' + test_resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent

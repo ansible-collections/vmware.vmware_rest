@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   ansible_integration_test:
+    name: vCenter Lab Regression Tests
     runs-on: ["self-hosted", linux, X64]
     environment: eco-vcenter
     steps:
