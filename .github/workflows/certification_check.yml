@@ -48,3 +48,40 @@ jobs:
     # This requires setting a repository secret called 'AH_TOKEN' which value contains a Red Hat Ansible Automation Hub token.
     # secrets:
     #   AH_TOKEN: ${{ secrets.AH_TOKEN }}
+
+  sanity:
+    name: Non-AAP Sanity (Ⓐ${{ matrix.ansible }})
+    strategy:
+      matrix:
+        ansible:
+          # Certification checks support the AAP ansible-core versions (2.16, 2.18, 2.20....)
+          # This tests non-AAP versions
+          - stable-2.19
+          - stable-2.21
+          - devel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform sanity testing
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          testing-type: sanity
+          pull-request-change-detection: false
+          coverage: never # coverage is always very low for sanity tests, and doesn't make much sense
+
+  check: # This job does nothing and is only used for the branch protection
+    # or multi-stage CI jobs, like making sure that all tests pass before
+    # a publishing job is started.
+    if: always()
+
+    needs:
+      - sanity
+      - certification_check
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
