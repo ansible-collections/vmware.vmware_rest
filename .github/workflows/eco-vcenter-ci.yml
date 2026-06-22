@@ -27,6 +27,8 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          # the eco-vcenter environment requires manual approval per run
+          allow-unsafe-pr-checkout: true
 
       - name: Generate integration config
         run: |
