@@ -3,6 +3,11 @@ SANITY_TARGETS ?=
 INTEGRATION_TARGETS ?=
 UNIT_TARGETS ?=
 
+UNIT_PYTHON_VERSION ?= 3.12
+
+GALAXY_YML ?= $(CURDIR)/galaxy.yml
+COLLECTION_ROOT = ~/.ansible/collections/ansible_collections/vmware/vmware_rest
+
 # setup commands
 .PHONY: upgrade-collections
 upgrade-collections:
@@ -25,17 +30,31 @@ tests/integration/integration_config.yml:
 .PHONY: linters
 linters:  ## Run extra linter tests
 	@pip install -r linters.requirements.txt; err=0; echo "\nStart tests.\n"; \
-	black --check --diff --color . || err=1; \
+	black --check --diff --color . --extend-exclude ".agents/*" || err=1; \
 	if [ "$$err" = 1 ]; then echo "\nAt least one linter failed\n" >&2; exit 1; fi
 
 .PHONY: units
-units:
-	echo "Unit tests are not yet implemented"
+units: upgrade-collections
+		cd $(COLLECTION_ROOT); \
+		ansible-test units --docker --python $(UNIT_PYTHON_VERSION) --coverage $(UNIT_TARGETS); \
+		ansible-test coverage combine --requirements --export tests/output/coverage/; \
+		ansible-test coverage report --requirements --docker --omit 'tests/*' --show-missing;
 
+.PHONY: units-coverage
+units-coverage: units
+		cd $(COLLECTION_ROOT); \
+		ansible-test coverage xml --requirements; \
+		cp tests/output/reports/coverage.xml $(CURDIR)/coverage-units.xml;
+
+# Copy .agents and config to the collection root so they are available for sanity tests.
+# This is a workaround to make the local tests match the CI tests.
 .PHONY: sanity
 sanity: upgrade-collections
-	cd ~/.ansible/collections/ansible_collections/vmware/vmware_rest; \
-	ansible-test sanity -v --color --coverage --junit --docker default $(SANITY_TARGETS)
+		cp -r .agents $(COLLECTION_ROOT)/; \
+		cp -r config $(COLLECTION_ROOT)/; \
+		cd $(COLLECTION_ROOT); \
+		ansible-test sanity -v --color --coverage --junit \
+				--docker default; \
 
 .PHONY: eco-vcenter-ci
 eco-vcenter-ci: tests/integration/integration_config.yml install-integration-reqs upgrade-collections
