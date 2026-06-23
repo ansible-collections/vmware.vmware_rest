@@ -57,6 +57,7 @@ def test_response_json_invalid_raises():
     with pytest.raises(Exception, match="invalid JSON"):
         response.json
 
+
 def test_response_log_to_file(tmp_path):
     log_file = tmp_path / "rest.log"
     response = Response(200, b'{"ok": true}')
