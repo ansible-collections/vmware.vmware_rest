@@ -131,7 +131,7 @@ def test_client_request_serializes_json_payload(client):
         client, "_do_request", return_value=api_response
     ) as mock_do_request:
         client.request("POST", "/vcenter/vm", data={"name": "vm-1"})
-    _, kwargs = mock_do_request.call_args
+    _, kwargs = mock_do_request.call_args  # pylint: disable=disallowed-name
     assert kwargs["data"] == '{"name":"vm-1"}'
     assert kwargs["headers"]["Content-type"] == "application/json"
 

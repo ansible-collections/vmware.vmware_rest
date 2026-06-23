@@ -21,7 +21,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import 
     UnexpectedAPIResponse,
     ApiCommunicationError,
     VmwareModuleError,
-    AuthError
+    AuthError,
 )
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,9 @@ class Response:
         try:
             return json.loads(self.data)
         except ValueError as exc:
-            raise VmwareModuleError(f"Received invalid JSON response: {self.data}") from exc
+            raise VmwareModuleError(
+                f"Received invalid JSON response: {self.data}"
+            ) from exc
 
     def log_to_file(self, log_file):
         with open(log_file, "a+", encoding="utf-8") as fd:
