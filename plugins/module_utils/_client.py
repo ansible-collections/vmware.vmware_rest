@@ -21,12 +21,14 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import 
     UnexpectedAPIResponse,
     ApiCommunicationError,
     VmwareModuleError,
+    AuthError
 )
 
 logger = logging.getLogger(__name__)
 
 
-DEFAULT_HEADERS = dict(Accept="application/json")
+HEADER_APPLICATION_JSON = "application/json"
+DEFAULT_HEADERS = dict(Accept=HEADER_APPLICATION_JSON)
 
 
 class Response:
@@ -47,7 +49,7 @@ class Response:
         try:
             return json.loads(self.data)
         except ValueError as exc:
-            raise Exception(f"Received invalid JSON response: {self.data}") from exc
+            raise VmwareModuleError(f"Received invalid JSON response: {self.data}") from exc
 
     def log_to_file(self, log_file):
         with open(log_file, "a+", encoding="utf-8") as fd:
@@ -72,7 +74,7 @@ class Client:
         log_file=None,
     ):
         if not host or host.startswith(("https://", "http://")):
-            raise Exception(
+            raise VmwareModuleError(
                 f"Invalid vCenter host value: '{host}'. "
                 "Value should be the hostname of the vCenter server, not including the 'https://' or 'http://'"
             )
@@ -112,16 +114,16 @@ class Client:
                 headers=headers,
             )
         except Exception as e:
-            raise Exception(f"Authentication failure: {e}")
+            raise AuthError(f"Authentication failure: {e}")
 
         if response.status != 200:
-            raise Exception(
+            raise AuthError(
                 f"Authentication failure. code: {response.status}, json: {response.json}"
             )
 
         return {
             "vmware-api-session-id": response.json["value"],
-            "content-type": "application/json",
+            "content-type": HEADER_APPLICATION_JSON,
         }
 
     def _do_request(self, method, path, data=None, headers=None):
@@ -166,7 +168,7 @@ class Client:
 
         if data is not None:
             data = json.dumps(data, separators=(",", ":"))
-            headers["Content-type"] = "application/json"
+            headers["Content-type"] = HEADER_APPLICATION_JSON
 
         elif bytes is not None:
             data = bytes
@@ -183,7 +185,7 @@ class Client:
         Session authentication uses /rest/... paths outside the /api prefix.
         """
         normalized = path.strip("/")
-        if normalized.startswith("api/") or normalized.startswith("rest/"):
+        if normalized.startswith(("api/", "rest/")):
             return normalized
         return "api/{0}".format(normalized)
 
