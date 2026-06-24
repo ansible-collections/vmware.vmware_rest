@@ -1,7 +1,7 @@
 ---
 - name: Retrieve the serial ports information from the VM
   vmware.vmware_rest.vcenter_vm_hardware_serial_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
   register: _result
 
 - name: Print debug info
@@ -10,7 +10,7 @@
 
 - name: Create a new serial port
   vmware.vmware_rest.vcenter_vm_hardware_serial:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     allow_guest_control: true
   register: _serial_port_1
 
@@ -22,7 +22,7 @@
 
 - name: Create another serial port with a label
   vmware.vmware_rest.vcenter_vm_hardware_serial:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     label: "Serial port 2"
     allow_guest_control: true
   register: _serial_port_2
@@ -36,7 +36,7 @@
 
 - name: Create an existing serial port (label)
   vmware.vmware_rest.vcenter_vm_hardware_serial:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     label: "Serial port 2"
     allow_guest_control: true
   register: _result
@@ -48,7 +48,7 @@
 
 - name: Get an existing serial port (label)
   vmware.vmware_rest.vcenter_vm_hardware_serial_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     label: "Serial port 2"
   register: _result
 
@@ -60,7 +60,7 @@
 
 - name: Delete an existing serial port (port id)
   vmware.vmware_rest.vcenter_vm_hardware_serial:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     port: "{{ _serial_port_1.id }}"
     state: absent
   register: _result
@@ -72,7 +72,7 @@
 
 - name: Delete an existing serial port (label)
   vmware.vmware_rest.vcenter_vm_hardware_serial:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     label: "Serial port 2"
     state: absent
   register: _result
