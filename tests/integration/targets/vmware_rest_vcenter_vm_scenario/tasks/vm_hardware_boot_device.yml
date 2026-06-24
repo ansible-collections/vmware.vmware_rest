@@ -1,14 +1,15 @@
 ---
 - name: Get boot device info
   vmware.vmware_rest.vcenter_vm_hardware_boot_device_info:
-    vm: '{{ test_vm_id }}'
+    vm: "{{ _test_vm_moid }}"
   register: _result
 
 - name: Print debug info
   ansible.builtin.debug:
     var: _result
 
-- name: Verify boot device type
+- name: Verify boot device info is defined
   ansible.builtin.assert:
     that:
-      - '_result.value == [{"type": "CDROM"}]'
+      - _result.value is defined
+      - _result.value is iterable

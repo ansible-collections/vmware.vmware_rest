@@ -1,0 +1,131 @@
+---
+# SCSI tests
+- name: List the SCSI adapters
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info:
+    vm: "{{ _test_vm_moid }}"
+  register: _list_scsi_info
+
+- name: Verify SCSI list
+  ansible.builtin.assert:
+    that:
+      - _list_scsi_info.value | length == 1
+
+- name: Get information about a specific scsi controller
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_scsi_info:
+    vm: "{{ _test_vm_moid }}"
+    adapter: "{{ _list_scsi_info.value[0].adapter }}"
+  register: _get_single_scsi_info
+
+- name: Verify SCSI info
+  ansible.builtin.assert:
+    that:
+      - _get_single_scsi_info.value is defined
+      - _get_single_scsi_info.id is defined
+
+# SATA tests
+- name: List the SATA adapters
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info:
+    vm: "{{ _test_vm_moid }}"
+  register: _list_sata_info
+
+- name: Verify SATA list
+  ansible.builtin.assert:
+    that:
+      - _list_sata_info.value | length >= 0
+
+- name: Get information about a specific SATA controller
+  vmware.vmware_rest.vcenter_vm_hardware_adapter_sata_info:
+    vm: "{{ _test_vm_moid }}"
+    adapter: "{{ _list_sata_info.value[0].adapter }}"
+  register: _get_single_sata_info
+  when: _list_sata_info.value | length > 0
+
+- name: Verify SATA info
+  ansible.builtin.assert:
+    that:
+      - _get_single_sata_info.value is defined
+      - _get_single_sata_info.id is defined
+  when: _list_sata_info.value | length > 0
+
+# CD-ROM tests
+- name: List the CD-ROM adapters
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
+    vm: "{{ _test_vm_moid }}"
+  register: _list_cdrom_info
+
+- name: Verify CD-ROM list
+  ansible.builtin.assert:
+    that:
+      - _list_cdrom_info.value | length >= 0
+
+- name: Get information about a specific CD-ROM
+  vmware.vmware_rest.vcenter_vm_hardware_cdrom_info:
+    vm: "{{ _test_vm_moid }}"
+    cdrom: "{{ _list_cdrom_info.value[0].cdrom }}"
+  register: _get_single_cdrom_info
+  when: _list_cdrom_info.value | length > 0
+
+- name: Verify CD-ROM info
+  ansible.builtin.assert:
+    that:
+      - _get_single_cdrom_info.value is defined
+      - _get_single_cdrom_info.id is defined
+  when: _list_cdrom_info.value | length > 0
+
+# Disk tests
+- name: List the disk adapters
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+    vm: "{{ _test_vm_moid }}"
+  register: _list_disk_info
+
+- name: Verify disk list
+  ansible.builtin.assert:
+    that:
+      - _list_disk_info.value | length >= 0
+
+- name: Get information about a specific disk
+  vmware.vmware_rest.vcenter_vm_hardware_disk_info:
+    vm: "{{ _test_vm_moid }}"
+    disk: "{{ _list_disk_info.value[0].disk }}"
+  register: _get_single_disk_info
+  when: _list_disk_info.value | length > 0
+
+- name: Verify disk info
+  ansible.builtin.assert:
+    that:
+      - _get_single_disk_info.value is defined
+      - _get_single_disk_info.id is defined
+  when: _list_disk_info.value | length > 0
+
+# Ethernet tests
+- name: List the ethernet adapters
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+    vm: "{{ _test_vm_moid }}"
+  register: _list_ethernet_info
+
+- name: Verify ethernet list
+  ansible.builtin.assert:
+    that:
+      - _list_ethernet_info.value | length >= 0
+
+- name: Get information about a specific ethernet adapter
+  vmware.vmware_rest.vcenter_vm_hardware_ethernet_info:
+    vm: "{{ _test_vm_moid }}"
+    nic: "{{ _list_ethernet_info.value[0].nic }}"
+  register: _get_single_ethernet_info
+  when: _list_ethernet_info.value | length > 0
+
+- name: Get the dvswitch called {{ test_network_name }}
+  vmware.vmware_rest.vcenter_network_info:
+    filter_types: DISTRIBUTED_PORTGROUP
+    filter_names: "{{ test_network_name }}"
+  register: portgroup_info
+  when: _list_ethernet_info.value | length > 0
+
+- name: Verify ethernet info
+  ansible.builtin.assert:
+    that:
+      - _get_single_ethernet_info.value is defined
+      - _get_single_ethernet_info.id is defined
+      - portgroup_info.value | length == 1
+  when: _list_ethernet_info.value | length > 0

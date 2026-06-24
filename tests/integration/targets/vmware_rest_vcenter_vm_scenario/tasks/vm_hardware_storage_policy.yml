@@ -1,7 +1,7 @@
 ---
 - name: Retrieve the disk information from the VM
   vmware.vmware_rest.vcenter_vm_hardware_disk_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
   register: _disk_info_by_name
 
 - name: Print debug info
@@ -15,7 +15,7 @@
 
 - name: Retrieve disk information using the label
   vmware.vmware_rest.vcenter_vm_hardware_disk_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     label: "Hard disk 1"
   register: _disk_info_by_label
 
@@ -30,7 +30,7 @@
 
 - name: Get VM storage policy
   vmware.vmware_rest.vcenter_vm_storage_policy_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
   register: _result
 
 - name: List existing storage policies
@@ -47,7 +47,7 @@
 
 - name: Prepare the disk policy dict
   ansible.builtin.set_fact:
-    vm_disk_policy: "{{ {} | combine({ new_disk_info.id: {'policy': vm_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
+    vm_disk_policy: "{{ {} | combine({ _disk_info_by_label.id: {'policy': vm_storage_policy.policy, 'type': 'USE_SPECIFIED_POLICY'} }) }}"
 
 - name: Print debug info
   ansible.builtin.debug:
@@ -55,7 +55,7 @@
 
 - name: Adjust VM storage policy
   vmware.vmware_rest.vcenter_vm_storage_policy:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     vm_home:
       type: USE_DEFAULT_POLICY
     disks: "{{ vm_disk_policy }}"
@@ -68,7 +68,7 @@
 
 - name: _Adjust VM storage policy (again)
   vmware.vmware_rest.vcenter_vm_storage_policy:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     vm_home:
       type: USE_DEFAULT_POLICY
     disks: "{{ vm_disk_policy }}"
@@ -87,5 +87,5 @@
 
 - name: Get VM storage policy compliance information
   vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
   register: _result

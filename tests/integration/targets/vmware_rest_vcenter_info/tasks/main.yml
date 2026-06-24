@@ -1,0 +1,133 @@
+---
+- name: Run vmware_rest_vcenter_vm_scenario test
+  # https://github.com/ansible-collections/cloud.common/issues/179
+  environment:
+    VMWARE_HOST: "{{ vcenter_hostname }}"
+    VMWARE_USER: "{{ vcenter_username }}"
+    VMWARE_PASSWORD: "{{ vcenter_password }}"
+    VMWARE_VALIDATE_CERTS: "False"
+    VMWARE_PORT: "{{ vcenter_port }}"
+  block:
+    - name: Set facts for tests
+      ansible.builtin.set_fact:
+        cluster_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
+        folder_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"
+        datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
+        resource_pool_parent_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
+
+    # Folder tests
+    - name: Build a list of all the folders
+      vmware.vmware_rest.vcenter_folder_info:
+      register: _all_folder_info
+
+    - name: Verify folders list
+      ansible.builtin.assert:
+        that:
+          - _all_folder_info.value | length > 0
+          - folder_id is in (_all_folder_info.value |  map(attribute='folder') | list)
+
+    - name: Get folder by ID
+      vmware.vmware_rest.vcenter_folder_info:
+        folders: "{{ folder_id }}"
+      register: _test_folder_id_info
+
+    - name: Get folder by name and type
+      vmware.vmware_rest.vcenter_folder_info:
+        filter_type: VIRTUAL_MACHINE
+        filter_names: "{{ vcenter_vm_folder }}"
+      register: _test_folder_name_info
+
+    - name: Verify test folder found
+      ansible.builtin.assert:
+        that:
+          - test_folders.value | length == 1
+          - (test_folders.value |  map(attribute='folder') | list | first) == folder_id
+          - vcenter_vm_folder.value | length == 1
+          - (vcenter_vm_folder.value |  map(attribute='folder') | list | first) == folder_id
+
+    # Cluster tests
+    - name: Build a list of all the clusters
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: _all_cluster_info
+
+    - name: Verify clusters list
+      ansible.builtin.assert:
+        that:
+          - _all_cluster_info.value | length > 0
+          - cluster_id is in (_all_cluster_info.value |  map(attribute='cluster') | list)
+
+    - name: Get cluster by ID
+      vmware.vmware_rest.vcenter_cluster_info:
+        clusters: "{{ cluster_id }}"
+      register: _test_cluster_id_info
+
+    - name: Get cluster by name
+      vmware.vmware_rest.vcenter_cluster_info:
+        filter_names: "{{ vcenter_cluster_name }}"
+      register: _test_cluster_name_info
+
+    - name: Verify test cluster found
+      ansible.builtin.assert:
+        that:
+          - _test_cluster_id_info.value | length == 1
+          - (_test_cluster_id_info.value |  map(attribute='cluster') | list | first) == cluster_id
+          - _test_cluster_name_info.value | length == 1
+          - (_test_cluster_name_info.value |  map(attribute='cluster') | list | first) == cluster_id
+
+    # Resource pool tests
+    - name: Build a list of all the resource pools
+      vmware.vmware_rest.vcenter_resourcepool_info:
+      register: _all_resourcepool_info
+
+    - name: Verify resource pools list
+      ansible.builtin.assert:
+        that:
+          - _all_resourcepool_info.value | length > 0
+          - resource_pool_parent_id is in (_all_resourcepool_info.value |  map(attribute='resource_pool') | list)
+
+    - name: Get resource pool by ID
+      vmware.vmware_rest.vcenter_resourcepool_info:
+        resource_pools: "{{ resource_pool_parent_id }}"
+      register: _test_resourcepool_id_info
+
+    - name: Get resource pool by name
+      vmware.vmware_rest.vcenter_resourcepool_info:
+        filter_names: "{{ vcenter_resource_pool }}"
+      register: _test_resourcepool_name_info
+
+    - name: Verify test resource pool found
+      ansible.builtin.assert:
+        that:
+          - _test_resourcepool_id_info.value | length == 1
+          - (_test_resourcepool_id_info.value |  map(attribute='resource_pool') | list | first) == resource_pool_parent_id
+          - _test_resourcepool_name_info.value | length == 1
+          - (_test_resourcepool_name_info.value |  map(attribute='resource_pool') | list | first) == resource_pool_parent_id
+
+    # Datastore tests
+    - name: Build a list of all the datastores
+      vmware.vmware_rest.vcenter_datastore_info:
+      register: _all_datastore_info
+
+    - name: Verify datastores list
+      ansible.builtin.assert:
+        that:
+          - _all_datastore_info.value | length > 0
+          - datastore_id is in (_all_datastore_info.value |  map(attribute='datastore') | list)
+
+    - name: Get datastore by ID
+      vmware.vmware_rest.vcenter_datastore_info:
+        datastores: "{{ datastore_id }}"
+      register: _test_datastore_id_info
+
+    - name: Get datastore by name
+      vmware.vmware_rest.vcenter_datastore_info:
+        filter_names: "{{ shared_storage_01 }}"
+      register: _test_datastore_name_info
+
+    - name: Verify test datastore found
+      ansible.builtin.assert:
+        that:
+          - _test_datastore_id_info.value | length == 1
+          - (_test_datastore_id_info.value |  map(attribute='datastore') | list | first) == datastore_id
+          - _test_datastore_name_info.value | length == 1
+          - (_test_datastore_name_info.value |  map(attribute='datastore') | list | first) == datastore_id

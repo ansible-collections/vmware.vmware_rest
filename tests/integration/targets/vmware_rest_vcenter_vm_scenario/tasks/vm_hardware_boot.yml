@@ -1,6 +1,6 @@
 - name: Retrieve the boot information from the VM
   vmware.vmware_rest.vcenter_vm_hardware_boot_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
   register: hardware_boot_info
 
 - name: Print debug info

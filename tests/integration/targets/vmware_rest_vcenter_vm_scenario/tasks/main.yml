@@ -15,38 +15,23 @@
         datastore_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/datastore/' + shared_storage_01, **vmware_rest_auth_vars) }}"
         resource_pool_parent_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool, **vmware_rest_auth_vars) }}"
 
-    - include_tasks: verify_env_information.yml
     - include_tasks: create_vm.yml
-
-    - name: Get test VM id
-      ansible.builtin.set_fact:
-        test_vm_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder + '/' + test_vm_name, **vmware_rest_auth_vars) }}"
-
     - include_tasks: vm_info.yml
-    - include_tasks: vm_hardware_adapter_info.yml
-    - include_tasks: vm_hardware_cdrom_info.yml
-    - include_tasks: vm_hardware_ethernet_info.yml
-    - include_tasks: vm_hardware_adapter.yml
+    - include_tasks: vm_power_info.yml
+    - include_tasks: vm_hardware.yml
+    - include_tasks: vm_adapter_info.yml
+    - include_tasks: vm_hardware_storage_policy.yml
     - include_tasks: vm_hardware_boot_device.yml
-    # Can't be changed efi_legacy_boot due to the https://issues.redhat.com/browse/ACA-2216
-    # - include_tasks: vm_hardware_boot.yml
-    - include_tasks: vm_hardware_disk.yml
-    - include_tasks: vm_hardware_ethernet.yml
     - include_tasks: vm_hardware_flo.yml
     - include_tasks: vm_hardware_parallel.yml
     - include_tasks: vm_hardware_serial.yml
-    - include_tasks: vm_hardware.yml
-    - include_tasks: vm_power.yml
+
+    # Can't be changed efi_legacy_boot due to the https://issues.redhat.com/browse/ACA-2216
+    # - include_tasks: vm_hardware_boot.yml
 
   always:
     - name: Delete VM
-      ansible.builtin.include_role:
-        name: prepare_vm
-      vars:
-        prepare_vm_state: absent
-        vm_id: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder + '/' + test_vm_name, **vmware_rest_auth_vars) }}"
-
-    - name: Delete resource pool
-      vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool + '/' + test_resource_pool_name, **vmware_rest_auth_vars) }}"
+      vmware.vmware.vm:
+        moid: "{{ _test_vm_moid }}"
         state: absent
+      when: _test_vm_moid is defined

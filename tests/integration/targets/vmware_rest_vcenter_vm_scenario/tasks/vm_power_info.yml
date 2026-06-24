@@ -1,0 +1,10 @@
+---
+- name: Get power info
+  vmware.vmware_rest.vcenter_vm_power_info:
+    vm: "{{ _test_vm_moid }}"
+  register: power_info
+
+- name: Check power info
+  ansible.builtin.assert:
+    that:
+      - power_info.value.state == "POWERED_OFF"

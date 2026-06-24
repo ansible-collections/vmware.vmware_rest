@@ -1,12 +1,12 @@
 ---
 - name: Retrieve the parallel port information from the VM
   vmware.vmware_rest.vcenter_vm_hardware_parallel_info:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
   register: _result
 
 - name: Turn on guest control on the parallel port
   vmware.vmware_rest.vcenter_vm_hardware_parallel:
-    vm: "{{ test_vm_id }}"
+    vm: "{{ _test_vm_moid }}"
     allow_guest_control: true
   register: _result
 
