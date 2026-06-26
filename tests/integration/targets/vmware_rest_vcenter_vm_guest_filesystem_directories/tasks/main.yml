@@ -188,5 +188,5 @@
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + resource_pool_parent_name + '/' +  test_resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + vcenter_resource_pool + '/' +  test_resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent

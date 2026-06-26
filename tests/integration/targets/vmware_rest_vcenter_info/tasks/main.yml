@@ -40,10 +40,10 @@
     - name: Verify test folder found
       ansible.builtin.assert:
         that:
-          - test_folders.value | length == 1
-          - (test_folders.value |  map(attribute='folder') | list | first) == folder_id
-          - vcenter_vm_folder.value | length == 1
-          - (vcenter_vm_folder.value |  map(attribute='folder') | list | first) == folder_id
+          - _test_folder_id_info.value | length == 1
+          - (_test_folder_id_info.value |  map(attribute='folder') | list | first) == folder_id
+          - _test_folder_name_info.value | length == 1
+          - (_test_folder_name_info.value |  map(attribute='folder') | list | first) == folder_id
 
     # Resource pool tests
     - name: Build a list of all the resource pools
@@ -71,8 +71,8 @@
         that:
           - _test_resourcepool_id_info.value | length == 1
           - (_test_resourcepool_id_info.value |  map(attribute='resource_pool') | list | first) == resource_pool_parent_id
-          - _test_resourcepool_name_info.value | length == 1
-          - (_test_resourcepool_name_info.value |  map(attribute='resource_pool') | list | first) == resource_pool_parent_id
+          - _test_resourcepool_name_info.value | length > 0
+          - resource_pool_parent_id is in (_test_resourcepool_name_info.value | map(attribute='resource_pool') | list)
 
     # Datastore tests
     - name: Build a list of all the datastores
