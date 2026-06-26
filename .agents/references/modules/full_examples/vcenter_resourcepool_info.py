@@ -84,7 +84,7 @@ options:
     elements: str
     aliases:
       - filter_clusters
-version_added: 4.11.0
+version_added: 5.0.0
 requirements: []
 notes:
   - Generated from vSphere API spec 9.1.0.

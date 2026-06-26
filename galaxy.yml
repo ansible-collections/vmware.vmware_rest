@@ -22,6 +22,7 @@ build_ignore:
   - .agents/*
   - .github/*
   - skills/*
+  - .cursor/*
   - GEMINI.md
   - CLAUDE.md
   - AGENTS.md

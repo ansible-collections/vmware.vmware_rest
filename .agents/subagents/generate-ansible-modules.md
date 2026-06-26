@@ -187,16 +187,96 @@ For each module in `module_names`:
 ```
 Task Progress:
 - [ ] Resolve module type (info vs CRUD)
+- [ ] Check if module already exists and preserve RETURN documentation
 - [ ] Load reference template (info.py.template or crud.py.template)
 - [ ] Locate API endpoint in spec
 - [ ] Build argument_spec from API parameters (including dict `options`)
 - [ ] Build DOCUMENTATION suboptions for dict parameters
 - [ ] Build PAYLOAD_FORMAT from request body/query/path params
 - [ ] Implement main() logic using Client
-- [ ] Write DOCUMENTATION, EXAMPLES, RETURN blocks
+- [ ] Write DOCUMENTATION, EXAMPLES, RETURN blocks (preserving existing RETURN)
 - [ ] Write plugins/modules/<name>.py
 - [ ] Validate output (sanity checklist below)
 ```
+
+### Step 0: Check for existing module and preserve RETURN
+
+Before generating a module, check if the file already exists at
+`plugins/modules/<module_name>.py`:
+
+1. If the file exists, read it and extract the `RETURN` block (the YAML inside
+   the `r"""` string after `RETURN = `).
+2. Parse the RETURN YAML to identify documented return values and their
+   structures.
+3. Store this information to use when generating the new RETURN block in Step 6.
+
+When a module is being regenerated (`overwrite: true` or in a correction pass),
+preserving existing RETURN documentation ensures:
+
+- **Backward compatibility**: Users relying on documented return keys continue
+  to see them in the new module.
+- **Incremental improvement**: New return values can be added from the API spec
+  without losing existing documentation.
+- **Stable interfaces**: Module behavior remains predictable across regeneration.
+
+**Preservation rules:**
+
+- **Keep all documented return keys** from the existing RETURN block.
+- **Add new keys** discovered from the API spec response schemas that aren't
+  already documented.
+- **Enhance existing key documentation** with more complete samples or
+  descriptions from the API spec, but don't remove keys.
+- **Update types and descriptions** if the API spec shows they were incorrect,
+  but maintain the key names themselves.
+
+If the module doesn't exist yet (first-time generation), skip this step and
+generate the RETURN block entirely from the API spec.
+
+**Example of RETURN preservation:**
+
+Existing module RETURN block:
+```yaml
+RETURN = r"""
+value:
+  description: List of resource pool information
+  returned: On success
+  type: list
+  sample:
+    - resource_pool: resgroup-123
+      name: Production
+id:
+  description: Resource pool identifier
+  returned: When creating
+  type: str
+  sample: resgroup-1009
+"""
+```
+
+New module should preserve both `value` and `id` keys even if the API spec and
+reference template only show `value`. The generated RETURN might look like:
+
+```yaml
+RETURN = r"""
+value:
+  description: List of resource pool information objects
+  returned: On success
+  type: list
+  elements: dict
+  sample:
+    - id: resgroup-1009
+      name: my_resource_pool
+      cpu_allocation:
+        reservation: 1000
+id:
+  description: Resource pool identifier
+  returned: When creating
+  type: str
+  sample: resgroup-1009
+"""
+```
+
+Note: The `value` sample was enhanced with new fields from the API spec, but
+`id` was preserved even though the reference template doesn't include it.
 
 ### Step 1: Load reference template
 
@@ -341,6 +421,22 @@ resource."). Use the Ansible `C()` markup for resource type names.
   `vmware.vmware_rest.<module_name>`.
 - **RETURN:** document keys returned on success. Use `value` as the primary
   return key following existing collection patterns.
+  
+  **When regenerating an existing module** (Step 0 found existing RETURN block):
+  - Start with the preserved RETURN documentation from the existing module.
+  - Add any new return keys found in the API spec response schemas that aren't
+    already documented.
+  - Enhance descriptions and samples with information from the API spec.
+  - Do **not** remove existing documented return keys — preserve backward
+    compatibility.
+  - Update type information if the API spec shows it was incorrect, but keep
+    the key name.
+  
+  **When generating a new module** (Step 0 found no existing file):
+  - Build RETURN block entirely from API spec response schemas.
+  - Use response examples from the spec when available.
+  - Follow the reference template patterns for structure.
+  
 - **notes:** include the API spec version used (e.g. "Generated from vSphere
   API spec 9.1.0").
 
@@ -367,6 +463,7 @@ Before reporting success for a module, verify:
 - [ ] No content was copied from or influenced by files in `plugins/modules/`.
 - [ ] Info module uses only GET/HEAD; CRUD module sets `supports_check_mode=False`.
 - [ ] Connection params come from `prepare_argument_spec()`, not duplicated.
+- [ ] When regenerating: existing RETURN keys are preserved in the new module.
 - [ ] FQCN used in EXAMPLES.
 - [ ] Errors use `module.fail_json()`.
 
