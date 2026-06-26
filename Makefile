@@ -56,6 +56,19 @@ sanity: upgrade-collections
 		ansible-test sanity -v --color --coverage --junit \
 				--docker default; \
 
+# Temporarily include a step to remove the eco-vcenter-ci targets
+.PHONY: integration
+integration: upgrade-collections
+	ansible-galaxy collection install -r tests/integration/requirements.yml; \
+	cd $(COLLECTION_ROOT); \
+	rm -rf tests/integration/targets/vmware_rest_*;
+	ansible --version; \
+	ansible-test --version; \
+	ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. ansible-galaxy collection list; \
+	ANSIBLE_ROLES_PATH=$(COLLECTION_ROOT)/tests/integration/targets \
+		ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. \
+		ansible-test integration $(INTEGRATION_TARGETS) $(CLI_ARGS);
+
 .PHONY: eco-vcenter-ci
 eco-vcenter-ci: tests/integration/integration_config.yml install-integration-reqs upgrade-collections
 	rm -rf ~/.ansible/collections/ansible_collections/cloud/common; \

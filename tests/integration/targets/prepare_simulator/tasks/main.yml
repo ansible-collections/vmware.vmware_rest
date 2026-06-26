@@ -1,0 +1,35 @@
+---
+- name: Start MockServer container
+  containers.podman.podman_container:
+    name: "{{ mockserver_container_name }}"
+    image: "{{ mockserver_image }}"
+    state: started
+    recreate: true
+    ports:
+      - "{{ mockserver_port }}:1080"
+    volumes:
+      - "{{ role_path }}/../../targets/{{ prepare_simulator_mock_api_spec_file_dir }}:/mockserver_specs:ro,z"
+    env:
+      MOCKSERVER_WATCH_INITIALIZATION_JSON: "false"
+      MOCKSERVER_INITIALIZATION_JSON_PATH: "/mockserver_specs"
+      MOCKSERVER_LOG_LEVEL: "INFO"
+  register: mockserver_container
+
+- name: Wait for MockServer to be ready
+  ansible.builtin.uri:
+    url: "http://localhost:{{ mockserver_port }}/mockserver/status"
+    method: PUT
+    status_code: [200]
+  retries: 30
+  delay: 2
+  register: mockserver_status
+  until: mockserver_status is succeeded
+
+- name: Set environment auth vars for MockServer
+  ansible.builtin.set_fact:
+    environment_auth_vars:
+      VMWARE_HOST: "localhost"
+      VMWARE_USER: "mockuser"
+      VMWARE_PASSWORD: "mockpassword"
+      VMWARE_VALIDATE_CERTS: "False"
+      VMWARE_PORT: "{{ mockserver_port }}"
