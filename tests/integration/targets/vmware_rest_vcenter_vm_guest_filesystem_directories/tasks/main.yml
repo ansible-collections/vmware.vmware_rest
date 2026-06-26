@@ -45,8 +45,8 @@
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
-          user_name: "{{ vcenter_test_vm_user_name }}"
-          password: "{{ vcenter_test_vm_user_password }}"
+          user_name: "{{ test_rhel9_username }}"
+          password: "{{ test_rhel9_password }}"
       register: vm_dir_info
 
     - name: Print debug info
@@ -66,8 +66,8 @@
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
-          user_name: "{{ vcenter_test_vm_user_name }}"
-          password: "{{ vcenter_test_vm_user_password }}"
+          user_name: "{{ test_rhel9_username }}"
+          password: "{{ test_rhel9_password }}"
       register: vm_dir_info
 
     - name: Print debug info
@@ -89,8 +89,8 @@
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
-          user_name: "{{ vcenter_test_vm_user_name }}"
-          password: "{{ vcenter_test_vm_user_password }}"
+          user_name: "{{ test_rhel9_username }}"
+          password: "{{ test_rhel9_password }}"
         state: move
       register: vm_dir_info
 
@@ -111,8 +111,8 @@
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
-          user_name: "{{ vcenter_test_vm_user_name }}"
-          password: "{{ vcenter_test_vm_user_password }}"
+          user_name: "{{ test_rhel9_username }}"
+          password: "{{ test_rhel9_password }}"
       register: vm_dir_info
 
     - name: Print debug info
@@ -132,8 +132,8 @@
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
-          user_name: "{{ vcenter_test_vm_user_name }}"
-          password: "{{ vcenter_test_vm_user_password }}"
+          user_name: "{{ test_rhel9_username }}"
+          password: "{{ test_rhel9_password }}"
         state: create_temporary
       register: vm_dir_info_temp
 
@@ -154,8 +154,8 @@
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
-          user_name: "{{ vcenter_test_vm_user_name }}"
-          password: "{{ vcenter_test_vm_user_password }}"
+          user_name: "{{ test_rhel9_username }}"
+          password: "{{ test_rhel9_password }}"
         state: absent
       loop:
         - "{{ path_tmp.dir }}"
@@ -188,5 +188,5 @@
 
     - name: Delete resource pool
       vmware.vmware_rest.vcenter_resourcepool:
-        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' +  test_resource_pool_name, **vmware_rest_auth_vars) }}"
+        resource_pool: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name + '/' + resource_pool_parent_name + '/' +  test_resource_pool_name, **vmware_rest_auth_vars) }}"
         state: absent
