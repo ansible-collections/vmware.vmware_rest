@@ -10,10 +10,16 @@
           **vmware_rest_auth_vars) }}
       register: resource_pool_info
 
+    - name: Lookup template ID
+      vmware.vmware.content_library_item_info:
+        library_name: "{{ ci_resources_content_library }}"
+        library_item_name: "{{ rhel9_content_library_template }}"
+      register: _lib_template_info
+
     - name: Deploy a new VM based on the template
       vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
         name: "{{ vm_name }}"
-        template_library_item: "{{ vcenter_test_vm_template.id }}"
+        template_library_item: "{{ _lib_template_info.library_item_info[0].id }}"
         placement:
           cluster: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/host/' + vcenter_cluster_name, **vmware_rest_auth_vars) }}"
           folder: "{{ lookup('vmware.vmware.moid_from_path', '/' + vcenter_datacenter + '/vm/' + vcenter_vm_folder, type='folder', **vmware_rest_auth_vars) }}"

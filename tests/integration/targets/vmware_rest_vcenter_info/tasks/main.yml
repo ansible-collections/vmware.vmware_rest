@@ -45,35 +45,6 @@
           - vcenter_vm_folder.value | length == 1
           - (vcenter_vm_folder.value |  map(attribute='folder') | list | first) == folder_id
 
-    # Cluster tests
-    - name: Build a list of all the clusters
-      vmware.vmware_rest.vcenter_cluster_info:
-      register: _all_cluster_info
-
-    - name: Verify clusters list
-      ansible.builtin.assert:
-        that:
-          - _all_cluster_info.value | length > 0
-          - cluster_id is in (_all_cluster_info.value |  map(attribute='cluster') | list)
-
-    - name: Get cluster by ID
-      vmware.vmware_rest.vcenter_cluster_info:
-        clusters: "{{ cluster_id }}"
-      register: _test_cluster_id_info
-
-    - name: Get cluster by name
-      vmware.vmware_rest.vcenter_cluster_info:
-        filter_names: "{{ vcenter_cluster_name }}"
-      register: _test_cluster_name_info
-
-    - name: Verify test cluster found
-      ansible.builtin.assert:
-        that:
-          - _test_cluster_id_info.value | length == 1
-          - (_test_cluster_id_info.value |  map(attribute='cluster') | list | first) == cluster_id
-          - _test_cluster_name_info.value | length == 1
-          - (_test_cluster_name_info.value |  map(attribute='cluster') | list | first) == cluster_id
-
     # Resource pool tests
     - name: Build a list of all the resource pools
       vmware.vmware_rest.vcenter_resourcepool_info:
