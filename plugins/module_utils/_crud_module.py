@@ -63,15 +63,25 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         return result
 
     def _search_for_resource(self) -> Union[dict, None]:
+        """
+        Get a resource using the module params. Enrich the resulting dict with
+        params or the resource summary to ensure the MOID is present.
+        """
         try:
-            return self._perform_get_operation()
+            resource = self._perform_get_operation()
         except RequiredPathParameterError:
             if not self.params.get("name"):
                 raise
+        else:
+            if resource:
+                return {**self.params, **resource}
+            else:
+                return resource
 
         for summary in self._perform_list_operation():
             if summary.get("name") == self.params.get("name"):
-                return self._perform_get_operation(resource=summary)
+                resource = self._perform_get_operation(resource=summary)
+                return {**summary, **resource}
 
         return None
 
