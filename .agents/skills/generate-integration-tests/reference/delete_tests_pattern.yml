@@ -1,0 +1,135 @@
+---
+# Pattern for DELETE Operation Tests
+# Replace placeholders:
+#   <module_name> - e.g., vcenter_datacenter
+#   <moid_attribute> - e.g., datacenter
+#   <resource_id> - e.g., datacenter-1001
+#   <param_*> - module parameters for name-based lookup
+#   <OperationId> - e.g., Vcenter.Datacenter
+
+# ============================================================
+# DELETE OPERATION TESTS
+# ============================================================
+
+# Test 1: Delete by ID
+- name: Load API spec expectations for delete
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_delete: "204"
+        <OperationId>_get: "200"
+
+- name: Delete resource by ID
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    state: absent
+  register: delete_result
+
+- name: Assert deletion success
+  ansible.builtin.assert:
+    that:
+      - delete_result.changed
+      - delete_result.id == '<resource_id>'
+
+# Test 2: Idempotent deletion
+- name: Load API spec expectations for empty state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+
+- name: Delete resource again (idempotent)
+  vmware.vmware_rest.<module_name>:
+    <param_1>: <value_1>
+    <param_2>: <value_2>
+    state: absent
+  register: delete_again
+
+- name: Assert idempotent delete
+  ansible.builtin.assert:
+    that:
+      - not delete_again.changed
+
+# Test 3: Check mode when resource exists
+- name: Load API spec for resource exists
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_get: "200"
+
+- name: Delete resource in check mode (when exists)
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    state: absent
+  check_mode: true
+  register: delete_check
+
+- name: Assert check mode reports change when deleting
+  ansible.builtin.assert:
+    that:
+      - delete_check.changed
+
+# Test 4: Check mode when resource doesn't exist
+- name: Load API spec for empty state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+
+- name: Delete non-existent resource in check mode (idempotent)
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    state: absent
+  check_mode: true
+  register: delete_check_idem
+
+- name: Assert check mode reports no change when already deleted
+  ansible.builtin.assert:
+    that:
+      - not delete_check_idem.changed
+
+# Test 5: Delete by name (if name-based lookup is supported)
+- name: Load API spec with resource present for name-based delete
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+        <OperationId>_get: "200"
+        <OperationId>_delete: "204"
+
+- name: Delete resource by name
+  vmware.vmware_rest.<module_name>:
+    <param_1>: <value_1>
+    <param_2>: <value_2>
+    state: absent
+  register: delete_by_name
+
+- name: Assert delete by name succeeds
+  ansible.builtin.assert:
+    that:
+      - delete_by_name.changed

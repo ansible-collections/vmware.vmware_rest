@@ -1,0 +1,114 @@
+---
+# Pattern for CREATE Operation Tests
+# Replace placeholders:
+#   <module_name> - e.g., vcenter_datacenter
+#   <resource_id> - e.g., datacenter-1001
+#   <param_*> - module parameters (name, folder, etc.)
+#   <OperationId> - e.g., Vcenter.Datacenter
+
+# ============================================================
+# CREATE OPERATION TESTS
+# ============================================================
+
+# Test 1: Initial creation
+- name: Load API spec expectations for create
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        <OperationId>_create: "200"
+        <OperationId>_list: "200"
+
+- name: Create a resource
+  vmware.vmware_rest.<module_name>:
+    <param_1>: <value_1>
+    <param_2>: <value_2>
+    state: present
+  register: create_result
+
+- name: Assert creation success
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+      - create_result.id == '<resource_id>'
+
+# Test 2: Idempotent creation
+- name: Load API spec expectations for created state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+        <OperationId>_get: "200"
+
+- name: Create resource again (idempotent)
+  vmware.vmware_rest.<module_name>:
+    <param_1>: <value_1>
+    <param_2>: <value_2>
+    state: present
+  register: create_again
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - not create_again.changed
+      - create_again.id == '<resource_id>'
+
+# Test 3: Check mode when resource doesn't exist
+- name: Load API spec for deleted state (for check mode test)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+
+- name: Create resource in check mode (when doesn't exist)
+  vmware.vmware_rest.<module_name>:
+    <param_1>: <new_value_1>
+    <param_2>: <new_value_2>
+    state: present
+  check_mode: true
+  register: create_check
+
+- name: Assert check mode reports change when creating
+  ansible.builtin.assert:
+    that:
+      - create_check.changed
+
+# Test 4: Check mode when resource exists
+- name: Load API spec back to created state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+        <OperationId>_get: "200"
+
+- name: Create existing resource in check mode (idempotent)
+  vmware.vmware_rest.<module_name>:
+    <param_1>: <value_1>
+    <param_2>: <value_2>
+    state: present
+  check_mode: true
+  register: create_check_idem
+
+- name: Assert check mode reports no change when already exists
+  ansible.builtin.assert:
+    that:
+      - not create_check_idem.changed

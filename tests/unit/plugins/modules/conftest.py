@@ -6,6 +6,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ...common.utils import mock_client
+from tests.unit.common.utils import mock_client, module_args
 
-__all__ = ["mock_client"]
+__all__ = ["mock_client", "module_args"]

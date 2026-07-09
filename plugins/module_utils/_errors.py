@@ -31,6 +31,47 @@ class AuthError(VmwareModuleError):
     pass
 
 
+class OperationFormatError(VmwareModuleError):
+    pass
+
+
+class RequiredParameterError(VmwareModuleError):
+    def __init__(self, param_name, uri, operation, http_method):
+        super().__init__(
+            "Missing required module parameter when building the request body or query: %s"
+            % param_name
+        )
+        self.operation = operation
+        self.param_name = param_name
+        self.operation = operation
+        self.uri = uri
+        self.http_method = http_method
+
+    def to_module_fail_json_output(self):
+        return {
+            "msg": self.message,
+            "module_param_name": self.param_name,
+            "operation": self.operation,
+            "uri": self.uri,
+            "http_method": self.http_method,
+        }
+
+
+class RequiredPathParameterError(RequiredParameterError):
+    def __init__(self, api_template, param_name, uri, operation, http_method):
+        super().__init__(param_name, uri, operation, http_method)
+        self.message = (
+            "Missing required module parameter when building the request path: %s"
+            % self.param_name
+        )
+        self.path_template_placeholder = api_template
+
+    def to_module_fail_json_output(self):
+        out = super().to_module_fail_json_output()
+        out["path_template_placeholder"] = self.path_template_placeholder
+        return out
+
+
 class UnexpectedAPIResponse(VmwareModuleError):
     def __init__(self, status, data):
         self.message = "Unexpected response - {0} {1}".format(status, data)

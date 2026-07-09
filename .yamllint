@@ -15,4 +15,3 @@ rules:
 ignore:
   - .github/
   - changelogs/fragments/
-  - config

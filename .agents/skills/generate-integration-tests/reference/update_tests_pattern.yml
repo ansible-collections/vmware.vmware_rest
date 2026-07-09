@@ -1,0 +1,117 @@
+---
+# Pattern for UPDATE Operation Tests
+# Replace placeholders:
+#   <module_name> - e.g., vcenter_resourcepool
+#   <moid_attribute> - e.g., resource_pool
+#   <resource_id> - e.g., resgroup-1001
+#   <param_*> - module parameters that can be updated
+#   <OperationId> - e.g., Vcenter.ResourcePool
+
+# ============================================================
+# UPDATE OPERATION TESTS
+# ============================================================
+
+# Test 1: Initial update
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_get: "200"
+        <OperationId>_update: "204"
+
+- name: Update a resource
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    <updatable_param_1>: <new_value_1>
+    <updatable_param_2>: <new_value_2>
+    state: present
+  register: update_result
+
+- name: Assert update success
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+      - update_result.id == '<resource_id>'
+
+# Test 2: Idempotent update
+- name: Load API spec expectations for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        <OperationId>_get: "200"
+        <OperationId>_list: "200"
+
+- name: Update resource again (idempotent)
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    <updatable_param_1>: <new_value_1>
+    <updatable_param_2>: <new_value_2>
+    state: present
+  register: update_again
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - not update_again.changed
+      - update_again.id == '<resource_id>'
+
+# Test 3: Check mode when update would occur
+- name: Load API spec for original state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        <OperationId>_get: "200"
+
+- name: Update resource in check mode (when would change)
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    <updatable_param_1>: <different_value_1>
+    state: present
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports change when updating
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+
+# Test 4: Check mode when no update needed
+- name: Load API spec for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        <OperationId>_get: "200"
+
+- name: Update resource in check mode (when no change)
+  vmware.vmware_rest.<module_name>:
+    <moid_attribute>: <resource_id>
+    <updatable_param_1>: <new_value_1>
+    <updatable_param_2>: <new_value_2>
+    state: present
+  check_mode: true
+  register: update_check_idem
+
+- name: Assert check mode reports no change when already updated
+  ansible.builtin.assert:
+    that:
+      - not update_check_idem.changed

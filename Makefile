@@ -51,7 +51,7 @@ units-coverage: units
 .PHONY: sanity
 sanity: upgrade-collections
 		cp -r .agents $(COLLECTION_ROOT)/; \
-		cp -r config $(COLLECTION_ROOT)/; \
+		cp -r content_generation $(COLLECTION_ROOT)/; \
 		cd $(COLLECTION_ROOT); \
 		ansible-test sanity -v --color --coverage --junit \
 				--docker default; \
@@ -61,7 +61,7 @@ sanity: upgrade-collections
 integration: upgrade-collections
 	ansible-galaxy collection install -r tests/integration/requirements.yml; \
 	cd $(COLLECTION_ROOT); \
-	rm -rf tests/integration/targets/vmware_rest_*;
+	rm -rf tests/integration/targets/vmware_rest_*; \
 	ansible --version; \
 	ansible-test --version; \
 	ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. ansible-galaxy collection list; \
