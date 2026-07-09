@@ -103,7 +103,10 @@ def test_search_for_resource_by_id(crud_module, mock_client):
 
     resource = crud_module._search_for_resource()
 
-    assert resource == {**CONNECTION_PARAMS, **{"resource_pool": "pool-1", "name": "my_pool"}}
+    assert resource == {
+        **CONNECTION_PARAMS,
+        **{"resource_pool": "pool-1", "name": "my_pool"},
+    }
 
 
 def test_search_for_resource_by_name(crud_module, mock_client):
