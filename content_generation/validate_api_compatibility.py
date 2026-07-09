@@ -32,8 +32,9 @@ How It Works:
        - Required body fields added (module doesn't send a now-required field)
        - Body fields removed/renamed (module sends a field that doesn't exist)
 
-    3. Updates compatible modules with a note:
-       "Has support for vSphere API {target_version}."
+    3. Updates module notes:
+       - Compatible modules: "Compatible with vSphere API {target_version}."
+       - Incompatible modules: "Not compatible with vSphere API {target_version}."
 
 Module Format Support:
     Modern (2026) format:
@@ -418,6 +419,71 @@ def schema_properties(schema: dict, spec_data: dict) -> dict:
         if "$ref" in value:
             props[key] = resolve_schema_ref(spec_data, value["$ref"])
     return props
+
+
+def flatten_schema_properties(
+    schema: dict, spec_data: dict, prefix: str = ""
+) -> set[str]:
+    """Recursively extract all field names from nested schema properties.
+
+    This mirrors the flatten_body_spec behavior for module body_spec, ensuring
+    we compare nested structures at the same level of granularity.
+
+    Args:
+        schema: OpenAPI schema dictionary (may contain $ref)
+        spec_data: Full OpenAPI spec data for resolving $refs
+        prefix: Internal parameter for tracking nesting path
+
+    Returns:
+        Set of all field names found at all nesting levels
+
+    Examples:
+        >>> schema = {
+        ...     "properties": {
+        ...         "name": {"type": "string"},
+        ...         "cpu_allocation": {
+        ...             "properties": {
+        ...                 "limit": {"type": "integer"},
+        ...                 "shares": {
+        ...                     "properties": {
+        ...                         "level": {"type": "string"}
+        ...                     }
+        ...                 }
+        ...             }
+        ...         }
+        ...     }
+        ... }
+        >>> flatten_schema_properties(schema, {})
+        {'name', 'cpu_allocation', 'limit', 'shares', 'level'}
+    """
+    if not schema:
+        return set()
+
+    # Resolve $ref if present
+    if "$ref" in schema:
+        schema = resolve_schema_ref(spec_data, schema["$ref"])
+
+    fields = set()
+    properties = schema.get("properties", {})
+
+    for key, value in properties.items():
+        # Add the field name
+        fields.add(key)
+
+        # Resolve $ref in the property value
+        prop_schema = value
+        if "$ref" in value:
+            prop_schema = resolve_schema_ref(spec_data, value["$ref"])
+
+        # If this property has nested properties, recurse into it
+        if isinstance(prop_schema, dict) and "properties" in prop_schema:
+            fields.update(
+                flatten_schema_properties(
+                    prop_schema, spec_data, prefix=f"{prefix}{key}."
+                )
+            )
+
+    return fields
 
 
 def schema_required(schema: dict, spec_data: dict) -> set[str]:
@@ -1371,7 +1437,9 @@ def compare_operation(
 
     req_schema = get_request_schema(target_spec_data, operation)
     required = schema_required(req_schema, target_spec_data)
-    props = schema_properties(req_schema, target_spec_data)
+
+    # Flatten spec properties to match module's flattened body_fields
+    spec_fields = flatten_schema_properties(req_schema, target_spec_data)
 
     missing_required = required - op.body_fields
     if missing_required and op.body_fields:
@@ -1385,7 +1453,7 @@ def compare_operation(
         )
 
     for field_name in op.body_fields:
-        if field_name not in props and props:
+        if field_name not in spec_fields and spec_fields:
             issues.append(
                 BreakingChange(
                     "Body field removed or renamed",
@@ -1398,10 +1466,32 @@ def compare_operation(
     return issues
 
 
-def update_module_notes(module_path: Path, target_version: str) -> None:
+def update_module_notes(
+    module_path: Path, target_version: str, compatible: bool
+) -> None:
+    """Update module documentation with compatibility notes.
+
+    Args:
+        module_path: Path to the module file
+        target_version: API version being validated against
+        compatible: True if compatible, False if incompatible
+    """
     content = module_path.read_text(encoding="utf-8")
-    note = f"  - Has support for vSphere API {target_version}."
+
+    if compatible:
+        note = f"  - Compatible with vSphere API {target_version}."
+    else:
+        note = f"  - Not compatible with vSphere API {target_version}."
+
+    # Check if this exact note already exists
     if note.strip() in content:
+        return
+
+    # Also check for old "Has support for" format and replace it
+    old_note = f"  - Has support for vSphere API {target_version}."
+    if old_note.strip() in content:
+        content = content.replace(old_note, note)
+        module_path.write_text(content, encoding="utf-8")
         return
 
     gen_match = re.search(
@@ -1439,7 +1529,11 @@ def validate_module(
             "reason": f"generated from same major version ({source_version})",
         }
 
-    if f"Has support for vSphere API {target_version}." in meta["content"]:
+    # Check for existing compatibility notes (both old and new format)
+    if (
+        f"Compatible with vSphere API {target_version}." in meta["content"]
+        or f"Has support for vSphere API {target_version}." in meta["content"]
+    ):
         return {
             "module": module_name,
             "status": "skipped",
@@ -1463,6 +1557,8 @@ def validate_module(
         )
 
     if all_issues:
+        if update_notes:
+            update_module_notes(module_path, target_version, compatible=False)
         return {
             "module": module_name,
             "status": "incompatible",
@@ -1471,7 +1567,7 @@ def validate_module(
         }
 
     if update_notes:
-        update_module_notes(module_path, target_version)
+        update_module_notes(module_path, target_version, compatible=True)
 
     return {
         "module": module_name,

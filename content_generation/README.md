@@ -20,6 +20,23 @@ There are a few AI agent skills at /.agents/skills/ that can be used for this pu
 
 The skills will generate the module, enrich the documentation using an LLM, perform formatting/sanity checks with black/ansible-test, and generate tests if needed.
 
+### Example prompts
+
+For a full workflow, here are the example prompts. Each line should be considered a new prompt. Avoid doing it all in one go.
+
+*Note*: you should make sure your agent reads AGENTS.md and registers the project skills in .agents/skills/.
+I used Claude CLI Sonnet 4.5 (Claude Code chat in VS Code had really terrible performance.)
+
+```
+Generate the vcenter_resourcepool and vcenter_resourcepool_info modules
+
+If no unit tests for those modules exist, generate them
+
+If no integration tests for those modules exist, generate them
+
+Use the validate_api_compatibility script to validate those modules against all available spec versions
+```
+
 ## Manual Quickstart
 
 To generate a module manually, run:
