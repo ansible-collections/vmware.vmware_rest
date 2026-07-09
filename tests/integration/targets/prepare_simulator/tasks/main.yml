@@ -1,23 +1,39 @@
 ---
+# Ensure new volumes get mounted
+- name: Stop Mockserver container
+  containers.podman.podman_container:
+    name: "{{ mockserver_container_name }}"
+    state: stopped
+  failed_when: false
+
 - name: Start MockServer container
   containers.podman.podman_container:
     name: "{{ mockserver_container_name }}"
     image: "{{ mockserver_image }}"
     state: started
-    recreate: true
     ports:
       - "{{ mockserver_port }}:1080"
     volumes:
-      - "{{ role_path }}/../../targets/{{ prepare_simulator_mock_api_spec_file_dir }}:/mockserver_specs:ro,z"
+      - "{{ role_path }}/../{{ prepare_simulator_mock_api_spec_file_dir }}:/mockserver_specs:ro,z"
     env:
       MOCKSERVER_WATCH_INITIALIZATION_JSON: "false"
       MOCKSERVER_INITIALIZATION_JSON_PATH: "/mockserver_specs"
       MOCKSERVER_LOG_LEVEL: "INFO"
   register: mockserver_container
 
+- name: Set environment auth vars for MockServer
+  ansible.builtin.set_fact:
+    mockserver_url: http://localhost:{{ mockserver_port }}
+    environment_auth_vars:
+      VMWARE_HOST: "localhost"
+      VMWARE_USER: "mockuser"
+      VMWARE_PASSWORD: "mockpassword"
+      VMWARE_VALIDATE_CERTS: "False"
+      VMWARE_PORT: "{{ mockserver_port }}"
+
 - name: Wait for MockServer to be ready
   ansible.builtin.uri:
-    url: "http://localhost:{{ mockserver_port }}/mockserver/status"
+    url: "{{ mockserver_url }}/mockserver/status"
     method: PUT
     status_code: [200]
   retries: 30
@@ -25,11 +41,21 @@
   register: mockserver_status
   until: mockserver_status is succeeded
 
-- name: Set environment auth vars for MockServer
-  ansible.builtin.set_fact:
-    environment_auth_vars:
-      VMWARE_HOST: "localhost"
-      VMWARE_USER: "mockuser"
-      VMWARE_PASSWORD: "mockpassword"
-      VMWARE_VALIDATE_CERTS: "False"
-      VMWARE_PORT: "{{ mockserver_port }}"
+- name: Set up expectation for session authentication
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      id: session-auth
+      httpRequest:
+        method: POST
+        path: /rest/com/vmware/cis/session
+      httpResponse:
+        statusCode: 200
+        headers:
+          Content-Type:
+            - application/json
+        body:
+          value: mock-session-id

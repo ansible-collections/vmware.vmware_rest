@@ -1,0 +1,75 @@
+---
+# Pattern for Info Module Tests (GET and LIST operations)
+# Replace placeholders:
+#   <module_name> - e.g., vcenter_datacenter
+#   <resource_plural> - e.g., datacenters
+#   <moid_attribute> - e.g., datacenter
+#   <resource_id> - e.g., datacenter-1001
+#   <OperationId> - e.g., Vcenter.Datacenter
+#   <field_*> - specific fields returned by GET operation
+
+# ============================================================
+# INFO MODULE TESTS
+# ============================================================
+
+# Test 1: List when empty
+- name: List <resource_plural> (empty)
+  vmware.vmware_rest.<module_name>_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.<resource_plural> is defined
+      - list_empty.<resource_plural> | length == 0
+
+# Test 2: Get by ID
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        <OperationId>_get: "200"
+
+- name: Get resource by ID
+  vmware.vmware_rest.<module_name>_info:
+    <moid_attribute>: <resource_id>
+  register: get_by_id
+
+- name: Assert resource details
+  ansible.builtin.assert:
+    that:
+      - get_by_id.value is defined
+      - get_by_id.value.<moid_attribute> == '<resource_id>'
+      - get_by_id.<resource_plural> is defined
+      - get_by_id.<resource_plural>[0].<field_1> == '<expected_value_1>'
+      - get_by_id.<resource_plural>[0].<field_2> is defined
+      # Add more field checks as appropriate
+
+# Test 3: List multiple items
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        <OperationId>_list: "200"
+        <OperationId>_get: "200"
+
+- name: List <resource_plural> (multiple)
+  vmware.vmware_rest.<module_name>_info: {}
+  register: list_multiple
+
+- name: Check multiple items in list
+  ansible.builtin.assert:
+    that:
+      - list_multiple.value is not defined
+      - list_multiple.<resource_plural> is defined
+      - list_multiple.<resource_plural> | length == 2

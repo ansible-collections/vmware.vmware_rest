@@ -8,6 +8,8 @@ An Ansible collection (`vmware.vmware_rest`) providing modules for managing VMwa
 
 The collection namespace, name, and version number can all be found in the `galaxy.yml` file.
 
+This collection's content is generated using scripts and API specs. Most operations can be enhanced with the help of an AI agent and the skills in /.agents/skills/
+
 ## Development Environment
 
 The collection must reside at `ansible_collections/NAMESPACE/NAME/` (relative to a directory on `ANSIBLE_COLLECTIONS_PATHS`) for imports to resolve correctly.
@@ -38,48 +40,6 @@ For test commands, patterns, and requirements see `skills/run-tests/SKILL.md`.
 
 - Every PR that changes module behavior needs a changelog fragment in `changelogs/fragments/<something>.yaml`. Docs/tests/refactoring PRs are exempt. Valid fragment sections: `major_changes`, `minor_changes`, `bugfixes`, `breaking_changes`, `deprecated_features`, `removed_features`, `security_fixes`, `known_issues`. Fragments are consumed (deleted) at release time (`keep_fragments: false` in `changelogs/config.yaml`).
 
-## Subagents
-
-Subagent definitions live in `.agents/subagents/`. When a task matches a subagent's trigger conditions, delegate to it.
-
-| Subagent | Use when |
-| --- | --- |
-| `orchestrate-module-generation` | **Start here** for end-to-end module generation from a vSphere API version: fetch spec → generate modules (≤2 per batch) → unit tests → integration tests → unit regression verify |
-| `fetch-vsphere-openapi-spec` | Downloading or updating vSphere OpenAPI specs under `config/api_specifications/` |
-| `generate-ansible-modules` | Generating Ansible modules from module names and an API spec version (writes only under `plugins/modules/`) |
-| `generate-unit-tests` | Generating unit tests for modules; API spec is the source of truth for mocks/assertions (writes only under `tests/unit/`) |
-| `generate-integration-tests` | Generating ansible-test integration targets for modules using the MockServer simulator (writes only under `tests/integration/`) |
-| `validate-module-documentation` | Read-only review of module DOCUMENTATION, EXAMPLES, and RETURN; compares CRUD/info pairs, integration test tasks, and runtime return values |
-| `validate-formatting-and-sanity` | Runs `make linters` and `make sanity` after test generation; applies black formatting; fixes sanity issues; re-runs unit tests when module code changes |
-
-### Module generation pipeline
-
-Use `orchestrate-module-generation` when a user asks to generate modules from a
-vSphere API major version. The orchestrator:
-
-1. **Fetch** — `fetch-vsphere-openapi-spec` installs the spec under
-   `config/api_specifications/<version>/`.
-2. **Batch** — groups up to two related modules per batch (typically `*_info` +
-   CRUD for the same resource).
-3. **Phase 1 — Unit gate** — `generate-ansible-modules` writes modules;
-   `validate-module-documentation` (`mode: structural`) reviews docs;
-   `generate-unit-tests` (`mode: generate`) writes and runs unit tests; iterate
-   on `module_error` or `doc_corrections_needed` until unit tests pass.
-4. **Phase 2 — Integration** — `generate-integration-tests` writes the target
-   and runs `make integration`; `validate-module-documentation`
-   (`mode: integration`) cross-checks EXAMPLES and RETURN against tests;
-   `module_error` / doc failures relay back to `generate-ansible-modules`, then
-   re-run integration until pass.
-5. **Phase 3 — Regression** — `generate-unit-tests` (`mode: verify`) re-runs
-   unit tests to confirm integration fixes did not break unit coverage.
-6. **Phase 4 — Formatting and sanity** — `validate-formatting-and-sanity`
-   runs `make linters` (applying `black` when needed) and `make sanity`;
-   fixes sanity failures; re-runs unit tests when module code changes.
-7. **Next batch** — proceed to the next module pair.
-
-Use `skip_integration: true` to run Phases 1 and 4 only (skip Phases 2–3). Full workflow:
-`.agents/subagents/orchestrate-module-generation.md`
-
 ## Agent Skills
 
 Project Skills live in `.agents/skills/*/SKILL.md` (YAML frontmatter + instructions). At session start, scan and register all skills. When a request matches a skill's trigger, load and apply it.
@@ -87,4 +47,10 @@ Additional skills may be found in `skills/*/SKILL.md`. These skills are placed b
 
 | Skill | Use when |
 | --- | --- |
-| `validate-module-api-compatibility` | Checking whether an LLM-generated module works with a vSphere API version other than its generation spec; compares endpoints against `config/api_specifications/` and updates `notes:` when compatible |
+| `ansible-module-doc-review` | Reviewing and enriching Ansible module documentation to ensure completeness and quality; replacing PLACEHOLDER text with meaningful descriptions, creating realistic usage examples, and completing RETURN documentation |
+| `classify-module-pattern` | Analyzing a vmware.vmware_rest module name and determining which operations it needs to implement (GET, LIST, CREATE, UPDATE, DELETE, ACTION) by examining the OpenAPI specification; returns the operation set and recommends the appropriate base class |
+| `fetch-vsphere-openapi-spec` | Downloading vSphere OpenAPI specifications from Broadcom/VCF sources and installing them under `content_generation/api_specs/<version>/`; acquiring specs for a specific vSphere or vCenter version from developer.broadcom.com or the VCF API specification portal |
+| `generate-ansible-module` | Generating or regenerating Ansible modules for the vmware.vmware_rest collection from VMware vSphere API specifications; orchestrates the complete generation workflow from bare-bones module creation through documentation enrichment, formatting, and sanity checks |
+| `generate-integration-tests` | Generating complete integration test suites for vmware.vmware_rest Ansible modules; validates module behavior against a MockServer API simulator, focusing on idempotency, check mode, and basic input/output expectations |
+| `generate-unit-tests` | Generating comprehensive unit tests for vmware.vmware_rest Ansible modules; tests validate module behavior, argument specs, payload mappings, and API interactions using mocked HTTP clients |
+| `validate-module-api-compatibility` | Validating whether an LLM-generated vmware.vmware_rest module is compatible with a vSphere API version other than its generation spec; compares endpoints and HTTP methods against OpenAPI specs in `content_generation/api_specs/` and updates module DOCUMENTATION notes when compatible |
