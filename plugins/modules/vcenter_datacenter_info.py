@@ -109,7 +109,7 @@ value:
     host_folder: group-h1003
     network_folder: group-n1004
     vm_folder: group-v1005
-  type: dict
+  type: raw
 info:
   description: A list of datacenters matching the query.
   returned: On success.

@@ -131,8 +131,22 @@ def test_list_all_datacenters(
         {"datacenter": "datacenter-1001", "name": "production-dc"},
         {"datacenter": "datacenter-1002", "name": "development-dc"},
     ]
+    detail_response_1 = {
+        "datacenter": "datacenter-1001",
+        "name": "production-dc",
+        "datastore_folder": "group-s1001",
+    }
+    detail_response_2 = {
+        "datacenter": "datacenter-1002",
+        "name": "development-dc",
+        "datastore_folder": "group-s1002",
+    }
 
-    mock_client.get.return_value = _response(200, list_response)
+    mock_client.get.side_effect = [
+        _response(200, list_response),
+        _response(200, detail_response_1),
+        _response(200, detail_response_2),
+    ]
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
@@ -140,8 +154,10 @@ def test_list_all_datacenters(
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
     assert "info" in result
-    # The base class wraps list results
     assert isinstance(result["info"], list)
+    assert len(result["info"]) == 2
+    assert result["info"][0]["datacenter"] == "datacenter-1001"
+    assert result["info"][1]["datacenter"] == "datacenter-1002"
 
 
 def test_list_datacenters_empty(
@@ -269,8 +285,22 @@ def test_list_datacenters_by_datacenters_filter(
         {"datacenter": "datacenter-1001", "name": "dc1"},
         {"datacenter": "datacenter-1002", "name": "dc2"},
     ]
+    detail_response_1 = {
+        "datacenter": "datacenter-1001",
+        "name": "dc1",
+        "datastore_folder": "group-s1001",
+    }
+    detail_response_2 = {
+        "datacenter": "datacenter-1002",
+        "name": "dc2",
+        "datastore_folder": "group-s1002",
+    }
 
-    mock_client.get.return_value = _response(200, list_response)
+    mock_client.get.side_effect = [
+        _response(200, list_response),
+        _response(200, detail_response_1),
+        _response(200, detail_response_2),
+    ]
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
@@ -279,8 +309,9 @@ def test_list_datacenters_by_datacenters_filter(
     result = exc.value.kwargs
     assert "info" in result
     assert isinstance(result["info"], list)
-    # Module may make multiple GET calls to fetch details
-    assert mock_client.get.called
+    assert len(result["info"]) == 2
+    assert result["info"][0]["datacenter"] == "datacenter-1001"
+    assert result["info"][1]["datacenter"] == "datacenter-1002"
 
 
 def test_list_datacenters_with_multiple_filters(

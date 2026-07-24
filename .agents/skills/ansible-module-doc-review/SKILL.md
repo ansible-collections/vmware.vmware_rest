@@ -133,7 +133,7 @@ value:
   sample:
     description: ntpd.service
     state: STARTED
-  type: dict
+  type: raw
 
 info:
   description: A list of detailed information about resources
