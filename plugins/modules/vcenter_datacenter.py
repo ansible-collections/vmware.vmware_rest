@@ -15,12 +15,9 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_datacenter
-short_description: Manage vCenter datacenters
+short_description: PLACEHOLDER
 description:
-  - This module allows you to create and delete datacenters in vCenter Server.
-  - Datacenters are organizational containers that group compute resources like hosts and clusters.
-  - A datacenter must be created in a specific folder within the vCenter inventory.
-  - You can force deletion of a datacenter even if it contains resources.
+  - PLACEHOLDER
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -48,21 +45,19 @@ options:
   name:
     description:
       - The name of the datacenter to be created.
-      - Required when creating a new datacenter (state is present).
     type: str
     required: false
   folder:
     description:
-      - The folder in which the datacenter should be created.
-      - Must be the MOID (managed object identifier) of an existing Folder.
-      - This is required when creating a datacenter.
+      - Datacenter folder in which the new datacenter should be created.
+      - This property is currently required. In the future, if this property is missing or 'null', the system will attempt to choose a suitable folder for the datacenter; if a folder cannot be chosen, the datacenter creation operation will fail.
+      - When clients pass a value of this schema as a parameter, the property must be an identifier (MOID) for the resource type 'Folder'. When operations return a value of this schema as a response, the property will be an identifier (MOID) for the resource type 'Folder'.
     type: str
     required: false
   force:
     description:
-      - Whether to force deletion of a non-empty datacenter.
-      - If true, the datacenter will be deleted even if it contains resources.
-      - If false or omitted, deletion will fail if the datacenter is not empty.
+      - If true, delete the datacenter even if it is not empty.
+      - If missing or 'null' a *Vapi.Std.Errors.ResourceInUse* error will be reported if the datacenter is not empty. This is the equivalent of passing the value false.
     type: bool
     required: false
 
@@ -72,35 +67,12 @@ requirements: []
 
 notes:
   - Generated from vSphere API spec 9.1.0.
-  - Compatible with vSphere API 8.0.2.
-  - Compatible with vSphere API 7.0.3.
 """
 
 EXAMPLES = r"""
-- name: Create a datacenter
-  vmware.vmware_rest.vcenter_datacenter:
-    name: my-datacenter
-    folder: group-d1
-    state: present
-
-- name: Delete an empty datacenter
-  vmware.vmware_rest.vcenter_datacenter:
-    datacenter: datacenter-1001
-    state: absent
-
-- name: Force delete a datacenter with resources
-  vmware.vmware_rest.vcenter_datacenter:
-    datacenter: datacenter-1001
-    force: true
-    state: absent
 """
 
 RETURN = r"""
-id:
-  description: MOID of the managed datacenter
-  returned: When state is present, or when a resource is deleted, or when state is set to a supported action
-  sample: datacenter-1001
-  type: str
 """
 
 
@@ -115,6 +87,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_conf
     OperationConfig,
 )
 
+
 MOID_PARAMETER_HINTS = ["datacenter"]
 
 LIST_ENDPOINT = "/vcenter/datacenter"
@@ -125,6 +98,20 @@ LIST_OPERATION = OperationConfig(
     name="list",
     uri=LIST_ENDPOINT,
     http_method="GET",
+    query_spec={
+        "datacenters": {
+            "required": False,
+            "module_param": "datacenter",
+        },
+        "names": {
+            "required": False,
+            "module_param": "name",
+        },
+        "folders": {
+            "required": False,
+            "module_param": "folder",
+        },
+    },
 )
 
 GET_OPERATION = OperationConfig(
@@ -151,6 +138,11 @@ DELETE_OPERATION = OperationConfig(
     name="delete",
     uri=ITEM_ENDPOINT,
     http_method="DELETE",
+    query_spec={
+        "force": {
+            "required": False,
+        },
+    },
 )
 
 
@@ -170,7 +162,7 @@ def create_module_argument_spec() -> dict:
     }
     module_args["state"] = {
         "type": "str",
-        "choices": ["present", "absent"],
+        "choices": ['present', 'absent'],
         "default": "present",
     }
     return module_args

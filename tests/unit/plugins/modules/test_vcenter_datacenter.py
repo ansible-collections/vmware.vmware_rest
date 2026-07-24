@@ -190,7 +190,7 @@ def test_delete_datacenter(
     mock_client.delete.assert_called_once()
     call_args = mock_client.delete.call_args
     assert call_args[0][0] == "/vcenter/datacenter/datacenter-1009"
-    assert call_args[1]["query"] is None
+    assert call_args[1]["query"] == {}
 
 
 def test_delete_datacenter_not_found(
@@ -268,7 +268,7 @@ def test_delete_by_name(
     mock_client.delete.assert_called_once()
     call_args = mock_client.delete.call_args
     assert call_args[0][0] == "/vcenter/datacenter/datacenter-1009"
-    assert call_args[1]["query"] is None
+    assert call_args[1]["query"] == {}
 
 
 def test_delete_with_force(
