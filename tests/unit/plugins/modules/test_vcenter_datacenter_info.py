@@ -222,20 +222,29 @@ def test_list_datacenters_by_folders(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response with filter - return dict not list
-    # When filters match a single item, API returns dict
-    list_response = {"datacenter": "datacenter-1001", "name": "dc1"}
+    # First GET returns the list summary, second GET fetches details for the item
+    list_response = [
+        {"datacenter": "datacenter-1001", "name": "dc1"},
+    ]
+    detail_response = {
+        "datacenter": "datacenter-1001",
+        "name": "dc1",
+        "datastore_folder": "group-s1002",
+    }
 
-    mock_client.get.return_value = _response(200, list_response)
+    mock_client.get.side_effect = [
+        _response(200, list_response),
+        _response(200, detail_response),
+    ]
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
 
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
-    # Should have value key for single resource
-    assert "value" in result or "info" in result
-    mock_client.get.assert_called_once()
+    assert "info" in result
+    assert len(result["info"]) == 1
+    assert result["info"][0]["datacenter"] == "datacenter-1001"
 
 
 def test_list_datacenters_by_datacenters_filter(
@@ -292,19 +301,29 @@ def test_list_datacenters_with_multiple_filters(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response with multiple filters - single result returns dict
-    list_response = {"datacenter": "datacenter-1001", "name": "production-dc"}
+    # First GET returns the list summary, second GET fetches details for the item
+    list_response = [
+        {"datacenter": "datacenter-1001", "name": "production-dc"},
+    ]
+    detail_response = {
+        "datacenter": "datacenter-1001",
+        "name": "production-dc",
+        "datastore_folder": "group-s1002",
+    }
 
-    mock_client.get.return_value = _response(200, list_response)
+    mock_client.get.side_effect = [
+        _response(200, list_response),
+        _response(200, detail_response),
+    ]
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
 
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
-    # Single resource returns value
-    assert "value" in result or "info" in result
-    mock_client.get.assert_called_once()
+    assert "info" in result
+    assert len(result["info"]) == 1
+    assert result["info"][0]["name"] == "production-dc"
 
 
 # ============================================================================
@@ -362,18 +381,27 @@ class TestCheckMode:
         mock_module.exit_json.side_effect = exit_json
         mock_module.check_mode = True
 
-        # Mock LIST response - single item returns dict
-        list_response = {"datacenter": "datacenter-1001", "name": "dc1"}
+        # First GET returns the list summary, second GET fetches details
+        list_response = [
+            {"datacenter": "datacenter-1001", "name": "dc1"},
+        ]
+        detail_response = {
+            "datacenter": "datacenter-1001",
+            "name": "dc1",
+        }
 
-        mock_client.get.return_value = _response(200, list_response)
+        mock_client.get.side_effect = [
+            _response(200, list_response),
+            _response(200, detail_response),
+        ]
 
         with pytest.raises(AnsibleExitJson) as exc:
             module_under_test.main()
 
         result = exc.value.kwargs
         # Info modules execute normally in check mode (read-only)
-        assert "value" in result or "info" in result
-        mock_client.get.assert_called_once()
+        assert "info" in result
+        assert len(result["info"]) == 1
 
 
 # ============================================================================

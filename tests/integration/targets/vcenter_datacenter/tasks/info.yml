@@ -53,6 +53,7 @@
 - name: Check datacenter multi list
   ansible.builtin.assert:
     that:
-      - list_multi.value is not defined
+      - list_multi.value is defined
+      - list_multi.value | length == 2
       - list_multi.info is defined
       - list_multi.info | length == 2
