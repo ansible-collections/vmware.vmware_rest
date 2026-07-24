@@ -99,14 +99,11 @@ def _format_params_dict(params: Dict[str, Any]) -> OrderedDict:
     return result
 
 
-def format_endpoint_operations(
-    operations: Dict[str, Any], endpoint_type: str
-) -> OrderedDict:
+def format_endpoint_operations(operations: Dict[str, Any]) -> OrderedDict:
     """Format operations section for an endpoint.
 
     Args:
         operations: Dictionary of method -> parameters
-        endpoint_type: "list", "item", or "action"
 
     Returns:
         OrderedDict of formatted operations
@@ -648,13 +645,11 @@ def _should_omit_list_get_query(
 
 def _format_endpoint_spec(
     endpoint: Optional[Dict[str, Any]],
-    endpoint_type: str,
 ) -> OrderedDict:
     """Format a single endpoint specification.
 
     Args:
         endpoint: Endpoint data with uri and operations
-        endpoint_type: Type of endpoint ("list", "item", or "action")
 
     Returns:
         OrderedDict with uri and operations, or empty dict if endpoint is None
@@ -667,10 +662,7 @@ def _format_endpoint_spec(
             ("uri", endpoint["uri"]),
             (
                 "operations",
-                format_endpoint_operations(
-                    endpoint["operations"],
-                    endpoint_type,
-                ),
+                format_endpoint_operations(endpoint["operations"]),
             ),
         ]
     )
@@ -690,7 +682,7 @@ def _format_action_endpoints(action_endpoints: OrderedDict) -> OrderedDict:
 
     formatted_actions = OrderedDict()
     for action_name, action_data in action_endpoints.items():
-        formatted_actions[action_name] = _format_endpoint_spec(action_data, "action")
+        formatted_actions[action_name] = _format_endpoint_spec(action_data)
     return formatted_actions
 
 
@@ -984,8 +976,8 @@ def format_api_endpoints_for_module_generation(
     )
 
     # Format endpoints
-    spec["list_endpoint"] = _format_endpoint_spec(list_endpoint, "list")
-    spec["item_endpoint"] = _format_endpoint_spec(item_endpoint, "item")
+    spec["list_endpoint"] = _format_endpoint_spec(list_endpoint)
+    spec["item_endpoint"] = _format_endpoint_spec(item_endpoint)
     spec["action_endpoints"] = _format_action_endpoints(action_endpoints)
 
     # Extract and convert path parameters

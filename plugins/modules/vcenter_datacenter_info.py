@@ -15,9 +15,12 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_datacenter_info
-short_description: PLACEHOLDER
+short_description: Gather information about vCenter datacenters.
 description:
-  - PLACEHOLDER
+  - Retrieve information about one or more VMware vCenter datacenters.
+  - Can return a list of all datacenters or detailed information about a specific datacenter
+    identified by its MOID.
+  - Use the filter parameters to narrow results by datacenter name, identifier, or parent folder.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -28,30 +31,37 @@ extends_documentation_fragment:
 options:
   datacenter:
     description:
-      - Identifier of the datacenter to manage.
+      - Identifier of the datacenter to retrieve details for.
       - Must be an identifier (MOID) for a C(Datacenter) resource.
     type: str
     required: false
   datacenters:
+    aliases:
+      - filter_datacenters
     description:
-      - Identifiers of datacenters that can match the filter.
-      - If missing or 'null' or empty, datacenters with any identifier match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'Datacenter'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'Datacenter'.
+      - A list of datacenter MOIDs to filter the results.
+      - Only datacenters whose identifiers appear in this list will be returned.
+      - If omitted or empty, datacenters with any identifier are returned.
     type: list
     required: false
     elements: str
   names:
+    aliases:
+      - filter_names
     description:
-      - Names that datacenters must have to match the filter (see *Vcenter.Datacenter.Info.name*).
-      - If missing or 'null' or empty, datacenters with any name match the filter.
+      - A list of datacenter names to filter the results.
+      - Only datacenters whose names appear in this list will be returned.
+      - If omitted or empty, datacenters with any name are returned.
     type: list
     required: false
     elements: str
   folders:
+    aliases:
+      - filter_folders
     description:
-      - Folders that must contain the datacenters for the datacenter to match the filter.
-      - If missing or 'null' or empty, datacenters in any folder match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'Folder'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'Folder'.
+      - A list of folder MOIDs to filter the results.
+      - Only datacenters that reside in the specified folders will be returned.
+      - If omitted or empty, datacenters in any folder are returned.
     type: list
     required: false
     elements: str
@@ -65,9 +75,48 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List all datacenters
+  vmware.vmware_rest.vcenter_datacenter_info:
+  register: all_datacenters
+
+- name: Get details about a specific datacenter
+  vmware.vmware_rest.vcenter_datacenter_info:
+    datacenter: datacenter-1001
+  register: my_datacenter
+
+- name: Filter datacenters by name
+  vmware.vmware_rest.vcenter_datacenter_info:
+    names:
+      - my_datacenter
+  register: filtered_datacenters
 """
 
 RETURN = r"""
+id:
+  description: MOID of the queried datacenter.
+  returned: When only one resource, with a MOID, was queried.
+  sample: datacenter-1001
+  type: str
+value:
+  description:
+    - Detailed information about a single datacenter.
+    - Dict if only one item was found, list otherwise.
+    - Maintained for backwards compatibility. Use the info return value if possible.
+  returned: On success.
+  sample:
+    name: my_datacenter
+    datastore_folder: group-s1002
+    host_folder: group-h1003
+    network_folder: group-n1004
+    vm_folder: group-v1005
+  type: dict
+info:
+  description: A list of datacenters matching the query.
+  returned: On success.
+  sample:
+    - datacenter: datacenter-1001
+      name: my_datacenter
+  type: list
 """
 
 
@@ -81,7 +130,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._info_module im
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_configs import (
     OperationConfig,
 )
-
 
 MOID_PARAMETER_HINTS = ["datacenter"]
 
@@ -120,14 +168,17 @@ def create_module_argument_spec() -> dict:
     }
     module_args["datacenters"] = {
         "type": "list",
+        "aliases": ["filter_datacenters"],
         "elements": "str",
     }
     module_args["folders"] = {
         "type": "list",
+        "aliases": ["filter_folders"],
         "elements": "str",
     }
     module_args["names"] = {
         "type": "list",
+        "aliases": ["filter_names"],
         "elements": "str",
     }
     return module_args

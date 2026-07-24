@@ -15,9 +15,13 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_datacenter
-short_description: PLACEHOLDER
+short_description: Manage vCenter datacenters.
 description:
-  - PLACEHOLDER
+  - Create and delete VMware vCenter datacenters.
+  - A datacenter is the top-level organizational container in vCenter that holds clusters,
+    hosts, virtual machines, datastores, and networks.
+  - Use this module to provision new datacenters or remove existing ones from the vCenter
+    inventory.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -49,15 +53,15 @@ options:
     required: false
   folder:
     description:
-      - Datacenter folder in which the new datacenter should be created.
-      - This property is currently required. In the future, if this property is missing or 'null', the system will attempt to choose a suitable folder for the datacenter; if a folder cannot be chosen, the datacenter creation operation will fail.
-      - When clients pass a value of this schema as a parameter, the property must be an identifier (MOID) for the resource type 'Folder'. When operations return a value of this schema as a response, the property will be an identifier (MOID) for the resource type 'Folder'.
+      - The inventory folder in which the datacenter should be created.
+      - Must be the MOID (managed object identifier) of an existing C(Folder) resource.
+      - Required when creating a datacenter.
     type: str
     required: false
   force:
     description:
-      - If true, delete the datacenter even if it is not empty.
-      - If missing or 'null' a *Vapi.Std.Errors.ResourceInUse* error will be reported if the datacenter is not empty. This is the equivalent of passing the value false.
+      - Whether to delete the datacenter even if it contains child resources such as clusters, hosts, or virtual machines.
+      - When set to C(false) or omitted, the delete operation will fail if the datacenter is not empty.
     type: bool
     required: false
 
@@ -70,9 +74,36 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Lookup the datacenter folder
+  vmware.vmware_rest.vcenter_folder_info:
+    filter_type: DATACENTER
+  register: datacenter_folders
+
+- name: Create a datacenter
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_datacenter
+    folder: '{{ datacenter_folders.value[0].folder }}'
+    state: present
+  register: my_datacenter
+
+- name: Delete a datacenter
+  vmware.vmware_rest.vcenter_datacenter:
+    datacenter: '{{ my_datacenter.id }}'
+    state: absent
+
+- name: Force delete a datacenter that contains resources
+  vmware.vmware_rest.vcenter_datacenter:
+    datacenter: '{{ my_datacenter.id }}'
+    force: true
+    state: absent
 """
 
 RETURN = r"""
+id:
+  description: MOID of the managed datacenter.
+  returned: When state is present, or when a resource is deleted, or when state is set to a supported action.
+  sample: datacenter-1001
+  type: str
 """
 
 
@@ -86,7 +117,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module im
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_configs import (
     OperationConfig,
 )
-
 
 MOID_PARAMETER_HINTS = ["datacenter"]
 
@@ -162,7 +192,7 @@ def create_module_argument_spec() -> dict:
     }
     module_args["state"] = {
         "type": "str",
-        "choices": ['present', 'absent'],
+        "choices": ["present", "absent"],
         "default": "present",
     }
     return module_args

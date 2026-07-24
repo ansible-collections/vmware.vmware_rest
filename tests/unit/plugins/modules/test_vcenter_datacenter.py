@@ -61,6 +61,9 @@ def test_create_datacenter(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
+    # Mock list response returns empty (no existing datacenter)
+    mock_client.get.return_value = _response(200, [])
+
     # Mock POST response returns the new datacenter ID
     create_response = "datacenter-1009"
 
@@ -137,6 +140,9 @@ def test_create_datacenter_name_only(
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
+
+    # Mock list response returns empty (no existing datacenter)
+    mock_client.get.return_value = _response(200, [])
 
     mock_client.post.return_value = _response(201, "datacenter-1009")
 
@@ -304,8 +310,11 @@ def test_delete_with_force(
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
     assert result["changed"] is True
-    # Verify delete was called - force is handled in the DELETE operation
+    # Verify delete was called with force in query params
     mock_client.delete.assert_called_once()
+    call_args = mock_client.delete.call_args
+    assert call_args[0][0] == "/vcenter/datacenter/datacenter-1009"
+    assert call_args[1]["query"] == {"force": True}
 
 
 # ============================================================================
@@ -334,6 +343,9 @@ class TestCheckMode:
         mock_module.params = set_module_args(module_args)
         mock_module.exit_json.side_effect = exit_json
         mock_module.check_mode = True
+
+        # Mock list response returns empty (no existing datacenter)
+        mock_client.get.return_value = _response(200, [])
 
         with pytest.raises(AnsibleExitJson) as exc:
             module_under_test.main()

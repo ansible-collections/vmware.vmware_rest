@@ -35,6 +35,8 @@ from format_api_endpoints_for_module_generation import (
 # CONSTANTS AND TEMPLATES
 # ============================================================================
 
+FILTER_ALIAS_PARAMS = {"datacenters", "folders", "names", "types", "type"}
+
 HEADER_TEMPLATE = """#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
@@ -190,6 +192,22 @@ def _format_yaml_suboptions(
     lines.append(suboptions_yaml)
 
 
+def _format_yaml_aliases(param_def: Dict, base_indent: str, lines: List[str]) -> None:
+    """Add aliases section to YAML lines.
+
+    Args:
+        param_def: Parameter definition
+        base_indent: Base indentation string
+        lines: List to append lines to
+    """
+    if "aliases" not in param_def:
+        return
+
+    lines.append(f"{base_indent}  aliases:")
+    for alias in param_def["aliases"]:
+        lines.append(f"{base_indent}    - {alias}")
+
+
 def _format_single_option(
     param_name: str, param_def: Dict, base_indent: str, indent: int, lines: List[str]
 ) -> None:
@@ -203,6 +221,7 @@ def _format_single_option(
         lines: List to append lines to
     """
     lines.append(f"{base_indent}{param_name}:")
+    _format_yaml_aliases(param_def, base_indent, lines)
     _format_yaml_description(param_def, base_indent, lines)
     _format_yaml_simple_fields(param_def, base_indent, lines)
     _format_yaml_choices(param_def, base_indent, lines)
@@ -561,7 +580,17 @@ def _get_singular_form(plural_name: str) -> Optional[str]:
     Returns:
         Singular form or None
     """
-    if plural_name.endswith("s") and not plural_name.endswith("ss"):
+    if plural_name.endswith("ss"):
+        return None
+    if plural_name.endswith("ies"):
+        return plural_name[:-3] + "y"
+    if (
+        plural_name.endswith("ses")
+        or plural_name.endswith("xes")
+        or plural_name.endswith("zes")
+    ):
+        return plural_name[:-2]
+    if plural_name.endswith("s"):
         return plural_name[:-1]
     return None
 
@@ -597,7 +626,9 @@ def _build_crud_list_query_spec(
 
 
 def generate_all_operations(
-    yaml_data: Dict, options_dict: Dict, available_ops: Dict[str, bool],
+    yaml_data: Dict,
+    options_dict: Dict,
+    available_ops: Dict[str, bool],
     is_info_module: bool = False,
 ) -> str:
     """
@@ -677,7 +708,9 @@ def generate_all_operations(
         item_ops = item_endpoint.get("operations", {})
         delete_op = item_ops.get("delete", {})
         query_params = delete_op.get("query", {})
-        query_spec = build_query_spec(query_params, options_dict) if query_params else None
+        query_spec = (
+            build_query_spec(query_params, options_dict) if query_params else None
+        )
 
         op = generate_operation_config(
             "delete", item_endpoint["uri"], "DELETE", query_spec=query_spec
@@ -745,6 +778,10 @@ def convert_option_to_arg_spec(option_def: Dict) -> Dict:
         argument_spec dict for this option
     """
     spec = {"type": option_def["type"]}
+
+    # Add aliases if present
+    if "aliases" in option_def:
+        spec["aliases"] = option_def["aliases"]
 
     # Add choices if present
     if "choices" in option_def:
@@ -1169,6 +1206,12 @@ def generate_module(yaml_data: Dict, module_name: str, api_version: str) -> str:
     list_endpoint = yaml_data.get("list_endpoint", {})
     item_endpoint = yaml_data.get("item_endpoint", {})
     action_endpoints = yaml_data.get("action_endpoints", {})
+
+    # 3b. Add filter_ aliases for info modules
+    if is_info:
+        for param_name in options:
+            if param_name in FILTER_ALIAS_PARAMS:
+                options[param_name]["aliases"] = [f"filter_{param_name}"]
 
     # 4. Generate sections
     header = HEADER_TEMPLATE.strip()

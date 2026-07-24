@@ -85,7 +85,7 @@ def test_normalize_info_results_multiple_items(info_module):
     result = info_module.normalize_info_results(query_results)
 
     assert "id" not in result
-    assert "value" not in result
+    assert result["value"] == query_results
     assert result["info"] == query_results
 
 
@@ -93,7 +93,7 @@ def test_normalize_info_results_empty_list(info_module):
     query_results = []
     result = info_module.normalize_info_results(query_results)
 
-    assert result == {"info": []}
+    assert result == {"info": [], "value": []}
 
 
 def test_normalize_info_results_rejects_non_list(info_module, mock_module):
@@ -200,7 +200,7 @@ def test_get_resource_info_not_found_returns_empty(info_module, mock_client):
 
     result = info_module.get_resource_info()
 
-    assert result == {"info": []}
+    assert result == {"info": [], "value": []}
 
 
 def test_get_resource_info_falls_back_to_list(info_module, mock_client):
