@@ -1,0 +1,102 @@
+---
+# ============================================================
+# CREATE DATACENTER TESTS
+# ============================================================
+- name: Load API spec expectations for create
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_create: "200"
+        Vcenter.Datacenter_list: "200"
+
+- name: Create a datacenter
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_datacenter
+    folder: group-d1
+    state: present
+  register: create_dc
+
+- name: Assert creation success
+  ansible.builtin.assert:
+    that:
+      - create_dc.changed
+      - create_dc.id == 'datacenter-1001'
+
+- name: Load API spec expectations for created state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+        Vcenter.Datacenter_get: "200"
+
+- name: Create datacenter again (idempotent)
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_datacenter
+    folder: group-d1
+    state: present
+  register: create_dc_again
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - not create_dc_again.changed
+      - create_dc_again.id == 'datacenter-1001'
+
+- name: Load API spec for deleted state (for check mode test)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+
+- name: Create datacenter in check mode (when doesn't exist)
+  vmware.vmware_rest.vcenter_datacenter:
+    name: new_datacenter
+    folder: group-d1
+    state: present
+  check_mode: true
+  register: create_dc_check
+
+- name: Assert check mode reports change when creating
+  ansible.builtin.assert:
+    that:
+      - create_dc_check.changed
+
+- name: Load API spec back to created state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+        Vcenter.Datacenter_get: "200"
+
+- name: Create existing datacenter in check mode (idempotent)
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_datacenter
+    folder: group-d1
+    state: present
+  check_mode: true
+  register: create_dc_check_idem
+
+- name: Assert check mode reports no change when already exists
+  ansible.builtin.assert:
+    that:
+      - not create_dc_check_idem.changed

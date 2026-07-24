@@ -377,3 +377,83 @@ class TestOperationConfig:
             "cpu_allocation": {"reservation": 100},
             "memory_allocation": {"reservation": 200},
         }
+
+    def test_build_query_with_module_param_remapping(self):
+        config = OperationConfig(
+            name="list",
+            uri="/vcenter/datacenter",
+            http_method="get",
+            query_spec={
+                "names": {"required": False, "module_param": "name"},
+            },
+        )
+        params = {"name": "my_datacenter"}
+        query = config.build_query(params)
+        assert query == {"names": "my_datacenter"}
+
+    def test_build_query_module_param_not_provided(self):
+        config = OperationConfig(
+            name="list",
+            uri="/vcenter/datacenter",
+            http_method="get",
+            query_spec={
+                "names": {"required": False, "module_param": "name"},
+            },
+        )
+        params = {}
+        query = config.build_query(params)
+        assert query == {}
+
+    def test_build_query_module_param_none_excluded(self):
+        config = OperationConfig(
+            name="list",
+            uri="/vcenter/datacenter",
+            http_method="get",
+            query_spec={
+                "names": {"required": False, "module_param": "name"},
+                "folders": {"required": False, "module_param": "folder"},
+            },
+        )
+        params = {"name": "my_dc", "folder": None}
+        query = config.build_query(params)
+        assert query == {"names": "my_dc"}
+
+    def test_build_query_module_param_falls_back_to_param_key(self):
+        config = OperationConfig(
+            name="list",
+            uri="/vcenter/datacenter",
+            http_method="get",
+            query_spec={
+                "datacenter": {"required": False},
+            },
+        )
+        params = {"datacenter": "datacenter-1"}
+        query = config.build_query(params)
+        assert query == {"datacenter": "datacenter-1"}
+
+    def test_build_body_with_module_param_remapping(self):
+        config = OperationConfig(
+            name="create",
+            uri="/vcenter/datacenter",
+            http_method="post",
+            body_spec={
+                "api_name": {"required": True, "module_param": "name"},
+            },
+        )
+        params = {"name": "my_datacenter"}
+        body = config.build_body(params)
+        assert body == {"api_name": "my_datacenter"}
+
+    def test_build_body_module_param_required_raises(self):
+        config = OperationConfig(
+            name="create",
+            uri="/vcenter/datacenter",
+            http_method="post",
+            body_spec={
+                "api_name": {"required": True, "module_param": "name"},
+            },
+        )
+        params = {}
+        with pytest.raises(RequiredParameterError) as exc:
+            config.build_body(params)
+        assert exc.value.param_name == "name"

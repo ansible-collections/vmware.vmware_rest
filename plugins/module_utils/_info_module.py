@@ -66,13 +66,10 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
         """
         Takes a query result from an INFO module query, and formats it
         to be consistent with expected INFO module outputs.
+        Always returns info (list[dict]) and value in the result.
         - If the module has a moid_attribute_name (it could be None) and queried a single object,
-          add id (str) to the return
-        - If the module is designed with no list endpoint, add value (dict) to the return.
-        - If the module has a list endpoint, and only one item is in the results, add
-          value (dict), and <moid_key>s (list[dict]) to the return
-        - If the module has a list endpoint, and 0 or many items are in the results, add
-          info (list[dict]) to the return
+          add id (str) to the return and value is a single dict.
+        - If the results contain 0 or many items, value is a list[dict].
         """
         if not isinstance(query_results, list):
             self.module.fail_json(
@@ -81,16 +78,18 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
             )
 
         results = {}
-        resource_id = None
 
         if len(query_results) == 1:
             resource_id = self._get_moid_attribute_value_from_resource(
                 resource=query_results[0]
             )
+            if resource_id:
+                results["id"] = resource_id
             results["value"] = query_results[0]
 
+        else:
+            results["value"] = query_results
+
         results["info"] = query_results
-        if resource_id:
-            results["id"] = resource_id
 
         return results

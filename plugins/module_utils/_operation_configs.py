@@ -76,8 +76,9 @@ class OperationConfig:
         out = {}
         for param_key, spec_value in spec.items():
             is_required = spec_value.get("required", False)
+            module_param_name = spec_value.get("module_param", param_key)
             subspec = spec_value.get("subspec", {})
-            param_value = params.get(param_key)
+            param_value = params.get(module_param_name)
             if subspec and param_value:
                 # there is a subspec dict, indicating we need to recurse
                 out[param_key] = self._build_dict_with_params(
@@ -93,7 +94,7 @@ class OperationConfig:
             if is_required:
                 # we didnt find a value, and we need a value, so raise an error
                 raise RequiredParameterError(
-                    param_name=param_key,
+                    param_name=module_param_name,
                     uri=self.uri,
                     operation=self.name,
                     http_method=self.http_method,

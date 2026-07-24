@@ -35,6 +35,8 @@ from format_api_endpoints_for_module_generation import (
 # CONSTANTS AND TEMPLATES
 # ============================================================================
 
+FILTER_ALIAS_PARAMS = {"datacenters", "folders", "names", "types", "type"}
+
 HEADER_TEMPLATE = """#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
@@ -190,6 +192,22 @@ def _format_yaml_suboptions(
     lines.append(suboptions_yaml)
 
 
+def _format_yaml_aliases(param_def: Dict, base_indent: str, lines: List[str]) -> None:
+    """Add aliases section to YAML lines.
+
+    Args:
+        param_def: Parameter definition
+        base_indent: Base indentation string
+        lines: List to append lines to
+    """
+    if "aliases" not in param_def:
+        return
+
+    lines.append(f"{base_indent}  aliases:")
+    for alias in param_def["aliases"]:
+        lines.append(f"{base_indent}    - {alias}")
+
+
 def _format_single_option(
     param_name: str, param_def: Dict, base_indent: str, indent: int, lines: List[str]
 ) -> None:
@@ -203,6 +221,7 @@ def _format_single_option(
         lines: List to append lines to
     """
     lines.append(f"{base_indent}{param_name}:")
+    _format_yaml_aliases(param_def, base_indent, lines)
     _format_yaml_description(param_def, base_indent, lines)
     _format_yaml_simple_fields(param_def, base_indent, lines)
     _format_yaml_choices(param_def, base_indent, lines)
@@ -552,8 +571,65 @@ def generate_operation_config(
     return "\n".join(lines)
 
 
+def _get_singular_form(plural_name: str) -> Optional[str]:
+    """Return the singular form of a plural parameter name, or None if unknown.
+
+    Args:
+        plural_name: Plural parameter name (e.g., "names", "folders")
+
+    Returns:
+        Singular form or None
+    """
+    if plural_name.endswith("ss"):
+        return None
+    if plural_name.endswith("ies"):
+        return plural_name[:-3] + "y"
+    if (
+        plural_name.endswith("ses")
+        or plural_name.endswith("xes")
+        or plural_name.endswith("zes")
+    ):
+        return plural_name[:-2]
+    if plural_name.endswith("s"):
+        return plural_name[:-1]
+    return None
+
+
+def _build_crud_list_query_spec(
+    query_params: Dict, options_dict: Dict
+) -> Optional[Dict]:
+    """Build query_spec for a CRUD module's LIST operation.
+
+    Only includes filters that have a matching singular module param,
+    and adds a module_param key to map the plural API name to the singular option.
+
+    Args:
+        query_params: Dict of {filter_name: is_required} from YAML
+        options_dict: Module options dict
+
+    Returns:
+        query_spec dict or None if no matching filters
+    """
+    if not query_params:
+        return None
+
+    spec = {}
+    for filter_name, is_required in query_params.items():
+        singular = _get_singular_form(filter_name)
+        if singular and singular in options_dict:
+            spec[filter_name] = {
+                "required": is_required if isinstance(is_required, bool) else False,
+                "module_param": singular,
+            }
+
+    return spec if spec else None
+
+
 def generate_all_operations(
-    yaml_data: Dict, options_dict: Dict, available_ops: Dict[str, bool]
+    yaml_data: Dict,
+    options_dict: Dict,
+    available_ops: Dict[str, bool],
+    is_info_module: bool = False,
 ) -> str:
     """
     Generate all OperationConfig constants based on available operations.
@@ -562,6 +638,7 @@ def generate_all_operations(
         yaml_data: Complete YAML data
         options_dict: Options dict from YAML
         available_ops: Dict of operation availability flags
+        is_info_module: True if this is an info module
 
     Returns:
         Python code string for all operations
@@ -576,7 +653,11 @@ def generate_all_operations(
         list_ops = list_endpoint.get("operations", {})
         get_op = list_ops.get("get", {})
         query_params = get_op.get("query", {})
-        query_spec = build_query_spec(query_params, options_dict)
+
+        if is_info_module:
+            query_spec = build_query_spec(query_params, options_dict)
+        else:
+            query_spec = _build_crud_list_query_spec(query_params, options_dict)
 
         op = generate_operation_config(
             "list",
@@ -624,7 +705,16 @@ def generate_all_operations(
 
     # Generate DELETE operation
     if available_ops["has_delete"]:
-        op = generate_operation_config("delete", item_endpoint["uri"], "DELETE")
+        item_ops = item_endpoint.get("operations", {})
+        delete_op = item_ops.get("delete", {})
+        query_params = delete_op.get("query", {})
+        query_spec = (
+            build_query_spec(query_params, options_dict) if query_params else None
+        )
+
+        op = generate_operation_config(
+            "delete", item_endpoint["uri"], "DELETE", query_spec=query_spec
+        )
         operations.append(op)
 
     return "\n\n".join(operations)
@@ -688,6 +778,10 @@ def convert_option_to_arg_spec(option_def: Dict) -> Dict:
         argument_spec dict for this option
     """
     spec = {"type": option_def["type"]}
+
+    # Add aliases if present
+    if "aliases" in option_def:
+        spec["aliases"] = option_def["aliases"]
 
     # Add choices if present
     if "choices" in option_def:
@@ -1113,12 +1207,18 @@ def generate_module(yaml_data: Dict, module_name: str, api_version: str) -> str:
     item_endpoint = yaml_data.get("item_endpoint", {})
     action_endpoints = yaml_data.get("action_endpoints", {})
 
+    # 3b. Add filter_ aliases for info modules
+    if is_info:
+        for param_name in options:
+            if param_name in FILTER_ALIAS_PARAMS:
+                options[param_name]["aliases"] = [f"filter_{param_name}"]
+
     # 4. Generate sections
     header = HEADER_TEMPLATE.strip()
     documentation = generate_documentation(module_name, options, api_version)
     imports = generate_imports(is_info)
     constants = generate_constants(moid_hints, list_endpoint, item_endpoint)
-    operations = generate_all_operations(yaml_data, options, available_ops)
+    operations = generate_all_operations(yaml_data, options, available_ops, is_info)
     action_ops = generate_action_operations(action_endpoints, options)
     argument_spec = generate_argument_spec_function(options, is_info)
     main_func = generate_main_function(is_info, available_ops, bool(action_endpoints))

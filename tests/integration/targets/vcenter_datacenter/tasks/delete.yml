@@ -1,0 +1,121 @@
+---
+# ============================================================
+# DELETE DATACENTER TESTS
+# ============================================================
+- name: Load API spec expectations for delete
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_delete: "204"
+        Vcenter.Datacenter_get: "200"
+
+- name: Delete a datacenter by ID
+  vmware.vmware_rest.vcenter_datacenter:
+    datacenter: datacenter-1001
+    state: absent
+  register: delete_dc
+
+- name: Assert deletion success
+  ansible.builtin.assert:
+    that:
+      - delete_dc.changed
+      - delete_dc.id == 'datacenter-1001'
+
+- name: Load API spec expectations for empty state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+
+- name: Delete datacenter again (idempotent)
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_datacenter
+    folder: group-d1
+    state: absent
+  register: delete_dc_again
+
+- name: Assert idempotent delete
+  ansible.builtin.assert:
+    that:
+      - not delete_dc_again.changed
+
+- name: Load API spec for final delete test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_get: "200"
+
+- name: Delete datacenter in check mode (when exists)
+  vmware.vmware_rest.vcenter_datacenter:
+    datacenter: datacenter-1001
+    state: absent
+  check_mode: true
+  register: delete_dc_check
+
+- name: Assert check mode reports change when deleting
+  ansible.builtin.assert:
+    that:
+      - delete_dc_check.changed
+
+- name: Load API spec for empty state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+
+- name: Delete non-existent datacenter in check mode (idempotent)
+  vmware.vmware_rest.vcenter_datacenter:
+    datacenter: datacenter-1001
+    state: absent
+  check_mode: true
+  register: delete_dc_check_idem
+
+- name: Assert check mode reports no change when already deleted
+  ansible.builtin.assert:
+    that:
+      - not delete_dc_check_idem.changed
+
+- name: Load API spec with datacenter present for final test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+        Vcenter.Datacenter_get: "200"
+        Vcenter.Datacenter_delete: "204"
+
+- name: Delete datacenter by name
+  vmware.vmware_rest.vcenter_datacenter:
+    name: my_datacenter
+    folder: group-d1
+    state: absent
+  register: delete_by_name
+
+- name: Assert delete by name succeeds
+  ansible.builtin.assert:
+    that:
+      - delete_by_name.changed

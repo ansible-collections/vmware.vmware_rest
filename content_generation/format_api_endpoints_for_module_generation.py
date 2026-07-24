@@ -99,15 +99,11 @@ def _format_params_dict(params: Dict[str, Any]) -> OrderedDict:
     return result
 
 
-def format_endpoint_operations(
-    operations: Dict[str, Any], endpoint_type: str, omit_list_get_query: bool = False
-) -> OrderedDict:
+def format_endpoint_operations(operations: Dict[str, Any]) -> OrderedDict:
     """Format operations section for an endpoint.
 
     Args:
         operations: Dictionary of method -> parameters
-        endpoint_type: "list", "item", or "action"
-        omit_list_get_query: If True and endpoint_type is "list", omit query params from GET
 
     Returns:
         OrderedDict of formatted operations
@@ -126,10 +122,8 @@ def format_endpoint_operations(
         if "body" in method_data:
             op_dict["body"] = _format_params_dict(method_data["body"])
 
-        # Add query parameters if appropriate
-        if "query" in method_data and not (
-            omit_list_get_query and endpoint_type == "list" and method == "get"
-        ):
+        # Add query parameters if present
+        if "query" in method_data:
             op_dict["query"] = _format_params_dict(method_data["query"])
 
         # Use empty dict if no parameters
@@ -651,15 +645,11 @@ def _should_omit_list_get_query(
 
 def _format_endpoint_spec(
     endpoint: Optional[Dict[str, Any]],
-    endpoint_type: str,
-    omit_list_get_query: bool = False,
 ) -> OrderedDict:
     """Format a single endpoint specification.
 
     Args:
         endpoint: Endpoint data with uri and operations
-        endpoint_type: Type of endpoint ("list", "item", or "action")
-        omit_list_get_query: Whether to omit list GET query parameters
 
     Returns:
         OrderedDict with uri and operations, or empty dict if endpoint is None
@@ -672,11 +662,7 @@ def _format_endpoint_spec(
             ("uri", endpoint["uri"]),
             (
                 "operations",
-                format_endpoint_operations(
-                    endpoint["operations"],
-                    endpoint_type,
-                    omit_list_get_query=omit_list_get_query,
-                ),
+                format_endpoint_operations(endpoint["operations"]),
             ),
         ]
     )
@@ -696,7 +682,7 @@ def _format_action_endpoints(action_endpoints: OrderedDict) -> OrderedDict:
 
     formatted_actions = OrderedDict()
     for action_name, action_data in action_endpoints.items():
-        formatted_actions[action_name] = _format_endpoint_spec(action_data, "action")
+        formatted_actions[action_name] = _format_endpoint_spec(action_data)
     return formatted_actions
 
 
@@ -833,18 +819,18 @@ def _add_path_parameters_to_options(
 
 
 def _get_excluded_params(
-    omit_list_get_query: bool, list_endpoint: Optional[Dict[str, Any]]
+    exclude_list_get_from_options: bool, list_endpoint: Optional[Dict[str, Any]]
 ) -> set:
     """Get set of parameters to exclude from options.
 
     Args:
-        omit_list_get_query: Whether to omit list GET query parameters
+        exclude_list_get_from_options: Whether to exclude list GET query params from options
         list_endpoint: List endpoint data
 
     Returns:
         Set of parameter names to exclude
     """
-    if not omit_list_get_query or not list_endpoint:
+    if not exclude_list_get_from_options or not list_endpoint:
         return set()
 
     if "get" not in list_endpoint["operations"]:
@@ -892,7 +878,7 @@ def _build_module_options(
     list_endpoint: Optional[Dict[str, Any]],
     item_endpoint: Optional[Dict[str, Any]],
     action_endpoints: OrderedDict,
-    omit_list_get_query: bool,
+    exclude_list_get_from_options: bool,
     all_path_params: List[str],
     required_path_params: List[str],
 ) -> OrderedDict:
@@ -904,7 +890,7 @@ def _build_module_options(
         list_endpoint: List endpoint data
         item_endpoint: Item endpoint data
         action_endpoints: Action endpoints dictionary
-        omit_list_get_query: Whether to omit list GET query parameters
+        exclude_list_get_from_options: Whether to exclude list GET query params from options
         all_path_params: All original path parameters
         required_path_params: Required original path parameters
 
@@ -944,7 +930,7 @@ def _build_module_options(
     )
 
     # Get excluded parameters
-    excluded_params = _get_excluded_params(omit_list_get_query, list_endpoint)
+    excluded_params = _get_excluded_params(exclude_list_get_from_options, list_endpoint)
 
     # Add remaining parameters
     _add_remaining_parameters(
@@ -984,16 +970,14 @@ def format_api_endpoints_for_module_generation(
     # Assign list and item endpoints based on count
     list_endpoint, item_endpoint = _assign_endpoints_by_count(non_action_endpoints)
 
-    # Determine if we should omit list GET query parameters
-    omit_list_get_query = _should_omit_list_get_query(
+    # Determine if we should exclude list GET query parameters from module options
+    exclude_list_get_from_options = _should_omit_list_get_query(
         module_name, list_endpoint, item_endpoint
     )
 
     # Format endpoints
-    spec["list_endpoint"] = _format_endpoint_spec(
-        list_endpoint, "list", omit_list_get_query
-    )
-    spec["item_endpoint"] = _format_endpoint_spec(item_endpoint, "item")
+    spec["list_endpoint"] = _format_endpoint_spec(list_endpoint)
+    spec["item_endpoint"] = _format_endpoint_spec(item_endpoint)
     spec["action_endpoints"] = _format_action_endpoints(action_endpoints)
 
     # Extract and convert path parameters
@@ -1012,7 +996,7 @@ def format_api_endpoints_for_module_generation(
         list_endpoint,
         item_endpoint,
         action_endpoints,
-        omit_list_get_query,
+        exclude_list_get_from_options,
         all_path_params,
         required_path_params,
     )

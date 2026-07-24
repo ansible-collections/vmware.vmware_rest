@@ -103,6 +103,7 @@ Must be a valid YAML dictionary documenting return values.
 
 **Do NOT document:**
 - The `changed` key (standard Ansible return value)
+- The `diff` key (standard Ansible return value)
 
 **Each return value must have:**
 - **description**: A sentence about what the return value represents
@@ -124,12 +125,15 @@ id:
   type: str
 
 value:
-  description: Detailed information about a single resource
-  returned: When only one resource was queried
+  description:
+    - Detailed information about a single resource.
+    - Dict if only one item was found, list otherwise
+    - Maintained for backwards compatibility. Use the info return value if possible.
+  returned: On success
   sample:
     description: ntpd.service
     state: STARTED
-  type: dict
+  type: raw
 
 info:
   description: A list of detailed information about resources

@@ -1,0 +1,59 @@
+---
+# ============================================================
+# DATACENTER INFO TESTS
+# ============================================================
+- name: List datacenters (empty)
+  vmware.vmware_rest.vcenter_datacenter_info: {}
+  register: list_dc_info
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_dc_info.info is defined
+      - list_dc_info.info | length == 0
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_get: "200"
+
+- name: Get a datacenter by ID
+  vmware.vmware_rest.vcenter_datacenter_info:
+    datacenter: datacenter-1001
+  register: get_dc_id
+
+- name: Assert datacenter details
+  ansible.builtin.assert:
+    that:
+      - get_dc_id.value is defined
+      - get_dc_id.value.name == 'my_datacenter'
+
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.Datacenter_list: "200"
+        Vcenter.Datacenter_get: "200"
+
+- name: List datacenters (multi)
+  vmware.vmware_rest.vcenter_datacenter_info: {}
+  register: list_multi
+
+- name: Check datacenter multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2
