@@ -95,19 +95,41 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         result = {"changed": False, "id": ""}
         resource = self._search_for_resource()
 
-        if not resource:
+        if not resource and action_value not in ("import",):
             self.module.fail_json(
                 "No matching resource was found. Use the present state to create the module before"
                 " attempting to perform the %s action." % action_value
             )
 
+        if resource is None:
+            resource = {}
+
         resource_id = self._get_moid_attribute_value_from_resource(resource)
-        result["id"] = resource_id
+        result["id"] = resource_id or ""
         result["changed"] = True
-        path = action_operation.build_path(params={**self.params, **resource})
+        
+        merged_params = {**self.params, **resource}
+        path = action_operation.build_path(params=merged_params)
+        body = action_operation.build_body(params=merged_params)
+        query = action_operation.build_query(params=merged_params)
+        
         http_method = getattr(self.client, action_operation.http_method)
+        
+        kwargs = {}
+        if body is not None:
+            kwargs["data"] = body
+        if query is not None:
+            kwargs["query"] = query
+            
         if not self.module.check_mode:
-            http_method(path=path)
+            response = http_method(path=path, **kwargs)
+            if response and response.status != 204 and response.data:
+                # Merge the JSON response into our result dictionary
+                # so the user gets back the API data (e.g. ExportResult)
+                if isinstance(response.json, dict):
+                    result.update(response.json)
+                else:
+                    result["value"] = response.json
 
         return result
 
@@ -136,7 +158,9 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         new_id = ""
         if not self.module.check_mode:
             response = http_method(path, data=body)
-            new_id = response.json
+            # A 204 No Content response won't have a JSON body
+            if response.status != 204 and response.data:
+                new_id = response.json
 
         return new_id
 

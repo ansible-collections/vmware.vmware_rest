@@ -55,7 +55,10 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
             )
             response = http_method(path)
             if response and response.status != 404:
-                result.append(response.json)
+                # Merge the summary resource data (which usually contains the ID/Name)
+                # with the detailed GET response data.
+                merged_resource = {**resource, **response.json}
+                result.append(merged_resource)
             else:
                 self.module.fail_json(
                     "Error while looking up more details about a resource: %s" % path
@@ -67,9 +70,11 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
         Takes a query result from an INFO module query, and formats it
         to be consistent with expected INFO module outputs.
         Always returns info (list[dict]) and value in the result.
-        - If the module has a moid_attribute_name (it could be None) and queried a single object,
-          add id (str) to the return and value is a single dict.
-        - If the results contain 0 or many items, value is a list[dict].
+        - If the module has a moid_attribute_name (it could be None) and the user 
+          specifically queried a single object using the MOID parameter, add id (str) 
+          to the return and value is a single dict.
+        - If the results contain 0 or many items, or the user didn't specify the ID parameter,
+          value is a list[dict].
         """
         if not isinstance(query_results, list):
             self.module.fail_json(
@@ -79,7 +84,11 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
 
         results = {}
 
-        if len(query_results) == 1:
+        # Only return `id` and single-dict `value` if we exactly returned 1 result
+        # AND the user explicitly requested this specific item by passing the ID parameter.
+        user_requested_specific_id = any(self.module.params.get(hint) for hint in self.moid_parameter_hints)
+
+        if len(query_results) == 1 and user_requested_specific_id:
             resource_id = self._get_moid_attribute_value_from_resource(
                 resource=query_results[0]
             )

@@ -212,9 +212,9 @@ class Client:
             request_kwargs=dict(query=query),
         )
 
-    def post(self, path, data, query=None):
+    def post(self, path, data=None, query=None):
         resp = self.request("POST", path, data=data, query=query)
-        if resp.status in (200, 201):
+        if resp.status in (200, 201, 204):
             return resp
         self.error_handler.handle_request_error(
             exception=UnexpectedAPIResponse(resp.status, resp.data),
@@ -223,7 +223,7 @@ class Client:
             request_kwargs=dict(data=data, query=query),
         )
 
-    def patch(self, path, data, query=None):
+    def patch(self, path, data=None, query=None):
         resp = self.request("PATCH", path, data=data, query=query)
         if resp.status in (200, 204):
             return resp
@@ -234,7 +234,7 @@ class Client:
             request_kwargs=dict(data=data, query=query),
         )
 
-    def put(self, path, data, query=None):
+    def put(self, path, data=None, query=None):
         resp = self.request("PUT", path, data=data, query=query)
         if resp.status == 200:
             return resp
