@@ -54,12 +54,19 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
                 params={**self.params, **resource}
             )
             response = http_method(path)
-            if response and response.status != 404:
-                result.append(response.json)
-            else:
+            if not response:
                 self.module.fail_json(
                     "Error while looking up more details about a resource: %s" % path
                 )
+
+            if response.status == 404:
+                self.module.warn(
+                    "Resource at %s could not be queried. It may have been deleted or modified during this operation."
+                    % path
+                )
+                continue
+
+            result.append(response.json)
         return result
 
     def normalize_info_results(self, query_results: list) -> dict:

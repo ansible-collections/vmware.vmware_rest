@@ -44,7 +44,6 @@ class RequiredParameterError(VmwareModuleError):
         )
         self.operation = operation
         self.param_name = param_name
-        self.operation = operation
         self.uri = uri
         self.http_method = http_method
 

@@ -81,6 +81,12 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         for summary in self._perform_list_operation():
             if summary.get("name") == self.params.get("name"):
                 resource = self._perform_get_operation(resource=summary)
+                if resource is None:
+                    self.module.warn(
+                        "Resource with name %s could not be queried. It may have been deleted or modified during this operation."
+                        % self.params.get("name")
+                    )
+                    continue
                 return {**summary, **resource}
 
         return None
