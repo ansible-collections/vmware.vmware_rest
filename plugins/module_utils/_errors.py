@@ -13,6 +13,7 @@ import json
 class VmwareModuleError(Exception):
     def __init__(self, message):
         super().__init__(message)
+        self.message = message
 
     def to_module_fail_json_output(self):
         return {

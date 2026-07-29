@@ -1,0 +1,101 @@
+---
+# ============================================================
+# UPDATE RESOURCE POOL TESTS
+# ============================================================
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_get: "200"
+        Vcenter.ResourcePool_update: "204"
+
+- name: Update a resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    name: updated_resource_pool
+    state: present
+  register: update_rp
+
+- name: Assert update success
+  ansible.builtin.assert:
+    that:
+      - update_rp.changed
+      - update_rp.id == 'resource_pool-1001'
+
+- name: Load API spec expectations for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_get: "200"
+        Vcenter.ResourcePool_list: "200"
+
+- name: Update resource pool again (idempotent)
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    name: updated_resource_pool
+    state: present
+  register: update_rp_again
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - not update_rp_again.changed
+      - update_rp_again.id == 'resource_pool-1001'
+
+- name: Load API spec for original state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_get: "200"
+
+- name: Update resource pool in check mode (when would change)
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    name: different_name
+    state: present
+  check_mode: true
+  register: update_rp_check
+
+- name: Assert check mode reports change when updating
+  ansible.builtin.assert:
+    that:
+      - update_rp_check.changed
+
+- name: Load API spec for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_get: "200"
+
+- name: Update resource pool in check mode (when no change)
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    name: updated_resource_pool
+    state: present
+  check_mode: true
+  register: update_rp_check_idem
+
+- name: Assert check mode reports no change when already updated
+  ansible.builtin.assert:
+    that:
+      - not update_rp_check_idem.changed
