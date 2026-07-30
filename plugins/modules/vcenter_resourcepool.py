@@ -265,6 +265,9 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._argument_spec import (
     connection_params_argument_spec,
 )
+from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
+    VmwareModuleError,
+)
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module import (
     VmwareRestCrudModuleBase,
 )
@@ -521,13 +524,18 @@ def main():
         delete_operation_config=DELETE_OPERATION,
     )
 
-    if module.params["state"] == "present":
-        result = crud_module.ensure_present()
-    elif module.params["state"] == "absent":
-        result = crud_module.ensure_absent()
+    try:
+        if module.params["state"] == "present":
+            result = crud_module.ensure_present()
+        elif module.params["state"] == "absent":
+            result = crud_module.ensure_absent()
 
-    else:
-        module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))
+        else:
+            module.fail_json(
+                msg="Unsupported state: {0}".format(module.params["state"])
+            )
+    except VmwareModuleError as e:
+        module.fail_json(**e.to_module_fail_json_output())
 
     module.exit_json(**result)
 

@@ -29,7 +29,10 @@ def exit_json(*args, **kwargs):
 
 def fail_json(*args, **kwargs):
     if args:
-        kwargs.update(args[0])
+        if isinstance(args[0], dict):
+            kwargs.update(args[0])
+        else:
+            kwargs["msg"] = args[0]
     raise AnsibleFailJson(kwargs)
 
 

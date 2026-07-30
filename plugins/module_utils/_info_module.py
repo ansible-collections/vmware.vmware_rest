@@ -31,20 +31,20 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
 
     def get_resource_info(self) -> dict:
         """
-        Gather infomation about one or more resources, based on the module parameters.
-        Always returns a list of dictionaries.
+        Gather information about one or more resources, based on the module parameters.
+        Uses the get endpoint when possible, otherwise falls back to the list endpoint.
         """
-        result = []
         try:
-            # prefer the item endpoint. It might not be possible to use the item endpoint,
-            # and if that is the case we need to use the list endpoint
             resource = self._perform_get_operation()
-            if resource:
-                result = [resource]
+            return self.normalize_info_results(
+                query_results=[resource] if resource else [],
+                single_resource=True,
+            )
         except RequiredPathParameterError:
-            result = self._list_resource_details()
-
-        return self.normalize_info_results(result)
+            return self.normalize_info_results(
+                query_results=self._list_resource_details(),
+                single_resource=False,
+            )
 
     def _list_resource_details(self) -> list:
         result = []
@@ -66,17 +66,21 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
                 )
                 continue
 
-            result.append(response.json)
+            result.append({**resource, **response.json})
         return result
 
-    def normalize_info_results(self, query_results: list) -> dict:
+    def normalize_info_results(
+        self, query_results: list, single_resource: bool = False
+    ) -> dict:
         """
         Takes a query result from an INFO module query, and formats it
         to be consistent with expected INFO module outputs.
         Always returns info (list[dict]) and value in the result.
-        - If the module has a moid_attribute_name (it could be None) and queried a single object,
-          add id (str) to the return and value is a single dict.
-        - If the results contain 0 or many items, value is a list[dict].
+        - info is always a list[dict], regardless of the query type.
+        - value preserves the shape of the query: a dict when a single resource
+          was fetched by ID (single_resource=True), a list[dict] when listing.
+        - id (str) is added when a single resource was fetched and has a
+          recognizable MOID attribute.
         """
         if not isinstance(query_results, list):
             self.module.fail_json(
@@ -84,19 +88,17 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
                 result_type=str(type(query_results)),
             )
 
-        results = {}
+        results = {"info": query_results}
 
-        if len(query_results) == 1:
-            resource_id = self._get_moid_attribute_value_from_resource(
-                resource=query_results[0]
-            )
-            if resource_id:
-                results["id"] = resource_id
-            results["value"] = query_results[0]
-
+        if single_resource:
+            results["value"] = query_results[0] if query_results else {}
+            if query_results:
+                resource_id = self._get_moid_attribute_value_from_resource(
+                    resource=query_results[0]
+                )
+                if resource_id:
+                    results["id"] = resource_id
         else:
             results["value"] = query_results
-
-        results["info"] = query_results
 
         return results

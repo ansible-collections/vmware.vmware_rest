@@ -215,12 +215,17 @@ def test_list_resource_pools_by_names(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
+    # Mock LIST response, then individual GET responses for each pool
     list_response = [
         {"resource_pool": "resgroup-1001", "name": "pool-a"},
         {"resource_pool": "resgroup-1002", "name": "pool-b"},
     ]
 
-    mock_client.get.return_value = _response(200, list_response)
+    mock_client.get.side_effect = [
+        _response(200, list_response),
+        _response(200, {"resource_pool": "resgroup-1001", "name": "pool-a"}),
+        _response(200, {"resource_pool": "resgroup-1002", "name": "pool-b"}),
+    ]
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()

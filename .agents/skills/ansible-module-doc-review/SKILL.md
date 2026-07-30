@@ -126,9 +126,9 @@ id:
 
 value:
   description:
-    - Detailed information about a single resource.
-    - Dict if only one item was found, list otherwise
-    - Maintained for backwards compatibility. Use the info return value if possible.
+    - Raw output from the API response
+    - This output is maintained for consistency with version 4.x and earlier of this collection.
+      It is recommended to switch to the info return key for a more consistent and documented output.
   returned: On success
   sample:
     description: ntpd.service

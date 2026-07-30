@@ -128,9 +128,9 @@ id:
   type: str
 value:
   description:
-    - Detailed information about a single resource pool.
-    - Dict if only one item was found, list otherwise.
-    - Maintained for backwards compatibility. Use the info return value if possible.
+    - Raw output from the API response.
+    - This output is maintained for consistency with version 4.x and earlier of this collection.
+      It is recommended to switch to the info return key for a more consistent and documented output.
   returned: On success.
   sample:
     name: my_resource_pool
@@ -163,6 +163,9 @@ info:
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._argument_spec import (
     connection_params_argument_spec,
+)
+from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
+    VmwareModuleError,
 )
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._info_module import (
     VmwareRestInfoModuleBase,
@@ -256,7 +259,10 @@ def main():
         get_operation_config=GET_OPERATION,
         list_operation_config=LIST_OPERATION,
     )
-    result = info_module.get_resource_info()
+    try:
+        result = info_module.get_resource_info()
+    except VmwareModuleError as e:
+        module.fail_json(**e.to_module_fail_json_output())
     module.exit_json(**result)
 
 

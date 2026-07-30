@@ -928,6 +928,9 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._argument_spec import (
     connection_params_argument_spec,
 )
+from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
+    VmwareModuleError,
+)
 from ansible_collections.vmware.vmware_rest.plugins.module_utils.{module_file} import (
     {base_class},
 )
@@ -985,7 +988,10 @@ def main():
         get_operation_config=GET_OPERATION,
         list_operation_config=LIST_OPERATION,
     )
-    result = info_module.get_resource_info()
+    try:
+        result = info_module.get_resource_info()
+    except VmwareModuleError as e:
+        module.fail_json(**e.to_module_fail_json_output())
     module.exit_json(**result)
 
 
@@ -1066,13 +1072,16 @@ def main():
 {op_assignments_str}
     )
 
-    if module.params["state"] == "present":
-        result = crud_module.ensure_present()
-    elif module.params["state"] == "absent":
-        result = crud_module.ensure_absent()
-{action_handler}
-    else:
-        module.fail_json(msg="Unsupported state: {{0}}".format(module.params["state"]))
+    try:
+        if module.params["state"] == "present":
+            result = crud_module.ensure_present()
+        elif module.params["state"] == "absent":
+            result = crud_module.ensure_absent()
+    {action_handler}
+        else:
+            module.fail_json(msg="Unsupported state: {{0}}".format(module.params["state"]))
+    except VmwareModuleError as e:
+        module.fail_json(**e.to_module_fail_json_output())
 
     module.exit_json(**result)
 

@@ -202,13 +202,17 @@ def test_list_datacenters_by_names(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response with filter
+    # Mock LIST response, then individual GET responses for each datacenter
     list_response = [
         {"datacenter": "datacenter-1001", "name": "production-dc"},
         {"datacenter": "datacenter-1002", "name": "development-dc"},
     ]
 
-    mock_client.get.return_value = _response(200, list_response)
+    mock_client.get.side_effect = [
+        _response(200, list_response),
+        _response(200, {"datacenter": "datacenter-1001", "name": "production-dc"}),
+        _response(200, {"datacenter": "datacenter-1002", "name": "development-dc"}),
+    ]
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
