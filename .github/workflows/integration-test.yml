@@ -109,11 +109,17 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      - name: Update podman
+        run: |
+          set -euxo pipefail
+          sudo apt-get update -y
+          sudo apt-get install -y --upgrade podman
+
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.versions.python }}
 
