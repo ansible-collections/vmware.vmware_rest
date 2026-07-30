@@ -69,7 +69,9 @@ jobs:
           targets = sorted(
               path.name
               for path in targets_dir.iterdir()
-              if path.is_dir() and path.name != "prepare_simulator"
+              if path.is_dir()
+              and not path.name.startswith("vmware_rest_")
+              and not path.name.startswith("prepare_")
           )
 
           target_groups = [
