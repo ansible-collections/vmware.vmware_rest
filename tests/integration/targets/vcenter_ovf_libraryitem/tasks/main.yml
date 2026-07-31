@@ -1,0 +1,21 @@
+---
+- name: Test vcenter_ovf_libraryitem module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load default API spec expectations
+      ansible.builtin.uri:
+        url: "{{ mockserver_url }}/mockserver/openapi"
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.Ovf.LibraryItem_get: "200"
+            Vcenter.Ovf.LibraryItem_action: "200"
+
+    - name: Include deploy tests
+      ansible.builtin.include_tasks: deploy.yml
+
+    - name: Include filter tests
+      ansible.builtin.include_tasks: filter.yml
