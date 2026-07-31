@@ -163,6 +163,7 @@ def test_ensure_absent_deletes_resource(crud_module, mock_client):
     mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
     delete_response = MagicMock()
     delete_response.status = 204
+    delete_response.data = b""
     mock_client.delete.return_value = delete_response
 
     with patch.object(
@@ -172,6 +173,7 @@ def test_ensure_absent_deletes_resource(crud_module, mock_client):
 
     assert result["changed"] is True
     assert result["id"] == "pool-1"
+    assert result["value"] == {}
     mock_client.delete.assert_called_once()
 
 
@@ -186,6 +188,7 @@ def test_ensure_absent_check_mode(crud_module, mock_client, mock_module):
 
     assert result["changed"] is True
     assert result["id"] == "pool-1"
+    assert result["value"] == {}
     mock_client.delete.assert_not_called()
 
 
@@ -203,7 +206,7 @@ def test_ensure_present_creates_resource(crud_module, mock_client):
 
     assert result["changed"] is True
     assert result["id"] == "pool-new"
-    # diff is not included when creating a new resource
+    assert result["value"] == "pool-new"
     assert "diff" not in result
     mock_client.post.assert_called_once()
 
@@ -220,6 +223,7 @@ def test_ensure_present_creates_resource_check_mode(
 
     assert result["changed"] is True
     assert result["id"] == ""
+    assert result["value"] == {}
     mock_client.post.assert_not_called()
 
 
@@ -235,6 +239,7 @@ def test_ensure_present_no_changes_needed(crud_module, mock_client):
 
     assert result["changed"] is False
     assert result["id"] == "pool-1"
+    assert result["value"] == {}
     assert result["diff"] == {}
     mock_client.patch.assert_not_called()
 
@@ -246,6 +251,7 @@ def test_ensure_present_updates_resource(crud_module, mock_client):
 
     update_response = MagicMock()
     update_response.status = 200
+    update_response.data = b""
     mock_client.patch.return_value = update_response
 
     with patch.object(
@@ -256,6 +262,7 @@ def test_ensure_present_updates_resource(crud_module, mock_client):
     assert result["changed"] is True
     assert result["id"] == "pool-1"
     assert result["diff"] == {"name": {"before": "my_pool", "after": "updated_pool"}}
+    assert result["value"] == {}
     mock_client.patch.assert_called_once()
 
 
@@ -275,6 +282,7 @@ def test_ensure_present_updates_resource_check_mode(
     assert result["changed"] is True
     assert result["id"] == "pool-1"
     assert result["diff"] == {"name": {"before": "my_pool", "after": "updated_pool"}}
+    assert result["value"] == {}
     mock_client.patch.assert_not_called()
 
 
@@ -373,6 +381,8 @@ def test_perform_action_success(crud_module, mock_client):
     mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
     action_response = MagicMock()
     action_response.status = 200
+    action_response.json = {"succeeded": True}
+    action_response.data = b'{"succeeded": true}'
     mock_client.post.return_value = action_response
 
     with patch.object(
@@ -382,6 +392,7 @@ def test_perform_action_success(crud_module, mock_client):
 
     assert result["changed"] is True
     assert result["id"] == "pool-1"
+    assert result["value"] == {"succeeded": True}
     mock_client.post.assert_called_once()
 
 
@@ -404,6 +415,7 @@ def test_perform_action_check_mode(crud_module, mock_client, mock_module):
 
     assert result["changed"] is True
     assert result["id"] == "pool-1"
+    assert result["value"] == {}
     mock_client.post.assert_not_called()
 
 
@@ -411,6 +423,7 @@ def test_update_if_needed_no_update_config(crud_module):
     crud_module.update_operation_config = None
     resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
-    diff = crud_module._update_if_needed(resource)
+    diff, value = crud_module._update_if_needed(resource)
 
     assert diff == {}
+    assert value == {}

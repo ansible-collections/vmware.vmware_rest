@@ -14,6 +14,9 @@
             Vcenter.Ovf.LibraryItem_get: "200"
             Vcenter.Ovf.LibraryItem_action: "200"
 
+    - name: Include present tests
+      ansible.builtin.include_tasks: present.yml
+
     - name: Include deploy tests
       ansible.builtin.include_tasks: deploy.yml
 

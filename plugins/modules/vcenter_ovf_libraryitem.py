@@ -15,14 +15,15 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_ovf_libraryitem
-short_description: Deploy an OVF package from a content library item or create a library item from a virtual machine.
+short_description: Manage OVF packages in vCenter content libraries.
 description:
-  - Deploy an OVF package stored in a content library item to a resource pool, or create an OVF library
-    item from an existing virtual machine or virtual appliance.
-  - Use C(state=deploy) to deploy an OVF package from a library item to a resource pool, creating a
-    virtual machine or virtual appliance.
-  - Use C(state=filter) to retrieve information about an OVF package in a library item, including
-    deployment options, networks, and storage groups, to prepare for deployment.
+  - Create, deploy, and inspect OVF packages stored in VMware vCenter content libraries.
+  - Use C(state=present) to export a virtual machine or virtual appliance as an OVF package
+    into a content library item.
+  - Use C(state=deploy) to deploy an OVF package from a content library item into a new
+    virtual machine or virtual appliance on a target resource pool.
+  - Use C(state=filter) to retrieve deployment information from an OVF package, such as
+    network and storage requirements, EULAs, and additional parameters needed before deploying.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -33,140 +34,175 @@ extends_documentation_fragment:
 options:
   state:
     description:
-      - The action to perform on the OVF library item.
-      - Use C(deploy) to deploy the OVF package from a content library item to a resource pool.
-      - Use C(filter) to retrieve deployment information from the OVF package without deploying.
+      - The desired state of the resource.
+      - Use C(present) to create or update the resource.
+      - Use C(deploy) to perform the deploy action.
+      - Use C(filter) to perform the filter action.
+      - Only C(present) supports idempotence.
     type: str
-    required: true
+    default: present
     choices:
+      - present
       - deploy
       - filter
   ovf_library_item_id:
     description:
-      - Identifier of the content library item containing the OVF package.
-      - Required for both C(deploy) and C(filter) operations.
+      - Identifier of the OVF library item to manage.
+      - Required when C(state=deploy) or C(state=filter).
     type: str
     required: false
   source:
     description:
-      - The source virtual machine or virtual appliance to create an OVF library item from.
+      - The virtual machine or virtual appliance to export as an OVF package.
+      - Required when C(state=present).
     type: dict
     required: false
     suboptions:
       type:
         description:
-          - Type of the deployable resource.
+          - Type of the source resource to export.
           - Must be one of C(VirtualMachine) or C(VirtualApp).
         type: str
         required: true
       id:
         description:
-          - Identifier of the deployable resource.
-          - Must be an identifier for a C(VirtualMachine) or C(VirtualApp) resource.
+          - MOID of the source virtual machine or virtual appliance to export.
         type: str
         required: true
   target:
     description:
-      - The target resource pool and optional folder for deploying the OVF package.
+      - The destination for the operation.
+      - When C(state=present), specifies the content library and optional library item to store the OVF package.
+      - When C(state=deploy), specifies the resource pool, host, and folder where the VM or vApp will be created.
+      - When C(state=filter), specifies the resource pool used to evaluate deployment requirements.
     type: dict
     required: false
     suboptions:
       library_id:
         description:
-          - Identifier of the content library in which a new library item should be created.
+          - MOID of the content library in which a new library item should be created.
           - Not used if I(library_item_id) is specified.
-          - This property is currently required.
+          - This property is currently required when C(state=present).
         type: str
         required: false
       library_item_id:
         description:
-          - Identifier of the library item that should be updated.
-          - If not specified, a new library item will be created and I(library_id) must be set.
+          - MOID of an existing library item to update with the new OVF package.
+          - If omitted, a new library item will be created. I(library_id) must be specified if this property is set.
+        type: str
+        required: false
+      resource_pool_id:
+        description:
+          - MOID of the resource pool to which the virtual machine or virtual appliance should be deployed.
+        type: str
+        required: false
+      host_id:
+        description:
+          - MOID of the target host on which the virtual machine or virtual appliance will run.
+          - The target host must be a member of the cluster that contains the resource pool identified by I(resource_pool_id).
+          - If omitted, the server will automatically select a target host from the resource pool when it is a stand-alone host or a cluster with DRS enabled.
+        type: str
+        required: false
+      folder_id:
+        description:
+          - MOID of the vCenter folder that should contain the virtual machine or virtual appliance. The folder must be a virtual machine folder.
+          - If omitted, the server will choose the deployment folder.
         type: str
         required: false
   create_spec:
     description:
-      - Specification for creating an OVF library item from a virtual machine or virtual appliance.
+      - Specification for creating the OVF package in the content library.
+      - Allows overriding the name and description stored in the OVF descriptor.
+      - Only used when C(state=present).
     type: dict
     required: false
     suboptions:
       name:
         description:
           - Name to use in the OVF descriptor stored in the library item.
-          - If missing or 'null', the server will use source's current name.
+          - If omitted, the server will use source's current name.
         type: str
         required: false
       description:
         description:
           - Description to use in the OVF descriptor stored in the library item.
-          - If missing or 'null', the server will use source's current annotation.
+          - If omitted, the server will use source's current annotation.
         type: str
         required: false
       flags:
         description:
-          - Flags to use for OVF package creation. The supported flags can be obtained using GET /vcenter/ovf/export-flag.
-          - If missing or 'null', no flags will be used.
+          - Flags to use for OVF package creation.
+          - If omitted, no flags will be used.
         type: list
         required: false
         elements: str
       library_item_source_id:
         description:
-          - Source identifier of the library item for image identification.
-          - This property was added in vSphere API 9.1.0.0.
-          - If not specified, no source identifier will be used.
+          - MOID of a source library item used for image identification.
+          - This property was added in __vSphere API 9.1.0.0__.
+          - If omitted, no source identifier will be used.
         type: str
         required: false
   deployment_spec:
     description:
-      - Specification for deploying the OVF package to a resource pool.
+      - Specification controlling how an OVF package is deployed to a resource pool.
+      - Includes settings for naming, networking, storage, and EULA acceptance.
+      - Only used when C(state=deploy).
     type: dict
     required: false
     suboptions:
       name:
         description:
           - Name assigned to the deployed target virtual machine or virtual appliance.
-          - If missing or 'null', the server will use the name from the OVF package.
+          - If omitted, the server will use the name from the OVF package.
         type: str
         required: false
       annotation:
         description:
           - Annotation assigned to the deployed target virtual machine or virtual appliance.
-          - If missing or 'null', the server will use the annotation from the OVF package.
+          - If omitted, the server will use the annotation from the OVF package.
         type: str
         required: false
       accept_all_eula:
         description:
-          - Whether to accept all End User License Agreements. See Vcenter.Ovf.LibraryItem.OvfSummary.EULAs.
+          - Whether to accept all End User License Agreements included in the OVF package.
+          - Use C(state=filter) to retrieve the EULAs before deploying.
         type: bool
         required: true
       network_mappings:
         description:
-          - Mapping of OVF network section identifiers to target network MOIDs.
-          - If not specified, the server will choose a network mapping.
+          - Mapping of OVF network names to vCenter network MOIDs.
+          - The key is the network name from the OVF descriptor and the value is the MOID of the target vCenter network.
+          - If omitted, the server will choose a network mapping.
         type: dict
         required: false
       subnet_mappings:
         description:
-          - Mapping of OVF network section identifiers to target subnet folder MOIDs.
-          - If set, takes precedence over I(network_mappings).
-          - This property was added in vSphere API 9.1.0.0.
-          - If not specified, I(network_mappings) will be used.
+          - Mapping of OVF network names to vCenter subnet folder MOIDs.
+          - The key is the network name from the OVF descriptor and the value is the MOID of the target subnet folder.
+            If set, this takes precedence over I(network_mappings).
+          - This property was added in __vSphere API 9.1.0.0__.
+          - If omitted, I(network_mappings) will be used instead.
         type: dict
         required: false
       storage_mappings:
         description:
-          - Mapping of OVF storage group section identifiers to target storage specifications.
-          - If not specified, the server will choose a storage mapping.
+          - Mapping of OVF storage group names to target storage specifications.
+          - The key is the storage group name from the OVF descriptor and the value is the target storage specification.
+          - If omitted, the server will choose a storage mapping.
         type: dict
         required: false
       storage_provisioning:
         description:
-          - Default storage provisioning type to use for all sections of type vmw:StorageSection
-            in the OVF descriptor.
-          - C(thin) - Space is allocated and zeroed on demand as used.
-          - C(thick) - All space is allocated at creation time, zeroed on demand.
-          - C(eagerZeroedThick) - All space is allocated and wiped clean at creation time.
-          - If not specified, the server will choose the provisioning type.
+          - Default storage provisioning type to use for all sections of type vmw:StorageSection in the OVF descriptor.
+          - thin - A thin provisioned virtual disk has space allocated and zeroed on demand as the space is used.
+          - thick - A thick provisioned virtual disk has all space allocated at creation time and the space is zeroed
+            on demand as the space is used.
+          - eagerZeroedThick - An eager zeroed thick provisioned virtual disk has all space allocated and wiped clean
+            of any previous contents on the physical media at creation time.
+          - Disks specified as eager zeroed thick may take longer time to create than disks specified with the other
+            disk provisioning types.
+          - If omitted, the server will choose the provisioning type.
         type: str
         required: false
         choices:
@@ -175,60 +211,68 @@ options:
           - eagerZeroedThick
       storage_profile_id:
         description:
-          - Default storage profile MOID to use for all sections of type vmw:StorageSection
-            in the OVF descriptor.
-          - If not specified, the server will choose the default profile.
+          - MOID of the default storage profile to use for all storage sections in the OVF descriptor.
+          - If omitted, the server will choose the default profile.
         type: str
         required: false
       locale:
         description:
           - The locale to use for parsing the OVF descriptor.
-          - If missing or 'null', the server locale will be used.
+          - If omitted, the server locale will be used.
         type: str
         required: false
       flags:
         description:
-          - Flags to be use for deployment. The supported flag values can be obtained using GET /vcenter/ovf/import-flag.
-          - If missing or 'null', no flags will be used.
+          - Flags to use for deployment.
+          - If omitted, no flags will be used.
         type: list
         required: false
         elements: str
       additional_parameters:
         description:
           - Additional OVF parameters that may be needed for the deployment.
-          - "If not specified, the server will choose default settings."
+          - These parameters may be required by the OVF descriptor of the OVF package. Use
+            C(state=filter) to discover which additional parameters are available.
+          - Examples include deployment options, extra config, IP allocation, OVF properties,
+            scale out, and vCenter extension parameters.
+          - If omitted, the server will choose default settings for all parameters necessary
+            for the deploy operation.
         type: list
         required: false
         elements: dict
         suboptions:
           type:
             description:
-              - Unique identifier describing the type of the OVF parameters.
-              - The value is the name of the OVF parameters schema.
+              - Unique identifier describing the type of the OVF parameters. The value is the name of
+                the OVF parameters schema.
+              - This property must be provided in the input parameters when deploying an OVF package.
+                This property will always be present in the result when retrieving information about an
+                OVF package.
             type: str
             required: false
       default_datastore_id:
         description:
-          - Default datastore MOID to use for all sections of type vmw:StorageSection
-            in the OVF descriptor.
-          - If not specified, the server will choose the default datastore.
+          - MOID of the default datastore to use for all storage sections in the OVF descriptor.
+          - If omitted, the server will choose the default datastore.
         type: str
         required: false
       vm_config_spec:
         description:
-          - Virtual machine configuration settings to use in place of the OVF descriptor.
-          - If set, the OVF descriptor acts as a disk descriptor only.
-          - Other deployment spec fields like I(name) and storage settings are still honored.
-          - This property was added in vSphere API 8.0.2.0.
-          - If not specified, VM specifications from the OVF descriptor will be used.
+          - Virtual machine configuration settings to use in place of those defined in the OVF descriptor.
+          - When set, the OVF descriptor is used only for disk definitions, while hardware specifications
+            come from this configuration.
+          - Other deployment spec settings such as I(name), I(storage_mappings), I(storage_profile_id),
+            I(storage_provisioning), and I(default_datastore_id) still apply and are not overridden.
+          - This property was added in __vSphere API 8.0.2.0__.
+          - If omitted, the virtual machine specifications from the OVF descriptor will be used.
         type: dict
         required: false
         suboptions:
           provider:
             description:
-              - Selects the provider for the VM configuration specification.
+              - The format provider for the VM configuration specification.
               - C(XML) - A vim.vm.ConfigSpec serialized to XML and base64 encoded.
-              - This property was added in vSphere API 8.0.2.0.
+              - This property was added in __vSphere API 8.0.2.0__.
             type: str
             required: true
             choices:
@@ -236,28 +280,32 @@ options:
           xml:
             description:
               - A vim.vm.ConfigSpec serialized to XML and base64 encoded.
-              - Only relevant when I(provider) is C(XML).
-              - This property was added in vSphere API 8.0.2.0.
+              - This property was added in __vSphere API 8.0.2.0__.
+              - Only relevant when I(provider) is set to C(XML).
             type: str
             required: false
       tag_params:
         description:
-          - Tag parameters for attaching tags to a VM during deployment.
-          - This property was added in vSphere API 9.1.0.0.
+          - Tag parameters that contain the information required to attach tags to a VM during VM deployment.
+          - This property was added in __vSphere API 9.1.0.0__.
+          - This property is optional because it was added in a newer version than its parent node.
         type: dict
         required: false
         suboptions:
           tags:
             description:
-              - List of tag parameters for attaching tags while deploying a VM.
-              - This property was added in vSphere API 9.1.0.0.
+              - List of tag parameters which contains information required to attach tags while deploying a VM.
+              - This property was added in __vSphere API 9.1.0.0__.
+              - This property is not used for the 'create' operation. It will always be present in the response
+                of the 'get' or 'list' operations. It is not used for the 'update' operation.
             type: list
             required: false
             elements: dict
           type:
             description:
-              - Unique identifier describing the type of the OVF parameters.
-              - The value is the name of the OVF parameters schema.
+              - Unique identifier describing the type of the OVF parameters. The value is the name of the OVF parameters schema.
+              - This property must be provided in the input parameters when deploying an OVF package. This property will always
+                be present in the result when retrieving information about an OVF package.
             type: str
             required: false
 
@@ -270,47 +318,92 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Deploy an OVF library item to a resource pool
+- name: Export a virtual machine to a content library as an OVF package
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    ovf_library_item_id: "{{ library_item_id }}"
-    state: deploy
+    source:
+      type: VirtualMachine
+      id: vm-123
     target:
-      library_id: "{{ library_id }}"
+      library_id: lib-456
+    create_spec:
+      name: my-vm-template
+      description: OVF export of my production web server
+    state: present
+
+- name: Export a virtual machine into an existing library item
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    source:
+      type: VirtualMachine
+      id: vm-123
+    target:
+      library_id: lib-456
+      library_item_id: item-789
+    create_spec:
+      name: my-vm-template
+    state: present
+
+- name: Deploy an OVF package from a content library item
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: item-789
+    target:
+      resource_pool_id: resgroup-1001
+      folder_id: group-v1002
+      host_id: host-1003
     deployment_spec:
-      name: my-deployed-vm
+      name: deployed-vm
       accept_all_eula: true
       storage_provisioning: thin
-
-- name: Deploy an OVF library item with network mappings
-  vmware.vmware_rest.vcenter_ovf_libraryitem:
-    ovf_library_item_id: "{{ library_item_id }}"
-    state: deploy
-    target:
-      library_id: "{{ library_id }}"
-    deployment_spec:
-      name: my-deployed-vm
-      annotation: Deployed from content library
-      accept_all_eula: true
       network_mappings:
-        VM Network: "{{ network_id }}"
-      storage_provisioning: thin
-      default_datastore_id: "{{ datastore_id }}"
+        VM Network: network-1004
+    state: deploy
 
-- name: Filter an OVF library item to get deployment information
+- name: Deploy an OVF package with a specific datastore and storage profile
   vmware.vmware_rest.vcenter_ovf_libraryitem:
-    ovf_library_item_id: "{{ library_item_id }}"
-    state: filter
+    ovf_library_item_id: item-789
     target:
-      library_id: "{{ library_id }}"
+      resource_pool_id: resgroup-1001
+    deployment_spec:
+      name: deployed-vm-custom-storage
+      accept_all_eula: true
+      default_datastore_id: datastore-1005
+      storage_profile_id: storageprofile-1006
+      storage_provisioning: eagerZeroedThick
+    state: deploy
+
+- name: Retrieve OVF deployment information before deploying
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: item-789
+    target:
+      resource_pool_id: resgroup-1001
+    state: filter
 """
 
 RETURN = r"""
 id:
   description:
-    - Identifier of the deployed resource or the created library item.
-  returned: When state is set to a supported action
-  sample: vm-1234
+    - Identifier of the managed resource.
+    - When C(state=present), this is the content library item identifier.
+    - When C(state=deploy), this is the identifier of the deployed virtual machine or virtual appliance.
+    - When C(state=filter), this is the OVF library item identifier that was queried.
+  returned: When state is present, or when state is set to a supported action
+  sample: item-789
   type: str
+value:
+  description:
+    - The full API response body returned by the vCenter OVF library item operation.
+    - When C(state=present), contains the operation result including library item ID
+      and whether the operation succeeded.
+    - When C(state=deploy), contains deployment result details including whether the
+      operation succeeded, any errors, and resource references.
+    - When C(state=filter), contains OVF deployment information such as network and
+      storage requirements, EULAs, and additional parameters needed for deployment.
+  returned: On success
+  type: raw
+  sample:
+    succeeded: true
+    resource_id:
+      type: VirtualMachine
+      id: vm-123
 """
 
 
@@ -330,8 +423,65 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_conf
 
 MOID_PARAMETER_HINTS = ["ovf_library_item_id"]
 
-LIST_ENDPOINT = ""
-ITEM_ENDPOINT = "/vcenter/ovf/library-item"
+LIST_ENDPOINT = "/vcenter/ovf/library-item"
+ITEM_ENDPOINT = ""
+
+
+CREATE_OPERATION = OperationConfig(
+    name="create",
+    uri=LIST_ENDPOINT,
+    http_method="POST",
+    body_spec={
+        "source": {
+            "required": True,
+            "subspec": {
+                "type": {
+                    "required": False,
+                },
+                "id": {
+                    "required": False,
+                },
+            },
+        },
+        "target": {
+            "required": True,
+            "subspec": {
+                "library_id": {
+                    "required": False,
+                },
+                "library_item_id": {
+                    "required": False,
+                },
+                "resource_pool_id": {
+                    "required": False,
+                },
+                "host_id": {
+                    "required": False,
+                },
+                "folder_id": {
+                    "required": False,
+                },
+            },
+        },
+        "create_spec": {
+            "required": True,
+            "subspec": {
+                "name": {
+                    "required": False,
+                },
+                "description": {
+                    "required": False,
+                },
+                "flags": {
+                    "required": False,
+                },
+                "library_item_source_id": {
+                    "required": False,
+                },
+            },
+        },
+    },
+)
 
 
 ACTION_OPERATIONS = {
@@ -347,6 +497,15 @@ ACTION_OPERATIONS = {
                         "required": False,
                     },
                     "library_item_id": {
+                        "required": False,
+                    },
+                    "resource_pool_id": {
+                        "required": False,
+                    },
+                    "host_id": {
+                        "required": False,
+                    },
+                    "folder_id": {
                         "required": False,
                     },
                 },
@@ -428,6 +587,15 @@ ACTION_OPERATIONS = {
                         "required": False,
                     },
                     "library_item_id": {
+                        "required": False,
+                    },
+                    "resource_pool_id": {
+                        "required": False,
+                    },
+                    "host_id": {
+                        "required": False,
+                    },
+                    "folder_id": {
                         "required": False,
                     },
                 },
@@ -557,12 +725,21 @@ def create_module_argument_spec() -> dict:
             "library_item_id": {
                 "type": "str",
             },
+            "resource_pool_id": {
+                "type": "str",
+            },
+            "host_id": {
+                "type": "str",
+            },
+            "folder_id": {
+                "type": "str",
+            },
         },
     }
     module_args["state"] = {
         "type": "str",
-        "choices": ["deploy", "filter"],
-        "required": True,
+        "choices": ["present", "deploy", "filter"],
+        "default": "present",
     }
     return module_args
 
@@ -576,6 +753,7 @@ def main():
     crud_module = VmwareRestCrudModuleBase(
         module=module,
         moid_parameter_hints=MOID_PARAMETER_HINTS,
+        create_operation_config=CREATE_OPERATION,
         action_operations=ACTION_OPERATIONS,
     )
 

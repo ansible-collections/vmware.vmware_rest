@@ -1,0 +1,117 @@
+---
+# ============================================================
+# PRESENT (CREATE) TESTS
+# ============================================================
+
+# Test 1: Create an OVF package from a virtual machine
+- name: Reset before present expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for create
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_create: "200"
+
+- name: Create OVF package from a virtual machine
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    source:
+      type: VirtualMachine
+      id: vm-123
+    target:
+      library_id: lib-1
+    create_spec:
+      name: my-vm-template
+      description: OVF export of my production web server
+    state: present
+  register: create_result
+
+- name: Assert create success
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+      - create_result.id == 'library_item-1001'
+
+# Test 2: Create in check mode
+- name: Reset before present check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for create check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_create: "200"
+
+- name: Create OVF package in check mode
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    source:
+      type: VirtualMachine
+      id: vm-123
+    target:
+      library_id: lib-1
+    create_spec:
+      name: my-vm-template
+    state: present
+  check_mode: true
+  register: create_check
+
+- name: Assert create check mode reports change
+  ansible.builtin.assert:
+    that:
+      - create_check.changed
+
+# Test 3: Create with full parameters (existing library item)
+- name: Reset before full present expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for full create
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_create: "200"
+
+- name: Create OVF package into existing library item
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    source:
+      type: VirtualMachine
+      id: vm-123
+    target:
+      library_id: lib-1
+      library_item_id: item-789
+    create_spec:
+      name: my-vm-template
+      description: Updated OVF export
+      flags:
+        - EXTRA_CONFIG
+    state: present
+  register: create_full_result
+
+- name: Assert full create success
+  ansible.builtin.assert:
+    that:
+      - create_full_result.changed
+      - create_full_result.id == 'library_item-1001'

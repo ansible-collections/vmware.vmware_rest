@@ -22,13 +22,23 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_conf
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module import (
     VmwareRestCrudModuleBase,
 )
+from ansible_collections.vmware.vmware_rest.plugins.modules import (
+    vcenter_ovf_libraryitem as module_under_test,
+)
 from ansible_collections.vmware.vmware_rest.plugins.modules.vcenter_ovf_libraryitem import (
     ACTION_OPERATIONS,
     MOID_PARAMETER_HINTS,
     create_module_argument_spec,
 )
 
-from ...common.utils import CONNECTION_PARAMS, fail_json
+from ...common.utils import (
+    AnsibleExitJson,
+    CONNECTION_PARAMS,
+    exit_json,
+    fail_json,
+    set_module_args,
+    _response,
+)
 
 
 @pytest.fixture
@@ -100,12 +110,15 @@ def test_perform_action_deploy_success(action_module, mock_client):
     ):
         deploy_response = MagicMock()
         deploy_response.status = 200
+        deploy_response.data = b'{"succeeded": true}'
+        deploy_response.json = {"succeeded": True}
         mock_client.post.return_value = deploy_response
 
         result = action_module.perform_action()
 
     assert result["changed"] is True
     assert result["id"] == "lib-item-1"
+    assert result["value"] == {"succeeded": True}
     mock_client.post.assert_called_once()
 
 
@@ -142,6 +155,8 @@ def test_perform_action_deploy_builds_correct_path(action_module, mock_client):
     ):
         deploy_response = MagicMock()
         deploy_response.status = 200
+        deploy_response.data = b'{"succeeded": true}'
+        deploy_response.json = {"succeeded": True}
         mock_client.post.return_value = deploy_response
 
         action_module.perform_action()
@@ -173,12 +188,15 @@ def test_perform_action_filter_success(action_module, mock_client):
     ):
         filter_response = MagicMock()
         filter_response.status = 200
+        filter_response.data = b'{"name": "my-ovf-item"}'
+        filter_response.json = {"name": "my-ovf-item"}
         mock_client.post.return_value = filter_response
 
         result = action_module.perform_action()
 
     assert result["changed"] is True
     assert result["id"] == "lib-item-1"
+    assert result["value"] == {"name": "my-ovf-item"}
     mock_client.post.assert_called_once()
 
 
@@ -223,6 +241,7 @@ def test_perform_action_deploy_check_mode(action_module, mock_client):
 
     assert result["changed"] is True
     assert result["id"] == "lib-item-1"
+    assert result["value"] == {}
     mock_client.post.assert_not_called()
 
 
@@ -247,6 +266,7 @@ def test_perform_action_filter_check_mode(action_module, mock_client):
 
     assert result["changed"] is True
     assert result["id"] == "lib-item-1"
+    assert result["value"] == {}
     mock_client.post.assert_not_called()
 
 
@@ -468,15 +488,15 @@ def test_filter_operation_config_build_body_minimal():
 # ============================================================================
 
 
-def test_argument_spec_has_required_state():
+def test_argument_spec_has_state():
     """
-    Test that the argument spec requires state with correct choices.
+    Test that the argument spec has state with correct choices and default.
     """
     spec = create_module_argument_spec()
 
     assert "state" in spec
-    assert spec["state"]["required"] is True
-    assert set(spec["state"]["choices"]) == {"deploy", "filter"}
+    assert spec["state"]["default"] == "present"
+    assert set(spec["state"]["choices"]) == {"present", "deploy", "filter"}
 
 
 def test_argument_spec_has_ovf_library_item_id():
@@ -595,3 +615,118 @@ def test_filter_operation_http_method():
     Test that the filter operation uses POST.
     """
     assert ACTION_OPERATIONS["filter"].http_method == "post"
+
+
+# ============================================================================
+# main() Tests - via module entry point
+# ============================================================================
+
+
+@pytest.fixture
+def patch_ansible_module():
+    with patch.object(module_under_test, "AnsibleModule") as mock:
+        yield mock
+
+
+@pytest.fixture
+def patch_create_client():
+    with patch.object(
+        module_under_test.VmwareRestCrudModuleBase, "_create_client"
+    ) as mock:
+        yield mock
+
+
+def test_main_deploy(patch_create_client, patch_ansible_module, mock_client):
+    """
+    Test main() with state=deploy calls perform_action and exits.
+    """
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    args = set_module_args(
+        {
+            "state": "deploy",
+            "ovf_library_item_id": "lib-item-1",
+            "target": {"resource_pool_id": "resgroup-1"},
+            "deployment_spec": {"accept_all_eula": True},
+        }
+    )
+    mock_module.params = args
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.get.return_value = _response(
+        200, {"ovf_library_item_id": "lib-item-1", "name": "test-ovf"}
+    )
+    mock_client.post.return_value = _response(200, {"id": "lib-item-1"})
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    assert result["id"] == "lib-item-1"
+    assert result["value"] == {"id": "lib-item-1"}
+
+
+def test_main_filter(patch_create_client, patch_ansible_module, mock_client):
+    """
+    Test main() with state=filter calls perform_action and exits.
+    """
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    args = set_module_args(
+        {
+            "state": "filter",
+            "ovf_library_item_id": "lib-item-1",
+            "target": {"resource_pool_id": "resgroup-1"},
+        }
+    )
+    mock_module.params = args
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.get.return_value = _response(
+        200, {"ovf_library_item_id": "lib-item-1", "name": "test-ovf"}
+    )
+    mock_client.post.return_value = _response(200, {"id": "lib-item-1"})
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    assert result["value"] == {"id": "lib-item-1"}
+
+
+def test_main_present(patch_create_client, patch_ansible_module, mock_client):
+    """
+    Test main() with state=present calls ensure_present and exits.
+    """
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    args = set_module_args(
+        {
+            "state": "present",
+            "source": {"type": "VirtualMachine", "id": "vm-1"},
+            "target": {"resource_pool_id": "resgroup-1", "library_id": "lib-1"},
+            "create_spec": {"name": "my-ovf"},
+        }
+    )
+    mock_module.params = args
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.post.return_value = _response(
+        200, {"value": {"ovf_library_item_id": "lib-item-new"}}
+    )
+
+    with pytest.raises(AnsibleExitJson):
+        module_under_test.main()
+
+    mock_module.exit_json.assert_called_once()

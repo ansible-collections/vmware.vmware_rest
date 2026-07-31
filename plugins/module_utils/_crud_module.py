@@ -41,11 +41,16 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
             action_operations if action_operations is not None else {}
         )
 
+    @staticmethod
+    def _get_response_value(response):
+        if not response.data:
+            return {}
+        return response.json
+
     def ensure_absent(self) -> dict:
         result = {"changed": False}
         resource = self._resolve_resource_context()
         if not resource:
-            # Object is already absent, nothing to do
             return result
 
         result["changed"] = True
@@ -58,8 +63,12 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         query = self.delete_operation_config.build_query(params=self.params)
         http_operation = getattr(self.client, self.delete_operation_config.http_method)
         if not self.module.check_mode:
-            http_operation(path, query=query)
+            response = http_operation(path, query=query)
+            result["value"] = self._get_response_value(response)
+        else:
+            result["value"] = {}
 
+        self._handle_errors_in_the_response(result)
         return result
 
     def _resolve_resource_context(self) -> Union[dict, None]:
@@ -127,8 +136,12 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
 
         http_method = getattr(self.client, action_operation.http_method)
         if not self.module.check_mode:
-            http_method(**kwargs)
+            response = http_method(**kwargs)
+            result["value"] = self._get_response_value(response)
+        else:
+            result["value"] = {}
 
+        self._handle_errors_in_the_response(result)
         return result
 
     def ensure_present(self) -> dict:
@@ -139,46 +152,80 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         result = {"changed": False, "id": ""}
         resource = self._resolve_resource_context()
 
-        if not resource:
-            result["id"] = self._create()
+        if not resource or resource == self.params:
+            new_id, value = self._create()
+            result["id"] = new_id
+            result["value"] = value
             result["changed"] = True
         else:
             result["id"] = self._get_moid_attribute_value_from_resource(resource)
-            result["diff"] = self._update_if_needed(resource)
+            diff, value = self._update_if_needed(resource)
+            result["diff"] = diff
+            result["value"] = value
             result["changed"] = bool(result["diff"])
 
+        self._handle_errors_in_the_response(result)
         return result
 
-    def _create(self) -> str:
+    def _handle_errors_in_the_response(self, result):
+        """
+        Some API endpoints (content library) return 200s and have errors in the response.
+        """
+        if "succeeded" not in result["value"]:
+            return
+
+        if result["value"]["succeeded"]:
+            return
+
+        try:
+            # brittle attempt at maintaining backwards compat idempotency. This really is an edge case, in an edge case,
+            # that would be inconvinient if broken.
+            error_type = result["value"]["error"]["errors"][0]["error"]["error_type"]
+            if error_type == "ALREADY_EXISTS":
+                result["diff"] = {}
+                result["changed"] = False
+                return
+
+        except KeyError:
+            pass
+
+        self.module.fail_json(
+            "The API operation failed. See the response return value for more details.",
+            response=result["value"],
+        )
+
+    def _create(self) -> tuple:
         path = self.create_operation_config.build_path(params=self.params)
         body = self.create_operation_config.build_body(params=self.params)
         http_method = getattr(self.client, self.create_operation_config.http_method)
         new_id = ""
+        value = {}
         if not self.module.check_mode:
             response = http_method(path, data=body)
-            new_id = response.json
+            value = self._get_response_value(response)
+            new_id = value
 
-        return new_id
+        return new_id, value
 
-    def _update_if_needed(self, resource: dict) -> dict:
+    def _update_if_needed(self, resource: dict) -> tuple:
         if self.update_operation_config is None:
-            # update operations are not supported for this resource
-            return {}
+            return {}, {}
 
         desired_body = self.update_operation_config.build_body(params=self.params)
         diff = self._calculate_resource_diff(current=resource, desired=desired_body)
         if not diff:
-            return {}
+            return {}, {}
 
-        # Build the path using the path mapping from update_operation_config or fallback to _path_mapping
         path = self.update_operation_config.build_path(
             params={**self.params, **resource}
         )
         update_method = getattr(self.client, self.update_operation_config.http_method)
+        value = {}
         if not self.module.check_mode:
-            update_method(path, data=desired_body)
+            response = update_method(path, data=desired_body)
+            value = self._get_response_value(response)
 
-        return diff
+        return diff, value
 
     def _calculate_resource_diff(self, current: dict, desired: dict) -> dict:
         """Return True when any desired key differs from current state."""
