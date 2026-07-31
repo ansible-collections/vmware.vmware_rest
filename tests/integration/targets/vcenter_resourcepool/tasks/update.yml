@@ -2,6 +2,12 @@
 # ============================================================
 # UPDATE RESOURCE POOL TESTS
 # ============================================================
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for update
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -26,6 +32,12 @@
     that:
       - update_rp.changed
       - update_rp.id == 'resource_pool-1001'
+
+- name: Reset before updated state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec expectations for updated state
   ansible.builtin.uri:
@@ -52,6 +64,12 @@
       - not update_rp_again.changed
       - update_rp_again.id == 'resource_pool-1001'
 
+- name: Reset before check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec for original state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -75,6 +93,12 @@
   ansible.builtin.assert:
     that:
       - update_rp_check.changed
+
+- name: Reset before idempotent check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec for updated state
   ansible.builtin.uri:

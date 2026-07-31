@@ -259,7 +259,7 @@ class Client:
 
 class ClientRequestErrorHandler:
     """
-    Handles exceptions that occur during HTTP requests to the ServiceNow instance.
+    Handles exceptions that occur during HTTP requests to the vSphere REST API.
 
     This class centralizes error handling logic for network and SSL-related errors,
     providing consistent error messages and determining whether errors are retryable.
@@ -293,7 +293,7 @@ class ClientRequestErrorHandler:
                 to continue. Defaults to False.
 
         Raises:
-            ServiceNowError or subclass thereof: For non-retryable errors.
+            VmwareModuleError or subclass thereof: For non-retryable errors.
 
         Returns:
             None: When retry_is_allowed is True and the error is retryable

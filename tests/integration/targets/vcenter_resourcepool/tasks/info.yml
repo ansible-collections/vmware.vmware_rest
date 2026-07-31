@@ -12,6 +12,12 @@
       - list_rp_info.info is defined
       - list_rp_info.info | length == 0
 
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for get
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -33,6 +39,12 @@
     that:
       - get_rp_id.value is defined
       - get_rp_id.value.name == 'my_resource_pool'
+
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec expectations for multiple
   ansible.builtin.uri:

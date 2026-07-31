@@ -82,7 +82,7 @@ class ApiCommunicationError(VmwareModuleError):
     def __init__(self, exception, message=None, method=None, path=None, **kwargs):
         self.message = (
             message
-            or "An unexpected error occurred while communicating with the ServiceNow API."
+            or "An unexpected error occurred while communicating with the vSphere REST API."
         )
         super().__init__(self.message)
         self.exception = exception

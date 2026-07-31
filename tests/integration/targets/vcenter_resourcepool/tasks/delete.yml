@@ -2,6 +2,12 @@
 # ============================================================
 # DELETE RESOURCE POOL TESTS
 # ============================================================
+- name: Reset before delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for delete
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -26,6 +32,12 @@
       - delete_rp.changed
       - delete_rp.id == 'resource_pool-1001'
 
+- name: Reset before empty state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for empty state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -47,6 +59,12 @@
   ansible.builtin.assert:
     that:
       - not delete_rp_again.changed
+
+- name: Reset before check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec for final delete test
   ansible.builtin.uri:
@@ -71,6 +89,12 @@
     that:
       - delete_rp_check.changed
 
+- name: Reset before idempotent check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec for empty state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -93,6 +117,12 @@
   ansible.builtin.assert:
     that:
       - not delete_rp_check_idem.changed
+
+- name: Reset before delete by name expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec with resource pool present for final test
   ansible.builtin.uri:
