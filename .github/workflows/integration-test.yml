@@ -113,7 +113,7 @@ jobs:
         run: |
           set -euxo pipefail
           sudo apt-get update -y
-          sudo apt-get install -y --upgrade podman
+          sudo apt-get install -y --upgrade podman crun
 
       - name: Checkout repo
         uses: actions/checkout@v7
