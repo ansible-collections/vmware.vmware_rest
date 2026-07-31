@@ -17,7 +17,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_conf
     OperationConfig,
 )
 from ...common.utils import (  # pylint: disable=unused-import
+    AnsibleFailJson,
     CONNECTION_PARAMS,
+    fail_json,
     mock_client,
 )
 
@@ -26,6 +28,7 @@ from ...common.utils import (  # pylint: disable=unused-import
 def mock_module():
     module = MagicMock()
     module.params = CONNECTION_PARAMS
+    module.fail_json = fail_json
     return module
 
 
@@ -68,12 +71,21 @@ def test_info_module_initialization(info_module):
     assert "resource_pool" in info_module.moid_parameter_hints
 
 
-def test_normalize_info_results_single_item(info_module):
+def test_normalize_info_results_single_resource_get(info_module):
     query_results = [{"resource_pool": "pool-1", "name": "my_pool"}]
-    result = info_module.normalize_info_results(query_results)
+    result = info_module.normalize_info_results(query_results, single_resource=True)
 
     assert result["id"] == "pool-1"
     assert result["value"] == {"resource_pool": "pool-1", "name": "my_pool"}
+    assert result["info"] == [{"resource_pool": "pool-1", "name": "my_pool"}]
+
+
+def test_normalize_info_results_single_resource_list(info_module):
+    query_results = [{"resource_pool": "pool-1", "name": "my_pool"}]
+    result = info_module.normalize_info_results(query_results, single_resource=False)
+
+    assert "id" not in result
+    assert result["value"] == [{"resource_pool": "pool-1", "name": "my_pool"}]
     assert result["info"] == [{"resource_pool": "pool-1", "name": "my_pool"}]
 
 
@@ -96,10 +108,16 @@ def test_normalize_info_results_empty_list(info_module):
     assert result == {"info": [], "value": []}
 
 
-def test_normalize_info_results_rejects_non_list(info_module, mock_module):
-    with pytest.raises(Exception):
-        info_module.normalize_info_results({"not": "a list"})
-    mock_module.fail_json.assert_called_once()
+def test_normalize_info_results_empty_get(info_module):
+    query_results = []
+    result = info_module.normalize_info_results(query_results, single_resource=True)
+
+    assert result == {"info": [], "value": {}}
+
+
+def test_normalize_info_results_rejects_non_list(info_module):
+    with pytest.raises(AnsibleFailJson):
+        info_module.normalize_info_results({"not": "a list"}, single_resource=False)
 
 
 def test_list_resource_details_success(info_module, mock_client):
@@ -171,7 +189,7 @@ def test_list_resource_details_handles_404(info_module, mock_client, mock_module
     ):
         info_module._list_resource_details()
 
-    mock_module.fail_json.assert_called_once()
+    mock_module.warn.assert_called_once()
 
 
 def test_get_resource_info_with_resource_id(info_module, mock_client):
@@ -200,7 +218,7 @@ def test_get_resource_info_not_found_returns_empty(info_module, mock_client):
 
     result = info_module.get_resource_info()
 
-    assert result == {"info": [], "value": []}
+    assert result == {"info": [], "value": {}}
 
 
 def test_get_resource_info_falls_back_to_list(info_module, mock_client):

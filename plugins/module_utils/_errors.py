@@ -13,6 +13,7 @@ import json
 class VmwareModuleError(Exception):
     def __init__(self, message):
         super().__init__(message)
+        self.message = message
 
     def to_module_fail_json_output(self):
         return {
@@ -43,7 +44,6 @@ class RequiredParameterError(VmwareModuleError):
         )
         self.operation = operation
         self.param_name = param_name
-        self.operation = operation
         self.uri = uri
         self.http_method = http_method
 
@@ -82,7 +82,7 @@ class ApiCommunicationError(VmwareModuleError):
     def __init__(self, exception, message=None, method=None, path=None, **kwargs):
         self.message = (
             message
-            or "An unexpected error occurred while communicating with the ServiceNow API."
+            or "An unexpected error occurred while communicating with the vSphere REST API."
         )
         super().__init__(self.message)
         self.exception = exception

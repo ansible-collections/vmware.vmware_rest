@@ -1,0 +1,71 @@
+---
+# ============================================================
+# RESOURCE POOL INFO TESTS
+# ============================================================
+- name: List resource pools (empty)
+  vmware.vmware_rest.vcenter_resourcepool_info: {}
+  register: list_rp_info
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_rp_info.info is defined
+      - list_rp_info.info | length == 0
+
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_get: "200"
+
+- name: Get a resource pool by ID
+  vmware.vmware_rest.vcenter_resourcepool_info:
+    resource_pool: resource_pool-1001
+  register: get_rp_id
+
+- name: Assert resource pool details
+  ansible.builtin.assert:
+    that:
+      - get_rp_id.value is defined
+      - get_rp_id.value.name == 'my_resource_pool'
+
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+        Vcenter.ResourcePool_get: "200"
+
+- name: List resource pools (multi)
+  vmware.vmware_rest.vcenter_resourcepool_info: {}
+  register: list_multi
+
+- name: Check resource pool multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2

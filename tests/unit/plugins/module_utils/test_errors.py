@@ -36,7 +36,7 @@ def test_unexpected_api_response_message():
 def test_api_communication_error_default_message():
     exc = ValueError("connection reset")
     error = ApiCommunicationError(exception=exc)
-    assert "ServiceNow API" in str(error)
+    assert "vSphere REST API" in str(error)
     assert error.exception is exc
 
 

@@ -179,7 +179,7 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module im
     VmwareRestCrudModuleBase,  # or VmwareRestInfoModuleBase
 )
 
-from ...common.utils import CONNECTION_PARAMS
+from ...common.utils import CONNECTION_PARAMS, fail_json
 
 
 @pytest.fixture
@@ -190,6 +190,7 @@ def mock_module():
     module = MagicMock()
     module.params = CONNECTION_PARAMS.copy()
     module.check_mode = False
+    module.fail_json = fail_json
     return module
 
 

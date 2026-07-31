@@ -17,7 +17,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_conf
     OperationConfig,
 )
 from ...common.utils import (  # pylint: disable=unused-import
+    AnsibleFailJson,
     CONNECTION_PARAMS,
+    fail_json,
     mock_client,
 )
 
@@ -27,6 +29,7 @@ def mock_module():
     module = MagicMock()
     module.params = CONNECTION_PARAMS
     module.check_mode = False
+    module.fail_json = fail_json
     return module
 
 
@@ -334,8 +337,6 @@ def test_values_equal_nested_dicts(crud_module):
 
 
 def test_perform_action_resource_not_found(crud_module, mock_module):
-    # Make fail_json raise an exception to stop execution
-    mock_module.fail_json.side_effect = Exception("fail_json called")
     crud_module.params["state"] = "connect"
     crud_module.action_operations["connect"] = OperationConfig(
         name="connect",
@@ -344,13 +345,10 @@ def test_perform_action_resource_not_found(crud_module, mock_module):
     )
 
     with patch.object(crud_module, "_search_for_resource", return_value=None):
-        with pytest.raises(Exception, match="fail_json called"):
+        with pytest.raises(AnsibleFailJson) as exc_info:
             crud_module.perform_action()
 
-    # Verify that fail_json was called with a message about resource not found
-    mock_module.fail_json.assert_called_once()
-    call_args = mock_module.fail_json.call_args[0]
-    assert "No matching resource was found" in call_args[0]
+    assert "No matching resource was found" in exc_info.value.kwargs["msg"]
 
 
 def test_perform_action_success(crud_module, mock_client):

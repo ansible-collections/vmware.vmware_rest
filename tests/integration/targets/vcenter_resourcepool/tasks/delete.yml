@@ -1,0 +1,149 @@
+---
+# ============================================================
+# DELETE RESOURCE POOL TESTS
+# ============================================================
+- name: Reset before delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for delete
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_delete: "204"
+        Vcenter.ResourcePool_get: "200"
+
+- name: Delete a resource pool by ID
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    state: absent
+  register: delete_rp
+
+- name: Assert deletion success
+  ansible.builtin.assert:
+    that:
+      - delete_rp.changed
+      - delete_rp.id == 'resource_pool-1001'
+
+- name: Reset before empty state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for empty state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+
+- name: Delete resource pool again (idempotent)
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    state: absent
+  register: delete_rp_again
+
+- name: Assert idempotent delete
+  ansible.builtin.assert:
+    that:
+      - not delete_rp_again.changed
+
+- name: Reset before check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec for final delete test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_get: "200"
+
+- name: Delete resource pool in check mode (when exists)
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    state: absent
+  check_mode: true
+  register: delete_rp_check
+
+- name: Assert check mode reports change when deleting
+  ansible.builtin.assert:
+    that:
+      - delete_rp_check.changed
+
+- name: Reset before idempotent check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec for empty state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+
+- name: Delete non-existent resource pool in check mode (idempotent)
+  vmware.vmware_rest.vcenter_resourcepool:
+    resource_pool: resource_pool-1001
+    state: absent
+  check_mode: true
+  register: delete_rp_check_idem
+
+- name: Assert check mode reports no change when already deleted
+  ansible.builtin.assert:
+    that:
+      - not delete_rp_check_idem.changed
+
+- name: Reset before delete by name expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec with resource pool present for final test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+        Vcenter.ResourcePool_get: "200"
+        Vcenter.ResourcePool_delete: "204"
+
+- name: Delete resource pool by name
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    state: absent
+  register: delete_by_name
+
+- name: Assert delete by name succeeds
+  ansible.builtin.assert:
+    that:
+      - delete_by_name.changed

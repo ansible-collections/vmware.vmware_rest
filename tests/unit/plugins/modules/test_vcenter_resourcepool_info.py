@@ -10,7 +10,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 
 from ansible_collections.vmware.vmware_rest.plugins.modules import (
-    vcenter_datacenter_info as module_under_test,
+    vcenter_resourcepool_info as module_under_test,
 )
 
 from ...common.utils import (
@@ -42,27 +42,44 @@ def patch_create_client():
 # ============================================================================
 
 
-def test_get_datacenter_by_id(
+def test_get_resource_pool_by_id(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test getting a specific datacenter by ID."""
+    """Test getting a specific resource pool by ID."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
     module_args.update(
         {
-            "datacenter": "datacenter-1009",
+            "resource_pool": "resgroup-1009",
         }
     )
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock GET response returns datacenter info
     get_response = {
-        "datacenter": "datacenter-1009",
-        "name": "my_datacenter",
+        "resource_pool": "resgroup-1009",
+        "name": "my_resource_pool",
+        "cpu_allocation": {
+            "reservation": 0,
+            "expandable_reservation": True,
+            "limit": -1,
+            "shares": {
+                "level": "NORMAL",
+                "shares": 4000,
+            },
+        },
+        "memory_allocation": {
+            "reservation": 0,
+            "expandable_reservation": True,
+            "limit": -1,
+            "shares": {
+                "level": "NORMAL",
+                "shares": 163840,
+            },
+        },
     }
 
     mock_client.get.return_value = _response(200, get_response)
@@ -72,30 +89,29 @@ def test_get_datacenter_by_id(
 
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
-    assert result["id"] == "datacenter-1009"
+    assert result["id"] == "resgroup-1009"
     assert "value" in result
-    assert result["value"]["datacenter"] == "datacenter-1009"
-    assert result["value"]["name"] == "my_datacenter"
+    assert result["value"]["name"] == "my_resource_pool"
+    assert result["value"]["cpu_allocation"]["shares"]["level"] == "NORMAL"
 
 
-def test_get_datacenter_not_found(
+def test_get_resource_pool_not_found(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test getting a datacenter that doesn't exist."""
+    """Test getting a resource pool that doesn't exist."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
     module_args.update(
         {
-            "datacenter": "datacenter-9999",
+            "resource_pool": "resgroup-9999",
         }
     )
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock GET response returns 404
     mock_client.get.return_value = _response(404, None)
 
     with pytest.raises(AnsibleExitJson) as exc:
@@ -103,7 +119,6 @@ def test_get_datacenter_not_found(
 
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
-    # Info modules return empty info list when not found
     assert "info" in result
     assert len(result["info"]) == 0
 
@@ -113,33 +128,32 @@ def test_get_datacenter_not_found(
 # ============================================================================
 
 
-def test_list_all_datacenters(
+def test_list_all_resource_pools(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test listing all datacenters."""
+    """Test listing all resource pools."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
-    module_args.update({})  # No filters
+    module_args.update({})
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response returns all datacenters
     list_response = [
-        {"datacenter": "datacenter-1001", "name": "production-dc"},
-        {"datacenter": "datacenter-1002", "name": "development-dc"},
+        {"resource_pool": "resgroup-1001", "name": "pool-a"},
+        {"resource_pool": "resgroup-1002", "name": "pool-b"},
     ]
     detail_response_1 = {
-        "datacenter": "datacenter-1001",
-        "name": "production-dc",
-        "datastore_folder": "group-s1001",
+        "resource_pool": "resgroup-1001",
+        "name": "pool-a",
+        "cpu_allocation": {"reservation": 0, "limit": -1},
     }
     detail_response_2 = {
-        "datacenter": "datacenter-1002",
-        "name": "development-dc",
-        "datastore_folder": "group-s1002",
+        "resource_pool": "resgroup-1002",
+        "name": "pool-b",
+        "cpu_allocation": {"reservation": 1000, "limit": 4000},
     }
 
     mock_client.get.side_effect = [
@@ -156,14 +170,14 @@ def test_list_all_datacenters(
     assert "info" in result
     assert isinstance(result["info"], list)
     assert len(result["info"]) == 2
-    assert result["info"][0]["datacenter"] == "datacenter-1001"
-    assert result["info"][1]["datacenter"] == "datacenter-1002"
+    assert result["info"][0]["resource_pool"] == "resgroup-1001"
+    assert result["info"][1]["resource_pool"] == "resgroup-1002"
 
 
-def test_list_datacenters_empty(
+def test_list_resource_pools_empty(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test listing datacenters when none exist."""
+    """Test listing resource pools when none exist."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
@@ -173,7 +187,6 @@ def test_list_datacenters_empty(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response returns empty list
     mock_client.get.return_value = _response(200, [])
 
     with pytest.raises(AnsibleExitJson) as exc:
@@ -185,33 +198,33 @@ def test_list_datacenters_empty(
     assert len(result["info"]) == 0
 
 
-def test_list_datacenters_by_names(
+def test_list_resource_pools_by_names(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test listing datacenters filtered by names."""
+    """Test listing resource pools filtered by names."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
     module_args.update(
         {
-            "names": ["production-dc", "development-dc"],
+            "names": ["pool-a", "pool-b"],
         }
     )
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response, then individual GET responses for each datacenter
+    # Mock LIST response, then individual GET responses for each pool
     list_response = [
-        {"datacenter": "datacenter-1001", "name": "production-dc"},
-        {"datacenter": "datacenter-1002", "name": "development-dc"},
+        {"resource_pool": "resgroup-1001", "name": "pool-a"},
+        {"resource_pool": "resgroup-1002", "name": "pool-b"},
     ]
 
     mock_client.get.side_effect = [
         _response(200, list_response),
-        _response(200, {"datacenter": "datacenter-1001", "name": "production-dc"}),
-        _response(200, {"datacenter": "datacenter-1002", "name": "development-dc"}),
+        _response(200, {"resource_pool": "resgroup-1001", "name": "pool-a"}),
+        _response(200, {"resource_pool": "resgroup-1002", "name": "pool-b"}),
     ]
 
     with pytest.raises(AnsibleExitJson) as exc:
@@ -221,35 +234,33 @@ def test_list_datacenters_by_names(
     result = exc.value.kwargs
     assert "info" in result
     assert isinstance(result["info"], list)
-    # Module may make multiple GET calls to fetch details
     assert mock_client.get.called
 
 
-def test_list_datacenters_by_folders(
+def test_list_resource_pools_by_clusters(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test listing datacenters filtered by folders."""
+    """Test listing resource pools filtered by clusters."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
     module_args.update(
         {
-            "folders": ["group-d1", "group-d2"],
+            "clusters": ["domain-c1007"],
         }
     )
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # First GET returns the list summary, second GET fetches details for the item
     list_response = [
-        {"datacenter": "datacenter-1001", "name": "dc1"},
+        {"resource_pool": "resgroup-1001", "name": "cluster-pool"},
     ]
     detail_response = {
-        "datacenter": "datacenter-1001",
-        "name": "dc1",
-        "datastore_folder": "group-s1002",
+        "resource_pool": "resgroup-1001",
+        "name": "cluster-pool",
+        "cpu_allocation": {"reservation": 0, "limit": -1},
     }
 
     mock_client.get.side_effect = [
@@ -264,40 +275,37 @@ def test_list_datacenters_by_folders(
     result = exc.value.kwargs
     assert "info" in result
     assert len(result["info"]) == 1
-    assert result["info"][0]["datacenter"] == "datacenter-1001"
+    assert result["info"][0]["resource_pool"] == "resgroup-1001"
 
 
-def test_list_datacenters_by_datacenters_filter(
+def test_list_resource_pools_by_datacenters(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test listing datacenters filtered by datacenter IDs."""
+    """Test listing resource pools filtered by datacenters."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
     module_args.update(
         {
-            "datacenters": ["datacenter-1001", "datacenter-1002"],
+            "datacenters": ["datacenter-1001"],
         }
     )
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # Mock LIST response with filter
     list_response = [
-        {"datacenter": "datacenter-1001", "name": "dc1"},
-        {"datacenter": "datacenter-1002", "name": "dc2"},
+        {"resource_pool": "resgroup-1001", "name": "dc-pool"},
+        {"resource_pool": "resgroup-1002", "name": "dc-pool-2"},
     ]
     detail_response_1 = {
-        "datacenter": "datacenter-1001",
-        "name": "dc1",
-        "datastore_folder": "group-s1001",
+        "resource_pool": "resgroup-1001",
+        "name": "dc-pool",
     }
     detail_response_2 = {
-        "datacenter": "datacenter-1002",
-        "name": "dc2",
-        "datastore_folder": "group-s1002",
+        "resource_pool": "resgroup-1002",
+        "name": "dc-pool-2",
     }
 
     mock_client.get.side_effect = [
@@ -312,38 +320,34 @@ def test_list_datacenters_by_datacenters_filter(
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
     assert "info" in result
-    assert isinstance(result["info"], list)
     assert len(result["info"]) == 2
-    assert result["info"][0]["datacenter"] == "datacenter-1001"
-    assert result["info"][1]["datacenter"] == "datacenter-1002"
 
 
-def test_list_datacenters_with_multiple_filters(
+def test_list_resource_pools_with_multiple_filters(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test listing datacenters with multiple filters."""
+    """Test listing resource pools with multiple filters."""
     patch_create_client.return_value = mock_client
     mock_module = MagicMock()
     patch_ansible_module.return_value = mock_module
 
     module_args.update(
         {
-            "names": ["production-dc"],
-            "folders": ["group-d1"],
+            "names": ["production-pool"],
+            "clusters": ["domain-c1007"],
         }
     )
     mock_module.params = set_module_args(module_args)
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
-    # First GET returns the list summary, second GET fetches details for the item
     list_response = [
-        {"datacenter": "datacenter-1001", "name": "production-dc"},
+        {"resource_pool": "resgroup-1001", "name": "production-pool"},
     ]
     detail_response = {
-        "datacenter": "datacenter-1001",
-        "name": "production-dc",
-        "datastore_folder": "group-s1002",
+        "resource_pool": "resgroup-1001",
+        "name": "production-pool",
+        "cpu_allocation": {"reservation": 2000, "limit": 8000},
     }
 
     mock_client.get.side_effect = [
@@ -358,7 +362,7 @@ def test_list_datacenters_with_multiple_filters(
     result = exc.value.kwargs
     assert "info" in result
     assert len(result["info"]) == 1
-    assert result["info"][0]["name"] == "production-dc"
+    assert result["info"][0]["name"] == "production-pool"
 
 
 # ============================================================================
@@ -372,24 +376,23 @@ class TestCheckMode:
     def test_get_check_mode(
         self, patch_create_client, patch_ansible_module, mock_client, module_args
     ):
-        """Test getting a datacenter in check mode."""
+        """Test getting a resource pool in check mode."""
         patch_create_client.return_value = mock_client
         mock_module = MagicMock()
         patch_ansible_module.return_value = mock_module
 
         module_args.update(
             {
-                "datacenter": "datacenter-1009",
+                "resource_pool": "resgroup-1009",
             }
         )
         mock_module.params = set_module_args(module_args)
         mock_module.exit_json.side_effect = exit_json
         mock_module.check_mode = True
 
-        # Mock GET response
         get_response = {
-            "datacenter": "datacenter-1009",
-            "name": "my_datacenter",
+            "resource_pool": "resgroup-1009",
+            "name": "my_resource_pool",
         }
 
         mock_client.get.return_value = _response(200, get_response)
@@ -398,15 +401,14 @@ class TestCheckMode:
             module_under_test.main()
 
         result = exc.value.kwargs
-        # Info modules execute normally in check mode (read-only)
-        assert result["id"] == "datacenter-1009"
+        assert result["id"] == "resgroup-1009"
         assert "value" in result
         mock_client.get.assert_called_once()
 
     def test_list_check_mode(
         self, patch_create_client, patch_ansible_module, mock_client, module_args
     ):
-        """Test listing datacenters in check mode."""
+        """Test listing resource pools in check mode."""
         patch_create_client.return_value = mock_client
         mock_module = MagicMock()
         patch_ansible_module.return_value = mock_module
@@ -416,13 +418,12 @@ class TestCheckMode:
         mock_module.exit_json.side_effect = exit_json
         mock_module.check_mode = True
 
-        # First GET returns the list summary, second GET fetches details
         list_response = [
-            {"datacenter": "datacenter-1001", "name": "dc1"},
+            {"resource_pool": "resgroup-1001", "name": "pool-a"},
         ]
         detail_response = {
-            "datacenter": "datacenter-1001",
-            "name": "dc1",
+            "resource_pool": "resgroup-1001",
+            "name": "pool-a",
         }
 
         mock_client.get.side_effect = [
@@ -434,7 +435,6 @@ class TestCheckMode:
             module_under_test.main()
 
         result = exc.value.kwargs
-        # Info modules execute normally in check mode (read-only)
         assert "info" in result
         assert len(result["info"]) == 1
 
@@ -449,15 +449,17 @@ class TestModuleConstants:
 
     def test_moid_parameter_hints(self):
         """Test that MOID parameter hints are correct."""
-        assert module_under_test.MOID_PARAMETER_HINTS == ["datacenter"]
+        assert module_under_test.MOID_PARAMETER_HINTS == ["resource_pool"]
 
     def test_list_endpoint(self):
         """Test that list API endpoint is correct."""
-        assert module_under_test.LIST_ENDPOINT == "/vcenter/datacenter"
+        assert module_under_test.LIST_ENDPOINT == "/vcenter/resource-pool"
 
     def test_item_endpoint(self):
         """Test that item API endpoint is correct."""
-        assert module_under_test.ITEM_ENDPOINT == "/vcenter/datacenter/{datacenter}"
+        assert (
+            module_under_test.ITEM_ENDPOINT == "/vcenter/resource-pool/{resource_pool}"
+        )
 
 
 # ============================================================================
@@ -468,20 +470,20 @@ class TestModuleConstants:
 class TestArgumentSpec:
     """Test the module argument specification."""
 
-    def test_create_module_argument_spec_datacenter(self):
-        """Test that datacenter parameter is correctly defined."""
+    def test_create_module_argument_spec_resource_pool(self):
+        """Test that resource_pool parameter is correctly defined."""
         spec = module_under_test.create_module_argument_spec()
 
-        assert "datacenter" in spec
-        assert spec["datacenter"]["type"] == "str"
+        assert "resource_pool" in spec
+        assert spec["resource_pool"]["type"] == "str"
 
-    def test_create_module_argument_spec_datacenters(self):
-        """Test that datacenters filter parameter is correctly defined."""
+    def test_create_module_argument_spec_resource_pools(self):
+        """Test that resource_pools filter parameter is correctly defined."""
         spec = module_under_test.create_module_argument_spec()
 
-        assert "datacenters" in spec
-        assert spec["datacenters"]["type"] == "list"
-        assert spec["datacenters"]["elements"] == "str"
+        assert "resource_pools" in spec
+        assert spec["resource_pools"]["type"] == "list"
+        assert spec["resource_pools"]["elements"] == "str"
 
     def test_create_module_argument_spec_names(self):
         """Test that names filter parameter is correctly defined."""
@@ -490,11 +492,37 @@ class TestArgumentSpec:
         assert "names" in spec
         assert spec["names"]["type"] == "list"
         assert spec["names"]["elements"] == "str"
+        assert spec["names"]["aliases"] == ["filter_names"]
 
-    def test_create_module_argument_spec_folders(self):
-        """Test that folders filter parameter is correctly defined."""
+    def test_create_module_argument_spec_parent_resource_pools(self):
+        """Test that parent_resource_pools parameter is correctly defined."""
         spec = module_under_test.create_module_argument_spec()
 
-        assert "folders" in spec
-        assert spec["folders"]["type"] == "list"
-        assert spec["folders"]["elements"] == "str"
+        assert "parent_resource_pools" in spec
+        assert spec["parent_resource_pools"]["type"] == "list"
+        assert spec["parent_resource_pools"]["elements"] == "str"
+
+    def test_create_module_argument_spec_datacenters(self):
+        """Test that datacenters filter parameter is correctly defined."""
+        spec = module_under_test.create_module_argument_spec()
+
+        assert "datacenters" in spec
+        assert spec["datacenters"]["type"] == "list"
+        assert spec["datacenters"]["elements"] == "str"
+        assert spec["datacenters"]["aliases"] == ["filter_datacenters"]
+
+    def test_create_module_argument_spec_hosts(self):
+        """Test that hosts filter parameter is correctly defined."""
+        spec = module_under_test.create_module_argument_spec()
+
+        assert "hosts" in spec
+        assert spec["hosts"]["type"] == "list"
+        assert spec["hosts"]["elements"] == "str"
+
+    def test_create_module_argument_spec_clusters(self):
+        """Test that clusters filter parameter is correctly defined."""
+        spec = module_under_test.create_module_argument_spec()
+
+        assert "clusters" in spec
+        assert spec["clusters"]["type"] == "list"
+        assert spec["clusters"]["elements"] == "str"

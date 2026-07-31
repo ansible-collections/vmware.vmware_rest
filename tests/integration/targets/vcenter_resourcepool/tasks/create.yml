@@ -1,0 +1,126 @@
+---
+# ============================================================
+# CREATE RESOURCE POOL TESTS
+# ============================================================
+- name: Reset before create expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for create
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_create: "200"
+        Vcenter.ResourcePool_list: "200"
+
+- name: Create a resource pool
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    parent: resgroup-1001
+    state: present
+  register: create_rp
+
+- name: Assert creation success
+  ansible.builtin.assert:
+    that:
+      - create_rp.changed
+      - create_rp.id == 'resource_pool-1001'
+
+- name: Reset before created state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for created state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+        Vcenter.ResourcePool_get: "200"
+
+- name: Create resource pool again (idempotent)
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    parent: resgroup-1001
+    state: present
+  register: create_rp_again
+
+- name: Assert idempotent
+  ansible.builtin.assert:
+    that:
+      - not create_rp_again.changed
+      - create_rp_again.id == 'resource_pool-1001'
+
+- name: Reset before check mode create expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec for deleted state (for check mode test)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+
+- name: Create resource pool in check mode (when doesn't exist)
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: new_resource_pool
+    parent: resgroup-1001
+    state: present
+  check_mode: true
+  register: create_rp_check
+
+- name: Assert check mode reports change when creating
+  ansible.builtin.assert:
+    that:
+      - create_rp_check.changed
+
+- name: Reset before idempotent check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec back to created state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.ResourcePool_list: "200"
+        Vcenter.ResourcePool_get: "200"
+
+- name: Create existing resource pool in check mode (idempotent)
+  vmware.vmware_rest.vcenter_resourcepool:
+    name: my_resource_pool
+    parent: resgroup-1001
+    state: present
+  check_mode: true
+  register: create_rp_check_idem
+
+- name: Assert check mode reports no change when already exists
+  ansible.builtin.assert:
+    that:
+      - not create_rp_check_idem.changed
