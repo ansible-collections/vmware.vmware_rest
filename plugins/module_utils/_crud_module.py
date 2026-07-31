@@ -21,7 +21,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         self,
         module,
         moid_parameter_hints: list,
-        get_operation_config: OperationConfig,
+        get_operation_config: OperationConfig = None,
         list_operation_config: OperationConfig = None,
         create_operation_config: OperationConfig = None,
         delete_operation_config: OperationConfig = None,
@@ -43,7 +43,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
 
     def ensure_absent(self) -> dict:
         result = {"changed": False}
-        resource = self._search_for_resource()
+        resource = self._resolve_resource_context()
         if not resource:
             # Object is already absent, nothing to do
             return result
@@ -62,22 +62,30 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
 
         return result
 
-    def _search_for_resource(self) -> Union[dict, None]:
+    def _resolve_resource_context(self) -> Union[dict, None]:
         """
         Get a resource using the module params. Enrich the resulting dict with
         params or the resource summary to ensure the MOID is present.
         """
+        if self.get_operation_config is None and self.list_operation_config is None:
+            # This is an action only endpoint. There is no resource to lookup, and all the resource
+            # context should be in the params
+            return self.params
+
+        # try to 'get' a resource, either using the resource ID from the params or a singleton api endpoint.
+        # For example, get a specific VM or get the vCenter appliance
         try:
             resource = self._perform_get_operation()
-        except RequiredPathParameterError:
-            if not self.params.get("name"):
-                raise
-        else:
             if resource:
                 return {**self.params, **resource}
             else:
-                return resource
+                return {}
+        except RequiredPathParameterError:
+            if not self.params.get("name") or not self.list_operation_config:
+                raise
 
+        # the get operation failed for whatever reason but we have a name parameter. So we can
+        # use the list operation and look for the resource using the name
         for summary in self._perform_list_operation():
             if summary.get("name") == self.params.get("name"):
                 resource = self._perform_get_operation(resource=summary)
@@ -89,7 +97,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
                     continue
                 return {**summary, **resource}
 
-        return None
+        return {}
 
     def perform_action(self) -> dict:
         """
@@ -99,7 +107,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         action_value = self.params["state"]
         action_operation = self.action_operations[action_value]
         result = {"changed": False, "id": ""}
-        resource = self._search_for_resource()
+        resource = self._resolve_resource_context()
 
         if not resource:
             self.module.fail_json(
@@ -110,10 +118,16 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         resource_id = self._get_moid_attribute_value_from_resource(resource)
         result["id"] = resource_id
         result["changed"] = True
-        path = action_operation.build_path(params={**self.params, **resource})
+        kwargs = {
+            "path": action_operation.build_path(params={**self.params, **resource}),
+            "data": action_operation.build_body(params=self.params),
+            "query": action_operation.build_query(params=self.params),
+        }
+        kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
         http_method = getattr(self.client, action_operation.http_method)
         if not self.module.check_mode:
-            http_method(path=path)
+            http_method(**kwargs)
 
         return result
 
@@ -123,7 +137,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         self._create or self._update, as appropriate.
         """
         result = {"changed": False, "id": ""}
-        resource = self._search_for_resource()
+        resource = self._resolve_resource_context()
 
         if not resource:
             result["id"] = self._create()

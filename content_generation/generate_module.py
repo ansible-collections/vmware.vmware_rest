@@ -1041,7 +1041,7 @@ def _build_action_handler(has_actions: bool) -> str:
         return ""
 
     return """    elif module.params["state"] in ACTION_OPERATIONS:
-        result = crud_module.perform_action()"""
+            result = crud_module.perform_action()"""
 
 
 def _generate_crud_module_main(
