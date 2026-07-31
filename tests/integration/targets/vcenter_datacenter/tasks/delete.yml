@@ -2,6 +2,12 @@
 # ============================================================
 # DELETE DATACENTER TESTS
 # ============================================================
+- name: Reset before delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for delete
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -26,6 +32,12 @@
       - delete_dc.changed
       - delete_dc.id == 'datacenter-1001'
 
+- name: Reset before empty state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for empty state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -48,6 +60,12 @@
   ansible.builtin.assert:
     that:
       - not delete_dc_again.changed
+
+- name: Reset before check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec for final delete test
   ansible.builtin.uri:
@@ -72,6 +90,12 @@
     that:
       - delete_dc_check.changed
 
+- name: Reset before idempotent check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec for empty state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -94,6 +118,12 @@
   ansible.builtin.assert:
     that:
       - not delete_dc_check_idem.changed
+
+- name: Reset before delete by name expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec with datacenter present for final test
   ansible.builtin.uri:

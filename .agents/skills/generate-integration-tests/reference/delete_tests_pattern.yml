@@ -12,6 +12,12 @@
 # ============================================================
 
 # Test 1: Delete by ID
+- name: Reset before delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for delete
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -37,6 +43,12 @@
       - delete_result.id == '<resource_id>'
 
 # Test 2: Idempotent deletion
+- name: Reset before empty state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for empty state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -61,6 +73,12 @@
       - not delete_again.changed
 
 # Test 3: Check mode when resource exists
+- name: Reset before check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec for resource exists
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -85,6 +103,12 @@
       - delete_check.changed
 
 # Test 4: Check mode when resource doesn't exist
+- name: Reset before idempotent check mode delete expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec for empty state
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -109,6 +133,12 @@
       - not delete_check_idem.changed
 
 # Test 5: Delete by name (if name-based lookup is supported)
+- name: Reset before delete by name expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec with resource present for name-based delete
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"

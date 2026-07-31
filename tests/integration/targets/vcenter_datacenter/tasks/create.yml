@@ -2,6 +2,12 @@
 # ============================================================
 # CREATE DATACENTER TESTS
 # ============================================================
+- name: Reset before create expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for create
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -26,6 +32,12 @@
     that:
       - create_dc.changed
       - create_dc.id == 'datacenter-1001'
+
+- name: Reset before created state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec expectations for created state
   ansible.builtin.uri:
@@ -52,6 +64,12 @@
       - not create_dc_again.changed
       - create_dc_again.id == 'datacenter-1001'
 
+- name: Reset before check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec for deleted state (for check mode test)
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -75,6 +93,12 @@
   ansible.builtin.assert:
     that:
       - create_dc_check.changed
+
+- name: Reset before idempotent check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
 
 - name: Load API spec back to created state
   ansible.builtin.uri:

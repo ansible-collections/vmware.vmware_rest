@@ -282,9 +282,19 @@ Without running tests, these critical bugs would have shipped!
 
 ### MockServer State Management
 
-The MockServer maintains the current API state. Tests must explicitly load the appropriate mock spec before each operation:
+The MockServer maintains the current API state. Tests must explicitly load the appropriate mock spec before each operation.
+
+**IMPORTANT — Reset Before Each Expectation Load**: MockServer 7.x treats `PUT /mockserver/openapi` as **additive** — each call adds expectations without clearing previous ones. This means expectations from earlier test steps bleed into later ones, causing non-deterministic failures (e.g., an "empty list" expectation competing with a "resource exists" expectation).
+
+**You must reset MockServer before every expectation load** (except the first one in `main.yml`, since MockServer has just started). Use the `prepare_simulator` role with `prepare_simulator_reset: true`:
 
 ```yaml
+- name: Reset before <context> expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for <state>
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -297,10 +307,13 @@ The MockServer maintains the current API state. Tests must explicitly load the a
         <OperationId>_<operation>: "<response_code>"
 ```
 
+The reset clears all expectations and re-establishes the session authentication expectation (required for modules to connect).
+
 **Common patterns**:
 - Load `default.json` before testing creation of non-existent resource
 - Load `created.json` before testing idempotent operations
 - Switch specs to simulate state changes
+- Always reset before switching specs to avoid expectation conflicts
 
 ### Assertion Patterns
 
@@ -462,6 +475,7 @@ The mock generator automatically determines these from the module's `LIST_PATH`.
 
 ### Tests fail on idempotency check
 - Mock spec not switched to `created.json` state
+- MockServer expectations accumulated from prior steps (add reset before expectation load)
 - Module may have actual bug (report to user)
 
 ### Check mode test fails
@@ -473,6 +487,11 @@ The mock generator automatically determines these from the module's `LIST_PATH`.
 - The mock generator creates `updated.json` identical to `created.json` as a baseline
 - You must manually edit it to reflect your test's UPDATE values (see Step 2.5)
 - Compare GET response values with what your UPDATE operation sends
+
+### Tests fail with unexpected responses or wrong data
+- MockServer expectations from previous test steps may still be active
+- Add a `prepare_simulator` reset before each `Load API spec expectations` task
+- The only exception is the first load in `main.yml` (MockServer just started)
 
 ## Example: Complete Test Generation
 
