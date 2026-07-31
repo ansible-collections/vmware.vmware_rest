@@ -1,0 +1,25 @@
+---
+- name: Reset MockServer expectations
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/reset"
+    method: PUT
+    status_code: [200]
+
+- name: Re-establish session authentication
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      id: session-auth
+      httpRequest:
+        method: POST
+        path: /rest/com/vmware/cis/session
+      httpResponse:
+        statusCode: 200
+        headers:
+          Content-Type:
+            - application/json
+        body:
+          value: mock-session-id

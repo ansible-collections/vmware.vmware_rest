@@ -24,6 +24,12 @@
       - list_empty.<resource_plural> | length == 0
 
 # Test 2: Get by ID
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for get
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"
@@ -51,6 +57,12 @@
       # Add more field checks as appropriate
 
 # Test 3: List multiple items
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
 - name: Load API spec expectations for multiple
   ansible.builtin.uri:
     url: "{{ mockserver_url }}/mockserver/openapi"

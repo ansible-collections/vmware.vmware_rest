@@ -1,5 +1,6 @@
 ---
 prepare_simulator_mock_api_spec_file_dir: ""
+prepare_simulator_reset: false
 mockserver_port: 1080
 mockserver_image: "mockserver/mockserver:latest"
 mockserver_container_name: "vmware_rest_mockserver"
