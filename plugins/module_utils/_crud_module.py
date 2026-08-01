@@ -152,7 +152,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         result = {"changed": False, "id": ""}
         resource = self._resolve_resource_context()
 
-        if not resource or resource == self.params:
+        if not resource or resource is self.params:
             new_id, value = self._create()
             result["id"] = new_id
             result["value"] = value
