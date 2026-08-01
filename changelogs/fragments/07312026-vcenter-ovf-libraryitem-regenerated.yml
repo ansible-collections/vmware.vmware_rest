@@ -2,5 +2,4 @@
 breaking_changes:
   - vcenter_ovf_libraryitem - The ``deployment_spec.accept_all_EULA`` parameter has been renamed
     to ``deployment_spec.accept_all_eula`` (snake_case) in the vSphere 9.1.0 API specification and
-    module arguments. You must update your module parameter to be all lowercase. The module will
-    still work with older versions of the API.
+    module arguments. The module will not work with older versions of the API.
