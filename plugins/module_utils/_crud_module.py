@@ -186,7 +186,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
                 result["changed"] = False
                 return
 
-        except KeyError:
+        except (KeyError, IndexError):
             pass
 
         self.module.fail_json(

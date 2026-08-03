@@ -760,8 +760,6 @@ def main():
     try:
         if module.params["state"] == "present":
             result = crud_module.ensure_present()
-        elif module.params["state"] == "absent":
-            result = crud_module.ensure_absent()
         elif module.params["state"] in ACTION_OPERATIONS:
             result = crud_module.perform_action()
         else:
