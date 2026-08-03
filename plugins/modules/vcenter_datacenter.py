@@ -104,6 +104,12 @@ id:
   returned: When state is present, or when a resource is deleted, or when state is set to a supported action.
   sample: datacenter-1001
   type: str
+value:
+  description: The raw API response body from the vCenter operation.
+  returned: On success
+  type: raw
+  sample:
+    name: my-datacenter
 """
 
 

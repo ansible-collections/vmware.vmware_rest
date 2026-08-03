@@ -584,11 +584,7 @@ def _get_singular_form(plural_name: str) -> Optional[str]:
         return None
     if plural_name.endswith("ies"):
         return plural_name[:-3] + "y"
-    if (
-        plural_name.endswith("ses")
-        or plural_name.endswith("xes")
-        or plural_name.endswith("zes")
-    ):
+    if plural_name.endswith(("ses", "xes", "zes")):
         return plural_name[:-2]
     if plural_name.endswith("s"):
         return plural_name[:-1]
@@ -1028,20 +1024,53 @@ def _build_operation_assignments(
     return "\n".join(assignments)
 
 
-def _build_action_handler(has_actions: bool) -> str:
-    """Build action handler code for CRUD module.
+def _build_state_handler(available_ops: Dict[str, bool], has_actions: bool) -> str:
+    """Build the state dispatch block for CRUD module main().
+
+    Only includes branches for states the module actually supports,
+    avoiding unreachable code.
 
     Args:
+        available_ops: Dict of operation availability flags
         has_actions: True if actions are defined
 
     Returns:
-        Action handler code or empty string
+        String of if/elif branches for state handling
     """
-    if not has_actions:
-        return ""
+    has_present = available_ops.get("has_create") or available_ops.get("has_update")
+    has_absent = available_ops.get("has_delete")
 
-    return """    elif module.params["state"] in ACTION_OPERATIONS:
-        result = crud_module.perform_action()"""
+    branches = []
+
+    if has_present:
+        branches.append(
+            'module.params["state"] == "present":\n'
+            "            result = crud_module.ensure_present()"
+        )
+
+    if has_absent:
+        branches.append(
+            'module.params["state"] == "absent":\n'
+            "            result = crud_module.ensure_absent()"
+        )
+
+    if has_actions:
+        branches.append(
+            'module.params["state"] in ACTION_OPERATIONS:\n'
+            "            result = crud_module.perform_action()"
+        )
+
+    lines = []
+    for i, branch in enumerate(branches):
+        keyword = "if" if i == 0 else "elif"
+        lines.append(f"        {keyword} {branch}")
+
+    lines.append(
+        "        else:\n"
+        '            module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))'
+    )
+
+    return "\n".join(lines)
 
 
 def _generate_crud_module_main(
@@ -1057,7 +1086,7 @@ def _generate_crud_module_main(
         Python code string for CRUD module main() function
     """
     op_assignments_str = _build_operation_assignments(available_ops, has_actions)
-    action_handler = _build_action_handler(has_actions)
+    state_handler = _build_state_handler(available_ops, has_actions)
 
     return f"""
 def main():
@@ -1073,13 +1102,7 @@ def main():
     )
 
     try:
-        if module.params["state"] == "present":
-            result = crud_module.ensure_present()
-        elif module.params["state"] == "absent":
-            result = crud_module.ensure_absent()
-    {action_handler}
-        else:
-            module.fail_json(msg="Unsupported state: {{0}}".format(module.params["state"]))
+{state_handler}
     except VmwareModuleError as e:
         module.fail_json(**e.to_module_fail_json_output())
 

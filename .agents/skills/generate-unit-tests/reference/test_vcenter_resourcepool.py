@@ -183,7 +183,7 @@ def test_ensure_present_creates_resource(crud_module, mock_client):
     crud_module.params["parent"] = "parent-pool-1"
 
     # Resource not found, will create
-    with patch.object(crud_module, "_search_for_resource", return_value=None):
+    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
         create_response = MagicMock()
         create_response.status = 201
         create_response.json = "pool-1"
@@ -215,7 +215,7 @@ def test_ensure_present_creates_resource_with_nested_params(crud_module, mock_cl
     }
 
     # Resource not found, will create
-    with patch.object(crud_module, "_search_for_resource", return_value=None):
+    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
         create_response = MagicMock()
         create_response.status = 201
         create_response.json = "pool-1"
@@ -253,7 +253,7 @@ def test_ensure_present_updates_resource(crud_module, mock_client):
     existing_resource = {"resource_pool": "pool-1", "name": "old_pool"}
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         update_response = MagicMock()
         update_response.status = 200
@@ -289,7 +289,7 @@ def test_ensure_present_updates_nested_params(crud_module, mock_client):
     }
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         update_response = MagicMock()
         update_response.status = 200
@@ -329,7 +329,7 @@ def test_ensure_present_no_changes(crud_module, mock_client):
     }
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         result = crud_module.ensure_present()
 
@@ -353,7 +353,7 @@ def test_ensure_absent_deletes_resource(crud_module, mock_client):
     existing_resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         delete_response = MagicMock()
         delete_response.status = 204
@@ -376,7 +376,7 @@ def test_ensure_absent_by_name(crud_module, mock_client):
     existing_resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         delete_response = MagicMock()
         delete_response.status = 204
@@ -395,7 +395,7 @@ def test_ensure_absent_already_absent(crud_module, mock_client):
     crud_module.params["resource_pool"] = "pool-999"
 
     # Resource not found
-    with patch.object(crud_module, "_search_for_resource", return_value=None):
+    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
         result = crud_module.ensure_absent()
 
     assert result["changed"] is False
@@ -407,7 +407,7 @@ def test_ensure_absent_already_absent(crud_module, mock_client):
 # ============================================================================
 
 
-def test_search_for_resource_by_id(crud_module, mock_client):
+def test_resolve_resource_context_by_id(crud_module, mock_client):
     """
     Test searching for a resource by its ID.
     """
@@ -422,14 +422,14 @@ def test_search_for_resource_by_id(crud_module, mock_client):
     }
     mock_client.get.return_value = get_response
 
-    result = crud_module._search_for_resource()
+    result = crud_module._resolve_resource_context()
 
     assert result is not None
     assert result["resource_pool"] == "pool-1"
     assert result["name"] == "my_pool"
 
 
-def test_search_for_resource_by_name(crud_module, mock_client):
+def test_resolve_resource_context_by_name(crud_module, mock_client):
     """
     Test searching for a resource by name when ID not provided.
     """
@@ -444,14 +444,14 @@ def test_search_for_resource_by_name(crud_module, mock_client):
     ]
     mock_client.get.return_value = list_response
 
-    result = crud_module._search_for_resource()
+    result = crud_module._resolve_resource_context()
 
     assert result is not None
     assert result["resource_pool"] == "pool-1"
     assert result["name"] == "my_pool"
 
 
-def test_search_for_resource_not_found_by_id(crud_module, mock_client):
+def test_resolve_resource_context_not_found_by_id(crud_module, mock_client):
     """
     Test searching for a resource by ID that doesn't exist.
     """
@@ -461,12 +461,12 @@ def test_search_for_resource_not_found_by_id(crud_module, mock_client):
     get_response.status = 404
     mock_client.get.return_value = get_response
 
-    result = crud_module._search_for_resource()
+    result = crud_module._resolve_resource_context()
 
-    assert result is None
+    assert result == {}
 
 
-def test_search_for_resource_not_found_by_name(crud_module, mock_client):
+def test_resolve_resource_context_not_found_by_name(crud_module, mock_client):
     """
     Test searching for a resource by name that doesn't exist.
     """
@@ -480,9 +480,9 @@ def test_search_for_resource_not_found_by_name(crud_module, mock_client):
     ]
     mock_client.get.return_value = list_response
 
-    result = crud_module._search_for_resource()
+    result = crud_module._resolve_resource_context()
 
-    assert result is None
+    assert result == {}
 
 
 def test_calculate_resource_diff_simple(crud_module):
@@ -572,7 +572,7 @@ def test_ensure_present_check_mode_create(crud_module, mock_client):
     crud_module.params["parent"] = "parent-1"
     crud_module.module.check_mode = True
 
-    with patch.object(crud_module, "_search_for_resource", return_value=None):
+    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
         result = crud_module.ensure_present()
 
     assert result["changed"] is True
@@ -591,7 +591,7 @@ def test_ensure_present_check_mode_update(crud_module, mock_client):
     existing_resource = {"resource_pool": "pool-1", "name": "old_pool"}
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         result = crud_module.ensure_present()
 
@@ -611,7 +611,7 @@ def test_ensure_absent_check_mode(crud_module, mock_client):
     existing_resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
     with patch.object(
-        crud_module, "_search_for_resource", return_value=existing_resource
+        crud_module, "_resolve_resource_context", return_value=existing_resource
     ):
         result = crud_module.ensure_absent()
 

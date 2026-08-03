@@ -22,7 +22,7 @@ class VmwareRestModuleBase(ABC):
         self,
         module,
         moid_parameter_hints: list,
-        get_operation_config: OperationConfig,
+        get_operation_config: OperationConfig = None,
         list_operation_config: OperationConfig = None,
     ):
         self.module = module

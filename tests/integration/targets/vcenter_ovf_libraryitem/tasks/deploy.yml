@@ -1,0 +1,155 @@
+---
+# ============================================================
+# DEPLOY ACTION TESTS
+# ============================================================
+
+# Test 1: Deploy an OVF library item
+- name: Reset before deploy expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for deploy (resource exists)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "200"
+        Vcenter.Ovf.LibraryItem_action: "200"
+
+- name: Deploy an OVF library item
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-1001
+    state: deploy
+    target:
+      library_id: lib-1
+    deployment_spec:
+      name: my-deployed-vm
+      accept_all_eula: true
+      storage_provisioning: thin
+  register: deploy_result
+
+- name: Assert deploy success
+  ansible.builtin.assert:
+    that:
+      - deploy_result.changed
+      - deploy_result.id == 'lib-item-1001'
+
+# Test 2: Deploy in check mode (resource exists)
+- name: Reset before deploy check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for deploy check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "200"
+        Vcenter.Ovf.LibraryItem_action: "200"
+
+- name: Deploy OVF library item in check mode
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-1001
+    state: deploy
+    target:
+      library_id: lib-1
+    deployment_spec:
+      name: my-deployed-vm
+      accept_all_eula: true
+      storage_provisioning: thin
+  check_mode: true
+  register: deploy_check
+
+- name: Assert deploy check mode reports change
+  ansible.builtin.assert:
+    that:
+      - deploy_check.changed
+      - deploy_check.id == 'lib-item-1001'
+
+# Test 3: Deploy with full parameters
+- name: Reset before full deploy expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for full deploy
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "200"
+        Vcenter.Ovf.LibraryItem_action: "200"
+
+- name: Deploy OVF library item with network mappings
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-1001
+    state: deploy
+    target:
+      library_id: lib-1
+    deployment_spec:
+      name: my-deployed-vm
+      annotation: Deployed from content library
+      accept_all_eula: true
+      network_mappings:
+        VM Network: network-1
+      storage_provisioning: thin
+      default_datastore_id: datastore-1
+  register: deploy_full_result
+
+- name: Assert full deploy success
+  ansible.builtin.assert:
+    that:
+      - deploy_full_result.changed
+      - deploy_full_result.id == 'lib-item-1001'
+
+# Test 4: Deploy fails when resource not found
+- name: Reset before deploy not found expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for deploy (resource not found)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/not_found.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "404"
+
+- name: Deploy OVF library item that does not exist
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-9999
+    state: deploy
+    target:
+      library_id: lib-1
+    deployment_spec:
+      name: my-deployed-vm
+      accept_all_eula: true
+  register: deploy_not_found
+  ignore_errors: true
+
+- name: Assert deploy fails when resource not found
+  ansible.builtin.assert:
+    that:
+      - deploy_not_found.failed

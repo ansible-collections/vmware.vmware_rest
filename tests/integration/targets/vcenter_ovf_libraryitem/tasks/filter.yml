@@ -1,0 +1,103 @@
+---
+# ============================================================
+# FILTER ACTION TESTS
+# ============================================================
+
+# Test 1: Filter an OVF library item
+- name: Reset before filter expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for filter (resource exists)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "200"
+        Vcenter.Ovf.LibraryItem_action: "200"
+
+- name: Filter an OVF library item to get deployment info
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-1001
+    state: filter
+    target:
+      library_id: lib-1
+  register: filter_result
+
+- name: Assert filter success
+  ansible.builtin.assert:
+    that:
+      - filter_result.changed
+      - filter_result.id == 'lib-item-1001'
+
+# Test 2: Filter in check mode
+- name: Reset before filter check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for filter check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "200"
+        Vcenter.Ovf.LibraryItem_action: "200"
+
+- name: Filter OVF library item in check mode
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-1001
+    state: filter
+    target:
+      library_id: lib-1
+  check_mode: true
+  register: filter_check
+
+- name: Assert filter check mode reports change
+  ansible.builtin.assert:
+    that:
+      - filter_check.changed
+      - filter_check.id == 'lib-item-1001'
+
+# Test 3: Filter fails when resource not found
+- name: Reset before filter not found expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for filter (resource not found)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/not_found.json"
+      operationsAndResponses:
+        Vcenter.Ovf.LibraryItem_get: "404"
+
+- name: Filter OVF library item that does not exist
+  vmware.vmware_rest.vcenter_ovf_libraryitem:
+    ovf_library_item_id: lib-item-9999
+    state: filter
+    target:
+      library_id: lib-1
+  register: filter_not_found
+  ignore_errors: true
+
+- name: Assert filter fails when resource not found
+  ansible.builtin.assert:
+    that:
+      - filter_not_found.failed

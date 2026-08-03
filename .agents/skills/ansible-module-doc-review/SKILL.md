@@ -156,6 +156,17 @@ id:
   type: str
 ```
 
+CRUD modules also return the raw API response body:
+
+```yaml
+value:
+  description: The raw API response body from the vCenter operation.
+  returned: On success
+  sample:
+    succeeded: true
+  type: raw
+```
+
 ## Step-by-Step Review Process
 
 ### Step 1: Identify the Module Type
@@ -196,7 +207,7 @@ Verify the examples:
 Check return value documentation:
 
 1. For INFO modules: Verify `id`, `value`, and `info` are documented (Hint: is the module name states with `appliance_`, the `id` value will never be returned)
-2. For CRUD modules: Verify `id` is documented (Hint: is the module name states with `appliance_`, the `id` value will never be returned)
+2. For CRUD modules: Verify `id` and `value` are documented (Hint: is the module name states with `appliance_`, the `id` value will never be returned)
 3. Ensure each return value has description, returned, type, and sample
 4. Verify samples are realistic (check API spec if needed)
 

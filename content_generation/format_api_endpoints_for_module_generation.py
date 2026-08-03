@@ -230,6 +230,10 @@ def extract_path_parameters(
 def _merge_param_type(merged: Dict[str, Any], params: Dict[str, Any]) -> None:
     """Merge parameters of a specific type (body or query) into the merged dict.
 
+    When the same parameter name appears in multiple operations with different
+    schemas (e.g., ``target`` used as both CreateTarget and DeploymentTarget),
+    their properties are merged into a single union so no sub-fields are lost.
+
     Args:
         merged: Dictionary to merge into (modified in place)
         params: Parameters to merge
@@ -238,6 +242,22 @@ def _merge_param_type(merged: Dict[str, Any], params: Dict[str, Any]) -> None:
         if param_name not in merged:
             merged[param_name] = param_info.copy()
             merged[param_name]["required"] = False
+        elif (
+            merged[param_name].get("type") == "object"
+            and param_info.get("type") == "object"
+            and "properties" in merged[param_name]
+            and "properties" in param_info
+        ):
+            for prop_name, prop_value in param_info["properties"].items():
+                if prop_name not in merged[param_name]["properties"]:
+                    new_prop = prop_value.copy()
+                    merged[param_name]["properties"][prop_name] = new_prop
+
+            # When the same parent param spans multiple operations with
+            # different schemas, no sub-property can be globally required.
+            # Per-operation body_specs enforce the real requirements at runtime.
+            for prop_info in merged[param_name]["properties"].values():
+                prop_info["required"] = False
 
 
 def _process_method_data(merged: Dict[str, Any], method_data: Dict[str, Any]) -> None:
@@ -583,13 +603,20 @@ def _create_endpoint_dict(uri: str, operations: Dict[str, Any]) -> Dict[str, Any
     return {"uri": uri, "operations": operations}
 
 
+_SINGLETON_OVERRIDE_AS_LIST = {
+    "vcenter_ovf_libraryitem",
+}
+
+
 def _assign_endpoints_by_count(
     non_action_endpoints: List[Dict[str, Any]],
+    module_name: str = "",
 ) -> Tuple[Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
     """Assign list and item endpoints based on singleton resource logic.
 
     Args:
         non_action_endpoints: List of non-action endpoint data
+        module_name: Module name, used to check singleton overrides
 
     Returns:
         Tuple of (list_endpoint, item_endpoint)
@@ -598,9 +625,16 @@ def _assign_endpoints_by_count(
     item_endpoint = None
 
     if len(non_action_endpoints) == 1:
-        # Singleton resource: single endpoint is always ITEM
         endpoint = non_action_endpoints[0]
-        item_endpoint = _create_endpoint_dict(endpoint["uri"], endpoint["operations"])
+        if module_name in _SINGLETON_OVERRIDE_AS_LIST:
+            list_endpoint = _create_endpoint_dict(
+                endpoint["uri"], endpoint["operations"]
+            )
+        else:
+            # Singleton resource: single endpoint is always ITEM
+            item_endpoint = _create_endpoint_dict(
+                endpoint["uri"], endpoint["operations"]
+            )
     elif len(non_action_endpoints) >= 2:
         if len(non_action_endpoints) > 2:
             print(
@@ -968,7 +1002,9 @@ def format_api_endpoints_for_module_generation(
     )
 
     # Assign list and item endpoints based on count
-    list_endpoint, item_endpoint = _assign_endpoints_by_count(non_action_endpoints)
+    list_endpoint, item_endpoint = _assign_endpoints_by_count(
+        non_action_endpoints, module_name
+    )
 
     # Determine if we should exclude list GET query parameters from module options
     exclude_list_get_from_options = _should_omit_list_get_query(
