@@ -112,6 +112,8 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         """
         This is the primary entrypoint when state == some action (connect, disconnect, deploy).
         It will always attempt to perform the action as requested.
+        Validation of MOIDs in the URI (does this resource even exist?) are left up to the vSphere API
+        to simplify code. It can provide better information than we can in the current context.
         """
         action_value = self.params["state"]
         action_operation = self.action_operations[action_value]
@@ -141,8 +143,6 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         """
         This is the primary routing entrypoint for state == present. It should call and route to
         self._create or self._update, as appropriate.
-        Validation of MOIDs in the URI (does this resource even exist?) are left up to the vSphere API
-        to simplify code. It can provide better information than we can in the current context.
         """
         result = {"changed": False, "id": ""}
         resource = self._resolve_resource_context()

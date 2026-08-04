@@ -44,6 +44,7 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
             if self.list_operation_config is None:
                 raise
 
+        # Fall through to list operation when GET requires a path parameter we don't have
         return self.normalize_info_results(
             query_results=self._list_resource_details(),
             single_resource=False,

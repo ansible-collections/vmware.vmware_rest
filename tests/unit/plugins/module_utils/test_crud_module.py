@@ -380,17 +380,13 @@ def test_perform_action_success(crud_module, mock_client):
         http_method="post",
     )
 
-    mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
     action_response = MagicMock()
     action_response.status = 200
     action_response.json = {"succeeded": True}
     action_response.data = b'{"succeeded": true}'
     mock_client.post.return_value = action_response
 
-    with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
-    ):
-        result = crud_module.perform_action()
+    result = crud_module.perform_action()
 
     assert result["changed"] is True
     assert result["id"] == "pool-1"
@@ -408,12 +404,7 @@ def test_perform_action_check_mode(crud_module, mock_client, mock_module):
         http_method="post",
     )
 
-    mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
-
-    with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
-    ):
-        result = crud_module.perform_action()
+    result = crud_module.perform_action()
 
     assert result["changed"] is True
     assert result["id"] == "pool-1"
