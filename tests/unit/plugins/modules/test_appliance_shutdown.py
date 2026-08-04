@@ -2,385 +2,357 @@
 # Copyright: (c) 2026, Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-"""
-Unit tests for appliance_shutdown module.
-
-Tests validate the action-only CRUD module behavior using the OperationConfig-based
-architecture with mocked HTTP clients. The appliance_shutdown module supports
-cancel, poweroff, and reboot actions via perform_action().
-"""
-
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch, MagicMock
 
-from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_configs import (
-    OperationConfig,
-)
-from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module import (
-    VmwareRestCrudModuleBase,
+from ansible_collections.vmware.vmware_rest.plugins.modules import (
+    appliance_shutdown as module_under_test,
 )
 
-from ...common.utils import CONNECTION_PARAMS, fail_json
+from ...common.utils import (
+    AnsibleExitJson,
+    exit_json,
+    set_module_args,
+    _response,
+)
 
 
-@pytest.fixture
-def mock_module():
-    """
-    Mock Ansible module object.
-    """
-    module = MagicMock()
-    module.params = CONNECTION_PARAMS.copy()
-    module.check_mode = False
-    module.fail_json = fail_json
-    return module
+@pytest.fixture(autouse=True)
+def patch_ansible_module():
+    """Automatically patch AnsibleModule for all tests."""
+    with patch.object(module_under_test, "AnsibleModule") as mock:
+        yield mock
 
 
-@pytest.fixture
-def crud_module(mock_module, mock_client):
-    """
-    Create CRUD module instance with appliance shutdown operation configs.
+@pytest.fixture(autouse=True)
+def patch_create_client():
+    """Automatically patch _create_client for all tests."""
+    with patch.object(
+        module_under_test.VmwareRestCrudModuleBase, "_create_client"
+    ) as mock:
+        yield mock
 
-    Note: mock_client is provided by conftest.py - do not redefine it.
-    """
-    get_operation = OperationConfig(
-        name="get",
-        uri="/appliance/shutdown",
-        http_method="GET",
+
+# ============================================================================
+# Test ACTION Operations - Reboot
+# ============================================================================
+
+
+def test_action_reboot(
+    patch_create_client, patch_ansible_module, mock_client, module_args
+):
+    """Test performing a reboot action."""
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    module_args.update(
+        {
+            "state": "reboot",
+            "delay": 10,
+            "reason": "Scheduled maintenance",
+        }
     )
+    mock_module.params = set_module_args(module_args)
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
 
-    action_operations = {
-        "cancel": OperationConfig(
-            name="cancel",
-            uri="/appliance/shutdown?action=cancel",
-            http_method="POST",
-        ),
-        "poweroff": OperationConfig(
-            name="poweroff",
-            uri="/appliance/shutdown?action=poweroff",
-            http_method="POST",
-            body_spec={
-                "delay": {"required": True},
-                "reason": {"required": True},
-            },
-        ),
-        "reboot": OperationConfig(
-            name="reboot",
-            uri="/appliance/shutdown?action=reboot",
-            http_method="POST",
-            body_spec={
-                "delay": {"required": True},
-                "reason": {"required": True},
-            },
-        ),
-    }
+    mock_client.post.return_value = _response(200, {})
 
-    with patch(
-        "ansible_collections.vmware.vmware_rest.plugins.module_utils._module_base.Client",
-        return_value=mock_client,
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    mock_module.exit_json.assert_called_once()
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    mock_client.post.assert_called_once()
+    call_args = mock_client.post.call_args
+    assert call_args[1]["path"] == "/appliance/shutdown?action=reboot"
+    assert call_args[1]["data"]["delay"] == 10
+    assert call_args[1]["data"]["reason"] == "Scheduled maintenance"
+
+
+def test_action_reboot_immediate(
+    patch_create_client, patch_ansible_module, mock_client, module_args
+):
+    """Test performing an immediate reboot with zero delay."""
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    module_args.update(
+        {
+            "state": "reboot",
+            "delay": 0,
+            "reason": "Emergency reboot",
+        }
+    )
+    mock_module.params = set_module_args(module_args)
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.post.return_value = _response(200, {})
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    call_args = mock_client.post.call_args
+    assert call_args[1]["data"]["delay"] == 0
+
+
+# ============================================================================
+# Test ACTION Operations - Poweroff
+# ============================================================================
+
+
+def test_action_poweroff(
+    patch_create_client, patch_ansible_module, mock_client, module_args
+):
+    """Test performing a poweroff action."""
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    module_args.update(
+        {
+            "state": "poweroff",
+            "delay": 5,
+            "reason": "Hardware maintenance",
+        }
+    )
+    mock_module.params = set_module_args(module_args)
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.post.return_value = _response(200, {})
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    mock_module.exit_json.assert_called_once()
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    mock_client.post.assert_called_once()
+    call_args = mock_client.post.call_args
+    assert call_args[1]["path"] == "/appliance/shutdown?action=poweroff"
+    assert call_args[1]["data"]["delay"] == 5
+    assert call_args[1]["data"]["reason"] == "Hardware maintenance"
+
+
+def test_action_poweroff_immediate(
+    patch_create_client, patch_ansible_module, mock_client, module_args
+):
+    """Test performing an immediate poweroff with zero delay."""
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    module_args.update(
+        {
+            "state": "poweroff",
+            "delay": 0,
+            "reason": "Emergency shutdown",
+        }
+    )
+    mock_module.params = set_module_args(module_args)
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.post.return_value = _response(200, {})
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    call_args = mock_client.post.call_args
+    assert call_args[1]["data"]["delay"] == 0
+    assert call_args[1]["data"]["reason"] == "Emergency shutdown"
+
+
+# ============================================================================
+# Test ACTION Operations - Cancel
+# ============================================================================
+
+
+def test_action_cancel(
+    patch_create_client, patch_ansible_module, mock_client, module_args
+):
+    """Test cancelling a pending shutdown (no body required)."""
+    patch_create_client.return_value = mock_client
+    mock_module = MagicMock()
+    patch_ansible_module.return_value = mock_module
+
+    module_args.update(
+        {
+            "state": "cancel",
+        }
+    )
+    mock_module.params = set_module_args(module_args)
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.check_mode = False
+
+    mock_client.post.return_value = _response(200, {})
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        module_under_test.main()
+
+    mock_module.exit_json.assert_called_once()
+    result = exc.value.kwargs
+    assert result["changed"] is True
+    mock_client.post.assert_called_once()
+    call_args = mock_client.post.call_args
+    assert call_args[1]["path"] == "/appliance/shutdown?action=cancel"
+    assert "data" not in call_args[1]
+
+
+# ============================================================================
+# Test Check Mode
+# ============================================================================
+
+
+class TestCheckMode:
+    """Test check mode behavior."""
+
+    def test_reboot_check_mode(
+        self, patch_create_client, patch_ansible_module, mock_client, module_args
     ):
-        module = VmwareRestCrudModuleBase(
-            module=mock_module,
-            moid_parameter_hints=[],
-            get_operation_config=get_operation,
-            action_operations=action_operations,
+        """Test reboot action in check mode."""
+        patch_create_client.return_value = mock_client
+        mock_module = MagicMock()
+        patch_ansible_module.return_value = mock_module
+
+        module_args.update(
+            {
+                "state": "reboot",
+                "delay": 10,
+                "reason": "Scheduled maintenance",
+            }
         )
-        yield module
+        mock_module.params = set_module_args(module_args)
+        mock_module.exit_json.side_effect = exit_json
+        mock_module.check_mode = True
+
+        with pytest.raises(AnsibleExitJson) as exc:
+            module_under_test.main()
+
+        result = exc.value.kwargs
+        assert result["changed"] is True
+        mock_client.post.assert_not_called()
+
+    def test_poweroff_check_mode(
+        self, patch_create_client, patch_ansible_module, mock_client, module_args
+    ):
+        """Test poweroff action in check mode."""
+        patch_create_client.return_value = mock_client
+        mock_module = MagicMock()
+        patch_ansible_module.return_value = mock_module
+
+        module_args.update(
+            {
+                "state": "poweroff",
+                "delay": 0,
+                "reason": "Emergency shutdown",
+            }
+        )
+        mock_module.params = set_module_args(module_args)
+        mock_module.exit_json.side_effect = exit_json
+        mock_module.check_mode = True
+
+        with pytest.raises(AnsibleExitJson) as exc:
+            module_under_test.main()
+
+        result = exc.value.kwargs
+        assert result["changed"] is True
+        mock_client.post.assert_not_called()
+
+    def test_cancel_check_mode(
+        self, patch_create_client, patch_ansible_module, mock_client, module_args
+    ):
+        """Test cancel action in check mode."""
+        patch_create_client.return_value = mock_client
+        mock_module = MagicMock()
+        patch_ansible_module.return_value = mock_module
+
+        module_args.update(
+            {
+                "state": "cancel",
+            }
+        )
+        mock_module.params = set_module_args(module_args)
+        mock_module.exit_json.side_effect = exit_json
+        mock_module.check_mode = True
+
+        with pytest.raises(AnsibleExitJson) as exc:
+            module_under_test.main()
+
+        result = exc.value.kwargs
+        assert result["changed"] is True
+        mock_client.post.assert_not_called()
 
 
 # ============================================================================
-# perform_action() Tests - REBOOT
+# Test Module Constants
 # ============================================================================
 
 
-def test_perform_action_reboot(crud_module, mock_client):
-    """
-    Test performing a reboot action.
-    """
-    crud_module.params["state"] = "reboot"
-    crud_module.params["delay"] = 10
-    crud_module.params["reason"] = "Scheduled maintenance"
+class TestModuleConstants:
+    """Test that module constants are correctly defined."""
 
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "", "shutdown_time": ""}
-    get_response.data = b'{"action": "", "shutdown_time": ""}'
+    def test_moid_parameter_hints(self):
+        """Test that MOID parameter hints are correct."""
+        assert module_under_test.MOID_PARAMETER_HINTS == []
 
-    post_response = MagicMock()
-    post_response.status = 200
-    post_response.json = {}
-    post_response.data = b"{}"
+    def test_list_endpoint(self):
+        """Test that list API endpoint is correct."""
+        assert module_under_test.LIST_ENDPOINT == ""
 
-    mock_client.get.return_value = get_response
-    mock_client.post.return_value = post_response
+    def test_item_endpoint(self):
+        """Test that item API endpoint is correct."""
+        assert module_under_test.ITEM_ENDPOINT == "/appliance/shutdown"
 
-    result = crud_module.perform_action()
-
-    assert result["changed"] is True
-    mock_client.post.assert_called_once()
-    call_kwargs = mock_client.post.call_args
-    assert call_kwargs.kwargs["data"]["delay"] == 10
-    assert call_kwargs.kwargs["data"]["reason"] == "Scheduled maintenance"
+    def test_action_operations_keys(self):
+        """Test that action operations are correctly defined."""
+        assert set(module_under_test.ACTION_OPERATIONS.keys()) == {
+            "cancel",
+            "poweroff",
+            "reboot",
+        }
 
 
 # ============================================================================
-# perform_action() Tests - POWEROFF
+# Test Argument Spec
 # ============================================================================
 
 
-def test_perform_action_poweroff(crud_module, mock_client):
-    """
-    Test performing a poweroff action.
-    """
-    crud_module.params["state"] = "poweroff"
-    crud_module.params["delay"] = 0
-    crud_module.params["reason"] = "Emergency shutdown"
+class TestArgumentSpec:
+    """Test the module argument specification."""
 
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "", "shutdown_time": ""}
-    get_response.data = b'{"action": "", "shutdown_time": ""}'
+    def test_create_module_argument_spec_state(self):
+        """Test that state parameter is correctly defined."""
+        spec = module_under_test.create_module_argument_spec()
 
-    post_response = MagicMock()
-    post_response.status = 200
-    post_response.json = {}
-    post_response.data = b"{}"
+        assert "state" in spec
+        assert spec["state"]["type"] == "str"
+        assert spec["state"]["choices"] == ["cancel", "poweroff", "reboot"]
+        assert spec["state"]["required"] is True
 
-    mock_client.get.return_value = get_response
-    mock_client.post.return_value = post_response
+    def test_create_module_argument_spec_delay(self):
+        """Test that delay parameter is correctly defined."""
+        spec = module_under_test.create_module_argument_spec()
 
-    result = crud_module.perform_action()
+        assert "delay" in spec
+        assert spec["delay"]["type"] == "int"
 
-    assert result["changed"] is True
-    mock_client.post.assert_called_once()
-    call_kwargs = mock_client.post.call_args
-    assert call_kwargs.kwargs["data"]["delay"] == 0
-    assert call_kwargs.kwargs["data"]["reason"] == "Emergency shutdown"
+    def test_create_module_argument_spec_reason(self):
+        """Test that reason parameter is correctly defined."""
+        spec = module_under_test.create_module_argument_spec()
 
-
-def test_perform_action_poweroff_with_delay(crud_module, mock_client):
-    """
-    Test performing a poweroff action with a non-zero delay.
-    """
-    crud_module.params["state"] = "poweroff"
-    crud_module.params["delay"] = 30
-    crud_module.params["reason"] = "Hardware maintenance"
-
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "", "shutdown_time": ""}
-    get_response.data = b'{"action": "", "shutdown_time": ""}'
-
-    post_response = MagicMock()
-    post_response.status = 200
-    post_response.json = {}
-    post_response.data = b"{}"
-
-    mock_client.get.return_value = get_response
-    mock_client.post.return_value = post_response
-
-    result = crud_module.perform_action()
-
-    assert result["changed"] is True
-    call_kwargs = mock_client.post.call_args
-    assert call_kwargs.kwargs["data"]["delay"] == 30
-
-
-# ============================================================================
-# perform_action() Tests - CANCEL
-# ============================================================================
-
-
-def test_perform_action_cancel(crud_module, mock_client):
-    """
-    Test performing a cancel action (no body required).
-    """
-    crud_module.params["state"] = "cancel"
-
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "reboot", "shutdown_time": "2026-08-03T12:00:00Z"}
-    get_response.data = b'{"action": "reboot", "shutdown_time": "2026-08-03T12:00:00Z"}'
-
-    post_response = MagicMock()
-    post_response.status = 200
-    post_response.json = {}
-    post_response.data = b"{}"
-
-    mock_client.get.return_value = get_response
-    mock_client.post.return_value = post_response
-
-    result = crud_module.perform_action()
-
-    assert result["changed"] is True
-    mock_client.post.assert_called_once()
-
-
-# ============================================================================
-# Check Mode Tests
-# ============================================================================
-
-
-def test_perform_action_reboot_check_mode(crud_module, mock_client):
-    """
-    Test reboot action in check mode - no POST should be made.
-    """
-    crud_module.params["state"] = "reboot"
-    crud_module.params["delay"] = 10
-    crud_module.params["reason"] = "Scheduled maintenance"
-    crud_module.module.check_mode = True
-
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "", "shutdown_time": ""}
-    get_response.data = b'{"action": "", "shutdown_time": ""}'
-    mock_client.get.return_value = get_response
-
-    result = crud_module.perform_action()
-
-    assert result["changed"] is True
-    mock_client.post.assert_not_called()
-
-
-def test_perform_action_poweroff_check_mode(crud_module, mock_client):
-    """
-    Test poweroff action in check mode - no POST should be made.
-    """
-    crud_module.params["state"] = "poweroff"
-    crud_module.params["delay"] = 0
-    crud_module.params["reason"] = "Emergency shutdown"
-    crud_module.module.check_mode = True
-
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "", "shutdown_time": ""}
-    get_response.data = b'{"action": "", "shutdown_time": ""}'
-    mock_client.get.return_value = get_response
-
-    result = crud_module.perform_action()
-
-    assert result["changed"] is True
-    mock_client.post.assert_not_called()
-
-
-def test_perform_action_cancel_check_mode(crud_module, mock_client):
-    """
-    Test cancel action in check mode - no POST should be made.
-    """
-    crud_module.params["state"] = "cancel"
-    crud_module.module.check_mode = True
-
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {"action": "reboot", "shutdown_time": "2026-08-03T12:00:00Z"}
-    get_response.data = b'{"action": "reboot", "shutdown_time": "2026-08-03T12:00:00Z"}'
-    mock_client.get.return_value = get_response
-
-    result = crud_module.perform_action()
-
-    assert result["changed"] is True
-    mock_client.post.assert_not_called()
-
-
-# ============================================================================
-# OperationConfig Tests
-# ============================================================================
-
-
-def test_operation_config_build_path_no_placeholders():
-    """
-    Test that OperationConfig builds paths without placeholders (static URI).
-    """
-    config = OperationConfig(
-        name="cancel",
-        uri="/appliance/shutdown?action=cancel",
-        http_method="POST",
-    )
-
-    path = config.build_path(params={})
-
-    assert path == "/appliance/shutdown?action=cancel"
-
-
-def test_operation_config_build_body_reboot():
-    """
-    Test that OperationConfig builds body for reboot action.
-    """
-    config = OperationConfig(
-        name="reboot",
-        uri="/appliance/shutdown?action=reboot",
-        http_method="POST",
-        body_spec={
-            "delay": {"required": True},
-            "reason": {"required": True},
-        },
-    )
-
-    params = {"delay": 10, "reason": "Scheduled maintenance"}
-    body = config.build_body(params)
-
-    assert body == {"delay": 10, "reason": "Scheduled maintenance"}
-
-
-def test_operation_config_build_body_poweroff():
-    """
-    Test that OperationConfig builds body for poweroff action.
-    """
-    config = OperationConfig(
-        name="poweroff",
-        uri="/appliance/shutdown?action=poweroff",
-        http_method="POST",
-        body_spec={
-            "delay": {"required": True},
-            "reason": {"required": True},
-        },
-    )
-
-    params = {"delay": 0, "reason": "Emergency shutdown"}
-    body = config.build_body(params)
-
-    assert body == {"delay": 0, "reason": "Emergency shutdown"}
-
-
-def test_operation_config_cancel_no_body():
-    """
-    Test that cancel OperationConfig has no body spec (returns None).
-    """
-    config = OperationConfig(
-        name="cancel",
-        uri="/appliance/shutdown?action=cancel",
-        http_method="POST",
-    )
-
-    body = config.build_body(params={})
-
-    assert body is None
-
-
-# ============================================================================
-# _resolve_resource_context() Tests
-# ============================================================================
-
-
-def test_resolve_resource_context_returns_get_data(crud_module, mock_client):
-    """
-    Test that _resolve_resource_context returns the GET response for a
-    singleton endpoint (no path parameters needed).
-    """
-    get_response = MagicMock()
-    get_response.status = 200
-    get_response.json = {
-        "action": "reboot",
-        "shutdown_time": "2026-08-03T12:00:00Z",
-        "reason": "Maintenance",
-    }
-    mock_client.get.return_value = get_response
-
-    result = crud_module._resolve_resource_context()
-
-    assert result is not None
-    assert result["action"] == "reboot"
-    assert result["shutdown_time"] == "2026-08-03T12:00:00Z"
+        assert "reason" in spec
+        assert spec["reason"]["type"] == "str"
