@@ -1,0 +1,50 @@
+---
+# ============================================================
+# APPLIANCE SHUTDOWN INFO TESTS
+# ============================================================
+
+# Test 1: Get shutdown status when no shutdown is pending
+- name: Get shutdown status (no pending shutdown)
+  vmware.vmware_rest.appliance_shutdown_info: {}
+  register: shutdown_info_empty
+
+- name: Assert no pending shutdown
+  ansible.builtin.assert:
+    that:
+      - shutdown_info_empty.value is defined
+      - shutdown_info_empty.value.action == ''
+      - shutdown_info_empty.value.reason == ''
+      - shutdown_info_empty.info is defined
+      - shutdown_info_empty.info | length == 1
+
+# Test 2: Get shutdown status when a shutdown is pending
+- name: Reset before pending shutdown expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for pending shutdown
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/pending_shutdown.json"
+      operationsAndResponses:
+        Appliance.Shutdown_get: "200"
+
+- name: Get shutdown status (pending reboot)
+  vmware.vmware_rest.appliance_shutdown_info: {}
+  register: shutdown_info_pending
+
+- name: Assert pending shutdown details
+  ansible.builtin.assert:
+    that:
+      - shutdown_info_pending.value is defined
+      - shutdown_info_pending.value.action == 'reboot'
+      - shutdown_info_pending.value.reason == 'Scheduled maintenance'
+      - shutdown_info_pending.value.shutdown_time == '2026-08-04T12:00:00Z'
+      - shutdown_info_pending.info is defined
+      - shutdown_info_pending.info | length == 1

@@ -1,0 +1,20 @@
+---
+- name: Test appliance_shutdown modules against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load default API spec expectations
+      ansible.builtin.uri:
+        url: "{{ mockserver_url }}/mockserver/openapi"
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Appliance.Shutdown_get: "200"
+
+    - name: Include info tests
+      ansible.builtin.include_tasks: info.yml
+
+    - name: Include action tests
+      ansible.builtin.include_tasks: actions.yml

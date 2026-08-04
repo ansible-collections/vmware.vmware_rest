@@ -116,14 +116,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         action_value = self.params["state"]
         action_operation = self.action_operations[action_value]
         result = {"changed": False, "id": ""}
-        resource = self._resolve_resource_context()
-
-        if not resource:
-            self.module.fail_json(
-                "No matching resource was found. Use the present state to create the module before"
-                " attempting to perform the %s action." % action_value
-            )
-
+        resource = self.params
         resource_id = self._get_moid_attribute_value_from_resource(resource)
         result["id"] = resource_id
         result["changed"] = True
@@ -148,6 +141,8 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         """
         This is the primary routing entrypoint for state == present. It should call and route to
         self._create or self._update, as appropriate.
+        Validation of MOIDs in the URI (does this resource even exist?) are left up to the vSphere API
+        to simplify code. It can provide better information than we can in the current context.
         """
         result = {"changed": False, "id": ""}
         resource = self._resolve_resource_context()
@@ -171,7 +166,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         """
         Some API endpoints (content library) return 200s and have errors in the response.
         """
-        if "succeeded" not in result["value"]:
+        if not result["value"] or "succeeded" not in result["value"]:
             return
 
         if result["value"]["succeeded"]:

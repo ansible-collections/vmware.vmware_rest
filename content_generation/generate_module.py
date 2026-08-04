@@ -965,13 +965,24 @@ ITEM_ENDPOINT = "{item_uri}"
     return constants.strip()
 
 
-def _generate_info_module_main() -> str:
+def _generate_info_module_main(available_ops: Dict[str, bool]) -> str:
     """Generate main() function for info modules.
+
+    Args:
+        available_ops: Dict of operation availability flags
 
     Returns:
         Python code string for info module main() function
     """
-    return """
+    op_assignments = [
+        "        get_operation_config=GET_OPERATION,",
+    ]
+    if available_ops["has_list"]:
+        op_assignments.append("        list_operation_config=LIST_OPERATION,")
+
+    op_block = "\n".join(op_assignments)
+
+    return f"""
 def main():
     module = AnsibleModule(
         argument_spec=create_module_argument_spec(),
@@ -981,8 +992,7 @@ def main():
     info_module = VmwareRestInfoModuleBase(
         module=module,
         moid_parameter_hints=MOID_PARAMETER_HINTS,
-        get_operation_config=GET_OPERATION,
-        list_operation_config=LIST_OPERATION,
+{op_block}
     )
     try:
         result = info_module.get_resource_info()
@@ -1129,7 +1139,7 @@ def generate_main_function(
         Python code string for main() function
     """
     if is_info_module:
-        main_func = _generate_info_module_main()
+        main_func = _generate_info_module_main(available_ops)
     else:
         main_func = _generate_crud_module_main(available_ops, has_actions)
 

@@ -16,6 +16,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module im
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_configs import (
     OperationConfig,
 )
+from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
+    RequiredPathParameterError,
+)
 from ...common.utils import (  # pylint: disable=unused-import
     AnsibleFailJson,
     CONNECTION_PARAMS,
@@ -354,7 +357,7 @@ def test_values_equal_nested_dicts(crud_module):
     assert crud_module._values_equal(current, desired) is False
 
 
-def test_perform_action_resource_not_found(crud_module, mock_module):
+def test_perform_action_missing_path_parameter(crud_module, mock_module):
     crud_module.params["state"] = "connect"
     crud_module.action_operations["connect"] = OperationConfig(
         name="connect",
@@ -362,11 +365,10 @@ def test_perform_action_resource_not_found(crud_module, mock_module):
         http_method="post",
     )
 
-    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
-        with pytest.raises(AnsibleFailJson) as exc_info:
-            crud_module.perform_action()
+    with pytest.raises(RequiredPathParameterError) as exc_info:
+        crud_module.perform_action()
 
-    assert "No matching resource was found" in exc_info.value.kwargs["msg"]
+    assert "resource_pool" in str(exc_info.value)
 
 
 def test_perform_action_success(crud_module, mock_client):
