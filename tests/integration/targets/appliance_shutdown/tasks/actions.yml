@@ -1,0 +1,217 @@
+---
+# ============================================================
+# APPLIANCE SHUTDOWN ACTION TESTS
+# ============================================================
+
+# Test 1: Reboot action
+- name: Reset before reboot action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for reboot test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Shutdown_get: "200"
+
+- name: Add reboot POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/shutdown"
+          queryStringParameters:
+            action:
+              - reboot
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Schedule a reboot
+  vmware.vmware_rest.appliance_shutdown:
+    state: reboot
+    delay: 10
+    reason: Scheduled maintenance
+  register: reboot_result
+
+- name: Assert reboot action succeeded
+  ansible.builtin.assert:
+    that:
+      - reboot_result.changed
+      - reboot_result.value is defined
+
+# Test 2: Reboot in check mode
+- name: Reset before reboot check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for reboot check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Shutdown_get: "200"
+
+- name: Schedule a reboot in check mode
+  vmware.vmware_rest.appliance_shutdown:
+    state: reboot
+    delay: 5
+    reason: Test reboot
+  check_mode: true
+  register: reboot_check
+
+- name: Assert reboot check mode reports change
+  ansible.builtin.assert:
+    that:
+      - reboot_check.changed
+      - reboot_check.value == {}
+
+# Test 3: Poweroff action
+- name: Reset before poweroff action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for poweroff test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Shutdown_get: "200"
+
+- name: Add poweroff POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/shutdown"
+          queryStringParameters:
+            action:
+              - poweroff
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Power off the appliance
+  vmware.vmware_rest.appliance_shutdown:
+    state: poweroff
+    delay: 0
+    reason: Emergency shutdown
+  register: poweroff_result
+
+- name: Assert poweroff action succeeded
+  ansible.builtin.assert:
+    that:
+      - poweroff_result.changed
+      - poweroff_result.value is defined
+
+# Test 4: Cancel action
+- name: Reset before cancel action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for cancel test (pending shutdown)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/pending_shutdown.json"
+      operationsAndResponses:
+        Appliance.Shutdown_get: "200"
+
+- name: Add cancel POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/shutdown"
+          queryStringParameters:
+            action:
+              - cancel
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Cancel a pending shutdown
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  register: cancel_result
+
+- name: Assert cancel action succeeded
+  ansible.builtin.assert:
+    that:
+      - cancel_result.changed
+      - cancel_result.value is defined
+
+# Test 5: Cancel in check mode
+- name: Reset before cancel check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for cancel check mode (pending shutdown)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/pending_shutdown.json"
+      operationsAndResponses:
+        Appliance.Shutdown_get: "200"
+
+- name: Cancel a pending shutdown in check mode
+  vmware.vmware_rest.appliance_shutdown:
+    state: cancel
+  check_mode: true
+  register: cancel_check
+
+- name: Assert cancel check mode reports change
+  ansible.builtin.assert:
+    that:
+      - cancel_check.changed
+      - cancel_check.value == {}

@@ -20,7 +20,7 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
         module,
         moid_parameter_hints: list,
         get_operation_config: OperationConfig,
-        list_operation_config: OperationConfig,
+        list_operation_config: OperationConfig = None,
     ):
         super().__init__(
             module=module,
@@ -41,10 +41,14 @@ class VmwareRestInfoModuleBase(VmwareRestModuleBase):
                 single_resource=True,
             )
         except RequiredPathParameterError:
-            return self.normalize_info_results(
-                query_results=self._list_resource_details(),
-                single_resource=False,
-            )
+            if self.list_operation_config is None:
+                raise
+
+        # Fall through to list operation when GET requires a path parameter we don't have
+        return self.normalize_info_results(
+            query_results=self._list_resource_details(),
+            single_resource=False,
+        )
 
     def _list_resource_details(self) -> list:
         result = []

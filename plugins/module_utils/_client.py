@@ -212,7 +212,7 @@ class Client:
             request_kwargs=dict(query=query),
         )
 
-    def post(self, path, data, query=None):
+    def post(self, path, data=None, query=None):
         resp = self.request("POST", path, data=data, query=query)
         if resp.status in (200, 201):
             return resp
