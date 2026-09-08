@@ -99,9 +99,8 @@ def test_get_item_by_stat_id(
     assert result["value"] == SAMPLE_ITEM
     # info is always a list; the single item yields exactly one element.
     assert result["info"] == [SAMPLE_ITEM]
-    # The payload's identifier field is named "id", not "stat_id"/"resource_id",
-    # so the base class cannot derive a top-level id.
-    assert "id" not in result
+    # The base class derives the top-level id from the payload's "id" field.
+    assert result["id"] == "cpu.util"
 
 
 def test_get_item_not_found(

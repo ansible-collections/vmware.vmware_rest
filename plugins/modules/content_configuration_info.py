@@ -66,6 +66,24 @@ value:
     priority_transfer_threads_pool_size: 5
     transfer_threads_pool_size: 20
   type: dict
+info:
+  description:
+    - The current global configuration of the Content Library Service, returned as a single-element list.
+    - This mirrors the content of RV(value) and is always present for consistency with other info modules.
+  returned: On success
+  elements: dict
+  sample:
+    - automatic_sync_enabled: true
+      automatic_sync_start_hour: 20
+      automatic_sync_stop_hour: 7
+      automatic_sync_refresh_interval: 240
+      automatic_sync_setting_refresh_interval: 600
+      maximum_concurrent_item_syncs: 5
+      transfer_throttling_bandwidth_total: 0
+      transfer_nfc_max_concurrent_transfers_per_host: 8
+      priority_transfer_threads_pool_size: 5
+      transfer_threads_pool_size: 20
+  type: list
 """
 
 

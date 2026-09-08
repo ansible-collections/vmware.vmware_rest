@@ -29,7 +29,11 @@ class VmwareRestModuleBase(ABC):
         self.params = module.params
         self.client = self._create_client()
 
-        self.moid_parameter_hints = ["resource_id"]
+        # "id" is a last-resort fallback: hints are checked in reverse order,
+        # so more specific parameter names (e.g. "resource_id" or module hints)
+        # take precedence. Some API responses (e.g. the Content Library models)
+        # key their identifier as "id".
+        self.moid_parameter_hints = ["id", "resource_id"]
         if moid_parameter_hints:
             self.moid_parameter_hints.extend(moid_parameter_hints)
         self.get_operation_config = get_operation_config

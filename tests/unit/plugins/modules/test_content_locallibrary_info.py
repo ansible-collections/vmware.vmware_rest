@@ -89,6 +89,8 @@ def test_get_library_by_id(
     # A single resource fetched by id yields a dict value and a one-item info list.
     assert result["value"] == SAMPLE_LIBRARY
     assert result["info"] == [SAMPLE_LIBRARY]
+    # The top-level id key is emitted from the response's "id" attribute.
+    assert result["id"] == "lib-1001"
 
     # GET should target the item endpoint with the library_id substituted in.
     mock_client.get.assert_called_once()
