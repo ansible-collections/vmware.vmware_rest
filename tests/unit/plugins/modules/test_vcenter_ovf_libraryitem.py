@@ -129,7 +129,9 @@ def test_perform_action_deploy_resource_not_found(action_module, mock_client):
     action_module.params["state"] = "deploy"
     action_module.params["ovf_library_item_id"] = "lib-item-999"
 
-    with patch.object(action_module, "_resolve_live_resource_context", return_value=None):
+    with patch.object(
+        action_module, "_resolve_live_resource_context", return_value=None
+    ):
         with pytest.raises(Exception):
             action_module.perform_action()
 
@@ -207,7 +209,9 @@ def test_perform_action_filter_resource_not_found(action_module, mock_client):
     action_module.params["state"] = "filter"
     action_module.params["ovf_library_item_id"] = "lib-item-999"
 
-    with patch.object(action_module, "_resolve_live_resource_context", return_value=None):
+    with patch.object(
+        action_module, "_resolve_live_resource_context", return_value=None
+    ):
         with pytest.raises(Exception):
             action_module.perform_action()
 
