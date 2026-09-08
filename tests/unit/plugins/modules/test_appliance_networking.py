@@ -11,8 +11,12 @@ architecture with mocked HTTP clients.
 ``appliance_networking`` manages a singleton resource (there is no MOID and no
 LIST endpoint). It supports two states:
 
-- ``present`` - GET the current networking configuration and PATCH it when the
-  requested ``ipv6_enabled`` value differs from the current state.
+- ``present`` - PATCH ``/appliance/networking`` whenever ``ipv6_enabled`` is
+  supplied. The GET response (``Appliance.Networking.Info``) only ever contains
+  ``dns`` and ``interfaces`` -- ``ipv6_enabled`` is write-only and lives solely
+  in the PATCH ``UpdateSpec``. Because the current value can never be read back,
+  the module cannot prove a no-op and must always write when ``ipv6_enabled`` is
+  requested.
 - ``reset``   - POST ``/appliance/networking?action=reset`` to reset and restart
   the network configuration on all interfaces.
 """
@@ -64,9 +68,11 @@ def _run_module(patch_ansible_module, module_args, check_mode=False):
     return mock_module
 
 
-# A representative GET /appliance/networking response.
+# A representative GET /appliance/networking response. The real
+# ``Appliance.Networking.Info`` schema is ``required: [dns, interfaces]`` with
+# exactly those two properties -- ``ipv6_enabled`` never appears here, so the
+# fixture must not invent it.
 CURRENT_CONFIG = {
-    "ipv6_enabled": False,
     "dns": {
         "mode": "STATIC",
         "hostname": "vcenter.example.com",
@@ -86,7 +92,13 @@ CURRENT_CONFIG = {
 def test_present_enables_ipv6(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test enabling IPv6 when it is currently disabled patches the resource."""
+    """Test enabling IPv6 patches the resource.
+
+    The GET response never carries ``ipv6_enabled``, so the current value is
+    unknown and the module must issue the PATCH. The diff ``before`` is
+    therefore ``None`` (unknown), not the requested value read back out of the
+    user's own params.
+    """
     patch_create_client.return_value = mock_client
     module_args.update({"state": "present", "ipv6_enabled": True})
     mock_module = _run_module(patch_ansible_module, module_args)
@@ -100,7 +112,7 @@ def test_present_enables_ipv6(
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
     assert result["changed"] is True
-    assert result["diff"] == {"ipv6_enabled": {"before": False, "after": True}}
+    assert result["diff"] == {"ipv6_enabled": {"before": None, "after": True}}
 
     mock_client.patch.assert_called_once()
     call_args = mock_client.patch.call_args
@@ -111,13 +123,16 @@ def test_present_enables_ipv6(
 def test_present_disables_ipv6(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test disabling IPv6 when it is currently enabled patches the resource."""
+    """Test disabling IPv6 patches the resource.
+
+    As with enabling, the current value is not readable from GET, so the module
+    always writes and reports ``before: None``.
+    """
     patch_create_client.return_value = mock_client
     module_args.update({"state": "present", "ipv6_enabled": False})
     mock_module = _run_module(patch_ansible_module, module_args)
 
-    enabled_config = {**CURRENT_CONFIG, "ipv6_enabled": True}
-    mock_client.get.return_value = _response(200, enabled_config)
+    mock_client.get.return_value = _response(200, CURRENT_CONFIG)
     mock_client.patch.return_value = _response(200, {})
 
     with pytest.raises(AnsibleExitJson) as exc:
@@ -125,29 +140,36 @@ def test_present_disables_ipv6(
 
     result = exc.value.kwargs
     assert result["changed"] is True
-    assert result["diff"] == {"ipv6_enabled": {"before": True, "after": False}}
+    assert result["diff"] == {"ipv6_enabled": {"before": None, "after": False}}
     mock_client.patch.assert_called_once()
     assert mock_client.patch.call_args[1]["data"] == {"ipv6_enabled": False}
 
 
-def test_present_idempotent(
+def test_present_ipv6_always_writes_when_state_unknown(
     patch_create_client, patch_ansible_module, mock_client, module_args
 ):
-    """Test no change when IPv6 is already in the requested state."""
+    """Test that ipv6_enabled cannot be idempotent.
+
+    ``Appliance.Networking.Info`` never reports ``ipv6_enabled``, so the module
+    can never prove the requested value already matches. Requesting it must
+    therefore always PATCH, even when the value happens to already be applied on
+    the appliance.
+    """
     patch_create_client.return_value = mock_client
     module_args.update({"state": "present", "ipv6_enabled": False})
     mock_module = _run_module(patch_ansible_module, module_args)
 
     mock_client.get.return_value = _response(200, CURRENT_CONFIG)
+    mock_client.patch.return_value = _response(200, {})
 
     with pytest.raises(AnsibleExitJson) as exc:
         module_under_test.main()
 
     mock_module.exit_json.assert_called_once()
     result = exc.value.kwargs
-    assert result["changed"] is False
-    assert result["diff"] == {}
-    mock_client.patch.assert_not_called()
+    assert result["changed"] is True
+    assert result["diff"] == {"ipv6_enabled": {"before": None, "after": False}}
+    mock_client.patch.assert_called_once()
 
 
 def test_present_without_ipv6_param_makes_no_changes(
@@ -227,7 +249,7 @@ class TestCheckMode:
 
         result = exc.value.kwargs
         assert result["changed"] is True
-        assert result["diff"] == {"ipv6_enabled": {"before": False, "after": True}}
+        assert result["diff"] == {"ipv6_enabled": {"before": None, "after": True}}
         mock_client.patch.assert_not_called()
 
     def test_reset_check_mode(

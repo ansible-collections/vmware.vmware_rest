@@ -28,7 +28,6 @@
                   "type": "object"
                 },
                 "example": {
-                  "ipv6_enabled": false,
                   "dns": {
                     "mode": "STATIC",
                     "hostname": "vcenter.example.com",

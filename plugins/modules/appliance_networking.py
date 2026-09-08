@@ -44,6 +44,8 @@ options:
     description:
       - Whether IPv6 is enabled on all interfaces.
       - If not specified, the current state of IPv6 is left unchanged.
+      - Due to the limitations of the vSphere API, this parameter does not support idempotency.
+        If this parameter is specified, a change will always be reported.
       - This property was added in vSphere API 6.7.
     type: bool
     required: false
