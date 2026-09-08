@@ -1,0 +1,73 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Configuration Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/content/configuration": {
+      "get": {
+        "operationId": "Content.Configuration_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "automatic_sync_enabled": true,
+                  "automatic_sync_start_hour": 20,
+                  "automatic_sync_stop_hour": 7,
+                  "automatic_sync_refresh_interval": 240,
+                  "automatic_sync_setting_refresh_interval": 600,
+                  "maximum_concurrent_item_syncs": 5,
+                  "transfer_throttling_bandwidth_total": 0,
+                  "transfer_nfc_max_concurrent_transfers_per_host": 8,
+                  "priority_transfer_threads_pool_size": 5,
+                  "transfer_threads_pool_size": 20
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Content.Configuration_update",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

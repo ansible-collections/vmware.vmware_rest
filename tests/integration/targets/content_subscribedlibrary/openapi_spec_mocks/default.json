@@ -1,0 +1,90 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Subscribed_Library Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/content/subscribed-library": {
+      "get": {
+        "operationId": "Content.SubscribedLibrary_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/subscribed-library/{library_id}": {
+      "get": {
+        "operationId": "Content.SubscribedLibrary_get",
+        "parameters": [
+          {
+            "name": "library_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "id": "3393956a-43ed-4e7f-bd96-eb39bd604445",
+                  "name": "my_subscribed_library",
+                  "description": "Mirror of the published library",
+                  "type": "SUBSCRIBED",
+                  "version": "2",
+                  "storage_backings": [
+                    {
+                      "datastore_id": "datastore-1013",
+                      "type": "DATASTORE"
+                    }
+                  ],
+                  "subscription_info": {
+                    "authentication_method": "NONE",
+                    "automatic_sync_enabled": true,
+                    "on_demand": false,
+                    "subscription_url": "https://vcenter.test:443/cls/vcsp/lib/e6d5c7a1-5a52-4a3b-9c1e-8f0b2d3a4b5c/lib.json"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

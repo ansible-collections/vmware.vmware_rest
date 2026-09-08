@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Local_Library Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/content/local-library": {
+      "get": {
+        "operationId": "Content.LocalLibrary_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": [
+                  {
+                    "library_id": "e6d5c7a1-5a52-4a3b-9c1e-8f0b2d3a4b5c",
+                    "name": "my_local_library"
+                  },
+                  {
+                    "library_id": "7f2a1b3c-9d4e-4a5b-8c6d-2e3f4a5b6c7d",
+                    "name": "templates_library"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/local-library/{library_id}": {
+      "get": {
+        "operationId": "Content.LocalLibrary_get",
+        "parameters": [
+          {
+            "name": "library_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "id": "e6d5c7a1-5a52-4a3b-9c1e-8f0b2d3a4b5c",
+                  "name": "my_local_library",
+                  "description": "Automated content library",
+                  "type": "LOCAL",
+                  "version": "1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

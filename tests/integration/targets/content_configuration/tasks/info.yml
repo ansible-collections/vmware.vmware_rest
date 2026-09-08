@@ -1,0 +1,39 @@
+---
+# ============================================================
+# CONTENT_CONFIGURATION_INFO TESTS
+# ============================================================
+# This is a singleton endpoint (GET only, no list). The info module
+# returns the current Content Library Service configuration as both
+# `value` (dict) and `info` (single-element list).
+
+# Test 1: Get the global configuration
+- name: Get the Content Library Service configuration
+  vmware.vmware_rest.content_configuration_info: {}
+  register: content_config
+
+- name: Assert configuration details
+  ansible.builtin.assert:
+    that:
+      - content_config.value is defined
+      - content_config.value.automatic_sync_enabled == true
+      - content_config.value.automatic_sync_start_hour == 20
+      - content_config.value.automatic_sync_stop_hour == 7
+      - content_config.value.maximum_concurrent_item_syncs == 5
+      - content_config.value.transfer_throttling_bandwidth_total == 0
+      - content_config.value.transfer_threads_pool_size == 20
+      - content_config.info is defined
+      - content_config.info | length == 1
+      - content_config.info[0].automatic_sync_start_hour == 20
+      - not content_config.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Get the Content Library Service configuration (check mode)
+  vmware.vmware_rest.content_configuration_info: {}
+  check_mode: true
+  register: content_config_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - content_config_check.value.automatic_sync_start_hour == 20
+      - not content_config_check.changed

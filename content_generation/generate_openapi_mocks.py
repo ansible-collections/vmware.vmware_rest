@@ -95,7 +95,7 @@ def add_list_operation(
 
     spec["paths"][path]["get"] = {
         "operationId": operation_id,
-        "parameters": [],
+        "parameters": _create_path_parameters(path),
         "responses": {"200": _create_response("ok", example)},
     }
 
@@ -108,7 +108,7 @@ def add_create_operation(
 
     spec["paths"][path]["post"] = {
         "operationId": operation_id,
-        "parameters": [],
+        "parameters": _create_path_parameters(path),
         "responses": {"200": _create_response("ok", example)},
     }
 
@@ -123,11 +123,22 @@ def _create_path_parameter(param_name: str) -> Dict[str, Any]:
     }
 
 
+def _create_path_parameters(path: str) -> List[Dict[str, Any]]:
+    """
+    Create path parameter definitions for every ``{placeholder}`` in the path.
+
+    MockServer only matches a request against an OpenAPI operation when all of
+    the path template's parameters are declared. Nested resources such as
+    ``/content/library/{library}/subscriptions`` therefore need the parent
+    parameter (``library``) declared too, not just the final MOID.
+    """
+    return [_create_path_parameter(name) for name in re.findall(r"\{(\w+)\}", path)]
+
+
 def add_get_operation(
     spec: Dict[str, Any],
     path: str,
     operation_id: str,
-    param_name: Optional[str],
     example: Dict[str, Any],
     include_404: bool = True,
 ) -> None:
@@ -140,35 +151,31 @@ def add_get_operation(
 
     operation = {
         "operationId": operation_id,
-        "parameters": [_create_path_parameter(param_name)] if param_name else [],
+        "parameters": _create_path_parameters(path),
         "responses": responses,
     }
 
     spec["paths"][path]["get"] = operation
 
 
-def add_update_operation(
-    spec: Dict[str, Any], path: str, operation_id: str, param_name: str
-) -> None:
+def add_update_operation(spec: Dict[str, Any], path: str, operation_id: str) -> None:
     """Add a PATCH update operation to the spec."""
     _ensure_path_exists(spec, path)
 
     spec["paths"][path]["patch"] = {
         "operationId": operation_id,
-        "parameters": [_create_path_parameter(param_name)],
+        "parameters": _create_path_parameters(path),
         "responses": {"204": _create_response("ok")},
     }
 
 
-def add_delete_operation(
-    spec: Dict[str, Any], path: str, operation_id: str, param_name: str
-) -> None:
+def add_delete_operation(spec: Dict[str, Any], path: str, operation_id: str) -> None:
     """Add a DELETE operation to the spec."""
     _ensure_path_exists(spec, path)
 
     spec["paths"][path]["delete"] = {
         "operationId": operation_id,
-        "parameters": [_create_path_parameter(param_name)],
+        "parameters": _create_path_parameters(path),
         "responses": {"204": _create_response("ok")},
     }
 
@@ -383,7 +390,6 @@ def _add_common_operations(
     list_data: Optional[List[Dict[str, Any]]] = None,
 ) -> None:
     """Add common CRUD operations to a spec."""
-    moid_name = module_info.get("moid_name")
     list_path = module_info["list_path"]
     item_path = module_info["item_path"]
     op_prefix = module_info["operation_prefix"]
@@ -401,15 +407,14 @@ def _add_common_operations(
             spec,
             item_path,
             f"{op_prefix}_get",
-            moid_name,
             resource_examples["get_result"],
         )
 
     if module_info["has_delete"] and item_path:
-        add_delete_operation(spec, item_path, f"{op_prefix}_delete", moid_name)
+        add_delete_operation(spec, item_path, f"{op_prefix}_delete")
 
     if module_info["has_update"] and item_path:
-        add_update_operation(spec, item_path, f"{op_prefix}_update", moid_name)
+        add_update_operation(spec, item_path, f"{op_prefix}_update")
 
 
 def _generate_default_mock(
@@ -492,7 +497,6 @@ def _generate_list_multiple_mock(
             spec,
             item_path,
             f"{op_prefix}_get",
-            moid_name,
             resource_examples["get_result"],
         )
 
@@ -517,7 +521,6 @@ def _generate_updated_mock(
         return
 
     resource_name = module_info["resource_name"]
-    moid_name = module_info.get("moid_name")
     list_path = module_info["list_path"]
     item_path = module_info["item_path"]
     op_prefix = module_info["operation_prefix"]
@@ -536,11 +539,10 @@ def _generate_updated_mock(
             spec,
             item_path,
             f"{op_prefix}_get",
-            moid_name,
             resource_examples["get_result"],
         )
 
-    add_update_operation(spec, item_path, f"{op_prefix}_update", moid_name)
+    add_update_operation(spec, item_path, f"{op_prefix}_update")
 
     with open(output_dir / "updated.json", "w") as f:
         json.dump(spec, f, indent=2)

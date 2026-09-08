@@ -1,0 +1,99 @@
+---
+# ============================================================
+# CONTENT_LOCALLIBRARY_INFO TESTS
+# ============================================================
+# Read-only info module backed by the /content/local-library LIST and
+# /content/local-library/{library_id} GET endpoints. Results are always
+# returned as both `info` (list[dict]) and `value`.
+
+# Test 1: List local libraries when none exist
+- name: List local libraries (empty)
+  vmware.vmware_rest.content_locallibrary_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - not list_empty.changed
+
+# Test 2: Get a single local library by ID
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Content.LocalLibrary_get: "200"
+
+- name: Get a local library by ID
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: e6d5c7a1-5a52-4a3b-9c1e-8f0b2d3a4b5c
+  register: get_by_id
+
+- name: Assert single library details
+  ansible.builtin.assert:
+    that:
+      - get_by_id.value is defined
+      - get_by_id.value.name == 'my_local_library'
+      - get_by_id.value.type == 'LOCAL'
+      - get_by_id.value.publish_info.published
+      - get_by_id.info is defined
+      - get_by_id.info | length == 1
+      - get_by_id.info[0].name == 'my_local_library'
+      - not get_by_id.changed
+
+# Test 3: List multiple local libraries
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Content.LocalLibrary_list: "200"
+        Content.LocalLibrary_get: "200"
+
+- name: List local libraries (multiple)
+  vmware.vmware_rest.content_locallibrary_info: {}
+  register: list_multiple
+
+- name: Assert multiple libraries listed
+  ansible.builtin.assert:
+    that:
+      - list_multiple.value is defined
+      - list_multiple.value | length == 2
+      - list_multiple.info is defined
+      - list_multiple.info | length == 2
+      - not list_multiple.changed
+
+# Test 4: Check mode returns the same read-only result without error
+- name: Get a local library by ID (check mode)
+  vmware.vmware_rest.content_locallibrary_info:
+    library_id: e6d5c7a1-5a52-4a3b-9c1e-8f0b2d3a4b5c
+  check_mode: true
+  register: get_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - get_check.value is defined
+      - not get_check.changed

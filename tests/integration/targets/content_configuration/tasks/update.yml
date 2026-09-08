@@ -1,0 +1,148 @@
+---
+# ============================================================
+# CONTENT_CONFIGURATION UPDATE TESTS
+# ============================================================
+# The module reads the current configuration (GET), compares it with the
+# supplied values, and issues a PATCH only when they differ.
+#   default.json -> original config (start_hour=20, stop_hour=7,
+#                   maximum_concurrent_item_syncs=5, bandwidth_total=0)
+#   updated.json -> config after the update below (start_hour=22, stop_hour=6,
+#                   maximum_concurrent_item_syncs=10, bandwidth_total=500)
+
+# Test 1: Initial update (values differ from current state)
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Content.Configuration_get: "200"
+        Content.Configuration_update: "204"
+
+- name: Update the Content Library Service configuration
+  vmware.vmware_rest.content_configuration:
+    automatic_sync_start_hour: 22
+    automatic_sync_stop_hour: 6
+    maximum_concurrent_item_syncs: 10
+    transfer_throttling_bandwidth_total: 500
+    state: present
+  register: update_result
+
+- name: Assert update reports a change
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+      - update_result.diff.automatic_sync_start_hour.before == 20
+      - update_result.diff.automatic_sync_start_hour.after == 22
+      - update_result.diff.maximum_concurrent_item_syncs.after == 10
+      - update_result.diff.transfer_throttling_bandwidth_total.after == 500
+
+# Test 2: Idempotent update (current state already matches)
+- name: Reset before updated state expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Content.Configuration_get: "200"
+        Content.Configuration_update: "204"
+
+- name: Update the Content Library Service configuration again (idempotent)
+  vmware.vmware_rest.content_configuration:
+    automatic_sync_start_hour: 22
+    automatic_sync_stop_hour: 6
+    maximum_concurrent_item_syncs: 10
+    transfer_throttling_bandwidth_total: 500
+    state: present
+  register: update_again
+
+- name: Assert no change on idempotent update
+  ansible.builtin.assert:
+    that:
+      - not update_again.changed
+
+# Test 3: Check mode when an update would occur
+- name: Reset before check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec for original state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Content.Configuration_get: "200"
+        Content.Configuration_update: "204"
+
+- name: Update the Content Library Service configuration in check mode (would change)
+  vmware.vmware_rest.content_configuration:
+    automatic_sync_start_hour: 22
+    automatic_sync_stop_hour: 6
+    maximum_concurrent_item_syncs: 10
+    transfer_throttling_bandwidth_total: 500
+    state: present
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports change when updating
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+
+# Test 4: Check mode when no update is needed
+- name: Reset before idempotent check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Content.Configuration_get: "200"
+        Content.Configuration_update: "204"
+
+- name: Update the Content Library Service configuration in check mode (no change)
+  vmware.vmware_rest.content_configuration:
+    automatic_sync_start_hour: 22
+    automatic_sync_stop_hour: 6
+    maximum_concurrent_item_syncs: 10
+    transfer_throttling_bandwidth_total: 500
+    state: present
+  check_mode: true
+  register: update_check_idem
+
+- name: Assert check mode reports no change when already updated
+  ansible.builtin.assert:
+    that:
+      - not update_check_idem.changed

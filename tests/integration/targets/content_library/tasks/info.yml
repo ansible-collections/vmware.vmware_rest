@@ -1,0 +1,97 @@
+---
+# ============================================================
+# CONTENT_LIBRARY_INFO TESTS
+# ============================================================
+# Read-only info module backed by the /content/library LIST and
+# /content/library/{library_id} GET endpoints. Results are always
+# returned as both `info` (list[dict]) and `value`.
+
+# Test 1: List content libraries when none exist
+- name: List content libraries (empty)
+  vmware.vmware_rest.content_library_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - not list_empty.changed
+
+# Test 2: Get a single content library by ID
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Content.Library_get: "200"
+
+- name: Get a content library by ID
+  vmware.vmware_rest.content_library_info:
+    library_id: library-1001
+  register: get_by_id
+
+- name: Assert single library details
+  ansible.builtin.assert:
+    that:
+      - get_by_id.value is defined
+      - get_by_id.value.name == 'my_library'
+      - get_by_id.info is defined
+      - get_by_id.info | length == 1
+      - get_by_id.info[0].name == 'my_library'
+      - not get_by_id.changed
+
+# Test 3: List multiple content libraries
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Content.Library_list: "200"
+        Content.Library_get: "200"
+
+- name: List content libraries (multiple)
+  vmware.vmware_rest.content_library_info: {}
+  register: list_multiple
+
+- name: Assert multiple libraries listed
+  ansible.builtin.assert:
+    that:
+      - list_multiple.value is defined
+      - list_multiple.value | length == 2
+      - list_multiple.info is defined
+      - list_multiple.info | length == 2
+      - not list_multiple.changed
+
+# Test 4: Check mode returns the same read-only result without error
+- name: Get a content library by ID (check mode)
+  vmware.vmware_rest.content_library_info:
+    library_id: library-1001
+  check_mode: true
+  register: get_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - get_check.value is defined
+      - not get_check.changed
