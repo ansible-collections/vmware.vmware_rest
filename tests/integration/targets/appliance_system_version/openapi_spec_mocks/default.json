@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Version Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/system/version": {
+      "get": {
+        "operationId": "Appliance.System.Version_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "version": "9.1.0.10000",
+                  "product": "VMware vCenter Server",
+                  "build": "12345678",
+                  "type": "vCenter Server with an embedded Platform Services Controller",
+                  "name": "VMware vCenter Server 9.1.0",
+                  "install_time": "2024-07-31T18:18:32.000Z",
+                  "summary": "",
+                  "releasedate": ""
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

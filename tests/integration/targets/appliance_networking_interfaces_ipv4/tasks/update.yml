@@ -1,0 +1,150 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING_INTERFACES_IPV4 UPDATE (state=present) TESTS
+# ============================================================
+
+# Test 1: Change the static address when it currently differs (change expected)
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update (current address 10.20.80.191)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv4_get: "200"
+        Appliance.Networking.Interfaces.Ipv4_update: "204"
+
+- name: Set a new static IPv4 address on the interface
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4:
+    interface_name: nic0
+    mode: STATIC
+    address: 10.20.80.200
+    prefix: 24
+    default_gateway: 10.20.80.1
+    state: present
+  register: update_address
+
+- name: Assert the address change reports a change
+  ansible.builtin.assert:
+    that:
+      - update_address.changed
+      - update_address.id == 'nic0'
+      - update_address.diff.address.before == '10.20.80.191'
+      - update_address.diff.address.after == '10.20.80.200'
+
+# Test 2: Apply the same address again when it already matches (idempotent)
+- name: Reset before idempotent update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for updated state (address 10.20.80.200)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv4_get: "200"
+        Appliance.Networking.Interfaces.Ipv4_update: "204"
+
+- name: Set the same static IPv4 address again (idempotent)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4:
+    interface_name: nic0
+    mode: STATIC
+    address: 10.20.80.200
+    prefix: 24
+    default_gateway: 10.20.80.1
+    state: present
+  register: update_address_again
+
+- name: Assert no change when the configuration already matches
+  ansible.builtin.assert:
+    that:
+      - not update_address_again.changed
+      - update_address_again.id == 'nic0'
+      - update_address_again.diff == {}
+
+# Test 3: Check mode when the update would cause a change
+- name: Reset before check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for check mode (current address 10.20.80.191)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv4_get: "200"
+        Appliance.Networking.Interfaces.Ipv4_update: "204"
+
+- name: Set a new static IPv4 address in check mode (when would change)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4:
+    interface_name: nic0
+    mode: STATIC
+    address: 10.20.80.200
+    prefix: 24
+    default_gateway: 10.20.80.1
+    state: present
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports change when updating
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+      - update_check.diff.address.before == '10.20.80.191'
+      - update_check.diff.address.after == '10.20.80.200'
+
+# Test 4: Check mode when no update is needed
+- name: Reset before idempotent check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for check mode (address 10.20.80.200)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv4_get: "200"
+        Appliance.Networking.Interfaces.Ipv4_update: "204"
+
+- name: Set the same static IPv4 address in check mode (when already set)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4:
+    interface_name: nic0
+    mode: STATIC
+    address: 10.20.80.200
+    prefix: 24
+    default_gateway: 10.20.80.1
+    state: present
+  check_mode: true
+  register: update_check_idem
+
+- name: Assert check mode reports no change when already configured
+  ansible.builtin.assert:
+    that:
+      - not update_check_idem.changed
+      - update_check_idem.diff == {}

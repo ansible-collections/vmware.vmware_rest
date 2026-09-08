@@ -1,0 +1,162 @@
+---
+# ============================================================
+# APPLIANCE SYSTEM STORAGE ACTION TESTS
+# ============================================================
+
+# Test 1: Resize action
+- name: Reset before resize action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for resize test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.System.Storage_get: "200"
+
+- name: Add resize POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/system/storage"
+          queryStringParameters:
+            action:
+              - resize
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Resize the appliance storage
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize
+  register: resize_result
+
+- name: Assert resize action succeeded
+  ansible.builtin.assert:
+    that:
+      - resize_result.changed
+      - resize_result.value is defined
+
+# Test 2: Resize in check mode
+- name: Reset before resize check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for resize check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.System.Storage_get: "200"
+
+- name: Resize the appliance storage in check mode
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize
+  check_mode: true
+  register: resize_check
+
+- name: Assert resize check mode reports change
+  ansible.builtin.assert:
+    that:
+      - resize_check.changed
+      - resize_check.value == {}
+
+# Test 3: Resize-ex action
+- name: Reset before resize-ex action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for resize-ex test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.System.Storage_get: "200"
+
+- name: Add resize-ex POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/system/storage"
+          queryStringParameters:
+            action:
+              - resize-ex
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Resize the appliance storage (extended)
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize-ex
+  register: resize_ex_result
+
+- name: Assert resize-ex action succeeded
+  ansible.builtin.assert:
+    that:
+      - resize_ex_result.changed
+      - resize_ex_result.value is defined
+
+# Test 4: Resize-ex in check mode
+- name: Reset before resize-ex check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for resize-ex check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.System.Storage_get: "200"
+
+- name: Resize the appliance storage (extended) in check mode
+  vmware.vmware_rest.appliance_system_storage:
+    state: resize-ex
+  check_mode: true
+  register: resize_ex_check
+
+- name: Assert resize-ex check mode reports change
+  ansible.builtin.assert:
+    that:
+      - resize_ex_check.changed
+      - resize_ex_check.value == {}

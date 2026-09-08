@@ -1,0 +1,37 @@
+---
+# ============================================================
+# APPLIANCE SYSTEM VERSION INFO TESTS
+# ============================================================
+
+# Test 1: Get version information about the appliance
+- name: Get appliance system version
+  vmware.vmware_rest.appliance_system_version_info: {}
+  register: system_version
+
+- name: Assert version details are reported
+  ansible.builtin.assert:
+    that:
+      - system_version.value is defined
+      - system_version.value.version == '9.1.0.10000'
+      - system_version.value.product == 'VMware vCenter Server'
+      - system_version.value.build == '12345678'
+      - system_version.value.type == 'vCenter Server with an embedded Platform Services Controller'
+      - system_version.value.name == 'VMware vCenter Server 9.1.0'
+      - system_version.value.install_time == '2024-07-31T18:18:32.000Z'
+      - system_version.info is defined
+      - system_version.info | length == 1
+      - system_version.info[0].version == '9.1.0.10000'
+      - not system_version.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Get appliance system version (check mode)
+  vmware.vmware_rest.appliance_system_version_info: {}
+  check_mode: true
+  register: system_version_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - system_version_check.value.version == '9.1.0.10000'
+      - system_version_check.value.product == 'VMware vCenter Server'
+      - not system_version_check.changed

@@ -356,3 +356,65 @@ class TestArgumentSpec:
 
         assert "reason" in spec
         assert spec["reason"]["type"] == "str"
+
+
+# ============================================================================
+# Test OperationConfig Building
+# ============================================================================
+
+
+class TestOperationConfig:
+    """Test that the action OperationConfig objects build paths and bodies correctly."""
+
+    def test_get_operation_build_path(self):
+        """Test that the get operation builds the item endpoint path."""
+        config = module_under_test.GET_OPERATION
+
+        assert config.http_method == "get"
+        assert config.build_path(params={}) == "/appliance/shutdown"
+
+    def test_cancel_build_path(self):
+        """Test that the cancel action builds the correct path with the action query."""
+        config = module_under_test.ACTION_OPERATIONS["cancel"]
+
+        assert config.http_method == "post"
+        assert config.build_path(params={}) == "/appliance/shutdown?action=cancel"
+
+    def test_cancel_build_body_none(self):
+        """Test that the cancel action has no request body."""
+        config = module_under_test.ACTION_OPERATIONS["cancel"]
+
+        assert config.build_body(params={}) is None
+
+    def test_poweroff_build_path(self):
+        """Test that the poweroff action builds the correct path."""
+        config = module_under_test.ACTION_OPERATIONS["poweroff"]
+
+        assert config.build_path(params={}) == "/appliance/shutdown?action=poweroff"
+
+    def test_poweroff_build_body(self):
+        """Test that the poweroff action builds a body with delay and reason."""
+        config = module_under_test.ACTION_OPERATIONS["poweroff"]
+
+        body = config.build_body(params={"delay": 5, "reason": "maintenance"})
+
+        assert body == {"delay": 5, "reason": "maintenance"}
+
+    def test_reboot_build_path(self):
+        """Test that the reboot action builds the correct path."""
+        config = module_under_test.ACTION_OPERATIONS["reboot"]
+
+        assert config.build_path(params={}) == "/appliance/shutdown?action=reboot"
+
+    def test_reboot_build_body(self):
+        """Test that the reboot action builds a body with delay and reason."""
+        config = module_under_test.ACTION_OPERATIONS["reboot"]
+
+        body = config.build_body(params={"delay": 0, "reason": "config change"})
+
+        assert body == {"delay": 0, "reason": "config change"}
+
+    def test_action_build_query_none(self):
+        """Test that action operations have no query spec (query embedded in the URI)."""
+        for config in module_under_test.ACTION_OPERATIONS.values():
+            assert config.build_query(params={}) is None

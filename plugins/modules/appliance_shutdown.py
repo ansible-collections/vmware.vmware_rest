@@ -15,12 +15,14 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: appliance_shutdown
-short_description: Manage shutdown operations on the vCenter Server Appliance.
+short_description: Power off or reboot the vCenter Server Appliance.
 description:
-  - Power off, reboot, or cancel a pending shutdown of the vCenter Server Appliance.
-  - This module performs non-idempotent actions against the appliance shutdown API.
-  - Use C(state=poweroff) or C(state=reboot) with a delay and reason to schedule a shutdown or restart.
-  - Use C(state=cancel) to cancel a previously scheduled shutdown or reboot.
+  - Schedule or cancel a power off or reboot of the vCenter Server Appliance.
+  - Use O(state=poweroff) to shut the appliance down, or O(state=reboot) to restart it.
+  - A shutdown or reboot can be scheduled to start after a delay, and a previously
+    scheduled shutdown can be cancelled with O(state=cancel).
+  - Use M(vmware.vmware_rest.appliance_shutdown_info) to view details of a pending
+    shutdown or reboot.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -32,10 +34,10 @@ options:
   state:
     description:
       - The shutdown action to perform on the appliance.
+      - Use C(poweroff) to power off the appliance.
+      - Use C(reboot) to reboot the appliance.
       - Use C(cancel) to cancel a pending shutdown or reboot.
-      - Use C(poweroff) to shut down the appliance.
-      - Use C(reboot) to restart the appliance.
-      - These are non-idempotent actions that are executed each time the module runs.
+      - None of these actions are idempotent.
     type: str
     required: true
     choices:
@@ -44,15 +46,15 @@ options:
       - reboot
   delay:
     description:
-      - Minutes after which the shutdown or reboot should start.
-      - If 0 is specified, the operation will start immediately.
-      - Required when I(state=poweroff) or I(state=reboot).
+      - The number of minutes to wait before the poweroff or reboot begins.
+      - When set to 0, the action starts immediately.
+      - Required when O(state=poweroff) or O(state=reboot). Ignored when O(state=cancel).
     type: int
     required: false
   reason:
     description:
-      - The reason for performing the shutdown or reboot.
-      - Required when I(state=poweroff) or I(state=reboot).
+      - A message describing why the appliance is being powered off or rebooted.
+      - Required when O(state=poweroff) or O(state=reboot). Ignored when O(state=cancel).
     type: str
     required: false
 
@@ -65,17 +67,17 @@ notes:
 """
 
 EXAMPLES = r"""
-- name: Schedule a reboot of the vCenter Server Appliance in 10 minutes
+- name: Reboot the appliance immediately
   vmware.vmware_rest.appliance_shutdown:
     state: reboot
-    delay: 10
-    reason: Scheduled maintenance window
+    delay: 0
+    reason: Applying configuration changes
 
-- name: Power off the vCenter Server Appliance immediately
+- name: Schedule a poweroff in 10 minutes
   vmware.vmware_rest.appliance_shutdown:
     state: poweroff
-    delay: 0
-    reason: Emergency shutdown for hardware maintenance
+    delay: 10
+    reason: Planned maintenance window
 
 - name: Cancel a pending shutdown or reboot
   vmware.vmware_rest.appliance_shutdown:
@@ -83,17 +85,11 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-id:
-  description: Identifier of the shutdown action performed.
-  returned: When state is set to a supported action
-  sample: ''
-  type: str
-
 value:
-  description: The raw API response body from the vCenter operation.
+  description: The raw API response body from the vCenter operation. Empty when the operation returns no content.
   returned: On success
-  sample: {}
   type: raw
+  sample: {}
 """
 
 

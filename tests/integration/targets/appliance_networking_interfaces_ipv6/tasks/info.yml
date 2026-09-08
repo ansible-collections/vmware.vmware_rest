@@ -1,0 +1,39 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING_INTERFACES_IPV6_INFO TESTS
+# ============================================================
+
+# Test 1: Get the IPv6 configuration of an interface
+- name: Gather the interface IPv6 configuration
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6_info:
+    interface_name: nic0
+  register: ipv6_info
+
+- name: Assert IPv6 configuration details are returned
+  ansible.builtin.assert:
+    that:
+      - ipv6_info.value is defined
+      - not ipv6_info.value.dhcp
+      - not ipv6_info.value.autoconf
+      - ipv6_info.value.default_gateway == 'fc00:10:20:83::1'
+      - ipv6_info.value.addresses | length == 1
+      - ipv6_info.value.addresses[0].address == 'fc00:10:20:83:20c:29ff:fe94:bb5a'
+      - ipv6_info.value.addresses[0].prefix == 64
+      - ipv6_info.info is defined
+      - ipv6_info.info | length == 1
+      - ipv6_info.info[0].default_gateway == 'fc00:10:20:83::1'
+      - not ipv6_info.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Gather the interface IPv6 configuration (check mode)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6_info:
+    interface_name: nic0
+  check_mode: true
+  register: ipv6_info_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - ipv6_info_check.value is defined
+      - ipv6_info_check.value.default_gateway == 'fc00:10:20:83::1'
+      - not ipv6_info_check.changed

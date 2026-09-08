@@ -1,0 +1,117 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Ipv6 Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/networking/interfaces/{interface_name}/ipv6": {
+      "get": {
+        "operationId": "Appliance.Networking.Interfaces.Ipv6_get",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "dhcp": false,
+                  "autoconf": false,
+                  "addresses": [
+                    {
+                      "address": "fc00:10:20:83:20c:29ff:fe94:bb5a",
+                      "origin": "STATIC",
+                      "prefix": 64,
+                      "status": "PREFERRED"
+                    }
+                  ],
+                  "default_gateway": "fc00:10:20:83::1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "put": {
+        "operationId": "Appliance.Networking.Interfaces.Ipv6_update",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dhcp": {
+                    "type": "boolean"
+                  },
+                  "autoconf": {
+                    "type": "boolean"
+                  },
+                  "addresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string"
+                        },
+                        "prefix": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "default_gateway": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

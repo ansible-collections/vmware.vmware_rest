@@ -1,0 +1,105 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING_INTERFACES_INFO TESTS
+# ============================================================
+
+# Test 1: List all interfaces when none are reported
+- name: List all network interfaces (empty)
+  vmware.vmware_rest.appliance_networking_interfaces_info:
+  register: list_empty
+
+- name: Assert an empty interface list is returned
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value | length == 0
+      - not list_empty.changed
+
+# Test 2: Get a single interface by name
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces_get: "200"
+
+- name: Get a network interface by name
+  vmware.vmware_rest.appliance_networking_interfaces_info:
+    interface_name: nic0
+  register: get_by_name
+
+- name: Assert interface details are returned
+  ansible.builtin.assert:
+    that:
+      - get_by_name.value is defined
+      - get_by_name.value.name == 'nic0'
+      - get_by_name.value.status == 'up'
+      - get_by_name.value.mac == '00:0c:29:94:bb:5a'
+      - get_by_name.value.ipv4.mode == 'STATIC'
+      - get_by_name.value.ipv4.address == '192.168.123.8'
+      - get_by_name.value.ipv4.prefix == 24
+      - get_by_name.info is defined
+      - get_by_name.info | length == 1
+      - get_by_name.info[0].name == 'nic0'
+      - not get_by_name.changed
+
+# Test 3: Check mode returns the same read-only result without change
+- name: Get a network interface by name (check mode)
+  vmware.vmware_rest.appliance_networking_interfaces_info:
+    interface_name: nic0
+  check_mode: true
+  register: get_by_name_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - get_by_name_check.value is defined
+      - get_by_name_check.value.name == 'nic0'
+      - not get_by_name_check.changed
+
+# Test 4: List multiple interfaces
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple interfaces
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces_list: "200"
+        Appliance.Networking.Interfaces_get: "200"
+
+- name: List all network interfaces (multiple)
+  vmware.vmware_rest.appliance_networking_interfaces_info:
+  register: list_multiple
+
+- name: Assert multiple interfaces are returned
+  ansible.builtin.assert:
+    that:
+      - list_multiple.info is defined
+      - list_multiple.info | length == 2
+      - list_multiple.value | length == 2
+      - list_multiple.info[0].name == 'nic0'
+      - list_multiple.info[0].status == 'up'
+      - list_multiple.info[1].name == 'nic1'
+      - list_multiple.info[1].status == 'down'
+      - list_multiple.info[1].ipv4.mode == 'DHCP'
+      - not list_multiple.changed

@@ -1,0 +1,102 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Storage Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/system/storage": {
+      "get": {
+        "operationId": "Appliance.System.Storage_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "example": [
+                  {
+                    "disk": "1",
+                    "partition": "/",
+                    "description": {
+                      "default_message": "Root partition",
+                      "id": "com.vmware.applmgmt.storage.root"
+                    }
+                  },
+                  {
+                    "disk": "2",
+                    "partition": "/storage/log",
+                    "description": {
+                      "default_message": "Log partition",
+                      "id": "com.vmware.applmgmt.storage.log"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/appliance/system/storage?action=resize": {
+      "post": {
+        "operationId": "Appliance.System.Storage_resize",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/system/storage?action=resize-ex": {
+      "post": {
+        "operationId": "Appliance.System.Storage_resize_ex",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

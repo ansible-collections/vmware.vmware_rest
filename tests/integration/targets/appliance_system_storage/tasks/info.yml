@@ -1,0 +1,22 @@
+---
+# ============================================================
+# APPLIANCE SYSTEM STORAGE INFO TESTS
+# ============================================================
+
+# Test 1: Get the disk to partition mapping of the appliance
+- name: Get the appliance storage mapping
+  vmware.vmware_rest.appliance_system_storage_info: {}
+  register: storage_info
+
+- name: Assert storage mapping details
+  ansible.builtin.assert:
+    that:
+      - storage_info.info is defined
+      - storage_info.info | length == 2
+      - storage_info.info[0].disk == '1'
+      - storage_info.info[0].partition == '/'
+      - storage_info.info[0].description.id == 'com.vmware.applmgmt.storage.root'
+      - storage_info.info[1].disk == '2'
+      - storage_info.info[1].partition == '/storage/log'
+      - storage_info.value is defined
+      - storage_info.value | length == 2

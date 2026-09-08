@@ -1,0 +1,89 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Interfaces Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/networking/interfaces": {
+      "get": {
+        "operationId": "Appliance.Networking.Interfaces_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/networking/interfaces/{interface_name}": {
+      "get": {
+        "operationId": "Appliance.Networking.Interfaces_get",
+        "parameters": [
+          {
+            "name": "interface_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "name": "nic0",
+                  "status": "up",
+                  "mac": "00:0c:29:94:bb:5a",
+                  "ipv4": {
+                    "mode": "STATIC",
+                    "address": "192.168.123.8",
+                    "prefix": 24,
+                    "default_gateway": "192.168.123.1",
+                    "configurable": true
+                  },
+                  "ipv6": {
+                    "dhcp": false,
+                    "autoconf": false,
+                    "addresses": [],
+                    "configurable": true
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

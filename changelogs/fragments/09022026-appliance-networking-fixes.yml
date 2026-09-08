@@ -1,0 +1,5 @@
+---
+bugfixes:
+  - appliance_networking - Add ``present`` to the ``state`` choices so the ``ipv6_enabled`` update
+    can actually be applied. Previously ``state`` only accepted ``reset``, leaving the IPv4/IPv6
+    update path unreachable.

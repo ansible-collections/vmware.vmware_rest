@@ -1,0 +1,158 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING_INTERFACES_IPV6 UPDATE (state=present) TESTS
+# ============================================================
+
+# Test 1: Change the default gateway when it currently differs (change expected)
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update (current gateway fc00:10:20:83::1)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv6_get: "200"
+        Appliance.Networking.Interfaces.Ipv6_update: "204"
+
+- name: Set a new IPv6 default gateway on the interface
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
+    interface_name: nic0
+    dhcp: false
+    autoconf: false
+    addresses:
+      - address: fc00:10:20:83:20c:29ff:fe94:bb5a
+        prefix: 64
+    default_gateway: fc00:10:20:83::2
+    state: present
+  register: update_gateway
+
+- name: Assert the gateway change reports a change
+  ansible.builtin.assert:
+    that:
+      - update_gateway.changed
+      - update_gateway.id == 'nic0'
+      - update_gateway.diff.default_gateway.before == 'fc00:10:20:83::1'
+      - update_gateway.diff.default_gateway.after == 'fc00:10:20:83::2'
+
+# Test 2: Apply the same configuration again when it already matches (idempotent)
+- name: Reset before idempotent update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for updated state (gateway fc00:10:20:83::2)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv6_get: "200"
+        Appliance.Networking.Interfaces.Ipv6_update: "204"
+
+- name: Set the same IPv6 configuration again (idempotent)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
+    interface_name: nic0
+    dhcp: false
+    autoconf: false
+    addresses:
+      - address: fc00:10:20:83:20c:29ff:fe94:bb5a
+        prefix: 64
+    default_gateway: fc00:10:20:83::2
+    state: present
+  register: update_gateway_again
+
+- name: Assert no change when the configuration already matches
+  ansible.builtin.assert:
+    that:
+      - not update_gateway_again.changed
+      - update_gateway_again.id == 'nic0'
+      - update_gateway_again.diff == {}
+
+# Test 3: Check mode when the update would cause a change
+- name: Reset before check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for check mode (current gateway fc00:10:20:83::1)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv6_get: "200"
+        Appliance.Networking.Interfaces.Ipv6_update: "204"
+
+- name: Set a new IPv6 default gateway in check mode (when would change)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
+    interface_name: nic0
+    dhcp: false
+    autoconf: false
+    addresses:
+      - address: fc00:10:20:83:20c:29ff:fe94:bb5a
+        prefix: 64
+    default_gateway: fc00:10:20:83::2
+    state: present
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports change when updating
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+      - update_check.diff.default_gateway.before == 'fc00:10:20:83::1'
+      - update_check.diff.default_gateway.after == 'fc00:10:20:83::2'
+
+# Test 4: Check mode when no update is needed
+- name: Reset before idempotent check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for check mode (gateway fc00:10:20:83::2)
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Appliance.Networking.Interfaces.Ipv6_get: "200"
+        Appliance.Networking.Interfaces.Ipv6_update: "204"
+
+- name: Set the same IPv6 configuration in check mode (when already set)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv6:
+    interface_name: nic0
+    dhcp: false
+    autoconf: false
+    addresses:
+      - address: fc00:10:20:83:20c:29ff:fe94:bb5a
+        prefix: 64
+    default_gateway: fc00:10:20:83::2
+    state: present
+  check_mode: true
+  register: update_check_idem
+
+- name: Assert check mode reports no change when already configured
+  ansible.builtin.assert:
+    that:
+      - not update_check_idem.changed
+      - update_check_idem.diff == {}

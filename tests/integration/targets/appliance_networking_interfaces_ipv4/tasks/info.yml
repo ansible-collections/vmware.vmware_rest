@@ -1,0 +1,38 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING_INTERFACES_IPV4_INFO TESTS
+# ============================================================
+
+# Test 1: Get the IPv4 configuration of an interface
+- name: Gather the interface IPv4 configuration
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4_info:
+    interface_name: nic0
+  register: ipv4_info
+
+- name: Assert IPv4 configuration details are returned
+  ansible.builtin.assert:
+    that:
+      - ipv4_info.value is defined
+      - ipv4_info.value.mode == 'STATIC'
+      - ipv4_info.value.address == '10.20.80.191'
+      - ipv4_info.value.prefix == 24
+      - ipv4_info.value.default_gateway == '10.20.80.1'
+      - ipv4_info.value.configurable
+      - ipv4_info.info is defined
+      - ipv4_info.info | length == 1
+      - ipv4_info.info[0].address == '10.20.80.191'
+      - not ipv4_info.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Gather the interface IPv4 configuration (check mode)
+  vmware.vmware_rest.appliance_networking_interfaces_ipv4_info:
+    interface_name: nic0
+  check_mode: true
+  register: ipv4_info_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - ipv4_info_check.value is defined
+      - ipv4_info_check.value.address == '10.20.80.191'
+      - not ipv4_info_check.changed

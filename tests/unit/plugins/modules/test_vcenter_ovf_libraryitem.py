@@ -106,7 +106,7 @@ def test_perform_action_deploy_success(action_module, mock_client):
     }
 
     with patch.object(
-        action_module, "_resolve_resource_context", return_value=existing_resource
+        action_module, "_resolve_live_resource_context", return_value=existing_resource
     ):
         deploy_response = MagicMock()
         deploy_response.status = 200
@@ -129,7 +129,9 @@ def test_perform_action_deploy_resource_not_found(action_module, mock_client):
     action_module.params["state"] = "deploy"
     action_module.params["ovf_library_item_id"] = "lib-item-999"
 
-    with patch.object(action_module, "_resolve_resource_context", return_value=None):
+    with patch.object(
+        action_module, "_resolve_live_resource_context", return_value=None
+    ):
         with pytest.raises(Exception):
             action_module.perform_action()
 
@@ -151,7 +153,7 @@ def test_perform_action_deploy_builds_correct_path(action_module, mock_client):
     }
 
     with patch.object(
-        action_module, "_resolve_resource_context", return_value=existing_resource
+        action_module, "_resolve_live_resource_context", return_value=existing_resource
     ):
         deploy_response = MagicMock()
         deploy_response.status = 200
@@ -184,7 +186,7 @@ def test_perform_action_filter_success(action_module, mock_client):
     }
 
     with patch.object(
-        action_module, "_resolve_resource_context", return_value=existing_resource
+        action_module, "_resolve_live_resource_context", return_value=existing_resource
     ):
         filter_response = MagicMock()
         filter_response.status = 200
@@ -207,7 +209,9 @@ def test_perform_action_filter_resource_not_found(action_module, mock_client):
     action_module.params["state"] = "filter"
     action_module.params["ovf_library_item_id"] = "lib-item-999"
 
-    with patch.object(action_module, "_resolve_resource_context", return_value=None):
+    with patch.object(
+        action_module, "_resolve_live_resource_context", return_value=None
+    ):
         with pytest.raises(Exception):
             action_module.perform_action()
 
@@ -235,7 +239,7 @@ def test_perform_action_deploy_check_mode(action_module, mock_client):
     }
 
     with patch.object(
-        action_module, "_resolve_resource_context", return_value=existing_resource
+        action_module, "_resolve_live_resource_context", return_value=existing_resource
     ):
         result = action_module.perform_action()
 
@@ -260,7 +264,7 @@ def test_perform_action_filter_check_mode(action_module, mock_client):
     }
 
     with patch.object(
-        action_module, "_resolve_resource_context", return_value=existing_resource
+        action_module, "_resolve_live_resource_context", return_value=existing_resource
     ):
         result = action_module.perform_action()
 
@@ -271,11 +275,11 @@ def test_perform_action_filter_check_mode(action_module, mock_client):
 
 
 # ============================================================================
-# _resolve_resource_context() Tests
+# _resolve_live_resource_context() Tests
 # ============================================================================
 
 
-def test_resolve_resource_context_by_id(action_module, mock_client):
+def test_resolve_live_resource_context_by_id(action_module, mock_client):
     """
     Test searching for a library item by its ID.
     """
@@ -289,13 +293,13 @@ def test_resolve_resource_context_by_id(action_module, mock_client):
     }
     mock_client.get.return_value = get_response
 
-    result = action_module._resolve_resource_context()
+    result = action_module._resolve_live_resource_context()
 
     assert result is not None
     assert result["ovf_library_item_id"] == "lib-item-1"
 
 
-def test_resolve_resource_context_not_found(action_module, mock_client):
+def test_resolve_live_resource_context_not_found(action_module, mock_client):
     """
     Test searching for a library item that does not exist.
     """
@@ -305,7 +309,7 @@ def test_resolve_resource_context_not_found(action_module, mock_client):
     get_response.status = 404
     mock_client.get.return_value = get_response
 
-    result = action_module._resolve_resource_context()
+    result = action_module._resolve_live_resource_context()
 
     assert result == {}
 

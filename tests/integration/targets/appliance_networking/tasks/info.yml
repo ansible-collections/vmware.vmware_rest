@@ -1,0 +1,37 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING_INFO TESTS
+# ============================================================
+
+# Test 1: Get the appliance network configuration. Appliance.Networking.Info
+# only contains dns and interfaces -- ipv6_enabled is write-only and never
+# appears in the GET response.
+- name: Gather the appliance network configuration
+  vmware.vmware_rest.appliance_networking_info: {}
+  register: net_info
+
+- name: Assert network configuration details are returned
+  ansible.builtin.assert:
+    that:
+      - net_info.value is defined
+      - "'ipv6_enabled' not in net_info.value"
+      - net_info.value.dns.mode == 'STATIC'
+      - net_info.value.dns.hostname == 'vcenter.example.com'
+      - net_info.value.interfaces.nic0.name == 'nic0'
+      - net_info.value.interfaces.nic0.status == 'up'
+      - net_info.info is defined
+      - net_info.info | length == 1
+      - not net_info.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Gather the appliance network configuration (check mode)
+  vmware.vmware_rest.appliance_networking_info: {}
+  check_mode: true
+  register: net_info_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - net_info_check.value is defined
+      - "'ipv6_enabled' not in net_info_check.value"
+      - not net_info_check.changed

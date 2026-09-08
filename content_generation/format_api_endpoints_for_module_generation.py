@@ -295,6 +295,12 @@ def merge_parameters(all_operations: Dict[str, Dict[str, Any]]) -> Dict[str, Any
     merged = {}
 
     for uri, operations in all_operations.items():
+        # Skip endpoints that classify_endpoint excludes (e.g. 'change' actions).
+        # Their parameters must not leak into the module argument spec when no
+        # operation is generated to consume them.
+        endpoint_type, _action_name = classify_endpoint(uri)
+        if endpoint_type is None:
+            continue
         for method, method_data in operations.items():
             _process_method_data(merged, method_data)
 
@@ -471,7 +477,10 @@ def format_parameter_option(
 
 
 def create_state_parameter(
-    has_list_post: bool, has_item_delete: bool, action_names: List[str]
+    has_list_post: bool,
+    has_item_delete: bool,
+    action_names: List[str],
+    has_item_update: bool = False,
 ) -> OrderedDict:
     """Create the state parameter based on available operations.
 
@@ -479,6 +488,7 @@ def create_state_parameter(
         has_list_post: Whether list endpoint has POST operation
         has_item_delete: Whether item endpoint has DELETE operation
         action_names: List of action endpoint names
+        has_item_update: Whether item endpoint has an update (PATCH/PUT) operation
 
     Returns:
         OrderedDict for state parameter
@@ -488,9 +498,10 @@ def create_state_parameter(
     # Build description
     description = ["The desired state of the resource."]
 
-    # Collect all state choices
+    # Collect all state choices. 'present' drives both create (list POST) and
+    # update (item PATCH/PUT), so it is offered when either exists.
     choices = []
-    if has_list_post:
+    if has_list_post or has_item_update:
         choices.append("present")
         description.append("Use C(present) to create or update the resource.")
 
@@ -946,11 +957,14 @@ def _build_module_options(
         m in ["post", "put"] for m in list_endpoint["operations"]
     )
     has_item_delete = item_endpoint and "delete" in item_endpoint["operations"]
+    has_item_update = item_endpoint and any(
+        m in ["patch", "put"] for m in item_endpoint["operations"]
+    )
     action_names = list(action_endpoints.keys())
 
-    if has_list_post or has_item_delete or action_names:
+    if has_list_post or has_item_delete or has_item_update or action_names:
         options["state"] = create_state_parameter(
-            has_list_post, has_item_delete, action_names
+            has_list_post, has_item_delete, action_names, has_item_update
         )
 
     # Add path parameters

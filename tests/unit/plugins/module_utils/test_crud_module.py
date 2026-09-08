@@ -100,22 +100,19 @@ def test_crud_module_initialization(crud_module):
     assert crud_module.action_operations == {}
 
 
-def test_resolve_resource_context_by_id(crud_module, mock_client):
+def test_resolve_live_resource_context_by_id(crud_module, mock_client):
     crud_module.params["resource_pool"] = "pool-1"
     mock_response = MagicMock()
     mock_response.status = 200
     mock_response.json = {"resource_pool": "pool-1", "name": "my_pool"}
     mock_client.get.return_value = mock_response
 
-    resource = crud_module._resolve_resource_context()
+    resource = crud_module._resolve_live_resource_context()
 
-    assert resource == {
-        **CONNECTION_PARAMS,
-        **{"resource_pool": "pool-1", "name": "my_pool"},
-    }
+    assert resource == mock_response.json
 
 
-def test_resolve_resource_context_by_name(crud_module, mock_client):
+def test_resolve_live_resource_context_by_name(crud_module, mock_client):
     crud_module.params["name"] = "my_pool"
 
     # Mock detailed get response
@@ -134,7 +131,7 @@ def test_resolve_resource_context_by_name(crud_module, mock_client):
         "_perform_list_operation",
         return_value=[{"resource_pool": "pool-1", "name": "my_pool"}],
     ):
-        resource = crud_module._resolve_resource_context()
+        resource = crud_module._resolve_live_resource_context()
 
     # The method returns the result from _perform_get_operation(resource=summary)
     assert resource == {
@@ -144,19 +141,19 @@ def test_resolve_resource_context_by_name(crud_module, mock_client):
     }
 
 
-def test_resolve_resource_context_not_found(crud_module, mock_client):
+def test_resolve_live_resource_context_not_found(crud_module, mock_client):
     crud_module.params["resource_pool"] = "pool-nonexistent"
     mock_response = MagicMock()
     mock_response.status = 404
     mock_client.get.return_value = mock_response
 
-    resource = crud_module._resolve_resource_context()
+    resource = crud_module._resolve_live_resource_context()
 
     assert resource == {}
 
 
 def test_ensure_absent_already_absent(crud_module):
-    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
+    with patch.object(crud_module, "_resolve_live_resource_context", return_value=None):
         result = crud_module.ensure_absent()
 
     assert result == {"changed": False}
@@ -170,7 +167,7 @@ def test_ensure_absent_deletes_resource(crud_module, mock_client):
     mock_client.delete.return_value = delete_response
 
     with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
+        crud_module, "_resolve_live_resource_context", return_value=mock_resource
     ):
         result = crud_module.ensure_absent()
 
@@ -185,7 +182,7 @@ def test_ensure_absent_check_mode(crud_module, mock_client, mock_module):
     mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
     with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
+        crud_module, "_resolve_live_resource_context", return_value=mock_resource
     ):
         result = crud_module.ensure_absent()
 
@@ -204,7 +201,7 @@ def test_ensure_present_creates_resource(crud_module, mock_client):
     create_response.json = "pool-new"
     mock_client.post.return_value = create_response
 
-    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
+    with patch.object(crud_module, "_resolve_live_resource_context", return_value=None):
         result = crud_module.ensure_present()
 
     assert result["changed"] is True
@@ -221,7 +218,7 @@ def test_ensure_present_creates_resource_check_mode(
     crud_module.params["name"] = "new_pool"
     crud_module.params["parent"] = "resgroup-8"
 
-    with patch.object(crud_module, "_resolve_resource_context", return_value=None):
+    with patch.object(crud_module, "_resolve_live_resource_context", return_value=None):
         result = crud_module.ensure_present()
 
     assert result["changed"] is True
@@ -236,7 +233,7 @@ def test_ensure_present_no_changes_needed(crud_module, mock_client):
     mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
     with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
+        crud_module, "_resolve_live_resource_context", return_value=mock_resource
     ):
         result = crud_module.ensure_present()
 
@@ -258,7 +255,7 @@ def test_ensure_present_updates_resource(crud_module, mock_client):
     mock_client.patch.return_value = update_response
 
     with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
+        crud_module, "_resolve_live_resource_context", return_value=mock_resource
     ):
         result = crud_module.ensure_present()
 
@@ -278,7 +275,7 @@ def test_ensure_present_updates_resource_check_mode(
     mock_resource = {"resource_pool": "pool-1", "name": "my_pool"}
 
     with patch.object(
-        crud_module, "_resolve_resource_context", return_value=mock_resource
+        crud_module, "_resolve_live_resource_context", return_value=mock_resource
     ):
         result = crud_module.ensure_present()
 

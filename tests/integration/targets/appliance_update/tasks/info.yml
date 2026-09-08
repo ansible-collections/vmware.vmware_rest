@@ -1,0 +1,35 @@
+---
+# ============================================================
+# APPLIANCE UPDATE INFO TESTS
+# ============================================================
+
+# Test 1: Get the current appliance update status
+- name: Get appliance update status
+  vmware.vmware_rest.appliance_update_info: {}
+  register: appliance_update
+
+- name: Assert appliance update details are reported
+  ansible.builtin.assert:
+    that:
+      - appliance_update.value is defined
+      - appliance_update.value.state == 'UP_TO_DATE'
+      - appliance_update.value.version == '9.1.0.10000'
+      - appliance_update.value.latest_query_time == '2024-07-31T18:18:32.000Z'
+      - appliance_update.info is defined
+      - appliance_update.info | length == 1
+      - appliance_update.info[0].state == 'UP_TO_DATE'
+      - appliance_update.info[0].version == '9.1.0.10000'
+      - not appliance_update.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Get appliance update status (check mode)
+  vmware.vmware_rest.appliance_update_info: {}
+  check_mode: true
+  register: appliance_update_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - appliance_update_check.value.state == 'UP_TO_DATE'
+      - appliance_update_check.value.version == '9.1.0.10000'
+      - not appliance_update_check.changed

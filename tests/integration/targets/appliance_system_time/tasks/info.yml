@@ -1,0 +1,35 @@
+---
+# ============================================================
+# APPLIANCE SYSTEM TIME INFO TESTS
+# ============================================================
+
+# Test 1: Get the current system time of the appliance
+- name: Get appliance system time
+  vmware.vmware_rest.appliance_system_time_info: {}
+  register: system_time
+
+- name: Assert system time details are reported
+  ansible.builtin.assert:
+    that:
+      - system_time.value is defined
+      - system_time.value.date == 'Thu 07-31-2014'
+      - system_time.value.time == '18:18:32'
+      - system_time.value.timezone == 'UTC'
+      - system_time.value.seconds_since_epoch == 1406830712.0
+      - system_time.info is defined
+      - system_time.info | length == 1
+      - system_time.info[0].timezone == 'UTC'
+      - not system_time.changed
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Get appliance system time (check mode)
+  vmware.vmware_rest.appliance_system_time_info: {}
+  check_mode: true
+  register: system_time_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - system_time_check.value.timezone == 'UTC'
+      - system_time_check.value.date == 'Thu 07-31-2014'
+      - not system_time_check.changed

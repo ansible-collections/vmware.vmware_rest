@@ -1,0 +1,131 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING UPDATE (state=present) TESTS
+# ============================================================
+
+# Test 1: Enable IPv6 (change expected). The GET response never reports
+# ipv6_enabled, so the current value is unknown and the module must PATCH.
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking_get: "200"
+        Appliance.Networking_update: "204"
+
+- name: Enable IPv6 on all interfaces
+  vmware.vmware_rest.appliance_networking:
+    ipv6_enabled: true
+    state: present
+  register: enable_ipv6
+
+- name: Assert IPv6 enablement reports a change
+  ansible.builtin.assert:
+    that:
+      - enable_ipv6.changed
+      # The current value is not readable from GET, so before is unknown (None).
+      - enable_ipv6.diff.ipv6_enabled.before is none
+      - enable_ipv6.diff.ipv6_enabled.after == true
+
+# Test 2: Applying ipv6_enabled again still reports a change. Idempotency is
+# impossible because Appliance.Networking.Info never exposes ipv6_enabled, so
+# the module can never prove the value already matches.
+- name: Reset before repeat update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for repeat update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking_get: "200"
+        Appliance.Networking_update: "204"
+
+- name: Enable IPv6 again
+  vmware.vmware_rest.appliance_networking:
+    ipv6_enabled: true
+    state: present
+  register: enable_ipv6_again
+
+- name: Assert a change is still reported (ipv6_enabled is not idempotent)
+  ansible.builtin.assert:
+    that:
+      - enable_ipv6_again.changed
+      - enable_ipv6_again.diff.ipv6_enabled.after == true
+
+# Test 3: Omitting ipv6_enabled leaves the configuration unchanged
+- name: Reset before no-op update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for no-op update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking_get: "200"
+
+- name: Apply present without ipv6_enabled
+  vmware.vmware_rest.appliance_networking:
+    state: present
+  register: present_noop
+
+- name: Assert no change when ipv6_enabled is omitted
+  ansible.builtin.assert:
+    that:
+      - not present_noop.changed
+      - present_noop.diff == {}
+
+# Test 4: Check mode reports the change without issuing the PATCH
+- name: Reset before check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking_get: "200"
+
+- name: Enable IPv6 in check mode (when would change)
+  vmware.vmware_rest.appliance_networking:
+    ipv6_enabled: true
+    state: present
+  check_mode: true
+  register: enable_ipv6_check
+
+- name: Assert check mode reports change when updating
+  ansible.builtin.assert:
+    that:
+      - enable_ipv6_check.changed
+      - enable_ipv6_check.diff.ipv6_enabled.after == true

@@ -49,12 +49,14 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
 
     def ensure_absent(self) -> dict:
         result = {"changed": False}
-        resource = self._resolve_resource_context()
+        resource = self._resolve_live_resource_context()
         if not resource:
             return result
 
         result["changed"] = True
-        resource_id = self._get_moid_attribute_value_from_resource(resource=resource)
+        resource_id = self._get_moid_attribute_value_from_resource(
+            resource={**self.params, **resource}
+        )
         result["id"] = resource_id
 
         path = self.delete_operation_config.build_path(
@@ -71,24 +73,33 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         self._handle_errors_in_the_response(result)
         return result
 
-    def _resolve_resource_context(self) -> Union[dict, None]:
+    def _resolve_live_resource_context(self) -> Union[dict, None]:
         """
-        Get a resource using the module params. Enrich the resulting dict with
-        params or the resource summary to ensure the MOID is present.
+        Fetch the current live state of a resource from the API and return it
+        as-is. The module params are intentionally NOT merged into the result:
+        the returned dict represents only what the API reports, so callers that
+        diff against it can tell a value the API omitted (unknown, must write)
+        apart from a value the user requested. Path building and MOID lookup
+        merge params in separately where they are actually needed.
+
+        For a name-based lookup the list summary and the detailed get response
+        are merged, since both are live API data.
+
+        Returns:
+            An empty dict if the resource does not exist or there is nothing to
+            look up (an action-only endpoint), otherwise the resource state.
         """
         if self.get_operation_config is None and self.list_operation_config is None:
-            # This is an action only endpoint. There is no resource to lookup, and all the resource
-            # context should be in the params
-            return self.params
+            # This is an action only endpoint. There is no resource to look up, so
+            # there is no live state to report. Callers fall back to the params for
+            # any path or MOID context they need.
+            return {}
 
         # try to 'get' a resource, either using the resource ID from the params or a singleton api endpoint.
         # For example, get a specific VM or get the vCenter appliance
         try:
             resource = self._perform_get_operation()
-            if resource:
-                return {**self.params, **resource}
-            else:
-                return {}
+            return resource if resource else {}
         except RequiredPathParameterError:
             if not self.params.get("name") or not self.list_operation_config:
                 raise
@@ -145,7 +156,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         """
         result = {"changed": False, "id": ""}
         try:
-            resource = self._resolve_resource_context()
+            resource = self._resolve_live_resource_context()
         except RequiredPathParameterError as e:
             # Did the user omit the ID param because the object doesnt exist yet?
             # Or did they omit a different param that is actually required?
@@ -154,13 +165,15 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
             else:
                 raise
 
-        if not resource or resource is self.params:
+        if not resource:
             new_id, value = self._create()
             result["id"] = new_id
             result["value"] = value
             result["changed"] = True
         else:
-            result["id"] = self._get_moid_attribute_value_from_resource(resource)
+            result["id"] = self._get_moid_attribute_value_from_resource(
+                {**self.params, **resource}
+            )
             diff, value = self._update_if_needed(resource)
             result["diff"] = diff
             result["value"] = value
@@ -242,7 +255,14 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         return diff
 
     def _values_equal(self, current_value, desired_value):
-        """Compare desired vs current values, recursing into partial dict updates."""
+        """Compare desired vs current values, recursing into partial dict updates.
+
+        Dicts are compared by subset: only the keys present in the desired value
+        are checked, so extra keys the API reports (but that we never send) do
+        not register as a change. Lists are compared element-wise with the same
+        semantics, which lets a desired list of partial dicts match a current
+        list whose elements carry additional read-only fields.
+        """
         if isinstance(desired_value, dict):
             if not isinstance(current_value, dict):
                 return False
@@ -250,4 +270,13 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
                 if not self._values_equal(current_value.get(key), value):
                     return False
             return True
+        if isinstance(desired_value, list):
+            if not isinstance(current_value, list) or len(current_value) != len(
+                desired_value
+            ):
+                return False
+            return all(
+                self._values_equal(current_item, desired_item)
+                for current_item, desired_item in zip(current_value, desired_value)
+            )
         return current_value == desired_value

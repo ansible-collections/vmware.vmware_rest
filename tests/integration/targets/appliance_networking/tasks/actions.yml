@@ -1,0 +1,83 @@
+---
+# ============================================================
+# APPLIANCE_NETWORKING ACTION (state=reset) TESTS
+# ============================================================
+
+# Test 1: Reset the network configuration
+- name: Reset before reset action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for reset test
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking_get: "200"
+
+- name: Add reset POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/networking"
+          queryStringParameters:
+            action:
+              - reset
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Reset the appliance network configuration
+  vmware.vmware_rest.appliance_networking:
+    state: reset
+  register: reset_result
+
+- name: Assert reset action succeeded
+  ansible.builtin.assert:
+    that:
+      - reset_result.changed
+      - reset_result.value is defined
+
+# Test 2: Reset in check mode
+- name: Reset before reset check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load GET expectation for reset check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Networking_get: "200"
+
+- name: Reset the network configuration in check mode
+  vmware.vmware_rest.appliance_networking:
+    state: reset
+  check_mode: true
+  register: reset_check
+
+- name: Assert reset check mode reports change
+  ansible.builtin.assert:
+    that:
+      - reset_check.changed
+      - reset_check.value == {}

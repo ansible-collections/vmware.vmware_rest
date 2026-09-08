@@ -770,17 +770,24 @@ def generate_action_operations(action_endpoints: Dict, options_dict: Dict) -> st
 # ============================================================================
 
 
-def convert_option_to_arg_spec(option_def: Dict) -> Dict:
+def convert_option_to_arg_spec(option_def: Dict, param_name: str = "") -> Dict:
     """
     Convert single option from YAML documentation format to argument_spec format.
 
     Args:
         option_def: Option definition from YAML
+        param_name: Name of the option, used to detect sensitive parameters
 
     Returns:
         argument_spec dict for this option
     """
     spec = {"type": option_def["type"]}
+
+    # Mark sensitive parameters so their values are not logged. Any option whose
+    # name contains "password" or "secret" is treated as sensitive.
+    lowered_name = param_name.lower()
+    if "password" in lowered_name or "secret" in lowered_name:
+        spec["no_log"] = True
 
     # Add aliases if present
     if "aliases" in option_def:
@@ -811,7 +818,9 @@ def convert_option_to_arg_spec(option_def: Dict) -> Dict:
     if "suboptions" in option_def:
         spec["options"] = {}
         for subopt_name, subopt_def in option_def["suboptions"].items():
-            spec["options"][subopt_name] = convert_option_to_arg_spec(subopt_def)
+            spec["options"][subopt_name] = convert_option_to_arg_spec(
+                subopt_def, subopt_name
+            )
 
     return spec
 
@@ -838,7 +847,7 @@ def generate_argument_spec_function(options_dict: Dict, is_info_module: bool) ->
             continue
 
         param_def = options_dict[param_name]
-        arg_spec = convert_option_to_arg_spec(param_def)
+        arg_spec = convert_option_to_arg_spec(param_def, param_name)
 
         # Format the spec dict
         spec_str = format_dict_literal(arg_spec, indent=4)
@@ -847,7 +856,7 @@ def generate_argument_spec_function(options_dict: Dict, is_info_module: bool) ->
     # Add state parameter if not info module
     if not is_info_module and "state" in options_dict:
         state_def = options_dict["state"]
-        state_spec = convert_option_to_arg_spec(state_def)
+        state_spec = convert_option_to_arg_spec(state_def, "state")
         spec_str = format_dict_literal(state_spec, indent=4)
         lines.append(f'    module_args["state"] = {spec_str}')
 
