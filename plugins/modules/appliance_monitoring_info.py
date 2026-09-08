@@ -65,6 +65,11 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
+id:
+  description: The identifier of the monitored item that was queried.
+  returned: When only one monitored item, identified by O(stat_id), was queried
+  sample: cpu.util
+  type: str
 value:
   description: Detailed information about a single monitored item.
   returned: When only one monitored item, identified by O(stat_id), was queried
