@@ -255,7 +255,14 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         return diff
 
     def _values_equal(self, current_value, desired_value):
-        """Compare desired vs current values, recursing into partial dict updates."""
+        """Compare desired vs current values, recursing into partial dict updates.
+
+        Dicts are compared by subset: only the keys present in the desired value
+        are checked, so extra keys the API reports (but that we never send) do
+        not register as a change. Lists are compared element-wise with the same
+        semantics, which lets a desired list of partial dicts match a current
+        list whose elements carry additional read-only fields.
+        """
         if isinstance(desired_value, dict):
             if not isinstance(current_value, dict):
                 return False
@@ -263,4 +270,13 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
                 if not self._values_equal(current_value.get(key), value):
                     return False
             return True
+        if isinstance(desired_value, list):
+            if not isinstance(current_value, list) or len(current_value) != len(
+                desired_value
+            ):
+                return False
+            return all(
+                self._values_equal(current_item, desired_item)
+                for current_item, desired_item in zip(current_value, desired_value)
+            )
         return current_value == desired_value

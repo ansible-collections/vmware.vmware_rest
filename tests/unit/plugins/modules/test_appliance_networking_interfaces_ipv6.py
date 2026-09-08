@@ -73,13 +73,26 @@ def _run_module(patch_ansible_module, module_args, check_mode=False):
 
 ITEM_PATH = "/appliance/networking/interfaces/nic0/ipv6"
 
+# The desired addresses use the Ipv6.Address shape (address + prefix only),
+# which is what the PUT body carries.
 ADDRESSES = [{"address": "fc00:10:20:83:20c:29ff:fe94:bb5a", "prefix": 64}]
+
+# The GET response uses the Ipv6.AddressInfo shape, which adds the read-only
+# origin and status fields the API reports but that the module never sends.
+CURRENT_ADDRESSES = [
+    {
+        "address": "fc00:10:20:83:20c:29ff:fe94:bb5a",
+        "prefix": 64,
+        "origin": "STATIC",
+        "status": "PREFERRED",
+    }
+]
 
 # A representative GET response for the interface's IPv6 configuration.
 CURRENT_CONFIG = {
     "dhcp": False,
     "autoconf": False,
-    "addresses": ADDRESSES,
+    "addresses": CURRENT_ADDRESSES,
     "default_gateway": "fc00:10:20:83::1",
 }
 
@@ -193,7 +206,7 @@ def test_present_updates_addresses(
     result = exc.value.kwargs
     assert result["changed"] is True
     assert result["diff"] == {
-        "addresses": {"before": ADDRESSES, "after": new_addresses}
+        "addresses": {"before": CURRENT_ADDRESSES, "after": new_addresses}
     }
     mock_client.put.assert_called_once()
 

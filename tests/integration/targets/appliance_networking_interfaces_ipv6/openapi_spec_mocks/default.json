@@ -42,7 +42,9 @@
                   "addresses": [
                     {
                       "address": "fc00:10:20:83:20c:29ff:fe94:bb5a",
-                      "prefix": 64
+                      "origin": "STATIC",
+                      "prefix": 64,
+                      "status": "PREFERRED"
                     }
                   ],
                   "default_gateway": "fc00:10:20:83::1"
