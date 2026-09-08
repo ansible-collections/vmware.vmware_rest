@@ -47,10 +47,19 @@ def patch_create_client():
         yield mock
 
 
+# The Content.Library.Subscriptions.Info body returned by the GET endpoint does
+# not carry the subscription identifier; that value only exists in the request
+# path and in the list summary. The module therefore cannot derive a top-level
+# id from a single-resource GET response.
 SAMPLE_SUBSCRIPTION = {
-    "subscription": "sub-1001",
     "subscribed_library": "lib-2002",
-    "subscribed_library_vcenter_hostname": "vcenter.example.com",
+    "subscribed_library_name": "my_subscribed_library",
+    "subscribed_library_location": "LOCAL",
+    "subscribed_library_vcenter": {
+        "hostname": "vcenter.example.com",
+        "https_port": 443,
+        "server_guid": "52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5",
+    },
     "subscribed_library_placement": {
         "cluster": "domain-c1007",
         "folder": "group-v1",
@@ -85,8 +94,9 @@ def test_get_subscription_by_id(
     result = exc.value.kwargs
     assert result["value"] == SAMPLE_SUBSCRIPTION
     assert result["info"] == [SAMPLE_SUBSCRIPTION]
-    # The response carries the subscription MOID, so an id is reported.
-    assert result["id"] == "sub-1001"
+    # The SubscriptionInfo body has no subscription/id/resource_id field, so the
+    # base class cannot derive a top-level id from a single-resource GET.
+    assert "id" not in result
 
     # GET should target the item endpoint with both path params substituted in.
     mock_client.get.assert_called_once()
@@ -143,12 +153,15 @@ def test_list_all_subscriptions(
     mock_module.exit_json.side_effect = exit_json
     mock_module.check_mode = False
 
+    # The list endpoint returns summary dicts carrying the subscription id; the
+    # per-item GET body (SubscriptionInfo) does not repeat it. The enriched entry
+    # therefore gets its subscription id from the summary, not the detail body.
     list_response = [
         {"subscription": "sub-1001"},
         {"subscription": "sub-1002"},
     ]
-    detail_1 = {"subscription": "sub-1001", "subscribed_library": "lib-2002"}
-    detail_2 = {"subscription": "sub-1002", "subscribed_library": "lib-3003"}
+    detail_1 = {"subscribed_library": "lib-2002"}
+    detail_2 = {"subscribed_library": "lib-3003"}
 
     mock_client.get.side_effect = [
         _response(200, list_response),
@@ -287,7 +300,7 @@ class TestCheckMode:
 
         mock_client.get.side_effect = [
             _response(200, [{"subscription": "sub-1001"}]),
-            _response(200, {"subscription": "sub-1001"}),
+            _response(200, {"subscribed_library": "lib-2002"}),
         ]
 
         with pytest.raises(AnsibleExitJson) as exc:

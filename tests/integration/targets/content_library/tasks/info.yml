@@ -46,6 +46,11 @@
     that:
       - get_by_id.value is defined
       - get_by_id.value.name == 'my_library'
+      - get_by_id.value.type == 'LOCAL'
+      - get_by_id.value.publish_info.published
+      # The LibraryModel keys its identifier as `id`, which the module surfaces
+      # as a top-level id for single-resource queries.
+      - get_by_id.id == 'library-1001'
       - get_by_id.info is defined
       - get_by_id.info | length == 1
       - get_by_id.info[0].name == 'my_library'
@@ -81,6 +86,11 @@
       - list_multiple.value | length == 2
       - list_multiple.info is defined
       - list_multiple.info | length == 2
+      # The list endpoint returns bare identifier strings; each is mapped onto
+      # library_id and enriched via a per-item GET.
+      - list_multiple.info[0].library_id == 'library-1001'
+      - list_multiple.info[1].library_id == 'library-1002'
+      - list_multiple.info[0].name == 'my_library'
       - not list_multiple.changed
 
 # Test 4: Check mode returns the same read-only result without error

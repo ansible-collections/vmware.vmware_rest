@@ -34,16 +34,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
                 },
                 "example": [
                   {
                     "subscription": "subscriptions-1001",
-                    "name": "my_subscriptions"
+                    "subscribed_library": "3393956a-43ed-4e7f-bd96-eb39bd604445",
+                    "subscribed_library_name": "my_subscribed_library",
+                    "subscribed_library_vcenter_hostname": "vcenter.test"
                   },
                   {
                     "subscription": "subscriptions-1002",
-                    "name": "another-subscriptions"
+                    "subscribed_library": "7f2a1b3c-9d4e-4a5b-8c6d-2e3f4a5b6c7d",
+                    "subscribed_library_name": "templates_subscribed_library",
+                    "subscribed_library_vcenter_hostname": "vcenter.test"
                   }
                 ]
               }
@@ -82,7 +89,17 @@
                   "type": "object"
                 },
                 "example": {
-                  "name": "my_subscriptions"
+                  "subscribed_library": "3393956a-43ed-4e7f-bd96-eb39bd604445",
+                  "subscribed_library_name": "my_subscribed_library",
+                  "subscribed_library_location": "LOCAL",
+                  "subscribed_library_vcenter": {
+                    "hostname": "vcenter.test",
+                    "https_port": 443,
+                    "server_guid": "52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5"
+                  },
+                  "subscribed_library_placement": {
+                    "folder": "group-v1013"
+                  }
                 }
               }
             }

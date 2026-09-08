@@ -166,6 +166,14 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
                 raise
 
         if not resource:
+            if self.create_operation_config is None:
+                self.module.fail_json(
+                    msg=(
+                        "The resource could not be found and this module does "
+                        "not support creating it. Verify the resource exists "
+                        "and that any required identifying parameters are correct."
+                    )
+                )
             new_id, value = self._create()
             result["id"] = new_id
             result["value"] = value

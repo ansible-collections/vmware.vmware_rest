@@ -25,17 +25,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "example": [
-                  {
-                    "library_id": "library-1001",
-                    "name": "my_library"
-                  },
-                  {
-                    "library_id": "library-1002",
-                    "name": "another-library"
-                  }
+                  "library-1001",
+                  "library-1002"
                 ]
               }
             }
@@ -65,7 +62,13 @@
                   "type": "object"
                 },
                 "example": {
-                  "name": "my_library"
+                  "id": "library-1001",
+                  "name": "my_library",
+                  "description": "Automated content library",
+                  "type": "LOCAL",
+                  "creation_time": "2026-01-15T10:22:00.940Z",
+                  "last_modified_time": "2026-01-15T10:22:00.940Z",
+                  "version": "1"
                 }
               }
             }

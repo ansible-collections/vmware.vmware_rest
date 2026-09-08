@@ -49,10 +49,12 @@
   ansible.builtin.assert:
     that:
       - get_by_id.value is defined
-      - get_by_id.value.name == 'my_subscriptions'
+      - get_by_id.value.subscribed_library_name == 'my_subscribed_library'
+      - get_by_id.value.subscribed_library_location == 'LOCAL'
+      - get_by_id.value.subscribed_library_vcenter.hostname == 'vcenter.test'
       - get_by_id.info is defined
       - get_by_id.info | length == 1
-      - get_by_id.info[0].name == 'my_subscriptions'
+      - get_by_id.info[0].subscribed_library_name == 'my_subscribed_library'
       - not get_by_id.changed
 
 # Test 3: List multiple subscriptions
@@ -86,6 +88,11 @@
       - list_multiple.value | length == 2
       - list_multiple.info is defined
       - list_multiple.info | length == 2
+      # The list endpoint returns summary dicts carrying the subscription id,
+      # which is preserved when each entry is enriched via a per-item GET.
+      - list_multiple.info[0].subscription == 'subscriptions-1001'
+      - list_multiple.info[1].subscription == 'subscriptions-1002'
+      - list_multiple.info[0].subscribed_library_name == 'my_subscribed_library'
       - not list_multiple.changed
 
 # Test 4: Check mode returns the same read-only result without error

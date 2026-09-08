@@ -25,7 +25,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "example": []
               }
@@ -56,7 +59,25 @@
                   "type": "object"
                 },
                 "example": {
-                  "name": "my_library"
+                  "id": "library-1001",
+                  "name": "my_library",
+                  "description": "Automated content library",
+                  "type": "LOCAL",
+                  "creation_time": "2026-01-15T10:22:00.940Z",
+                  "last_modified_time": "2026-01-15T10:22:00.940Z",
+                  "version": "1",
+                  "server_guid": "52fb0b5e-ffc3-465b-bf4f-e4e6d5423cf5",
+                  "storage_backings": [
+                    {
+                      "datastore_id": "datastore-1013",
+                      "type": "DATASTORE"
+                    }
+                  ],
+                  "publish_info": {
+                    "published": true,
+                    "authentication_method": "NONE",
+                    "publish_url": "https://vcenter.test:443/cls/vcsp/lib/library-1001/lib.json"
+                  }
                 }
               }
             }
