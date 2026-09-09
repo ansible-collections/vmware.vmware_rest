@@ -1,0 +1,91 @@
+---
+# ============================================================
+# FOLDER INFO TESTS
+# ============================================================
+- name: List folders (empty)
+  vmware.vmware_rest.vcenter_folder_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value is defined
+      - list_empty.value | length == 0
+
+# ------------------------------------------------------------
+# List multiple folders
+# ------------------------------------------------------------
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple folders
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.Folder_list: "200"
+
+- name: List folders (multiple)
+  vmware.vmware_rest.vcenter_folder_info: {}
+  register: list_multi
+
+- name: Check folder multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2
+      - list_multi.info[0].folder == 'group-v1005'
+      - list_multi.info[0].name == 'my_folder'
+      - list_multi.info[0].type == 'VIRTUAL_MACHINE'
+      - list_multi.info[1].folder == 'group-h23'
+      - list_multi.info[1].type == 'HOST'
+
+# ------------------------------------------------------------
+# Filter folders (single result collapses value to a dict)
+# ------------------------------------------------------------
+- name: Reset before filtered list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for filtered folders
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/filtered.json"
+      operationsAndResponses:
+        Vcenter.Folder_list: "200"
+
+- name: List virtual machine folders filtered by name
+  vmware.vmware_rest.vcenter_folder_info:
+    filter:
+      type: VIRTUAL_MACHINE
+    names:
+      - my_folder
+  register: list_filtered
+
+- name: Check filtered folder list
+  ansible.builtin.assert:
+    that:
+      - list_filtered.info is defined
+      - list_filtered.info | length == 1
+      - list_filtered.info[0].folder == 'group-v1005'
+      - list_filtered.info[0].type == 'VIRTUAL_MACHINE'
+      - list_filtered.value is defined
+      - list_filtered.value.folder == 'group-v1005'
+      - list_filtered.value.name == 'my_folder'
