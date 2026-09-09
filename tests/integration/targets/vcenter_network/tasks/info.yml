@@ -1,0 +1,89 @@
+---
+# ============================================================
+# NETWORK INFO TESTS
+# ============================================================
+- name: List networks (empty)
+  vmware.vmware_rest.vcenter_network_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value is defined
+      - list_empty.value | length == 0
+
+# ------------------------------------------------------------
+# List multiple networks
+# ------------------------------------------------------------
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple networks
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.Network_list: "200"
+
+- name: List networks (multiple)
+  vmware.vmware_rest.vcenter_network_info: {}
+  register: list_multi
+
+- name: Check network multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2
+      - list_multi.info[0].network == 'network-1001'
+      - list_multi.info[0].name == 'VM Network'
+      - list_multi.info[0].type == 'STANDARD_PORTGROUP'
+      - list_multi.info[1].network == 'dvportgroup-2002'
+      - list_multi.info[1].type == 'DISTRIBUTED_PORTGROUP'
+
+# ------------------------------------------------------------
+# Filter networks by type (single result collapses value to a dict)
+# ------------------------------------------------------------
+- name: Reset before filtered list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for filtered networks
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/filtered.json"
+      operationsAndResponses:
+        Vcenter.Network_list: "200"
+
+- name: List distributed portgroups
+  vmware.vmware_rest.vcenter_network_info:
+    types:
+      - DISTRIBUTED_PORTGROUP
+  register: list_filtered
+
+- name: Check filtered network list
+  ansible.builtin.assert:
+    that:
+      - list_filtered.info is defined
+      - list_filtered.info | length == 1
+      - list_filtered.info[0].network == 'dvportgroup-2002'
+      - list_filtered.info[0].type == 'DISTRIBUTED_PORTGROUP'
+      - list_filtered.value is defined
+      - list_filtered.value.network == 'dvportgroup-2002'
+      - list_filtered.value.name == 'DPortGroup'
