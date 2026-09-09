@@ -1,0 +1,117 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Datastore Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/datastore": {
+      "get": {
+        "operationId": "Vcenter.Datastore_list",
+        "parameters": [
+          {
+            "name": "names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "types",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "example": [
+                  {
+                    "datastore": "datastore-1001",
+                    "name": "my_datastore",
+                    "type": "VMFS",
+                    "free_space": 32204521472,
+                    "capacity": 53687091200
+                  },
+                  {
+                    "datastore": "datastore-1002",
+                    "name": "shared_nfs",
+                    "type": "NFS",
+                    "free_space": 128849018880,
+                    "capacity": 214748364800
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vcenter/datastore/{datastore}": {
+      "get": {
+        "operationId": "Vcenter.Datastore_get",
+        "parameters": [
+          {
+            "name": "datastore",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "name": "my_datastore",
+                  "type": "VMFS",
+                  "accessible": true,
+                  "free_space": 32204521472,
+                  "multiple_host_access": true,
+                  "thin_provisioning_supported": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}
