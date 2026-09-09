@@ -1,0 +1,104 @@
+---
+# ============================================================
+# PRESENT (CREATE) TESTS
+# ============================================================
+
+# Test 1: Create a VM template library item from a source VM
+- name: Reset before create expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for create
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.VmTemplate.LibraryItems_create: "200"
+
+- name: Create a VM template library item
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    name: my-vm-template
+    source_vm: vm-1001
+    library: 570bdaa2-5f0a-45c8-8bb5-abcdef012345
+    placement:
+      folder: group-v1002
+      resource_pool: resgroup-1003
+    state: present
+  register: create_result
+
+- name: Assert create success
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+      - create_result.id == '570bdaa2-5f0a-45c8-8bb5-1234567890ab'
+
+# Test 2: Create in check mode (reports change, performs no POST)
+- name: Reset before create check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for create check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/created.json"
+      operationsAndResponses:
+        Vcenter.VmTemplate.LibraryItems_create: "200"
+
+- name: Create a VM template library item in check mode
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    name: my-vm-template
+    source_vm: vm-1001
+    library: 570bdaa2-5f0a-45c8-8bb5-abcdef012345
+    placement:
+      resource_pool: resgroup-1003
+    state: present
+  check_mode: true
+  register: create_check
+
+- name: Assert create check mode reports change
+  ansible.builtin.assert:
+    that:
+      - create_check.changed
+
+# Test 3: Idempotent present when the library item already exists
+- name: Reset before idempotent present expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for existing library item
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.VmTemplate.LibraryItems_get: "200"
+
+- name: Ensure present for an existing library item (idempotent)
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    template_library_item: 570bdaa2-5f0a-45c8-8bb5-1234567890ab
+    name: my-vm-template
+    state: present
+  register: present_idem
+
+- name: Assert present is idempotent for existing item
+  ansible.builtin.assert:
+    that:
+      - not present_idem.changed
+      - present_idem.id == '570bdaa2-5f0a-45c8-8bb5-1234567890ab'
