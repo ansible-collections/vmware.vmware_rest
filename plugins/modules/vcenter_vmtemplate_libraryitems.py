@@ -428,7 +428,8 @@ id:
   description:
     - Identifier of the managed resource.
     - When C(state=present), this is the identifier of the created virtual machine template library item.
-    - When C(state=deploy), this is the identifier of the source template library item that was deployed from. The identifier of the newly deployed virtual machine is returned in C(value).
+    - When C(state=deploy), this is the identifier of the source template library item that was deployed 
+      from. The identifier of the newly deployed virtual machine is returned in C(value).
   returned: When state is present, or when state is set to a supported action
   sample: vm-1010
   type: str
