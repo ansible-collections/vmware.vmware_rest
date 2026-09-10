@@ -40,8 +40,8 @@
     - name: Verify test folder found
       ansible.builtin.assert:
         that:
-          - _test_folder_id_info.value | length == 1
-          - (_test_folder_id_info.value |  map(attribute='folder') | list | first) == folder_id
+          - _test_folder_id_info.info | length == 1
+          - (_test_folder_id_info.info |  map(attribute='folder') | list | first) == folder_id
           # - _test_folder_name_info.value | length == 1
           # - (_test_folder_name_info.value |  map(attribute='folder') | list | first) == folder_id
 

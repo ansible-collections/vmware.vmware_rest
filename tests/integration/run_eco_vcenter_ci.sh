@@ -51,7 +51,7 @@ fi
 for target in "${target_list[@]}"; do
     echo "Running integration test for $target"
     total=$((total + 1))
-    if ansible-test integration $target --skip-tags force-simulator-run -vvvv; then
+    if ansible-test integration $target --skip-tags force-simulator-run; then
         echo -e "Test: $target ${GREEN}Passed${NC}" | tee -a "$TEST_OUTPUT_LOG"
     else
         echo -e "Test: $target ${RED}Failed${NC}" | tee -a "$TEST_OUTPUT_LOG"

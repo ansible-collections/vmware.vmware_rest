@@ -127,5 +127,5 @@
     that:
       - _get_single_ethernet_info.value is defined
       - _get_single_ethernet_info.id is defined
-      - portgroup_info.value | length == 1
+      - portgroup_info.info | length == 1
   when: _list_ethernet_info.value | length > 0
