@@ -48,6 +48,7 @@ def connection_params_argument_spec():
         "session_timeout": dict(
             type="float",
             required=False,
+            default=300,
             fallback=(env_fallback, ["VMWARE_SESSION_TIMEOUT"]),
         ),
     }

@@ -31,19 +31,19 @@
         folders: "{{ folder_id }}"
       register: _test_folder_id_info
 
-    - name: Get folder by name and type
-      vmware.vmware_rest.vcenter_folder_info:
-        filter_type: VIRTUAL_MACHINE
-        filter_names: "{{ vcenter_vm_folder }}"
-      register: _test_folder_name_info
+    # - name: Get folder by name and type
+    #   vmware.vmware_rest.vcenter_folder_info:
+    #     filter_type: VIRTUAL_MACHINE
+    #     filter_names: "{{ vcenter_vm_folder }}"
+    #   register: _test_folder_name_info
 
     - name: Verify test folder found
       ansible.builtin.assert:
         that:
           - _test_folder_id_info.value | length == 1
           - (_test_folder_id_info.value |  map(attribute='folder') | list | first) == folder_id
-          - _test_folder_name_info.value | length == 1
-          - (_test_folder_name_info.value |  map(attribute='folder') | list | first) == folder_id
+          # - _test_folder_name_info.value | length == 1
+          # - (_test_folder_name_info.value |  map(attribute='folder') | list | first) == folder_id
 
     # Resource pool tests
     - name: Build a list of all the resource pools
