@@ -129,7 +129,11 @@ EXAMPLES = r"""
 
 RETURN = r"""
 id:
-  description: MOID of the queried datastore.
+  description:
+    - MOID of the queried datastore.
+    - This is not returned when a single datastore is looked up directly by its
+      MOID (using the O(datastore) parameter), since it would be redundant with
+      the value the caller already supplied.
   returned: When only one resource, with a MOID, was queried.
   sample: datastore-1001
   type: str

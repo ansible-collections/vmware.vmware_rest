@@ -22,6 +22,8 @@ description:
     as a virtual machine template.
   - Use C(state=deploy) to deploy a new virtual machine from an existing virtual machine template
     library item onto a target resource pool, host, or cluster.
+  - This module will always report a change in check mode.
+  - Library items cannot be updated due to API limitations
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -426,7 +428,7 @@ id:
   description:
     - Identifier of the managed resource.
     - When C(state=present), this is the identifier of the created virtual machine template library item.
-    - When C(state=deploy), this is the identifier of the deployed virtual machine.
+    - When C(state=deploy), this is the identifier of the source template library item that was deployed from. The identifier of the newly deployed virtual machine is returned in C(value).
   returned: When state is present, or when state is set to a supported action
   sample: vm-1010
   type: str

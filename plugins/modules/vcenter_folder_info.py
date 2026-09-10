@@ -127,11 +127,6 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-id:
-  description: MOID of the queried folder.
-  returned: When only one resource, with a MOID, was queried.
-  sample: group-v1005
-  type: str
 value:
   description:
     - Raw output from the API response.

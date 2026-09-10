@@ -118,11 +118,6 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-id:
-  description: MOID of the queried network.
-  returned: When only one resource, with a MOID, was queried.
-  sample: network-1001
-  type: str
 value:
   description:
     - Raw output from the API response.
