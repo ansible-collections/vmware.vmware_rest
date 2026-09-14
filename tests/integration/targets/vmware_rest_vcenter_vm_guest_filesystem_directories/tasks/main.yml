@@ -71,16 +71,17 @@
           user_name: "{{ test_rhel9_username }}"
           password: "{{ test_rhel9_password }}"
       register: vm_dir_info
+      ignore_errors: true
 
     - name: Print debug info
       ansible.builtin.debug:
         var: vm_dir_info
 
-    - name: Verify no changes
+    - name: Verify the module fails when the directory already exists
       ansible.builtin.assert:
         that:
-          - vm_dir_info is not ansible.builtin.changed
-          - vm_dir_info.value.error_type == "ALREADY_EXISTS"
+          - vm_dir_info is ansible.builtin.failed
+          - "'ALREADY_EXISTS' in vm_dir_info.exception_info.message"
 
     - name: Move directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
