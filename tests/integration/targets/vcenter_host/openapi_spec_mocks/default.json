@@ -1,0 +1,89 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Host Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/host": {
+      "get": {
+        "operationId": "Vcenter.Host_list",
+        "parameters": [
+          {
+            "name": "hosts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "connection_states",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "clusters",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "example": []
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

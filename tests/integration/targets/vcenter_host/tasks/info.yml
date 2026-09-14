@@ -1,0 +1,91 @@
+---
+# ============================================================
+# HOST INFO TESTS
+# ============================================================
+- name: List hosts (empty)
+  vmware.vmware_rest.vcenter_host_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value is defined
+      - list_empty.value | length == 0
+
+# ------------------------------------------------------------
+# List multiple hosts
+# ------------------------------------------------------------
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple hosts
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.Host_list: "200"
+
+- name: List hosts (multiple)
+  vmware.vmware_rest.vcenter_host_info: {}
+  register: list_multi
+
+- name: Check host multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2
+      - list_multi.info[0].host == 'host-1001'
+      - list_multi.info[0].name == 'esxi01.example.com'
+      - list_multi.info[0].connection_state == 'CONNECTED'
+      - list_multi.info[1].host == 'host-1002'
+      - list_multi.info[1].connection_state == 'DISCONNECTED'
+
+# ------------------------------------------------------------
+# Filter hosts (single result collapses value to a dict)
+# ------------------------------------------------------------
+- name: Reset before filtered list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for filtered hosts
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/filtered.json"
+      operationsAndResponses:
+        Vcenter.Host_list: "200"
+
+- name: List connected hosts filtered by name
+  vmware.vmware_rest.vcenter_host_info:
+    names:
+      - esxi01.example.com
+    connection_states:
+      - CONNECTED
+  register: list_filtered
+
+- name: Check filtered host list
+  ansible.builtin.assert:
+    that:
+      - list_filtered.info is defined
+      - list_filtered.info | length == 1
+      - list_filtered.info[0].host == 'host-1001'
+      - list_filtered.info[0].connection_state == 'CONNECTED'
+      - list_filtered.value is defined
+      - list_filtered.value.host == 'host-1001'
+      - list_filtered.value.name == 'esxi01.example.com'

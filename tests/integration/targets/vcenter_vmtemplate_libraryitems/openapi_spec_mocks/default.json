@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VmTemplate LibraryItems Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm-template/library-items/{template_library_item}": {
+      "get": {
+        "operationId": "Vcenter.VmTemplate.LibraryItems_get",
+        "parameters": [
+          {
+            "name": "template_library_item",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "vm_template": "vm-1001",
+                  "guest_os": "WINDOWS_9_SERVER_64"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "post": {
+        "operationId": "Vcenter.VmTemplate.LibraryItems_deploy",
+        "parameters": [
+          {
+            "name": "template_library_item",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "vm-1010"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

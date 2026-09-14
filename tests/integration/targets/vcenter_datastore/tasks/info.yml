@@ -1,0 +1,111 @@
+---
+# ============================================================
+# DATASTORE INFO TESTS
+# ============================================================
+- name: List datastores (empty)
+  vmware.vmware_rest.vcenter_datastore_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value is defined
+      - list_empty.value | length == 0
+
+# ------------------------------------------------------------
+# Get a single datastore by its MOID (uses the item endpoint)
+# ------------------------------------------------------------
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Datastore_get: "200"
+
+- name: Get a datastore by ID
+  vmware.vmware_rest.vcenter_datastore_info:
+    datastore: datastore-1001
+  register: get_by_id
+
+- name: Assert datastore details
+  ansible.builtin.assert:
+    that:
+      - get_by_id.value is defined
+      - get_by_id.value.name == 'my_datastore'
+      - get_by_id.value.type == 'VMFS'
+      - get_by_id.value.accessible
+      - get_by_id.value.free_space == 32204521472
+      - get_by_id.info is defined
+      - get_by_id.info | length == 1
+
+# ------------------------------------------------------------
+# List multiple datastores (uses the list endpoint)
+# ------------------------------------------------------------
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.Datastore_list: "200"
+        Vcenter.Datastore_get: "200"
+
+- name: List datastores (multiple)
+  vmware.vmware_rest.vcenter_datastore_info: {}
+  register: list_multi
+
+# The list endpoint returns summaries; the module then enriches each one with a
+# per-item GET. The datastore MOID comes from the summary (the GET Info body has
+# no datastore key), while name/type/accessible come from the GET response.
+- name: Check datastore multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2
+      - list_multi.info[0].datastore == 'datastore-1001'
+      - list_multi.info[1].datastore == 'datastore-1002'
+      - list_multi.info[0].capacity == 53687091200
+      - list_multi.info[1].capacity == 214748364800
+      - list_multi.info[0].name == 'my_datastore'
+      - list_multi.info[0].type == 'VMFS'
+      - list_multi.info[0].accessible
+      - list_multi.info[1].name == 'my_datastore'
+      - list_multi.info[1].accessible
+
+# ------------------------------------------------------------
+# Filter the list by name (the module forwards the query param)
+# ------------------------------------------------------------
+- name: List datastores filtered by name
+  vmware.vmware_rest.vcenter_datastore_info:
+    names:
+      - my_datastore
+  register: list_filtered
+
+- name: Check filtered datastore list returns data
+  ansible.builtin.assert:
+    that:
+      - list_filtered.info is defined
+      - list_filtered.info | length == 2

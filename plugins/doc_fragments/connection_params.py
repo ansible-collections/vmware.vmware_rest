@@ -59,4 +59,5 @@ class ModuleDocFragment(object):
                 - Timeout in seconds for the whole operation including connection establishment,
                     request sending, and response.
             type: float
+            default: 300
 """

@@ -1,0 +1,21 @@
+---
+- name: Test vcenter_vmtemplate_libraryitems module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    - name: Load default API spec expectations
+      ansible.builtin.uri:
+        url: "{{ mockserver_url }}/mockserver/openapi"
+        method: PUT
+        status_code: [200, 201]
+        body_format: json
+        body:
+          specUrlOrPayload: "file:/mockserver_specs/default.json"
+          operationsAndResponses:
+            Vcenter.VmTemplate.LibraryItems_get: "200"
+            Vcenter.VmTemplate.LibraryItems_deploy: "200"
+
+    - name: Include present tests
+      ansible.builtin.include_tasks: present.yml
+
+    - name: Include deploy tests
+      ansible.builtin.include_tasks: deploy.yml

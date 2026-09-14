@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VmTemplate LibraryItems Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm-template/library-items": {
+      "post": {
+        "operationId": "Vcenter.VmTemplate.LibraryItems_create",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "570bdaa2-5f0a-45c8-8bb5-1234567890ab"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

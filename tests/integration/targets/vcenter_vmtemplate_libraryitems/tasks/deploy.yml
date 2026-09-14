@@ -1,0 +1,78 @@
+---
+# ============================================================
+# DEPLOY ACTION TESTS
+# ============================================================
+
+# Test 1: Deploy a virtual machine from a template library item
+- name: Reset before deploy expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for deploy
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.VmTemplate.LibraryItems_get: "200"
+        Vcenter.VmTemplate.LibraryItems_deploy: "200"
+
+- name: Deploy a VM from a template library item
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    template_library_item: 570bdaa2-5f0a-45c8-8bb5-1234567890ab
+    name: deployed-vm
+    powered_on: true
+    placement:
+      folder: group-v1002
+      resource_pool: resgroup-1003
+    state: deploy
+  register: deploy_result
+
+- name: Assert deploy success
+  ansible.builtin.assert:
+    that:
+      - deploy_result.changed
+      - deploy_result.id == '570bdaa2-5f0a-45c8-8bb5-1234567890ab'
+      - deploy_result.value == 'vm-1010'
+
+# Test 2: Deploy in check mode (reports change, performs no POST)
+- name: Reset before deploy check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for deploy check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.VmTemplate.LibraryItems_get: "200"
+        Vcenter.VmTemplate.LibraryItems_deploy: "200"
+
+- name: Deploy a VM from a template library item in check mode
+  vmware.vmware_rest.vcenter_vmtemplate_libraryitems:
+    template_library_item: 570bdaa2-5f0a-45c8-8bb5-1234567890ab
+    name: deployed-vm
+    powered_on: true
+    placement:
+      resource_pool: resgroup-1003
+    state: deploy
+  check_mode: true
+  register: deploy_check
+
+- name: Assert deploy check mode reports change
+  ansible.builtin.assert:
+    that:
+      - deploy_check.changed
+      - deploy_check.id == '570bdaa2-5f0a-45c8-8bb5-1234567890ab'
+      - not deploy_check.value

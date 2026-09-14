@@ -1,0 +1,13 @@
+---
+breaking_changes:
+  - vcenter_folder_info - The ``type`` parameter (and its ``filter_type`` alias) has been moved into
+    a new ``filter`` dictionary as ``filter.type``, reflecting the ``Vcenter.Folder.FilterSpec``
+    object introduced in the vSphere 9.1.0 API specification. Playbooks that set ``type`` or
+    ``filter_type`` at the top level must now use ``filter.type``. The ``folders``, ``names``,
+    ``parent_folders``, and ``datacenters`` filters remain top-level parameters.
+  - vcenter_host_info - The ``standalone`` parameter has been moved into a new ``filter`` dictionary
+    as ``filter.standalone``, reflecting the ``Vcenter.Host.FilterSpec`` object introduced in the
+    vSphere 9.1.0 API specification. Playbooks that set ``standalone`` at the top level must now use
+    ``filter.standalone``. The other host filters remain top-level parameters.
+  - vcenter_folder_info and vcenter_network_info - The 'value' return is not guaranteed to be a list.
+    If a list is desired, the 'info' return will always be a list (as documented)

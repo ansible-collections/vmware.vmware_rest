@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Folder Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/folder": {
+      "get": {
+        "operationId": "Vcenter.Folder_list",
+        "parameters": [
+          {
+            "name": "folders",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "example": []
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}
