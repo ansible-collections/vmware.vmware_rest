@@ -140,7 +140,7 @@ def test_ensure_present_no_changes(
             "upgrade_policy": "MANUAL",
         }
     )
-    _, result = _run_module(
+    _, result = _run_module(  # pylint: disable=disallowed-name
         patch_create_client, patch_ansible_module, mock_client, module_args
     )
 
@@ -160,7 +160,7 @@ def test_ensure_present_omit_upgrade_policy_noop(
     mock_client.get.return_value = _response(200, VM_TOOLS)
 
     module_args.update({"state": "present", "vm": VM_ID})
-    _, result = _run_module(
+    _, result = _run_module(  # pylint: disable=disallowed-name
         patch_create_client, patch_ansible_module, mock_client, module_args
     )
 
@@ -211,7 +211,7 @@ def test_action_upgrade(
     mock_client.post.return_value = _response(200, {})
 
     module_args.update({"state": "upgrade", "vm": VM_ID})
-    _, result = _run_module(
+    _, result = _run_module(  # pylint: disable=disallowed-name
         patch_create_client, patch_ansible_module, mock_client, module_args
     )
 
@@ -267,7 +267,7 @@ class TestCheckMode:
                 "upgrade_policy": "UPGRADE_AT_POWER_CYCLE",
             }
         )
-        _, result = _run_module(
+        _, result = _run_module(  # pylint: disable=disallowed-name
             patch_create_client,
             patch_ansible_module,
             mock_client,
@@ -287,7 +287,7 @@ class TestCheckMode:
     ):
         """Test the upgrade action in check mode issues no POST."""
         module_args.update({"state": "upgrade", "vm": VM_ID})
-        _, result = _run_module(
+        _, result = _run_module(  # pylint: disable=disallowed-name
             patch_create_client,
             patch_ansible_module,
             mock_client,
