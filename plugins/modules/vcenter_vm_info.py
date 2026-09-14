@@ -144,7 +144,11 @@ EXAMPLES = r"""
 
 RETURN = r"""
 id:
-  description: MOID of the queried virtual machine.
+  description:
+    - MOID of the queried virtual machine.
+    - This is not returned when a single VM is looked up directly by its
+      MOID (using the O(vm) parameter), since it would be redundant with
+      the value the caller already supplied.
   returned: When only one resource, with a MOID, was queried.
   sample: vm-1013
   type: str

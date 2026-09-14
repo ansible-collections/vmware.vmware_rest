@@ -42,6 +42,7 @@
         vm: "{{ _test_vm_moid }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
+        state: create
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
@@ -63,6 +64,7 @@
         vm: "{{ _test_vm_moid }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
+        state: create
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
@@ -108,6 +110,7 @@
         vm: "{{ _test_vm_moid }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
+        state: create
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
@@ -134,7 +137,7 @@
           type: USERNAME_PASSWORD
           user_name: "{{ test_rhel9_username }}"
           password: "{{ test_rhel9_password }}"
-        state: create_temporary
+        state: createTemporary
       register: vm_dir_info_temp
 
     - name: Print debug info
@@ -156,7 +159,7 @@
           type: USERNAME_PASSWORD
           user_name: "{{ test_rhel9_username }}"
           password: "{{ test_rhel9_password }}"
-        state: absent
+        state: delete
       loop:
         - "{{ path_tmp.dir }}"
         - "{{ path_tmp.new_dir }}"
