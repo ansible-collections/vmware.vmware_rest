@@ -31,7 +31,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module im
 
 from ...common.utils import CONNECTION_PARAMS, fail_json, AnsibleFailJson
 
-
 ITEM_ENDPOINT = "/vcenter/vm/{vm}/storage/policy"
 
 
@@ -188,9 +187,7 @@ def test_ensure_present_resource_not_found_cannot_create(crud_module, mock_clien
     """
     crud_module.params["vm"] = "vm-missing"
 
-    with patch.object(
-        crud_module, "_resolve_live_resource_context", return_value={}
-    ):
+    with patch.object(crud_module, "_resolve_live_resource_context", return_value={}):
         with pytest.raises(AnsibleFailJson):
             crud_module.ensure_present()
 

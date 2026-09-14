@@ -1,0 +1,65 @@
+---
+# ============================================================
+# VM TOOLS ACTION TESTS
+# ============================================================
+# The CRUD module exposes a single, non-idempotent action (state=upgrade) that
+# POSTs to .../tools?action=upgrade to trigger a Tools upgrade. The action
+# returns 204 (no body), so the module always reports a change, surfaces an empty
+# `value`, and skips the API call in check mode.
+
+# ------------------------------------------------------------
+# Test 1: run the tools upgrade action
+# ------------------------------------------------------------
+- name: Reset before upgrade action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add upgrade POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/vcenter/vm/vm-1001/tools"
+          queryStringParameters:
+            action:
+              - upgrade
+        httpResponse:
+          statusCode: 204
+
+- name: Trigger the tools upgrade
+  vmware.vmware_rest.vcenter_vm_tools:
+    vm: vm-1001
+    state: upgrade
+    command_line_options: /S /v /qn
+  register: upgrade_result
+
+- name: Assert upgrade action succeeded
+  ansible.builtin.assert:
+    that:
+      - upgrade_result.changed
+      - upgrade_result.id == 'vm-1001'
+      - upgrade_result.value == {}
+
+# ------------------------------------------------------------
+# Test 2: run the upgrade action in check mode (no API call is made)
+# ------------------------------------------------------------
+- name: Trigger the tools upgrade in check mode
+  vmware.vmware_rest.vcenter_vm_tools:
+    vm: vm-1001
+    state: upgrade
+    command_line_options: /S /v /qn
+  check_mode: true
+  register: upgrade_check_mode
+
+- name: Assert check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - upgrade_check_mode.changed
+      - upgrade_check_mode.id == 'vm-1001'
+      - upgrade_check_mode.value == {}

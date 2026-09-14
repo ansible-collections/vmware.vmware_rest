@@ -31,7 +31,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import 
 
 from ...common.utils import CONNECTION_PARAMS, fail_json
 
-
 ITEM_ENDPOINT = "/vcenter/vm/{vm}/storage/policy"
 
 
@@ -176,9 +175,7 @@ def test_normalize_info_results_empty(info_module):
     """
     Test normalize_info_results with an empty result set.
     """
-    result = info_module.normalize_info_results(
-        query_results=[], single_resource=True
-    )
+    result = info_module.normalize_info_results(query_results=[], single_resource=True)
 
     assert result["info"] == []
     assert result["value"] == {}
