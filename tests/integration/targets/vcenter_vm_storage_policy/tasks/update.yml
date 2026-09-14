@@ -1,0 +1,100 @@
+---
+# ============================================================
+# VM STORAGE POLICY UPDATE TESTS
+# ============================================================
+# This CRUD module only supports state=present, backed by GET + PATCH. It reads
+# the current policy via GET and PATCHes when the desired policy differs.
+#
+# NOTE on idempotency: the API represents the current vm_home policy as a bare
+# string (a policy MOID), while the update spec expects a {type, policy} dict.
+# The two shapes can never compare equal, so supplying vm_home/disks always
+# registers as a change. A true no-op is only possible when neither vm_home nor
+# disks is provided (empty desired body -> empty diff -> changed=false).
+
+# ------------------------------------------------------------
+# Test 1: update the vm_home storage policy (change is applied)
+# ------------------------------------------------------------
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Vcenter.Vm.Storage.Policy_get: "200"
+        Vcenter.Vm.Storage.Policy_update: "200"
+
+- name: Update the vm_home storage policy
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: vm-1001
+    state: present
+    vm_home:
+      type: USE_SPECIFIED_POLICY
+      policy: f4e5d6c7-b8a9-4012-9345-6789abcdef01
+  register: update_result
+
+- name: Assert update applied the change
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+      - update_result.id == 'vm-1001'
+      - "'vm_home' in update_result.diff"
+
+# ------------------------------------------------------------
+# Test 2: update in check mode (change needed, no API call is made)
+# ------------------------------------------------------------
+- name: Update the vm_home storage policy in check mode
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: vm-1001
+    state: present
+    vm_home:
+      type: USE_SPECIFIED_POLICY
+      policy: f4e5d6c7-b8a9-4012-9345-6789abcdef01
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+      - update_check.value == {}
+
+# ------------------------------------------------------------
+# Test 3: present with nothing to change (idempotent no-op)
+# ------------------------------------------------------------
+- name: Reset before no-op expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for no-op
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Vm.Storage.Policy_get: "200"
+
+- name: Reconfigure the vm with no policy changes
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: vm-1001
+    state: present
+  register: noop_result
+
+- name: Assert no change when nothing is requested
+  ansible.builtin.assert:
+    that:
+      - not noop_result.changed
+      - noop_result.id == 'vm-1001'

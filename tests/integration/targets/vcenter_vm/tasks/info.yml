@@ -1,0 +1,113 @@
+---
+# ============================================================
+# VM INFO TESTS
+# ============================================================
+- name: List vms (empty)
+  vmware.vmware_rest.vcenter_vm_info: {}
+  register: list_empty
+
+- name: Assert empty list
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value is defined
+      - list_empty.value | length == 0
+
+# ------------------------------------------------------------
+# Get a single vm by its MOID (uses the item endpoint)
+# ------------------------------------------------------------
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Vm_get: "200"
+
+- name: Get a vm by ID
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: vm-1001
+  register: get_by_id
+
+# The VM Info body does not carry the vm MOID, so only the detailed fields are
+# asserted here (value collapses to a dict for a single resource).
+- name: Assert vm details
+  ansible.builtin.assert:
+    that:
+      - get_by_id.value is defined
+      - get_by_id.value.name == 'DC0_H0_VM0'
+      - get_by_id.value.guest_os == 'RHEL_9_64'
+      - get_by_id.value.power_state == 'POWERED_ON'
+      - get_by_id.value.cpu.count == 2
+      - get_by_id.value.memory.size_mib == 2048
+      - get_by_id.value.hardware.version == 'VMX_21'
+      - get_by_id.info is defined
+      - get_by_id.info | length == 1
+
+# ------------------------------------------------------------
+# List multiple vms (uses the list endpoint)
+# ------------------------------------------------------------
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Vcenter.Vm_list: "200"
+        Vcenter.Vm_get: "200"
+
+- name: List vms (multiple)
+  vmware.vmware_rest.vcenter_vm_info: {}
+  register: list_multi
+
+# The list endpoint returns summaries; the module then enriches each one with a
+# per-item GET. The vm MOID and cpu_count come from the summary, while the
+# detailed guest_os/cpu/memory come from the GET response.
+- name: Check vm multi list
+  ansible.builtin.assert:
+    that:
+      - list_multi.value is defined
+      - list_multi.value | length == 2
+      - list_multi.info is defined
+      - list_multi.info | length == 2
+      - list_multi.info[0].vm == 'vm-1001'
+      - list_multi.info[1].vm == 'vm-1002'
+      - list_multi.info[0].cpu_count == 2
+      - list_multi.info[1].cpu_count == 4
+      - list_multi.info[0].guest_os == 'RHEL_9_64'
+      - list_multi.info[0].cpu.count == 2
+      - list_multi.info[0].memory.size_mib == 2048
+
+# ------------------------------------------------------------
+# Filter the list by name (the module forwards the query param)
+# ------------------------------------------------------------
+- name: List vms filtered by name
+  vmware.vmware_rest.vcenter_vm_info:
+    names:
+      - DC0_H0_VM0
+  register: list_filtered
+
+- name: Check filtered vm list returns data
+  ansible.builtin.assert:
+    that:
+      - list_filtered.info is defined
+      - list_filtered.info | length == 2
