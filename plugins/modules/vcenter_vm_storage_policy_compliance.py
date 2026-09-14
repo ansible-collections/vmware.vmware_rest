@@ -15,9 +15,14 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_storage_policy_compliance
-short_description: PLACEHOLDER
+short_description: Check the storage policy compliance of a virtual machine.
 description:
-  - PLACEHOLDER
+  - Run an on-demand storage policy compliance check for a virtual machine.
+  - The check compares the storage policies assigned to the virtual machine's home
+    directory and virtual disks against the actual storage on which they reside.
+  - The compliance results are returned in the response; use
+    M(vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info) to read the last
+    known compliance status without triggering a new check.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -29,30 +34,34 @@ options:
   state:
     description:
       - The desired state of the resource.
-      - Use C(check) to perform the check action.
-      - Only options C(present) and C(absent) support idempotence.
+      - Use C(check) to trigger an on-demand storage policy compliance check.
+      - This module only supports the C(check) action and is therefore not idempotent;
+        every run performs a fresh compliance check.
     type: str
     required: true
     choices:
       - check
   vm:
     description:
-      - Identifier of the vm to manage.
-      - Must be an identifier (MOID) for a C(Vm) resource.
+      - The identifier of the virtual machine to check for compliance.
+      - Must be the MOID (managed object identifier) of a C(Vm) resource.
     type: str
     required: true
   vm_home:
     description:
-      - Invoke compliance check on the virtual machine home directory if set to true.
-      - This property was added in __vSphere API 6.7__.
+      - Whether to include the virtual machine's home directory in the compliance check.
+      - Set to C(true) to check the home directory, C(false) to skip it.
+      - This property was added in vSphere API 6.7.
     type: bool
     required: false
   disks:
     description:
-      - Identifiers of the virtual machine's virtual disks for which compliance should be checked.
-      - This property was added in __vSphere API 6.7__.
-      - If missing or 'null' or empty, compliance check is invoked on all the associated disks.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'com.vmware.vcenter.vm.hardware.Disk'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'com.vmware.vcenter.vm.hardware.Disk'.
+      - The MOIDs (managed object identifiers) of the virtual machine's virtual disks
+        to check for compliance.
+      - Each identifier must reference a C(com.vmware.vcenter.vm.hardware.Disk) resource.
+      - If omitted, null, or empty, the compliance check is invoked on all disks
+        associated with the virtual machine.
+      - This property was added in vSphere API 6.7.
     type: list
     required: false
     elements: str
@@ -66,9 +75,51 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+      - test_vm1
+
+- name: Check storage policy compliance for the whole VM
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance:
+    vm: '{{ search_result.value[0].vm }}'
+    vm_home: true
+    state: check
+
+- name: Check compliance for specific disks only
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance:
+    vm: '{{ search_result.value[0].vm }}'
+    vm_home: false
+    disks:
+      - '2000'
+      - '2001'
+    state: check
 """
 
 RETURN = r"""
+id:
+  description: MOID of the virtual machine that was checked.
+  returned: When state is set to a supported action.
+  sample: vm-1009
+  type: str
+value:
+  description: The raw API response body containing the storage policy compliance results.
+  returned: On success
+  type: raw
+  sample:
+    overall_compliance: COMPLIANT
+    vm_home:
+      status: COMPLIANT
+      check_time: '2026-09-14T10:30:00.000Z'
+      policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+      failure_cause: []
+    disks:
+      '2000':
+        status: COMPLIANT
+        check_time: '2026-09-14T10:30:00.000Z'
+        policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+        failure_cause: []
 """
 
 

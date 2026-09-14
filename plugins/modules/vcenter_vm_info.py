@@ -15,9 +15,13 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_info
-short_description: PLACEHOLDER
+short_description: Gather information about virtual machines in vCenter.
 description:
-  - PLACEHOLDER
+  - Retrieve information about one or more virtual machines managed by vCenter.
+  - When a virtual machine identifier is supplied, return the full configuration details for that single
+    virtual machine, including its hardware, boot options, CPU, memory, disks, and network adapters.
+  - When no identifier is supplied, return a summary list of virtual machines, optionally narrowed using
+    the available filters such as names, folders, datacenters, hosts, clusters, resource pools, and power states.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -28,15 +32,16 @@ extends_documentation_fragment:
 options:
   vm:
     description:
-      - Identifier of the vm to manage.
-      - Must be an identifier (MOID) for a C(Vm) resource.
+      - Identifier of the virtual machine to retrieve full configuration details for.
+      - Must be the MOID (managed object identifier) of a C(VirtualMachine) resource.
+      - When set, the module returns detailed information about this single virtual machine instead of a summary list.
     type: str
     required: false
   vms:
     description:
-      - Identifiers of virtual machines that can match the filter.
-      - If missing or 'null' or empty, virtual machines with any identifier match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'VirtualMachine'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'VirtualMachine'.
+      - Limit the results to virtual machines with these identifiers (MOIDs).
+      - Each value must be the MOID of a C(VirtualMachine) resource.
+      - If omitted or empty, virtual machines with any identifier match the filter.
     type: list
     required: false
     elements: str
@@ -44,8 +49,8 @@ options:
     aliases:
       - filter_names
     description:
-      - Names that virtual machines must have to match the filter (see *Vcenter.VM.Info.name*).
-      - If missing or 'null' or empty, virtual machines with any name match the filter.
+      - Limit the results to virtual machines with these display names.
+      - If omitted or empty, virtual machines with any name match the filter.
     type: list
     required: false
     elements: str
@@ -53,9 +58,9 @@ options:
     aliases:
       - filter_folders
     description:
-      - Folders that must contain the virtual machine for the virtual machine to match the filter.
-      - If missing or 'null' or empty, virtual machines in any folder match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'Folder'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'Folder'.
+      - Limit the results to virtual machines contained in these folders.
+      - Each value must be the MOID of a C(Folder) resource.
+      - If omitted or empty, virtual machines in any folder match the filter.
     type: list
     required: false
     elements: str
@@ -63,44 +68,43 @@ options:
     aliases:
       - filter_datacenters
     description:
-      - Datacenters that must contain the virtual machine for the virtual machine to match the filter.
-      - If missing or 'null' or empty, virtual machines in any datacenter match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'Datacenter'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'Datacenter'.
+      - Limit the results to virtual machines contained in these datacenters.
+      - Each value must be the MOID of a C(Datacenter) resource.
+      - If omitted or empty, virtual machines in any datacenter match the filter.
     type: list
     required: false
     elements: str
   hosts:
     description:
-      - Hosts that must contain the virtual machine for the virtual machine to match the filter.
-      - If missing or 'null' or empty, virtual machines on any host match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'HostSystem'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'HostSystem'.
+      - Limit the results to virtual machines running on these hosts.
+      - Each value must be the MOID of a C(HostSystem) resource.
+      - If omitted or empty, virtual machines on any host match the filter.
     type: list
     required: false
     elements: str
   clusters:
     description:
-      - Clusters that must contain the virtual machine for the virtual machine to match the filter.
-      - If missing or 'null' or empty, virtual machines in any cluster match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'ClusterComputeResource'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'ClusterComputeResource'.
+      - Limit the results to virtual machines contained in these clusters.
+      - Each value must be the MOID of a C(ClusterComputeResource) resource.
+      - If omitted or empty, virtual machines in any cluster match the filter.
     type: list
     required: false
     elements: str
   resource_pools:
     description:
-      - Resource pools that must contain the virtual machine for the virtual machine to match the filter.
-      - If missing or 'null' or empty, virtual machines in any resource pool match the filter.
-      - When clients pass a value of this schema as a parameter, the property must contain identifiers (MOIDs) for the resource type 'ResourcePool'. When operations return a value of this schema as a response, the property will contain identifiers (MOIDs) for the resource type 'ResourcePool'.
+      - Limit the results to virtual machines contained in these resource pools.
+      - Each value must be the MOID of a C(ResourcePool) resource.
+      - If omitted or empty, virtual machines in any resource pool match the filter.
     type: list
     required: false
     elements: str
   power_states:
     description:
-      - Power states that a virtual machine must be in to match the filter (see *Vcenter.Vm.Power.Info.state*.
-      - POWERED_OFF - The virtual machine is powered off.
-      - POWERED_ON - The virtual machine is powered on.
-      - SUSPENDED - The virtual machine is suspended.
-      - For more information see *Vcenter.Vm.Power.State*.
-      - If missing or 'null' or empty, virtual machines in any power state match the filter.
+      - Limit the results to virtual machines that are in one of these power states.
+      - V(POWERED_OFF) - The virtual machine is powered off.
+      - V(POWERED_ON) - The virtual machine is powered on.
+      - V(SUSPENDED) - The virtual machine is suspended.
+      - If omitted or empty, virtual machines in any power state match the filter.
     type: list
     required: false
     elements: str
@@ -114,9 +118,76 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: List all virtual machines
+  vmware.vmware_rest.vcenter_vm_info:
+  register: all_vms
+
+- name: Get full details about a specific virtual machine
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: vm-1013
+  register: my_vm
+
+- name: Filter virtual machines by name
+  vmware.vmware_rest.vcenter_vm_info:
+    names:
+      - my_test_vm
+  register: filtered_vms
+
+- name: Find powered-on virtual machines in specific clusters
+  vmware.vmware_rest.vcenter_vm_info:
+    clusters:
+      - domain-c1007
+    power_states:
+      - POWERED_ON
+  register: running_vms
 """
 
 RETURN = r"""
+id:
+  description: MOID of the queried virtual machine.
+  returned: When only one resource, with a MOID, was queried.
+  sample: vm-1013
+  type: str
+value:
+  description:
+    - Raw output from the API response.
+    - This output is maintained for consistency with version 4.x and earlier of this collection.
+      It is recommended to switch to the info return key for a more consistent and documented output.
+  returned: On success.
+  sample:
+    name: my_test_vm
+    power_state: POWERED_ON
+    guest_os: RHEL_9_64
+    cpu:
+      count: 2
+      cores_per_socket: 1
+      hot_add_enabled: false
+      hot_remove_enabled: false
+    memory:
+      size_mib: 4096
+      hot_add_enabled: false
+    disks:
+      "2000":
+        label: Hard disk 1
+        type: SCSI
+        capacity: 17179869184
+    nics:
+      "4000":
+        label: Network adapter 1
+        type: VMXNET3
+        mac_address: "00:50:56:aa:bb:cc"
+        state: CONNECTED
+  type: raw
+info:
+  description: A list of virtual machines matching the query.
+  returned: On success.
+  sample:
+    - vm: vm-1013
+      name: my_test_vm
+      power_state: POWERED_ON
+      cpu_count: 2
+      memory_size_mib: 4096
+  type: list
 """
 
 

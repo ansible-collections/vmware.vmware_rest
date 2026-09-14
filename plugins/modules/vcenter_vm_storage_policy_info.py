@@ -15,9 +15,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_storage_policy_info
-short_description: PLACEHOLDER
+short_description: Gather the storage policies associated with a virtual machine.
 description:
-  - PLACEHOLDER
+  - Return the storage policies associated with a virtual machine's home directory and its virtual hard disks.
+  - The result reports the storage policy of the VM home directory and a map of each virtual disk to its storage policy.
+  - A disk that is not associated with a storage policy is omitted from the disk map.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -28,7 +30,7 @@ extends_documentation_fragment:
 options:
   vm:
     description:
-      - Identifier of the vm to manage.
+      - Identifier of the virtual machine to query.
       - Must be an identifier (MOID) for a C(Vm) resource.
     type: str
     required: true
@@ -42,9 +44,43 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+      - test_vm1
+
+- name: Gather the storage policies associated with a VM
+  vmware.vmware_rest.vcenter_vm_storage_policy_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: storage_policy_info
 """
 
 RETURN = r"""
+id:
+  description: MOID of the queried virtual machine.
+  returned: When only one resource, with a MOID, was queried.
+  sample: vm-1009
+  type: str
+value:
+  description:
+    - Raw output from the API response.
+    - This output is maintained for consistency with version 4.x and earlier of this collection.
+      It is recommended to switch to the info return key for a more consistent and documented output.
+  returned: On success.
+  sample:
+    vm_home: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+    disks:
+      '2000': aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+  type: raw
+info:
+  description: A list of detailed storage policy information for the virtual machine.
+  returned: On success.
+  sample:
+    - vm_home: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+      disks:
+        '2000': aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+  type: list
 """
 
 
@@ -61,7 +97,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._info_module im
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_configs import (
     OperationConfig,
 )
-
 
 MOID_PARAMETER_HINTS = ["vm"]
 

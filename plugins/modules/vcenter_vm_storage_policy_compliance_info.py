@@ -15,9 +15,13 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_storage_policy_compliance_info
-short_description: PLACEHOLDER
+short_description: Retrieve the storage policy compliance status of a virtual machine.
 description:
-  - PLACEHOLDER
+  - Gather the last known storage policy compliance information for a virtual machine.
+  - Reports the overall compliance status along with per-entity compliance details for
+    the virtual machine's home directory and its virtual disks.
+  - This module reads cached compliance results and does not trigger a new check. Use
+    M(vmware.vmware_rest.vcenter_vm_storage_policy_compliance) to run an on-demand check.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -28,8 +32,8 @@ extends_documentation_fragment:
 options:
   vm:
     description:
-      - Identifier of the vm to manage.
-      - Must be an identifier (MOID) for a C(Vm) resource.
+      - The identifier of the virtual machine to query.
+      - Must be the MOID (managed object identifier) of a C(Vm) resource.
     type: str
     required: true
 
@@ -42,9 +46,61 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+      - test_vm1
+
+- name: Gather the storage policy compliance status of a VM
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
+    vm: '{{ search_result.value[0].vm }}'
+  register: compliance_info
 """
 
 RETURN = r"""
+id:
+  description: MOID of the queried virtual machine.
+  returned: When only one resource, with a MOID, was queried.
+  sample: vm-1009
+  type: str
+value:
+  description:
+    - Raw output from the API response.
+    - This output is maintained for consistency with version 4.x and earlier of this collection.
+      It is recommended to switch to the info return key for a more consistent and documented output.
+  returned: On success.
+  sample:
+    overall_compliance: COMPLIANT
+    vm_home:
+      status: COMPLIANT
+      check_time: '2026-09-14T10:30:00.000Z'
+      policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+      failure_cause: []
+    disks:
+      '2000':
+        status: COMPLIANT
+        check_time: '2026-09-14T10:30:00.000Z'
+        policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+        failure_cause: []
+  type: raw
+info:
+  description: A list of detailed storage policy compliance information for the virtual machine.
+  returned: On success.
+  sample:
+    - overall_compliance: COMPLIANT
+      vm_home:
+        status: COMPLIANT
+        check_time: '2026-09-14T10:30:00.000Z'
+        policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+        failure_cause: []
+      disks:
+        '2000':
+          status: COMPLIANT
+          check_time: '2026-09-14T10:30:00.000Z'
+          policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+          failure_cause: []
+  type: list
 """
 
 

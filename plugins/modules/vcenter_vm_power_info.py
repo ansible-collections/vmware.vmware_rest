@@ -15,9 +15,14 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_power_info
-short_description: PLACEHOLDER
+short_description: Gather information about the power state of a virtual machine.
 description:
-  - PLACEHOLDER
+  - Retrieve the current power state of a virtual machine.
+  - The returned details indicate whether the virtual machine is powered on, powered off, or suspended.
+  - When the virtual machine is powered off, the result also reports whether it was shut down cleanly,
+    which can be used to detect an unexpected crash.
+  - Use this module to check a virtual machine's power state before performing operations that require
+    it to be in a specific state.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -28,7 +33,7 @@ extends_documentation_fragment:
 options:
   vm:
     description:
-      - Identifier of the vm to manage.
+      - Identifier of the virtual machine whose power state information should be gathered.
       - Must be an identifier (MOID) for a C(Vm) resource.
     type: str
     required: true
@@ -42,9 +47,32 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Gather power state information for a virtual machine
+  vmware.vmware_rest.vcenter_vm_power_info:
+    vm: vm-1013
+  register: power_info
+
+- name: Fail if the virtual machine is not powered on
+  ansible.builtin.assert:
+    that:
+      - power_info.value.state == "POWERED_ON"
 """
 
 RETURN = r"""
+value:
+  description: Detailed information about the power state of the virtual machine.
+  returned: On success
+  type: dict
+  sample:
+    clean_power_off: true
+    state: POWERED_OFF
+info:
+  description: A list containing the detailed power state information for the queried virtual machine.
+  returned: On success
+  type: list
+  sample:
+    - clean_power_off: true
+      state: POWERED_OFF
 """
 
 

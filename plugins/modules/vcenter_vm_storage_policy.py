@@ -15,9 +15,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 module: vcenter_vm_storage_policy
-short_description: PLACEHOLDER
+short_description: Manage the storage policies associated with a virtual machine.
 description:
-  - PLACEHOLDER
+  - Update the storage policy configuration of a virtual machine's home directory and/or its virtual hard disks.
+  - Assign a specific storage policy, or fall back to the default storage policy of the datastore.
+  - Only entities that are supplied are reconfigured; entities left unset retain their current storage policy.
 
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
@@ -42,19 +44,16 @@ options:
     required: true
   vm_home:
     description:
-      - Storage policy to be used when reconfiguring the virtual machine home.
-      - This property was added in __vSphere API 6.7__.
-      - If missing or 'null' the current storage policy is retained.
+      - The storage policy to apply to the virtual machine's home directory.
+      - If omitted, the current storage policy of the VM home directory is retained.
     type: dict
     required: false
     suboptions:
       type:
         description:
-          - Policy type to be used while performing update operation on the virtual machine home's directory.
-          - USE_SPECIFIED_POLICY - Use the specified policy (see *Vcenter.Vm.Storage.Policy.VmHomePolicySpec.policy*).
-          - USE_DEFAULT_POLICY - Use the default storage policy of the datastore.
-          - For more information see *Vcenter.Vm.Storage.Policy.VmHomePolicySpec.PolicyType*.
-          - This property was added in __vSphere API 6.7__.
+          - How to select the storage policy for the VM home directory.
+          - Use C(USE_SPECIFIED_POLICY) to assign the storage policy given in I(vm_home.policy).
+          - Use C(USE_DEFAULT_POLICY) to assign the default storage policy of the datastore.
         type: str
         required: true
         choices:
@@ -62,18 +61,17 @@ options:
           - USE_DEFAULT_POLICY
       policy:
         description:
-          - Storage Policy identification.
-          - This property was added in __vSphere API 6.7__.
-          - This property is optional and it is only relevant when the value of type is *Vcenter.Vm.Storage.Policy.VmHomePolicySpec.PolicyType.USE_SPECIFIED_POLICY*.
-          - When clients pass a value of this schema as a parameter, the property must be an identifier (MOID) for the resource type 'com.vmware.vcenter.StoragePolicy'. When operations return a value of this schema as a response, the property will be an identifier (MOID) for the resource type 'com.vmware.vcenter.StoragePolicy'.
+          - The storage policy to assign to the VM home directory.
+          - Only used, and required, when I(vm_home.type) is C(USE_SPECIFIED_POLICY).
+          - Must be an identifier (MOID) for the resource type C(com.vmware.vcenter.StoragePolicy).
         type: str
         required: false
   disks:
     description:
-      - Storage policy or policies to be used when reconfiguring virtual machine disk.
-      - This property was added in __vSphere API 6.7__.
-      - If missing or 'null' the current storage policy is retained.
-      - When clients pass a value of this schema as a parameter, the key in the property map must be an identifier (MOID) for the resource type 'com.vmware.vcenter.vm.hardware.Disk'. When operations return a value of this schema as a response, the key in the property map will be an identifier (MOID) for the resource type 'com.vmware.vcenter.vm.hardware.Disk'.
+      - The storage policies to apply to the virtual machine's virtual disks.
+      - A map keyed by the disk MOID, where each value is a storage policy specification for that disk.
+      - Each key must be an identifier (MOID) for the resource type C(com.vmware.vcenter.vm.hardware.Disk).
+      - Any disk that is not listed retains its current storage policy.
     type: dict
     required: false
 
@@ -86,9 +84,46 @@ notes:
 """
 
 EXAMPLES = r"""
+- name: Look up the VM called test_vm1 in the inventory
+  register: search_result
+  vmware.vmware_rest.vcenter_vm_info:
+    filter_names:
+      - test_vm1
+
+- name: Assign a specific storage policy to the VM home directory
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: '{{ search_result.value[0].vm }}'
+    vm_home:
+      type: USE_SPECIFIED_POLICY
+      policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+    state: present
+
+- name: Assign storage policies to the VM home directory and a virtual disk
+  vmware.vmware_rest.vcenter_vm_storage_policy:
+    vm: '{{ search_result.value[0].vm }}'
+    vm_home:
+      type: USE_DEFAULT_POLICY
+    disks:
+      '2000':
+        type: USE_SPECIFIED_POLICY
+        policy: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+    state: present
 """
 
 RETURN = r"""
+id:
+  description: MOID of the managed virtual machine.
+  returned: When state is present, or when a resource is deleted, or when state is set to a supported action.
+  sample: vm-1009
+  type: str
+value:
+  description: The raw API response body from the vCenter storage policy update operation.
+  returned: On success
+  type: raw
+  sample:
+    vm_home: aa6d5a82-1c88-45da-85d3-3d74b91a5bad
+    disks:
+      '2000': aa6d5a82-1c88-45da-85d3-3d74b91a5bad
 """
 
 
@@ -105,7 +140,6 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._crud_module im
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._operation_configs import (
     OperationConfig,
 )
-
 
 MOID_PARAMETER_HINTS = ["vm"]
 
@@ -156,7 +190,7 @@ def create_module_argument_spec() -> dict:
         "options": {
             "type": {
                 "type": "str",
-                "choices": ['USE_SPECIFIED_POLICY', 'USE_DEFAULT_POLICY'],
+                "choices": ["USE_SPECIFIED_POLICY", "USE_DEFAULT_POLICY"],
                 "required": True,
             },
             "policy": {
@@ -166,7 +200,7 @@ def create_module_argument_spec() -> dict:
     }
     module_args["state"] = {
         "type": "str",
-        "choices": ['present'],
+        "choices": ["present"],
         "default": "present",
     }
     return module_args
@@ -189,7 +223,9 @@ def main():
         if module.params["state"] == "present":
             result = crud_module.ensure_present()
         else:
-            module.fail_json(msg="Unsupported state: {0}".format(module.params["state"]))
+            module.fail_json(
+                msg="Unsupported state: {0}".format(module.params["state"])
+            )
     except VmwareModuleError as e:
         module.fail_json(**e.to_module_fail_json_output())
 
