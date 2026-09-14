@@ -9,5 +9,5 @@ breaking_changes:
     as ``filter.standalone``, reflecting the ``Vcenter.Host.FilterSpec`` object introduced in the
     vSphere 9.1.0 API specification. Playbooks that set ``standalone`` at the top level must now use
     ``filter.standalone``. The other host filters remain top-level parameters.
-  - vcenter_folder_info and vcenter_network_info - The 'value' return is not garunteed to be a list.
+  - vcenter_folder_info and vcenter_network_info - The 'value' return is not guaranteed to be a list.
     If a list is desired, the 'info' return will always be a list (as documented)
