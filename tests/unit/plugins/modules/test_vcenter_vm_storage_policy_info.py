@@ -27,12 +27,21 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._info_module im
 )
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
     RequiredPathParameterError,
+    VmwareModuleError,
 )
 from ansible_collections.vmware.vmware_rest.plugins.modules import (
     vcenter_vm_storage_policy_info as module_under_test,
 )
 
-from ...common.utils import CONNECTION_PARAMS, fail_json
+from ...common.utils import (
+    CONNECTION_PARAMS,
+    AnsibleExitJson,
+    AnsibleFailJson,
+    exit_json,
+    fail_json,
+    set_module_args,
+    _response,
+)
 
 ITEM_ENDPOINT = "/vcenter/vm/{vm}/storage/policy"
 
@@ -308,3 +317,81 @@ class TestArgumentSpec:
         spec = module_under_test.create_module_argument_spec()
 
         assert "state" not in spec
+
+
+# ============================================================================
+# main() Tests - end-to-end module entrypoint
+# ============================================================================
+
+
+def _run_main_with_params(params, get_response=None, get_status=200):
+    """
+    Drive module_under_test.main() with a mocked AnsibleModule and HTTP client.
+
+    Patches AnsibleModule and _create_client inline (rather than via fixtures) so
+    these end-to-end tests do not interfere with the base-class-level fixtures
+    used elsewhere in this file. Returns the exit_json kwargs.
+    """
+    mock_module = MagicMock()
+    mock_module.params = set_module_args(params)
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.fail_json.side_effect = fail_json
+    mock_module.check_mode = False
+
+    mock_client = MagicMock()
+    if get_response is not None or get_status != 200:
+        mock_client.get.return_value = _response(get_status, get_response)
+
+    with patch.object(module_under_test, "AnsibleModule", return_value=mock_module):
+        with patch.object(
+            module_under_test.VmwareRestInfoModuleBase,
+            "_create_client",
+            return_value=mock_client,
+        ):
+            module_under_test.main()
+
+
+def test_main_returns_policy_for_vm():
+    """main() returns the storage policy for a VM on success."""
+    get_response = {
+        "vm_home": {"type": "USE_DEFAULT_POLICY"},
+        "disks": {"disk-1": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-1"}},
+    }
+
+    with pytest.raises(AnsibleExitJson) as exc:
+        _run_main_with_params({"vm": "vm-1"}, get_response=get_response)
+
+    result = exc.value.kwargs
+    assert len(result["info"]) == 1
+    assert result["value"]["vm_home"] == {"type": "USE_DEFAULT_POLICY"}
+
+
+def test_main_returns_empty_when_not_found():
+    """main() returns an empty result when the VM's policy is not found (404)."""
+    with pytest.raises(AnsibleExitJson) as exc:
+        _run_main_with_params({"vm": "vm-missing"}, get_status=404)
+
+    result = exc.value.kwargs
+    assert result["info"] == []
+    assert result["value"] == {}
+
+
+def test_main_handles_vmware_module_error():
+    """main() converts a VmwareModuleError into a module failure."""
+    mock_module = MagicMock()
+    mock_module.params = set_module_args({"vm": "vm-1"})
+    mock_module.exit_json.side_effect = exit_json
+    mock_module.fail_json.side_effect = fail_json
+    mock_module.check_mode = False
+
+    with patch.object(module_under_test, "AnsibleModule", return_value=mock_module):
+        with patch.object(module_under_test.VmwareRestInfoModuleBase, "_create_client"):
+            with patch.object(
+                module_under_test.VmwareRestInfoModuleBase,
+                "get_resource_info",
+                side_effect=VmwareModuleError("boom"),
+            ):
+                with pytest.raises(AnsibleFailJson) as exc:
+                    module_under_test.main()
+
+    assert exc.value.kwargs["msg"] == "boom"
