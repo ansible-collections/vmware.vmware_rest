@@ -2,4 +2,4 @@
 breaking_changes:
   - vcenter_vm_guest_filesystem_directories - The 'present', 'absent', 'create_temporary' states have been removed and replaced with options that better
     reflect the action taken by the API.
-  - vcenter_vm_guest_filesystem_directories - The state option has no default vaule and must be specified.
+  - vcenter_vm_guest_filesystem_directories - The state option has no default value and must be specified.

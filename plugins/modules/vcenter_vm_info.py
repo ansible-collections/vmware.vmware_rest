@@ -33,14 +33,14 @@ options:
   vm:
     description:
       - Identifier of the virtual machine to retrieve full configuration details for.
-      - Must be the MOID (managed object identifier) of a C(VirtualMachine) resource.
+      - Must be the MOID (managed object identifier) of a C(Vm) resource.
       - When set, the module returns detailed information about this single virtual machine instead of a summary list.
     type: str
     required: false
   vms:
     description:
       - Limit the results to virtual machines with these identifiers (MOIDs).
-      - Each value must be the MOID of a C(VirtualMachine) resource.
+      - Each value must be the MOID of a C(Vm) resource.
       - If omitted or empty, virtual machines with any identifier match the filter.
     type: list
     required: false

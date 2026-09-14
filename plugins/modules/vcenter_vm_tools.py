@@ -34,7 +34,7 @@ options:
       - The desired state of the resource.
       - Use C(present) to create or update the resource.
       - Use C(upgrade) to perform the upgrade action.
-      - Only options C(present) and C(absent) support idempotence.
+      - Only options C(present) support idempotence.
     type: str
     default: present
     choices:
@@ -55,7 +55,7 @@ options:
         version of Tools on power on. If one is available, Tools are upgraded automatically and the guest is
         rebooted if necessary.
       - Applied when I(state=present).
-      - This property was added in __vSphere API 7.0.0.0__.
+      - This property was added in vSphere API 7.0.0.0.
       - If not set, the upgrade policy is left unchanged.
     type: str
     required: false
@@ -102,7 +102,7 @@ EXAMPLES = r"""
 RETURN = r"""
 id:
   description: MOID of the managed virtual machine.
-  returned: When state is present, or when a resource is deleted, or when state is set to a supported action.
+  returned: When state is present, or when state is set to a supported action.
   sample: vm-1013
   type: str
 value:

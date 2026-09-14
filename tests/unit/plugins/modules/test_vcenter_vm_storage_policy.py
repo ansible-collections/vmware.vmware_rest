@@ -96,6 +96,9 @@ def crud_module(mock_module, mock_client):
 def test_ensure_present_updates_vm_home(crud_module, mock_client):
     """
     Test updating the vm_home storage policy when a change is detected.
+
+    The GET endpoint reports the current vm_home policy as a bare policy-MOID
+    string, while the desired body is a {type, policy} dict.
     """
     crud_module.params["vm"] = "vm-1"
     crud_module.params["vm_home"] = {
@@ -104,7 +107,7 @@ def test_ensure_present_updates_vm_home(crud_module, mock_client):
     }
 
     existing_resource = {
-        "vm_home": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-old"},
+        "vm_home": "policy-old",
     }
 
     with patch.object(
@@ -120,7 +123,7 @@ def test_ensure_present_updates_vm_home(crud_module, mock_client):
     assert result["changed"] is True
     assert result["id"] == "vm-1"
     assert result["diff"]["vm_home"] == {
-        "before": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-old"},
+        "before": "policy-old",
         "after": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-new"},
     }
     mock_client.patch.assert_called_once()
@@ -129,6 +132,10 @@ def test_ensure_present_updates_vm_home(crud_module, mock_client):
 def test_ensure_present_updates_disks(crud_module, mock_client):
     """
     Test updating a per-disk storage policy when a change is detected.
+
+    The GET endpoint reports the current disks as a map keyed by disk MOID whose
+    values are bare policy-MOID strings, while the desired body maps each disk to
+    a {type, policy} dict.
     """
     crud_module.params["vm"] = "vm-1"
     crud_module.params["disks"] = {
@@ -136,7 +143,7 @@ def test_ensure_present_updates_disks(crud_module, mock_client):
     }
 
     existing_resource = {
-        "disks": {"disk-1": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-old"}},
+        "disks": {"disk-1": "policy-old"},
     }
 
     with patch.object(
@@ -155,18 +162,20 @@ def test_ensure_present_updates_disks(crud_module, mock_client):
     mock_client.patch.assert_called_once()
 
 
-def test_ensure_present_no_changes(crud_module, mock_client):
+def test_ensure_present_no_changes_when_nothing_requested(crud_module, mock_client):
     """
-    Test no changes when the storage policy already matches the desired
-    state (idempotent). Only the keys the user specified are compared, so
-    read-only fields reported by the API must not register as changes.
+    The only idempotent no-op path: neither vm_home nor disks is supplied, so
+    the desired update body is empty, nothing is diffed, and no PATCH is issued.
+
+    A no-op is impossible whenever vm_home or disks *is* supplied, because the
+    GET reports those as bare policy-MOID strings while the desired body is a
+    {type, policy} dict (see test_ensure_present_vm_home_always_changes).
     """
     crud_module.params["vm"] = "vm-1"
-    crud_module.params["vm_home"] = {"type": "USE_DEFAULT_POLICY"}
 
     existing_resource = {
-        "vm_home": {"type": "USE_DEFAULT_POLICY", "policy": "policy-existing"},
-        "disks": {"disk-1": {"type": "USE_DEFAULT_POLICY"}},
+        "vm_home": "policy-existing",
+        "disks": {"disk-1": "policy-existing"},
     }
 
     with patch.object(
@@ -178,6 +187,38 @@ def test_ensure_present_no_changes(crud_module, mock_client):
     assert result["id"] == "vm-1"
     assert result["diff"] == {}
     mock_client.patch.assert_not_called()
+
+
+def test_ensure_present_vm_home_always_changes(crud_module, mock_client):
+    """
+    Supplying vm_home is never idempotent: the GET reports the current policy as
+    a bare policy-MOID string while the desired body is a {type, policy} dict, so
+    the two can never compare equal even when the effective policy is unchanged.
+    Every run therefore registers a change and re-issues the PATCH.
+    """
+    crud_module.params["vm"] = "vm-1"
+    crud_module.params["vm_home"] = {
+        "type": "USE_SPECIFIED_POLICY",
+        "policy": "policy-existing",
+    }
+
+    existing_resource = {
+        "vm_home": "policy-existing",
+    }
+
+    with patch.object(
+        crud_module, "_resolve_live_resource_context", return_value=existing_resource
+    ):
+        update_response = MagicMock()
+        update_response.status = 200
+        update_response.json = {}
+        mock_client.patch.return_value = update_response
+
+        result = crud_module.ensure_present()
+
+    assert result["changed"] is True
+    assert result["diff"]["vm_home"]["before"] == "policy-existing"
+    mock_client.patch.assert_called_once()
 
 
 def test_ensure_present_resource_not_found_cannot_create(crud_module, mock_client):
@@ -213,7 +254,7 @@ def test_ensure_present_check_mode_update(crud_module, mock_client):
     crud_module.module.check_mode = True
 
     existing_resource = {
-        "vm_home": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-old"},
+        "vm_home": "policy-old",
     }
 
     with patch.object(
@@ -223,7 +264,7 @@ def test_ensure_present_check_mode_update(crud_module, mock_client):
 
     assert result["changed"] is True
     assert result["diff"]["vm_home"] == {
-        "before": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-old"},
+        "before": "policy-old",
         "after": {"type": "USE_SPECIFIED_POLICY", "policy": "policy-new"},
     }
     mock_client.patch.assert_not_called()

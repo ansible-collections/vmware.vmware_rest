@@ -46,6 +46,8 @@ options:
     description:
       - The storage policy to apply to the virtual machine's home directory.
       - If omitted, the current storage policy of the VM home directory is retained.
+      - When this option is specified, the module can never be idempotent. A change will
+        always be reported.
     type: dict
     required: false
     suboptions:
@@ -72,6 +74,8 @@ options:
       - A map keyed by the disk MOID, where each value is a storage policy specification for that disk.
       - Each key must be an identifier (MOID) for the resource type C(com.vmware.vcenter.vm.hardware.Disk).
       - Any disk that is not listed retains its current storage policy.
+      - When this option is specified, the module can never be idempotent. A change will
+        always be reported.
     type: dict
     required: false
 
@@ -113,7 +117,7 @@ EXAMPLES = r"""
 RETURN = r"""
 id:
   description: MOID of the managed virtual machine.
-  returned: When state is present, or when a resource is deleted, or when state is set to a supported action.
+  returned: When state is present, or when state is set to a supported action.
   sample: vm-1009
   type: str
 value:

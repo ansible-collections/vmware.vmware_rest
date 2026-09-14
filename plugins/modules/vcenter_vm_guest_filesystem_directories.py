@@ -62,7 +62,7 @@ options:
         requested operation inside the virtual machine.
       - Required for every action.
     type: dict
-    required: false
+    required: true
     suboptions:
       interactive_session:
         description:
@@ -408,6 +408,7 @@ def create_module_argument_spec() -> dict:
     }
     module_args["credentials"] = {
         "type": "dict",
+        "required": True,
         "options": {
             "interactive_session": {
                 "type": "bool",

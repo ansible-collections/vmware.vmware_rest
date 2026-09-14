@@ -28,6 +28,9 @@ from ansible_collections.vmware.vmware_rest.plugins.module_utils._info_module im
 from ansible_collections.vmware.vmware_rest.plugins.module_utils._errors import (
     RequiredPathParameterError,
 )
+from ansible_collections.vmware.vmware_rest.plugins.modules import (
+    vcenter_vm_storage_policy_info as module_under_test,
+)
 
 from ...common.utils import CONNECTION_PARAMS, fail_json
 
@@ -275,3 +278,33 @@ def test_operation_config_build_path_missing_vm_raises():
 
     with pytest.raises(RequiredPathParameterError):
         config.build_path({})
+
+
+# ============================================================================
+# Argument Spec Tests
+# ============================================================================
+
+
+class TestArgumentSpec:
+    """Test the module argument specification."""
+
+    def test_create_module_argument_spec_has_connection_params(self):
+        """Test that connection parameters are included."""
+        spec = module_under_test.create_module_argument_spec()
+
+        assert "vcenter_hostname" in spec
+        assert "vcenter_username" in spec
+        assert "vcenter_password" in spec
+
+    def test_create_module_argument_spec_vm_required(self):
+        """Test that the vm identifier is a required string parameter."""
+        spec = module_under_test.create_module_argument_spec()
+
+        assert spec["vm"]["type"] == "str"
+        assert spec["vm"]["required"] is True
+
+    def test_create_module_argument_spec_no_state(self):
+        """Test that info module has no state parameter."""
+        spec = module_under_test.create_module_argument_spec()
+
+        assert "state" not in spec
