@@ -1,0 +1,234 @@
+---
+# ============================================================
+# VCENTER VM GUEST FILESYSTEM DIRECTORIES ACTION TESTS
+#
+# The module wraps four non-idempotent guest operations. Each test loads a
+# single POST expectation that mirrors the real vSphere API contract
+# (204 No Content for create/delete/move, a 200 JSON string for
+# createTemporary) and asserts the module reports the change and surfaces the
+# API response under `value`.
+# ============================================================
+
+# ------------------------------------------------------------
+# Test 1: create a directory
+# ------------------------------------------------------------
+- name: Reset before create action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add create POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/vcenter/vm/vm-1234/guest/filesystem/directories"
+          queryStringParameters:
+            action:
+              - create
+        httpResponse:
+          statusCode: 204
+
+- name: Create a directory in the guest
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: vm-1234
+    state: create
+    path: /tmp/ansible_app
+    create_parents: true
+    credentials:
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: guest_password
+  register: create_result
+
+- name: Assert create action succeeded
+  ansible.builtin.assert:
+    that:
+      - create_result.changed
+      - create_result.id == 'vm-1234'
+      - create_result.value == {}
+
+# ------------------------------------------------------------
+# Test 2: create a directory in check mode (no API call is made)
+# ------------------------------------------------------------
+- name: Create a directory in check mode
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: vm-1234
+    state: create
+    path: /tmp/ansible_app
+    credentials:
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: guest_password
+  check_mode: true
+  register: create_check
+
+- name: Assert create check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - create_check.changed
+      - create_check.value == {}
+
+# ------------------------------------------------------------
+# Test 3: create a temporary directory (returns the new path)
+# ------------------------------------------------------------
+- name: Reset before createTemporary action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add createTemporary POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/vcenter/vm/vm-1234/guest/filesystem/directories"
+          queryStringParameters:
+            action:
+              - createTemporary
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: '"/tmp/ansible_a1b2c3_tmp"'
+
+- name: Create a temporary directory in the guest
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: vm-1234
+    state: createTemporary
+    prefix: ansible_
+    suffix: _tmp
+    parent_path: /tmp
+    credentials:
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: guest_password
+  register: temp_result
+
+- name: Assert createTemporary returns the new directory path
+  ansible.builtin.assert:
+    that:
+      - temp_result.changed
+      - temp_result.id == 'vm-1234'
+      - temp_result.value == '/tmp/ansible_a1b2c3_tmp'
+
+# ------------------------------------------------------------
+# Test 4: createTemporary in check mode (no API call is made)
+# ------------------------------------------------------------
+- name: Create a temporary directory in check mode
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: vm-1234
+    state: createTemporary
+    prefix: ansible_
+    suffix: _tmp
+    credentials:
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: guest_password
+  check_mode: true
+  register: temp_check
+
+- name: Assert createTemporary check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - temp_check.changed
+      - temp_check.value == {}
+
+# ------------------------------------------------------------
+# Test 5: move (rename) a directory
+# ------------------------------------------------------------
+- name: Reset before move action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add move POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/vcenter/vm/vm-1234/guest/filesystem/directories"
+          queryStringParameters:
+            action:
+              - move
+        httpResponse:
+          statusCode: 204
+
+- name: Move a directory in the guest
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: vm-1234
+    state: move
+    path: /tmp/ansible_app
+    new_path: /opt/ansible_app
+    credentials:
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: guest_password
+  register: move_result
+
+- name: Assert move action succeeded
+  ansible.builtin.assert:
+    that:
+      - move_result.changed
+      - move_result.id == 'vm-1234'
+      - move_result.value == {}
+
+# ------------------------------------------------------------
+# Test 6: delete a directory recursively
+# ------------------------------------------------------------
+- name: Reset before delete action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add delete POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/vcenter/vm/vm-1234/guest/filesystem/directories"
+          queryStringParameters:
+            action:
+              - delete
+        httpResponse:
+          statusCode: 204
+
+- name: Delete a directory in the guest
+  vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
+    vm: vm-1234
+    state: delete
+    path: /opt/ansible_app
+    recursive: true
+    credentials:
+      type: USERNAME_PASSWORD
+      user_name: root
+      password: guest_password
+  register: delete_result
+
+- name: Assert delete action succeeded
+  ansible.builtin.assert:
+    that:
+      - delete_result.changed
+      - delete_result.id == 'vm-1234'
+      - delete_result.value == {}

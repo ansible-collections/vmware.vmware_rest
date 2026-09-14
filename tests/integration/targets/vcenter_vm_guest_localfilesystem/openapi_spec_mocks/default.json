@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Local_Filesystem Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/guest/local-filesystem": {
+      "get": {
+        "operationId": "Vcenter.Vm.Guest.LocalFilesystem_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "/": {
+                    "capacity": 21462233088,
+                    "free_space": 8927387648,
+                    "filesystem": "ext4",
+                    "mappings": [
+                      {
+                        "disk": "2000"
+                      }
+                    ]
+                  },
+                  "/boot": {
+                    "capacity": 1063256064,
+                    "free_space": 891244544,
+                    "filesystem": "ext4",
+                    "mappings": [
+                      {
+                        "disk": "2000"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

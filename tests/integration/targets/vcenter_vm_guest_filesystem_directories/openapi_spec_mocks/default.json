@@ -1,0 +1,107 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VM Guest Filesystem Directories Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/guest/filesystem/directories?action=create": {
+      "post": {
+        "operationId": "Vcenter.Vm.Guest.Filesystem.Directories_create",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The directory was created successfully."
+          }
+        }
+      }
+    },
+    "/vcenter/vm/{vm}/guest/filesystem/directories?action=createTemporary": {
+      "post": {
+        "operationId": "Vcenter.Vm.Guest.Filesystem.Directories_createTemporary",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The absolute path of the temporary directory that was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "/tmp/ansible_a1b2c3_tmp"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vcenter/vm/{vm}/guest/filesystem/directories?action=delete": {
+      "post": {
+        "operationId": "Vcenter.Vm.Guest.Filesystem.Directories_delete",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The directory was deleted successfully."
+          }
+        }
+      }
+    },
+    "/vcenter/vm/{vm}/guest/filesystem/directories?action=move": {
+      "post": {
+        "operationId": "Vcenter.Vm.Guest.Filesystem.Directories_move",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The directory was moved successfully."
+          }
+        }
+      }
+    }
+  }
+}

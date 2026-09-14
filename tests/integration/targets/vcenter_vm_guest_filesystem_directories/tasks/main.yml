@@ -1,0 +1,10 @@
+---
+- name: Test vcenter_vm_guest_filesystem_directories module against MockServer
+  environment: "{{ environment_auth_vars }}"
+  block:
+    # This module only exposes guest filesystem actions (create, createTemporary,
+    # delete, move). None of them are idempotent and there is no GET/LIST
+    # operation, so the tests focus on each action's request/response contract
+    # and check mode behavior.
+    - name: Include action tests
+      ansible.builtin.include_tasks: actions.yml

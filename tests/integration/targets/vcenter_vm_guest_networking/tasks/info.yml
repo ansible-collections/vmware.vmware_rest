@@ -1,0 +1,71 @@
+---
+# ============================================================
+# VCENTER_VM_GUEST_NETWORKING_INFO TESTS
+#
+# Read-only module that wraps the guest networking GET endpoint. It always
+# describes a single VM, so `value` is a dict and `info` is a single-element
+# list. There is no LIST endpoint and the module never changes state.
+# ============================================================
+
+# Test 1: Get the guest networking configuration of a VM
+- name: Gather the guest networking information
+  vmware.vmware_rest.vcenter_vm_guest_networking_info:
+    vm: vm-1234
+  register: net_info
+
+- name: Assert guest networking details are returned
+  ansible.builtin.assert:
+    that:
+      - not net_info.changed
+      - net_info.value is defined
+      - net_info.value.dns_values.host_name == 'test-vm1'
+      - net_info.value.dns_values.domain_name == 'example.com'
+      - net_info.value.dns.ip_addresses == ['10.0.2.1', '8.8.8.8']
+      - net_info.value.dns.search_domains == ['example.com']
+      - net_info.info is defined
+      - net_info.info | length == 1
+      - net_info.info[0].dns_values.host_name == 'test-vm1'
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Gather the guest networking information (check mode)
+  vmware.vmware_rest.vcenter_vm_guest_networking_info:
+    vm: vm-1234
+  check_mode: true
+  register: net_info_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - not net_info_check.changed
+      - net_info_check.value is defined
+      - net_info_check.value.dns_values.host_name == 'test-vm1'
+
+# Test 3: A VM whose guest networking data is unavailable returns an empty result
+- name: Reset before not-found expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for missing guest networking data
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Vm.Guest.Networking_get: "404"
+
+- name: Gather guest networking info for a VM with no data
+  vmware.vmware_rest.vcenter_vm_guest_networking_info:
+    vm: vm-9999
+  register: net_missing
+
+- name: Assert an empty result is returned when the data is unavailable
+  ansible.builtin.assert:
+    that:
+      - not net_missing.changed
+      - net_missing.value == {}
+      - net_missing.info | length == 0
