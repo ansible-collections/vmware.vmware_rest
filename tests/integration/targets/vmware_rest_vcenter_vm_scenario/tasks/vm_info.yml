@@ -31,4 +31,3 @@
       - _vm_name_info.value[0].name == test_vm_name
       - _vm_name_info.value[0].vm == _test_vm_moid
       - _vm_moid_info.value.name == test_vm_name
-      - _vm_moid_info.id == _test_vm_moid

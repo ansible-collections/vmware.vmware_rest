@@ -1,0 +1,71 @@
+---
+# ============================================================
+# VCENTER_VM_GUEST_POWER_INFO TESTS
+#
+# Read-only module that wraps the guest power GET endpoint. It reports the
+# guest OS power state and whether the guest is ready to process soft power
+# operations for a single VM, so `value` is a dict and `info` is a
+# single-element list. There is no LIST endpoint and the module never
+# changes state.
+# ============================================================
+
+# Test 1: Get the guest power state of a VM
+- name: Gather the guest power information
+  vmware.vmware_rest.vcenter_vm_guest_power_info:
+    vm: vm-1234
+  register: power_info
+
+- name: Assert guest power state is returned
+  ansible.builtin.assert:
+    that:
+      - not power_info.changed
+      - power_info.value is defined
+      - power_info.value.state == 'RUNNING'
+      - power_info.value.operations_ready
+      - power_info.info is defined
+      - power_info.info | length == 1
+      - power_info.info[0].state == 'RUNNING'
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Gather the guest power information (check mode)
+  vmware.vmware_rest.vcenter_vm_guest_power_info:
+    vm: vm-1234
+  check_mode: true
+  register: power_info_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - not power_info_check.changed
+      - power_info_check.value is defined
+      - power_info_check.value.state == 'RUNNING'
+
+# Test 3: A VM whose guest power data is unavailable returns an empty result
+- name: Reset before not-found expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for missing guest power data
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Vm.Guest.Power_get: "404"
+
+- name: Gather guest power info for a VM with no data
+  vmware.vmware_rest.vcenter_vm_guest_power_info:
+    vm: vm-9999
+  register: power_missing
+
+- name: Assert an empty result is returned when the data is unavailable
+  ansible.builtin.assert:
+    that:
+      - not power_missing.changed
+      - power_missing.value == {}
+      - power_missing.info | length == 0

@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Policy Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/storage/policy": {
+      "get": {
+        "operationId": "Vcenter.Vm.Storage.Policy_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "vm_home": "aa6d5a82-1c88-45da-85d3-3d74b91a5bad",
+                  "disks": {
+                    "2000": "aa6d5a82-1c88-45da-85d3-3d74b91a5bad"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Vcenter.Vm.Storage.Policy_update",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The virtual machine storage policy was updated successfully."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

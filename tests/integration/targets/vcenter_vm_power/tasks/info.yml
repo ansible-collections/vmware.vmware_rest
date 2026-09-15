@@ -1,0 +1,57 @@
+---
+# ============================================================
+# VM POWER INFO TESTS
+# ============================================================
+# This module is GET-only and requires a vm MOID. It reports the current power
+# state of a single virtual machine (there is no list endpoint), so value
+# always collapses to a single dict.
+
+# ------------------------------------------------------------
+# Get power state for a powered-on vm
+# ------------------------------------------------------------
+- name: Get power state (powered on)
+  vmware.vmware_rest.vcenter_vm_power_info:
+    vm: vm-1001
+  register: power_on
+
+- name: Assert powered-on state
+  ansible.builtin.assert:
+    that:
+      - power_on.value is defined
+      - power_on.value.state == 'POWERED_ON'
+      - power_on.info is defined
+      - power_on.info | length == 1
+      - power_on.info[0].state == 'POWERED_ON'
+
+# ------------------------------------------------------------
+# Get power state for a powered-off vm (state transition)
+# ------------------------------------------------------------
+- name: Reset before powered-off expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for powered-off state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/powered_off.json"
+      operationsAndResponses:
+        Vcenter.Vm.Power_get: "200"
+
+- name: Get power state (powered off)
+  vmware.vmware_rest.vcenter_vm_power_info:
+    vm: vm-1001
+  register: power_off
+
+- name: Assert powered-off state
+  ansible.builtin.assert:
+    that:
+      - power_off.value is defined
+      - power_off.value.state == 'POWERED_OFF'
+      - power_off.value.clean_power_off
+      - power_off.info | length == 1

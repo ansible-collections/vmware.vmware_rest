@@ -1,0 +1,24 @@
+---
+# ============================================================
+# VM STORAGE POLICY COMPLIANCE INFO TESTS
+# ============================================================
+# The info module is GET-only and requires a vm MOID. It returns the cached
+# storage policy compliance status for a single virtual machine (there is no
+# list endpoint), so value always collapses to a single dict.
+
+- name: Get storage policy compliance for a vm
+  vmware.vmware_rest.vcenter_vm_storage_policy_compliance_info:
+    vm: vm-1001
+  register: compliance
+
+- name: Assert compliance details
+  ansible.builtin.assert:
+    that:
+      - compliance.value is defined
+      - compliance.value.overall_compliance == 'COMPLIANT'
+      - compliance.value.vm_home.status == 'COMPLIANT'
+      - compliance.value.vm_home.policy == 'policy-42'
+      - compliance.value.disks['2000'].status == 'COMPLIANT'
+      - compliance.info is defined
+      - compliance.info | length == 1
+      - compliance.info[0].overall_compliance == 'COMPLIANT'

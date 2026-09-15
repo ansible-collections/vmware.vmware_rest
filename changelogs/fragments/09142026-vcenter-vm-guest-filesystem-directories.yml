@@ -1,0 +1,10 @@
+---
+major_changes:
+  - vcenter_vm_guest_filesystem_directories - The module now raises an error when the vSphere API request
+    fails (for example when creating a directory that already exists) instead of silently returning a
+    successful, unchanged result. Playbooks that relied on the previous behavior should handle the failure
+    explicitly.
+breaking_changes:
+  - vcenter_vm_guest_filesystem_directories - The 'present', 'absent', 'create_temporary' states have been removed and replaced with options that better
+    reflect the action taken by the API.
+  - vcenter_vm_guest_filesystem_directories - The state option has no default value and must be specified.

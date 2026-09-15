@@ -1,0 +1,27 @@
+---
+# ============================================================
+# VM TOOLS INFO TESTS
+# ============================================================
+# The info module is GET-only and requires a vm MOID. It returns the current
+# VMware Tools status for a single virtual machine (there is no list endpoint),
+# so value always collapses to a single dict. The Tools.Info payload has no MOID
+# attribute of its own, so no `id` is set on the result.
+
+- name: Get VMware Tools status for a vm
+  vmware.vmware_rest.vcenter_vm_tools_info:
+    vm: vm-1001
+  register: tools
+
+- name: Assert VMware Tools details
+  ansible.builtin.assert:
+    that:
+      - tools.value is defined
+      - tools.value.upgrade_policy == 'MANUAL'
+      - tools.value.run_state == 'RUNNING'
+      - tools.value.version_status == 'SUPPORTED_OLD'
+      - tools.value.install_type == 'OPEN_VM_TOOLS'
+      - tools.value.version == '12384'
+      - tools.value.auto_update_supported == false
+      - tools.info is defined
+      - tools.info | length == 1
+      - tools.info[0].upgrade_policy == 'MANUAL'

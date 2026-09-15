@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Identity Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/guest/identity": {
+      "get": {
+        "operationId": "Vcenter.Vm.Guest.Identity_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "name": "RHEL_9_64",
+                  "family": "LINUX",
+                  "full_name": {
+                    "id": "vmsg.guestos.rhel9_64Guest.label",
+                    "default_message": "Red Hat Enterprise Linux 9 (64-bit)",
+                    "args": []
+                  },
+                  "host_name": "test-vm1.example.com",
+                  "ip_address": "10.0.2.15"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

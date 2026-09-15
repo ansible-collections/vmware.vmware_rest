@@ -1,0 +1,112 @@
+---
+# ============================================================
+# VM TOOLS UPDATE TESTS
+# ============================================================
+# state=present is backed by GET + PATCH. The module reads the current Tools
+# configuration via GET and PATCHes when the desired upgrade_policy differs.
+# upgrade_policy is a plain string in both the GET response and the update body,
+# so genuine idempotency is achievable (unlike some sibling modules whose shapes
+# never compare equal).
+
+# ------------------------------------------------------------
+# Test 1: change the upgrade policy (current MANUAL -> UPGRADE_AT_POWER_CYCLE)
+# ------------------------------------------------------------
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Vm.Tools_get: "200"
+        Vcenter.Vm.Tools_update: "204"
+
+- name: Set the tools upgrade policy
+  vmware.vmware_rest.vcenter_vm_tools:
+    vm: vm-1001
+    state: present
+    upgrade_policy: UPGRADE_AT_POWER_CYCLE
+  register: update_result
+
+- name: Assert update applied the change
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+      - update_result.id == 'vm-1001'
+      - "'upgrade_policy' in update_result.diff"
+      - update_result.diff.upgrade_policy.before == 'MANUAL'
+      - update_result.diff.upgrade_policy.after == 'UPGRADE_AT_POWER_CYCLE'
+
+# ------------------------------------------------------------
+# Test 2: update in check mode (change needed, no API call is made)
+# ------------------------------------------------------------
+- name: Set the tools upgrade policy in check mode
+  vmware.vmware_rest.vcenter_vm_tools:
+    vm: vm-1001
+    state: present
+    upgrade_policy: UPGRADE_AT_POWER_CYCLE
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+      - update_check.value == {}
+
+# ------------------------------------------------------------
+# Test 3: policy already matches desired (idempotent no-op)
+# ------------------------------------------------------------
+- name: Reset before idempotent expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for updated state
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/updated.json"
+      operationsAndResponses:
+        Vcenter.Vm.Tools_get: "200"
+        Vcenter.Vm.Tools_update: "204"
+
+- name: Set the tools upgrade policy again (idempotent)
+  vmware.vmware_rest.vcenter_vm_tools:
+    vm: vm-1001
+    state: present
+    upgrade_policy: UPGRADE_AT_POWER_CYCLE
+  register: update_again
+
+- name: Assert no change when policy already matches
+  ansible.builtin.assert:
+    that:
+      - not update_again.changed
+      - update_again.id == 'vm-1001'
+
+# ------------------------------------------------------------
+# Test 4: present with nothing to change (empty desired body -> no-op)
+# ------------------------------------------------------------
+- name: Reconfigure the vm tools with no changes requested
+  vmware.vmware_rest.vcenter_vm_tools:
+    vm: vm-1001
+    state: present
+  register: noop_result
+
+- name: Assert no change when nothing is requested
+  ansible.builtin.assert:
+    that:
+      - not noop_result.changed
+      - noop_result.id == 'vm-1001'

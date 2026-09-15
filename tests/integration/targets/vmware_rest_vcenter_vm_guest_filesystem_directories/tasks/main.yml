@@ -42,6 +42,7 @@
         vm: "{{ _test_vm_moid }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
+        state: create
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
@@ -63,22 +64,24 @@
         vm: "{{ _test_vm_moid }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
+        state: create
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
           user_name: "{{ test_rhel9_username }}"
           password: "{{ test_rhel9_password }}"
       register: vm_dir_info
+      ignore_errors: true
 
     - name: Print debug info
       ansible.builtin.debug:
         var: vm_dir_info
 
-    - name: Verify no changes
+    - name: Verify the module fails when the directory already exists
       ansible.builtin.assert:
         that:
-          - vm_dir_info is not ansible.builtin.changed
-          - vm_dir_info.value.error_type == "ALREADY_EXISTS"
+          - vm_dir_info is ansible.builtin.failed
+          - "'ALREADY_EXISTS' in vm_dir_info.exception_info.message"
 
     - name: Move directory in /tmp
       vmware.vmware_rest.vcenter_vm_guest_filesystem_directories:
@@ -108,6 +111,7 @@
         vm: "{{ _test_vm_moid }}"
         path: "{{ path_tmp.dir }}"
         create_parents: true
+        state: create
         credentials:
           interactive_session: false
           type: USERNAME_PASSWORD
@@ -134,7 +138,7 @@
           type: USERNAME_PASSWORD
           user_name: "{{ test_rhel9_username }}"
           password: "{{ test_rhel9_password }}"
-        state: create_temporary
+        state: createTemporary
       register: vm_dir_info_temp
 
     - name: Print debug info
@@ -156,12 +160,10 @@
           type: USERNAME_PASSWORD
           user_name: "{{ test_rhel9_username }}"
           password: "{{ test_rhel9_password }}"
-        state: absent
+        state: delete
       loop:
         - "{{ path_tmp.dir }}"
         - "{{ path_tmp.new_dir }}"
-        - "{{ path_tmp.no_dir }}"
-        - "{{ path_tmp.new_no_dir }}"
         - "{{ vm_dir_info_temp.value }}"
       register: vm_del_dir_info
 
@@ -174,9 +176,7 @@
         that:
           - vm_del_dir_info.results[0].item == path_tmp.dir and vm_del_dir_info.results[0].changed
           - vm_del_dir_info.results[1].item == path_tmp.new_dir and vm_del_dir_info.results[1].changed
-          - vm_del_dir_info.results[2].item == path_tmp.no_dir and not vm_del_dir_info.results[2].changed
-          - vm_del_dir_info.results[3].item == path_tmp.new_no_dir and not vm_del_dir_info.results[3].changed
-          - vm_del_dir_info.results[4].item == vm_dir_info_temp.value and vm_del_dir_info.results[4].changed
+          - vm_del_dir_info.results[2].item == vm_dir_info_temp.value and vm_del_dir_info.results[2].changed
 
   always:
     - name: Delete VM

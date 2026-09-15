@@ -236,7 +236,7 @@ class Client:
 
     def post(self, path, data=None, query=None):
         resp = self.request("POST", path, data=data, query=query)
-        if resp.status in (200, 201):
+        if resp.status in (200, 201, 204):
             return resp
         self.error_handler.handle_request_error(
             exception=UnexpectedAPIResponse(resp.status, resp.data),

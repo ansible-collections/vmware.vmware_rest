@@ -1,0 +1,126 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Vm Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm": {
+      "get": {
+        "operationId": "Vcenter.Vm_list",
+        "parameters": [
+          {
+            "name": "vms",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "names",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "power_states",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "example": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vcenter/vm/{vm}": {
+      "get": {
+        "operationId": "Vcenter.Vm_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "name": "DC0_H0_VM0",
+                  "guest_os": "RHEL_9_64",
+                  "power_state": "POWERED_ON",
+                  "instant_clone_frozen": false,
+                  "cpu": {
+                    "count": 2,
+                    "cores_per_socket": 1,
+                    "hot_add_enabled": false,
+                    "hot_remove_enabled": false
+                  },
+                  "memory": {
+                    "size_mib": 2048,
+                    "hot_add_enabled": false
+                  },
+                  "hardware": {
+                    "version": "VMX_21",
+                    "upgrade_policy": "NEVER",
+                    "upgrade_status": "NONE"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

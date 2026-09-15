@@ -1,0 +1,80 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Tools Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/tools": {
+      "get": {
+        "operationId": "Vcenter.Vm.Tools_get",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "auto_update_supported": true,
+                  "install_attempt_count": 0,
+                  "version_number": 12384,
+                  "version": "12384",
+                  "upgrade_policy": "UPGRADE_AT_POWER_CYCLE",
+                  "version_status": "SUPPORTED_OLD",
+                  "install_type": "OPEN_VM_TOOLS",
+                  "run_state": "RUNNING"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Vcenter.Vm.Tools_update",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

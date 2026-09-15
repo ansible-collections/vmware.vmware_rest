@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter Routes Mock",
+    "version": "9.1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/vcenter/vm/{vm}/guest/networking/routes": {
+      "get": {
+        "operationId": "Vcenter.Vm.Guest.Networking.Routes_list",
+        "parameters": [
+          {
+            "name": "vm",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                },
+                "example": [
+                  {
+                    "network": "0.0.0.0",
+                    "prefix_length": 0,
+                    "gateway_address": "10.0.2.2",
+                    "interface_index": 0
+                  },
+                  {
+                    "network": "10.0.2.0",
+                    "prefix_length": 24,
+                    "interface_index": 0
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

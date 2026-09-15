@@ -1,0 +1,74 @@
+---
+# ============================================================
+# VCENTER_VM_GUEST_IDENTITY_INFO TESTS
+#
+# Read-only module that wraps the guest identity GET endpoint. It always
+# describes a single VM, so `value` is a dict and `info` is a single-element
+# list. There is no LIST endpoint and the module never changes state.
+# ============================================================
+
+# Test 1: Get the guest identity of a VM
+- name: Gather the guest identity information
+  vmware.vmware_rest.vcenter_vm_guest_identity_info:
+    vm: vm-1234
+  register: identity_info
+
+- name: Assert guest identity details are returned
+  ansible.builtin.assert:
+    that:
+      - not identity_info.changed
+      - identity_info.value is defined
+      - identity_info.value.name == 'RHEL_9_64'
+      - identity_info.value.family == 'LINUX'
+      - identity_info.value.host_name == 'test-vm1.example.com'
+      - identity_info.value.ip_address == '10.0.2.15'
+      - identity_info.value.full_name.default_message == 'Red Hat Enterprise Linux 9 (64-bit)'
+      - identity_info.info is defined
+      - identity_info.info | length == 1
+      - identity_info.info[0].name == 'RHEL_9_64'
+      - identity_info.info[0].host_name == 'test-vm1.example.com'
+
+# Test 2: Check mode returns the same read-only result without error
+- name: Gather the guest identity information (check mode)
+  vmware.vmware_rest.vcenter_vm_guest_identity_info:
+    vm: vm-1234
+  check_mode: true
+  register: identity_info_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - not identity_info_check.changed
+      - identity_info_check.value is defined
+      - identity_info_check.value.name == 'RHEL_9_64'
+      - identity_info_check.value.ip_address == '10.0.2.15'
+
+# Test 3: A VM whose guest identity is unavailable returns an empty result
+- name: Reset before not-found expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for a missing guest identity
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Vcenter.Vm.Guest.Identity_get: "404"
+
+- name: Gather guest identity for a VM with no identity information
+  vmware.vmware_rest.vcenter_vm_guest_identity_info:
+    vm: vm-9999
+  register: identity_missing
+
+- name: Assert an empty result is returned when the identity is unavailable
+  ansible.builtin.assert:
+    that:
+      - not identity_missing.changed
+      - identity_missing.value == {}
+      - identity_missing.info | length == 0
