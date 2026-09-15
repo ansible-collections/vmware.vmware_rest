@@ -1,0 +1,4 @@
+---
+deprecated_features:
+  - Deprecate appliance_vmon_service and appliance_vmon_service_info modules as the endpoint has been removed. Use
+    appliance_services and appliance_services_info instead.

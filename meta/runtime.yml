@@ -100,6 +100,16 @@ plugin_routing:
         removal_version: 6.0.0
         warning_text: Floppy drives are legacy hardware. Use modern storage options or vmware.vmware.vm instead.
 
+    appliance_vmon_service:
+      deprecation:
+        removal_version: 6.0.0
+        warning_text: This API endpoint is no longer supported. Use vmware.vmware_rest.appliance_services instead.
+
+    appliance_vmon_service_info:
+      deprecation:
+        removal_version: 6.0.0
+        warning_text: This API endpoint is no longer supported. Use vmware.vmware_rest.appliance_services_info instead.
+
     # tombstones
     appliance_access_consolecli:
       tombstone:
