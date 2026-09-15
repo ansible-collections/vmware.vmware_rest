@@ -164,8 +164,6 @@
       loop:
         - "{{ path_tmp.dir }}"
         - "{{ path_tmp.new_dir }}"
-        - "{{ path_tmp.no_dir }}"
-        - "{{ path_tmp.new_no_dir }}"
         - "{{ vm_dir_info_temp.value }}"
       register: vm_del_dir_info
 
@@ -178,9 +176,7 @@
         that:
           - vm_del_dir_info.results[0].item == path_tmp.dir and vm_del_dir_info.results[0].changed
           - vm_del_dir_info.results[1].item == path_tmp.new_dir and vm_del_dir_info.results[1].changed
-          - vm_del_dir_info.results[2].item == path_tmp.no_dir and not vm_del_dir_info.results[2].changed
-          - vm_del_dir_info.results[3].item == path_tmp.new_no_dir and not vm_del_dir_info.results[3].changed
-          - vm_del_dir_info.results[4].item == vm_dir_info_temp.value and vm_del_dir_info.results[4].changed
+          - vm_del_dir_info.results[2].item == vm_dir_info_temp.value and vm_del_dir_info.results[4].changed
 
   always:
     - name: Delete VM
