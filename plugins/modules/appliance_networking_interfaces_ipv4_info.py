@@ -22,6 +22,11 @@ description:
     and the default gateway.
   - Use M(vmware.vmware_rest.appliance_networking_interfaces_ipv4) to change the IPv4 configuration.
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

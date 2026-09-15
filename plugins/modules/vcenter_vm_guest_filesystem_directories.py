@@ -28,6 +28,12 @@ description:
   - None of the actions are idempotent; each call performs the requested guest
     operation directly.
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(ansible.builtin.file) instead.
+
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

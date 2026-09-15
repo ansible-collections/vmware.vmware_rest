@@ -22,6 +22,11 @@ description:
   - The returned information includes the interface name, link status, MAC address, and the IPv4 and IPv6
     address configuration when enabled.
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

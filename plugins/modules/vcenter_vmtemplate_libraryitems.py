@@ -25,6 +25,11 @@ description:
   - This module will always report a change in check mode.
   - Library items cannot be updated due to API limitations
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(vmware.vmware.deploy_content_library_template) or M(vmware.vmware.content_template) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

@@ -21,6 +21,11 @@ description:
   - The status is reported as a color code that summarizes whether the database storage is operating normally or requires attention.
   - Use this module to monitor for database storage capacity or performance problems.
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

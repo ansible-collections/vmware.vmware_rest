@@ -1,0 +1,18 @@
+deprecated_features:
+  - Deprecate appliance_health_applmgmt_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_health_databasestorage_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_health_load_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_health_mem_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_health_storage_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_health_swap_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_health_system_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_networking_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_networking_interfaces_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_networking_interfaces_ipv4_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_networking_interfaces_ipv6_info module. Use vmware.vmware.appliance_info
+  - Deprecate vcenter_host_info module. Use vmware.vmware.esxi_info
+  - Deprecate vcenter_vm_info module. Use vmware.vmware.vm_info
+  - Deprecate vcenter_vm_guest_filesystem_directories module. Use ansible.builtin.file
+  - Deprecate vcenter_vmtemplate_libraryitems module. Use vmware.vmware.deploy_content_library_template or vmware.vmware.content_template
+  - Deprecate appliance_system_time_info module. Use vmware.vmware.appliance_info
+  - Deprecate appliance_system_version_info module. Use vmware.vmware.appliance_info

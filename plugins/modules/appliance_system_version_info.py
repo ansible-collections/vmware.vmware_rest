@@ -25,6 +25,11 @@ description:
   - Use this module to confirm the running version and build of the appliance before
     or after applying updates.
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

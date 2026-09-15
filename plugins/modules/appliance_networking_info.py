@@ -23,6 +23,11 @@ description:
   - This module is read only and does not change any configuration. Use
     M(vmware.vmware_rest.appliance_networking) to modify the appliance network settings.
 
+deprecated:
+  removed_in: 6.0.0
+  why: Functionality is duplicated in other supported modules.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 
