@@ -23,7 +23,7 @@ description:
 
 deprecated:
   removed_in: 6.0.0
-  why: Functionality is duplicated in other supported modules.
+  why: This functionality has been moved to vmware.vmware.appliance_info.
   alternative: Use M(vmware.vmware.appliance_info) instead.
 
 author:
