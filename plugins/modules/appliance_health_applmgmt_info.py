@@ -21,6 +21,11 @@ description:
   - The status is reported as a color code that summarizes whether the services are operating normally or require attention.
   - Use this module to monitor the health of the appliance management subsystem.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.appliance_info.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

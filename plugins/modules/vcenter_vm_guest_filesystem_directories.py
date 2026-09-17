@@ -28,6 +28,12 @@ description:
   - None of the actions are idempotent; each call performs the requested guest
     operation directly.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.appliance_info.
+  alternative: Use M(ansible.builtin.file) instead.
+
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

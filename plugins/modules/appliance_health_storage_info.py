@@ -21,6 +21,11 @@ description:
   - The status is reported as a color code that summarizes whether the appliance storage is operating normally or requires attention.
   - Use this module to monitor for storage capacity or performance problems on the appliance.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.appliance_info.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

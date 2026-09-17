@@ -23,6 +23,13 @@ description:
   - When no identifier is supplied, return a summary list of virtual machines, optionally narrowed using
     the available filters such as names, folders, datacenters, hosts, clusters, resource pools, and power states.
 
+
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.appliance_info.
+  alternative: Use M(vmware.vmware.vm_info) instead.
+
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

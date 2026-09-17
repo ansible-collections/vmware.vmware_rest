@@ -21,6 +21,11 @@ description:
   - The status is reported as a color code that summarizes the aggregate health of the appliance across its subsystems.
   - Use this module for a high-level health check of the appliance.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.appliance_info.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

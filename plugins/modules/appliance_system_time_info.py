@@ -23,6 +23,11 @@ description:
   - Use this module to verify that the appliance clock and timezone are set correctly,
     which is important for certificate validation, logging, and authentication.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.appliance_info.
+  alternative: Use M(vmware.vmware.appliance_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 
