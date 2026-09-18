@@ -1,0 +1,81 @@
+---
+# ============================================================
+# APPLIANCE_VMON_SERVICE UPDATE (state=present) TESTS
+# ============================================================
+# state=present manages the service startup_type. The module reads the current
+# service (GET) and issues a PATCH.
+#
+# NOTE: This module is intentionally NOT idempotent (see the module
+# DOCUMENTATION). The desired request body nests the value under `request_body`
+# while the GET response exposes `startup_type` at the top level, so the diff
+# always reports a change. These tests lock in that documented behavior:
+# state=present always reports changed=true.
+
+# Test 1: Update the startup type of an existing service
+- name: Reset before update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_get: "200"
+        Appliance.Vmon.Service_update: "204"
+
+- name: Set the service startup type
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    state: present
+    request_body:
+      startup_type: AUTOMATIC
+  register: update_result
+
+- name: Assert update reports a change
+  ansible.builtin.assert:
+    that:
+      - update_result.changed
+      - update_result.id == 'vpxd'
+      - update_result.diff.request_body.after.startup_type == 'AUTOMATIC'
+
+# Test 2: Update in check mode (still reports a change; documented non-idempotent)
+- name: Reset before check mode update expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for check mode update
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_get: "200"
+        Appliance.Vmon.Service_update: "204"
+
+- name: Set the service startup type in check mode
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    state: present
+    request_body:
+      startup_type: MANUAL
+  check_mode: true
+  register: update_check
+
+- name: Assert check mode reports a change without sending the PATCH
+  ansible.builtin.assert:
+    that:
+      - update_check.changed
+      - update_check.id == 'vpxd'
+      - update_check.value == {}

@@ -1,0 +1,170 @@
+---
+# ============================================================
+# APPLIANCE_SERVICES ACTION (restart/start/stop) TESTS
+# ============================================================
+# Actions always attempt the requested operation and always report
+# changed=true (the module is documented as non-idempotent and does not
+# resolve the current run state first). The action is a POST to
+# /appliance/services/{service} with an ?action=<action> query parameter.
+
+# Test 1: Restart a service
+- name: Reset before restart action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add restart POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/services/ntpd"
+          queryStringParameters:
+            action:
+              - restart
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Restart the service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: restart
+  register: restart_result
+
+- name: Assert restart action succeeded
+  ansible.builtin.assert:
+    that:
+      - restart_result.changed
+      - restart_result.id == 'ntpd'
+      - restart_result.value is defined
+
+# Test 2: Restart in check mode (reports change without calling the API)
+- name: Reset before restart check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Restart the service in check mode
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: restart
+  check_mode: true
+  register: restart_check
+
+- name: Assert restart check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - restart_check.changed
+      - restart_check.id == 'ntpd'
+      - restart_check.value == {}
+
+# Test 3: Start a service
+- name: Reset before start action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add start POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/services/ntpd"
+          queryStringParameters:
+            action:
+              - start
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Start the service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: start
+  register: start_result
+
+- name: Assert start action succeeded
+  ansible.builtin.assert:
+    that:
+      - start_result.changed
+      - start_result.id == 'ntpd'
+      - start_result.value is defined
+
+# Test 4: Stop a service
+- name: Reset before stop action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Add stop POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/expectation"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      - httpRequest:
+          method: POST
+          path: "/api/appliance/services/ntpd"
+          queryStringParameters:
+            action:
+              - stop
+        httpResponse:
+          statusCode: 200
+          headers:
+            Content-Type:
+              - "application/json"
+          body: "{}"
+
+- name: Stop the service
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: stop
+  register: stop_result
+
+- name: Assert stop action succeeded
+  ansible.builtin.assert:
+    that:
+      - stop_result.changed
+      - stop_result.id == 'ntpd'
+      - stop_result.value is defined
+
+# Test 5: Stop in check mode (reports change without calling the API)
+- name: Reset before stop check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Stop the service in check mode
+  vmware.vmware_rest.appliance_services:
+    service: ntpd
+    state: stop
+  check_mode: true
+  register: stop_check
+
+- name: Assert stop check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - stop_check.changed
+      - stop_check.id == 'ntpd'
+      - stop_check.value == {}

@@ -1,0 +1,102 @@
+---
+# ============================================================
+# APPLIANCE_VMON_SERVICE_INFO TESTS
+# ============================================================
+
+# Test 1: List services when none are reported (empty list). The default.json
+# list example returns an empty array.
+- name: List VMON services (empty)
+  vmware.vmware_rest.appliance_vmon_service_info: {}
+  register: list_empty
+
+- name: Assert empty list is returned
+  ansible.builtin.assert:
+    that:
+      - list_empty.info is defined
+      - list_empty.info | length == 0
+      - list_empty.value | length == 0
+      - not list_empty.changed
+
+# Test 2: Get a single service by identifier (GET endpoint returns the service
+# info object directly)
+- name: Reset before get expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for get
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_get: "200"
+
+- name: Get VMON service by identifier
+  vmware.vmware_rest.appliance_vmon_service_info:
+    service: vpxd
+  register: get_by_id
+
+- name: Assert service details are returned
+  ansible.builtin.assert:
+    that:
+      - get_by_id.value is defined
+      - get_by_id.value.startup_type == 'AUTOMATIC'
+      - get_by_id.value.state == 'STARTED'
+      - get_by_id.value.health == 'HEALTHY'
+      - get_by_id.value.name_key == 'cis.vpxd.ServiceName'
+      - get_by_id.info is defined
+      - get_by_id.info | length == 1
+      - get_by_id.info[0].state == 'STARTED'
+      - not get_by_id.changed
+
+# Test 3: List multiple services. The list endpoint returns the full
+# key/value service objects, which the module returns as-is.
+- name: Reset before multiple list expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load API spec expectations for multiple services
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/list_multiple.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_list: "200"
+        Appliance.Vmon.Service_get: "200"
+
+- name: List VMON services (multiple)
+  vmware.vmware_rest.appliance_vmon_service_info: {}
+  register: list_multiple
+
+- name: Assert multiple services are returned
+  ansible.builtin.assert:
+    that:
+      - list_multiple.info is defined
+      - list_multiple.info | length == 2
+      - list_multiple.value | length == 2
+      - list_multiple.info | map(attribute='key') | list | sort == ['vmware-vpostgres', 'vpxd']
+      - list_multiple.info[0].value.state is defined
+      - list_multiple.info[0].value.startup_type is defined
+      - not list_multiple.changed
+
+# Test 4: Check mode returns the same read-only result without error
+- name: List VMON services (check mode)
+  vmware.vmware_rest.appliance_vmon_service_info: {}
+  check_mode: true
+  register: list_check
+
+- name: Assert check mode reports no change for read-only info module
+  ansible.builtin.assert:
+    that:
+      - list_check.info | length == 2
+      - not list_check.changed

@@ -1,0 +1,102 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "vCenter VMON Service Mock - Multiple Services",
+    "version": "8.0.2.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/appliance/vmon/service": {
+      "get": {
+        "operationId": "Appliance.Vmon.Service_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": [
+                  {
+                    "key": "vpxd",
+                    "value": {
+                      "name_key": "cis.vpxd.ServiceName",
+                      "description_key": "cis.vpxd.ServiceDescription",
+                      "startup_type": "AUTOMATIC",
+                      "state": "STARTED",
+                      "health": "HEALTHY",
+                      "health_messages": []
+                    }
+                  },
+                  {
+                    "key": "vmware-vpostgres",
+                    "value": {
+                      "name_key": "cis.vmware-vpostgres.ServiceName",
+                      "description_key": "cis.vmware-vpostgres.ServiceDescription",
+                      "startup_type": "AUTOMATIC",
+                      "state": "STARTED",
+                      "health": "HEALTHY",
+                      "health_messages": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appliance/vmon/service/{service}": {
+      "get": {
+        "operationId": "Appliance.Vmon.Service_get",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "name_key": "cis.vpxd.ServiceName",
+                  "description_key": "cis.vpxd.ServiceDescription",
+                  "startup_type": "AUTOMATIC",
+                  "state": "STARTED",
+                  "health": "HEALTHY",
+                  "health_messages": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

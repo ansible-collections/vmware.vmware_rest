@@ -1,0 +1,132 @@
+---
+# ============================================================
+# APPLIANCE_VMON_SERVICE ACTION (start/stop) TESTS
+# ============================================================
+# Actions always attempt the requested operation and always report
+# changed=true (the module does not resolve current run state first).
+
+# Test 1: Start a service
+- name: Reset before start action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load start POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_start: "200"
+
+- name: Start the service
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    state: start
+  register: start_result
+
+- name: Assert start action succeeded
+  ansible.builtin.assert:
+    that:
+      - start_result.changed
+      - start_result.id == 'vpxd'
+      - start_result.value is defined
+
+# Test 2: Start in check mode
+- name: Reset before start check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load start POST expectation for check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_start: "200"
+
+- name: Start the service in check mode
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    state: start
+  check_mode: true
+  register: start_check
+
+- name: Assert start check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - start_check.changed
+      - start_check.id == 'vpxd'
+      - start_check.value == {}
+
+# Test 3: Stop a service
+- name: Reset before stop action expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load stop POST expectation
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_stop: "200"
+
+- name: Stop the service
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    state: stop
+  register: stop_result
+
+- name: Assert stop action succeeded
+  ansible.builtin.assert:
+    that:
+      - stop_result.changed
+      - stop_result.id == 'vpxd'
+      - stop_result.value is defined
+
+# Test 4: Stop in check mode
+- name: Reset before stop check mode expectations
+  ansible.builtin.include_role:
+    name: prepare_simulator
+  vars:
+    prepare_simulator_reset: true
+
+- name: Load stop POST expectation for check mode
+  ansible.builtin.uri:
+    url: "{{ mockserver_url }}/mockserver/openapi"
+    method: PUT
+    status_code: [200, 201]
+    body_format: json
+    body:
+      specUrlOrPayload: "file:/mockserver_specs/default.json"
+      operationsAndResponses:
+        Appliance.Vmon.Service_stop: "200"
+
+- name: Stop the service in check mode
+  vmware.vmware_rest.appliance_vmon_service:
+    service: vpxd
+    state: stop
+  check_mode: true
+  register: stop_check
+
+- name: Assert stop check mode reports change without calling the API
+  ansible.builtin.assert:
+    that:
+      - stop_check.changed
+      - stop_check.id == 'vpxd'
+      - stop_check.value == {}
