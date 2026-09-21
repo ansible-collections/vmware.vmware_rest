@@ -70,6 +70,8 @@ requirements: []
 
 notes:
   - Generated from vSphere API spec 8.0.2.
+  - Not compatible with vSphere API 7.0.3.
+  - Not compatible with vSphere API 9.1.0.
 """
 
 EXAMPLES = r"""
