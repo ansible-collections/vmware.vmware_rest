@@ -178,6 +178,11 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
             result["id"] = new_id
             result["value"] = value
             result["changed"] = True
+        elif not isinstance(resource, dict):
+            result["id"] = self._get_moid_attribute_value_from_resource(self.params)
+            diff, value = self._update_without_idempotence()
+            result["value"] = value
+            result["changed"] = True
         else:
             result["id"] = self._get_moid_attribute_value_from_resource(
                 {**self.params, **resource}
@@ -229,6 +234,17 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
             new_id = value if isinstance(value, str) else ""
 
         return new_id, value
+
+    def _update_without_idempotence(self):
+        path = self.update_operation_config.build_path(params=self.params)
+        desired_body = self.update_operation_config.build_body(params=self.params)
+        update_method = getattr(self.client, self.update_operation_config.http_method)
+        value = {}
+        if not self.module.check_mode:
+            response = update_method(path, data=desired_body)
+            value = self._get_response_value(response)
+
+        return {}, value
 
     def _update_if_needed(self, resource: dict) -> tuple:
         if self.update_operation_config is None:
