@@ -29,11 +29,7 @@ I used Claude CLI Sonnet 4.5 (Claude Code chat in VS Code had really terrible pe
 
 ```
 Generate the vcenter_resourcepool and vcenter_resourcepool_info modules
-
-If no unit tests for those modules exist, generate them
-
-If no integration tests for those modules exist, generate them
-
+Use the ansible-module-doc-review skill to process vcenter_resourcepool
 Use the validate_api_compatibility script to validate those modules against all available spec versions
 ```
 
@@ -59,11 +55,11 @@ python content_generation/validate_api_compatibility.py --target '8.0.2'
 
 ## Generating Tests
 
-If tests do not exist for the module, you can generate them using the /.agents/skills/generate-integration-tests and /.agents/skills/generate-unit-tests skills. These instruct the AI agent to generate passing tests based on the API spec.
+Since the collection shares so much base logic, tests need to focus on validating the actual API endpoints/data handling rather than the underlying base classes.
 
-While there are guidelines and scripts to help ensure a certain quality baseline, it is best to review them yourself to ensure all desired scenarios are tested and assertions make sense.
+If tests do not exist for the module, the recommended route is to as an AI agent to generate some for you based on the existing tests. Since these tests should all be API spec driven, most of the "writing" just involves pulling data out of the API spec and putting it in the tests.
 
-Once tests have been generated, I recommend you run them yourself, format them with black, and run sanity tests to make sure everything is green. The AI agent can help, but it tends to struggle if you ask it to do everything at once.
+Once the agent is done, validate that the tests assert the actual API spec state, and not just what the module does.
 
 ## Scripts
 
@@ -88,10 +84,6 @@ This is the main script for generating modules. It takes the YAML document outpu
 ### fetch_vsphere_openapi_spec
 
 This script can get an OpenAPI spec from Broadcom and place it in this repo. It is mainly called by AI agents using the fetch-vsphere-openapi-spec skill in /.agents/skills/
-
-### generate_openapi_mocks
-
-This script is used to generate OpenAPI spec files that are used in integration test mocks. The integration tests will setup a mock server that should respond as described by the specs, and make testing the modules possible without disrupting a live vCenter environment.
 
 ### validate_api_compatibility
 
