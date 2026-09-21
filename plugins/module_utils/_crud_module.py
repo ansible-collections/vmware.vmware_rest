@@ -86,20 +86,21 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         are merged, since both are live API data.
 
         Returns:
-            An empty dict if the resource does not exist or there is nothing to
-            look up (an action-only endpoint), otherwise the resource state.
+            None - the get operation returned a 404 (no resource) or no list results were found
+            Get response - If the get operation was configured properly, typically a dict
+            dict - A dict with the hydrated resource context
         """
         if self.get_operation_config is None and self.list_operation_config is None:
             # This is an action only endpoint. There is no resource to look up, so
             # there is no live state to report. Callers fall back to the params for
             # any path or MOID context they need.
-            return {}
+            return None
 
         # try to 'get' a resource, either using the resource ID from the params or a singleton api endpoint.
         # For example, get a specific VM or get the vCenter appliance
         try:
             resource = self._perform_get_operation()
-            return resource if resource else {}
+            return resource
         except RequiredPathParameterError:
             if not self.params.get("name") or not self.list_operation_config:
                 raise
@@ -117,7 +118,7 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
                     continue
                 return {**summary, **resource}
 
-        return {}
+        return None
 
     def perform_action(self) -> dict:
         """
@@ -161,11 +162,11 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
             # Did the user omit the ID param because the object doesnt exist yet?
             # Or did they omit a different param that is actually required?
             if e.param_name == self.moid_parameter_hints[-1]:
-                resource = {}
+                resource = None
             else:
                 raise
 
-        if not resource:
+        if resource is None:
             if self.create_operation_config is None:
                 self.module.fail_json(
                     msg=(
@@ -236,6 +237,9 @@ class VmwareRestCrudModuleBase(VmwareRestModuleBase):
         return new_id, value
 
     def _update_without_idempotence(self):
+        if self.update_operation_config is None:
+            return {}, {}
+
         path = self.update_operation_config.build_path(params=self.params)
         desired_body = self.update_operation_config.build_body(params=self.params)
         update_method = getattr(self.client, self.update_operation_config.http_method)

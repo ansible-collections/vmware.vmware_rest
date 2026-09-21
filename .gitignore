@@ -24,6 +24,7 @@ GEMINI.md
 .tmp/
 .ansible/
 .tmp-run/
+tests/output/
 
 # Integration tests
 tests/integration/integration_config.yml

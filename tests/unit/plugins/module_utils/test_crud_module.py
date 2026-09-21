@@ -149,7 +149,7 @@ def test_resolve_live_resource_context_not_found(crud_module, mock_client):
 
     resource = crud_module._resolve_live_resource_context()
 
-    assert resource == {}
+    assert resource is None
 
 
 def test_ensure_absent_already_absent(crud_module):

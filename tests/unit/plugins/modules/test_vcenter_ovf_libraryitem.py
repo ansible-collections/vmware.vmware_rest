@@ -311,7 +311,7 @@ def test_resolve_live_resource_context_not_found(action_module, mock_client):
 
     result = action_module._resolve_live_resource_context()
 
-    assert result == {}
+    assert result is None
 
 
 # ============================================================================
