@@ -149,7 +149,7 @@ def test_resolve_live_resource_context_not_found(crud_module, mock_client):
 
     resource = crud_module._resolve_live_resource_context()
 
-    assert resource == {}
+    assert resource is None
 
 
 def test_ensure_absent_already_absent(crud_module):
@@ -417,3 +417,96 @@ def test_update_if_needed_no_update_config(crud_module):
 
     assert diff == {}
     assert value == {}
+
+
+# ============================================================================
+# List-shaped live resource handling
+#
+# Some singleton endpoints (e.g. a VM's boot device order) return a bare JSON
+# array from GET rather than an object. Such a resource cannot be diffed against
+# the desired body, so ensure_present() falls back to a non-idempotent update:
+# it always writes the desired state and reports changed with an empty diff.
+# ============================================================================
+
+
+def test_resolve_live_resource_context_returns_list(crud_module, mock_client):
+    crud_module.params["resource_pool"] = "pool-1"
+    mock_response = MagicMock()
+    mock_response.status = 200
+    mock_response.json = [{"name": "entry1"}, {"name": "entry2"}]
+    mock_client.get.return_value = mock_response
+
+    resource = crud_module._resolve_live_resource_context()
+
+    assert resource == [{"name": "entry1"}, {"name": "entry2"}]
+
+
+def test_ensure_present_list_resource_updates_without_idempotence(
+    crud_module, mock_client
+):
+    crud_module.params["resource_pool"] = "pool-1"
+    crud_module.params["name"] = "my_pool"
+    # GET returned a bare list, which cannot be diffed against the desired body
+    live_resource = [{"name": "my_pool"}]
+
+    update_response = MagicMock()
+    update_response.status = 200
+    update_response.data = b""
+    mock_client.patch.return_value = update_response
+
+    with patch.object(
+        crud_module, "_resolve_live_resource_context", return_value=live_resource
+    ):
+        result = crud_module.ensure_present()
+
+    assert result["changed"] is True
+    assert result["id"] == "pool-1"
+    assert result["value"] == {}
+    mock_client.patch.assert_called_once()
+
+
+def test_ensure_present_list_resource_check_mode(crud_module, mock_client, mock_module):
+    mock_module.check_mode = True
+    crud_module.params["resource_pool"] = "pool-1"
+    crud_module.params["name"] = "my_pool"
+    live_resource = [{"name": "my_pool"}]
+
+    with patch.object(
+        crud_module, "_resolve_live_resource_context", return_value=live_resource
+    ):
+        result = crud_module.ensure_present()
+
+    assert result["changed"] is True
+    assert result["id"] == "pool-1"
+    assert result["value"] == {}
+    mock_client.patch.assert_not_called()
+
+
+def test_update_without_idempotence_writes_desired_body(crud_module, mock_client):
+    crud_module.params["resource_pool"] = "pool-1"
+    crud_module.params["name"] = "my_pool"
+
+    update_response = MagicMock()
+    update_response.status = 200
+    update_response.data = b""
+    mock_client.patch.return_value = update_response
+
+    diff, value = crud_module._update_without_idempotence()
+
+    assert diff == {}
+    assert value == {}
+    mock_client.patch.assert_called_once_with(
+        "/vcenter/resource-pool/pool-1", data={"name": "my_pool"}
+    )
+
+
+def test_update_without_idempotence_check_mode(crud_module, mock_client, mock_module):
+    mock_module.check_mode = True
+    crud_module.params["resource_pool"] = "pool-1"
+    crud_module.params["name"] = "my_pool"
+
+    diff, value = crud_module._update_without_idempotence()
+
+    assert diff == {}
+    assert value == {}
+    mock_client.patch.assert_not_called()

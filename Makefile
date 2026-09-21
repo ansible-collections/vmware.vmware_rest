@@ -6,12 +6,27 @@ UNIT_TARGETS ?=
 UNIT_PYTHON_VERSION ?= 3.12
 
 GALAXY_YML ?= $(CURDIR)/galaxy.yml
-COLLECTION_ROOT = ~/.ansible/collections/ansible_collections/vmware/vmware_rest
+# Where ansible-galaxy installs the collection when we're running from outside
+# the ansible_collections/vmware/vmware_rest tree.
+INSTALLED_COLLECTION_ROOT ?= $(HOME)/.ansible/collections/ansible_collections/vmware/vmware_rest
+
+# If we're already inside the collection tree, use it directly; otherwise point
+# at the installed copy that upgrade-collections populates. This is decided here
+# (make parse time) because $(eval) inside a recipe cannot be gated by a shell if.
+ifeq ($(patsubst %/ansible_collections/vmware/vmware_rest,MATCH,$(realpath $(CURDIR))),MATCH)
+COLLECTION_ROOT ?= .
+IN_COLLECTION_TREE := 1
+else
+COLLECTION_ROOT ?= $(INSTALLED_COLLECTION_ROOT)
+IN_COLLECTION_TREE :=
+endif
 
 # setup commands
 .PHONY: upgrade-collections
 upgrade-collections:
+ifndef IN_COLLECTION_TREE
 	ansible-galaxy collection install --upgrade -p ~/.ansible/collections .
+endif
 
 .PHONY: install-collection-python-reqs
 install-collection-python-reqs:
@@ -19,8 +34,10 @@ install-collection-python-reqs:
 
 .PHONY: install-integration-reqs
 install-integration-reqs: install-collection-python-reqs
+ifndef IN_COLLECTION_TREE
 	pip install -r tests/integration/requirements.txt; \
 	ansible-galaxy collection install --upgrade -p ~/.ansible/collections -r tests/integration/requirements.yml
+endif
 
 tests/integration/integration_config.yml:
 	chmod +x ./tests/integration/generate_integration_config.sh; \
@@ -72,11 +89,11 @@ integration: upgrade-collections
 .PHONY: eco-vcenter-ci
 eco-vcenter-ci: tests/integration/integration_config.yml install-integration-reqs upgrade-collections
 	rm -rf ~/.ansible/collections/ansible_collections/cloud/common; \
-	cd ~/.ansible/collections/ansible_collections/vmware/vmware_rest; \
+	cd $(COLLECTION_ROOT); \
 	ansible --version; \
 	ansible-test --version; \
 	ANSIBLE_COLLECTIONS_PATH=~/.ansible/collections/ansible_collections ansible-galaxy collection list; \
 	chmod +x tests/integration/run_eco_vcenter_ci.sh; \
-	ANSIBLE_ROLES_PATH=~/.ansible/collections/ansible_collections/vmware/vmware_rest/tests/integration/targets \
-		ANSIBLE_COLLECTIONS_PATH=~/.ansible/collections/ansible_collections \
+	ANSIBLE_ROLES_PATH=$(COLLECTION_ROOT)/tests/integration/targets \
+		ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. \
 		./tests/integration/run_eco_vcenter_ci.sh $(INTEGRATION_TARGETS)

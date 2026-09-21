@@ -89,7 +89,7 @@ def test_ensure_present_creates_resource(crud_module, mock_client):
     crud_module.params["name"] = "my-template"
     crud_module.params["library"] = "lib-1"
 
-    with patch.object(crud_module, "_resolve_live_resource_context", return_value={}):
+    with patch.object(crud_module, "_resolve_live_resource_context", return_value=None):
         create_response = MagicMock()
         create_response.status = 200
         create_response.data = b'"item-new"'
@@ -134,7 +134,7 @@ def test_ensure_present_check_mode_create(crud_module, mock_client):
     crud_module.params["library"] = "lib-1"
     crud_module.module.check_mode = True
 
-    with patch.object(crud_module, "_resolve_live_resource_context", return_value={}):
+    with patch.object(crud_module, "_resolve_live_resource_context", return_value=None):
         result = crud_module.ensure_present()
 
     assert result["changed"] is True
@@ -259,7 +259,7 @@ def test_resolve_live_resource_context_not_found(crud_module, mock_client):
 
     result = crud_module._resolve_live_resource_context()
 
-    assert result == {}
+    assert result is None
 
 
 # ============================================================================
