@@ -75,7 +75,7 @@ ansible-galaxy collection install vmware.vmware_rest:5.0.0
   * Modules:
     * `vmware.vmware_rest.appliance_networking_interfaces_ipv4` - Sets the IPv4 network configuration for specific network interface
     * `vmware.vmware_rest.appliance_networking_interfaces_ipv6` - Sets the IPv6 network configuration for specific interface
-    * `vmware.vmware_rest.appliance_vmon_service` - Lists the details of services managed by vMon
+    * `vmware.vmware_rest.appliance_service` - Lists the details of services managed by vCenter
 
 * Use Case Name: Manage a Content Library
   * Actors:
@@ -91,7 +91,6 @@ ansible-galaxy collection install vmware.vmware_rest:5.0.0
   * Description:
     * The system administrator can manage a VMs settings.
   * Modules:
-    * `vmware.vmware_rest.vcenter_vm_guest_filesystem_directories` - Creates a directory in the guest operating system
     * `vmware.vmware_rest.vcenter_vm_hardware_boot_device` - Sets the virtual devices that will be used to boot the virtual machine
     * `vmware.vmware_rest.vcenter_vm_hardware_boot` - Updates the boot-related settings of a virtual machine
     * `vmware.vmware_rest.vcenter_vm_hardware_parallel` - Adds a virtual parallel port to the virtual machine

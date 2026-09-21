@@ -39,10 +39,6 @@ ifndef IN_COLLECTION_TREE
 	ansible-galaxy collection install --upgrade -p ~/.ansible/collections -r tests/integration/requirements.yml
 endif
 
-tests/integration/integration_config.yml:
-	chmod +x ./tests/integration/generate_integration_config.sh; \
-	./tests/integration/generate_integration_config.sh
-
 # test commands
 .PHONY: linters
 linters:  ## Run extra linter tests
@@ -78,22 +74,9 @@ sanity: upgrade-collections
 integration: upgrade-collections
 	ansible-galaxy collection install -r tests/integration/requirements.yml; \
 	cd $(COLLECTION_ROOT); \
-	rm -rf tests/integration/targets/vmware_rest_*; \
 	ansible --version; \
 	ansible-test --version; \
 	ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. ansible-galaxy collection list; \
 	ANSIBLE_ROLES_PATH=$(COLLECTION_ROOT)/tests/integration/targets \
 		ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. \
 		ansible-test integration $(INTEGRATION_TARGETS) $(CLI_ARGS);
-
-.PHONY: eco-vcenter-ci
-eco-vcenter-ci: tests/integration/integration_config.yml install-integration-reqs upgrade-collections
-	rm -rf ~/.ansible/collections/ansible_collections/cloud/common; \
-	cd $(COLLECTION_ROOT); \
-	ansible --version; \
-	ansible-test --version; \
-	ANSIBLE_COLLECTIONS_PATH=~/.ansible/collections/ansible_collections ansible-galaxy collection list; \
-	chmod +x tests/integration/run_eco_vcenter_ci.sh; \
-	ANSIBLE_ROLES_PATH=$(COLLECTION_ROOT)/tests/integration/targets \
-		ANSIBLE_COLLECTIONS_PATH=$(COLLECTION_ROOT)/../.. \
-		./tests/integration/run_eco_vcenter_ci.sh $(INTEGRATION_TARGETS)
