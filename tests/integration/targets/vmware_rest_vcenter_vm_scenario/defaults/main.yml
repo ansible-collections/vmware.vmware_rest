@@ -1,3 +1,0 @@
----
-test_resource_pool_name: "{{ tiny_prefix }}-vcenter-vm-tests-resource-pool"
-test_vm_name: "{{ tiny_prefix }}-vm"
