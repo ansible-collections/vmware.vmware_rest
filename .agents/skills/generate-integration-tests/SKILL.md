@@ -4,6 +4,9 @@
 
 Generate complete integration test suites for vmware.vmware_rest Ansible modules. Integration tests validate module behavior against a MockServer API simulator, focusing on idempotency, check mode, and basic input/output expectations.
 
+Tests should always be written with the API spec as the source of truth. They should use assertions based on the spec, not what the module actually does.
+Seeing errors in the results helps identify module bugs.
+
 ## Scope
 
 Integration tests should be **meaningful but short**. They validate:
@@ -25,12 +28,26 @@ Use this skill when asked to generate integration tests for a module or module p
 ## Prerequisites
 
 - Module(s) must exist in `plugins/modules/`
-- The `generate_openapi_mocks.py` script must be available at `content_generation/generate_openapi_mocks.py`
 - The `prepare_simulator` role must be available in the test infrastructure
+
+## Examples
+
+- tests/integration/targets/vcenter_datacenter (CRUD/INFO)
+- tests/integration/targets/appliance_shutdown (INFO/ACTION)
+
+- **`example_module_analysis.md`** - Shows how to analyze module files to determine:
+  - Module type (CRUD vs Info)
+  - Supported operations
+  - Module parameters
+  - Operation IDs
+  - What test files to create
+  - Includes examples for different module types
 
 ## Workflow
 
 ### Step 1: Analyze the Module(s)
+
+`example_module_analysis.md` - Example of module analysis output
 
 Read the module file(s) to understand:
 
@@ -55,33 +72,14 @@ Read the module file(s) to understand:
    - Identifying parameters (name, folder, etc.)
    - Resource-specific parameters
 
-### Step 2: Generate OpenAPI Mocks
+### Step 2: Understand mock json Customization
 
-Run the mock generator script:
+All tests use mock json files to load responses onto a mock api server. Existing tests will have example of what these files look like and how to use them.
 
-```bash
-python content_generation/generate_openapi_mocks.py <module_name> [output_dir]
-```
+It is important to use real examples and data shapes from the API spec in the mocks.
 
-Example:
-```bash
-python content_generation/generate_openapi_mocks.py vcenter_datacenter
-```
-
-This generates mock specification files in `tests/integration/targets/<module_name>/openapi_spec_mocks/`:
-- `default.json` - Empty state (no resources exist)
-- `created.json` - Resource exists (if CREATE supported)
-- `list_multiple.json` - Multiple resources exist (if LIST supported)
-- `updated.json` - Updated resource state (if UPDATE supported)
-
-**Note**: If the module name ends with `_info`, the script automatically strips it for the target directory name.
-
-### Step 2.5: Understand updated.json Customization
-
-**IMPORTANT**: The generated `updated.json` is a baseline (identical to `created.json`) and will need manual customization after you write your update tests.
-
-The script cannot know what fields your tests will update. The workflow is:
-1. Generate initial mocks (including baseline `updated.json`)
+If the tests need to cover an 'update' scenario, the mocks will need to be updated in the middle of the test. The general workflow is:
+1. Generate initial mocks
 2. Write your integration tests (defining what fields to update)
 3. **Manually edit `updated.json`** to reflect the values your UPDATE operation sets
 4. Re-run tests to verify idempotency
@@ -179,7 +177,7 @@ This is the orchestrator that sets up the initial mock state and includes other 
 
 ### Step 6: Create tasks/info.yml
 
-Tests for the info module (LIST and GET operations). See `reference/info_tests_pattern.yml` for the standard pattern.
+Tests for the info module (LIST and GET operations).
 
 **Key tests**:
 1. List when empty
@@ -193,7 +191,7 @@ Each test should:
 
 ### Step 7: Create tasks/create.yml (if CREATE supported)
 
-Tests for CREATE operations. See `reference/create_tests_pattern.yml` for the standard pattern.
+Tests for CREATE operations.
 
 **Key tests**:
 1. Initial creation (verify `changed=true` and ID returned)
@@ -208,7 +206,7 @@ Tests for CREATE operations. See `reference/create_tests_pattern.yml` for the st
 
 ### Step 8: Create tasks/update.yml (if UPDATE supported)
 
-Tests for UPDATE operations. See `reference/update_tests_pattern.yml` for the standard pattern.
+Tests for UPDATE operations.
 
 **Key tests**:
 1. Initial update (verify `changed=true`)
@@ -217,7 +215,7 @@ Tests for UPDATE operations. See `reference/update_tests_pattern.yml` for the st
 
 ### Step 9: Create tasks/delete.yml (if DELETE supported)
 
-Tests for DELETE operations. See `reference/delete_tests_pattern.yml` for the standard pattern.
+Tests for DELETE operations.
 
 **Key tests**:
 1. Delete by ID (verify `changed=true`)
@@ -516,15 +514,6 @@ python content_generation/generate_openapi_mocks.py vcenter_resourcepool
 # Step 10: Run tests
 make integration CLI_ARGS=-vvvv INTEGRATION_TARGETS=vcenter_resourcepool
 ```
-
-## Reference Files
-
-See the `reference/` directory for complete examples:
-- `info_tests_pattern.yml` - Pattern for info module tests
-- `create_tests_pattern.yml` - Pattern for CREATE operation tests
-- `update_tests_pattern.yml` - Pattern for UPDATE operation tests
-- `delete_tests_pattern.yml` - Pattern for DELETE operation tests
-- `example_module_analysis.md` - Example of module analysis output
 
 ## Remember
 

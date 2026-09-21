@@ -6,23 +6,12 @@ See [Ansible Using collections](https://docs.ansible.com/ansible/latest/user_gui
 
 ## How To: Generate Collection Modules
 
-Modules in this collection are generated using an AI agent, and a vSphere REST API spec.
+Modules in this collection are generated using a script and a vSphere REST API spec. It is possible to regenerate modules without replacing the documentation. This is recommended unless you have access to an AI agent.
 
-The process is designed to be API spec driven, self-iterative, and include testing and validation. You can generate one or multiple modules.
+If you do have access to an agent, you can use the ansible-module-doc-review skill to help complete the documentation for the module from a raw generated state.
 
-For performance purposes, its best to be sure your AI agent loads the projects subagents. For example, for claude you can do,
-```
-mkdir -p .claude/agents/;
-cp -R .agents/subagents/* .claude/agents/
-```
-
-An example prompt would be:
-```
-using the module generation workflow and vsphere 9 api spec, generate vcenter_resourcepool and vcenter_resourcepool_info.
-```
+Refer to `content_generation/README.md` for more details.
 
 ### API Spec
 
-There is an AI skill dedicated to getting the API spec from Broadcom. It basically just runs a python script `.agents/scripts/fetch_vsphere_openapi_spec.py`, so you can do this manually if needed.
-
-The module generation workflow will automatically get the API spec requested, if it does not exist.
+There is a skill to help get the API spec from Broadcom. You can run `content_generation/fetch_vsphere_openapi_spec.py`.

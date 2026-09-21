@@ -44,11 +44,7 @@ To run sanity tests:
 make sanity
 ```
 
-To run integration tests against a vCenter lab:
+To run integration tests against a mock API server:
 ```bash
-# set env variables for auth
-export VCENTER_HOSTNAME='my-vcenter.example.com'
-export VCENTER_USERNAME='someuser@vcenter.local'
-export VCENTER_PASSWORD='password'
-make eco-vcenter-ci
+make integration
 ```
