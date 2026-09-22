@@ -1,0 +1,3 @@
+deprecated_features:
+  - Deprecate vcenter_vm_power_info module. Use vmware.vmware.vm_info
+  - Deprecate vcenter_folder_info module. Use vmware.vmware.folder_info

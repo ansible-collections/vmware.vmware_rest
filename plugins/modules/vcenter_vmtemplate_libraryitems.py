@@ -27,7 +27,7 @@ description:
 
 deprecated:
   removed_in: 6.0.0
-  why: This functionality has been moved to vmware.vmware.appliance_info.
+  why: This functionality has been moved to vmware.vmware.
   alternative: Use M(vmware.vmware.deploy_content_library_template) or M(vmware.vmware.content_template) instead.
 
 author:

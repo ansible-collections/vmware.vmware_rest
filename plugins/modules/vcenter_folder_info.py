@@ -22,6 +22,11 @@ description:
   - Use the filter parameters to narrow results by folder name, identifier, type, parent folder,
     or datacenter.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.folder_info.
+  alternative: Use M(vmware.vmware.folder_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 
