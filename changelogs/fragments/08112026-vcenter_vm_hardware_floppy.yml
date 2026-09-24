@@ -1,6 +1,0 @@
----
-minor_changes:
-  - vcenter_vm_hardware_floppy_info - The non-operational ``label`` parameter has been removed. This parameter was accepted but never used by the vSphere API as an input.
-  - vcenter_vm_hardware_floppy - The non-operational ``label`` parameter has been removed. This parameter was accepted but never used by the vSphere API as an input.
-deprecated_features:
-  - Deprecate vcenter_vm_hardware_floppy and vcenter_vm_hardware_floppy_info modules as floppy drives are legacy hardware.
