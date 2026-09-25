@@ -4,6 +4,135 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v5.0.0
+======
+
+Major Changes
+-------------
+
+- vcenter_vm_guest_filesystem_directories - The module now raises an error when the vSphere API request fails (for example when creating a directory that already exists) instead of silently returning a successful, unchanged result. Playbooks that relied on the previous behavior should handle the failure explicitly.
+- all modules - The return value ``value`` may be slightly different than it was in previous versions. Refer to the module documentation for expected types and examples.
+
+Minor Changes
+-------------
+
+- appliance_networking_interfaces_info - The redundant ``id`` return value is no longer emitted. It only ever echoed back the ``interface_name`` input, which callers already know. Use the ``value`` or ``info`` return values for interface details.
+- vcenter_vm_hardware_floppy - The non-operational ``label`` parameter has been removed. This parameter was accepted but never used by the vSphere API as an input.
+- vcenter_vm_hardware_floppy_info - The non-operational ``label`` parameter has been removed. This parameter was accepted but never used by the vSphere API as an input.
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- appliance_monitoring_query - The ``interval``, ``function``, ``start_time`` and ``end_time`` parameters have been grouped under a new required ``item`` dictionary parameter to match the vSphere 9.1.0 API specification. The module will not work with older versions of the API.
+- appliance_networking_interfaces_ipv4 - The ``state`` parameter now accepts ``present`` instead of ``set``. Playbooks that explicitly set ``state: set`` must be updated to ``state: present``.
+- appliance_networking_interfaces_ipv6 - The ``state`` parameter now accepts ``present`` instead of ``set``. Playbooks that explicitly set ``state: set`` must be updated to ``state: present``.
+- appliance_system_storage - The ``state`` parameter now accepts ``resize-ex`` instead of ``resize_ex``. This was done to better align with the API expectations.
+- vcenter_folder_info - The ``type`` parameter (and its ``filter_type`` alias) has been moved into a new ``filter`` dictionary as ``filter.type``, reflecting the ``Vcenter.Folder.FilterSpec`` object introduced in the vSphere 9.1.0 API specification. Playbooks that set ``type`` or ``filter_type`` at the top level must now use ``filter.type``. The ``folders``, ``names``, ``parent_folders``, and ``datacenters`` filters remain top-level parameters.
+- vcenter_folder_info and vcenter_network_info - The 'value' return is not guaranteed to be a list. If a list is desired, the 'info' return will always be a list (as documented)
+- vcenter_host_info - The ``standalone`` parameter has been moved into a new ``filter`` dictionary as ``filter.standalone``, reflecting the ``Vcenter.Host.FilterSpec`` object introduced in the vSphere 9.1.0 API specification. Playbooks that set ``standalone`` at the top level must now use ``filter.standalone``. The other host filters remain top-level parameters.
+- vcenter_ovf_libraryitem - The ``deployment_spec.accept_all_EULA`` parameter has been renamed to ``deployment_spec.accept_all_eula`` (snake_case) in the vSphere 9.1.0 API specification and module arguments. The module will not work with older versions of the API.
+- vcenter_vm_guest_filesystem_directories - The 'present', 'absent', 'create_temporary' states have been removed and replaced with options that better reflect the action taken by the API.
+- vcenter_vm_guest_filesystem_directories - The state option has no default value and must be specified.
+
+Deprecated Features
+-------------------
+
+- Deprecate appliance_health_applmgmt_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_health_databasestorage_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_health_load_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_health_mem_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_health_storage_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_health_swap_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_health_system_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_networking_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_networking_interfaces_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_networking_interfaces_ipv4_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_networking_interfaces_ipv6_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_system_time_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_system_version_info module. Use vmware.vmware.appliance_info
+- Deprecate appliance_vmon_service and appliance_vmon_service_info modules as the endpoint has been removed. Use appliance_services and appliance_services_info instead.
+- Deprecate vcenter_folder_info module. Use vmware.vmware.folder_info
+- Deprecate vcenter_host_info module. Use vmware.vmware.esxi_info
+- Deprecate vcenter_vm_guest_filesystem_directories module. Use ansible.builtin.file
+- Deprecate vcenter_vm_hardware_floppy and vcenter_vm_hardware_floppy_info modules as floppy drives are legacy hardware.
+- Deprecate vcenter_vm_info module. Use vmware.vmware.vm_info
+- Deprecate vcenter_vm_power_info module. Use vmware.vmware.vm_info
+- Deprecate vcenter_vmtemplate_libraryitems module. Use vmware.vmware.deploy_content_library_template or vmware.vmware.content_template
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- appliance_access_consolecli - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_consolecli_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_dcui - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_dcui_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_shell - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_shell_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_ssh - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_access_ssh_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_dns_domains - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_dns_domains_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_dns_hostname - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_dns_hostname_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_dns_servers - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_dns_servers_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_firewall_inbound - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_firewall_inbound_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_noproxy - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_noproxy_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_proxy - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_networking_proxy_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_ntp - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_ntp_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_system_globalfips - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_system_globalfips_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_system_time_timezone - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_system_time_timezone_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_timesync - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- appliance_timesync_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- cluster_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- content_library_item_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- content_locallibrary - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- content_subscribedlibrary - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- datacenter_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- datastore_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- folder_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- host_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- network_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- resource_pool_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_cluster_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_host - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_guest_customization - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_guest_networking_interfaces_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_guest_power - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_adapter_sata - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_adapter_scsi - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_cdrom - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_cpu - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_cpu_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_disk - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_ethernet - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_memory - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_hardware_memory_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_libraryitem_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vm_power - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vcenter_vmtemplate_libraryitems_info - The deprecated module has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+- vm_moid - The deprecated lookup plugin has been removed (https://github.com/ansible-collections/vmware.vmware_rest/pull/648)
+
+Bugfixes
+--------
+
+- appliance_networking - Add ``present`` to the ``state`` choices so the ``ipv6_enabled`` update can actually be applied. Previously ``state`` only accepted ``reset``, leaving the IPv4/IPv6 update path unreachable.
+- appliance_networking_interfaces_ipv4_info - Mark ``interface_name`` as required so the module fails clearly during argument validation instead of attempting a request against an incomplete endpoint path.
+- appliance_networking_interfaces_ipv6_info - Mark ``interface_name`` as required so the module fails clearly during argument validation instead of attempting a request against an incomplete endpoint path.
+
+New Modules
+-----------
+
+- content_library_info - Gather information about vCenter content libraries.
+- content_library_subscriptions_info - Gather information about the subscriptions of a published content library.
+
 v4.11.0
 =======
 

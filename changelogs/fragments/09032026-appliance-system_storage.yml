@@ -1,4 +1,0 @@
----
-breaking_changes:
-  - appliance_system_storage - The ``state`` parameter now accepts ``resize-ex`` instead
-    of ``resize_ex``. This was done to better align with the API expectations.

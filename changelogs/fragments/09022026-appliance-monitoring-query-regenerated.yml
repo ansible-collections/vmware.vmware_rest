@@ -1,5 +1,0 @@
----
-breaking_changes:
-  - appliance_monitoring_query - The ``interval``, ``function``, ``start_time`` and ``end_time``
-    parameters have been grouped under a new required ``item`` dictionary parameter to match the
-    vSphere 9.1.0 API specification. The module will not work with older versions of the API.
