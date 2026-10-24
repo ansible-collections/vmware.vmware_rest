@@ -61,12 +61,30 @@ def test_response_json_invalid_raises():
 
 def test_response_log_to_file(tmp_path):
     log_file = tmp_path / "rest.log"
-    response = Response(200, b'{"ok": true}')
-    response.method = "GET"
-    response.url = "https://vcenter.example.com/api/test"
+    response = Response(
+        200,
+        b'{"ok": true}',
+        method="GET",
+        url="https://vcenter.example.com/api/test",
+    )
     response.log_to_file(str(log_file))
     content = log_file.read_text(encoding="utf-8")
     assert "GET: https://vcenter.example.com/api/test" in content
+    assert '"ok": true' in content
+
+
+def test_client_logs_response_with_request_metadata(client, tmp_path):
+    log_file = tmp_path / "rest.log"
+    client.log_file = str(log_file)
+    url = "https://vcenter.example.com:443/api/test"
+    raw_response = MagicMock(status=200, headers={})
+    raw_response.read.return_value = b'{"ok": true}'
+
+    with patch.object(client._client, "open", return_value=raw_response):
+        client._do_request("GET", url)
+
+    content = log_file.read_text(encoding="utf-8")
+    assert f"GET: {url}" in content
     assert '"ok": true' in content
 
 

@@ -52,9 +52,11 @@ def flatten_query_params(query):
 
 
 class Response:
-    def __init__(self, status, data, headers=None):
+    def __init__(self, status, data, headers=None, method=None, url=None):
         self.status = status
         self.data = data
+        self.method = method
+        self.url = url
         # [('h1', 'v1'), ('H2', 'V2')] -> {'h1': 'v1', 'h2': 'V2'}
         self.headers = (
             dict((k.lower(), v) for k, v in dict(headers).items()) if headers else {}
@@ -161,7 +163,7 @@ class Client:
         except HTTPError as e:
             # An HTTP error occurred, but that might be a valid response from the API.
             # The caller should handle it
-            response = Response(e.code, e.read(), e.headers)
+            response = Response(e.code, e.read(), e.headers, method=method, url=path)
 
         except Exception as e:
             self.error_handler.handle_request_error(
@@ -171,7 +173,13 @@ class Client:
                 request_kwargs=request_kwargs,
             )
         else:
-            response = Response(raw_resp.status, raw_resp.read(), raw_resp.headers)
+            response = Response(
+                raw_resp.status,
+                raw_resp.read(),
+                raw_resp.headers,
+                method=method,
+                url=path,
+            )
 
         if self.log_file:
             response.log_to_file(self.log_file)
