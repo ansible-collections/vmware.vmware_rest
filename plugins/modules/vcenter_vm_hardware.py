@@ -23,6 +23,11 @@ description:
   - The virtual machine is identified by its managed object identifier (MOID).
   - This module maps to the vCenter C(/vcenter/vm/{vm}/hardware) REST API.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.vm_hardware_version.
+  alternative: Use M(vmware.vmware.vm_hardware_version) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

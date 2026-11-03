@@ -1,0 +1,4 @@
+---
+deprecated_features:
+  - vcenter_vm_hardware - the module has been deprecated in favor of ``vmware.vmware.vm_hardware_version`` and will be removed in vmware.vmware_rest 6.0.0.
+  - vcenter_vm_hardware_info - the module has been deprecated in favor of ``vmware.vmware.vm_hardware_version_info`` and will be removed in vmware.vmware_rest 6.0.0.
