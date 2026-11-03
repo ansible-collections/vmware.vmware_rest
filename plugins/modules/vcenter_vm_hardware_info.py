@@ -24,6 +24,11 @@ description:
     confirm it meets the minimum version required by a feature or to check the state of a
     pending hardware upgrade.
 
+deprecated:
+  removed_in: 6.0.0
+  why: This functionality has been moved to vmware.vmware.vm_hardware_version_info.
+  alternative: Use M(vmware.vmware.vm_hardware_version_info) instead.
+
 author:
   - Ansible Eco Content Team (@eco-ansible-content)
 

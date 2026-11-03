@@ -195,6 +195,16 @@ plugin_routing:
         removal_version: 6.0.0
         warning_text: This API endpoint is no longer supported. Use vmware.vmware_rest.appliance_services_info instead.
 
+    vcenter_vm_hardware:
+      deprecation:
+        removal_version: 6.0.0
+        warning_text: Use vmware.vmware.vm_hardware_version instead.
+
+    vcenter_vm_hardware_info:
+      deprecation:
+        removal_version: 6.0.0
+        warning_text: Use vmware.vmware.vm_hardware_version_info instead.
+
     vcenter_vm_power_info:
       deprecation:
         removal_version: 6.0.0
