@@ -1079,3 +1079,16 @@ releases:
       name: content_library_subscriptions_info
       namespace: ''
     release_date: '2026-09-24'
+  5.0.1:
+    changes:
+      bugfixes:
+      - Fix optional REST logging by retaining the request method and URL on responses.
+      deprecated_features:
+      - vcenter_vm_hardware - the module has been deprecated in favor of ``vmware.vmware.vm_hardware_version``
+        and will be removed in vmware.vmware_rest 6.0.0.
+      - vcenter_vm_hardware_info - the module has been deprecated in favor of ``vmware.vmware.vm_hardware_version_info``
+        and will be removed in vmware.vmware_rest 6.0.0.
+    fragments:
+    - 11032026-deprecate-hw.yml
+    - fix_rest_log_metadata.yaml
+    release_date: '2026-11-05'

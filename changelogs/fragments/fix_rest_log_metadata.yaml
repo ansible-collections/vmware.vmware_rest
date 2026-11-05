@@ -1,2 +1,0 @@
-bugfixes:
-  - Fix optional REST logging by retaining the request method and URL on responses.
