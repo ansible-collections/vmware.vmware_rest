@@ -4,6 +4,20 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
+v5.1.0
+======
+
+Deprecated Features
+-------------------
+
+- vcenter_vm_hardware - the module has been deprecated in favor of ``vmware.vmware.vm_hardware_version`` and will be removed in vmware.vmware_rest 6.0.0.
+- vcenter_vm_hardware_info - the module has been deprecated in favor of ``vmware.vmware.vm_hardware_version_info`` and will be removed in vmware.vmware_rest 6.0.0.
+
+Bugfixes
+--------
+
+- Fix optional REST logging by retaining the request method and URL on responses.
+
 v5.0.0
 ======
 
@@ -11,7 +25,6 @@ Major Changes
 -------------
 
 - vcenter_vm_guest_filesystem_directories - The module now raises an error when the vSphere API request fails (for example when creating a directory that already exists) instead of silently returning a successful, unchanged result. Playbooks that relied on the previous behavior should handle the failure explicitly.
-- all modules - The return value ``value`` may be slightly different than it was in previous versions. Refer to the module documentation for expected types and examples.
 
 Minor Changes
 -------------
