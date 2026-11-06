@@ -4,7 +4,7 @@ vmware.vmware\_rest Release Notes
 
 .. contents:: Topics
 
-v5.0.1
+v5.1.0
 ======
 
 Deprecated Features

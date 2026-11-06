@@ -1079,7 +1079,7 @@ releases:
       name: content_library_subscriptions_info
       namespace: ''
     release_date: '2026-09-24'
-  5.0.1:
+  5.1.0:
     changes:
       bugfixes:
       - Fix optional REST logging by retaining the request method and URL on responses.
